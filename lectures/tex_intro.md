@@ -4,7 +4,7 @@
 
 <!--pan_title:tex_intro -->
 
-In the spring of 2024 I lectured Advanced Integrated Circuits for the third
+In the spring of 2025 I lectured Advanced Integrated Circuits for the fourth
 time. I have an inherent need to make things better, and the course is no
 different.
 
@@ -33,7 +33,6 @@ preparing for the lecture, writing these notes, making a YouTube video (so I'll
 remember next year what I wanted to talk about). I passed 1k subscribers.
 Friday's I had the lecture and the group work. 
 
-
 For the group work I forced students into groups, and I forced that they for the
 first 5-10 minutes do a check-in. That I need to do next year too.
 
@@ -46,12 +45,15 @@ following questions:
 
 The check-in led to excellent team work for those students that showed up. 
 
-Thanks to Jonathan for helping out in the exercise hours. 
+For the fourth semester I'm making a few tweaks. Hopefully I'll get the same
+schedule (Thursday's/Friday's). 
+
+One change will be the grading of the project, I'll be using github actions to
+do the GDS,DRC,LVS,SIM and docs. 
 
 I love programming and automation. Not much makes me more happy than using the
 same source (the [slide
 markdowns](https://github.com/wulffern/aic2024/tree/main/lectures)), to generate the [lecture notes](https://analogicus.com/aic2024/), to translate
 into the [book](https://analogicus.com/aic2024/assets/aic.pdf) your looking at right now.
-
 
 If you find an error in what I've made, then [fork](https://docs.github.com/en/get-started/quickstart/fork-a-repo) [aic2024](https://github.com/wulffern/aic2024), fix , [commit](https://git-scm.com/docs/git-commit), [push](https://git-scm.com/docs/git-push) and [create a pull request](https://docs.github.com/en/desktop/contributing-and-collaborating-using-github-desktop/working-with-your-remote-repository-on-github-or-github-enterprise/creating-an-issue-or-pull-request). That way, we use the global brain power most efficiently, and avoid multiple humans spending time on discovering the same error.

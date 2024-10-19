@@ -14,8 +14,10 @@ endif
 
 FILES = l00_diode \
 	l00_refresher \
-	lp_project_report \
-	l01_intro \
+	lr0_mosfet \
+	lr0_tools \
+	l00_spice
+#	l01_intro \
 	l02_esd \
 	l03_refbias \
 	l04_afe \
@@ -24,11 +26,11 @@ FILES = l00_diode \
 	l07_vreg \
 	l08_pll \
 	l09_osc \
+	lp_project_report \
 	l10_lpradio \
 	lx_energysrc \
 	l11_aver \
-	lr0_mosfet \
-	l00_spice
+
 	#l00_need_to_know
 
 
