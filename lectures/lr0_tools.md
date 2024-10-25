@@ -357,7 +357,7 @@ xschem -b ../design/JNW_EX_SKY130A/JNW_EX.sch &
 
 ### Add Ports
 
-Add IBPS\_4U and IBNS\_20U ports, the P and N in the name signifies what
+Add IBPS\_5U and IBNS\_20U ports, the P and N in the name signifies what
 transistor the current comes from. So IBPS must go into a diode connected NMOS,
 and N will be our output, and go into a diode connected PMOS somewhere else.
 
@@ -380,8 +380,8 @@ Press ESC to deselect everything
 
 Select the input transistor, and change the name to 'xi'
 
-Select the output transistor, and change the name to 'xo[4:0]'. Using bus
-notation on the name will create 5 transistors
+Select the output transistor, and change the name to 'xo[3:0]'. Using bus
+notation on the name will create 4 transistors
 
 Select ports, and use 'm' to move the ports close to the transistors.
 
@@ -450,7 +450,7 @@ make typical
 
 Delete the VDD source
 
-Add a current source of 4uA, and a voltage source of 1V to IBNS_20U
+Add a current source of 5uA, and a voltage source of 1V to IBNS_20U
 
 ``` spice
 IBP 0 IBPS_5U dc 5u
@@ -459,7 +459,7 @@ V0  IBNS_20U 0 dc 1
 
 Save the current in V0 by adding i(V0) to the save statement in the testbench
 
-Save the voltage by adding v(IPS_4U) to the save statement
+Save the voltage by adding v(IBPS_5U) to the save statement
 
 ```spice 
 .save i(V0) v(IBPS_5U)
@@ -473,7 +473,7 @@ Add measurement of the current and VGS. It must be added between the
 ``` spice
 let ibn = -i(v0)
 meas tran ibns_20u find ibn at=5n
-meas tran vgs_m1 find v(ibps_4u) at=5n
+meas tran vgs_m1 find v(ibps_5u) at=5n
 ```
 
 Run simulation
@@ -602,16 +602,16 @@ Delete the "return" line.
 
 Add the following lines (they automatically plot the current and gate voltage)
 
-``` yaml
+```python
 import cicsim as cs
 fname = name +".png"
 print(f"Saving {fname}")
-cs.rawplot(name + ".raw","time","v(ibps_4u),i(v0)",ptype="",fname=fname)
+cs.rawplot(name + ".raw","time","v(ibps_5u),i(v0)",ptype="",fname=fname)
 ```
 
 Re-run measurements to check the python code
 
-``` yaml
+```bash
 make typical etc mc OPT="--no-run"
 ```
 
@@ -907,6 +907,7 @@ The sim is to run a typical simulation.
 library: JNW_EX_SKY130A
 cell: JNW_EX
 author: Carsten Wulff
+github: wulffern
 tagline: The answer is 42
 email: carsten@wulff.no
 url: analogicus.github.io

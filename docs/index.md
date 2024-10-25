@@ -6,7 +6,7 @@ layout: home
 ---
 
 I write all the lectures in markdown, and you can see the source at
-[aic2054](https://github.com/wulffern/aic2025)
+[aic2025](https://github.com/wulffern/aic2025)
 
 For the slides, I use [deckset](https://www.deckset.com) to play the slideshow.
 

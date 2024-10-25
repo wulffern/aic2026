@@ -1,10 +1,10 @@
-footer: Carsten Wulff 2023
+footer: Carsten Wulff 2024
 slidenumbers:true
 autoscale:true
 theme: Plain Jane, 1
 text:  Helvetica
 header:  Helvetica
-date: 2023-10-26
+date: 2024-10-25
 
 <!--pan_skip:-->
 
@@ -42,6 +42,13 @@ look at the units below, and you can see it's $Q=CV$ [^1]
 
 ![left](https://www.nist.gov/sites/default/files/images/2021/08/23/NIST.SP_.1247.png)
 
+<!--pan_doc: 
+
+<sub>Figure 1: Si base units, from [https://www.nist.gov/pml/owm/metric-si/si-units](https://www.nist.gov/pml/owm/metric-si/si-units)</sub>
+
+-->
+
+
 ---
 
 #  Electrons
@@ -51,7 +58,10 @@ into smaller parts. Explained further in the [standard model of particle physics
 
 ![right 60%](../media/standard_model.pdf)
 
-<!--pan_doc: 
+
+<!--pan_doc:
+
+<sub>Figure 2: Standard model of particle physics, Wikipedia</sub>
 
 Electrons have a negative charge of $q \approx 1.602 \times 10^{-19}$. The proton a positive charge. The two charges balance exactly! If you have a trillion electrons and a trillion protons inside a volume, the net external charge will be $0$ (assuming we measure from some distance away). I find this fact absolutely incredible. There must be a fundamental connection between the charge of the proton and electron. It's insane that the charges balance out so exactly.
 
@@ -83,6 +93,8 @@ some origin, $\omega$ is the frequency and $t$ is time.
 
 The energy is $E = \hbar \omega$ , where $\hbar = h/2\pi$ and $h$ is 
 [Planck Constant](https://en.wikipedia.org/wiki/Planck_constant) and the momentum is $p = \hbar k$
+
+The probability amplitude is also called the wave function. Type of wave function depends on the scenario, and does not have to take on the solution above. The possible wave functions are those equations that fits with the time evolution of quantum states given by the Schrodinger equation. 
 
 -->
 
@@ -179,13 +191,21 @@ $$ E_2 = E_0 - A$$
 
 In a silicon crystal we can have trillions of atoms, and those that are close, have states that interact. **That's why crystals stay solids**. All chemical bonds are states of electrons interacting! Some are strong (co-valent bonds), some are weaker (ionic bonds), but it's all quantum states interacting.
 
--->
-
 The discrete energy levels of the electron transition into bands of allowed energy states. 
+
+-->
 
 ![right fit](https://upload.wikimedia.org/wikipedia/commons/thumb/e/ef/Solid_state_electronic_band_structure.svg/640px-Solid_state_electronic_band_structure.svg.png)
 
+<!--pan_doc:
+
+<sub>Figure 3: [Electronic band structure, Wikipedia](https://en.wikipedia.org/wiki/Electronic_band_structure)</sub>
+
 For a crystal, the allowed energy bands is captured in the [band structure](https://en.wikipedia.org/wiki/Electronic_band_structure)
+
+
+-->
+
 
 ---
 
@@ -196,6 +216,10 @@ faces, and 4 atoms inside the unit cell at a nearest neighbor distance of 0.235 
 
 ![left fit](https://upload.wikimedia.org/wikipedia/commons/f/f1/Silicon-unit-cell-3D-balls.png)
 
+<!--pan_doc:
+<sub>Figure 4: [Silicon, Wikipedia](https://en.wikipedia.org/wiki/Silicon)</sub>
+-->
+
 ---
 
 # Band structure 
@@ -204,6 +228,9 @@ The full band structure of a silicon unit cell is complicated, it's a [3 dimensi
 
 ![right fit](https://lampx.tugraz.at/~hadley/ss1/semiconductors/Si_bandstructure.png)
 
+<!--pan_doc: 
+<sub>Figure 5: [Silicon Band Structure](http://lampx.tugraz.at/~hadley/ss1/semiconductors/silicon_bandstructure.php)</sub>
+-->
 
 ---
 
@@ -250,13 +277,21 @@ $$
 
 If the energy of the state is more than a few kT away from the Fermi-level, then
 
-
-
 -->
 
 $$
 f(E) \approx e^{(E_F - E)/kT}
 $$
+
+<!--pan_doc:
+
+The equation above is one of the reasons the structure $e^{E/kT}$ or $e^{qV/kT}$ shows up all over the place. You'll see it in the equations for current in a diode, $I_D = I_s (e^{q V_D/nkT} -1)$, the subthreshold conduction of a mosfet $I_D \propto e^{q V_{gs}/nkT}$ and even the [Arrhenius Equation](https://en.wikipedia.org/wiki/Arrhenius_equation) $k = A e^{-E_a/kT}$. 
+
+It seems like any time you have something related to chemical reactions (state transitions of electrons, breaking bonds, forming bonds), or current in solids, there is a relation to the equation above. To me, that makes sense. 
+
+The Fermi-Dirac function also explains why there are more free carriers, and reaction rates increase, at high temperature. The part of the equation that is $e^{-E/kT}$ will approach one at high temperatures.
+
+-->
 
 ---
 
@@ -268,7 +303,9 @@ In metals, the band splitting of the energy levels causes the valence band and c
 
 <!--pan_doc:
 
-As such, electrons can easily transition between bound state and free state. As such, electrons in metals are shared over large distances, and there are many electrons readily available to move under an applied field, or difference in electron density. That's why metals conduct well.
+<sub>Figure 6: Band splitting in materials. [Electronic Band Structure, Wikipedia](https://en.wikipedia.org/wiki/Electronic_band_structure)</sub>
+
+Electrons can easily transition between bound state and free state. As such, electrons in metals are shared over large distances, and there are many electrons readily available to move under an applied field, or difference in electron density. That's why metals conduct well.
 
 -->
 
@@ -284,11 +321,29 @@ That's also why glass is opaque to ultra-violet, which has enough energy to exci
 
 Based on these two pieces of information you could estimate the bandgap of glass.
 
+<!--pan_doc: 
+
+```python
+from scipy import constants
+#- We must use the "correct" units for planck's constant to get energy in eV
+h = constants.physical_constants["Planck constant in eV/Hz"][0]
+c = constants.physical_constants["speed of light in vacuum"][0]
+
+lambda_optical = 450e-9
+e_optical = h * c/lambda_optical
+
+lambda_ultra = 380e-9
+e_ultra = h * c/lambda_ultra
+
+print("Bandgap of glass is above %.2f eV, maybe around %.2f eV " %(e_optical,e_ultra))
+```
+-->
+
 ---
 
 # Semiconductors
 
-In a silicon the bandgap is lower than an insulator, approximately 
+In silicon the bandgap is lower than an insulator, approximately 
 
 $$E_G = 1.12\text{ } eV$$
 
@@ -305,9 +360,12 @@ of distance in the material.
 
 ![right fit](https://upload.wikimedia.org/wikipedia/commons/4/43/Pn-junction_zero_bias.png)
 
-The horizontal axis is the distance, the vertical axis is the energy.
+<!--pan_doc:
+<sub>Figure 7: [Band diagram of a PN junction, Wikipedia](https://en.wikipedia.org/wiki/Band_diagram)</sub>
+-->
 
-The figure shows a PN-junction 
+The horizontal axis is the distance in the material, the vertical axis is the energy.
+
 
 ---
 
@@ -321,7 +379,8 @@ electron to be in that quantum state.
 
 The probability is the Fermi-Dirac distribution. The density of available states
 is a complicated calculation from the band-structure of silicon. 
-for details.
+
+For details see the Diodes chapter.
 
 -->
 
@@ -383,17 +442,56 @@ Under the best of circumstances they are fantastically hard to solve! But it's h
 
 ---
 
+# Permittivity and Permeability
+
+
+<!--pan_doc:
+
 The permittivity of free space is defined as 
+
+-->
+
+[.column]
 
 $$\epsilon_0 = \frac{1}{\mu_0 c^2}$$
 
+<!--pan_doc:
+
 , where $c$ is the [speed of light](https://en.wikipedia.org/wiki/Speed_of_light), and $\mu_0$ is the [vacuum permeability](https://en.wikipedia.org/wiki/Vacuum_permeability), which, in [SI units](https://en.wikipedia.org/wiki/International_System_of_Units), is now
+
+-->
+
+[.column]
 
 $$\mu_0 = \frac{2 \alpha}{q^2}\frac{h}{c}$$ 
 
+
+<!--pan_doc:
+
 , where $\alpha$ is the [fine structure constant](https://en.wikipedia.org/wiki/Fine-structure_constant).
 
+-->
+
 ---
+
+# Quantum electrodynamics
+
+<!--pan_doc:
+
+The quantum electrodynamics (QED) is a full description of interactions between light and matter. The equations describe both quantum mechancial effects, electromagnetism and is in agreement with special relativity. 
+
+The equations are rather complicated, but it's based on [Lagrangian](https://en.wikipedia.org/wiki/Lagrangian_(field_theory)) physics. Maxwell's equations actually fall out of the QED Lagrangian when one assumes local phase symmetry. 
+
+-->
+
+The QED Lagrangian is 
+
+$$ \mathcal{L} = \bar{\psi}[i \hbar c \gamma^\mu\partial_\mu - mc^2]\psi - q[\bar{\psi} \gamma^\mu \psi] A_\mu - \frac{1}{16 \pi}F_{\mu\nu}F^{\mu\nu} $$
+
+For more information, have a look at [Electromagnetism as a Gauge Theory](https://www.youtube.com/watch?v=Sj_GSBaUE1o)
+
+---
+
 
 # Voltage 
 
@@ -405,9 +503,13 @@ $$ E = \frac{dV}{dx}$$
 
 # Current 
 
+<!--pan_doc:
+
 Current has unit $A$ and charge $C$ has unit $As$, so the current is the number of charges passing through a volume per second. 
 
 The current density $J$ has units $A/m^2$ and is often used, since we can multiply by the surface area of a conductor, if the current density is uniform. 
+
+-->
 
 $$ I  = A \times J $$
 
@@ -415,7 +517,7 @@ $$ I  = A \times J $$
 
 # Drift current
 
-Charges in an electric field will give rise to a drift current. 
+Charge carriers (electrons, holes, ions) in an electric field will give rise to a drift current. 
 
 We know from Newtons laws that force equals mass times acceleration 
 
@@ -434,7 +536,7 @@ $$ \vec{J} = q\vec{E} \times n \times \mu $$
 <!--pan_doc: 
 
 where $n$ is the charge density, and $\mu$ is the mobility (how easily the
-charges move) and has units [$m^2/Vs$]
+charges move) and has units $m^2/Vs$
 
 -->
 
@@ -450,15 +552,13 @@ $$ J = \frac{C}{m^3}\frac{V}{m}\frac{m^2}{Vs} = \frac{C}{s}m^{-2}$$
 
 ---
 
-So multiplying by an area 
+So multiplying by an area A with unit meters squared
 
-$$ A = B m^2$$
-
-$$ I = q n \mu B V$$
+$$ I = q n \mu A V$$
 
 and we can see that the conductance 
 
-$$G = q n \mu B$$
+$$G = q n \mu A$$
 
 ---
 
@@ -476,7 +576,7 @@ Or [Ohms law](https://en.wikipedia.org/wiki/Ohm%27s_law)
 
 # Diffusion current
 
-A difference in charge density will give rise to a diffusion current, and the current density is
+A difference in charge density will give rise to a diffusion current. The current density is
 
 $$ J = -q D_n \frac{d \rho}{dx}$$
 
@@ -492,15 +592,12 @@ $$ J = -q D_n \frac{d \rho}{dx}$$
 
 <!--pan_doc:
 
-
-
 I struggled with the concepts diffusion current and drift current for a long time.  Why are there two types of current? It was when I read [The Schrödinger Equation in a Classical Context: A Seminar on Superconductivity](https://www.feynmanlectures.caltech.edu/III_21.html) I realised that 
 the two types of current come directly from the Schrodinger equation, there is one component related to the electric field (potential energy) and a component related to the momentum (kinetic energy). 
 
 In the absence of an electric field electrons will still jump from state to state set 
 by the probabilities of the Hamiltonian. If there are more electrons in an area, then it will seem
-like there is an average movement of charges away from that area. That's how I think about the 
-equation above. We can kinda see it from the Schrödinger equation below. 
+like there is an average movement of charges away from that area. That's how I think about drift and diffusion currents. We can kinda see it from the Schrödinger equation below. 
 
 -->
 
@@ -538,11 +635,15 @@ where $n$ denotes electrons, and $p$ denote holes.
 
 # Resistors 
 
-We can make resistors with metal and silicon (a semiconductor)
+<!--pan_doc:
+We can make resistors with many materials. The behavior of the charge carrier may be different between materials.
+-->
 
 In metal the dominant carrier depends on the metal, but it's usually electrons. As such, one can often ignore the hole current.
 
-In a semiconductor the dominant carrier depends on the Fermi level in relation to the conduction band and valence band. If the Fermi level is close to the valence band the dominant carrier will be holes. If the Fermi level is close to the conduction band, the dominant carrier will be electrons.
+In a semiconductor the dominant carrier depends on the Fermi level in relation to the conduction band and valence band. 
+
+If the Fermi level is close to the valence band the dominant carrier will be holes. If the Fermi level is close to the conduction band, the dominant carrier will be electrons.
 
 That's why we often talk about "majority carriers" and "minority carriers", both are important in semiconductors.
 
@@ -550,7 +651,7 @@ That's why we often talk about "majority carriers" and "minority carriers", both
 
 # Capacitors 
 
-A capacitor resists a change in voltage. 
+A capacitor resists a change in voltage
 
 $$ I = C \frac{dV}{dt}$$
 
@@ -560,7 +661,7 @@ and store energy in an electric field between two conductors with an insulator b
 
 # Inductors
 
-An inductor resist a change in current.
+An inductor resist a change in current
 
 $$ V = L \frac{dI}{dt}$$
 
