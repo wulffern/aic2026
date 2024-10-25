@@ -1,10 +1,10 @@
-footer: Carsten Wulff 2023
+footer: Carsten Wulff 2024
 slidenumbers:true
 autoscale:true
 theme: Plain Jane, 1
 text:  Helvetica
 header:  Helvetica
-date: 2023-10-26
+date: 2024-10-25
 
 
 <!--pan_skip: -->
@@ -59,7 +59,7 @@ nm.
 
 ![Silicon crystal unit cell\label{fig:silicon}](../media/503px-Silicon-unit-cell-3D-balls.png)
 
-*Figure 1: Silicon crystal unit cell*
+<sub>Figure 1: Silicon crystal unit cell</sub>
 
 As you hopefully know, the energy levels of an electron around a positive
 nucleus are quantized, and we call them orbitals (or shells). For an atom far
@@ -72,15 +72,17 @@ Hence covalent bonds.
 
 If we assume the crystal is perfect, then at 0 Kelvin all electrons will be part of
 covalent bonds. Each silicon atom share 4
-electrons with its neighbors. I think what we really mean when we say "share 4
+electrons with its neighbors. What we really mean when we say "share 4
 electrons" is that the wave-functions of the outer orbitals interact, and
 we can no longer think of the orbitals as belonging to either of the silicon
 nuclei. All the neighbors atoms "share" electrons, and
-nowhere is there an vacant state, or a hole, in the valence band. If such a
-crystal were to exist, it would not conduct any current, as the charges cannot
-move. 
+nowhere is there an vacant state, or a hole, in the valence band. 
 
-In a atom, or a crystal, there are also higher energy states where the carriers
+If such a crystal were to exist, where there were no holes in the valence band, 
+and a net neutral charge, the crystal could not conduct any drift current. Electrons would move 
+around continuously, swapping states, but there could be no net drift of charge carriers. 
+
+In an atom, or a crystal, there are also higher energy states where the carriers
 are "free" to move. We call these energy levels, or bands of energy levels,
 conduction bands. In singular form "conduction band", refers to the lowest
 available energy level where the electrons are free to move. 
@@ -91,23 +93,20 @@ band. The electrons in the conduction band leave vacant states, or holes, in the
 valence band. 
 
 Electrons can move both in the conduction band, as free electrons, and in the
-valence band, as a positive particle, or hole. 
+valence band, as a positive particle, or hole. Both bands can support drift and diffusion currents.
 
 -->
 
 
 # Intrinsic carrier concentration
 
-The intrinsic carrier concentration of silicon, or how many free electrons and holes at a given temperature, is given by 
+The intrinsic carrier concentration of silicon, or the density of free electrons and holes at a given temperature, is given by 
 
 
----
 
 <!--pan_skip: -->
 
-$$
-n_i = \sqrt{N_c N_v} e^{-\frac{E_g}{2 k T}} 
-$$
+# $$ n_i = \sqrt{N_c N_v} e^{\frac{-E_g}{2 k T}}  $$
 
 ---
 
@@ -115,7 +114,7 @@ $$
 <!--pan_doc: 
 
 $$
-n_i = \sqrt{N_c N_v} e^{-\frac{E_g}{2 k T}} 
+n_i = \sqrt{N_c N_v} e^{-E_g/(2 k T)} 
 \tag{1} 
 \label{eq:ni}
 $$
@@ -142,6 +141,10 @@ $m_p^\ast$ is the effective mass of holes.
 
 <!--pan_doc:
 
+Leave it to engineers to simplify equations beyond understanding. Equation \eqref{eq:ni} is complicated, and the density of states includes the effective mass of electrons and holes, which is a parameter that depends on the curvature of the band structure. To engineers, this is too complicated, and $n_i$ has been simplified so it "works" in daily calculation. 
+
+Through engineering simplification, however, physics understanding is lost. 
+
 In [@cjm11] they claim the intrinsic carrier concentration is a constant, although
 they do mention $n_i$ doubles every 11 degrees Kelvin. 
 
@@ -164,8 +167,7 @@ the same, while the "doubling every 11 degrees" is just wrong.
 ![right fit Intrinsic carrier concentration versus temperature\label{fig:ni}](../media/ni.pdf)
 
 <!--pan_doc:
-*Figure 2: Intrinsic carrier concentration versus temperature*
-
+<sub>Figure 2: Intrinsic carrier concentration versus temperature</sub>
 
 
 At room temperature the intrinsic carrier consentration is approximately
@@ -176,7 +178,10 @@ per $um^{3}$ it's
 $n_{i} = \frac{1 \times 10^{16}}{(1 \times 10^{6})^{3}} \text{ carriers}/\mu \text{m}^{3}< 1$,
 so there are really not that many free carriers in intrinsic silicon.
 
-But where does Eq \eqref{eq:ni} come from? I find it  unsatisfying
+From Figure 2 we can see that $n_i$ changes greatly as a function of temperature, but the understanding "why" is not easy to get from "doubling every 11 degrees". To understand the temperature behavior of diodes, we must understand Eq \eqref{eq:ni}.
+
+
+So where does Eq \eqref{eq:ni} come from? I find it unsatisfying
 if I don't understand where things come from. I like to understand why there is
 an exponential, or effective mass, or Planck's constant. If you're like me, then
 read the next section. If you don't care, and just want to memorize the
@@ -224,8 +229,8 @@ $$ \widehat{H} \psi(x,t) = i \hbar \frac{\partial}{\partial t}  \psi(x,t)  =
 \widehat{E}  \psi(x,t)$$
 
 where $\widehat{H}$ is sometimes called the *Hamiltonian* and is an operator,
-or something that act on the wave-function. I recently read [Feynman's
-Lectures on Physics](https://www.feynmanlectures.caltech.edu), and Feynman
+or something that act on the wave-function. In [Feynman's
+Lectures on Physics](https://www.feynmanlectures.caltech.edu)  Feynman
 called the Hamiltonian the *Energy Matrix* of a system. I like that better. The
 $\widehat{E}$ is the energy operator, something that operates on the
 wave-function to give the Energy. 
@@ -235,14 +240,20 @@ We could re-arrange
 $$ [\widehat{H} - \widehat{E}]\psi(r,t) = 0$$
  
 This is an equation with at least 5 unknowns, the space vector in three dimensions, time, and the
-energy matrix  $\widehat{H}$. It turns out, that the energy matrix depends
+energy matrix  $\widehat{H}$. 
+
+The dimensions of the energy matrix depends
 on the system. The energy matrix further up is for one free electron. For an atom, the
-energy matrix will have more dimensions to describe the possible quantum states.
+energy matrix will have more dimensions to describe the possible quantum states. 
+
+I consider all energy matricies as infinite dimensions, but most state transitions are so unlikely that they can be safely ignored. 
  
 I was watching [Quantum computing in the 21st
 Century](https://youtu.be/zxml8UQSwC0) and David Jamison mentioned that the
 largest system we could today compute would be a system with about 30
-electrons. So although we know exactly how the equations of quantum mechanics
+electrons. 
+
+We know exactly how the equations of quantum mechanics
 appear to be, and they've proven extremely successful, we must make
 simplifications before we can predict how electrons behave in complicated
 systems like the silicon lattice with approximately 0.7 trillion electrons per
@@ -287,10 +298,9 @@ $$N(dk) = \frac{2}{(2 \pi)^p} dk$$
  
 Where $p$ is the number of dimensions (in our case 3).
 
-Then uses the band structure $E(k)$ to convert to the density of states as a
-function of energy $N(E)$. The simplest band structure, and a approxmiation of
+The band structure $E(k)$ is used to convert to the density of states to a
+function of energy $N(E)$. The simplest band structure, and an approxmiation of
 the lowest conduction band is
-
 -->
 
 $$E(k) = \frac{\hbar^2 k^2}{2 m^*}$$
@@ -359,8 +369,8 @@ to
 
 $$ f(E) = \frac{1}{e^{(E-E_F)/kT}} = e^{(E_F - E)/kT}$$
 
-A few observiation on the Fermi-Dirac distribution. If the Energy of a particle
-is at the Fermi level, then $f(E) = \frac{1}{2}$, or a 50 % probability. 
+A few observiation on the Fermi-Dirac distribution. If the Energy of a state
+is at the Fermi level, then $f(E) = \frac{1}{2}$, or a 50 % probability of being occupied. 
 
 In a metal, the Fermi level lies within a band, as the conduction
 band and valence band overlap. As a result, there are a bunch of free electrons
@@ -430,7 +440,7 @@ $$
 As we can see, Equation \eqref{eq:nc0} has the same coefficients and form as the
 computation in Equation \eqref{eq:ni}. The
 difference is that we also have to account for holes. At thermal equilibrium
-and intrinsic silicon $n_i^2 = n_0 p_0$.
+and intrinsic silicon $n_i^2 = n_0 p_0$
 
 ## How to think about electrons (and holes)
 I've come to the realization that to imagine electrons as balls moving around in
@@ -450,7 +460,7 @@ location changes, according to the type of derivations above.
 Once the electrons are in the conduction band, then they follow the same
 equations as diffusion of a gas,  [Fick's law of
 diffusion](https://en.wikipedia.org/wiki/Fick%27s_laws_of_diffusion). 
-Any charge concentration difference will give rise to a [diffusion
+Any charge density concentration difference will give rise to a [diffusion
 current](https://en.wikipedia.org/wiki/Diffusion_current) given by 
 
 \begin{equation}
@@ -468,7 +478,7 @@ to an applied force $F$.
 To make matters more complicated, an inversion layer of a MOSFET is not in three
 dimensions, but rather a [two dimensional electron
 gas](https://en.wikipedia.org/wiki/Two-dimensional_electron_gas), as the density of
-states is confined to the silicon surface. As such, we should not expect the
+states is confined close to the silicon surface. As such, we should not expect the
 mobility of bulk silicon to be the same as the mobility of a MOSFET transistor.
 
 -->
@@ -716,8 +726,7 @@ $$
 
 <!--pan_doc:
 
-where $L_p$ is a diffusion length. This equation smells to me like a simplified
-model of reality, I'm not sure how much it's based on fundamental physics.
+where $L_p$ is a diffusion length. I think the equation above, the exponential decay as a function of length, is related to the probabilty of electron/hole recombination, and how the rate of recombination must be related to the exceess hole concentration, as such related to [Exponential decay](https://en.wikipedia.org/wiki/Exponential_decay).
 
 Anyhow, we can now compute the current density, and need only compute it for
 $x_n$ = 0, so you can show it's 
@@ -867,7 +876,7 @@ across temperature to within a few mV.
 ![right fit Diode forward voltage as a function of temperature \label{fig:vd}](../media/vd.pdf)
 
 <!--pan_doc:
-*Figure 3: Diode forward voltage as a function of temperature*
+<sub>Figure 3: Diode forward voltage as a function of temperature</sub>
 -->
 
 ---
@@ -923,7 +932,7 @@ with the small exception of the non-linear component of $V_D$.
 
 <!--pan_doc:
 
-*Figure 4: Circuit to generate a current proportional to kT*
+<sub>Figure 4: Circuit to generate a current proportional to kT</sub>
 -->
 
 
@@ -954,8 +963,8 @@ longer true, and must be taken into account in how we describe reality.
 
 Other parts, like the exact value of the bandgap $E_g$, the diffusion constant
 $D_p$ or diffusion length $L_p$ are macroscopic phenomena,  we can't
-expect them to be $100%$ true. The values would be based on measurement, but not
-always exact, and maybe, if you rotate your diode, they would be different. 
+expect them to be $100$ % true. The values would be based on measurement, but not
+always exact, and maybe, if you rotate your diode 90 degrees on the integrated circuit, the values could be different. 
 
 You should realize that the consequence of our imperfection is that the equations in
 electronics should always be taken with a grain of salt. 

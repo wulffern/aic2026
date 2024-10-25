@@ -478,7 +478,7 @@ $$\mu_0 = \frac{2 \alpha}{q^2}\frac{h}{c}$$
 
 <!--pan_doc:
 
-The quantum electrodynamics (QED) is a full description of interactions between light and matter. The equations describe both quantum mechancial effects, electromagnetism and is in agreement with special relativity. 
+The quantum electrodynamics (QED) is a full description of interactions between light and matter. The equations describe both quantum mechanical effects, electromagnetism and is in agreement with special relativity. 
 
 The equations are rather complicated, but it's based on [Lagrangian](https://en.wikipedia.org/wiki/Lagrangian_(field_theory)) physics. Maxwell's equations actually fall out of the QED Lagrangian when one assumes local phase symmetry. 
 
@@ -592,7 +592,7 @@ $$ J = -q D_n \frac{d \rho}{dx}$$
 
 <!--pan_doc:
 
-I struggled with the concepts diffusion current and drift current for a long time.  Why are there two types of current? It was when I read [The Schrödinger Equation in a Classical Context: A Seminar on Superconductivity](https://www.feynmanlectures.caltech.edu/III_21.html) I realised that 
+I struggled with the concepts diffusion current and drift current for a long time.  Why are there two types of current? It was when I read [The Schrödinger Equation in a Classical Context: A Seminar on Superconductivity](https://www.feynmanlectures.caltech.edu/III_21.html) I realized that 
 the two types of current come directly from the Schrodinger equation, there is one component related to the electric field (potential energy) and a component related to the momentum (kinetic energy). 
 
 In the absence of an electric field electrons will still jump from state to state set 

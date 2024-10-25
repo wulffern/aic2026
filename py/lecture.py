@@ -201,7 +201,7 @@ class Lecture():
 
         if("jekyll" in self.options):
 
-            furl = "https://github.com/wulffern/aic2024/tree/main/" + self.filename
+            furl = "https://github.com/wulffern/aic2025/tree/main/" + self.filename
             slides = ""
             if("lectures" in self.filename ):
                 slides = "[Slides](" +  self.options["jekyll"] + self.filename.replace("lectures","assets/slides").replace(".md",".pdf") +")"
@@ -300,7 +300,7 @@ class Presentation(Lecture):
 title: {self.title}
 output:
   slidy_presentation:
-    footer: "Copyright (c) 2024, Carsten Wulff"
+    footer: "Copyright (c) 2025, Carsten Wulff"
     fig_width: 800
 ---
 
@@ -372,7 +372,7 @@ def cli():
 
 @cli.command()
 @click.argument("filename")
-@click.option("--root",default="/aic2024/",help="Root of jekyll site")
+@click.option("--root",default="/aic2025/",help="Root of jekyll site")
 @click.option("--date",default=None,help="Date to use")
 def post(filename,root,date):
     options = dict()
