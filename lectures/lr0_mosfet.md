@@ -54,9 +54,11 @@ The length (L), and width (W) of the MOS is annotated in blue.
 
 ![inline 100%](../media/3dcross.pdf)
 
+
 ---
 
 <!--pan_doc:
+<sub>Figure 1: 3D crossection of a transistor</sub>
 
 MOSFETs come in two main types. There is NMOS, and PMOS. The symbols are as shown below. 
 The NMOS is MN1 and PMOS is MP1. 
@@ -65,7 +67,9 @@ The NMOS is MN1 and PMOS is MP1.
 
 ![inline](../media/fig_nmospmos.pdf)  
 
+
 <!--pan_doc:
+<sub>Figure 2: Transistor symbols</sub>
 
 The MOS part of the name can be seen in MN1, where $V_{G}$ is the gate connected to a vertical line (metal), a space (oxide), 
 and another vertical line (the silicon substrate or silicon bulk). 
@@ -109,6 +113,7 @@ Imagine that your eyes could see the free electrons as a blue fluorescent color.
 ![inline](../media/mosfet_off.pdf)
 
 <!--pan_doc:
+<sub>Figure 3: MOSFET in "off" state </sub>
 
 As you increase the gate voltage, the color underneath the gate would change. First, you would think there might be some blue color, but it would be barely noticeable. 
 
@@ -117,7 +122,7 @@ As you increase the gate voltage, the color underneath the gate would change. Fi
 ![inline](../media/mosfet_subthreshold.pdf)
 
 <!--pan_doc:
-
+<sub>Figure 4: MOSFET in subthreshold </sub>
 
 At a certain voltage, suddenly, there would be a thin blue sheet underneath the gate. You'd have to
 zoom in to see it, in reality it's a ultra thin, 2 dimensional electron sheet.
@@ -129,6 +134,7 @@ As you continue to increase the gate voltage the blue color would become a littl
 ![inline](../media/mosfet_strong_inversion.pdf)
 
 <!--pan_doc:
+<sub>Figure 5: MOSFET in strong inversion </sub>
 
 
 This thin blue sheet extend from source to drain, and create a conductive channel where the electrons can move from source to drain (or drain to source), exactly like a resistor. The conductance of the sheet is the same as the brightness, higher gate source voltage, more bright blue, higher conductance, less resistance.
@@ -149,7 +155,7 @@ in the sheet.
 ![inline](../media/mosfet_strong_inversion_and_saturation.pdf)
 
 <!--pan_doc:
-
+<sub>Figure 6: MOSFET in strong inversion and saturation </sub>
 
 That could make you think the current would stop, but it turns out, that the electrons close to drain get swept across 
 the gap because the electric field is so high from the edge of the sheet to the drain.
@@ -172,6 +178,7 @@ If the input $V_{in}$ is a high voltage, then the output $V_{out}$ is a low volt
 ---
 
 <!--pan_doc:
+<sub>Figure 7: Inverter  </sub>
 
 I can now build more complex "logic gates". The one below is a Not-AND gate (NAND). If both inputs (A and B) are high, then the output is low (both NMOS are on). Otherwise, the output is high. 
 
@@ -183,6 +190,7 @@ consume lots of power. There are smarter ways to use the transistors.
 ![inline](../media/nand_tr.png)  
 
 <!--pan_doc:
+<sub>Figure 8:  NAND </sub>
 
 You may be too young to have seen the Matrix, but now is the time to decide between the [red pill and the blue pill](https://en.m.wikipedia.org/wiki/Red_pill_and_blue_pill).
 
@@ -194,7 +202,14 @@ transistors work.
 
 ![fit](https://upload.wikimedia.org/wikipedia/commons/thumb/5/52/Red_and_blue_pill.jpg/1024px-Red_and_blue_pill.jpg) 
 
+---
+
 <!--pan_doc:
+<sub>Figure 9: The choice  </sub>
+
+-->
+
+
 
 Because:
 
@@ -207,52 +222,11 @@ Because:
 - Why is there not a current from the bulk (0 V) to drain?
 - Why does not the electrons jump from source to drain? It's a gap, the same as from the sheet to drain?
 
-
 And did you realize I never in this chapter explained how the field effect worked?
 
-<!--Someday, I'll write the details. I just need to figure out how I'm going to write it first. -->
+Someday, I may write all the details, if I ever understand it all. For now, I hope that the sections below will help you a bit. 
 
--->
-
----
-
-# Transistors in strong inversion
-
-<!--pan_doc:
-
-The conditions to be in strong inversion is that the gate/source voltage is above some magic values (threshold voltage), and then some. In the nomenclature I've used above, there is lot's of blue stuff underneath the gate. 
-
-## Where are the free electrons?
-
-The quantum state of the electron is fully determined by it's spin, momentum and position in space. How those parameters evolve with time is determined by the Schrodinger equation. In the general form
-
-$$ i\hbar\frac{d}{dt}\Psi(r,t) = \widehat{H} \Psi(r,t) $$
-
-The Hamiltonian ($H$) is an "energy matrix" operator and may contain terms both for the momentum and Columb force (electric field) experienced by the system.
-
-But what does the Schrodinger equation tell us? Well, the equation above does not tell me much, it can't be "solved", or rather, it does not have a single solution. It's more a framework for how the wave function, and the Hamiltonian, describes the quantum states of a system, and the probability ampltiudes of transition between states. 
-
-The Schrodinger equation describes the time evolution of the bound electrons shared between the Silicon atoms, and the fact that applying a electric field to silicon can free co-valent bonds. 
-
-As the gate voltage increases the wave function that fits in the Schrodinger equation predicts that the free electrons will form  a 2d sheet underneath the gate. The thickness of the sheet is only a few nano meters.
-
-In Figure 2 in [Carrier transport near the Si/SiO2 interface of a MOSFET](https://www.sciencedirect.com/science/article/pii/0038110189900609) you can see how the free electron density is located underneath the gate. 
-
-I would really recommend that you have a look at Mark Lundstrom's lecture series on [Essentials of MOSFETs](https://www.youtube.com/watch?v=5eG6CvcEHJ8&list=PLtkeUZItwHK6F4a4OpCOaKXKmYBKGWcHi). It's the most complete description of electrons in MOSFET's I've seen 
-
-
-
--->
-
-<!-- https://pdf.sciencedirectassets.com/271497/1-s2.0-S0038110100X02584/1-s2.0-0038110189900609/main.pdf-->
-
-
-# How should I size my transistor?
-
-One of the more common questions asked by students is "How should I size my transistor?". There is no simple answer to that question. As many things
-in life, it's complicated.
-
-## From the book?
+# Analog transistors in the books 
 
 In the books we learn the equations for weak inversion
 
@@ -278,11 +252,11 @@ In the equation above, moving the conduction band edge is equivalent to reducing
 
 In strong inversion, the MOSFET is more like a voltage controlled resistor with a conductance that is proportional to gate-source voltage. 
 
-The density of electrons increases because we bend the conduction band beyond the Fermi level, as a result, most of the available energy states in the conduction band are filled by electrons. Electrons are only free to move, however, close to the surface of the silicon, as far away from the surface, we don't feel the effects of the gate voltage, and the conduction band stays at the same energy. As a result, electrons form a 2 dimensional electron gas close to the silicon surface. What we call an inversion layer. 
+The density of electrons increases because we bend the conduction band beyond the Fermi level, as a result, most of the available energy states in the conduction band are filled by electrons. 
 
-The threshold voltage is defined as the point when the density of electrons in the inversion layer is equal to the density of holes in the substrate, or bulk, which usually is a p-type semiconductor for an NMOS.
+Electrons are only free to move, however, close to the surface of the silicon, as far away from the surface, we don't feel the effects of the gate-source voltage, and the conduction band stays at the same energy. As a result, electrons form a 2 dimensional electron gas close to the silicon surface. What we call an inversion layer. 
 
-Once we have that electron gas, or inversion layer, we have a connection between the drain and source n-type regions, and the current can be estimated by a drift current. The diffusion current will still be there, but much smaller magnitude than the drift current, so we drop the diffusion current, and get
+Once we have that electron gas, or inversion layer, we have a connection between the drain and source n-type regions, and the current can be estimated by a drift current. Parts of the  diffusion current will still be there, but much smaller magnitude than the drift current, so we drop the diffusion current, and get
 
 $$ I_D = \frac{1}{2} \mu_n C_{ox}\frac{W}{L}(V_{gs}-V_{th})^2 $$
 
@@ -298,11 +272,148 @@ I think, quite often, we just end up with confused students. And I don't think i
 
 It's not necessary for an analog design student to remember how to compute the density of available energy states from Schrodinger and the wave function. If we wanted to use the relativistc version of Schrodinger (which includes magnetic fields, and if you did not know, magnetic fields is just a relativistic effect of the electric field) and the wave function to compute how an Silicon atom actually behaves, I don't think we can. As far as I've been able to figure out, it's not possible to have a closed form solution (symbolic), nor is it possible with supercomputers to do a numeric time-evolution of the states in a single Silicon atom with all the inter-particle interactions, space, momentum, spins, electric fields and magnetic fields. 
 
-But we can make sure we connect the links from Schrodinger to the MOSFET equations, that's easy, that's what I've tried to do in the previous section.
+But we can make sure we connect the links from Schrodinger to the MOSFET equations, the short version of that was above, but the following sections tries to explain with words how the transistor actually works. 
 
-For answering the question "How should I size my transistor?", the above section does not really give an answer, they serve as the basis for the answers, but not the actual answer.
+I'm not going to give all the equations and all the maths. For that, there are excelent books and resources. I would recommend [Mark Lundstrom](https://www.youtube.com/watch?v=5eG6CvcEHJ8&list=PLtkeUZItwHK6F4a4OpCOaKXKmYBKGWcHi) for the best in detail description of MOSFETs. 
 
-# The best method (as of today)
+# Transistors in weak inversion 
+
+Consider the cartoon below which shows the hole concentration in the valence band, and electron concentration in the conduction band
+versus the x direction of the transistor.
+
+For the moment we'll ignore the field effect of the gate, and how that modulates the hole concentration 
+underneath the gate. 
+
+If you're familiar with bipolars, then you may think I've drawn the wrong transistor, because you 
+see an NPN bipolar transistor. The picture is correct, however, this is how a normal MOSFET looks.
+It's actually also a NPN bipolar transistor, but we don't usually use that part (you'll see more when we get to ESD)
+
+In the source we've doped with donors, and have an abundance of free electrons. Underneath the gate, or the bulk, 
+we have doped with acceptors, and have an abundance of holes.
+![](../media/mos_np.pdf)
+
+<sub>Figure 10: Charge carrier density in a MOSFET</sub>
+
+Let's consider electron current for now, and only look at the conduction band. 
+
+An electron in the source would see a energy barrier of $\phi_B$, and most electrons would be turned
+around at the barrier. Some, however, do have the energy to traverse the barrier and flow through the bulk. 
+Not all of them would reach the bulk, due to recombination, but let's assume the bulk is short, and all electrons
+injected into the bulk show up at the drain. 
+
+At the drain side they would fall down the potential barrier to the drain. The same process would
+happen in reverse, from drain to source.
+
+![](../media/mos_bands.pdf)
+<sub>Figure 11: MOSFET subthreshold , $V_{DS} = 0$</sub>
+
+There would also be hole currents flowing between source/bulk/drain and visa versa
+
+Assume source and drain are at the same potential, then the sum of all currents (1,2,3,4) for both electrons
+and holes in Figure 11 must equal zero.
+
+Assume that we increase the drain voltage, as shown in Figure 12. Increasing the drain voltage is the same
+as reducing the conduction band in the drain. 
+
+Since there now is a higher barrier from drain to bulk, it's now much less probable that electrons
+are injected from drain to bulk. 
+
+Now the sum of all currents would not equal zero, as the 1 and 3 currents are larger than 2 and 4. 
+
+As such, there would be a net flow of electron current from source to drain.  
+
+![](../media/mos_bands_drainv.pdf)
+<sub>Figure 12: MOSFET subthreshold, $V_{S} = 0\text{ V}, V_D > 0\text{ V}$ </sub>
+
+Notice that if we increase the drain voltage further,
+then the electron injection from drain to bulk would quickly approach zero. 
+
+At that point, even though we increase the drain voltage further, the current does not really change. As the current is only now
+given by the barrier height at the source. 
+
+The barrier height at the source is the built in voltage of the junction, and as we've seen before, that voltage
+depends on doping concentration. If we increase the hole concentration in bulk, then we increase the barrier height,
+and it's less probable that the electrons have enough energy to be injected from source to bulk. 
+
+If we only need to consider the electrons and holes at source for the subthreshold current (assuming the drain voltage is high enough),
+then we should expect the equation look very similar to a diode, and indeed it does.
+
+The drain current, which is mostly a diffusion current, is given by 
+
+$$ I_{D} = I_{D0} \frac{W}{L} e^{q(V_{GS} - V_{TH})/ n kT} $$
+
+where
+
+$$ n = (C_{ox} + C_{j0})/C_{ox} $$
+ 
+$$ I_{D0} = (n - 1) \mu_n C_{ox} \left(\frac{kT}{q}\right)^2 $$
+
+This is not exactly the same as the diode equation, but we can see that it looks similar. Most of the quantum mechanics is baked into the $V_{TH}$
+
+The transconductance ($dI_D/dV_{GS}$) in weak inversion is then 
+
+$$ g_m = \frac{I_D}{nV_T} $$
+
+A big difference from the diode equation is the fact that the gate-source voltage seems to determine the current, and not the voltage across the pn junction. 
+
+# The Field Effect 
+
+Consider the band diagram in Figure 13, in the figure we're looking at a cross section of the transistor. From left we're in the gate, then we have the oxide, and then the bulk of the transistor. 
+
+We don't see the drain and source, as the source would be towards you, and the drain would be into the picture.
+
+The cartoon is not a real transistor. I don't think there is necessarily a combination of semiconductor and metal where we end up with the same Fermi level ($E_F$) without some bending of the conduction band and valence band, but for illustration, let's assume that's the case. 
+
+We can see the Fermi level in the semiconductor is shifted towards the valence band, and thus we have a P-type semiconductor. 
+
+The gate is metallic, so it does not have a bandgap, and we assume that the Fermi level is at the conduction band edge. 
+
+![](../media/mos_gbands.pdf)
+<sub>Figure 13: Band diagram of a fictive MOSFET.  </sub>
+
+
+Assume we increase the gate-source voltage. In a band diagram that corresponds to shifting the energy down. 
+
+![](../media/mos_gbands_bend.pdf)
+<sub>Figure 14: Band diagram with gate-source voltage applied  </sub>
+
+Moving the gate down has the effect of bending the bands in the semiconductor. We'll lose some voltage across the oxide, but not necessarily that much. 
+
+The bending of the valence band will decrease the hole concentration close to the silicon surface, and the semiconductor will be depleted of mobile charge carriers. 
+
+The valence band bending will also reduce the barrier height in Figure 12, which increases the number of carriers that can be injected at source/bulk interface, so the subthreshold current will start to increase.
+
+At some point, the band bending of the conduction band will become so large that the electron concentration underneath the gate will increase signficantly. The gate-source voltage where the electron concentration equals the bulk hole concentration far away from the silicon surface is called the "threshold voltage". 
+
+As you continue to increase the gate-source voltage there is a limit to how much the electron concentration increases. When the band bending of the conduction band passes the Fermi level, then over 50 percent of the available states in the conduction band are filled with electrons. 
+
+![](../media/mos_gbands_muchbend.pdf)
+<sub>Figure 13: Band diagram with high gate-source voltage applied  </sub>
+
+# Transistors in strong inversion
+
+The conditions to be in strong inversion is that the gate/source voltage is above some magic values (threshold voltage), and then some. 
+
+## Where are the free electrons?
+
+The quantum state of the electron is fully determined by it's spin, momentum and position in space. How those parameters evolve with time is determined by the Schrodinger equation. In the general form
+
+$$ i\hbar\frac{d}{dt}\Psi(r,t) = \widehat{H} \Psi(r,t) $$
+
+The Hamiltonian ($H$) is an "energy matrix" operator and may contain terms both for the momentum and Columb force (electric field) experienced by the system.
+
+But what does the Schrodinger equation tell us? Well, the equation above does not tell me much, it can't be "solved", or rather, it does not have a single solution. It's more a framework for how the wave function, and the Hamiltonian, describes the quantum states of a system, and the probability ampltiudes of transition between states. 
+
+The Schrodinger equation describes the time evolution of the bound electrons shared between the Silicon atoms, and the fact that applying a electric field to silicon can free co-valent bonds. 
+
+As the gate-source voltage increases the wave function that fits in the Schrodinger equation predicts that the free electrons will form a 2d sheet underneath the gate. The thickness of the sheet is only a few nano meters.
+
+In Figure 2 in [Carrier transport near the Si/SiO2 interface of a MOSFET](https://www.sciencedirect.com/science/article/pii/0038110189900609) you can see how the free electron density is located underneath the gate. 
+
+I would really recommend that you have a look at Mark Lundstrom's lecture series on [Essentials of MOSFETs](https://www.youtube.com/watch?v=5eG6CvcEHJ8&list=PLtkeUZItwHK6F4a4OpCOaKXKmYBKGWcHi). It's the most complete description of electrons in MOSFET's I've seen 
+
+
+# How should I size my transistor?
 
 The method that makes most sense to me, is to use the inversion-coefficient method, described in [Nanoscale MOSFET Modeling: Part 1](https://ieeexplore.ieee.org/document/8016485) and [Nanoscale MOSFET Modeling: Part 2](https://ieeexplore.ieee.org/document/8110872).
 
@@ -311,8 +422,4 @@ The inversion coefficient tells us how strongly inverted the MOSFET channel (inv
 There are also some blog posts worth looking at [Inversion Coefficient Based Circuit Design](https://kevinfronczak.com/blog/inversion-coefficient-based-circuit-design) and  [My Circuit Design Methodology](https://kevinfronczak.com/blog/my-circuit-design-methodology).
 
 I should caveat my proposal for method. For the past 7 years I've not had the luxury to do full time, hardcore, analog design. As my career progressed, most of my time is now spent telling others what I think is a good idea to do, and not doing hardcore analog design myself. I think, however, I have a pretty decent understanding of analog circuits, and how to design them, so I think I'm correct in the proposal. If I were to start hardcore analog design now, I would go all in on inversion-coefficient based transistor size selection.
-
-Maybe next holiday I'll have time to characterize Skywater 130 nm for analog design using the inversion coefficient method above. Or maybe you will beat me to it, and do it for me. That's even better, because if you publish it, then I can just use whatever you found out.
-
-
 
