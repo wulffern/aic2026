@@ -394,8 +394,6 @@ As you continue to increase the gate-source voltage there is a limit to how much
 
 The conditions to be in strong inversion is that the gate/source voltage is above some magic values (threshold voltage), and then some. 
 
-## Where are the free electrons?
-
 The quantum state of the electron is fully determined by it's spin, momentum and position in space. How those parameters evolve with time is determined by the Schrodinger equation. In the general form
 
 $$ i\hbar\frac{d}{dt}\Psi(r,t) = \widehat{H} \Psi(r,t) $$

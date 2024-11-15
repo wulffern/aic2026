@@ -4,7 +4,7 @@ autoscale:true
 theme: Plain Jane, 1
 text:  Helvetica
 header:  Helvetica
-date: 2024-01-12
+date: 2025-01-09
     
 
 <!--pan_title: Lecture 1 -  Introduction -->
@@ -32,7 +32,7 @@ My name is
 
 Carsten Wulff [carstenw@ntnu.no](carstenw@ntnu.no)
 
-<!--pan_doc: and I've worked in the integrated circuit industry for the past 20 years. 
+<!--pan_doc: and I've worked in the integrated circuit industry for over 20 years. 
 
 I finished my Masters in 2002, and did a Ph.D on analog-to-digital converters finished in 2008. 
 
@@ -81,7 +81,7 @@ The market is expected to grow to 1136 billion in 2028.
 
 Integrated circuits enable pretty much all technologies.
 
-I will be dead in approximately 50 years, and will retire in approximately 30 years. 
+I will be dead in approximately 50 years, and will retire in approximately 20 years. 
 Everything I know will be gone (except for the small pieces I've left behind in videos or written word)
 
 Someone must take over, and to do that, they need to know most of what I know, and hopefully a bit more. 
@@ -91,12 +91,13 @@ the stamina, patience, and brain necessary to learn some of the hardest topics i
 
 > Making integrated circuits (that work reliably) is not rocket science, it's much harder.
 
-In this course we'll focus on analog ICs, because the real world is analog, and all ICs must have some 
+In this course, we'll focus on analog ICs, because the real world is analog, and all ICs must have some 
 analog components, otherwise they won't work.
 
 -->
 
 ---
+
 
 [.column]
 
@@ -107,7 +108,7 @@ analog components, otherwise they won't work.
 
 <!--pan_doc:
 
-The steps to make integrated circuits is split in two. We have a analog flow, and a digital flow. 
+The steps to make integrated circuits is split in two. We have an analog flow, and a digital flow. 
 
 It's rare to find a single human that do both flows well. Usually people choose, and I think it's based on what they like and their personality.
 
@@ -132,7 +133,7 @@ it's likely that you'll find analog flow interesting.
 
 <!--pan_doc:
 
-Something that would make me really happy is if someone is able to tapeout an IC after this course. 
+Something that would make me really happy is if someone is able to tapeout an IC in this course. 
 
 It's now possible without signing an NDA or buying expensive software licenses. 
 
@@ -142,18 +143,24 @@ have fueled a renaissance of open source software tools.
 Together with [Efabless](https://https://efabless.com) there are cheap alternatives, like [tinytapeout](https://tinytapeout.com),
 which makes it possible for a private citizen to tape-out their own integrated circuit.
 
-Google just sponsored a [GlobalFoundries 180 nm tapeout](https://efabless.com/gf-180-open-mpw-shuttle-program) where you could tape out 
-your circuit for free.
-
 -->
 
 ---
 
 <!--pan_skip: -->
 
-# <https://analogicus.com/aic2024>
+
+## [https://tinytapeout.com/runs/](https://tinytapeout.com/runs/)
 
 
+![inline](../media/tinytapeout.png)
+
+
+---
+
+<!--pan_skip: -->
+
+# <https://analogicus.com/aic2025>
 
 
 ---
@@ -177,8 +184,8 @@ The skills needed are
 - _Language_: **English**, **Writing English (Latex, Word, Email)**
 - _Psychology_: Personalities, convincing people, presentations (Powerpoint, Deckset), **stress management (what makes your brain turn off?)**
 - _DevOps_: **Linux**, bulid systems (CMake, make, ninja), continuous integration (bamboo, jenkins), **version control (git)**, containers (docker), container orchestration (swarm, kubernetes)
-- _Programming_: Python, Go, C, C++, Matlab <sub>Since 1999 I’ve programmed in Python, Go, Visual BASIC, PHP, Ruby, Perl, C#, SKILL, Ocean, Verilog-A, C++, BASH, AWK, VHDL, SPICE, MATLAB, ASP, Java, C, SystemC, Verilog, and probably a few I’ve forgotten.</sub>
-- _Firmware_: signal processing, algorithms
+- _Programming_: Python, C, C++, Matlab <sub>Since 1999 I’ve programmed in Python, Go, Visual BASIC, PHP, Ruby, Perl, C#, SKILL, Ocean, Verilog-A, C++, BASH, AWK, VHDL, SPICE, MATLAB, ASP, Java, C, SystemC, Verilog, Assembler, and probably a few I’ve forgotten.</sub>
+- _Firmware_: signal processing, algorithms, software architecture, security
 - _Infrastructure_: **Power management**, **reset**, **bias**, **clocks**
 - _Domains_: CPUs, peripherals, memories, bus systems
 - _Sub-systems_: **Radio’s**, **analog-to-digital converters**, **comparators**
@@ -283,14 +290,14 @@ my understanding is wrong, then I'll happily discuss.
 # Plan
 
 **Lectures:**
-Friday at 08:15 - 10:00
+Thursday at 10:15 - 12:00
 
-Read the introduction before the lectures at [aic2024](https://analogicus.com/aic2024)
+Read the introduction before the lectures at [aic2025](https://analogicus.com/aic2025)
 
 The "lectures" will be Q & A's on the topic. If no questions, then I'll ramble on.
 
 **Project Hours:**
-Friday at 10:15 - 12:00
+Thursday at 12:15 - 14:00
 
 Groups meet, and work on project. 
 
@@ -304,12 +311,13 @@ Groups meet, and work on project.
 
 - [Time schedule](https://www.ntnu.no/studier/emner/TFE4188#tab=timeplan)
 
-- [Lecture plan](https://wulffern.github.io/aic2024/plan/)
+- [Lecture plan](https://wulffern.github.io/aic2025/plan/)
 
-- [Syllabus](https://wulffern.github.io/aic2024/syllabus/)
+- [Syllabus](https://wulffern.github.io/aic2025/syllabus/)
 
-- [Youtube Videos](https://youtube.com/playlist?list=PLybHXZ9FyEhZ3HT2KPzjY2bmMJupRX2M6&si=gLMDbo0leoEBZsm0)
+- [Youtube Videos](https://www.youtube.com/playlist?list=PLybHXZ9FyEhbm9-A3QR1NRlt6VxeTXYr5)
 
+- [AIC2024](http://analogicus.com/aic2024/)
 
 ---
 
@@ -335,7 +343,7 @@ Buy a hard-copy of the book if you don't have that. Don't expect to understand t
 
 ## Exam
 
-- June 2022
+- May/June?
 - 4 hours
 - A - F grade (F = Fail)
 - Counts for 55 % of the grade
@@ -349,15 +357,11 @@ Buy a hard-copy of the book if you don't have that. Don't expect to understand t
 
 <!--pan_skip: -->
 
-## Exercises
+## Compulsary exercises
 
-- Exercises on blackboard now
-- Solutions on blackboard after the deadline
-- **One compulsory exercise: Exercise 0 - Skywater 130nm tutorial**
-- For the rest, two options:
-  - Don't do the exercises, don't get feedback
-  - Do the exercises, hand them in within deadline, get feedback
-- The TA will only support the exercises in the marked weeks
+Follow: [Sky130nm Tutorial](https://analogicus.com/aic2025/2025/01/01/Sky130nm-tutorial.html)
+
+Submit link to your github repository: [JNW\_EX\_SKY130A](http://analogicus.com/jnw_ex_sky130a/)
 
 ---
 
@@ -369,18 +373,20 @@ Counts for 45 % of the grade
 
 No exam without project.
 
-Strict deadline 3'rd of May. If you hand in 4'th of May at 00:00:01, then you fail the course.
+Strict deadline 30'th of April. If you hand in 1'th of May at 00:00:01, then you fail the course.
 
 ---
 
 
-# CNR (2024)
+# JNW (2025)
 
-*"In an insane world, it was the sanest choice."*  - Sarah Connor, Terminator 2: Judgment Day
+
+**"You can use logic to justify almost anything. That's its power. And its flaw."** - Kathryn Janeway, Star Trek Voyager: Prime Factors
+
 
 <!--pan_doc: 
 
-The project for 2024 is to 
+The project for 2025 is to 
 
 -->
 
@@ -389,7 +395,7 @@ The project for 2024 is to
 
 <!--pan_doc: 
 
-An outline of the plan is shown below. There will be five milestones in all. 
+An outline of the plan is shown below. 
 
 At the end of the project you will have a function that converts temperature to a digital value.
 
@@ -415,9 +421,11 @@ $$
 D = f_3(t) = f_3(f_2(f_1(T))) = f_0(T)
 $$
 
-The fourth milestone is the layout, while the fifth milestone is the report. 
+The third milestone is the layout, while the fourth milestone is the report. 
 
+You can find an example of last years designs at [cnr\_gr02\_sky130nm](https://github.com/analogicus/cnr_gr02_sky130nm)
 
+You will be using a repository on github for all your design data. In that repository I've made it possible to run github actions, or github workflows. For each of the milestones there are associated workflows (SIM/DOCS/GDS/DRC/LVS). 
 
 -->
 
@@ -425,6 +433,35 @@ The fourth milestone is the layout, while the fifth milestone is the report.
 ---
 
 ![fit](../media/project_plan.pdf)
+
+
+<!--pan_doc:
+
+**Milestone 0:** The zero milestone is not really part of the project, but it does introduce you too how you will work with the files in the project. It's important that you do this right away. To complete the milestone, upload a link to blackboard with your github repository for the tutorial [Skywater 130 nm Tutorial](https://analogicus.com/aic2025/2025/01/01/Sky130nm-tutorial.html)
+ 
+
+**Milestone 1:** The first milestone is to make a circuit that can convert from a temperature, to a current that is proportional to temperature. You will run a simulation on github that demonstrates that the circuit works. That is the SIM workflow.
+
+**Milestone 2:** In the second milestone you will complete the schematic design of the circuit, and possibly also do some SystemVerilog to demonstrate that you get a digital value out that is proportional to temperature. Here, the simulations on github may be too long, so it's sufficient to describe the circuit, and how it works in detail in the documentation. This is the DOC workflow.
+
+**Milestone 3:** The third milestone, making the layout, is optional, however, it will be impossible to get an A without getting some points from the layout milestone. Once the layout is complete, I expect that the design rule checks (DRC), Layout versus Schematic (LVS), and GDS (stream out to a [GDSII](https://en.wikipedia.org/wiki/GDSII) file) is passing on github.
+
+**Milestone 4:** I will force you to work in groups. As such, it may be that some contribute more than others. To ensure that the grading is fair, the report will be indivirual. It's OK to share figures, tables, and so on, but the PDF shall be written by you and you alone.
+
+-->
+
+---
+
+## Grading
+
+| Milestone | What does it mean                                               | Condition for more than 0 points | Possible Points |
+|-----------|-----------------------------------------------------------------|----------------------------------|-----------------|
+| M1 I=f(T) | Circuit that can convert a temperature into a current           | SIM passing                      | 10              |
+| M2 D=f(T) | Circuit that can convert from temperature into  a digital value | DOC passing                      | 20              |
+| M3 Layout | Layout of your circuit                                          | DRC/LVS/GDS passing              | 20              |
+| M4 Report | Individual report                                               | Uploaded to blackboard           | 48              |
+| Cooleness  | Extra points that I may choose to award                         |                                  | 10              |
+| Total     |                                                                 |                                  | 108             |
 
 
 <!--pan_doc:
@@ -439,15 +476,11 @@ That's why I think it's important not to just work in groups, but also focus on 
 
 A group shall be maximum 4 members. There must be at least 3 that don't know each-other that well. 
 
-The group will meet once per week, and shall have a discussion according to the outline below. 
+The group will meet once per week in the exercise hours.
 
-If there is time left at the end of the group session it will be used for Q & A.
+### Check-in
 
-### First session of milestone 
-
-During the first group session of a milestone, you will
-
-**Check-in (10 minutes)**
+All group session must start with a Check-in (10 minutes)
 
 Some example questions could be 
 
@@ -464,47 +497,7 @@ Some examples answers could be:
 
 The point of this exercise is to get to know each other a bit, and attempt to create psychological safety in the group.
 
-**Ideas (35 minutes)**
-
-Come up with ideas for how the milestone could be implemented. What circuit ideas could work? 
-
-**Break (15 minutes)**
-
-**Plan (20 minutes)**
-
-Sketch out who does what the next week. What's the goal for the week. 
-
-
-**Reflect (5 minutes)**
-
-In silence, think about the group dynamics. How did it go today? What was good? 
-What could be improved? Write down one word.
-
-**Discuss (10 minutes)** 
-
-Each group member talks about their one word.
-
-### Other sessions of a milestone 
-
-You shall always Check-in, Reflect and Discuss. Although some may consider it a waste of time, it's important to improve the
-group dynamics.
-
-**Review (35 minutes)**
-
-Go through the plan from last week, what worked, what did not work, what should be done differently.  Discuss.
-
-**Plan (20 minutes)**
-
-Sketch out who does what the next week. What's the goal for the week. 
-
-
 -->
-
----
-
-<!--pan_skip: -->
-
-# [Grading](https://www.ntnu.no/wiki/display/tfe4487/CNR+-+Grading)
 
 ---
 
@@ -522,12 +515,12 @@ I've made a rather detailed (at least I think so myself) tutorial on how to make
 I strongly recommend you start with that first. 
 -->
 
- [Skywater 130 nm Tutorial](https://analogicus.com/aic2024/2023/11/16/Tools.html)
+ [Skywater 130 nm Tutorial](https://analogicus.com/aic2025/2025/01/01/Sky130nm-tutorial.html)
  
  
 <!--pan_doc:
  
- I've also made some more complex examples, that can be found at the link below. There are digital logic cells, standard transistors, and  few other blocks. 
+ I've also made some more complex examples, that can be found at the link below. There are digital logic cells, standard transistors, and few other blocks. 
  
 -->
  

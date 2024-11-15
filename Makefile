@@ -16,9 +16,9 @@ FILES = l00_diode \
 	l00_refresher \
 	lr0_mosfet \
 	lr0_tools \
-	l00_spice
-#	l01_intro \
-	l02_esd \
+	l00_spice \
+	l01_intro
+#	l02_esd \
 	l03_refbias \
 	l04_afe \
 	l05_sc \
