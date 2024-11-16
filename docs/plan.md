@@ -23,6 +23,8 @@ permalink: /plan/
 | 15   |                      | M3      | Analog SystemVerilog      | analog system verilog behavioral models                      |
 | 16   |                      |         | Easter                    |                                                              |
 | 17   |                      |         | Q & A                     |                                                              |
-| 18   |                      | M4      |                           |                                                              |
+| 18   |                      | M4      |                           | Project deadline is 30'th of April                           |
+
+
 
 

@@ -12,13 +12,13 @@ endif
 
 .PHONY:  slides
 
-FILES = l00_diode \
-	l00_refresher \
+FILES = l01_intro \
+		l00_refresher \
+	l00_diode \
 	lr0_mosfet \
-	lr0_tools \
 	l00_spice \
-	l01_intro
-#	l02_esd \
+	lr0_tools \
+	l02_esd \
 	l03_refbias \
 	l04_afe \
 	l05_sc \
@@ -26,10 +26,10 @@ FILES = l00_diode \
 	l07_vreg \
 	l08_pll \
 	l09_osc \
-	lp_project_report \
 	l10_lpradio \
 	lx_energysrc \
 	l11_aver \
+	lp_project_report
 
 	#l00_need_to_know
 
@@ -49,6 +49,7 @@ jstart:
 
 latex:
 	-mkdir pdf/media
+	-rm pdf/chapters.tex
 	${PYTHON} py/lecture.py latex lectures/tex_intro.md
 	${foreach f, ${FILES}, ${PYTHON} py/lecture.py latex lectures/${f}.md || exit ; }
 	cd pdf; make one

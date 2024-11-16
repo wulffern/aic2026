@@ -57,6 +57,10 @@ class Image():
             os.makedirs(self.options["latex"] + "media/",exist_ok=True)
             try:
                 shutil.copyfile(os.path.join(self.options["dir"],self.src),  self.options["latex"] + "media/" + self.filesrc)
+                if("pdf" in self.src in self.src):
+                    shutil.copyfile(os.path.join(self.options["dir"],self.src.replace(".pdf",".svg")),  self.options["latex"] + "media/" + self.filesrc.replace(".pdf",".svg") )
+                if("svg" in self.src in self.src):
+                    shutil.copyfile(os.path.join(self.options["dir"],self.src.replace(".svg",".pdf")),  self.options["latex"] + "media/" + self.filesrc.replace(".svg",".pdf") )
             except Exception as e:
                 print(e)
     def __str__(self):
@@ -398,6 +402,9 @@ def post(filename,root,date):
 
     with open(fname,"w") as fo:
         fo.write(str(l))
+
+
+
     
 
 
@@ -417,6 +424,14 @@ def latex(filename,root):
     fname = root + os.path.sep + p.title.strip().replace(" ","_").lower() + ".md"
     with open(fname,"w") as fo:
         fo.write(str(p))
+
+    with open("pdf/chapters.tex","a") as fo:
+        fo.write(r"\setchapterstyle{kao}" + "\n")
+        fo.write(r"\setchapterpreamble[u]{\margintoc}"+ "\n")
+        title = p.title.strip()
+        title = re.sub(r"Lecture\s+[\d|X]*\s+-\s+","",title)
+        fo.write(r"\chapter{"+title+"}"+ "\n")
+        fo.write(r"\input{"+p.title.strip().replace(" ","_").lower()+"_fiximg.tex}"+ "\n\n")
 
     flatex = fname.replace(".md",".latex")
     cmd = f"pandoc --citeproc --bibliography=pdf/aic.bib --csl=pdf/ieee-with-url.csl  -o {flatex} {fname}  "

@@ -36,13 +36,16 @@ one: fix hash kaobook pandoc.tex
 	TEXINPUTS=".:kaobook:" pdflatex aic
 	#TEXINPUTS=".:kaobook:" pdflatex aic.tex
 	#-pdflatex -interaction nonstopmode --shell-escape aic.latex
+	${MAKE} compress
 
 compress:
+	cp aic.pdf aic_compress.pdf
 	gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS=/ebook \
 	-dNOPAUSE -dQUIET -dBATCH -sOutputFile=aic_compress.pdf aic.pdf
 
 ebook:
-	cat aic.tex |perl -pe "s/fiximg/fiximg_png/ig" > aic_epub.latex
+	cat aic.tex |perl -pe "s/chapters/chapters_epub/ig" > aic_epub.latex
+	cat chapters.tex |perl -pe "s/fiximg/fiximg_png/ig" > chapters_epub.tex
 	pandoc --gladtex -o aic.epub aic_epub.latex
 
 clean:

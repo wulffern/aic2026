@@ -2,7 +2,7 @@
 
 ---
 
-<!--pan_title:tex_intro -->
+<!--pan_title:Background -->
 
 In the spring of 2025 I lectured Advanced Integrated Circuits for the fourth
 time. I have an inherent need to make things better, and the course is no

@@ -221,13 +221,13 @@ them passing.
 The workflows are defined below. 
 
 ```bash
-├── .github
-│   └── workflows  
-│       ├── docs.yaml # Generate a github page 
-│       ├── drc.yaml  # Run Design Rule Checks 
-│       ├── gds.yaml  # Generate a GDS file from layout 
-│       ├── lvs.yaml  # Run Layout Versus Schematic and Layout Parasitic Extraction
-│       └── sim.yaml  # Run a simulation 
+.github
+   workflows  
+   docs.yaml # Generate a github page 
+   drc.yaml  # Run Design Rule Checks 
+   gds.yaml  # Generate a GDS file from layout 
+   lvs.yaml  # Run Layout Versus Schematic and Layout Parasitic Extraction
+    sim.yaml  # Run a simulation 
 ```
 
 ### Configuration files 
@@ -236,12 +236,12 @@ Each IP has a few files that define the setup, you'll need to modify at least
 the `README.md` and the `info.yaml`.
 
 ```bash
-├── .gitignore  # files that are ignored by git
-├── README.md   # Frontpage documentation 
-├── config.yaml # What libraries are used. This file can be used by cicconf
-├── info.yaml   # Setup names, authors etc 
-├── media       # Where you should store images for documentation
-├── tech -> ../tech_sky130A  # The technology library
+ .gitignore  # files that are ignored by git
+ README.md   # Frontpage documentation 
+ config.yaml # What libraries are used. This file can be used by cicconf
+ info.yaml   # Setup names, authors etc 
+ media       # Where you should store images for documentation
+ tech -> ../tech_sky130A  # The technology library
 ``` 
 
 ### Design files 
@@ -259,11 +259,11 @@ Note there are also two symbolic links to other libraries. These two libraries
 contain standard cells and standard analog transistors (ATR) that you should be using.
 
 ```
-├── design
-│   ├── JNW_EX_SKY130A
-│   │   └── JNW_EX.sch
-│   ├── JNW_ATR_SKY130A -> ../../jnw_atr_sky130a/design/JNW_ATR_SKY130A
-│   └── JNW_TR_SKY130A -> ../../jnw_tr_sky130a/design/JNW_TR_SKY130A
+design
+  JNW_EX_SKY130A
+  JNW_EX.sch
+  JNW_ATR_SKY130A -> ../../jnw_atr_sky130a/design/JNW_ATR_SKY130A
+  JNW_TR_SKY130A -> ../../jnw_tr_sky130a/design/JNW_TR_SKY130A
 ```
 
 For example, if the cell name was `JNW_EX`, then you would have 
@@ -289,9 +289,9 @@ make cell CELL=JNW_EX
 This will make a simulation folder for you. Repeat for all your cells. 
 
 ```
-├── sim
-│   ├── Makefile
-│   └── cicsim.yaml -> ../tech/cicsim/cicsim.yaml
+sim
+  Makefile
+  cicsim.yaml -> ../tech/cicsim/cicsim.yaml
 ```
 
 ### The work 
@@ -304,13 +304,12 @@ need to learn those also, but I'd wait until you feel a bit more comfortable.
 
 
 ```bash 
-└── work
-    ├── .magicrc
-    ├── Makefile
-    ├── mos.24bit.dstyle -> ../tech/magic/mos.24bit.dstyle
-    ├── mos.24bit.std.cmap -> ../tech/magic/mos.24bit.std.cmap
-    └── xschemrc
-
+work
+ .magicrc
+ Makefile
+ mos.24bit.dstyle -> ../tech/magic/mos.24bit.dstyle
+ mos.24bit.std.cmap -> ../tech/magic/mos.24bit.std.cmap
+ xschemrc
 ```
 
 ## Github setup
@@ -924,14 +923,22 @@ sim:
 Go to github. Press Settings. Press Pages. Choose Build and Deployment  ->
 GitHub Actions
 
-Wait for the workflows to build. And check your github pages. Mine is [https://analogicus.github.io/jnw_ex0_sky130a/](https://analogicus.github.io/jnw_ex0_sky130a/)
+Wait for the workflows to build. And check your github pages. Mine is [https://analogicus.github.io/jnw_ex0_sky130a/](https://analogicus.github.io/jnw_ex0_sky130a/**
 
 
 
+## Frequency asked questions
 
+**Q:** My GDS/LVS/DRC action fails, even though it works locally. 
 
+Sometimes the reference to the transistors in the magic file might be wrong.
+Open the .mag file in a text editor and check. The correct way is 
 
+```
+use JNWATR_NCH_4C5F0  JNWATR_NCH_4C5F0_0 ../JNW_ATR_SKY130A
+```
 
+It's the last `../JNW_ATR_SKY130A` that sometimes is missing.
 
 
 
