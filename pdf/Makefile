@@ -36,10 +36,9 @@ one: fix hash kaobook pandoc.tex
 	TEXINPUTS=".:kaobook:" pdflatex aic
 	#TEXINPUTS=".:kaobook:" pdflatex aic.tex
 	#-pdflatex -interaction nonstopmode --shell-escape aic.latex
-	${MAKE} compress
+	#${MAKE} compress
 
 compress:
-	cp aic.pdf aic_compress.pdf
 	gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS=/ebook \
 	-dNOPAUSE -dQUIET -dBATCH -sOutputFile=aic_compress.pdf aic.pdf
 
