@@ -17,6 +17,7 @@ FILES = l01_intro \
 	l00_diode \
 	lr0_mosfet \
 	l00_spice \
+	l00_sv \
 	lr0_tools \
 	l02_esd \
 	l03_refbias \

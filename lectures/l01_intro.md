@@ -600,7 +600,7 @@ The point of this exercise is to get to know each other a bit, and attempt to cr
 
 We'll use professional 
 -->
-Open source software (xschem, ngspice, sky130B PDK, Magic VLSI, netgen)
+Open source software (xschem, ngspice, sky130A PDK, Magic VLSI, netgen)
 
 <!--pan_doc:
 
