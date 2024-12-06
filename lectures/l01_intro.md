@@ -66,6 +66,27 @@ I have a hobby trying to figure out how to make a new analog circuit design
 
 ---
 
+# How I see our roles 
+
+**Professors:** Guide students on what is impossible, possible, and hints on what
+might be possible 
+
+**Ph.D students:** Venture into the unknown and make something (more) possible
+
+**Master students:** Learn all that is currently possible
+
+**Bachelor students:** Learn how to make complicated into easy
+
+**Industry:** Take what is possible, and/or complicated, and make it easy
+
+
+
+![left](../media/education.pdf)
+
+---
+
+
+
 <!--pan_skip: -->
 
 #[fit] Why
@@ -95,6 +116,51 @@ In this course, we'll focus on analog ICs, because the real world is analog, and
 analog components, otherwise they won't work.
 
 -->
+
+---
+
+
+[.background-color:#000000]
+[.text: #FFFFFF]
+# There will always be analog circuits, because the real world is analog
+
+<!--pan_skip: -->
+
+---
+
+<!--pan_skip: -->
+
+### Life of an analog designer: Schematic Design
+
+[.column]
+![inline](../media/l00_schematic.pdf)
+
+[.column]
+![inline](../media/l00_simulation.pdf)
+
+---
+
+<!--pan_skip: -->
+
+### Life of an analog designer: Layout Design
+
+[.column]
+![inline](../media/l00_layout.pdf)
+
+[.column]
+![inline](../media/l00_simulation.pdf)
+
+---
+
+| Status | Abstraction | Design | Layout | Why |
+|:------:|:------------|:-------|:-------|:----|
+| :construction:       | Chip        | SystemVerilog     | digital     | Complex connections, few analog interfaces              |
+| :construction:       | Module      | SystemVerilog     | digital     | Large amount of digital signals, few analog signals     |
+| :warning:       | Block       | Schematic         | programmatic | Large amount of critical analog interfaces, few digital |
+| :white_check_mark:      | Cell         | Netlist/JSON | compiled    | Few analog interfaces, few digital interfaces                                 |
+| :white_check_mark:      | Device      | JSON              | compiled    | Polygon pushing                                         |
+| :white_check_mark:      | Technology  | JSON/Rules        | compiled    | Custom for each technology                              |
+
 
 ---
 
@@ -252,6 +318,33 @@ s/programming/analog design/ig
 
 ---
 
+## Analog Design Process
+
+[.column]
+- Define the problem, what are you trying to solve?
+- Find a circuit that can solve the problem (papers, books)
+- Find right transistor sizes. What transistors should be weak inversion, strong
+  inversion, or don't care?
+- Write a verification plan. Plan to simulate everything that could go wrong.
+- Check operating region of transistors (.op)
+- Check key parameters (.dc, .ac, .tran)
+- Check function. Exercise all inputs. Check all control signals
+
+
+[.column]
+
+- Check key parameters in all corners. Check mismatch (Monte-Carlo simulation)
+- Do layout, and check it's error free. Run design rule checks (DRC). Check layout versus schematic (LVS)
+- Extract parasitics from layout. Resistance, capacitance, and inductance if necessary.
+- On extracted parasitic netlist, check key parameters in all corners and mismatch (if possible).
+- If everything works, then your done.
+
+*On failure, go back as far as necessary*
+
+
+---
+
+
 # My Goal
 
 <!--pan_doc: 
@@ -349,11 +442,6 @@ Buy a hard-copy of the book if you don't have that. Don't expect to understand t
 - Counts for 55 % of the grade
 
 ---
-<!--pan_skip: -->
-
-#[fit] Time to take responsibility for your own future 
-
----
 
 <!--pan_skip: -->
 
@@ -361,7 +449,12 @@ Buy a hard-copy of the book if you don't have that. Don't expect to understand t
 
 Follow: [Sky130nm Tutorial](https://analogicus.com/aic2025/2025/01/01/Sky130nm-tutorial.html)
 
-Submit link to your github repository: [JNW\_EX\_SKY130A](http://analogicus.com/jnw_ex_sky130a/)
+Submit link to your github repository on blackboard
+
+For example, my repository:
+[JNW\_EX\_SKY130A](http://analogicus.com/jnw_ex_sky130a/)
+
+**The exercise is designed to teach you everything the skills you need to do the project**
 
 ---
 
@@ -547,8 +640,8 @@ Expect that you will spend at least $$2\pi$$ times more time than planned *(most
 # Do
 - google
 - ask a someone in your class
-- use the "øvingstime and labratorieøvelse" to talk to teaching assistants and hopefully me. Don't ask about future exercises
-- come to the office (B311)
+- use the "øvingstime and labratorieøvelse" to talk to teaching assistants and hopefully me. 
+- come to the office (B311) on Thursday's
 
 ---
 
