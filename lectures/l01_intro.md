@@ -445,7 +445,7 @@ Buy a hard-copy of the book if you don't have that. Don't expect to understand t
 
 <!--pan_skip: -->
 
-## Compulsary exercises
+## Compulsory exercises
 
 Follow: [Sky130nm Tutorial](https://analogicus.com/aic2025/2025/01/01/Sky130nm-tutorial.html)
 
@@ -539,7 +539,7 @@ You will be using a repository on github for all your design data. In that repos
 
 **Milestone 3:** The third milestone, making the layout, is optional, however, it will be impossible to get an A without getting some points from the layout milestone. Once the layout is complete, I expect that the design rule checks (DRC), Layout versus Schematic (LVS), and GDS (stream out to a [GDSII](https://en.wikipedia.org/wiki/GDSII) file) is passing on github.
 
-**Milestone 4:** I will force you to work in groups. As such, it may be that some contribute more than others. To ensure that the grading is fair, the report will be indivirual. It's OK to share figures, tables, and so on, but the PDF shall be written by you and you alone.
+**Milestone 4:** I will force you to work in groups. As such, it may be that some contribute more than others. To ensure that the grading is fair, the report will be individual. It's OK to share figures, tables, and so on, but the PDF shall be written by you and you alone.
 
 -->
 
