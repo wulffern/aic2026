@@ -86,7 +86,10 @@ externally managed. As such, we need to install a python environment.
 
 ```bash 
 #- Find a package similar to name below
+sudo apt-get update
 sudo apt install python3.12-venv
+sudo mkdir /opt
+sudo mkdir /opt/eda
 sudo mkdir /opt/eda/python3
 sudo chown -R $USER:$USER /opt/eda/python3/
 python3 -m venv /opt/eda/python3
@@ -117,9 +120,9 @@ make requirements
 make tt
 make eda_compile
 sudo make eda_install
+python3 -m ensurepip --default-pip
 python3 -m pip install matplotlib numpy click svgwrite pyyaml pandas tabulate wheel setuptools tikzplotlib
 source install_open_pdk.sh
-cd ../..
 ```
 
 ## Install cicconf 
@@ -128,7 +131,8 @@ cIcConf is used for configuration. How the IPs are connected, and what version
 of IPs to get. 
 
 ``` bash
-cd aicex/ip/cicconf
+cd
+cd pro/aicex/ip/cicconf
 git checkout main 
 git pull
 python3 -m pip install -e .
@@ -139,7 +143,7 @@ Update IPs
 
 ```sh
 cicconf update 
-cd ..
+cd ../..
 ```
 
 
