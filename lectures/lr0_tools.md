@@ -57,6 +57,15 @@ cat ~/.ssh/id_rsa.pub
 
 And add the public key to your github account. Settings - SSH and GPG keys 
 
+## Provide git with author identity
+
+There are interactions with git that require an author identity. You are supposed to use one of these interactions a lot during the project, namely, ```git commit```. What you need to provide is an email address and a name. If you would like to keep your real email address private/secret, read what it says on GitHub at your user settings page under [emails](https://github.com/settings/emails). Use the below commands to provide the author identity information to git.
+
+```
+git config --global user.email "you@example.com"
+git config --global user.name "Your Name"
+```
+
 ## Get AICEX and setup your shell 
 
 You don't have to put aicex in `$HOME/pro`, but if you don't know where to put
@@ -86,7 +95,10 @@ externally managed. As such, we need to install a python environment.
 
 ```bash 
 #- Find a package similar to name below
+sudo apt-get update
 sudo apt install python3.12-venv
+sudo mkdir /opt
+sudo mkdir /opt/eda
 sudo mkdir /opt/eda/python3
 sudo chown -R $USER:$USER /opt/eda/python3/
 python3 -m venv /opt/eda/python3
@@ -131,9 +143,10 @@ make ngspice_compile ngspice_install
 make yosys_compile yosys_install
 
 
+python3 -m ensurepip --default-pip
+
 python3 -m pip install matplotlib numpy click svgwrite pyyaml pandas tabulate wheel setuptools tikzplotlib
 source install_open_pdk.sh
-cd ../..
 ```
 
 ## Install cicconf 
@@ -142,7 +155,8 @@ cIcConf is used for configuration. How the IPs are connected, and what version
 of IPs to get. 
 
 ``` bash
-cd aicex/ip/cicconf
+cd
+cd pro/aicex/ip/cicconf
 git checkout main 
 git pull
 python3 -m pip install -e .
@@ -153,7 +167,7 @@ Update IPs
 
 ```sh
 cicconf clone --https 
-cd ..
+cd ../..
 ```
 
 
@@ -223,8 +237,8 @@ that rely on an exact structure. Don't mess with it.
 ### Github workflows
 
 On github it's possible use something called workflows to run things every time
-you push a new version. It's really nice, since it can then do checks that
-you're design is valid. 
+you push a new version. It's really nice, since it can then check that
+your design is valid. 
 
 The grading of the milestones is determined by passing github workflows. 
 
@@ -241,7 +255,7 @@ The workflows are defined below.
    drc.yaml  # Run Design Rule Checks 
    gds.yaml  # Generate a GDS file from layout 
    lvs.yaml  # Run Layout Versus Schematic and Layout Parasitic Extraction
-    sim.yaml  # Run a simulation 
+   sim.yaml  # Run a simulation 
 ```
 
 ### Configuration files 
@@ -328,13 +342,14 @@ work
 
 ## Github setup
 
-Create a repository on [github](https://github.com)
+Create a repository on [github](https://github.com).
+The name of the repository that you make on GitHub has to be the same as what is written after ```<your username>``` in the last command below. In this example, that is ```jnw_ex_sky130a```.
 
 
 ``` bash
-cd jnw_ex_sky130nm
+cd jnw_ex_sky130a
 git remote add origin \
- git@github.com:<your user name>/jnw_ex_sky130nm.git
+ git@github.com:<your username>/jnw_ex_sky130a.git
 ```
 
 ## Start working 
@@ -357,7 +372,7 @@ Take a look inside the file called Makefile.
 
 ## Draw Schematic <a name="sch"></a>
 
-The block we'll make is a current mirror with a 1 to 5 scaling. 
+The block we'll make is a current mirror with a 1 to 4 scaling. 
 
 A schematic is how we describe the connectivity, and the types of devices in an
 analog circuit. The open source schematic editor we will use is XSchem.
@@ -376,12 +391,12 @@ and N will be our output, and go into a diode connected PMOS somewhere else.
 
 ### Add transistors
 
-Use 'Shift-I' to open the library manager. Click the `jnw_ex0_sky130A/design`
-path, then `JNW_ATR_SKY130A` and select `JNW_ATR_4C5F0.sym`
+Use 'I' or 'Shift+i' (note the letter case) to open the library manager. Click the `jnw_ex_sky130A/design`
+path, then `JNW_ATR_SKY130A` and select `JNWATR_NCH_4C5F0.sym`
 
 The naming convention for these transistors is `<number of contacts on
-drain/source>C<times minimum gate length>F`, so the before the C is the width,
-and before/after the F is the length. The absolute size does not matter for now.
+drain/source>C<times minimum gate length>F`, so the number before the C is the width,
+and the number before/after the F is the length. The absolute size does not matter for now.
 Just think "4C5F0 is a 4 contact wide long transistor", while a "4C1F2 is a 4
 contact wide, short transistor".
 
@@ -406,7 +421,7 @@ Use 'f' to zoom full screen
 
 Remember to save the schematic
 
-![](../media/JNW_EX0.svg)
+![](../media/JNW_EX.svg)
 
 ### Netlist schematic
 
@@ -426,7 +441,7 @@ I've made [cicsim](https://github.com/wulffern/cicsim) that I use to run simulat
 results
 
 ### Setup simulation environment
-Navigate to the `jnw\_ex0\_sky130nm/sim/` directory.
+Navigate to the `jnw_ex_sky130a/sim/` directory.
 
 Make a new simulation folder
 
@@ -765,11 +780,11 @@ see m2
 ```
 
 Change to the 'wire tool' with spacebar. Press the top transistor 'S' and draw
-all the way down. 
+all the way down to connect all of the transistors' source terminals. 
 
 Change grid to 0.5 um.
 
-Select a 0.5 um box below the transistors and paint the rectangle (middle click on locali)
+Select a 0.5 um box below the transistors and paint the rectangle with locali (middle click on locali)
 
 Connect guard rings to ground. Use the 'wire tool'
 
@@ -782,7 +797,7 @@ change layer down
 
 Press "space" to enter wire mode. Left click to start a wire, and right click to end the wire.
 
-The drain of M1 transistor needs a connection to from gate to drain. We do that
+The drain of M1 transistor needs a connection from gate to drain. We do that
 for the middle transistor.
 
 Start the route, press 'shift-left click' to go up one layer, route over to
@@ -934,12 +949,11 @@ sim:
 
 ## Setup github pages 
 
-Go to github. Press Settings. Press Pages. Choose Build and Deployment  ->
+Go to your GitHub repository (repo). Press Settings. Press Pages. Choose source under Build and Deployment  ->
 GitHub Actions
 
-Wait for the workflows to build. And check your github pages. Mine is
-[https://analogicus.github.io/jnw_ex0_sky130a/](https://analogicus.github.io/jnw_ex0_sky130a/)
-
+Wait for the workflows to build. And check your github pages. 
+Mine is [https://analogicus.github.io/jnw_ex0_sky130a/](https://analogicus.github.io/jnw_ex0_sky130a/).
 
 
 ## Frequency asked questions
