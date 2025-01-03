@@ -376,8 +376,8 @@ and N will be our output, and go into a diode connected PMOS somewhere else.
 
 ### Add transistors
 
-Use 'Shift-I' to open the library manager. Click the `jnw_ex_sky130A/design`
-path, then `JNW_ATR_SKY130A` and select `JNW_ATR_4C5F0.sym`
+Use 'I' or 'Shift+i' (note the letter case) to open the library manager. Click the `jnw_ex_sky130A/design`
+path, then `JNW_ATR_SKY130A` and select `JNWATR_NCH_4C5F0.sym`
 
 The naming convention for these transistors is `<number of contacts on
 drain/source>C<times minimum gate length>F`, so the number before the C is the width,
