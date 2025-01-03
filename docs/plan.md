@@ -24,7 +24,7 @@ permalink: /plan/
 | 16   |                      |         | Easter                    |                                                              |
 | 17   |                      |         | Q & A                     |                                                              |
 | 18   |                      | M4      |                           | Project deadline is 30'th of April                           |
-
+| 23   |                      |         |                           | TinyTapeout 11 (2025-06-02)                                                             |
 
 
 

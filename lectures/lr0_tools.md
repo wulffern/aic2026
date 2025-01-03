@@ -138,7 +138,7 @@ cd ../
 Update IPs
 
 ```sh
-cicconf update 
+cicconf clone --https 
 cd ..
 ```
 
@@ -923,13 +923,14 @@ sim:
 Go to github. Press Settings. Press Pages. Choose Build and Deployment  ->
 GitHub Actions
 
-Wait for the workflows to build. And check your github pages. Mine is [https://analogicus.github.io/jnw_ex0_sky130a/](https://analogicus.github.io/jnw_ex0_sky130a/**
+Wait for the workflows to build. And check your github pages. Mine is
+[https://analogicus.github.io/jnw_ex0_sky130a/](https://analogicus.github.io/jnw_ex0_sky130a/)
 
 
 
 ## Frequency asked questions
 
-**Q:** My GDS/LVS/DRC action fails, even though it works locally. 
+*Q:*  My GDS/LVS/DRC action fails, even though it works locally. 
 
 Sometimes the reference to the transistors in the magic file might be wrong.
 Open the .mag file in a text editor and check. The correct way is 

@@ -553,7 +553,7 @@ You will be using a repository on github for all your design data. In that repos
 | M2 D=f(T) | Circuit that can convert from temperature into  a digital value | DOC passing                      | 20              |
 | M3 Layout | Layout of your circuit                                          | DRC/LVS/GDS passing              | 20              |
 | M4 Report | Individual report                                               | Uploaded to blackboard           | 48              |
-| Cooleness  | Extra points that I may choose to award                         |                                  | 10              |
+| Coolness  | Extra points that I may choose to award                         |                                  | 10              |
 | Total     |                                                                 |                                  | 108             |
 
 

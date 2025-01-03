@@ -30,7 +30,8 @@ FILES = l01_intro \
 	l10_lpradio \
 	lx_energysrc \
 	l11_aver \
-	lp_project_report
+	lp_project_report \
+	l00_ades
 
 	#l00_need_to_know
 
