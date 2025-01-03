@@ -115,8 +115,22 @@ what fails. There is no point in continuing if one command fails.
 cd aicex/tests/
 make requirements
 make tt
-make eda_compile
-sudo make eda_install
+
+# On a mac, you probably need to add bison to the path
+export PATH="/opt/homebrew/opt/bison/bin:$PATH"
+
+#- I've split the install of each of the tools. It's possible to run the commented out lines instead, but they often fail
+#make eda_compile
+#sudo make eda_install
+make magic_compile  magic_install
+make netgen_compile netgen_install
+make xschem_compile xschem_install
+make iverilog_compile iverilog_install
+make ngspice_compile # Sometimes fails
+make ngspice_compile ngspice_install
+make yosys_compile yosys_install
+
+
 python3 -m pip install matplotlib numpy click svgwrite pyyaml pandas tabulate wheel setuptools tikzplotlib
 source install_open_pdk.sh
 cd ../..
@@ -138,7 +152,7 @@ cd ../
 Update IPs
 
 ```sh
-cicconf update 
+cicconf clone --https 
 cd ..
 ```
 
@@ -923,13 +937,14 @@ sim:
 Go to github. Press Settings. Press Pages. Choose Build and Deployment  ->
 GitHub Actions
 
-Wait for the workflows to build. And check your github pages. Mine is [https://analogicus.github.io/jnw_ex0_sky130a/](https://analogicus.github.io/jnw_ex0_sky130a/**
+Wait for the workflows to build. And check your github pages. Mine is
+[https://analogicus.github.io/jnw_ex0_sky130a/](https://analogicus.github.io/jnw_ex0_sky130a/)
 
 
 
 ## Frequency asked questions
 
-**Q:** My GDS/LVS/DRC action fails, even though it works locally. 
+*Q:*  My GDS/LVS/DRC action fails, even though it works locally. 
 
 Sometimes the reference to the transistors in the magic file might be wrong.
 Open the .mag file in a text editor and check. The correct way is 
