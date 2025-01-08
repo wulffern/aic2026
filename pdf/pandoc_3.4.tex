@@ -110,24 +110,24 @@
 \setcounter{secnumdepth}{5}
 
 
-%\usepackage{etoolbox}
+\usepackage{etoolbox}
 
-%% \makeatletter
-%% \patchcmd{\LT@caption}
-%%   {\bgroup}
-%%   {\bgroup\global\LTpatch@captiontrue}
-%%   {}{}
-%% \patchcmd{\longtable}
-%%   {\par}
-%%   {\par\global\LTpatch@captionfalse}
-%%   {}{}
-%% \apptocmd{\endlongtable}
-%%   {\ifLTpatch@caption\else\addtocounter{table}{-1}\fi}
-%%   {}{}
-%% \newif\ifLTpatch@caption
-%% \makeatother
+\makeatletter
+ \patchcmd{\LT@caption}
+   {\bgroup}
+   {\bgroup\global\LTpatch@captiontrue}
+   {}{}
+ \patchcmd{\longtable}
+   {\par}
+   {\par\global\LTpatch@captionfalse}
+   {}{}
+ \apptocmd{\endlongtable}
+   {\ifLTpatch@caption\else\addtocounter{table}{-1}\fi}
+   {}{}
+ newif\ifLTpatch@caption
+\makeatother
 
-%\AtBeginEnvironment{longtable}{\tiny}
+\AtBeginEnvironment{longtable}{\tiny}
 %\patchcmd{\LT@array}{\@mkpream{#2}}{\StrGobbleLeft{#2}{2}[\pream]\StrGobbleRight{\pream}{2}[\pream]\StrSubstitute{\pream}{l}{|l}[\pream]\@mkpream{@{}\pream|@{}}}{}{}
 
 \NewDocumentCommand\citeproctext{}{}
