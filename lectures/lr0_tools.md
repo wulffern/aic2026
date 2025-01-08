@@ -119,19 +119,26 @@ Make sure you load the settings before you proceed
 ```bash
 source ~/.bashrc
 ```
-
 Hopefully the commands below work, if not, then try again, or try to understand
 what fails. There is no point in continuing if one command fails. 
+
 
 ```bash
 cd aicex/tests/
 make requirements
 make tt
+```
 
-# On a mac, you probably need to add bison to the path
+On a mac, you probably need to add bison to the path
+
+```
 export PATH="/opt/homebrew/opt/bison/bin:$PATH"
+```
 
-#- I've split the install of each of the tools. It's possible to run the commented out lines instead, but they often fail
+I've split the install of each of the tools. It's possible to run the commented
+out lines instead, but they often fail
+
+```bash
 #make eda_compile
 #sudo make eda_install
 make magic_compile  magic_install
@@ -140,9 +147,23 @@ make xschem_compile xschem_install
 make iverilog_compile iverilog_install
 make ngspice_compile # Sometimes fails
 make ngspice_compile ngspice_install
+```
+
+On Mac, do 
+
+```bash 
+brew install yosys verilator
+```
+
+On Linux, do 
+
+``` bash 
 make yosys_compile yosys_install
+``` 
 
+On all, do
 
+```bash 
 python3 -m ensurepip --default-pip
 
 python3 -m pip install matplotlib numpy click svgwrite pyyaml pandas tabulate wheel setuptools tikzplotlib
@@ -169,7 +190,6 @@ Update IPs
 cicconf clone --https 
 cd ../..
 ```
-
 
 ## Install cicsim
 

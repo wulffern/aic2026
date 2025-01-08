@@ -6,6 +6,7 @@ import click
 from sys import platform
 import shutil
 import urllib.parse
+import hashlib
 
 class Image():
 
@@ -34,10 +35,14 @@ class Image():
             self.src = svg
 
         if(self.isUrl and "downloadImage" in self.options):
+#            print(self.src)
             url = self.src
-            self.src = "/tmp/" +  urllib.parse.unquote(os.path.basename(self.src))
+            arr = url.split("?")
+            end = arr[0].split(".")[-1]
+            self.src = "/tmp/" +  hashlib.sha256(os.path.basename(self.src).encode()).hexdigest() + "." + end
+#            print(self.src)
             if(not os.path.exists(self.src)):
-                os.system(f"cd /tmp/; wget {url}")
+                os.system(f"cd /tmp/; wget {url} -O {self.src}")
 
 
         self.filesrc = os.path.basename(self.src)
@@ -73,8 +78,14 @@ class Image():
 
             return f"![]({path})" + "{: width=\"700\" }\n"
         elif("latex" in self.options):
-            path = "media/" + self.filesrc
-            return f"![]({path})\n\n"
+
+            if(self.dirsrc == "/tmp"):
+                path = "/tmp/" + self.filesrc
+            else:
+                path = "media/" + self.filesrc
+            #print(path)
+
+            return f"<!-- {self.orgsrc} -->\n\n![]({path})\n\n"
 
         return self.src
 

@@ -511,7 +511,7 @@ The current density $J$ has units $A/m^2$ and is often used, since we can multip
 
 -->
 
-$$ I  = A \times J $$
+$$ I  = \text{Area} \times J $$
 
 ---
 

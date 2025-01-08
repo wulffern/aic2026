@@ -12,10 +12,15 @@ endif
 
 .PHONY:  slides
 
+#	lr0_logic \
+
 FILES = l01_intro \
 		l00_refresher \
 	l00_diode \
+	lr0_passives \
 	lr0_mosfet \
+	lr0_circuits \
+	lr0_logic \
 	l00_spice \
 	l00_sv \
 	lr0_tools \
