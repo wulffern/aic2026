@@ -10,7 +10,11 @@ date: 2025-01-23
 
 <!--pan_doc:
 
+Keywords: TempSense IC insides, POR, ESD, HBM, CDM (INV), HBM protection, GGNMOS, Latch-up
+
 <iframe width="560" height="315" src="https://www.youtube.com/embed/6bqHO1iIJw0?si=8BkCgBFiA-bL5S7_" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
+Video is from 2024, so the plan might not be exactly the same. In addition, we're not using Caravel for the tapeout, but rather TinyTapeout.
 
 -->
 
@@ -43,7 +47,7 @@ Understand why you must **always handle ESD** on an IC
 <!--pan_doc:
 
 
-The project for 2024 is to design an integrated temperature sensor. 
+The project is to design an integrated temperature sensor. 
 
 First, we need to have an idea of what comes in and out of the temperature
 sensor. Before we have made the temperature sensor, we need to think what the signal interface could be, and we need to learn.
@@ -82,14 +86,14 @@ This list contains supplies, clocks, digital outputs, bias currents and a ground
 
 
 ### Supply 
+
 The temperature sensor has two supplies, one analog (3.3 V) and one digital (1.2 V), which must come from somewhere. 
 
-We're using Skywater, and to use the free tapeouts we must use the [Caravel](https://caravel-harness.readthedocs.io/en/latest/) 
-test chip harness.
+We're using [TinyTapeout](http://www.tinytapeout.com)
 
-That luckily has two supplies. It can be powered externally by up to 5.0 V, and has an external low dropout regulator (LDO) that provides the digital supply (1.8 V).
+That has ability for both 3.3 V and 1.8 V I believe. An external low dropout regulator (LDO) provide the digital supply (1.8 V).
 
-See more at [Absolute maximum ratings](https://caravel-harness.readthedocs.io/en/latest/maximum-ratings.html)
+See more at [Analog Specs]([Absolute maximum ratings](https://caravel-harness.readthedocs.io/en/latest/maximum-ratings.html))
 
 ### Ground 
 
@@ -99,17 +103,17 @@ agreed that it's useful to have a "node" or "wire" we consider 0 V.
 
 ### Clocks 
 
-Most digital need a clock, and the Caravel provide a 40 MHz clock which should suffice for most things. We could probably just use that clock for 
+Most digital need a clock, and TinyTapeout can provide a 50 MHz clock which should suffice for most things. We could probably just use that clock for 
 our temperature sensor.
 
 ### Digital 
 
-We need to read the digital outputs.  We could either feed those off chip, or use a on chip micro-controller. The Caravel includes options to do both. We could connect digital
-outputs to the logic analyzer, and program the RISC-V to store the readings. Or we could connect the digital output to the I/O and use an instrument in the lab.
+We need to read the digital outputs.  We could either feed those off chip, or use a on chip micro-controller. The TinyTapeout includes options to do both. We could connect digital
+outputs to the logic analyzer, and program the MCU to store the readings. Or we could connect the digital output to the I/O and use an instrument in the lab.
 
 ### Bias 
 
-The Caravel does not provide bias currents (that I found), so that is something you will need to make. 
+The TinyTapeout does not provide bias currents (that I found), so that is something you will need to make. 
 
 ### Conclusion
 
@@ -121,7 +125,7 @@ I would claim that any System-On-Chip will always need these blocks!
 I want you to pause, take a look at the 
 -->
 
-[course plan](https://wulffern.github.io/aic2024/plan/)
+[course plan](https://wulffern.github.io/aic2025/plan/)
 
 <!--pan_doc:
 and now you might understand why I've selected the topics.
@@ -228,8 +232,6 @@ Models a person touching a device with a finger.
 
 Models a device in an electric field where one pin is suddenly connected
 
-
-
 -->
 
 [.column]
@@ -241,6 +243,7 @@ Models a device in an electric field where one pin is suddenly connected
 **System level ESD** 
 
 <!--pan_doc:
+
 Once mounted on the PCB, the ICs can be more protected against ESD events, however, it depends on the PCB, and how that reacts to a current. 
 
 Take a look at your USB-A connector, you will notice that the outer pins, the power and ground, are made such that they connect first, The $D+$ and $D-$
@@ -280,7 +283,6 @@ in maybe $10^{10^{10^{56}}}$ years, then the charges will equalize, and the Ferm
 -->
 
 
-
 Assume there is an equal number of electrons and protons on the IC. According to Gauss' law 
 
 $$ \oint_{\partial \Omega} \mathbf{E} \cdot d\mathbf{S} = \frac{1}{\epsilon_0} \iiint_{V} \rho
@@ -299,7 +301,7 @@ place it on an metal plate with an insulator in-between, and charge the metal pl
 
 <!--pan_doc: 
 
-Inside the IC electrons and holes will redistribute to compensate for the electric field. Closest to the metal plate
+Inside the integrated circuit, electrons and holes will redistribute to compensate for the electric field. Closest to the metal plate
 there will be a negative charge, and furthest away there will be a positive charge. 
 
 This comes from the fact that if you leave a metal inside an electric field for long enough the metal will not have any internal field.
