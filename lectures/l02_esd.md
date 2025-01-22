@@ -10,7 +10,8 @@ date: 2025-01-23
 
 <!--pan_doc:
 
-Keywords: TempSense IC insides, POR, ESD, HBM, CDM (INV), HBM protection, GGNMOS, Latch-up
+Keywords: TempSense, Node Voltage, Ground, VDD, Clocks, Digital, Bias, RESET (POR), Package, Why ESD, 
+CDM (Gauss, INV), HBM (01,10,02,20,12,21) , GGNMOS, Latch-up
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/6bqHO1iIJw0?si=8BkCgBFiA-bL5S7_" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
