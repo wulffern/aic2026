@@ -520,22 +520,68 @@ Take a look at [New Ballasting Layout Schemes to Improve ESD Robustness of I/O B
 
 <!--pan_skip: -->
 
-If you don't do the layout right[^3]
+If you don't do the layout right
 
-
-
-[.column]
-
-![fit](../ip/esd_layout.pdf) 
-
-[.column]
-
-![fit ](../ip/esd_damage.pdf)
-
-
-[^3]: [New Ballasting Layout Schemes to Improve ESD Robustness of I/O Buffers in Fully Silicided CMOS Process](https://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=5299049)
+[New Ballasting Layout Schemes to Improve ESD Robustness of I/O Buffers in Fully Silicided CMOS Process](https://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=5299049)
 
 ---
+
+
+<!--pan_title: Circuits -->
+
+# But I just want a digital input, what do I need?
+
+<!--pan_doc: 
+
+Even if it's only a digital input, you still need to consider ESD events. 
+
+Below is a complete digital input network. 
+
+Assuming we have a [QFN package](https://en.wikipedia.org/wiki/Flat_no-leads_package) package there will be a 
+bond-wire from the package metal, to our die pad. 
+
+Right after the die pad, sometimes under, there will be a primary ESD protection that can conduct, in all directions, between input, supply and ground. 
+
+From the input it's common to have a resistor to reduce the probability of currents going towards
+the core area. 
+
+Before we get to a transistor gate oxide it's common to have a set of secondary protection circutis. A resistor further reduces the current, and two local clamps (GGPMOS and GGNMOS) ensure 
+that the voltage across the transistor gate does not go to breakdown levels.
+
+-->
+
+---
+
+![original fit](../media/l6/esd.pdf)
+
+---
+
+##[fit] Input buffer
+
+
+<!--pan_doc:
+
+An input buffer can be seen below. I like to include a RC low-pass filter to filter out the RF frequencies (I don't want my input to toggle if a phone is on top of my circuit).
+
+After the RC filter we need a [Schmitt trigger](https://en.wikipedia.org/wiki/Schmitt_trigger), you can find a Schmitt trigger at [JNW\_TR\_SKY130A](https://analogicus.github.io/jnw_tr_sky130A/schematic.html).
+
+The Schmitt trigger must be with thick oxide gates and with IO supply (for example 3.0 V). 
+
+The first inverter must also be a thick oxide inverter, however, the supply of the inverter will be core supply (for example 1.2 V). The thick oxide inverter provides a level-shift to 
+core supply. 
+
+The last inverter is just to get the polarity of the TO\_CORE signal the same as the input. _
+
+-->
+
+![right fit](../media/l6/fig_methodology.pdf)
+
+---
+
+#[fit] Latch-up
+
+---
+
 
 ## How can current in one place lead to a current somewhere else?
 
@@ -549,6 +595,28 @@ Assume we have the circuit below.
 
 ![left fit](../media/l02_latchup.pdf)
 
+---
+
+Logic cells close to large NMOS pad drivers are prone to latch-up.
+
+The latch-up process can start with electrons injected into the p-type substrate.
+
+![right 200%](../media/fig_inv.pdf)
+
+---
+
+<!--pan_skip: -->
+
+1. Electrons injected into substrate, diffuse around, but will be accelerated by n-well to p-substrate built in voltage. Can end up in n-well
+2. PMOS drain can be forward biased by reduced n-well potential. Hole injection into n-well. Holes diffuse around, but will be accelerated by n-well to p-substrate built in voltage. Can end up in p-substrate under NMOS
+3. NMOS source pn-junction can be forward biased. Electrons injected into p-substrate. Diffuse around, but will be accelerated by n-well to p-substrate built in voltage.
+4. Go to 2 (latch-up)
+
+![right fit](../media/scr_eh.pdf)
+   
+
+
+---
 
 <!--pan_doc:
 
@@ -556,7 +624,6 @@ We can draw a cross section of the inverter.
 
 -->
 
----
 
 ![fit](../media/scr_eh.pdf)
 
@@ -611,9 +678,15 @@ If we can trigger the thyristor when the VDD shoots to high, then we can create 
 
 See [low-leakage](https://www.sofics.com/features/low-leakage/) ESD for a few examples.
 
-
+A model with the parasitic bipolars can be seen below.
 
 -->
+
+---
+
+
+![original fit](../media/l8/scr_model.pdf)
+
 
 ---
 

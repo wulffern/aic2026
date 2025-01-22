@@ -13,45 +13,6 @@ date: 2025-01-08
 
 ---
 
-<!--pan_title: Circuits -->
-
-## But I just want a digital input, what do I need?
-
----
-
-![original fit](../media/l6/esd.pdf)
-
----
-
-#[fit] Input buffer
-
-![right fit](../media/l6/fig_methodology.pdf)
-
----
-
-#[fit] Latch-up
-
-Logic cells close to large NMOS pad drivers are prone to latch-up.
-
-The latch-up process can start with electrons injected into the p-type substrate.
-
-![right 200%](../media/fig_inv.pdf)
-
----
-
-1. Electrons injected into substrate, diffuse around, but will be accelerated by n-well to p-substrate built in voltage. Can end up in n-well
-2. PMOS drain can be forward biased by reduced n-well potential. Hole injection into n-well. Holes diffuse around, but will be accelerated by n-well to p-substrate built in voltage. Can end up in p-substrate under NMOS
-3. NMOS source pn-junction can be forward biased. Electrons injected into p-substrate. Diffuse around, but will be accelerated by n-well to p-substrate built in voltage.
-4. Go to 2 (latch-up)
-   
-![right fit](../media/l8/scr_eh.pdf)
-
----
-
-![original fit](../media/l8/scr_model.pdf)
-
----
-
 #[fit] Current Mirrors
 
 ---
