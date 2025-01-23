@@ -1,4 +1,4 @@
-footer: Carsten Wulff 2021
+footer: Carsten Wulff 2025
 slidenumbers:true
 autoscale:true
 theme: Plain Jane, 1
