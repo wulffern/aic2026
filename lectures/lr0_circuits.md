@@ -62,7 +62,7 @@ If the two transistors are the same size, threshold voltage, mobility, etc, and 
 A current pushed into $M_1$ will cause the $V_{GS1}$ to rise, and at some point, find a stable point where the current pushed in is equal to the current in $M_1$
 
 $M_2$ will see the same $V_{GS1} = V_{GS2}$ so the current will be the same, provided the voltage at $i_o$ is sufficient to pinch-off the channel of $M_2$, or 
-the $V_{DS2} \gtrapprox 3 kT/q $ if the transitor is in weak-inversion.
+the $V_{DS2} \approx 3 kT/q$ if the transitor is in weak-inversion.
 
 
 -->
