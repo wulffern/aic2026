@@ -22,6 +22,8 @@ refresh of the most common circuits and their properties.
 -->
 ---
 
+<!--pan_skip: -->
+
 ![](https://www.youtube.com/watch?v=ShYWUlJ2FZs)
 
 ---
