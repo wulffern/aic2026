@@ -15,7 +15,12 @@ date: 2025-01-01
 
 ---
 
+
+
 <!--pan_doc: 
+
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/IrnHm3dRKD0?si=4Xm203ALvQkHCIDN" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 I'm stunned if you've never heared the word "transistor". I think most people have heard the word. What I find funny is that almost nobody understand in full detail how transistors work.
 
@@ -712,10 +717,6 @@ $$
 ---
 
 ![inline 130%](../media/weakinv.pdf)
-
----
-
-![inline 130%](../media/inversion.pdf)
 
 ---
 

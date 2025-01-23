@@ -8,47 +8,17 @@ date: 2025-01-08
 
 <!--pan_skip: -->
 
+<!--pan_title: Circuits -->
+
 
 # Circuits
 
----
+<!--pan_doc: 
 
-<!--pan_title: Circuits -->
+Most of the circuit design on integrated circuits uses MOSFET transistors. This section provides a short 
+refresh of the most common circuits and their properties.
 
-## But I just want a digital input, what do I need?
-
----
-
-![original fit](../media/l6/esd.pdf)
-
----
-
-#[fit] Input buffer
-
-![right fit](../media/l6/fig_methodology.pdf)
-
----
-
-#[fit] Latch-up
-
-Logic cells close to large NMOS pad drivers are prone to latch-up.
-
-The latch-up process can start with electrons injected into the p-type substrate.
-
-![right 200%](../media/fig_inv.pdf)
-
----
-
-1. Electrons injected into substrate, diffuse around, but will be accelerated by n-well to p-substrate built in voltage. Can end up in n-well
-2. PMOS drain can be forward biased by reduced n-well potential. Hole injection into n-well. Holes diffuse around, but will be accelerated by n-well to p-substrate built in voltage. Can end up in p-substrate under NMOS
-3. NMOS source pn-junction can be forward biased. Electrons injected into p-substrate. Diffuse around, but will be accelerated by n-well to p-substrate built in voltage.
-4. Go to 2 (latch-up)
-   
-![right fit](../media/l8/scr_eh.pdf)
-
----
-
-![original fit](../media/l8/scr_model.pdf)
+-->
 
 ---
 
@@ -56,34 +26,92 @@ The latch-up process can start with electrons injected into the p-type substrate
 
 ---
 
+<!--pan_doc: 
+
+MOSFETs need a current for the transistor to be biased in the correct operating region. The current must come from somewhere, we'll look at
+bias generators later. Usually there is a central bias circuit that provides a single, good, reference current.
+
+On an IC, however, there will be many circuits, and they all need a bias current (usually). As such, we need a circuit to copy a current. 
+
+In the figure below you can see a selection of current mirros. They all do the same thing. Try to ensure that $i_i$ and $i_o$ are the same current. 
+
+Which one we choose is usually determined by what we mean by $i_i = i_o$. Do we mean "within $\pm$ 10 %", or "within $\pm$ 2 %". 
+
+-->
+
 ![fit](../media/l8/fig_current_mirrors.pdf)
 
 ---
 
-- $$r_{in}$$
-- $$r_{out}$$
-- $$\frac{i_{o}}{i_{i}}$$
-- Source degeneration
-- Cascode
+## Normal current mirror
+
+<!--pan_doc: 
+
+The normal current mirror consists of a diode connected transistor ($M_1$) and a common source transistor $M_2$. 
+
+If we assume infinite output resistance of the MOSFETs, then the drain voltage does not affect the current. 
+
+If the two transistors are the same size, threshold voltage, mobility, etc, and they have the same gate-source voltage, then the current in them must be the same. 
+
+A current pushed into $M_1$ will cause the $V_{GS1}$ to rise, and at some point, find a stable point where the current pushed in is equal to the current in $M_1$
+
+$M_2$ will see the same $V_{GS1} = V_{GS2}$ so the current will be the same, provided the voltage at $i_o$ is sufficient to pinch-off the channel of $M_2$, or 
+the $V_{DS2} \gtrapprox 3 kT/q $ if the transitor is in weak-inversion.
+
+
+-->
 
 ![right 200%](../media/l8/fig_cm.pdf)
 
 ---
- $$r_{in}$$
 
-![original fit](../media/l8/cm_in.pdf)
+### Input resistance 
+
+<!--pan_doc:
+
+To see the small signal input resistance we can apply a test voltage to the diode connected resistor, as shown in the figure below.
+
+
+-->
+
+![original right fit](../media/l8/cm_in_noeq.pdf)
+
+Observe the current 
+
+$$ i_y = g_{ds}v_y + g_m v_y $$
+
+While the input resistance
+
+$$ r_{in}= \frac{v_y}{i_y} = \frac{1}{g_m + g_{ds}} $$
+
+<!--pan_doc:
+
+which, assuming $g_{ds} >> g_{m}$, reduces to 
+
+$$ r_{in} \approx \frac{1}{g_m} $$.
+
+Assume now I apply $1\text{ }\mu A$ current to the diode connected transistor, and the $g_{m} = 1\text{ }\mu S $. 
+
+Would the voltage be $v_y = r_{in} i_y = \frac{1\text{ }\mu A}{1\text{ }\mu S} = 1\text{ }V$? <span style='color:red'>NO!</span> It's important to understand the difference between the small signal input resistance, and the large signal impedance. 
+
+The large signal impedance is a highly non-linear function (we've seen before that the current in a MOSFET has both an exponential, and a square-law, and sometimes a linear with voltage), as such, there is no single function describing what the gate-source voltage will be. 
+
+To see the DC voltage, apply a current in SPICE, and use a simulator to find the voltage. 
+
+
+-->
 
 ---
- $$r_{out}$$
 
+### Output resistance
 
-![original fit](../media/l8/cm_out.pdf)
+![original left fit](../media/l8/cm_out.pdf)
 
 ---
- $$\frac{i_{o}}{i_{i}}$$
 
+### Current gain 
 
-![original fit](../media/l8/cm_tf.pdf)
+![original right fit](../media/l8/cm_tf.pdf)
 
 ---
 
@@ -97,8 +125,6 @@ What is the operating region of M1 and M2?
 
 ---
 
-
-
 M1 and M2 are in linear region, can be simplified to resistors
 
  $$r_{in} = \frac{1}{g_{m1}}+ R_s$$
@@ -106,7 +132,6 @@ M1 and M2 are in linear region, can be simplified to resistors
 ![left fit](../media/l8/fig_cmRdeg.pdf)
 
 ---
-
 
 
 ![right fit](../media/l8/cm_sdeg.pdf)

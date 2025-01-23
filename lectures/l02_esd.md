@@ -10,7 +10,12 @@ date: 2025-01-23
 
 <!--pan_doc:
 
+Keywords: TempSense, Node Voltage, Ground, VDD, Clocks, Digital, Bias, RESET (POR), Package, Why ESD, 
+CDM (Gauss, INV), HBM (01,10,02,20,12,21) , GGNMOS, Latch-up
+
 <iframe width="560" height="315" src="https://www.youtube.com/embed/6bqHO1iIJw0?si=8BkCgBFiA-bL5S7_" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
+Video is from 2024, so the plan might not be exactly the same. In addition, we're not using Caravel for the tapeout, but rather TinyTapeout.
 
 -->
 
@@ -43,7 +48,7 @@ Understand why you must **always handle ESD** on an IC
 <!--pan_doc:
 
 
-The project for 2024 is to design an integrated temperature sensor. 
+The project is to design an integrated temperature sensor. 
 
 First, we need to have an idea of what comes in and out of the temperature
 sensor. Before we have made the temperature sensor, we need to think what the signal interface could be, and we need to learn.
@@ -82,14 +87,14 @@ This list contains supplies, clocks, digital outputs, bias currents and a ground
 
 
 ### Supply 
+
 The temperature sensor has two supplies, one analog (3.3 V) and one digital (1.2 V), which must come from somewhere. 
 
-We're using Skywater, and to use the free tapeouts we must use the [Caravel](https://caravel-harness.readthedocs.io/en/latest/) 
-test chip harness.
+We're using [TinyTapeout](http://www.tinytapeout.com)
 
-That luckily has two supplies. It can be powered externally by up to 5.0 V, and has an external low dropout regulator (LDO) that provides the digital supply (1.8 V).
+That has ability for both 3.3 V and 1.8 V I believe. An external low dropout regulator (LDO) provide the digital supply (1.8 V).
 
-See more at [Absolute maximum ratings](https://caravel-harness.readthedocs.io/en/latest/maximum-ratings.html)
+See more at [Analog Specs]([Absolute maximum ratings](https://caravel-harness.readthedocs.io/en/latest/maximum-ratings.html))
 
 ### Ground 
 
@@ -99,17 +104,17 @@ agreed that it's useful to have a "node" or "wire" we consider 0 V.
 
 ### Clocks 
 
-Most digital need a clock, and the Caravel provide a 40 MHz clock which should suffice for most things. We could probably just use that clock for 
+Most digital need a clock, and TinyTapeout can provide a 50 MHz clock which should suffice for most things. We could probably just use that clock for 
 our temperature sensor.
 
 ### Digital 
 
-We need to read the digital outputs.  We could either feed those off chip, or use a on chip micro-controller. The Caravel includes options to do both. We could connect digital
-outputs to the logic analyzer, and program the RISC-V to store the readings. Or we could connect the digital output to the I/O and use an instrument in the lab.
+We need to read the digital outputs.  We could either feed those off chip, or use a on chip micro-controller. The TinyTapeout includes options to do both. We could connect digital
+outputs to the logic analyzer, and program the MCU to store the readings. Or we could connect the digital output to the I/O and use an instrument in the lab.
 
 ### Bias 
 
-The Caravel does not provide bias currents (that I found), so that is something you will need to make. 
+The TinyTapeout does not provide bias currents (that I found), so that is something you will need to make. 
 
 ### Conclusion
 
@@ -121,7 +126,7 @@ I would claim that any System-On-Chip will always need these blocks!
 I want you to pause, take a look at the 
 -->
 
-[course plan](https://wulffern.github.io/aic2024/plan/)
+[course plan](https://wulffern.github.io/aic2025/plan/)
 
 <!--pan_doc:
 and now you might understand why I've selected the topics.
@@ -228,8 +233,6 @@ Models a person touching a device with a finger.
 
 Models a device in an electric field where one pin is suddenly connected
 
-
-
 -->
 
 [.column]
@@ -241,6 +244,7 @@ Models a device in an electric field where one pin is suddenly connected
 **System level ESD** 
 
 <!--pan_doc:
+
 Once mounted on the PCB, the ICs can be more protected against ESD events, however, it depends on the PCB, and how that reacts to a current. 
 
 Take a look at your USB-A connector, you will notice that the outer pins, the power and ground, are made such that they connect first, The $D+$ and $D-$
@@ -280,7 +284,6 @@ in maybe $10^{10^{10^{56}}}$ years, then the charges will equalize, and the Ferm
 -->
 
 
-
 Assume there is an equal number of electrons and protons on the IC. According to Gauss' law 
 
 $$ \oint_{\partial \Omega} \mathbf{E} \cdot d\mathbf{S} = \frac{1}{\epsilon_0} \iiint_{V} \rho
@@ -299,7 +302,7 @@ place it on an metal plate with an insulator in-between, and charge the metal pl
 
 <!--pan_doc: 
 
-Inside the IC electrons and holes will redistribute to compensate for the electric field. Closest to the metal plate
+Inside the integrated circuit, electrons and holes will redistribute to compensate for the electric field. Closest to the metal plate
 there will be a negative charge, and furthest away there will be a positive charge. 
 
 This comes from the fact that if you leave a metal inside an electric field for long enough the metal will not have any internal field.
@@ -517,22 +520,68 @@ Take a look at [New Ballasting Layout Schemes to Improve ESD Robustness of I/O B
 
 <!--pan_skip: -->
 
-If you don't do the layout right[^3]
+If you don't do the layout right
 
-
-
-[.column]
-
-![fit](../ip/esd_layout.pdf) 
-
-[.column]
-
-![fit ](../ip/esd_damage.pdf)
-
-
-[^3]: [New Ballasting Layout Schemes to Improve ESD Robustness of I/O Buffers in Fully Silicided CMOS Process](https://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=5299049)
+[New Ballasting Layout Schemes to Improve ESD Robustness of I/O Buffers in Fully Silicided CMOS Process](https://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=5299049)
 
 ---
+
+
+<!--pan_title: Circuits -->
+
+# But I just want a digital input, what do I need?
+
+<!--pan_doc: 
+
+Even if it's only a digital input, you still need to consider ESD events. 
+
+Below is a complete digital input network. 
+
+Assuming we have a [QFN package](https://en.wikipedia.org/wiki/Flat_no-leads_package) package there will be a 
+bond-wire from the package metal, to our die pad. 
+
+Right after the die pad, sometimes under, there will be a primary ESD protection that can conduct, in all directions, between input, supply and ground. 
+
+From the input it's common to have a resistor to reduce the probability of currents going towards
+the core area. 
+
+Before we get to a transistor gate oxide it's common to have a set of secondary protection circutis. A resistor further reduces the current, and two local clamps (GGPMOS and GGNMOS) ensure 
+that the voltage across the transistor gate does not go to breakdown levels.
+
+-->
+
+---
+
+![original fit](../media/l6/esd.pdf)
+
+---
+
+##[fit] Input buffer
+
+
+<!--pan_doc:
+
+An input buffer can be seen below. I like to include a RC low-pass filter to filter out the RF frequencies (I don't want my input to toggle if a phone is on top of my circuit).
+
+After the RC filter we need a [Schmitt trigger](https://en.wikipedia.org/wiki/Schmitt_trigger), you can find a Schmitt trigger at [JNW\_TR\_SKY130A](https://analogicus.github.io/jnw_tr_sky130A/schematic.html).
+
+The Schmitt trigger must be with thick oxide gates and with IO supply (for example 3.0 V). 
+
+The first inverter must also be a thick oxide inverter, however, the supply of the inverter will be core supply (for example 1.2 V). The thick oxide inverter provides a level-shift to 
+core supply. 
+
+The last inverter is just to get the polarity of the TO\_CORE signal the same as the input. _
+
+-->
+
+![right fit](../media/l6/fig_methodology.pdf)
+
+---
+
+#[fit] Latch-up
+
+---
+
 
 ## How can current in one place lead to a current somewhere else?
 
@@ -546,6 +595,30 @@ Assume we have the circuit below.
 
 ![left fit](../media/l02_latchup.pdf)
 
+---
+
+<!--pan_skip: -->
+
+Logic cells close to large NMOS pad drivers are prone to latch-up.
+
+The latch-up process can start with electrons injected into the p-type substrate.
+
+![right 200%](../media/fig_inv.pdf)
+
+---
+
+<!--pan_skip: -->
+
+1. Electrons injected into substrate, diffuse around, but will be accelerated by n-well to p-substrate built in voltage. Can end up in n-well
+2. PMOS drain can be forward biased by reduced n-well potential. Hole injection into n-well. Holes diffuse around, but will be accelerated by n-well to p-substrate built in voltage. Can end up in p-substrate under NMOS
+3. NMOS source pn-junction can be forward biased. Electrons injected into p-substrate. Diffuse around, but will be accelerated by n-well to p-substrate built in voltage.
+4. Go to 2 (latch-up)
+
+![right fit](../media/scr_eh.pdf)
+   
+
+
+---
 
 <!--pan_doc:
 
@@ -553,7 +626,6 @@ We can draw a cross section of the inverter.
 
 -->
 
----
 
 ![fit](../media/scr_eh.pdf)
 
@@ -608,9 +680,15 @@ If we can trigger the thyristor when the VDD shoots to high, then we can create 
 
 See [low-leakage](https://www.sofics.com/features/low-leakage/) ESD for a few examples.
 
-
+A model with the parasitic bipolars can be seen below.
 
 -->
+
+---
+
+
+![original fit](../media/l8/scr_model.pdf)
+
 
 ---
 
