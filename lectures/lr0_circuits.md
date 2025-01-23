@@ -11,14 +11,18 @@ date: 2025-01-08
 <!--pan_title: Circuits -->
 
 
-# Circuits
+# Integrated Circuits
 
 <!--pan_doc: 
 
 Most of the circuit design on integrated circuits uses MOSFET transistors. This section provides a short 
 refresh of the most common circuits and their properties.
 
+
 -->
+---
+
+![](https://www.youtube.com/watch?v=ShYWUlJ2FZs)
 
 ---
 
@@ -125,6 +129,8 @@ What is the operating region of M1 and M2?
 
 ---
 
+### Input resistance
+
 M1 and M2 are in linear region, can be simplified to resistors
 
  $$r_{in} = \frac{1}{g_{m1}}+ R_s$$
@@ -133,6 +139,7 @@ M1 and M2 are in linear region, can be simplified to resistors
 
 ---
 
+## Output resistance
 
 ![right fit](../media/l8/cm_sdeg.pdf)
 
@@ -151,7 +158,7 @@ $$ r_{out} =  r_{ds2}[1 + R_s(g_{m1} + g_{ds2})] \approx r_{ds2} [1 + g_{m1}R_s]
 
 ---
 
-# Cascode
+### Cascode output resistance
 
 From source degeneration (ignoring bulk effect)
 
@@ -172,12 +179,13 @@ $$
 
 ---
 
+### Active cascodes
 
-# One more thing ....
+$$
+r_{out} \approx  r_{ds2}(A r_{ds4} g_{m4})
+$$
 
----
-
-![fit](../media/l8/cm_gain_boost.pdf)
+![right fit](../media/l8/cm_gain_boost.pdf)
 
 ---
 
@@ -204,9 +212,6 @@ Output resistance $$r_{out}$$
 
 <!--pan_skip: -->
 
-![left fit](../media/l9/sf_ls.png)
-
----
 
 ## Gain
 
@@ -220,13 +225,10 @@ $$ A = \frac{v_o}{v_i} = \frac{g_m}{g_m + g_{ds} + g_s} $$
 
 **Gain is less than 1**
 
-<!--pan_skip: -->
-    
-![right fit](../media/l9/sf_ss.png)
 
 ---
 
-## $$r_{out}$$
+## Output resistance 
 
 $$ i_o = v_o (g_{ds} + g_{s}) - g_{m} v_i + v_o g_m $$
 
@@ -281,13 +283,7 @@ Output resistance
 
 ![right fit](../media/l9/cg_ss_rin.png)
 
-<!--pan_skip: -->
-
-![left fit](../media/l9/cg_ls_rin.png)
-
----
-
-## $$r_{in}$$
+## Input resistance
 
 $$ i = g_m v + g_{ds} v $$
 
@@ -303,7 +299,7 @@ $$ r_{in}  \approx \frac{1}{g_m}\left(1 + \frac{R_L}{r_{ds}}\right) $$
 
 ---
 
-## $$r_{out}$$
+## Output resistance
 
 ![fit inline](../media/l9/cg_ss_rout.png)
 
@@ -311,10 +307,6 @@ $$ r_{in}  \approx \frac{1}{g_m}\left(1 + \frac{R_L}{r_{ds}}\right) $$
 
 ## Gain
 
-
-![right fit](../media/l9/cg_ss_a.png)
-
----
 
 
 $$ i_{o} = - g_m v_{i} + \frac{v_{o} - v_{i}}{r_{ds}} $$
@@ -366,11 +358,6 @@ Gain
 
 ---
 
-![left fit](../media/l9/cs_ls_a.png)
-
-![right fit](../media/l9/cs_ss_a.png)
-
----
 
 ##  Gain
 
@@ -382,7 +369,6 @@ $$ -g_m v_i = \frac{v_o}{r_{ds}} $$
 
 $$ \frac{v_o}{v_i} = - g_m r_{ds}$$
 
-<!--pan_skip: -->
 
 ![right fit](../media/l9/cs_ss_a.png)
 

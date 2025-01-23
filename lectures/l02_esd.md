@@ -526,9 +526,6 @@ If you don't do the layout right
 
 ---
 
-
-<!--pan_title: Circuits -->
-
 # But I just want a digital input, what do I need?
 
 <!--pan_doc: 

@@ -47,6 +47,8 @@ Max current ~ mA/$$\square$$
  [Cadence
  Quantus](https://eda.sw.siemens.com/en-US/ic/calibre-design/circuit-verification/xrc/)
  [Magic VLSI](http://opencircuitdesign.com/magic/)
+ 
+[.column]
 
  3D EM Simulators
  [Keysight ADS](https://www.keysight.com/zz/en/products/software/pathwave-design-software/pathwave-advanced-design-system.html)
@@ -63,7 +65,9 @@ Max current ~ mA/$$\square$$
 
 # Polysilicon
 
-Often two types, with, and without silicide 
+Can be both N-doped, and P-doped
+
+Often with two flavors, with, and without silicide 
 
 Silicide reduces resistance of polysilicon
 
