@@ -96,7 +96,7 @@ which, assuming $g_{ds} >> g_{m}$, reduces to
 
 $$ r_{in} \approx \frac{1}{g_m} $$.
 
-Assume now I apply $1\text{ }\mu A$ current to the diode connected transistor, and the $g_{m} = 1\text{ }\mu S $. 
+Assume now I apply $1\text{ }\mu A$ current to the diode connected transistor, and the $g_{m} = 1\text{ }\mu S$. 
 
 Would the voltage be $v_y = r_{in} i_y = \frac{1\text{ }\mu A}{1\text{ }\mu S} = 1\text{ }V$? <span style='color:red'>NO!</span> It's important to understand the difference between the small signal input resistance, and the large signal impedance. 
 
