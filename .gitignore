@@ -3,6 +3,17 @@ __pycache__/
 *.py[cod]
 *$py.class
 pandoc
+ex/*.pdf
+lectures/*.pdf
+lectures/*.mov
+oldip
+octave
+pdf/aic.*
+pdf/chapters*
+pdf/pandoc.tex
+pdf/kaobook
+pdf/.auctex*
+py/*.svg
 
 _site
 .sass-cache

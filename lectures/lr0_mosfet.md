@@ -1277,7 +1277,7 @@ Accept it, or don't use this circuit.
 
 If you need stability over temperature, use 7.3.2 and 7.3.4 in CJM (SUN\_BIAS\_GF130N)
  
- <!--pan_skip:-->
+<!--pan_skip: -->
  
 ![right 150%](../media/fig_l8_cmfixproc.pdf)
 
