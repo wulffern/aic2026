@@ -30,9 +30,9 @@ Introduction to **circuit architectures**
 
 <!--pan_doc:
 
-Keywords: VREf, IREF, VD, BGAP, LVBGAP, VI, GMCELL
+Keywords: VREF, IREF, VD, BGAP, LVBGAP, VI, GMCELL
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/ulZnJZIIBUc?si=VBmGeMsLR_UJ8Y7u" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/3Z4YXoVmxx8?si=9JI3Cw1d8Fdip_7t" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 In our testbenches, and trial schematics, it's common to include voltage sources and current sources. However, the 
 ideal voltage source, or ideal current source does not exist in the real world. There is no such thing.
@@ -169,7 +169,7 @@ To see the temperature coefficient, I find it easier to re-arrange the equation 
 
 ---
 
-Some algebra (see [Diodes](https://analogicus.com/aic2024/2023/10/26/Diodes.html))
+Some algebra (see [Diodes](https://analogicus.com/aic2025/2024/10/25/Diodes.html))
  
  $$ V_{BE} = \frac{kT}{q}(\ell  - 3 \ln T) + V_G $$ 
 
@@ -434,7 +434,7 @@ Where the output voltage can be chosen freely, and indeed be lower than 1.2 V.
 
 ---
 
-## How does a VI converter circuit work?
+## Voltage to current conversion
 
 <!--pan_doc: 
 
@@ -456,7 +456,7 @@ If we wanted to create an accurate current, then we'd trim the R until the curre
 ---
 
 
-## GmCell: Why is 1/Z proportional to transistor transconductance?
+## GM Cell
 
 ![left fit](../media/l3_gmcell.pdf)
 
@@ -465,33 +465,61 @@ If we wanted to create an accurate current, then we'd trim the R until the curre
 
 Sometimes we don't need a full bandgap reference. In those cases, we can use a GM cell, where the impedance could be a resistor, in which case
 
+-->
+
 $$ V_o = V_{GS1}  - V_{GS2}  = V_{eff1} + V_{tn} - V_{eff2} - V_{tn} = V_{eff1} - V_{eff2}$$
 
+<!--pan_doc:
+
 Assuming strong inversion, then 
+
+
 
 $$ I_{D1} = \frac{1}{2} \mu_n C_{ox} \frac{W_1}{L_1} V_{eff1}^2 $$ 
 
 $$ I_{D2} = \frac{1}{2} \mu_n C_{ox} 4 \frac{W_1}{L_1} V_{eff2}^2 $$ 
 
+
+
 $$ I_{D1} = I_{D2} $$
+
+-->
 
 $$ \frac{1}{2} \mu_n C_{ox} \frac{W_1}{L_1} V_{eff1}^2 = \frac{1}{2} \mu_n C_{ox} 4 \frac{W_1}{L_1} V_{eff2}^2 $$
 
 $$ V_{eff1} = 2 V_{eff2} $$
 
+<!--pan_doc:
+
 Inserted into above
+
+
 
 $$V_o = V_{eff1} - \frac{1}{2} V_{eff1} = \frac{1}{2}V_{eff1}$$
 
+
+
 Still assuming strong inversion, such that
+
+-->
+
 
 $$ g_{m} = \frac{2 I_d}{V_{eff}} $$
 
+<!--pan_doc:
+
 we find that
+
+
+-->
 
 $$ I = \frac{ V_{eff1}}{2Z} $$
 
+
+
 $$ Z \Rightarrow \frac{1}{g_m} $$
+
+<!--pan_doc:
 
 If we use a resistor for Z, then we can get a transconductance that is proportional to a resistor, or a constant $g_{m}$ bias.
 
@@ -505,7 +533,7 @@ We can use other things for Z, like  a switched capacitor
 
 ---
 
-<!--pan_doc:
+
 
 # Want to learn more?
 
@@ -519,7 +547,7 @@ We can use other things for Z, like  a switched capacitor
 
 [The Design of a Low-Voltage Bandgap Reference](https://ieeexplore.ieee.org/document/9523469)
 
--->
+---
 
 
 #[fit] Thanks!
