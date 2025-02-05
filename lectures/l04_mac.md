@@ -265,7 +265,7 @@ $$ \frac{\ell_2}{\ell_1} =  e^{\pm \frac{a_{vt}}{\sqrt{W L}}/n U_{T}} $$
 
 ---
 
-[An Always-On 3.8 μ J/86% CIFAR-10 Mixed-Signal Binary CNN Processor With All Memory on Chip in 28-nm CMOS](https://ieeexplore.ieee.org/document/8480105)
+[An Always-On 3.8 u J/86 % CIFAR-10 Mixed-Signal Binary CNN Processor With All Memory on Chip in 28-nm CMOS](https://ieeexplore.ieee.org/document/8480105)
 
 <!--pan_skip: -->
 
