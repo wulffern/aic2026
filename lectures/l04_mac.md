@@ -32,6 +32,8 @@ References:
 
 [Neural Nets 3blue1brown](https://www.3blue1brown.com/topics/neural-networks)
 
+<!--pan_skip: -->
+
 ![right fit](https://youtu.be/aircAruvnKk)
 
 ---
