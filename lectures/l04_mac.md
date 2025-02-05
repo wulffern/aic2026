@@ -15,7 +15,7 @@ References:
 
 -->
 
-<!--pan_title: Lecture 4 - Analog Neural Networks -->
+<!--pan_title: Lecture 4 - Analog Neural Networks and Translinear Circuits -->
 
 <!--pan_skip: -->
 ## TFE4188
