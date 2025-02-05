@@ -36,7 +36,8 @@ FILES = l01_intro \
 	lx_energysrc \
 	l11_aver \
 	lp_project_report \
-	l00_ades
+	l00_ades \
+	l04_mac
 
 	#l00_need_to_know
 
