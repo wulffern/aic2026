@@ -16,7 +16,11 @@
 
 \input{pandoc.tex}
 
-\newcommand{\myfigwidth}{120mm}
+%\usepackage[style=ieee]{biblatex}
+
+\setcounter{secnumdepth}{3}
+\counterwithin*{sidenote}{chapter}
+
 
 \urlstyle{same} % disable monospaced font for URLs
 \hypersetup{
@@ -32,6 +36,9 @@
 
 \usepackage{longtable,booktabs,array}
 
+\newcommand{\myfigwidth}{100mm}
+\newcommand{\myfigheight}{100mm}
+
 
   \newcommand\BackgroundPic{%
 \put(0,0){%
@@ -43,7 +50,8 @@ keepaspectratio]{background.png}%
 \vfill
 }}}
 
-\title{Advanced Integrated Circuits 2024}
+
+\title{Advanced Integrated Circuits 2025}
 \author{Carsten~Wulff}
 \date{}
 
@@ -190,7 +198,7 @@ keepaspectratio]{background.png}%
 %\input{what_i_expect_you_to_already_know.latex}
 
 
-\bibliographystyle{IEEEtran}
+%\bibliographystyle{IEEEtran}
 \bibliography{aic.bib}
 
 \backmatter

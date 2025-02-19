@@ -17,12 +17,7 @@ endif
 FILES = l01_intro \
 		l00_refresher \
 	l00_diode \
-	lr0_passives \
-	lr0_mosfet \
-	lr0_circuits \
-	lr0_logic \
-	l00_spice \
-	l00_sv \
+	lr0_noise \
 	lr0_tools \
 	l02_esd \
 	l03_refbias \
@@ -36,8 +31,16 @@ FILES = l01_intro \
 	lx_energysrc \
 	l11_aver \
 	lp_project_report \
-	l00_ades \
-	l04_mac
+	l04_mac \
+	lr0_passives \
+	lr0_mosfet \
+	lr0_circuits \
+	l00_spice \
+	lr0_logic \
+	l00_sv
+
+
+
 
 	#l00_need_to_know
 

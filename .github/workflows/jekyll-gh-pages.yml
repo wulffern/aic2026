@@ -25,7 +25,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     container:
-      image: wulffern/aic:2024_latest
+      image: wulffern/aic:2025_latest
       options: --user root
     steps:
       - name: Checkout

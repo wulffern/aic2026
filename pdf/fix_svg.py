@@ -5,11 +5,16 @@ import sys
 import os
 fname = sys.argv[1]
 
+from sys import platform
+
 
 def imgConvert(ftype,fotype,path):
     fopath = "media/"+ os.path.basename(path).replace(ftype,fotype)
     if(not os.path.exists(fopath)):
-        os.system(f"convert -density 100 {path} {fopath}")
+        if( platform == "darwin"):
+            os.system(f"magick -density 100 {path} {fopath}")
+        else:
+            os.system(f"convert -density 100 {path} {fopath}")
     return fopath
 
 
@@ -29,8 +34,7 @@ def getPath(line):
 tmplt = r"""
 {
 \centering
-\includegraphics[width=\myfigwidth]{#path#}
-
+\includegraphics[width=\myfigwidth,height=\myfigheight,keepaspectratio]{#path#}
 }
 """
 

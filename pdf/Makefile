@@ -22,7 +22,7 @@ hash:
 #- Choose right pandoc file based on pandoc version
 PANDOC=pandoc_$(shell pandoc --version|head -n 1|cut -d " " -f 2|cut -d "." -f "1,2").tex
 pandoc.tex:
-	cp ${PANDOC} pandoc.tex
+	ln -s ${PANDOC} pandoc.tex
 
 
 one: fix hash kaobook pandoc.tex
@@ -67,3 +67,4 @@ clean:
 	-rm *.pdf
 	-rm *.bcf
 	-rm *fiximg*.tex
+	-rm *.mw

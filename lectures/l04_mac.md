@@ -15,6 +15,7 @@ References:
 
 -->
 
+
 <!--pan_title: Lecture 4 - Analog Neural Networks and Translinear Circuits -->
 
 <!--pan_skip: -->
@@ -274,29 +275,9 @@ $$ \frac{\ell_2}{\ell_1} =  e^{\pm \frac{a_{vt}}{\sqrt{W L}}/n U_{T}} $$
 
 [An Always-On 3.8 u J/86 % CIFAR-10 Mixed-Signal Binary CNN Processor With All Memory on Chip in 28-nm CMOS](https://ieeexplore.ieee.org/document/8480105)
 
-<!--pan_skip: -->
-
-![inline fit](../ip/8480105.gif)
-
----
-
 [CAP-RAM: A Charge-Domain In-Memory Computing 6T-SRAM for Accurate and Precision-Programmable CNN Inference](https://ieeexplore.ieee.org/document/9441013)
 
-
-<!--pan_skip: -->
-
-![inline fit](../ip/chen2-3056447-small.gif)
-
-
----
-
 [ARCHON: A 332.7TOPS/W 5b Variation-Tolerant Analog CNN Processor Featuring Analog Neuronal Computation Unit and Analog Memory](https://ieeexplore.ieee.org/document/9731654)
-
-<!--pan_skip: -->
-
-![inline fit](../ip/9731654-fig-2-source-large.gif)
-
----
 
 [IMPACT: A 1-to-4b 813-TOPS/W 22-nm FD-SOI Compute-in-Memory CNN Accelerator Featuring a 4.2-POPS/W 146-TOPS/mm2 CIM-SRAM With Multi-Bit Analog Batch-Normalization](https://ieeexplore.ieee.org/document/10129929)
 
@@ -304,6 +285,5 @@ $$ \frac{\ell_2}{\ell_1} =  e^{\pm \frac{a_{vt}}{\sqrt{W L}}/n U_{T}} $$
 
 #[fit] Thanks!
 
----
 
 

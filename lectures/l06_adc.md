@@ -1252,7 +1252,7 @@ and that may look like an exercise in "Let's make something complex", however, m
 20 MHz Band](https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=4381437)
 
 
-![inline](../media/qt_sd.png)![inline](../ip/qt_sd_response.png)
+![inline](../media/qt_sd.png) ![inline](../media/qt_sd_response.png)
 
 ---
 

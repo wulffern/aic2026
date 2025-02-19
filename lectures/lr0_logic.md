@@ -239,7 +239,7 @@ PD  $$\Rightarrow$$ NMOS in paralell
 
 ---
 
-# $$SR$$-Latch
+# SR-Latch
 
 Use boolean expressions to figure out how gates work. 
 
@@ -249,10 +249,10 @@ $$\overline{AB}  = \overline{A}+ \overline{B}$$
 $$\overline{A+B}  = \overline{A} \cdot \overline{B}$$
 
 
- $$ Q = \overline{R \overline{Q}} = \overline{R} +
+ $$Q = \overline{R \overline{Q}} = \overline{R} +
 \overline{\overline{Q}} = \overline{R} + Q $$
 
- $$ \overline{Q} = \overline{S Q} = \overline{S} +
+ $$\overline{Q} = \overline{S Q} = \overline{S} +
 \overline{Q} = \overline{S} + \overline{Q} $$
 
 ![right 200% ](../media/l13/sr.pdf)
@@ -260,7 +260,9 @@ $$\overline{A+B}  = \overline{A} \cdot \overline{B}$$
 ---
 
 
-$$ Q = \overline{R} + Q $$, $$ \overline{Q} =\overline{S} + \overline{Q} $$
+$$Q = \overline{R} + Q$$ , 
+
+$$\overline{Q} =\overline{S} + \overline{Q}$$
 
 | S | R | Q | ~Q |
 |:---|:---|:---| :---|
@@ -293,7 +295,7 @@ $$ Q = \overline{R} + Q $$, $$ \overline{Q} =\overline{S} + \overline{Q} $$
 
 ---
 
-# What about $$\text{Y} = \text{AB}$$ and $$\text{Y} = \text{A} + \text{B}$$?
+What about $$\text{Y} = \text{AB}$$ and $$\text{Y} = \text{A} + \text{B}$$?
 
 
 [.column]
@@ -781,9 +783,17 @@ $$D_F = 12, p = 3 \Rightarrow D = 12 + 3 = 15$$
 [.background-color: #000000]
 [.text: #FFFFFF]
 
+<!--pan_skip: -->
+
 #[fit] For close to optimal delay, use $$f = 4$$ <sub><sub>(Used to be $$f=e$$)</sub></sub>
 
 ---
+
+<!--pan_doc: 
+
+For close to optimal delay, use $$f = 4$$ <sub><sub>(Used to be $$f=e$$)</sub></sub>
+
+-->
 
 
 #[fit] Trends
@@ -948,7 +958,7 @@ Average power: $$\frac{1}{T} \int_0^T{P(t)dt} $$ [W or J/s]
  $$P_R = V_R I_R =  I_R^2 R  = \frac{V_R^2}{R} $$
 
 ---
-# Charging a capacitor to $$V_{DD}$$
+# Charging a capacitor to VDD
 
  Capacitor differential equation $$ I_C = C\frac{dV}{dt}$$
 
@@ -957,20 +967,20 @@ Average power: $$\frac{1}{T} \int_0^T{P(t)dt} $$ [W or J/s]
  $$E_{C} = \frac{1}{2} C V_{DD}^2$$
 
 ---
-# Energy to charge a capacitor to a voltage $$V_{DD}$$
+# Energy to charge a capacitor to a voltage VDD
 
- $$ E_{C} = \frac{1}{2} C V_{DD}^2$$
+ $$E_{C} = \frac{1}{2} C V_{DD}^2$$
  
- $$ I_{VDD} = I_C = C \frac{dV}{dt}$$
+ $$I_{VDD} = I_C = C \frac{dV}{dt}$$
 
- $$ E_{VDD} = \int_0^\infty{I_{VDD} V_{DD} dt} = \int_0^\infty{C \frac{dV}{dt} V_{DD} dt} = C V_{DD}\int_0^{V_{DD}}{dV} = C V_{DD}^2$$
+ $$E_{VDD} = \int_0^\infty{I_{VDD} V_{DD} dt} = \int_0^\infty{C \frac{dV}{dt} V_{DD} dt} = C V_{DD}\int_0^{V_{DD}}{dV} = C V_{DD}^2$$
 
  Only half the energy is stored on the capacitor, the rest is dissipated in the PMOS 
 
 ---
-# Discharging a capacitor to $$0$$
+# Discharging a capacitor to 0
 
-$$ E_{C} = \frac{1}{2} C V_{DD}^2$$
+$$E_{C} = \frac{1}{2} C V_{DD}^2$$
 
 Voltage is pulled to ground, and the power is dissipated in the NMOS
 
@@ -986,7 +996,7 @@ $$P_{VDD} = C V_{DD}^2 f$$
 ---
 # Sources of power dissipation in CMOS logic
 
-$$ P_{total} = P_{dynamic} + P_{static}$$ 
+$$P_{total} = P_{dynamic} + P_{static}$$ 
 
 [.column]
 **Dynamic power dissipation**
@@ -1009,7 +1019,7 @@ Source/drain reverse bias PN junction leakage
 $$P_{static} = \left( I_{sub} + I_{gate} + I_{pn} \right) V_{DD}$$
 
 ---
-# $$ P_{switching}$$ in logic gates
+# Switching Power in logic gates
 
 Only output node transitions from low to high consume power from $$V_{DD}$$
 
@@ -1046,7 +1056,7 @@ Clocks $$\alpha = 1$$
 
  $$P_X = P_Z =  1 - P P = 1 - \frac{1}{4} = \frac{3}{4}$$
 
- $$ \overline{P_X} = \overline{P_Y} = \frac{1}{4}$$ 
+ $$\overline{P_X} = \overline{P_Y} = \frac{1}{4}$$ 
 
  $$P_Y = \frac{1}{4} \times \frac{1}{4} = \frac{1}{16}$$
 
@@ -1064,7 +1074,7 @@ Clocks $$\alpha = 1$$
 [.column]
 
 
-# $$ \overline{\overline{\text{AB}} + \overline{\text{CD}}} $$ 
+$$ \overline{\overline{\text{AB}} + \overline{\text{CD}}} $$ 
 
 Use *De Morgan* first  $$\overline{A+B}  = \overline{A} \cdot \overline{B}$$
 
@@ -1075,22 +1085,31 @@ Use *De Morgan* first  $$\overline{A+B}  = \overline{A} \cdot \overline{B}$$
 
 ---
 
+<!--pan_skip: -->
+
 #[fit] $$P_{tot} = \alpha C V_{DD}^2 f$$
 
 ---
+
+<!--pan_doc:
+
+$$P_{tot} = \alpha C V_{DD}^2 f$$
+
+-->
+
 # Strategies to reduce dynamic power
 
 1. Stop clock
 1. Stop activity
 1. Reduce clock frequency
-1. Turn off $$V_{DD}$$
-1. Reduce $$V_{DD}$$
+1. Turn off VDD
+1. Reduce VDD
 
 ![right fit](../media/l13/digital_ff_comb.pdf)
 
 ---
 
-## Stop clock[^1]
+## Stop clock [^1]
 
 ![inline fit ](../media/l16/stop_clock.pdf) 
 
@@ -1116,7 +1135,7 @@ Use *De Morgan* first  $$\overline{A+B}  = \overline{A} \cdot \overline{B}$$
 
 ---
 
-### Reduce power supply ($$V_{DD}$$) 
+### Reduce power supply 
 
 ![inline fit ](../media/l16/reduce_vdd.pdf) 
 

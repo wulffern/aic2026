@@ -107,7 +107,7 @@
 \setlength{\emergencystretch}{3em} % prevent overfull lines
 \providecommand{\tightlist}{%
   \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
-\setcounter{secnumdepth}{5}
+
 
 
 \usepackage{etoolbox}
@@ -124,7 +124,7 @@
  \apptocmd{\endlongtable}
    {\ifLTpatch@caption\else\addtocounter{table}{-1}\fi}
    {}{}
- newif\ifLTpatch@caption
+   \ifLTpatch@caption
 \makeatother
 
 \AtBeginEnvironment{longtable}{\tiny}

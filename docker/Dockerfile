@@ -3,7 +3,7 @@ FROM texlive/texlive:latest
 
 RUN apt-get update && \
     apt-get -y install ghostscript pip poppler-utils pandoc wget imagemagick python3-svglib\
-    python3.12-venv && \
+    python3.13-venv && \
     apt-get autoremove -y && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
