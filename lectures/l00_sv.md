@@ -12,6 +12,8 @@ date: 2024-12-06
 
 ---
 
+<iframe width="560" height="315" src="https://www.youtube.com/embed/vEZPCIInwmQ?si=f42sDa6U5A6YV_Hw" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
 # Digital simulation
 
 - The order of execution of events at the same time-step do not matter
