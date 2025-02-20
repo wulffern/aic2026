@@ -19,6 +19,7 @@ FILES = l01_intro \
 	l00_diode \
 	lr0_noise \
 	lr0_tools \
+	l00_ades \
 	l02_esd \
 	l03_refbias \
 	l04_afe \
