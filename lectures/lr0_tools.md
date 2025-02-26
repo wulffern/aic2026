@@ -235,6 +235,8 @@ xschem -b ../design/SUN_SAR9B_SKY130NM/SUNSAR_SAR9B_CV.sch &
 
 # Design tutorial
 
+<iframe width="560" height="315" src="https://www.youtube.com/embed/YoJCkAmBo44?si=PA9Td0lBYERgkOrS" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
 ## Create the IP 
 
 I've made some scripts to automatically generate the IP. 
