@@ -804,6 +804,8 @@ You can find the schematic for the OTA at
 
 [A 56 mW Continuous-Time Quadrature Cascaded Sigma-Delta Modulator With 77 dB DR in a Near Zero-IF 20 MHz Band](https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=4381437)
 
+[Complex signal processing is not - complex](https://ieeexplore.ieee.org/document/1257061)
+
 -->
 
 ---
