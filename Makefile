@@ -35,6 +35,7 @@ FILES = l01_intro \
 	l04_mac \
 	lr0_passives \
 	lr0_mosfet \
+	lr0_layout \
 	lr0_circuits \
 	l00_spice \
 	lr0_logic \
