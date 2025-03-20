@@ -74,7 +74,7 @@ book:
 
 
 ci:
-	docker build -f docker/Dockerfile ${OPT} . -t wulffern/aic:${YEAR}_latest
+	docker build --platform linux/amd64,linux/arm64 -f docker/Dockerfile ${OPT} . -t wulffern/aic:${YEAR}_latest
 
 tagpush:
 	docker tag wulffern/aic:${YEAR}_latest wulffern/aic:${YEAR}.${TAG}
