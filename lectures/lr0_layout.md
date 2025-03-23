@@ -46,6 +46,11 @@ cd aicex/ip/cicpy
 git checkout main
 git pull 
 python3 -m pip install -e .
+cd ..
+cd cicspi 
+git checkout main 
+git pull
+python3 -m pip install -e .
 ```
 
 # Placement 
@@ -84,7 +89,7 @@ As such, if I rename my instances, as shown below,
 Then the layout becomes a bit better 
 
 ```bash 
-cicpy mag JNW_GR05_SKY130A OTA_Manuel --gbreak 4 --xspace 34000 --yspace 10000
+cicpy sch2mag JNW_GR05_SKY130A OTA_Manuel --gbreak 3 --xspace 34000 --yspace 30000
 ```
 
 The gbreak command inserts a "group break" after the fourth group, such that a
