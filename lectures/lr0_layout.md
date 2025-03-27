@@ -43,7 +43,7 @@ help. Install cicpy.
 
 ```bash 
 cd aicex/ip/cicpy
-git checkout main
+git checkout master
 git pull 
 python3 -m pip install -e .
 cd ..
