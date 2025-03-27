@@ -60,7 +60,7 @@ it will be overriden
 
 ```bash 
 cd jnw_gr05_sky130a/work 
-cicpy mag JNW_GR05_SKY130A OTA_Manuel
+cicpy sch2mag JNW_GR05_SKY130A OTA_Manuel
 ```
 
 ![](../media/layout_ota_m1.png)
