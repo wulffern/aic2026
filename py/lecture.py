@@ -39,8 +39,9 @@ class Image():
             url = self.src
             arr = url.split("?")
             end = arr[0].split(".")[-1]
+            #print(self.src)
             self.src = "/tmp/" +  hashlib.sha256(os.path.basename(self.src).encode()).hexdigest() + "." + end
-#            print(self.src)
+            #print(self.src)
             if(not os.path.exists(self.src)):
                 os.system(f"cd /tmp/; wget {url} -O {self.src}")
 
