@@ -47,12 +47,7 @@ jobs:
           destination: ./_site
       - name: Upload artifact
         uses: actions/upload-pages-artifact@main
-      - name: Upload Docs
-        uses: actions/upload-artifact@main
-        with:
-          name: docs
-          path: |
-            ./docs
+
 
   # Deployment job
   deploy:

@@ -236,7 +236,7 @@ I would encourage you to read [The Crystal Oscillator](https://ieeexplore.ieee.o
 
 -->
 
-![fit](../media/xosc_res.svg)
+![fit](../media/xosc_res.pdf)
 
 ---
 
@@ -250,8 +250,6 @@ Below is a common oscillator circuit, a Pierce Oscillator. The crystal is the be
 Above the dotted line is what we have inside the IC. Call the left side of the inverter XC1 and right side XC2. 
 The inverter is biased by a resistor, $R_1$, to keep the XC1 at a reasonable voltage.
 The XC1 and XC2 will oscillate in opposite directions. As XC1 increases, XC2 will decrease. The $R_2$ is to model the internal resistance (on-chip wires, bond-wire).
-
-
 
 -->
 

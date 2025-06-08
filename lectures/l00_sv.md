@@ -235,7 +235,7 @@ What we want from the digital is to control the binary value of the current DAC.
 
 -->
 
-![](../media/JNWSW_CM.svg)
+![](../media/JNWSW_CM.pdf)
 
 ---
 
@@ -315,7 +315,7 @@ digital compiled library
 
 [.column]
 
-```
+```bash 
 adut [clk
 + reset
 + ]
@@ -341,7 +341,7 @@ something to calculate them (I think), so connect some resistors
 
 [.column]
 
-```
+```bash
 * Inputs
 Rsvi0 clk 0 1G
 Rsvi1 reset 0 1G
@@ -364,7 +364,7 @@ buses from digital `b[4:0]` to a real value `dec_b`
 
 [.column]
 
-```
+```bash
 E_STATE_b dec_b 0 value={( 0 
 + + 16*v(b.4)/AVDD
 + + 8*v(b.3)/AVDD
@@ -385,7 +385,7 @@ An example testbench can be seen below (`sim/JNWSW_CM/tran.spi`)
 
 -->
 
-```
+```bash
 ...
 
 .include ../xdut.spi
@@ -412,7 +412,7 @@ signals have the right levels
 
 -->
 
-```
+```bash
 
 *- Override the default digital output bridge.
 pre_set auto_bridge_d_out =

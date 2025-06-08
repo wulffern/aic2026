@@ -32,19 +32,15 @@ FILES = l01_intro \
 	lx_energysrc \
 	l11_aver \
 	lp_project_report \
-	l04_mac \
-	lr0_passives \
-	lr0_mosfet \
 	lr0_layout \
+	lr0_mosfet \
 	lr0_circuits \
+	lr0_passives \
 	l00_spice \
 	lr0_logic \
-	l00_sv
+	l00_sv \
+	l04_mac
 
-
-
-
-	#l00_need_to_know
 
 
 all: posts texfiles latex standalone book
@@ -63,10 +59,10 @@ jstart:
 texfiles:
 	-mkdir pdf/media
 	-rm pdf/chapters.tex
+	${PYTHON} py/lecture.py latex lectures/tex_intro.md
 	-rm docs/downloads.md
 	cd pdf; make hash_short
 	cat downloads.md > docs/downloads.md
-	${PYTHON} py/lecture.py latex lectures/tex_intro.md
 	${foreach f, ${FILES}, ${PYTHON} py/lecture.py latex lectures/${f}.md || exit ; }
 	cd pdf; make fix hash pandoc.tex
 

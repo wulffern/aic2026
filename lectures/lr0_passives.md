@@ -17,21 +17,45 @@ date: 2025-01-08
 
 # Metal in ICs is not wire in schematic
 
-Resistance ~ m$$\Omega$$/$$\square$$
+<!--pan_doc: 
 
-Capacitance ~ aF/$$\mu$$m to fF/$$\mu$$m
+Metal wires in an integrated circuit comes in two types, copper and aluminium.
 
-Inductance ~ nH/mm
+Most of the routing layers will be copper. To ensure that the copper ions don't diffuse into 
+the silicon-oxide a barrier material surrounds all copper interconnect. 
 
-Max current ~ mA/$$\square$$
+Copper is too stiff to be wire-bonded. As such, the top layer metals would be aluminium.
+
+Since the routing is so small, we have to care about the parasitic properties of the routing. Below is a table with some
+common quantities for copper. For example, if we have 1000 $\mu$m metal wire with 1 $\mu$m width, then it would be approximately 
+150 $\Omega$, 1 nH , 1 pF and tolerate a maximum of 1 mA DC current.
+
+-->
+
+| Parameter      | Typ. Value | Unit                       |
+|:--------------:|:----------:|:--------------------------:|
+| Resistance     | 150        | $$\text{m}\Omega/\square$$ |
+| Capacitance    | 1          | $$\text{fF}/\mu\text{m}$$    |
+| Inductance     | 1          | nH/mm                      |
+| Max DC current | 1          | mA/$$\square$$             |
+
 
 <!--pan_skip: -->
 
 <!--![right fit](https://www.researchgate.net/publication/329551868/figure/fig1/AS:702470942629891@1544493532703/General-structure-of-an-IC-with-BEOL-evidenced-a-SEM-section-of-an-Intel-Broadwell.jpg)-->
-![right fit](../media/General-structure-of-an-IC-with-BEOL-evidenced-a-SEM-section-of-an-Intel-Broadwell.jpg)
+![right
+fit](../media/General-structure-of-an-IC-with-BEOL-evidenced-a-SEM-section-of-an-Intel-Broadwell.jpg)
+
 ---
 
-| Layout | Must simulate/know |
+<!--pan_doc:
+
+The type of circuit we have determine what we must simulate. Everything needs to be simulated with parasitc capacitance and max current.
+Only RF, however, usually needs to be simulated with resistance, capacitance, inductance and maximum current. 
+
+-->
+
+| Circuit type | Must simulate/know |
 |:--: | :--: |
 | All | C Imax |
 | Analog, Power | R C Imax |
@@ -39,31 +63,56 @@ Max current ~ mA/$$\square$$
 
 ---
 
+<!--pan_doc:
+
+To simulate the effects of parasitics, we need a description of the technology. A Process Design Kit (PDK). Most PDKs are closely
+guarded secrets, as they describe many things about the way the foundry makes the integrated circuits. 
+
+Some PDKs are open source, however, see [Skywater 130 nm](https://skywater-pdk.readthedocs.io) and [IHP-Open-PDK](https://github.com/IHP-GmbH/IHP-Open-PDK)
+
+In addition to the PDK, we need tools that can calculate from the layout the parasitic elements. Some of the tools are 
+-->
+
 [.column]
 
- Layout parasitic extraction
- [Calibre xRC](https://eda.sw.siemens.com/en-US/ic/calibre-design/circuit-verification/xrc/)
- [Synopsys StarRC](https://eda.sw.siemens.com/en-US/ic/calibre-design/circuit-verification/xrc/)
- [Cadence
- Quantus](https://eda.sw.siemens.com/en-US/ic/calibre-design/circuit-verification/xrc/)
- [Magic VLSI](http://opencircuitdesign.com/magic/)
+Layout parasitic extraction tools
+ 
+- [Calibre xRC](https://eda.sw.siemens.com/en-US/ic/calibre-design/circuit-verification/xrc/)
+- [Synopsys StarRC](https://eda.sw.siemens.com/en-US/ic/calibre-design/circuit-verification/xrc/)
+- [Cadence Quantus](https://eda.sw.siemens.com/en-US/ic/calibre-design/circuit-verification/xrc/)
+- [Magic VLSI](http://opencircuitdesign.com/magic/)
  
 [.column]
 
- 3D EM Simulators
- [Keysight ADS](https://www.keysight.com/zz/en/products/software/pathwave-design-software/pathwave-advanced-design-system.html)
- [HFSS](https://www.keysight.com/zz/en/products/software/pathwave-design-software/pathwave-advanced-design-system.html)
+3D EM Simulators
+ 
+ - [Keysight ADS](https://www.keysight.com/zz/en/products/software/pathwave-design-software/pathwave-advanced-design-system.html)
+ - [HFSS](https://www.keysight.com/zz/en/products/software/pathwave-design-software/pathwave-advanced-design-system.html)
 
- Transistor CAD (TCAD)
- [Synopsys TCAD](https://www.synopsys.com/silicon/tcad.html)
+Transistor CAD (TCAD)
+ 
+- [Synopsys TCAD](https://www.synopsys.com/silicon/tcad.html)
 
 ---
 
 #[fit] Resistors
 
+<!--pan_doc:
+
+Sometimes we want a specific resistance. In general, any resistance on IC will vary in absolute value by maybe up to $\pm$ 20 %.
+The relative size, however, can be controlled to within 0.1 %. 
+
+In other words, you can't rely on a 1 kOhm resistor actually being 1 kOhm, it might be 0.8 kOhm. If you have two, however, you can 
+trust that both of them will be 0.8 kOhm.
+
+That's why almost all analog circuits rely on the relative sizes of passives, not the absolute value. If a circuit
+does rely on absolute values, then it usually needs to be trimmed in production. 
+
+-->
+
 ---
 
-# Polysilicon
+## Polysilicon
 
 Can be both N-doped, and P-doped
 
@@ -75,7 +124,7 @@ Silicide reduces resistance of polysilicon
 
 ---
 
-# Diffusion
+## Diffusion
 
 Use doped region as resistor
 
@@ -90,7 +139,7 @@ Tricky temperature dependence
 
 ---
 
-# Metal
+## Metal
 
 Usually too low omhic to be a useful resistor
 
@@ -106,7 +155,7 @@ Must be considered for power supply and ground routing (high currents)
 #[fit] Capacitors
 
 ---
-# What is S, M, L, XL on a chip?
+## What is S, M, L, XL on a chip?
 
 [nRF52832](https://www.nordicsemi.com/products/nrf52832) $$ 3200 \mu m \times 3000 \mu m = 9600 k \mu m^2$$ 
 
@@ -117,7 +166,7 @@ XL $$ > 200 \text{ } k\mu m^2$$
 
 ---
 
-# Metal-Oxide-Metal finger capacitors
+## Metal-Oxide-Metal finger capacitors
 
 Unit capacitance $$ \approx 1 fF/\mu m^2/layer $$
 
@@ -127,7 +176,7 @@ Unit capacitance $$ \approx 1 fF/\mu m^2/layer $$
 
 ---
 
-# MOS capacitors
+## MOS capacitors
 
 ![right fit](../media/inversion.pdf)
 
@@ -135,9 +184,9 @@ Unit capacitance $$ \approx 1 fF/\mu m^2/layer $$
 
 [.column]
 
-dicex/sim/spice/NCHIO/vcap.cir
 
-```
+```bash
+dicex/sim/spice/NCHIO/vcap.cir
 * gate cap
 
 .include ../../../models/ptm_130.spi
@@ -152,15 +201,16 @@ M1 D G S B nmos  w=1u  l=1u
 .op
 ```
 
-Moscap $$ \approx 10 fF / \mu m^2 $$
+Moscap is $$ \approx 10 fF / \mu m^2 $$
 
- $$ 10 pF = 31 \mu m \times 31 \mu m \approx 1 k \mu m^2$$
+$$ 10 pF = 31 \mu m \times 31 \mu m \approx 1 k \mu m^2$$
 
 [.column]
 
-dicex/sim/spice/NCHIO/vcap.vlog
 
-```
+
+```bash
+dicex/sim/spice/NCHIO/vcap.vlog
 Device m1:
 	Vgs     (gate-source voltage)        [V] : 0.5
 	Vgd     (gate-drain voltage)         [V] : -0.5
@@ -198,12 +248,16 @@ Device m1:
 
 ---
 
-#[fit] Varactors (voltage dependent capacitor)
+## Varactors
+
+<!--pan_doc:
+
+A varactor is a "variable capacitor", usually it's a device that varies the capacitance with the voltage across the device.
+
+-->
 
 
----
-
-![original fit](../media/l6/pn.pdf)
+![inline fit](../media/l6/pn.pdf)
 
 ---
 
@@ -216,7 +270,9 @@ Use foundry model
 3D electro magnetic simulation often needed
 
 <!--![right 200%](https://s.zeptobars.com/nRF51822.jpg) -->
+
 ![right 200%](../media/nRF51822.jpg) 
+
 ---
 
 # Variation in passives
@@ -234,7 +290,6 @@ Relative precision for devices on same die $$ > 2 $$% or more
 Resistors and Capacitors can be matched extremely well
 
 ![right fit ](../media/l6/pres_good.pdf)
-
 
 
 ---

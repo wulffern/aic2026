@@ -115,16 +115,17 @@ To compute the data rate, let's do a back of the envelope estimate of the data, 
 
 -->
 
+```bash 
 Application Data Rate > 76 bits/ms = 76 kbps
 
 Assume 30 % packet loss
 
 Raw Data Rate > 228 kbps
 
-Multiply by $$\pi$$ > 716 kbps
+Multiply by 3.14 > 716 kbps
 
 Round to nearest nice number = 1Mbps
-
+```
 
 <!--pan_doc:
 
@@ -188,8 +189,10 @@ Below is a table of the available frequencies, but how should we pick which one 
 
 For a mouse we want to hold in our hand, there is a size limit to the antenna. There are many types of antenna, but 
 -->
+
+
 [.column]
-assume $$\lambda/4$$ is an OK antenna size ($$\lambda = c/f$$)
+assume wavelength/4 is an OK antenna size (wavelength = lightspeed/frequency)
 
 <!--pan_doc:
 
@@ -735,7 +738,7 @@ Bluetooth LE is the perfect standard for wireless mice.
 
 ---
 
-For further information [Building a Bluetooth application on nRF Connect SDK](https://devzone.nordicsemi.com/guides/nrf-connect-sdk-guides/b/software/posts/building-a-ble-application-on-ncs-comparing-and-contrasting-to-softdevice-based-ble-applications)
+png further information [Building a Bluetooth application on nRF Connect SDK](https://devzone.nordicsemi.com/guides/nrf-connect-sdk-guides/b/software/posts/building-a-ble-application-on-ncs-comparing-and-contrasting-to-softdevice-based-ble-applications)
 
 [Bluetooth Specifications in Development](https://www.bluetooth.com/specifications/specifications-in-development/) 
 

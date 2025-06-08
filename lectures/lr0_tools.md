@@ -131,7 +131,7 @@ make tt
 
 On a mac, you probably need to add bison to the path
 
-```
+```bash
 export PATH="/opt/homebrew/opt/bison/bin:$PATH"
 ```
 
@@ -166,7 +166,8 @@ On all, do
 ```bash 
 python3 -m ensurepip --default-pip
 
-python3 -m pip install matplotlib numpy click svgwrite pyyaml pandas tabulate wheel setuptools tikzplotlib
+python3 -m pip install matplotlib numpy click svgwrite \
+    pyyaml pandas tabulate wheel setuptools tikzplotlib
 source install_open_pdk.sh
 ```
 
@@ -209,13 +210,13 @@ cd ../..
 Edit `~/.spiceinit` and add
 
 ```bash
-set ngbehavior=hsa     ; set compatibility for reading PDK libs
+set ngbehavior=hsa     ; set compatibility for PDK libs
 set ng_nomodcheck      ; don't check the model parameters
 set num_threads=8      ; CPU hardware threads available
 set skywaterpdk
 option noinit          ; don't print operating point data
 option klu
-optran 0 0 0 100p 2n 0 ; don't use dc operating point, but transient op
+optran 0 0 0 100p 2n 0 ; don't use dc operating point,
 option opts
 ```
 
@@ -276,7 +277,8 @@ The workflows are defined below.
    docs.yaml # Generate a github page 
    drc.yaml  # Run Design Rule Checks 
    gds.yaml  # Generate a GDS file from layout 
-   lvs.yaml  # Run Layout Versus Schematic and Layout Parasitic Extraction
+   lvs.yaml  # Run Layout Versus Schematic 
+             # and Layout Parasitic Extraction
    sim.yaml  # Run a simulation 
 ```
 
@@ -288,7 +290,7 @@ the `README.md` and the `info.yaml`.
 ```bash
  .gitignore  # files that are ignored by git
  README.md   # Frontpage documentation 
- config.yaml # What libraries are used. This file can be used by cicconf
+ config.yaml # What libraries are used. Used by  cicconf
  info.yaml   # Setup names, authors etc 
  media       # Where you should store images for documentation
  tech -> ../tech_sky130A  # The technology library
@@ -338,11 +340,12 @@ make cell CELL=JNW_EX
 ```
 This will make a simulation folder for you. Repeat for all your cells. 
 
-```
+```bash
 sim
   Makefile
   cicsim.yaml -> ../tech/cicsim/cicsim.yaml
 ```
+
 
 ### The work 
 
@@ -468,7 +471,8 @@ Navigate to the `jnw_ex_sky130a/sim/` directory.
 Make a new simulation folder
 
 ``` bash
-cicsim simcell  JNW_EX_SKY130A JNW_EX ../tech/cicsim/cell_spice/template.yaml
+cicsim simcell  JNW_EX_SKY130A JNW_EX \
+    ../tech/cicsim/cell_spice/template.yaml
 ```
 
 I would recommend you have a look at simcell_template.yaml file to understand what happens.
@@ -775,7 +779,8 @@ Type "macro help" in the command window to see all shortcuts
 | Shift-Up    | Move cell up                      |
 | Shift-Down  | Move cell down                    |
 | Shift-Left  | Move cell left                    |
-| Shift-Right | Moce cell right                   |
+| Shift-Right | Move cell right                   |
+
 
 ### Add transistors
 
@@ -884,13 +889,13 @@ The default `tran.spi` should already have support for that.
 
 Open the Makefile, and change
 
-```
+```bash
 VIEW=Sch
 ```
 
 to
 
-```
+```bash
 VIEW=Lay
 ```
 
