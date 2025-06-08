@@ -58,6 +58,19 @@ with open(fname) as fi:
  #                   fo_png.write(line)
  #                   continue
 
+                #if(re.search(r"\\begin{longtable}",line)):
+
+
+                #if(re.search(r"\\end{longtable}",line)):
+                #    line = r"\end{tblr}" + "\n"
+
+                #if(re.search(r"\\(toprule|bottomrule|midrule|endhead|endlastfoot)",line)):
+                #    line = ""
+
+                #if(re.search(r"\s*>{\\raggedright",line)):
+                #    line = ""
+
+
                 #- Pandoc sometimes uses includesvg instead of includegraphics
                 line = line.replace("includesvg","includegraphics")
                 if(re.search(r"includegraphics(\[[^\]]+\])?{",line)):

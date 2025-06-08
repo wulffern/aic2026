@@ -153,14 +153,14 @@ analog components, otherwise they won't work.
 
 ---
 
-| Status | Abstraction | Design | Layout | Why |
-|:------:|:------------|:-------|:-------|:----|
-| :construction:       | Chip        | SystemVerilog     | digital     | Complex connections, few analog interfaces              |
-| :construction:       | Module      | SystemVerilog     | digital     | Large amount of digital signals, few analog signals     |
-| :warning:       | Block       | Schematic         | programmatic | Large amount of critical analog interfaces, few digital |
-| :white_check_mark:      | Cell         | Netlist/JSON | compiled    | Few analog interfaces, few digital interfaces                                 |
-| :white_check_mark:      | Device      | JSON              | compiled    | Polygon pushing                                         |
-| :white_check_mark:      | Technology  | JSON/Rules        | compiled    | Custom for each technology                              |
+| Status             | Abstraction | Design        | Layout       | Why                                                     |
+|:------------------|:------------|:--------------|:-------------|:--------------------------------------------------------|
+| :construction:     | Chip        | SystemVerilog | digital      | Complex connections, few analog interfaces              |
+| :construction:     | Module      | SystemVerilog | digital      | Large amount of digital signals, few analog signals     |
+| :warning:          | Block       | Schematic     | programmatic | Large amount of critical analog interfaces, few digital |
+| :white_check_mark: | Cell        | Netlist/JSON  | compiled     | Few analog interfaces, few digital interfaces           |
+| :white_check_mark: | Device      | JSON          | compiled     | Polygon pushing                                         |
+| :white_check_mark: | Technology  | JSON/Rules    | compiled     | Custom for each technology                              |
 
 
 ---
@@ -549,7 +549,7 @@ You will be using a repository on github for all your design data. In that repos
 ## Grading
 
 | Milestone | What does it mean                                               | Condition for more than 0 points | Possible Points |
-|-----------|-----------------------------------------------------------------|----------------------------------|-----------------|
+|:---------|:---------------------------------------------------------------|:--------------------------------|:---------------|
 | M1 I=f(T) | Circuit that can convert a temperature into a current           | SIM passing                      | 10              |
 | M2 D=f(T) | Circuit that can convert from temperature into  a digital value | DOC passing                      | 20              |
 | M3 Layout | Layout of your circuit                                          | DRC/LVS/GDS passing              | 20              |

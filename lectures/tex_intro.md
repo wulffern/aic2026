@@ -35,8 +35,8 @@ In 2025 there were 23 students that took the exam, however, 26 different
 students showed up to the lectures (more than a few times). The average
 attendance was around 80 %. 
 
-|Wk|Date|Attendance|
-|:--|:---|:---|
+|Wk|Attendance|
+|:--|:---|
 |2|21|
 |3|21|
 |4|23|

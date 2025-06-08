@@ -56,10 +56,10 @@ I've made a checklist below for the most common questions that you need to ask y
 ## Specification 
 
 | Item                   | Description                                                                                                                               | Yes | Action |
-|:----------------------|:-----------------------------------------------------------------------------------------------------------------------------------------|:---|:------|
+|:-----------------------|:------------------------------------------------------------------------------------------------------------------------------------------|:----|:-------|
 | Functional description | Have you described what the IP shall do?                                                                                                  |     |        |
 | Key parameters         | Have you updated your key parameters in the README                                                                                        |     |        |
-| Architecture           | Have you described the circuit architecture? How should it work?                                                                           |     |        |
+| Architecture           | Have you described the circuit architecture? How should it work?                                                                          |     |        |
 | Realism                | Do you know how to do what you plan to do?                                                                                                |     |        |
 | Verification plan      | Have you described exactly what you need to check? For example, stability of OTAs, current consumption, key parameters                    |     |        |
 | Specification          | Have you added a specification for all parameters you intend to check. For example, phase margin should always be larger than 45 degrees. |     |        |
@@ -71,7 +71,7 @@ I've made a checklist below for the most common questions that you need to ask y
 
 | Item                  | Description                                                                                               | Yes | Action |
 |:----------------------|:----------------------------------------------------------------------------------------------------------|:----|:-------|
-| git                   | Have you committed the schematics to the repository?                                                       |     |        |
+| git                   | Have you committed the schematics to the repository?                                                      |     |        |
 | git push              | Are the schematics pushed to github? Are you sure?                                                        |     |        |
 | git tag               | Is the current version tagged                                                                             |     |        |
 | Implementation        | Are all schematics described with their own markdown file?                                                |     |        |
@@ -86,7 +86,7 @@ I've made a checklist below for the most common questions that you need to ask y
 
 | Item       | Description                                                                      | Yes | Action |
 |:-----------|:---------------------------------------------------------------------------------|:----|:-------|
-| git        | Are all schematics and layout committed? Are you sure?                            |     |        |
+| git        | Are all schematics and layout committed? Are you sure?                           |     |        |
 | git push   | Have you pushed to github?                                                       |     |        |
 | git tag    | Is the latest version tagged?                                                    |     |        |
 | LVS        | Is the LVS on github passing (green)?                                            |     |        |

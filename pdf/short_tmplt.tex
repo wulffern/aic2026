@@ -1,18 +1,8 @@
 
 \documentclass[final,a4paper,journal]{IEEEtran}
+%\documentclass[final,a4paper,journal]{report}
 
 \input{pandoc.tex}
-
-\usepackage{upgreek}
-\usepackage{amssymb,amsmath}
-\usepackage{cite}
-\usepackage{verbatim}
-\usepackage{listings}
-\usepackage{xcolor}
-\usepackage{flafter}
-\usepackage{booktabs}
-\usepackage{url}
-\usepackage{ textcomp }
 
 \usepackage{wrapfig}
 
@@ -34,34 +24,74 @@
 \newcommand{\myfigheight}{80mm}
 
 
-\makeatletter
-\let\oldlt\longtable
-\let\endoldlt\endlongtable
-\def\longtable{\@ifnextchar[\longtable@i \longtable@ii}
-\def\longtable@i[#1]{\begin{figure}[t]
-\onecolumn
-\begin{minipage}{0.45\textwidth}
-\scriptsize
-\oldlt[#1]
-}
-\def\longtable@ii{\begin{figure}[t]
-\onecolumn
-\begin{minipage}{0.45\textwidth}
-\scriptsize
-\oldlt
-}
-\def\endlongtable{\endoldlt
-\end{minipage}
-\twocolumn
-\end{figure}}
-\makeatother
+
+%\usepackage{tabularray}
+%\let\longtable\longtblr
+%\let\endlongtable\endlongtblr
+%\NewTblrTheme{headless}{
+%    \DefTblrTemplate{contfoot-text}{default}{}
+%    \DefTblrTemplate{conthead-text}{default}{}
+%    \DefTblrTemplate{caption}{default}{}
+%    \DefTblrTemplate{conthead}{default}{}
+%    \DefTblrTemplate{capcont}{default}{}
+%}
+%\SetTblrOuter[longtblr]{
+%    entry=none,
+%    label=none,
+%    theme=headless,
+%}
+%toprule|bottomrule|midrule|endhead|endlastfoot)
+%\let\noalign\empty
+\def\endlastfoot{\hspace{-2.5mm}} % compensate whitespace produced by left over \empty tokens
+%\let\endhead\empty
+%\def\toprule{\hspace{-1mm}} % compensate whitespace produced by left over \empty tokens
+%\let\midrule\empty
+%\let\bottomrule\empty
+% add some optional styling
+%\UseTblrLibrary{varwidth}
+%\SetTblrInner[longtblr]{
+%  row{1}     = {gray!20,valign=h},
+%  hline{1,Z} = {0.3mm},
+%  hline{2}   = {0.1mm},
+%  row{Z}     = {valign=f},
+%  row{odd}   = {gray!5},
+%  hspan      = minimal,
+%  columns    = {co=1,valign=t},
+%}
+%
+\renewenvironment{longtable}{\begin{center}\scriptsize\begin{tabular}}{\end{tabular}\end{center}}
+\renewcommand{\endhead}{}
+\renewcommand{\toprule}[2]{\hline}
+\renewcommand{\midrule}[2]{\hline}
+\renewcommand{\bottomrule}[2]{\hline}
+
+%\makeatletter
+%\let\oldlt\longtable
+%\let\endoldlt\endlongtable
+%\def\longtable[#1]{
+%\begin{}[htb]
+%\onecolumn
+%\begin{minipage}{0.45\textwidth}
+%\scriptsize
+%\oldlt[#1]
+%}
+%\def\endlongtable{\endoldlt
+%\end{minipage}
+%\end
+%\twocolumn{table}
+%}
+%\makeatother
+
+
+
+
 
 
 \title{__title__}
-\author{Carsten~Wulff, carsten@wulff.no \url{http://analogicus.com/aic2025}}
-\date{}
+\author{Carsten~Wulff, carsten@wulff.no }
 
-\markboth{Advanced Integrated Circuits - __version__}{Carsten Wulff}
+%\markboth{Advanced Integrated Circuits - __version__
+%}{Carsten Wulff}
 
 \begin{document}
 
@@ -72,7 +102,7 @@
 
 \input{__file__}
 
-
+\bibliographystyle{IEEEtran}
 \bibliography{aic.bib}
 
 \input{authors.tex}

@@ -93,9 +93,9 @@ different sources and can be whatever.
 
 <div id="t:rms" markdown="1">
 
-|                    |                    |
-|:------------------:|:------------------:|
+
 |      Voltage       |      Current       |
+|:------------------:|:------------------:|
 |    $V_{rms}^2$     |    $I_{rms}^2$     |
 | $\overline{V_n^2}$ | $\overline{I_n^2}$ |
 | $\overline{v_n^2}$ | $\overline{i_n^2}$ |
@@ -108,13 +108,11 @@ different sources and can be whatever.
 
 <div id="t:rms" markdown="1">
 
-|                           |                           |
-|:-------------------------:|:-------------------------:|
 |          Voltage          |          Current          |
+|:-------------------------:|:-------------------------:|
 |         $V_{rms}$         |         $I_{rms}$         |
 | $\sqrt{\overline{V_n^2}}$ | $\sqrt{\overline{I_n^2}}$ |
 | $\sqrt{\overline{v_n^2}}$ | $\sqrt{\overline{i_n^2}}$ |
-
 
 
 </div>

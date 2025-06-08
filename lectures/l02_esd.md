@@ -43,7 +43,7 @@ Understand why you must **always handle ESD** on an IC
 
 ---
 
-## What blocks must our IC include?
+# What blocks must our IC include?
 
 <!--pan_doc:
 

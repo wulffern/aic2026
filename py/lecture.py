@@ -198,6 +198,9 @@ class Lecture():
         return line
 
     def _convertImage(self,line):
+        if(re.search("^<!--",line)):
+            return line
+
         m = re.search(r"\!\[([^\]]*)\]\(([^\)]+)\)",line)
 
         if(m):
