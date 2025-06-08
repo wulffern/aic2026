@@ -17,7 +17,7 @@ class Image():
         self.directory = options["dir"]
         self.skip = False
         self.isUrl = False
-        self.abstmp = os.path.abspath(os.path.normpath(options["dir"] +  "/../tmp")) + "/"
+        self.abstmp = os.path.abspath(os.path.normpath(options["dir"] +  "/../pdf/media")) + "/"
 
         if(not os.path.exists(self.abstmp)):
             os.makedirs(self.abstmp)
@@ -47,6 +47,7 @@ class Image():
             self.src = self.abstmp +  hashlib.sha256(os.path.basename(self.src).encode()).hexdigest() + "." + end
             #print(self.src)
             if(not os.path.exists(self.src)):
+                print(self.orgsrc,self.src)
                 os.system(f"cd {self.abstmp}; wget {url} -O {self.src}")
 
 
@@ -55,6 +56,7 @@ class Image():
 
 
     def copy(self):
+
         if(self.isUrl and not ("downloadImage" in self.options) ):
             return
             
@@ -66,11 +68,13 @@ class Image():
         elif("latex" in self.options):
             os.makedirs(self.options["latex"] + "media/",exist_ok=True)
             try:
-                shutil.copyfile(os.path.join(self.options["dir"],self.src),  self.options["latex"] + "media/" + self.filesrc)
-                if("pdf" in self.src in self.src):
-                    shutil.copyfile(os.path.join(self.options["dir"],self.src.replace(".pdf",".svg")),  self.options["latex"] + "media/" + self.filesrc.replace(".pdf",".svg") )
-                if("svg" in self.src in self.src):
-                    shutil.copyfile(os.path.join(self.options["dir"],self.src.replace(".svg",".pdf")),  self.options["latex"] + "media/" + self.filesrc.replace(".svg",".pdf") )
+                #print(self.src)
+                if(self.src.startswith("../")):
+                    shutil.copyfile(os.path.join(self.options["dir"],self.src),  self.options["latex"] + "media/" + self.filesrc)
+                    if("pdf" in self.src):
+                        shutil.copyfile(os.path.join(self.options["dir"],self.src.replace(".pdf",".svg")),  self.options["latex"] + "media/" + self.filesrc.replace(".pdf",".svg") )
+                    if("svg" in self.src):
+                         shutil.copyfile(os.path.join(self.options["dir"],self.src.replace(".svg",".pdf")),  self.options["latex"] + "media/" + self.filesrc.replace(".svg",".pdf") )
             except Exception as e:
                 print(e)
     def __str__(self):

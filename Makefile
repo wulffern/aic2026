@@ -47,7 +47,7 @@ FILES = l01_intro \
 	#l00_need_to_know
 
 
-all: posts texfiles standalone latex book
+all: posts texfiles latex standalone book
 
 posts:
 	-rm images.txt
@@ -68,6 +68,7 @@ texfiles:
 	cat downloads.md > docs/downloads.md
 	${PYTHON} py/lecture.py latex lectures/tex_intro.md
 	${foreach f, ${FILES}, ${PYTHON} py/lecture.py latex lectures/${f}.md || exit ; }
+	cd pdf; make fix hash pandoc.tex
 
 
 standalone: texfiles

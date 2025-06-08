@@ -17,7 +17,7 @@ date: 2024-10-25
 
 -->
 
-<!--pan_title: A refresher-->
+<!--pan_title: A Refresher-->
 
 # There are standard units of measurement
 

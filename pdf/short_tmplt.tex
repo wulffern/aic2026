@@ -3,6 +3,20 @@
 
 \input{pandoc.tex}
 
+\usepackage{upgreek}
+\usepackage{amssymb,amsmath}
+\usepackage{cite}
+\usepackage{verbatim}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{flafter}
+\usepackage{booktabs}
+\usepackage{url}
+\usepackage{ textcomp }
+
+\usepackage{wrapfig}
+
+
 \urlstyle{same} % disable monospaced font for URLs
 \hypersetup{
   pdftitle={__title__},
@@ -51,7 +65,6 @@
 
 \begin{document}
 
-
 \bibliographystyle{IEEEtran}
 
 \maketitle
@@ -62,6 +75,7 @@
 
 \bibliography{aic.bib}
 
+\input{authors.tex}
 
 
 \end{document}

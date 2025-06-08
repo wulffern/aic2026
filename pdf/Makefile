@@ -29,7 +29,7 @@ pandoc.tex:
 	ln -s ${PANDOC} pandoc.tex
 
 
-one: fix hash kaobook pandoc.tex
+one: kaobook
 	export
 	chmod -R 755  media
 	TEXINPUTS=".:kaobook:" pdflatex aic
@@ -52,10 +52,11 @@ ebook:
 	pandoc --gladtex -o aic.epub aic_epub.latex
 
 standalone:
-	pdflatex ${FNAME}
+	pdflatex  ${FNAME}
 	-bibtex ${FNAME}
 	pdflatex ${FNAME}
-	pdflatex ${FNAME}
+	pdflatex  ${FNAME}
+	#dvipdf ${FNAME}
 
 clean:
 	-rm *.latex

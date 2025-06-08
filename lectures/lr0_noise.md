@@ -29,16 +29,14 @@ probably noise!
 
 The mean of a signal x(t) is defined as
 
-$$\label{mean}
-  \overline{x(t)} = \lim_{T\to\infty} \frac{1}{T}\int^{+T/2}_{-T/2}{ x(t) dt}$$
+$$\label{mean} \overline{x(t)} = \lim_{T\to\infty} \frac{1}{T}\int^{+T/2}_{-T/2}{ x(t) dt}$$
 The mean square of x(t) defined as
 
-$$\label{eq:meansquare}
-  \overline{x^2(t)} =\lim_{T\to\infty} \frac{1}{T}\int^{+T/2}_{-T/2}{ x^2(t) dt}$$
+$$\label{eq:meansquare} \overline{x^2(t)} =\lim_{T\to\infty} \frac{1}{T}\int^{+T/2}_{-T/2}{ x^2(t) dt}$$
 The variance of x(t) defined as
 
-$$\label{eq:var}
-  \sigma^2 = \overline{x^2(t)} - \overline{x(t)}^2$$ For a signals with
+$$\label{eq:var} \sigma^2 = \overline{x^2(t)} - \overline{x(t)}^2$$ 
+For a signals with
 a mean of zero the variance is equal to the mean square. The
 auto-correlation of x(t) is defined as
 
@@ -55,7 +53,9 @@ Average power is defined for a continuous system as
 (<a href="#eq:powcont" data-reference-type="ref"
 data-reference="eq:powcont">[eq:powcont]</a>) and for discrete samples
 it can be defined as (<a href="#eq:powsamp" data-reference-type="ref"
-data-reference="eq:powsamp">[eq:powsamp]</a>). $P_{av}$ usually has the
+data-reference="eq:powsamp">[eq:powsamp]</a>). 
+
+$P_{av}$ usually has the
 unit $A^2$ or $V^2$, so we have to multiply/devide by the impedance to
 get the power in Watts. To get Volts and Amperes we use the
 root-mean-square (RMS) value which is defined as $\sqrt{P_{av}}$.
@@ -77,7 +77,9 @@ of voltage or current, some of them are listed in Table
 data-reference="t:avgpow">[t:avgpow]</a> and Table
 <a href="#t:rms" data-reference-type="ref" data-reference="t:rms">2</a>.
 Notation can be a confusing thing, it changes from book to book and
-makes expressions look different. It is important to realize that it
+makes expressions look different. 
+
+It is important to realize that it
 does not matter how you write average power and RMS value. If you want
 you can invent your own notation for average power and RMS value.
 However, if you are presenting your calculations to other people it is
@@ -98,8 +100,6 @@ different sources and can be whatever.
 | $\overline{V_n^2}$ | $\overline{I_n^2}$ |
 | $\overline{v_n^2}$ | $\overline{i_n^2}$ |
 
-Notations for RMS
-
 </div>
 
 </div>
@@ -115,7 +115,7 @@ Notations for RMS
 | $\sqrt{\overline{V_n^2}}$ | $\sqrt{\overline{I_n^2}}$ |
 | $\sqrt{\overline{v_n^2}}$ | $\sqrt{\overline{i_n^2}}$ |
 
-Notations for RMS
+
 
 </div>
 
