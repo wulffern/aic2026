@@ -114,8 +114,8 @@ Below is an example of ReRAM. In the Pristine state the conductance is low, resi
 
 ---
 
-![fit](https://sky130-fd-pr-reram.readthedocs.io/en/latest/_images/forming.png)
-
+<!--![fit](https://sky130-fd-pr-reram.readthedocs.io/en/latest/_images/forming.png)-->
+![fit](../media/forming.png)
 
 
 <!--pan_doc:

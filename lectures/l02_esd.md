@@ -198,7 +198,9 @@ of the few ESD books in existence, shown below, and rely on you understanding of
 
 -->
 
-![right 110%](https://media.wiley.com/product_data/coverImage300/18/04714987/0471498718.jpg)
+<!--![right 110%](https://media.wiley.com/product_data/coverImage300/18/04714987/0471498718.jpg)
+
+![right 110%](../media/esdbook.jpg)
 
 <!--pan_doc: 
 

@@ -80,7 +80,8 @@ The unit cell is a face-centered cubic crystal with a lattice spacing of approx 
 Nearest neighbor $$d = \frac{1}{2}\left(a \sqrt{2}\right)$$
 
 [.column]
-![fit](https://upload.wikimedia.org/wikipedia/commons/thumb/f/f1/Silicon-unit-cell-3D-balls.png/628px-Silicon-unit-cell-3D-balls.png)
+![fit](../media/503px-Silicon-unit-cell-3D-balls.png)
+<!--![fit](https://upload.wikimedia.org/wikipedia/commons/thumb/f/f1/Silicon-unit-cell-3D-balls.png/628px-Silicon-unit-cell-3D-balls.png)-->
 
 ---
 ## Energy levels of electrons in solids (current)
@@ -88,7 +89,9 @@ Nearest neighbor $$d = \frac{1}{2}\left(a \sqrt{2}\right)$$
 Electrons can only exist in discrete energy levels, given by the solutions to the Schrodinger equation.
 Since the probability amplitudes add for electrons in close proximity, then for crystals it's more complicated. 
 
-![inline](https://www.researchgate.net/profile/Arnab-Pariari/publication/333131266/figure/fig1/AS:759043060682752@1557981376301/A-schematic-diagram-to-show-the-discrete-energy-levels-of-an-isolated-atom-and-energy.jpg)
+
+<!--![inline](https://www.researchgate.net/profile/Arnab-Pariari/publication/333131266/figure/fig1/AS:759043060682752@1557981376301/A-schematic-diagram-to-show-the-discrete-energy-levels-of-an-isolated-atom-and-energy.jpg)-->
+![inline](../media/A-schematic-diagram-to-show-the-discrete-energy-levels-of-an-isolated-atom-and-energy.jpg)
 
 ---
 ## Movement of electrons in solids
@@ -829,8 +832,8 @@ Often 5 - 10 layers of metal
 |Metal Y | Copper| Ultra thick | Cross chip power routing. Often used for RF inductors.|
 |RDL | Aluminium | Ultra tick | Can tolerate high forces during wire bonding.|
 
-![right](https://skywater-pdk.readthedocs.io/en/main/_images/metal_stack.svg)
-
+<!--![right](https://skywater-pdk.readthedocs.io/en/main/_images/metal_stack.svg)-->
+![right](../media/metal_stack.svg)
 ---
 [.background-color: #000000]
 [.text: #FFFFFF]

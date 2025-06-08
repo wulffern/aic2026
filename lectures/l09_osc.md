@@ -140,8 +140,8 @@ _The MAC is a passive atomic clock, incorporating the interrogation technique of
 
 __A rubidium clock is basically a crystal oscillator locked to an atomic reference.__
 
-![left fit](https://cdn.sparkfun.com/r/455-455/assets/parts/1/3/1/0/0/14830-Atomic_Clock-04.jpg)
-
+<!--![left fit](https://cdn.sparkfun.com/r/455-455/assets/parts/1/3/1/0/0/14830-Atomic_Clock-04.jpg)-->
+![left fit](../media/14830-Atomic_Clock-04.jpg)
 ---
 
 <!--pan_doc:
@@ -155,8 +155,8 @@ The negative feedback loop ensures that the 5 MHz clock coming out is proportion
 
 -->
 
-![ fit](https://upload.wikimedia.org/wikipedia/commons/0/0a/Rubidium-oscillator.jpg)
-
+<!--![ fit](https://upload.wikimedia.org/wikipedia/commons/0/0a/Rubidium-oscillator.jpg)-->
+![fit](../media/Rubidium-oscillator.jpg)
 ---
 
 
@@ -177,8 +177,8 @@ Oscillators](https://en.wikipedia.org/wiki/Crystal_oscillator)
 
 -->
 
-![fit](https://upload.wikimedia.org/wikipedia/commons/thumb/d/dc/Quartz_crystal_internal.jpg/440px-Quartz_crystal_internal.jpg)
-
+<!--![fit](https://upload.wikimedia.org/wikipedia/commons/thumb/d/dc/Quartz_crystal_internal.jpg/440px-Quartz_crystal_internal.jpg)--> 
+![fit](../media/Quartz_crystal_internal.jpg)
 ---
 
 <!--pan_doc:
@@ -193,8 +193,8 @@ a correct enough frequency.
 -->
 
 
-![fit](https://upload.wikimedia.org/wikipedia/commons/thumb/8/8b/Crystal_modes_multilingual.svg/300px-Crystal_modes_multilingual.svg.png)
-
+<!--![fit](https://upload.wikimedia.org/wikipedia/commons/thumb/8/8b/Crystal_modes_multilingual.svg/300px-Crystal_modes_multilingual.svg.png)-->
+![fit](../media/Crystal_modes_multilingual.png)
 ---
 
 <!--pan_doc:
@@ -552,8 +552,9 @@ guess that there are two oscillators in the nRF51822. Maybe it's a [multiple con
 -->
 ---
 
-![fit](https://s.zeptobars.com/nRF51822.jpg) 
+<!--![fit](https://s.zeptobars.com/nRF51822.jpg) -->
 
+![fit](../media/nRF51822.jpg)
 ---
 
 <!--pan_doc:

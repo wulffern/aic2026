@@ -40,7 +40,8 @@ look at the units below, and you can see it's $Q=CV$ [^1]
 
 -->
 
-![left](https://www.nist.gov/sites/default/files/images/2021/08/23/NIST.SP_.1247.png)
+<!--![left](https://www.nist.gov/sites/default/files/images/2021/08/23/NIST.SP_.1247.png)-->
+![left](../media/NIST.SP_.1247.png)
 
 <!--pan_doc: 
 
@@ -195,8 +196,8 @@ The discrete energy levels of the electron transition into bands of allowed ener
 
 -->
 
-![right fit](https://upload.wikimedia.org/wikipedia/commons/thumb/e/ef/Solid_state_electronic_band_structure.svg/640px-Solid_state_electronic_band_structure.svg.png)
-
+<!--![right fit](https://upload.wikimedia.org/wikipedia/commons/thumb/e/ef/Solid_state_electronic_band_structure.svg/640px-Solid_state_electronic_band_structure.svg.png)-->
+![right fit](../media/Solid_state_electronic_band_structure.svg.png)
 <!--pan_doc:
 
 <sub>Figure 3: [Electronic band structure, Wikipedia](https://en.wikipedia.org/wiki/Electronic_band_structure)</sub>
@@ -214,8 +215,8 @@ For a crystal, the allowed energy bands is captured in the [band structure](http
 A [silicon](https://en.wikipedia.org/wiki/Silicon) crystal unit cell is a diamond faced cubic with 8 atoms in the corners spaced at 0.543 nm, 6 at the center of the
 faces, and 4 atoms inside the unit cell at a nearest neighbor distance of 0.235 nm. 
 
-![left fit](https://upload.wikimedia.org/wikipedia/commons/f/f1/Silicon-unit-cell-3D-balls.png)
-
+<!--![left fit](https://upload.wikimedia.org/wikipedia/commons/f/f1/Silicon-unit-cell-3D-balls.png)-->
+![left fit](../media/503px-Silicon-unit-cell-3D-balls.png)
 <!--pan_doc:
 <sub>Figure 4: [Silicon, Wikipedia](https://en.wikipedia.org/wiki/Silicon)</sub>
 -->
@@ -226,7 +227,9 @@ faces, and 4 atoms inside the unit cell at a nearest neighbor distance of 0.235 
 
 The full band structure of a silicon unit cell is complicated, it's a [3 dimensional concept](http://lampx.tugraz.at/~hadley/ss1/semiconductors/silicon_bandstructure.php)
 
-![right fit](https://lampx.tugraz.at/~hadley/ss1/semiconductors/Si_bandstructure.png)
+<!--![right fit](https://lampx.tugraz.at/~hadley/ss1/semiconductors/Si_bandstructure.png)-->
+
+![right fit](../media/Si_bandstructure.png)
 
 <!--pan_doc: 
 <sub>Figure 5: [Silicon Band Structure](http://lampx.tugraz.at/~hadley/ss1/semiconductors/silicon_bandstructure.php)</sub>
@@ -299,8 +302,8 @@ The Fermi-Dirac function also explains why there are more free carriers, and rea
 
 In metals, the band splitting of the energy levels causes the valence band and conduction band to overlap. 
 
-![left fit](https://upload.wikimedia.org/wikipedia/commons/thumb/9/9d/Band_filling_diagram.svg/1024px-Band_filling_diagram.svg.png)
-
+<!--![left fit](https://upload.wikimedia.org/wikipedia/commons/thumb/9/9d/Band_filling_diagram.svg/1024px-Band_filling_diagram.svg.png)-->
+![left fit](../media/Band_filling_diagram.png)
 <!--pan_doc:
 
 <sub>Figure 6: Band splitting in materials. [Electronic Band Structure, Wikipedia](https://en.wikipedia.org/wiki/Electronic_band_structure)</sub>
@@ -358,8 +361,9 @@ A [band diagram](https://en.wikipedia.org/wiki/Band_diagram) or energy level
 diagrams shows the conduction band energy and valence band energy as a function
 of distance in the material.
 
-![right fit](https://upload.wikimedia.org/wikipedia/commons/4/43/Pn-junction_zero_bias.png)
+<!--![right fit](https://upload.wikimedia.org/wikipedia/commons/4/43/Pn-junction_zero_bias.png)-->
 
+![right fit](../media/Pn-junction_zero_bias.png)
 <!--pan_doc:
 <sub>Figure 7: [Band diagram of a PN junction, Wikipedia](https://en.wikipedia.org/wiki/Band_diagram)</sub>
 -->

@@ -53,7 +53,7 @@ A NN consists of addition, multiplication, and a non-linear function
 
 <!--![right fit
 ](https://upload.wikimedia.org/wikipedia/commons/5/54/Feed_forward_neural_net.gif) -->
-![right fit ](../media/nerualnet.png)
+![right fit ](../media/neuralnet.png)
 
 ---
 
@@ -113,7 +113,10 @@ For efficient inference, additions and multiplications should be low power!
 
 > The directed sum of the potential differences around any closed loop is zero
 
-![fit right](https://upload.wikimedia.org/wikipedia/commons/thumb/4/40/Kirchhoff_voltage_law.svg/878px-Kirchhoff_voltage_law.svg.png)
+<!--![fit right](https://upload.wikimedia.org/wikipedia/commons/thumb/4/40/Kirchhoff_voltage_law.svg/878px-Kirchhoff_voltage_law.svg.png)-->
+
+![fit right](../media/Kirchhoff_voltage_law.png)
+
 
 $$ V_1 + V_2 + V_3 + V_4 = 0$$
 
@@ -129,7 +132,9 @@ $$ V_1 + V_2 + V_3 + V_4 = 0$$
 > The algebraic sum of currents in a network of conductors meeting at a point is
 > zero 
 
-![fit right](https://upload.wikimedia.org/wikipedia/commons/thumb/4/46/KCL_-_Kirchhoff%27s_circuit_laws.svg/789px-KCL_-_Kirchhoff%27s_circuit_laws.svg.png)
+<!--![fit right](https://upload.wikimedia.org/wikipedia/commons/thumb/4/46/KCL_-_Kirchhoff%27s_circuit_laws.svg/789px-KCL_-_Kirchhoff%27s_circuit_laws.svg.png)-->
+
+![fit right](../media/KCL.png)
 
 $$ i_1 + i_2 + i_3 + i_4 = 0 $$
 
