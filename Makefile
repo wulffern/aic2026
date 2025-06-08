@@ -59,9 +59,10 @@ jstart:
 texfiles:
 	-mkdir pdf/media
 	-rm pdf/chapters.tex
+	cd pdf; make hash_short
 	${PYTHON} py/lecture.py latex lectures/tex_intro.md
 	-rm docs/downloads.md
-	cd pdf; make hash_short
+
 	cat downloads.md > docs/downloads.md
 	${foreach f, ${FILES}, ${PYTHON} py/lecture.py latex lectures/${f}.md || exit ; }
 	cd pdf; make fix hash pandoc.tex
