@@ -61,7 +61,7 @@ And add the public key to your github account. Settings - SSH and GPG keys
 
 There are interactions with git that require an author identity. You are supposed to use one of these interactions a lot during the project, namely, ```git commit```. What you need to provide is an email address and a name. If you would like to keep your real email address private/secret, read what it says on GitHub at your user settings page under [emails](https://github.com/settings/emails). Use the below commands to provide the author identity information to git.
 
-```
+```bash
 git config --global user.email "you@example.com"
 git config --global user.name "Your Name"
 ```
@@ -249,7 +249,7 @@ cicconf newip ex
 ```
 
 ## The file structure 
-
+    
 It matters how you name files, and store files. I would be surprised if you 
 had a good method already, as such, I won't allow you to make your own folder
 structure and names for things. I also control the filenames and folder
@@ -308,7 +308,7 @@ shown below.
 Note there are also two symbolic links to other libraries. These two libraries
 contain standard cells and standard analog transistors (ATR) that you should be using.
 
-```
+```bash
 design
   JNW_EX_SKY130A
   JNW_EX.sch
@@ -656,7 +656,8 @@ Add the following lines (they automatically plot the current and gate voltage)
 import cicsim as cs
 fname = name +".png"
 print(f"Saving {fname}")
-cs.rawplot(name + ".raw","time","v(ibps_5u),i(v0)",ptype="",fname=fname)
+cs.rawplot(name + ".raw","time","v(ibps_5u),i(v0)" \
+  ,ptype="",fname=fname)
 ```
 
 Re-run measurements to check the python code
@@ -792,7 +793,7 @@ Place all transistors on top of each other.
 
 In the command window, type
 
-``` tcl
+```tcl
 see no *
 see viali
 see locali
@@ -985,7 +986,7 @@ Mine is [https://analogicus.github.io/jnw_ex0_sky130a/](https://analogicus.githu
 Sometimes the reference to the transistors in the magic file might be wrong.
 Open the .mag file in a text editor and check. The correct way is 
 
-```
+```sh
 use JNWATR_NCH_4C5F0  JNWATR_NCH_4C5F0_0 ../JNW_ATR_SKY130A
 ```
 

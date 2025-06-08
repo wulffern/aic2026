@@ -29,7 +29,8 @@ TFE4187 Analog CMOS1**
 | 18      | Oversampling Converters                  | 18.4,18.5,18.8,18.9                               |
 | 19      | Phase-locked loops                       |                                                   |
 
-In addition to the chapters in the book, the exercises on blackboard and project, the following papers are part of the
+In addition to the chapters in the book, the exercises on blackboard, lectures,
+lecture notes, project, and the following papers are part of the
 syllabus
 
 | Title                                                                                                         | Excluded |

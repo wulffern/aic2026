@@ -17,6 +17,10 @@ class Image():
         self.directory = options["dir"]
         self.skip = False
         self.isUrl = False
+        self.abstmp = os.path.abspath(os.path.normpath(options["dir"] +  "/../tmp")) + "/"
+
+        if(not os.path.exists(self.abstmp)):
+            os.makedirs(self.abstmp)
 
 
         if("/ip/" in self.src and "allowIP" not in self.options):
@@ -40,10 +44,10 @@ class Image():
             arr = url.split("?")
             end = arr[0].split(".")[-1]
             #print(self.src)
-            self.src = "/tmp/" +  hashlib.sha256(os.path.basename(self.src).encode()).hexdigest() + "." + end
+            self.src = self.abstmp +  hashlib.sha256(os.path.basename(self.src).encode()).hexdigest() + "." + end
             #print(self.src)
             if(not os.path.exists(self.src)):
-                os.system(f"cd /tmp/; wget {url} -O {self.src}")
+                os.system(f"cd {self.abstmp}; wget {url} -O {self.src}")
 
 
         self.filesrc = os.path.basename(self.src)
@@ -80,8 +84,8 @@ class Image():
             return f"![]({path})" + "{: width=\"700\" }\n"
         elif("latex" in self.options):
 
-            if(self.dirsrc == "/tmp"):
-                path = "/tmp/" + self.filesrc
+            if(self.dirsrc == self.abstmp):
+                path = self.abstmp + self.filesrc
             else:
                 path = "media/" + self.filesrc
             #print(path)
@@ -220,7 +224,8 @@ class Lecture():
             furl = "https://github.com/wulffern/aic2025/tree/main/" + self.filename
             slides = ""
             if("lectures" in self.filename ):
-                slides = "[Slides](" +  self.options["jekyll"] + self.filename.replace("lectures","assets/slides").replace(".md",".pdf") +")"
+                #slides = "[Slides](" +  self.options["jekyll"] + self.filename.replace("lectures","assets/slides").replace(".md",".pdf") +")"
+                slides = " [PDF](" +  self.options["jekyll"] + self.filename.replace("lectures","assets/").replace(".md",".pdf") +")"
 
             ss += f"""---
 layout: post
@@ -422,13 +427,16 @@ def post(filename,root,date):
 
 @cli.command()
 @click.argument("filename")
-@click.option("--root",default="pdf/",help="output roote")
+@click.option("--root",default="pdf/",help="output root")
 def latex(filename,root):
     options = dict()
     options["latex"] = root
     options["downloadImage"] = True
     options["allowIP"] = True
     options["dir"] = os.path.dirname(filename)
+
+    basename = os.path.basename(filename).replace(".md","")
+
     p = Latex(filename,options)
     p.copyAssets()
 
@@ -437,19 +445,37 @@ def latex(filename,root):
     with open(fname,"w") as fo:
         fo.write(str(p))
 
+    foname_fixed = p.title.strip().replace(" ","_").lower()+"_fiximg.tex"
+    foname = os.path.basename(filename).replace(".md",".tex")
+
     with open("pdf/chapters.tex","a") as fo:
         fo.write(r"\setchapterstyle{kao}" + "\n")
         fo.write(r"\setchapterpreamble[u]{\margintoc}"+ "\n")
         title = p.title.strip()
         title = re.sub(r"Lecture\s+[\d|X]*\s+-\s+","",title)
         fo.write(r"\chapter{"+title+"}"+ "\n")
-        fo.write(r"\input{"+p.title.strip().replace(" ","_").lower()+"_fiximg.tex}"+ "\n\n")
+        fo.write(r"\input{"+foname_fixed + "}"+ "\n\n")
+
+    #-Get version text
+    with open("pdf/version_short.tex") as fi:
+        version = fi.read()
+
+
+    #- Write short
+    with open("pdf/short_tmplt.tex") as fi:
+        buff = fi.read()
+        with open("pdf/" + foname,"w") as fo:
+            fo.write(buff.replace("__title__",title).replace("__file__",foname_fixed).replace("__version__",version))
+
+
+    with open("docs/downloads.md","a") as fo:
+        fo.write(f"- [{title}](/aic2025/assets/{basename}.pdf)\n")
 
     flatex = fname.replace(".md",".latex")
     cmd = f"pandoc --citeproc --bibliography=pdf/aic.bib --csl=pdf/ieee-with-url.csl  -o {flatex} {fname}  "
     os.system(cmd)
-    cmd = f"pandoc -s --citeproc --bibliography=pdf/aic.bib --csl=pdf/ieee-with-url.csl  -o {flatex}_standalone.tex {fname}  "
-    os.system(cmd)
+    #cmd = f"pandoc -s --citeproc --bibliography=pdf/aic.bib --csl=pdf/ieee-with-url.csl  -o {flatex}_standalone.tex {fname}  "
+    #os.system(cmd)
 
 
 

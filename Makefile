@@ -35,6 +35,7 @@ FILES = l01_intro \
 	l04_mac \
 	lr0_passives \
 	lr0_mosfet \
+	lr0_layout \
 	lr0_circuits \
 	l00_spice \
 	lr0_logic \
@@ -46,7 +47,7 @@ FILES = l01_intro \
 	#l00_need_to_know
 
 
-all: posts latex book
+all: posts texfiles standalone latex book
 
 posts:
 	-rm images.txt
@@ -59,11 +60,21 @@ posts:
 jstart:
 	docker run --rm --name aic_docs --volume="${SITE}:/srv/jekyll" -p 3002:4000 -it jekyll/jekyll:${JEKYLL_VERSION} jekyll serve --watch --drafts
 
-latex:
+texfiles:
 	-mkdir pdf/media
 	-rm pdf/chapters.tex
+	-rm docs/downloads.md
+	cd pdf; make hash_short
+	cat downloads.md > docs/downloads.md
 	${PYTHON} py/lecture.py latex lectures/tex_intro.md
 	${foreach f, ${FILES}, ${PYTHON} py/lecture.py latex lectures/${f}.md || exit ; }
+
+
+standalone: texfiles
+	${foreach f, ${FILES}, cd pdf; make standalone FNAME=${f}.tex;}
+	${foreach f, ${FILES}, cp pdf/${f}.pdf docs/assets/;}
+
+latex: texfiles
 	cd pdf; make one
 	cp pdf/aic.pdf docs/assets/
 

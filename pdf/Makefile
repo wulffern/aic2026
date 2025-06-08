@@ -4,6 +4,7 @@ VERSION_HASH=${shell git log -1 --pretty=format:"%H"}
 FILE= aic
 
 TEXS = ${shell ls -1 *.latex}
+STANDALONE = ${shell cat standalone.files}
 
 PYTHON=python3
 ifneq ($(wildcard /pyenv/bin/.*),)
@@ -18,6 +19,9 @@ fix:
 
 hash:
 	echo '{\\noindent ${VERSION_DATE}} \\\\ \n {\\noindent from ${VERSION_HASH}}'  > version.tex
+
+hash_short:
+	echo ' ${VERSION_DATE} from ${VERSION_HASH}'  > version_short.tex
 
 #- Choose right pandoc file based on pandoc version
 PANDOC=pandoc_$(shell pandoc --version|head -n 1|cut -d " " -f 2|cut -d "." -f "1,2").tex
@@ -46,6 +50,12 @@ ebook:
 	cat aic.tex |perl -pe "s/chapters/chapters_epub/ig" > aic_epub.latex
 	cat chapters.tex |perl -pe "s/fiximg/fiximg_png/ig" > chapters_epub.tex
 	pandoc --gladtex -o aic.epub aic_epub.latex
+
+standalone:
+	pdflatex ${FNAME}
+	-bibtex ${FNAME}
+	pdflatex ${FNAME}
+	pdflatex ${FNAME}
 
 clean:
 	-rm *.latex

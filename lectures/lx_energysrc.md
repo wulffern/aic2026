@@ -47,9 +47,11 @@ Introduction to **Energy Harvesting**
 --
 --
 
-1 year $$ \Rightarrow$$ 45 $$\mu$$W/cm$$^3$$ 
+Energy density $$ \Rightarrow [250,693]\text{ }mWh/cm^3 $$
 
-10 year $$ \Rightarrow$$ 3.5 $$\mu$$W/cm$$^3$$ 
+1 year $$ \Rightarrow$$  $$[29,80]\text{ }\mu$$W/cm$$^3$$ 
+
+10 year $$ \Rightarrow$$  $$[2.9,8]\text{ }\mu$$W/cm$$^3$$ 
 
 ---
 

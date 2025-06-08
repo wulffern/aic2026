@@ -1,0 +1,67 @@
+
+\documentclass[final,a4paper,journal]{IEEEtran}
+
+\input{pandoc.tex}
+
+\urlstyle{same} % disable monospaced font for URLs
+\hypersetup{
+  pdftitle={__title__},
+  pdfauthor={Carsten~Wulff},
+  colorlinks=true,
+  linkcolor={Maroon},
+  filecolor={Maroon},
+  citecolor={Blue},
+  urlcolor={Blue},
+  pdfcreator={}}
+\usepackage{flafter}
+\usepackage{longtable,booktabs,array}
+
+\newcommand{\myfigwidth}{90mm}
+\newcommand{\myfigheight}{80mm}
+
+
+\makeatletter
+\let\oldlt\longtable
+\let\endoldlt\endlongtable
+\def\longtable{\@ifnextchar[\longtable@i \longtable@ii}
+\def\longtable@i[#1]{\begin{figure}[t]
+\onecolumn
+\begin{minipage}{0.45\textwidth}
+\scriptsize
+\oldlt[#1]
+}
+\def\longtable@ii{\begin{figure}[t]
+\onecolumn
+\begin{minipage}{0.45\textwidth}
+\scriptsize
+\oldlt
+}
+\def\endlongtable{\endoldlt
+\end{minipage}
+\twocolumn
+\end{figure}}
+\makeatother
+
+
+\title{__title__}
+\author{Carsten~Wulff, carsten@wulff.no \url{http://analogicus.com/aic2025}}
+\date{}
+
+\markboth{Advanced Integrated Circuits - __version__}{Carsten Wulff}
+
+\begin{document}
+
+
+\bibliographystyle{IEEEtran}
+
+\maketitle
+
+
+\input{__file__}
+
+
+\bibliography{aic.bib}
+
+
+
+\end{document}

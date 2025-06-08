@@ -1219,7 +1219,7 @@ $$ V_O(z) = 10 \frac{kT}{q} \ln (N)z^{-1} $$
 
 [Ring Amplifiers for Switched Capacitor Circuits](https://ieeexplore.ieee.org/document/6373760)
 
-[A Switched-Capacitor RF Power Amplifier](A Switched-Capacitor RF Power Amplifier)
+[A Switched-Capacitor RF Power Amplifier](https://ieeexplore.ieee.org/document/6009207)
 
 [Design of Active N-Path Filters](https://ieeexplore.ieee.org/document/6650076)
 
