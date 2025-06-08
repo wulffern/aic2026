@@ -153,7 +153,9 @@ For the ISM bands, there are regions, as seen below.
 
 
 
-![left fit](https://upload.wikimedia.org/wikipedia/commons/9/9b/International_Telecommunication_Union_regions_with_dividing_lines.svg)
+<!--![left fit](https://upload.wikimedia.org/wikipedia/commons/9/9b/International_Telecommunication_Union_regions_with_dividing_lines.svg)-->
+
+![left fit](../media/International_Telecommunication_Union_regions_with_dividing_lines.svg)
 
 - Yellow: Region 1
 - Blue: Region 2
@@ -632,8 +634,8 @@ in the receive chain.
 
 <!--pan_skip: -->
 
-![fit](https://www.bluetooth.com/wp-content/themes/bluetooth/images/logos/bluetooth-logo-color-black.svg)
-
+<!--![fit](https://www.bluetooth.com/wp-content/themes/bluetooth/images/logos/bluetooth-logo-color-black.svg)-->
+![fit](../media/bluetooth-logo-color-black.svg)
 
 ---
 
@@ -693,7 +695,9 @@ The advertiser channels have been intentionally placed where there is space betw
 
 -->
 
-![inline](https://devzone.nordicsemi.com/cfs-file/__key/communityserver-discussions-components-files/4/map.PNG)
+<!--![inline](https://devzone.nordicsemi.com/cfs-file/__key/communityserver-discussions-components-files/4/map.PNG)-->
+
+![inline](../media/map.PNG)
 
 ---
 
@@ -710,7 +714,9 @@ Take any spectrum analyzer anywhere, and you'll see traffic on 2402, 2426, and 2
 
 -->
 
-![inline](https://devzone.nordicsemi.com/cfs-file/__key/communityserver-blogs-components-weblogfiles/00-00-00-00-12-DZ-21/ble_5F00_connection.jpg)
+<!--![inline](https://devzone.nordicsemi.com/cfs-file/__key/communityserver-blogs-components-weblogfiles/00-00-00-00-12-DZ-21/ble_5F00_connection.jpg)-->
+
+![inline](../media/ble_connection.jpg)
 
 ---
 
@@ -723,7 +729,9 @@ Bluetooth LE is the perfect standard for wireless mice.
 
 -->
 
-![inline](https://devzone.nordicsemi.com/resized-image/__size/1042x0/__key/communityserver-blogs-components-weblogfiles/00-00-00-00-28/2148.pastedimage1646833758482v3.png)
+<!--![inline](https://devzone.nordicsemi.com/resized-image/__size/1042x0/__key/communityserver-blogs-components-weblogfiles/00-00-00-00-28/2148.pastedimage1646833758482v3.png)-->
+
+![inline](../media/ble_connection.png)
 
 ---
 

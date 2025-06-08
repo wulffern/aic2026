@@ -70,6 +70,8 @@ texfiles:
 	${foreach f, ${FILES}, ${PYTHON} py/lecture.py latex lectures/${f}.md || exit ; }
 	cd pdf; make fix hash pandoc.tex
 
+images:
+	${foreach f, ${FILES}, echo ${f} && egrep "^!.*\(https://" lectures/${f}.md;}
 
 standalone: texfiles
 	${foreach f, ${FILES}, cd pdf; make standalone FNAME=${f}.tex;}

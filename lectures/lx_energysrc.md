@@ -179,8 +179,8 @@ Imagine we have Iron and copper wires, as shown below, and we heat one end. In t
 
 ---
 
-![fit](https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Thermoelectric_effect.svg/2560px-Thermoelectric_effect.svg.png)
-
+<!--![fit](https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Thermoelectric_effect.svg/2560px-Thermoelectric_effect.svg.png)-->
+![fit](../media/Thermoelectric_effect.png)
 <!--pan_doc:
 
 The voltage difference at the hot and cold end
@@ -203,11 +203,14 @@ valence band.
 
 -->
 
-![inline fit](https://upload.wikimedia.org/wikipedia/commons/e/e5/Absolute_Seebeck_coefficients_of_various_metals_up_to_high_temperatures.svg)
+<!--![inline fit](https://upload.wikimedia.org/wikipedia/commons/e/e5/Absolute_Seebeck_coefficients_of_various_metals_up_to_high_temperatures.svg)-->
+
+![inline fit](../media/Absolute_Seebeck_coefficients_of_various_metals_up_to_high_temperatures.svg)
 
 
+<!--![right fit](https://upload.wikimedia.org/wikipedia/commons/thumb/b/b7/Mott_Seebeck_silicon.svg/440px-Mott_Seebeck_silicon.svg.png)-->
 
-![right fit](https://upload.wikimedia.org/wikipedia/commons/thumb/b/b7/Mott_Seebeck_silicon.svg/440px-Mott_Seebeck_silicon.svg.png)
+![right fit](../media/Mott_Seebeck_silicon.png)
 
 ---
 
@@ -225,8 +228,8 @@ Assume we have a temperature difference of 50 degrees, then maybe we could get a
 100 mV. That's a low voltage, but is possible to use.
 --->
 
-![fit](https://upload.wikimedia.org/wikipedia/commons/thumb/8/8b/Thermoelectric_Generator_Diagram.svg/440px-Thermoelectric_Generator_Diagram.svg.png)
-
+<!--![fit](https://upload.wikimedia.org/wikipedia/commons/thumb/8/8b/Thermoelectric_Generator_Diagram.svg/440px-Thermoelectric_Generator_Diagram.svg.png)-->
+![fit](../media/Thermoelectric_Generator_Diagram.png)
 
 <!--pan_doc:
 
@@ -237,8 +240,8 @@ we heat one end, and cool the other. Maybe you've heard of [Peltier elements](ht
 
 ---
 
-![fit](https://upload.wikimedia.org/wikipedia/commons/thumb/3/3b/Thermoelectric_Cooler_Diagram.svg/440px-Thermoelectric_Cooler_Diagram.svg.png)
-
+<!--![fit](https://upload.wikimedia.org/wikipedia/commons/thumb/3/3b/Thermoelectric_Cooler_Diagram.svg/440px-Thermoelectric_Cooler_Diagram.svg.png)-->
+![fit](../media/Thermoelectric_Cooler_Diagram.png)
 
 
 ---
@@ -264,8 +267,8 @@ underneath Voyager in the picture below. The radioisotopes provide the heat, spa
 
 -->
 
-![left fit](https://upload.wikimedia.org/wikipedia/commons/thumb/6/60/Voyager_spacecraft_model.png/1280px-Voyager_spacecraft_model.png)
-
+<!--![left fit](https://upload.wikimedia.org/wikipedia/commons/thumb/6/60/Voyager_spacecraft_model.png/1280px-Voyager_spacecraft_model.png)-->
+![left fit](../media/1280px-Voyager_spacecraft_model.png)
 
 ---
 
@@ -459,8 +462,8 @@ Vibrations on a piezoelectric material will result in a AC voltage across the su
 <!--pan_skip: -->
 
 
-![fit](https://upload.wikimedia.org/wikipedia/commons/c/c4/SchemaPiezo.gif)
-
+<!--![fit](https://upload.wikimedia.org/wikipedia/commons/c/c4/SchemaPiezo.gif)-->
+![fit](../media/SchemaPiezo.gif)
 ---
 
 <!--pan_doc:
@@ -490,8 +493,8 @@ An example of piezoelectric energy harvester can be found in [A Fully Integrated
 
 Near Field Communication (NFC) operates at close physical distances
 
-![left fit](https://upload.wikimedia.org/wikipedia/commons/thumb/5/5d/FarNearFields-USP-4998112-1.svg/618px-FarNearFields-USP-4998112-1.svg.png)
-
+<!--![left fit](https://upload.wikimedia.org/wikipedia/commons/thumb/5/5d/FarNearFields-USP-4998112-1.svg/618px-FarNearFields-USP-4998112-1.svg.png)-->
+![left fit](../media/FarNearFields-USP-4998112-1.png)
 
 Reactive near field or inductive near field
 

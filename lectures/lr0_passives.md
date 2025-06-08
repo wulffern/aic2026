@@ -27,8 +27,8 @@ Max current ~ mA/$$\square$$
 
 <!--pan_skip: -->
 
-![right fit](https://www.researchgate.net/publication/329551868/figure/fig1/AS:702470942629891@1544493532703/General-structure-of-an-IC-with-BEOL-evidenced-a-SEM-section-of-an-Intel-Broadwell.jpg)
-
+<!--![right fit](https://www.researchgate.net/publication/329551868/figure/fig1/AS:702470942629891@1544493532703/General-structure-of-an-IC-with-BEOL-evidenced-a-SEM-section-of-an-Intel-Broadwell.jpg)-->
+![right fit](../media/General-structure-of-an-IC-with-BEOL-evidenced-a-SEM-section-of-an-Intel-Broadwell.jpg)
 ---
 
 | Layout | Must simulate/know |
@@ -215,8 +215,8 @@ Use foundry model
 
 3D electro magnetic simulation often needed
 
-![right 200%](https://s.zeptobars.com/nRF51822.jpg) 
-
+<!--![right 200%](https://s.zeptobars.com/nRF51822.jpg) -->
+![right 200%](../media/nRF51822.jpg) 
 ---
 
 # Variation in passives

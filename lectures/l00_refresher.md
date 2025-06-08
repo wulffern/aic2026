@@ -197,7 +197,7 @@ The discrete energy levels of the electron transition into bands of allowed ener
 -->
 
 <!--![right fit](https://upload.wikimedia.org/wikipedia/commons/thumb/e/ef/Solid_state_electronic_band_structure.svg/640px-Solid_state_electronic_band_structure.svg.png)-->
-![right fit](../media/Solid_state_electronic_band_structure.svg.png)
+![right fit](../media/Solid_state_electronic_band_structure.png)
 <!--pan_doc:
 
 <sub>Figure 3: [Electronic band structure, Wikipedia](https://en.wikipedia.org/wiki/Electronic_band_structure)</sub>

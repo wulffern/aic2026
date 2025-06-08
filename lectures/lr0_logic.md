@@ -499,12 +499,12 @@ Negative slack (over PVT[^1]) $$\Rightarrow$$ Timing is not OK
 ---
 ### [What is timing analysis](https://www.synopsys.com/glossary/what-is-static-timing-analysis.html)
 
-![inline](https://www.synopsys.com/content/dam/synopsys/solutions/design/timing-paths-diagram.jpg.imgw.850.x.jpg)![inline](https://www.synopsys.com/content/dam/synopsys/solutions/design/multiple-paths-through-combined-logic.jpg.imgw.850.x.jpg)
-
+<!--![inline](https://www.synopsys.com/content/dam/synopsys/solutions/design/timing-paths-diagram.jpg.imgw.850.x.jpg)![inline](https://www.synopsys.com/content/dam/synopsys/solutions/design/multiple-paths-through-combined-logic.jpg.imgw.850.x.jpg)-->
+![inline](../media/timing-paths-diagram.jpg)
 ---
 
-![inline](https://www.synopsys.com/content/dam/synopsys/solutions/design/paths-timing-analysis.jpg.imgw.850.x.jpg)![inline](https://www.synopsys.com/content/dam/synopsys/solutions/design/setup-hold-checks.jpg.imgw.850.x.jpg)
-
+<!--![inline](https://www.synopsys.com/content/dam/synopsys/solutions/design/paths-timing-analysis.jpg.imgw.850.x.jpg)![inline](https://www.synopsys.com/content/dam/synopsys/solutions/design/setup-hold-checks.jpg.imgw.850.x.jpg)-->
+![inline](../media/paths-timing-analysis.jpg)
 ---
 
 
@@ -1174,8 +1174,8 @@ Often 5 - 10 layers of metal
 |Metal 3 - 5 | Copper| Thicker| Between gates routing|
 |RDL | Aluminium | Ultra tick | Can tolerate high forces during wire bonding.|
 
-![right fit ](https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhicsE_FrEV9hyy3wtzIhV-sw-tyzHzCWnmzcTxQRNxIKG1DHggITsJyhU-06EmzWTQGnMStpR26YtA649XHxyh7EtqzbY1payEhG342Cc9jZtepb3B8dIUPb6NKs3kLKWRsQEJeuiRtue7QrlIz8xvr2mbRFcO7ROAlK1XGTwrLkVTi_kjsApyH1_q/s856/Skywater%20Blog%202.png)
-
+<!--![right fit ](https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhicsE_FrEV9hyy3wtzIhV-sw-tyzHzCWnmzcTxQRNxIKG1DHggITsJyhU-06EmzWTQGnMStpR26YtA649XHxyh7EtqzbY1payEhG342Cc9jZtepb3B8dIUPb6NKs3kLKWRsQEJeuiRtue7QrlIz8xvr2mbRFcO7ROAlK1XGTwrLkVTi_kjsApyH1_q/s856/Skywater%20Blog%202.png)-->
+![right fit](../media/skymetal.png)
 
 <!-- Figure from lect14-wires Integrated Circuit Design slide set -->
 

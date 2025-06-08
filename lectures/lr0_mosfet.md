@@ -216,7 +216,9 @@ transistors work.
 -->
 ---
 
-![fit](https://upload.wikimedia.org/wikipedia/commons/thumb/5/52/Red_and_blue_pill.jpg/1024px-Red_and_blue_pill.jpg) 
+<!--![fit](https://upload.wikimedia.org/wikipedia/commons/thumb/5/52/Red_and_blue_pill.jpg/1024px-Red_and_blue_pill.jpg) -->
+
+![fit](../media/Red_and_blue_pill.jpg)
 
 ---
 
@@ -1394,8 +1396,8 @@ $$ PSD_{GR}(f) \propto \text{Lorentzian shape} \approx \frac{A}{1 + \frac{f^2}{f
 Assume there are many sources of popcorn noise at different energy levels and time constants, then the sum of the spectral densities approaches flicker noise.
 $$ PSD_{flicker}(f) \propto \frac{1}{f} $$
 
-![right fit](https://upload.wikimedia.org/wikipedia/en/2/2a/Popcorn_noise_graph.png)
-
+<!--![right fit](https://upload.wikimedia.org/wikipedia/en/2/2a/Popcorn_noise_graph.png)-->
+![right fit](../media/Popcorn_noise_graph.png)
 ---
 
 

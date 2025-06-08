@@ -443,7 +443,7 @@ Use 'f' to zoom full screen
 
 Remember to save the schematic
 
-![](../media/JNW_EX.svg)
+![](../media/JNW_EX0.svg)
 
 ### Netlist schematic
 
