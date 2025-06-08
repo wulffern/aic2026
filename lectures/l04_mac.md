@@ -51,7 +51,9 @@ $$ a_{l+1} = \sigma(W_l a_l + b_l) $$
 A NN consists of addition, multiplication, and a non-linear function
 
 
-![right fit ](https://upload.wikimedia.org/wikipedia/commons/5/54/Feed_forward_neural_net.gif)
+<!--![right fit
+](https://upload.wikimedia.org/wikipedia/commons/5/54/Feed_forward_neural_net.gif) -->
+![right fit ](../media/nerualnet.png)
 
 ---
 
