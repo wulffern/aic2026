@@ -62,6 +62,7 @@ clean:
 	-rm *.latex
 	-rm *_fiximg.tex
 	-rm *.md
+	-rm l*.tex
 	-rm *.epub
 	-rm -rf media
 	-rm *.bbl

@@ -47,7 +47,6 @@ class Image():
             self.src = self.abstmp +  hashlib.sha256(os.path.basename(self.src).encode()).hexdigest() + "." + end
             #print(self.src)
             if(not os.path.exists(self.src)):
-                print(self.orgsrc,self.src)
                 os.system(f"cd {self.abstmp}; wget {url} -O {self.src}")
 
 
