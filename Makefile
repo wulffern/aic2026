@@ -93,3 +93,6 @@ tagpush:
 
 cish:
 	docker run --rm  -it -v `pwd`:/workspace/ -i wulffern/aic:${YEAR}_latest bash --login
+
+equations:
+	${foreach f,${FILES},cat lectures/${f}.md |perl -pe 's/\n//ig;'| perl -ne 'print "\n# ${f}\n\n";while(m/\$$\$$([^\$$]+)\$$\$$/ig){print "\n\$$\$$".$$1."\$$\$$\n"}';}

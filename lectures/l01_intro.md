@@ -18,6 +18,8 @@ date: 2025-01-09
 
 <!--pan_doc:
 
+**Status:** 1.0
+
 <iframe width="560" height="315" src="https://www.youtube.com/embed/DVBnfpi90Cs?si=nQKU0RLHBnv4NMzY" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 -->
@@ -56,6 +58,11 @@ I have a hobby trying to figure out how to make a new analog circuit design
 
 ![inline](../media/timeline.pdf)
 
+<!--pan_doc:
+<sub>Figure 1: My life </sub>
+-->
+
+
 
 ---
 
@@ -68,6 +75,15 @@ I have a hobby trying to figure out how to make a new analog circuit design
 ---
 
 # How I see our roles 
+
+<!--pan_doc: 
+
+In Figure 2 you can see how I think about the research universe. There are things we know 
+to be possible, things that actually are impossible (travel back in time, breaking thermodynamics, travel with a speed beyond light).
+
+Between the impossible, and the possible, lies the unknown. I consider our roles as follows:
+
+-->
 
 **Professors:** Guide students on what is impossible, possible, and hints on what
 might be possible 
@@ -84,6 +100,11 @@ might be possible
 
 ![left](../media/education.pdf)
 
+<!--pan_doc:
+<sub>Figure 2: Research Universe  </sub>
+-->
+
+
 ---
 
 
@@ -99,9 +120,7 @@ might be possible
 <!--pan_doc: 
 
 In 2020 the global integrated circuit market was [437.7 billion dollars](https://www.fortunebusinessinsights.com/integrated-circuit-market-106522)! 
-The market is expected to grow to 1136 billion in 2028.
-
-Integrated circuits enable pretty much all technologies.
+The market is expected to grow to 1136 billion in 2028. Integrated circuits enable all technologies.
 
 I will be dead in approximately 50 years, and will retire in approximately 20 years. 
 Everything I know will be gone (except for the small pieces I've left behind in videos or written word)
@@ -113,8 +132,7 @@ the stamina, patience, and brain necessary to learn some of the hardest topics i
 
 > Making integrated circuits (that work reliably) is not rocket science, it's much harder.
 
-In this course, we'll focus on analog ICs, because the real world is analog, and all ICs must have some 
-analog components, otherwise they won't work.
+
 
 -->
 
@@ -153,6 +171,8 @@ analog components, otherwise they won't work.
 
 ---
 
+<!--pan_skip: -->
+
 | Status             | Abstraction | Design        | Layout       | Why                                                     |
 |:------------------|:------------|:--------------|:-------------|:--------------------------------------------------------|
 | :construction:     | Chip        | SystemVerilog | digital      | Complex connections, few analog interfaces              |
@@ -169,13 +189,14 @@ analog components, otherwise they won't work.
 [.column]
 
 
-![inline](../media/analog_world.png)
 
-<sub> [https://circuitcellar.com/insights/tech-the-future/kinget-the-world-is-analog/](https://circuitcellar.com/insights/tech-the-future/kinget-the-world-is-analog/)</sub>
 
 <!--pan_doc:
 
-The steps to make integrated circuits is split in two. We have an analog flow, and a digital flow. 
+In this course, we'll focus on analog ICs, because the real world is analog, and all ICs must have some 
+analog components, otherwise they won't work.
+
+The steps to make integrated circuits is split in two. We have an analog flow, and a digital flow, as shown in Figure 3. 
 
 It's rare to find a single human that do both flows well. Usually people choose, and I think it's based on what they like and their personality.
 
@@ -184,9 +205,21 @@ If you like the world to be ordered, with definite answers, then it's likely tha
 If you're comfortable with not knowing, and an insatiable desire to understand how the world *really* works at a fundamental level, then 
 it's likely that you'll find analog flow interesting. 
 
+
 ![inline](../media/dig_des.svg)
 
+<!--pan_doc:
+<sub>Figure 3: Analog and Digital design process  </sub>
 -->
+
+
+-->
+
+<!--pan_skip: -->
+
+![inline](../media/analog_world.png)
+
+<sub> [https://circuitcellar.com/insights/tech-the-future/kinget-the-world-is-analog/](https://circuitcellar.com/insights/tech-the-future/kinget-the-world-is-analog/)</sub>
 
 ---
 
@@ -196,7 +229,7 @@ it's likely that you'll find analog flow interesting.
 
 ---
 
-##[fit] Will you tape-out an IC?
+#[fit] Will you tape-out an IC?
 
 <!--pan_doc:
 
@@ -367,8 +400,8 @@ I want to:
 
 <!--pan_doc:
 
-I'm not a mind reader, I can't see inside your head. That means, you must ask questions, only by your questions can I start to understand
-what pieces of information is missing from your head, or maybe somehow to correct your understanding. 
+I'm not a mind reader, I can't see inside your head. That means, you must ask questions. Only by your questions can I start to understand
+what pieces of information is missing from your head, or maybe somehow  correct your understanding. 
 
 At the same time, and similar to a mountain guide, you should not assume I'm always right. I'm human, and I will make mistakes. 
 And maybe you can correct my understanding of something. All I care about is to *really* understand how the world works, so if you think 
@@ -430,6 +463,11 @@ Buy a hard-copy of the book if you don't have that. Don't expect to understand t
 
 ![inline](../media/cjm.png)
 
+<!--pan_doc:
+<sub>Figure 4: The book we'll use  </sub>
+-->
+
+
 
 ---
 
@@ -472,7 +510,7 @@ Strict deadline 30'th of April. If you hand in 1'th of May at 00:00:01, then you
 ---
 
 
-# JNW (2025)
+# Project JNW (2025)
 
 
 **"You can use logic to justify almost anything. That's its power. And its flaw."** - Kathryn Janeway, Star Trek Voyager: Prime Factors
@@ -583,6 +621,7 @@ Some example questions could be
 - What is something funny that happened?
 
 Some examples answers could be:
+
 - My dog died yesterday, so I'm not feeling great today.
 - I woke up early, had an omelet, and went running, so I feel motivated and fantastic.
 - I feel *blaaah* today, motivation is lacking. 

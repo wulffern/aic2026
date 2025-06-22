@@ -10,8 +10,10 @@ date: 2025-01-23
 
 <!--pan_doc:
 
-Keywords: TempSense, Node Voltage, Ground, VDD, Clocks, Digital, Bias, RESET (POR), Package, Why ESD, 
-CDM (Gauss, INV), HBM (01,10,02,20,12,21) , GGNMOS, Latch-up
+**Keywords:** TempSense, Node Voltage, Ground, VDD, Clocks, Digital, Bias, RESET (POR), Package, Why ESD, 
+CDM (Gauss, INV), HBM (01,10,02,20,12,21**), GGNMOS, Latch-up
+
+**Status:** 1.0
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/6bqHO1iIJw0?si=8BkCgBFiA-bL5S7_" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
@@ -92,7 +94,7 @@ The temperature sensor has two supplies, one analog (3.3 V) and one digital (1.2
 
 We're using [TinyTapeout](http://www.tinytapeout.com)
 
-That has ability for both 3.3 V and 1.8 V I believe. An external low dropout regulator (LDO) provide the digital supply (1.8 V).
+That has ability for both 3.3 V and 1.8 V. An external low dropout regulator (LDO) provide the digital supply (1.8 V).
 
 See more at [Analog Specs]([Absolute maximum ratings](https://caravel-harness.readthedocs.io/en/latest/maximum-ratings.html))
 
@@ -152,20 +154,25 @@ How would we know?
 Most ICs will have a special analog block that can keep the digital logic, bias generators, clock generators, input/output and voltage regulators in a **safe**
 state until the power supply is high enough (for example 1.62 V). 
 
-One of the challenges with a POR is that we want to keep the system in a reset state until we're sure that the power is on. 
+One of the challenges with a Power On Reset (POR) is that we want to keep the system in a reset state until we're sure that the power is on. 
 Another challenge is that the POR should not consume current.
 
-If we make a level triggered (triggers when VDD reaches a certain level), then we need a reference, a comparator and maybe other circuits. As a result, potentially high current.
+If we make a level triggered (triggers when VDD reaches a certain level), then we need a reference, a compared and maybe other circuits. As a result, potentially high current.
 
 If we make a delay based POR, then we need a long delay, which means large resistors or capacitors. Accordingly, high cost. 
 
-Below is an idea for a [Power-On-Reset](https://patents.google.com/patent/GB2509147A/en?inventor=carsten+wulff&oq=carsten+wulff) (POR) I had way back when. 
+Below is an idea for a [Power-On-Reset](https://patents.google.com/patent/GB2509147A/en?inventor=carsten+wulff&oq=carsten+wulff)  I had way back when. 
 The POR uses a delay based on the tunneling current in a thin oxide transistor (2), and uses a thick-oxide transistor (3) as a capacitor. The output X would go to a Schmitt
 trigger (5).
 -->
 
 
 ![inline fit](../media/por.pdf)
+
+<!--pan_doc:
+<sub>Figure 1: Power On Reset using gate tunneling  </sub>
+-->
+
 
 
 ---
@@ -202,6 +209,11 @@ of the few ESD books in existence, shown below, and rely on you understanding of
 
 ![right 110%](../media/esdbook.jpg)
 
+<!--pan_doc:
+<sub>Figure 2: A book on ESD </sub>
+-->
+
+
 <!--pan_doc: 
 
 The industry has agreed on some common test criteria for electrostatic discharge. Test that model
@@ -213,6 +225,8 @@ then it's probably going to survive in volume production
 Standards for testing at [JEDEC](https://www.jedec.org/category/technology-focus-area/esd-electrostatic-discharge-0)
 
 ---
+
+<!--pan_skip: -->
 
 
 ## When do ESD events occur?
@@ -245,7 +259,13 @@ Models a device in an electric field where one pin is suddenly connected
 
 **System level ESD** 
 
+
+
+---
+
 <!--pan_doc:
+
+The JEDEC standard splits ESD events into Human body model, Charged device model, and System level ESD. 
 
 Once mounted on the PCB, the ICs can be more protected against ESD events, however, it depends on the PCB, and how that reacts to a current. 
 
@@ -257,8 +277,13 @@ We won't go into details on System level ESD, as that is more a PCB type of conc
 
 -->
 
----
 ## Human body model (HBM)
+
+<!--pan_doc:
+
+HBM is the "simple" version of ESD, a model can be seen in Figure 3. Some of the properties of HBM are: 
+
+-->
 
 - Models a person touching a device with a finger
 - **Long** duration (around 100 ns)
@@ -267,6 +292,14 @@ We won't go into details on System level ESD, as that is more a PCB type of conc
 - 4 kV HBM ESD is 2.67 A peak current
 
 ![right fit](../media/esd_hbm_finger.pdf)
+
+<!--pan_doc:
+<sub>Figure 3: Human body model (HBM)</sub>
+
+More on circuits that protect from HBM later.
+
+-->
+
 
 ---
 ## Charged device model (CDM)
@@ -293,14 +326,21 @@ $$ \oint_{\partial \Omega} \mathbf{E} \cdot d\mathbf{S} = \frac{1}{\epsilon_0} \
 
 <!--pan_doc:
 
-So there is no external electric field from the IC.
+Which says that the electric field through the surface is the volume integral of the charges inside the surface. 
+If there are the same amount of protons and electrons, and the distribution is even, then there will be no field through IC surface.
+As such, there is no external electric field from the IC.
 
 If we place an IC in an electric field, the charges inside will redistribute. Flip the IC on it's back, 
-place it on an metal plate with an insulator in-between, and charge the metal plate to 1 kV. 
+place it on an metal plate with an insulator in-between, and charge the metal plate to 1 kV, as shown in Figure 4.
 
 -->
 
 ![left fit](../media/cdm.pdf)
+
+<!--pan_doc:
+<sub>Figure 4: Charged Device Model (CDM) testing</sub>
+-->
+
 
 <!--pan_doc: 
 
@@ -333,6 +373,11 @@ The gate source of the PMOS in the second inverter will see approximately 1 kV a
 
 ![fit](../media/cdm1.pdf)
 
+<!--pan_doc:
+<sub>Figure 5: Cross domain voltage problem with CDM (or indeed HBM) events </sub>
+-->
+
+
 <!--pan_doc: 
 
 Assuming some luck, then VDD1 and VDD2 are separate, but the same voltage, or at least close enough, I can take two diodes, connected in opposite
@@ -356,30 +401,39 @@ CDM is tricky, because there are so many details, and it's easy to miss one that
 The positive current enters the VSS, and leaves via the VDD, so our supplies are flipped up-side down. 
 It's a fair assumption that none of the circuits inside will work as intended.
 
-But the IC must not die, so we have to lead the current to ground somehow
+But the IC must not die, so we have to lead the current to ground somehow.
  
  -->
 
 
 ![left fit](../media/esd_hbm_model.pdf)
 
+<!--pan_doc:
+<sub>Figure 6: ESD HBM zap example </sub>
+-->
+
+
 ---
 
-#[fit]  Permutations
 
 <!--pan_doc:
 
-Let's simplify and think of the possible permutations, shown in the figure below. We don't know where the current will enter 
+Let's simplify and think of the possible permutations, shown in Figure 7. We don't know where the current will enter 
 nor where it will leave our circuit, so we must make sure that all combinations are covered.
 
 _-->
 
 ![right fit](../media/l02_hbm_overview.pdf)
 
+<!--pan_doc:
+<sub>Figure 7: ESD zap permutations </sub>
+-->
+
+
 ---
 
 <!--pan_doc: 
-When the current enters VSS and must leave via VDD, then it's simple, we can use a diode. 
+When the current enters VSS and must leave via VDD, then it's simple, we can use a diode, as shown in Figure 8. 
 
 Under normal operation the diode will be reverse biased, and although it will add some leakage, it will 
 not affect the normal operation of our IC.
@@ -389,14 +443,25 @@ not affect the normal operation of our IC.
 
 ![inline fit](../media/l02_01.pdf)
 
+<!--pan_doc:
+<sub>Figure 8: Protection for zap from ground to VDD </sub>
+-->
+
+
 ---
 
 <!--pan_doc:
-The same is true for current in on VSS and out on PIN. Here we can also use a diode. 
+The same is true for current in on VSS and out on PIN. Here we can also use a diode, as shown in Figure 9. 
 
 -->
 
 ![inline fit](../media/l02_02.pdf)
+
+
+<!--pan_doc:
+<sub>Figure 9: Protection for zap from ground to PIN </sub>
+-->
+
 
 ---
 
@@ -415,27 +480,39 @@ drain very fast, and your phone might even catch fire.
 As such, ESD design engineers have a "ESD design window". Never let the ESD circuit trigger when VDD < normal, but always trigger the ESD circuit 
 before VDD $>$ breakdown of circuit.
 
-A circuit that can sometimes be used, if the ESD design window is not too small, is the Grounded-Gate-NMOS in the figure 
-below. 
+A circuit that can sometimes be used, if the ESD design window is not too small, is the Grounded-Gate-NMOS in Figure 10. 
 
 -->
 
 ![inline fit](../media/l02_all.pdf)
+<!--pan_doc:
+<sub>Figure 10: Full protection with diodes and grounded gate NMOS (GGNMOS) </sub>
+-->
+
 
 ---
 
-## Why does this work?
+# The grounded gate NMOS
 
-![left fit](../media/l02_ggnmos.pdf)
 
 <!--pan_doc: 
 
-If you try the circuit above in with the normal BSIM spice model, it will not work. The transistor model
+If you try the circuit in Figure 11 with the normal BSIM spice model, it will not work. The transistor model
 does not include that part of the physics. 
 
-We need to think about how electrons, holes PN-junctions and bipolars work. 
+We need to think about how electrons, holes PN-junctions and bipolars work. Let's refresh quantum mechanics a bit.
 
-### Quick refresh of solid-state physics
+-->
+
+![left fit](../media/l02_ggnmos.pdf)
+<!--pan_doc:
+<sub>Figure 11: The grounded gate NMOS (GGNMOS) </sub>
+-->
+
+
+
+<!--pan_doc:
+
 
 Electrons sticking to atoms (bound electrons), can only exist at discrete energy levels. As we bring atoms
 closer to each-other the discrete energy levels will split, as computed from Schrodinger, into bands of allowed energy states. 
@@ -454,9 +531,9 @@ How many free charges there are in a band is given by Fermi-Dirac distribution a
 If an electron, or a hole have sufficient energy (accelerated by a field), they can free an electron/hole pair 
 when they scatter off an atom. If you break too many bonds between atoms, your material will be damaged. 
 
-### The grounded-gate NMOS
 
-Assume a transistor like the one below. The gate, source and bulk is connected to ground. The drain is connected to a high voltage.
+Assume a transistor like the one in Figure 12. The gate, source and bulk is connected to ground. The drain is connected to a high voltage.
+
 
 -->
 
@@ -464,9 +541,16 @@ Assume a transistor like the one below. The gate, source and bulk is connected t
 
 ![fit](../media/ggnmos.pdf)
 
+<!--pan_doc:
+<sub>Figure 12: Cross section of the grounded gate NMOS </sub>
+-->
+
+
 <!--pan_doc: 
 
-### Avalanche 
+The process of a GGNMOS will be (1) Avalanche, (2) hole accumulation, (3) forward bias of PN-junction, and (4) direct electron
+current from source to drain. 
+
 
 The first thing that can happen is that the field in the depletion zone between drain and bulk (1) is large, due to the high voltage on drain, and the thin depletion region. 
 
@@ -482,10 +566,10 @@ a new electron/hole pair (energy level is set by impact ionization of the atom),
 One electron turn into two, two to four, four to eight and so on. The number of electrons can quickly become large, and we have an
 avalanche condition. Same as a snow avalanche, where everything was quiet and nice, now suddenly, there is a big trouble.
 
+
 Usually the avalanche process does not damage anything, at least initially, but it does increase the hole concentration in the bulk.
 The number of holes in the bulk will be the same as the number of electrons freed in the depletion region.
 
-### Forward bias of PN-junction 
 
 The extra holes underneath the transistor will increase the local potential. If the substrate contact (5) is far away, then the 
 local potential close to the source/bulk PN-junction (3) might increase enough to significantly increase the number of electrons injected from source.
@@ -494,7 +578,6 @@ Some of the electrons will find a hole, and settle down, while others will diffu
 close to the drain region, and the field in the depletion zone, they will be accelerated by the drain/bulk field, and can 
 further increase the avalanche condition. 
 
-### Bad things can happen 
 
 For a normal transistor, not designed to survive, the electron flow (4) can cause local damage to the drain. Normally there is nothing 
 that prevents the current from increasing, and the transistor will eventually die.
@@ -502,9 +585,6 @@ that prevents the current from increasing, and the transistor will eventually di
 If we add a resistor to the drain region (unscilicided drain), however, we will slow down the electron flow, and we can get a stable condition,
 and design a transistor that survives.
 
-
-
-### What have we done 
 
 Turns out, that every single NMOS has a sleeping bear. A parasitic bipolar. That's exactly what this GGNMOS is, a bipolar transistor, although a
 pretty bad one, that is designed to trigger when avalanche condition sets in and is designed to survive. 
@@ -553,6 +633,11 @@ that the voltage across the transistor gate does not go to breakdown levels.
 
 ![original fit](../media/l6/esd.pdf)
 
+<!--pan_doc:
+<sub>Figure 13: Full protection of an input including secondary protection </sub>
+-->
+
+
 ---
 
 ##[fit] Input buffer
@@ -574,6 +659,10 @@ The last inverter is just to get the polarity of the TO\_CORE signal the same as
 -->
 
 ![right fit](../media/l6/fig_methodology.pdf)
+<!--pan_doc:
+<sub>Figure 14: Full digital input including Schmitt trigger and level shifters </sub>
+-->
+
 
 ---
 
@@ -582,17 +671,22 @@ The last inverter is just to get the polarity of the TO\_CORE signal the same as
 ---
 
 
-## How can current in one place lead to a current somewhere else?
 
 <!--pan_doc:
 
 Another fun physics problem can happen in digital logic that is close to an electron source, like a connection to the real world,
 what we call a pad. A pad is where you connect the bond-wire in a QFN type of package with [wire-bonding](https://en.wikipedia.org/wiki/Wire_bonding)
 
-Assume we have the circuit below.
+Assume we have the circuit in Figure 15. Under certain conditions we can get a short from VDD to ground. 
+
 -->
 
 ![left fit](../media/l02_latchup.pdf)
+
+<!--pan_doc:
+<sub>Figure 15: Inverter that suddenly shorts from VDD to ground located close to a PAD</sub>
+-->
+
 
 ---
 
@@ -603,6 +697,8 @@ Logic cells close to large NMOS pad drivers are prone to latch-up.
 The latch-up process can start with electrons injected into the p-type substrate.
 
 ![right 200%](../media/fig_inv.pdf)
+
+
 
 ---
 
@@ -621,15 +717,23 @@ The latch-up process can start with electrons injected into the p-type substrate
 
 <!--pan_doc:
 
-We can draw a cross section of the inverter.
+Consider the cross section of the inverter in Figure 16. The latch-up process starts
+with electron injection (1), then forward bias of PMOS source/drain junction (2), forward bias of NMOS source/drain junction (3) , and finally positive feedback .
+
 
 -->
 
 
 ![fit](../media/scr_eh.pdf)
 
+<!--pan_doc:
+<sub>Figure 16: Cross section of an inverter </sub>
+-->
+
+
 
 <!--pan_doc: 
+
 
 ### Electron injection
 
@@ -639,6 +743,7 @@ electrons into the substrate/bulk (1) and electrons will diffuse around.
 If some of the electrons comes close to the N-well depletion region (2) they will be swept across by the built-in field.
 As a result, the potential of the N-well will decrease, and we can forward bias the source or drain junction
 of a PMOS. 
+
 
 ### Forward biased PMOS source or drain junction
 
@@ -656,7 +761,7 @@ bulk. If this happens, then we get electron injection into bulk. Some of those e
 
 ### Positive-feedback
 
-Now we have a condition where the process accellerates, and locks-up. Once turned on, this circuit will not turn off until the supply is low.
+Now we have a condition where the process accelerates, and locks-up. Once turned on, this circuit will not turn off until the supply is low.
 
 This is a phenomena called latch-up. Similar to ESD circuits, latch-up can short the supply to ground, and make things burn. 
 
@@ -679,7 +784,10 @@ If we can trigger the thyristor when the VDD shoots to high, then we can create 
 
 See [low-leakage](https://www.sofics.com/features/low-leakage/) ESD for a few examples.
 
-A model with the parasitic bipolars can be seen below.
+A model with the parasitic bipolars can be seen in Figure 17. The resistors in the picture is to emulate what 
+happens when there is a current injected into the base of the NPN or PNP. I would recommend that you think through
+the physics instead of using the parasitic bipolar circuits. I've found the parasitic bipolar leads you down the wrong 
+path when you actually want to understand the physics of latch-up.
 
 -->
 
@@ -687,6 +795,10 @@ A model with the parasitic bipolars can be seen below.
 
 
 ![original fit](../media/l8/scr_model.pdf)
+
+<!--pan_doc:
+<sub>Figure 17: Cross section of an inverter including the parasitic bipolars </sub>
+-->
 
 
 ---

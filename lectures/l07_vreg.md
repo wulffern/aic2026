@@ -344,9 +344,10 @@ The OTA in the LDO is modeled by the B source. Notice the use of the tanh functi
 
 -->
 
-```
+```bash
 * Pass-fet
-XM1 OUT G VDD VDD sky130_fd_pr__pfet_01v8 L=0.252 W=11.52 nf=2 ...  m=1000
+XM1 OUT G VDD VDD sky130_fd_pr__pfet_01v8 
++ L=0.252 W=11.52 nf=2 ...  m=1000
 
 * Reference
 VREF VREF 0 dc 0.8

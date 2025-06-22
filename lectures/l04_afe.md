@@ -791,7 +791,7 @@ You can find the schematic for the OTA at
 
 [CNR\_OTA\_SKY130NM](https://github.com/wulffern/cnr_ota_sky130nm)
 
-![fit inline](../media/l04_ota_sch.svg)
+![fit inline](../media/l04_ota_sch.pdf)
 
 
 <!--pan_doc:
