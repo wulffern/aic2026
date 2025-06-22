@@ -30,7 +30,9 @@ Introduction to **circuit architectures**
 
 <!--pan_doc:
 
-Keywords: VREF, IREF, VD, BGAP, LVBGAP, VI, GMCELL
+**Keywords:** VREF, IREF, VD, BGAP, LVBGAP, VI, GMCELL
+
+**Status:** 0.5
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/3Z4YXoVmxx8?si=9JI3Cw1d8Fdip_7t" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 

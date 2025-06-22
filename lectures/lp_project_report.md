@@ -4,6 +4,8 @@ date: 2023-10-26
 
 <!--pan_title: How to write a project report-->
 
+**Status:** 0.8
+
 # Why
 > Them who has a Why? in life can tolerate almost any How?
 

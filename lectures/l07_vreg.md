@@ -15,7 +15,9 @@ date: 2025-02-27
 
 <!--pan_doc:
 
-Keywords: Battery, Vreg, LDOP, LDON, Flipped voltage follower, Buck, Boost, Load, Line, PSRR, MAX C, Quiescent, Settling, Efficiency, PWM, PFM
+**Keywords:** Battery, Vreg, LDOP, LDON, Flipped voltage follower, Buck, Boost, Load, Line, PSRR, MAX C, Quiescent, Settling, Efficiency, PWM, PFM
+
+**Status:** 0.5
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/Nf-MXWMP1KI?si=zaxwrVcJEu4l_7tG" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 

@@ -57,6 +57,8 @@ Energy density $$ \Rightarrow [250,693]\text{ }mWh/cm^3 $$
 
 <!--pan_doc:
 
+**Status:** 0.3
+
 <iframe width="560" height="315" src="https://www.youtube.com/embed/Tb2CFHLmkzw?si=4f29EI_Hwj3My9fn" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 Integrated circuits are wasteful of energy. Digital circuits charge transistor gates to change states, and when

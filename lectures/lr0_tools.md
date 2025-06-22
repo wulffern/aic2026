@@ -8,6 +8,8 @@ date: 2025-01-01
 
 <!--pan_title: Sky130nm tutorial -->
 
+**Status:** 1.0
+
 # Tools
 
 I would strongly recommend that you install all tools locally on your system. 

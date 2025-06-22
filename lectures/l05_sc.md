@@ -18,7 +18,9 @@ date: 2025-02-13
 
 <!--pan_doc:
 
-Keywords: SC DAC, SC FUND, DT, Alias, Subsample, Z Domain, FIR, IIR, SC MDAC, SC INT, Switch, Non-Overlap, VBE SC, Nyquist
+**Keywords:** SC DAC, SC FUND, DT, Alias, Subsample, Z Domain, FIR, IIR, SC MDAC, SC INT, Switch, Non-Overlap, VBE SC, Nyquist
+
+**Status:** 0.5
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/WWwDGFx1Z08?si=GxuhbdTRLbs-ML_1" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 

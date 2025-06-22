@@ -19,6 +19,8 @@ date: 2025-01-01
 
 <!--pan_doc: 
 
+**Status:** 0.3
+
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/IrnHm3dRKD0?si=4Xm203ALvQkHCIDN" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
@@ -756,7 +758,7 @@ V_{eff} V_{DS} - V_{DS}^2/2
 \end{cases}
 $$
 
-<!--pan_skip -->
+<!--pan_skip: -->
 
 ![right fit](../media/vdrain.pdf)
 

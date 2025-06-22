@@ -405,7 +405,6 @@ But the IC must not die, so we have to lead the current to ground somehow.
  
  -->
 
-
 ![left fit](../media/esd_hbm_model.pdf)
 
 <!--pan_doc:
@@ -421,9 +420,9 @@ But the IC must not die, so we have to lead the current to ground somehow.
 Let's simplify and think of the possible permutations, shown in Figure 7. We don't know where the current will enter 
 nor where it will leave our circuit, so we must make sure that all combinations are covered.
 
-_-->
+-->
 
-![right fit](../media/l02_hbm_overview.pdf)
+![inline fit](../media/l02_hbm_overview.pdf)
 
 <!--pan_doc:
 <sub>Figure 7: ESD zap permutations </sub>
@@ -485,6 +484,7 @@ A circuit that can sometimes be used, if the ESD design window is not too small,
 -->
 
 ![inline fit](../media/l02_all.pdf)
+
 <!--pan_doc:
 <sub>Figure 10: Full protection with diodes and grounded gate NMOS (GGNMOS) </sub>
 -->
@@ -505,6 +505,7 @@ We need to think about how electrons, holes PN-junctions and bipolars work. Let'
 -->
 
 ![left fit](../media/l02_ggnmos.pdf)
+
 <!--pan_doc:
 <sub>Figure 11: The grounded gate NMOS (GGNMOS) </sub>
 -->
@@ -659,6 +660,7 @@ The last inverter is just to get the polarity of the TO\_CORE signal the same as
 -->
 
 ![right fit](../media/l6/fig_methodology.pdf)
+
 <!--pan_doc:
 <sub>Figure 14: Full digital input including Schmitt trigger and level shifters </sub>
 -->

@@ -15,9 +15,13 @@ date: 2025-01-08
 <!--pan_title: Integrated Passives -->
 
 
+**Status:** 0.3
+
 # Metal in ICs is not wire in schematic
 
 <!--pan_doc: 
+
+
 
 Metal wires in an integrated circuit comes in two types, copper and aluminium.
 

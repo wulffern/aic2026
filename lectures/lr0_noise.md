@@ -8,6 +8,8 @@ date: 2025-02-06
 
 <!--pan_title: Noise-->
 
+**Status:** 0.5
+
 # Noise
 
 Noise is a phenomena that occurs in all electronic circuits. It places a

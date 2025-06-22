@@ -10,6 +10,8 @@ date: 2025-01-08
 
 <!--pan_title: CMOS Logic -->
 
+**Status:** 0.3
+
 
 #[fit] Analog transistor to digital transistor
 ---
