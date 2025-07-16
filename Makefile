@@ -15,6 +15,7 @@ endif
 #	lr0_logic \
 
 FILES = l01_intro \
+		l00_jayn \
 		l00_refresher \
 	l00_diode \
 	lr0_noise \
