@@ -50,21 +50,22 @@ Jayn was happy in her helium atom, but the universe never stands still. Another
 proton came, then another, and eventually Jayn found herself part of a silicon
 atom, orbiting a nucleus with 14 protons and -- of course -- 14 electrons.
 
-
 She was no longer close to the nucleus. Now, she was far out on the edge, in the
 outermost orbital shell. From there, she could feel the presence of everything around
-her -- not just her own atom, but all the neighboring silicon atoms as well. Their
-pull wasn't strong, but it was always there, like the faint crash of distant
-waves on a shore.
+her -- not just her own atom, but all the neighboring atoms as well.
 
-Jayn stayed part of that silicate crystal for around five billion years. She was
-part of a grand, quiet beach, washed over by time. But one day, everything
+But one day, everything
 changed. Her star exploded -- a supernova -- and she was flung
 across the universe.
 
 For a time, Jayn was adrift again. Not alone, but not close to anything
 familiar. Eventually, she was caught in the gravity of a forming planet -- the one
-we now call Earth. She spent billions of years tumbling through its oceans,
+we now call Earth. There her silicon atom joined with other atoms, mostly oxygen. Their
+pull wasn't strong, but it was always there, like the faint crash of distant
+waves on a shore. 
+
+Jayn stayed part of that silicate crystal for around five billion years. She was
+part of a grand, quiet beach, washed over by time. She spent billions of years tumbling through its oceans,
 sometimes bonding with other atoms, sometimes drifting free. One day, she washed
 up on a beach, part of a grain of sand. And there she stayed for a long, long
 time.
@@ -83,19 +84,23 @@ where every atom around her was another silicon atom, each in perfect order. For
 the first time, she could feel the full, equal pull of the electrons and nuclei
 around her -- like a vast, invisible ocean of charges. It was electrifying.
 
-Time usually passed slowly for Jayn. Electrons move so fast that the rest of the
-universe seems to crawl. But now, she could feel something speeding up. A
-disturbance. She couldn't tell what it was, only that it was coming.
+
+Time usually passed slowly for Jayn. Electrons moved so fast that the rest of
+the universe seemed to crawl. But now, she could feel something speeding up.
+
+
+Electrons were whizzing by—sometimes so fast that they couldn't physically move
+any faster, bumping into other atoms in their haste. A disturbance. She couldn't
+tell what it was, only that it was coming.
 
 Then one day, it happened.
 
 Another electron struck. It hit hard -- so hard that Jayn was knocked from her
-orbit. For a brief moment, she was free. She flew through the lattice,
-disoriented, until she found another open spot -- an empty energy state --where she
+orbital shell. For a brief moment, she was free. She flew through the crystal lattice,
+disoriented, until she found another open spot -- an empty energy state -- where she
 could settle again. It was strange but exhilarating.
 
-
-And did you know? The presence of just that one electron -- Jayn --was enough to
+And did you know? The presence of just that one electron -- Jayn -- was enough to
 shift the threshold of a transistor. It changed the flow of current, altered the
 frequency of an oscillator. One tiny change, one tiny electron, had changed the
 world.
@@ -106,6 +111,5 @@ identical to all her cousins and siblings.
 
 The only differences between them are where they are, their apparent mass, and
 their speed through the universe (and yes, their "spin").
-
 
 So ends the story of Jayn -- our 13.8 billion-year-old friend.
