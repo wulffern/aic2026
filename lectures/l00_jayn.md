@@ -2,8 +2,6 @@ date: 2025-07-16
 
 <!--pan_title: The Story of Jayn-->
 
-# The Story of Jayn 
-
 I want to tell you a story about Jayn. Jayn is an electron. Just one among
 countless others. There's nothing particularly special about Jayn, but he plays
 an important role in our story.
@@ -60,12 +58,11 @@ across the universe.
 
 For a time, Jayn was adrift again. Not alone, but not close to anything
 familiar. Eventually, she was caught in the gravity of a forming planet -- the one
-we now call Earth. There her silicon atom joined with other atoms, mostly oxygen. Their
-pull wasn't strong, but it was always there, like the faint crash of distant
-waves on a shore. 
+we now call Earth. Her silicon atom joined with other atoms, mostly oxygen. The
+allure of the other atoms  wasn't strong, but it was always there.
 
-Jayn stayed part of that silicate crystal for around five billion years. She was
-part of a grand, quiet beach, washed over by time. She spent billions of years tumbling through its oceans,
+Jayn stayed part of that silicate crystal for around five billion years.
+She spent billions of years tumbling through Earth's oceans,
 sometimes bonding with other atoms, sometimes drifting free. One day, she washed
 up on a beach, part of a grain of sand. And there she stayed for a long, long
 time.
@@ -101,7 +98,7 @@ disoriented, until she found another open spot -- an empty energy state -- where
 could settle again. It was strange but exhilarating.
 
 And did you know? The presence of just that one electron -- Jayn -- was enough to
-shift the threshold of a transistor. It changed the flow of current, altered the
+shift the threshold voltage of a transistor. It changed the flow of current, altered the
 frequency of an oscillator. One tiny change, one tiny electron, had changed the
 world.
 
