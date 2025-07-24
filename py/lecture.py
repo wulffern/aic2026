@@ -363,7 +363,9 @@ class Latex(Lecture):
             r"^\* TOC":"",
             r"^{:toc }":"",
             r"\*\*Q:\*\*" : "",
-            r"#(.*) Thanks!" : ""
+            r"#(.*) Thanks!" : "",
+            r"<sub>" :"<small><sub>_",
+            r"</sub>" :"_</sub></small>"
             #"^---":"#",
         }
 

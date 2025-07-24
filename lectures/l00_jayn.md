@@ -82,31 +82,31 @@ the first time, she could feel the full, equal pull of the electrons and nuclei
 around her -- like a vast, invisible ocean of charges. It was electrifying.
 
 
-Time usually passed slowly for Jayn. Electrons moved so fast that the rest of
-the universe seemed to crawl. But now, she could feel something speeding up.
+<!--Time usually passed slowly for Jayn. Electrons moved so fast that the rest of
+the universe seemed to crawl. But now, she could feel something speeding up. -->
 
 
-Electrons were whizzing by—sometimes so fast that they couldn't physically move
+<!-- Electrons were whizzing by—sometimes so fast that they couldn't physically move
 any faster, bumping into other atoms in their haste. A disturbance. She couldn't
-tell what it was, only that it was coming.
+tell what it was, only that it was coming. -->
 
-Then one day, it happened.
-
-Another electron struck. It hit hard -- so hard that Jayn was knocked from her
+Then one day, it happened. Another electron struck. It hit hard -- so hard that Jayn was knocked from her
 orbital shell. For a brief moment, she was free. She flew through the crystal lattice,
 disoriented, until she found another open spot -- an empty energy state -- where she
 could settle again. It was strange but exhilarating.
 
 And did you know? The presence of just that one electron -- Jayn -- was enough to
-shift the threshold voltage of a transistor. It changed the flow of current, altered the
-frequency of an oscillator. One tiny change, one tiny electron, had changed the
-world.
+shift the threshold voltage of a transistor, change the flow of bias current, alter the
+frequency of an oscillator, cause my phone
+to loose the Bluetooth link to my door look, and made me swear a number of
+times until the Bluetooth link finally reconnected, many, many, many seconds later.
 
 And yet, her story doesn't end. Because Jayn, like all electrons, never really
 ends. She may pop in and out of existence, but she is always there -- unchanged,
 identical to all her cousins and siblings.
 
-The only differences between them are where they are, their apparent mass, and
-their speed through the universe (and yes, their "spin").
+The only differences between them are where they are, their momentum and yes, their "spin".
 
 So ends the story of Jayn -- our 13.8 billion-year-old friend.
+
+\newpage
