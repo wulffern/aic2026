@@ -86,7 +86,7 @@ For 2026 I should do the following changes:
 
 I love programming and automation. Not much makes me more happy than using the
 same source (the [slide
-markdowns](https://github.com/wulffern/aic2024/tree/main/lectures)), to generate the [lecture notes](https://analogicus.com/aic2024/), to translate
-into the [book](https://analogicus.com/aic2024/assets/aic.pdf) your looking at right now.
+markdowns](https://github.com/wulffern/aic2025/tree/main/lectures)), to generate the [lecture notes](https://analogicus.com/aic2025/), to translate
+into the [book](https://analogicus.com/aic2025/assets/aic.pdf) your looking at right now.
 
-If you find an error in what I've made, then [fork](https://docs.github.com/en/get-started/quickstart/fork-a-repo) [aic2024](https://github.com/wulffern/aic2024), fix , [commit](https://git-scm.com/docs/git-commit), [push](https://git-scm.com/docs/git-push) and [create a pull request](https://docs.github.com/en/desktop/contributing-and-collaborating-using-github-desktop/working-with-your-remote-repository-on-github-or-github-enterprise/creating-an-issue-or-pull-request). That way, we use the global brain power most efficiently, and avoid multiple humans spending time on discovering the same error.
+If you find an error in what I've made, then [fork](https://docs.github.com/en/get-started/quickstart/fork-a-repo) [aic2025](https://github.com/wulffern/aic2025), fix , [commit](https://git-scm.com/docs/git-commit), [push](https://git-scm.com/docs/git-push) and [create a pull request](https://docs.github.com/en/desktop/contributing-and-collaborating-using-github-desktop/working-with-your-remote-repository-on-github-or-github-enterprise/creating-an-issue-or-pull-request). That way, we use the global brain power most efficiently, and avoid multiple humans spending time on discovering the same error.
