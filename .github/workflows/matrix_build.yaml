@@ -81,7 +81,6 @@ jobs:
           apt-get -y install ghostscript pip poppler-utils pandoc wget \
           imagemagick python3-svglib python3-venv texlive
           python -m venv /pyenv && /pyenv/bin/python3 -m pip install click svglib numpy pandas matplotlib
-      - name: Build posts
       - name: Build ${{ matrix.target }}
         shell: bash
         run: |
