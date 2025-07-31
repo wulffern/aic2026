@@ -17,7 +17,7 @@ permissions:
 
 # Allow one concurrent deployment
 concurrency:
-  group: "pages"
+  group: "docs"
   cancel-in-progress: true
 
 jobs:
@@ -79,7 +79,7 @@ jobs:
       - name: Install
         run: |
           sudo apt-get update
-          sudo apt-get -y install ghostscript pip poppler-utils pandoc wget \
+          sudo apt-get -y install ghostscript pip poppler-utils wget \
           imagemagick python3-svglib python3-venv texlive
           sudo mkdir /pyenv && sudo chmod 777 /pyenv
           python -m venv /pyenv && /pyenv/bin/python3 -m pip install click svglib numpy pandas matplotlib
