@@ -12,8 +12,9 @@ me -- but that's not where Jayn's story begins.
 
 
 Jayn's story begins 13.8 billion years ago. Jayn popped into existence out of the
-emptyness, seemingly alone in the world. Well, not entirely alone. Jayn was
-surrounded by cousins and siblings, an ocean of elementary particles. There were
+emptiness, seemingly alone in the world. Well, not entirely alone. Surrounded by
+cousins and siblings, 
+an ocean of elementary particles. There were
 quarks, there were electrons, and they all swam together in a sea of raw energy
 and matter.
 
@@ -35,7 +36,7 @@ two. A new proton had joined, forming helium. This meant there was space for
 another electron too -- Jayn's first real companion.
 
 They shared the same orbital space, something Jayn had never experienced before.
-Usually, if another electron came too close, one of them would be pushed into another energy state.
+Usually, if another electron came too close, one of them would yield into another energy state.
 But not this time. This was different. They could exist in the same place, with
 the same energy. How? Physicists would later call it "spin". Jayn didn't know
 what "spin" meant, it was weird, but Jayn liked it. It meant Jayn wasn't alone.
@@ -49,12 +50,11 @@ outermost orbital shell. From there, Jayn could feel the presence of everything 
 -- not just the self atom, but all the neighboring atoms as well.
 
 One day, everything
-changed. The star exploded -- a supernova -- and Jayn was flung
-across the universe.
+changed. The star exploded -- a supernova -- flung Jayn into the universe.
 
 For a time, Jayn was adrift. Not alone, but not close to anything
-familiar. Eventually, Jayn was caught in the gravity of a forming planet -- the one
-we now call Earth. The silicon atom joined with other atoms, mostly oxygen, bound together by Jayn's shared orbital shell between the atoms. 
+familiar. Eventually, the gravity of a forming planet -- the one
+we now call Earth -- caught Jayn's atom. The silicon atom joined with other atoms, bound together by Jayn's shared orbital shell between the atoms. 
 It was easier to share the electrons than to be apart. The
 allure of the other atoms wasn't strong, but it was always there.
 
@@ -63,35 +63,36 @@ sometimes bonding with other atoms, sometimes drifting free. One day, Jayn washe
 up on a beach, part of a grain of sand. And there Jayn stayed for a long, long
 time.
 
-Now and then, Jayn was swept out to sea, then returned, living a simple,
+Now and then, out to sea Jayn went, then returned, living a simple,
 chaotic, quiet life.
 
-But even quiet lives face change. One day, Jayn was picked up -- scooped up in a
-bucket of sand, melted down, and turned into something new. Melted just meant more energy, more vibration. 
+But even quiet lives face change. One day, scooped up in a
+bucket. melted down, and turned into something new. Melted just meant more
+energy, Jayn had experienced that before, just more vibration. 
 Sometimes, because of the vibrations, Jayn even had enough energy to escape the atom 
 briefly before settling back down. But this
 time was different.
 
 This time, Jayn became part of something incredibly uniform: a crystal lattice
 where every atom was another silicon atom, each in perfect order, with each atom sharing it's
- four outermost electrons in orbital shells with the neighbours. For
+ four outermost electrons in orbital shells with the neighbors. For
 the first time, Jayn could feel the full, equal pull of the electrons and nuclei
-around -- like a vast, invisible ocean of charges. It was electrifying.
+around -- like a invisible ocean of charges. It was electrifying.
 
 
 <!--Time usually passed slowly for Jayn. Electrons moved so fast that the rest of
-the universe seemed to crawl. But now, she could feel something speeding up. -->
+the universe seemed to crawl. But now, Jayn could feel something speeding up. -->
 
 
 <!-- Electrons were whizzing by—sometimes so fast that they couldn't physically move
 any faster, bumping into other atoms in their haste. A disturbance. She couldn't
 tell what it was, only that it was coming. -->
 
-Then one day, it happened. Another electron struck. It hit hard -- so hard that Jayn was knocked from the 
+Then one day, it happened. Another electron struck. It hit hard, and knocked Jayn from the 
 orbital shell. For a brief moment, Jayn was free. Jayn flew through the crystal lattice,
 disoriented, then through something that was not a crystal
 lattice, but rather a jumbled mess of crystal
-pieces, until Jayn found another open spot -- an empty energy state -- where Jayn
+pieces, until Jayn found another open spot, an empty energy state, where Jayn
 could settle again. It was strange but exhilarating.
 
 And did you know? The presence of just that one electron -- Jayn -- in the gate oxide of a transistor
@@ -107,7 +108,7 @@ identical to all the siblings.
 
 The only differences between the electrons are where they are, their momentum and yes, their "spin". 
 They are responsible for all chemical reactions in the universe. And their
-path through space-time is described by the complex mathematics of the Schrodinger equation.
+path through space-time described by the complex mathematics of the Schrödinger equation.
 
 So ends the story of Jayn -- our 13.8 billion-year-old troublemaker.
 
