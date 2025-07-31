@@ -39,7 +39,7 @@ jobs:
           sudo apt-get update
           sudo apt-get -y install ghostscript pip poppler-utils wget \
           imagemagick python3-svglib python3-venv
-          sudo python -m venv /pyenv && /pyenv/bin/python3 -m pip install click \
+          python -m venv /pyenv && /pyenv/bin/python3 -m pip install click \
           svglib numpy pandas matplotlib
           [[ "$(uname -m)" == "x86_65" ]] && wget https://github.com/jgm/pandoc/releases/download/3.7.0.2/pandoc-3.7.0.2-1-amd64.deb &&  sudo dpkg -i pandoc-3.7.0.2-1-amd64.deb
           [[ "$(uname -m)" == "aarch64" ]] && wget https://github.com/jgm/pandoc/releases/download/3.7.0.2/pandoc-3.7.0.2-1-arm64.deb  &&  sudo dpkg -i pandoc-3.7.0.2-1-arm64.deb
@@ -80,7 +80,7 @@ jobs:
           sudo apt-get update
           sudo apt-get -y install ghostscript pip poppler-utils pandoc wget \
           imagemagick python3-svglib python3-venv texlive
-          sudo python -m venv /pyenv && /pyenv/bin/python3 -m pip install click svglib numpy pandas matplotlib
+          python -m venv /pyenv && /pyenv/bin/python3 -m pip install click svglib numpy pandas matplotlib
       - name: Build ${{ matrix.target }}
         shell: bash
         run: |
