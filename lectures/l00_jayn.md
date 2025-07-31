@@ -112,8 +112,3 @@ path through space-time described by the complex mathematics of the Schrödinger
 
 So ends the story of Jayn -- our 13.8 billion-year-old troublemaker.
 
-
-<!--pan_doc:
-\newpage
-
--->
