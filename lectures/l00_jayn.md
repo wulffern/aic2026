@@ -67,7 +67,7 @@ Now and then, out to sea Jayn went, then returned, living a simple,
 chaotic, quiet life.
 
 But even quiet lives face change. One day, scooped up in a
-bucket. melted down, and turned into something new. Melted just meant more
+bucket, melted down, and turned into something new. Melted just meant more
 energy, Jayn had experienced that before, just more vibration. 
 Sometimes, because of the vibrations, Jayn even had enough energy to escape the atom 
 briefly before settling back down. But this
