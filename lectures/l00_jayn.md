@@ -8,18 +8,18 @@ an important role in our story.
 
 
 At one point in Jayn's long life, without knowing it, Jayn would cause problems for
-me -- but that's not where his story begins.
+me -- but that's not where Jayn's story begins.
 
 
 Jayn's story begins 13.8 billion years ago. Jayn popped into existence out of the
-vacuum, seemingly alone in the world. Well, not entirely alone. Jayn was
+emptyness, seemingly alone in the world. Well, not entirely alone. Jayn was
 surrounded by cousins and siblings, an ocean of elementary particles. There were
 quarks, there were electrons, and they all swam together in a sea of raw energy
 and matter.
 
 
 Before long, the quarks got tired of floating around on their own. They clumped
-together, forming protons and nutrons -- massive beasts compared to little Jayn. Jayn didn't
+together, forming protons and neutrons -- massive beasts compared to little Jayn. Jayn didn't
 like this new, crowded world. Jayn loved the freedom of zipping around the
 universe unbound. But eventually, Jayn felt a tug -- a deep, irresistible attraction
 to one of those giant protons. And with that, Jayn became part of something new:
@@ -35,7 +35,7 @@ two. A new proton had joined, forming helium. This meant there was space for
 another electron too -- Jayn's first real companion.
 
 They shared the same orbital space, something Jayn had never experienced before.
-Usually, if another electron came too close, one of them would be pushed away.
+Usually, if another electron came too close, one of them would be pushed into another energy state.
 But not this time. This was different. They could exist in the same place, with
 the same energy. How? Physicists would later call it "spin". Jayn didn't know
 what "spin" meant, it was weird, but Jayn liked it. It meant Jayn wasn't alone.
@@ -89,12 +89,12 @@ tell what it was, only that it was coming. -->
 
 Then one day, it happened. Another electron struck. It hit hard -- so hard that Jayn was knocked from the 
 orbital shell. For a brief moment, Jayn was free. Jayn flew through the crystal lattice,
-disoriented,then through something that was not a crystal
+disoriented, then through something that was not a crystal
 lattice, but rather a jumbled mess of crystal
 pieces, until Jayn found another open spot -- an empty energy state -- where Jayn
 could settle again. It was strange but exhilarating.
 
-And did you know? The presence of just that one electron -- Jayn -- in the gate oxide of a transistpr 
+And did you know? The presence of just that one electron -- Jayn -- in the gate oxide of a transistor
 was enough to
 shift the threshold voltage, change the flow of bias current, alter the
 frequency of an oscillator, cause my phone
@@ -103,7 +103,7 @@ times until the Bluetooth link finally reconnected, many, many, many seconds lat
 
 And yet, Jayn's story doesn't end. Because Jayn, like all electrons, never really
 ends. Jayn may pop in and out of existence, but is always there -- unchanged,
-identical to all cousins and siblings.
+identical to all the siblings.
 
 The only differences between the electrons are where they are, their momentum and yes, their "spin". 
 They are responsible for all chemical reactions in the universe. And their
@@ -111,4 +111,8 @@ path through space-time is described by the complex mathematics of the Schroding
 
 So ends the story of Jayn -- our 13.8 billion-year-old troublemaker.
 
+
+<!--pan_doc:
 \newpage
+
+-->
