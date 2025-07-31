@@ -37,7 +37,8 @@ jobs:
         run: |
           which python3
           git config --global --add safe.directory `pwd`
-          make
+          make posts texfiles
+          make -j 3 latex book standalone
       - name: Setup Pages
         uses: actions/configure-pages@v2
       - name: Build with Jekyll
