@@ -1,5 +1,5 @@
 # Sample workflow for building and deploying a Jekyll site to GitHub Pages
-name: matrix
+name: Docs
 
 on:
   # Runs on pushes targeting the default branch
@@ -39,7 +39,7 @@ jobs:
           sudo apt-get update
           sudo apt-get -y install ghostscript pip poppler-utils wget \
           imagemagick python3-svglib python3-venv
-          sudo mkdir /pyenv && chmod 777 /pyenv
+          sudo mkdir /pyenv && sudo chmod 777 /pyenv
           python -m venv /pyenv && /pyenv/bin/python3 -m pip install click \
           svglib numpy pandas matplotlib
           [[ "$(uname -m)" == "x86_65" ]] && wget https://github.com/jgm/pandoc/releases/download/3.7.0.2/pandoc-3.7.0.2-1-amd64.deb &&  sudo dpkg -i pandoc-3.7.0.2-1-amd64.deb
@@ -81,7 +81,7 @@ jobs:
           sudo apt-get update
           sudo apt-get -y install ghostscript pip poppler-utils pandoc wget \
           imagemagick python3-svglib python3-venv texlive
-          sudo mkdir /pyenv && chmod 777 /pyenv
+          sudo mkdir /pyenv && sudo chmod 777 /pyenv
           python -m venv /pyenv && /pyenv/bin/python3 -m pip install click svglib numpy pandas matplotlib
       - name: Build ${{ matrix.target }}
         shell: bash
