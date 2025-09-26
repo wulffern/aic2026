@@ -10,6 +10,8 @@ date: 2025-01-01
 
 **Status:** 1.0
 
+<!--pan_doc: <iframe width="560" height="315" src="https://www.youtube.com/embed/YoJCkAmBo44?si=3xzkkX-U4_HSl49A" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe> -->
+
 # Tools
 
 I would strongly recommend that you install all tools locally on your system. 

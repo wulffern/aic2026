@@ -75,6 +75,7 @@ milestone actions worked well.
 
 For 2026 I should do the following changes:
 
+- Add GPT as part of learning: generate verification plan, checklists etc. 
 - Wait until after M0 for group selection
 - Talk about layout early. Force full M0 tutorial
 - Make them do TR layout early
