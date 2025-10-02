@@ -84,6 +84,7 @@ For 2026 I should do the following changes:
 - Reduce time for milestone 1. Maybe make a ready schematic hierarchy to force names? ideal OTA?
 - Find a good sigma delta intro circuit
 - Add to analog systemverilog
+- Write about FFTs
 
 I love programming and automation. Not much makes me more happy than using the
 same source (the [slide
