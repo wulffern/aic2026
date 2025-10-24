@@ -2,7 +2,7 @@
 JEKYLL_VERSION=3.8
 SITE=${shell pwd}/docs
 TAG=1
-YEAR=2025
+YEAR=2026
 
 #-
 PYTHON=python3
@@ -10,17 +10,20 @@ ifneq ($(wildcard /pyenv/bin/.*),)
 	PYTHON=/pyenv/bin/python3
 endif
 
-.PHONY:  slides
+.PHONY:  slides version
 
 #	lr0_logic \
 
-FILES = l01_intro \
-		l00_jayn \
-		l00_refresher \
+FILES = l00_jayn \
+	l01_intro \
+	l00_refresher \
 	l00_diode \
+	lr0_mosfet \
+	lr0_circuits \
+	lr0_passives \
 	lr0_noise \
 	lr0_tools \
-	l00_ades \
+	#l00_ades \
 	l02_esd \
 	l03_refbias \
 	l04_afe \
@@ -34,9 +37,6 @@ FILES = l01_intro \
 	l11_aver \
 	lp_project_report \
 	lr0_layout \
-	lr0_mosfet \
-	lr0_circuits \
-	lr0_passives \
 	l00_spice \
 	lr0_logic \
 	l00_sv \
@@ -44,7 +44,11 @@ FILES = l01_intro \
 
 
 
-all: posts texfiles latex standalone book
+all: version posts texfiles latex standalone book
+
+version:
+	echo "aic${YEAR}" > version
+
 
 posts:
 	-rm images.txt

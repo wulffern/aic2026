@@ -13,7 +13,7 @@
 # you will see them accessed via {{ site.title }}, {{ site.email }}, and so on.
 # You can create any custom variable you would like, and they will be accessible
 # in the templates via {{ site.myvariable }}.
-title: aic2025
+title: aic2026
 author:
   name: Carsten Wulff
   email: carsten@wulff.no
@@ -22,9 +22,9 @@ author:
   
 
 description: >- # this means to ignore newlines until "baseurl:"
-   Lectures on Advanced Integrated Circuits 2025
+   Lectures on Advanced Integrated Circuits 2026
 domain: "wulffern.github.io"
-baseurl: "/aic2025" # the subpath of your site, e.g. /blog
+baseurl: "/aic2026" # the subpath of your site, e.g. /blog
 url: "https://wulffern.github.io" # the base hostname & protocol for your site, e.g. http://example.com
 
 

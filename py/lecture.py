@@ -8,6 +8,13 @@ import shutil
 import urllib.parse
 import hashlib
 
+aic_version = "aicXX"
+
+with open("version") as fi:
+    aic_version = fi.read().strip()
+
+year = aic_version.replace("aic","")
+
 class Image():
 
     def __init__(self,imgsrc,options):
@@ -227,7 +234,7 @@ class Lecture():
 
         if("jekyll" in self.options):
 
-            furl = "https://github.com/wulffern/aic2025/tree/main/" + self.filename
+            furl = f"https://github.com/wulffern/{aic_version}/tree/main/" + self.filename
             slides = ""
             if("lectures" in self.filename ):
                 #slides = "[Slides](" +  self.options["jekyll"] + self.filename.replace("lectures","assets/slides").replace(".md",".pdf") +")"
@@ -327,7 +334,7 @@ class Presentation(Lecture):
 title: {self.title}
 output:
   slidy_presentation:
-    footer: "Copyright (c) 2025, Carsten Wulff"
+    footer: "Copyright (c) {year}, Carsten Wulff"
     fig_width: 800
 ---
 
@@ -401,7 +408,7 @@ def cli():
 
 @cli.command()
 @click.argument("filename")
-@click.option("--root",default="/aic2025/",help="Root of jekyll site")
+@click.option("--root",default=f"/{aic_version}/",help="Root of jekyll site")
 @click.option("--date",default=None,help="Date to use")
 def post(filename,root,date):
     options = dict()
@@ -477,7 +484,7 @@ def latex(filename,root):
 
 
     with open("docs/downloads.md","a") as fo:
-        fo.write(f"- [{title}](/aic2025/assets/{basename}.pdf)\n")
+        fo.write(f"- [{title}](/{aic_version}/assets/{basename}.pdf)\n")
 
     flatex = fname.replace(".md",".latex")
     cmd = f"pandoc --citeproc --bibliography=pdf/aic.bib --csl=pdf/ieee-with-url.csl  -o {flatex} {fname}  "

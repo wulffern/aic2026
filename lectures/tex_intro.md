@@ -4,13 +4,13 @@
 
 <!--pan_title:Background -->
 
-In the spring of 2025 I lectured Advanced Integrated Circuits for the fourth
+In the spring of 2026 I lectured Advanced Integrated Circuits for the fifth
 time. I have an inherent need to make things better, and the course is no
 different.
 
 In 2022 I noticed that  little of what I had on slides, or
 said in lectures, made it into the student brain. That annoyed me,
-and I realized that probably a few things needed to change.
+and I realized that things needed to change.
 
 In 2023 I moved to complete open source project, and the project was without
 grade. There should have been a grade on the project. 
@@ -88,7 +88,7 @@ For 2026 I should do the following changes:
 
 I love programming and automation. Not much makes me more happy than using the
 same source (the [slide
-markdowns](https://github.com/wulffern/aic2025/tree/main/lectures)), to generate the [lecture notes](https://analogicus.com/aic2025/), to translate
-into the [book](https://analogicus.com/aic2025/assets/aic.pdf) your looking at right now.
+markdowns](https://github.com/wulffern/aic2026/tree/main/lectures)), to generate the [lecture notes](https://analogicus.com/aic2026/), to translate
+into the [book](https://analogicus.com/aic2026/assets/aic.pdf) your looking at right now.
 
-If you find an error in what I've made, then [fork](https://docs.github.com/en/get-started/quickstart/fork-a-repo) [aic2025](https://github.com/wulffern/aic2025), fix , [commit](https://git-scm.com/docs/git-commit), [push](https://git-scm.com/docs/git-push) and [create a pull request](https://docs.github.com/en/desktop/contributing-and-collaborating-using-github-desktop/working-with-your-remote-repository-on-github-or-github-enterprise/creating-an-issue-or-pull-request). That way, we use the global brain power most efficiently, and avoid multiple humans spending time on discovering the same error.
+If you find an error in what I've made, then [fork](https://docs.github.com/en/get-started/quickstart/fork-a-repo) [aic2026](https://github.com/wulffern/aic2026), fix , [commit](https://git-scm.com/docs/git-commit), [push](https://git-scm.com/docs/git-push) and [create a pull request](https://docs.github.com/en/desktop/contributing-and-collaborating-using-github-desktop/working-with-your-remote-repository-on-github-or-github-enterprise/creating-an-issue-or-pull-request). That way, we use the global brain power most efficiently, and avoid multiple humans spending time on discovering the same error.

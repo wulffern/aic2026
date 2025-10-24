@@ -99,7 +99,7 @@ And did you know? The presence of just that one electron -- Jayn -- in the gate 
 was enough to
 shift the threshold voltage, change the flow of bias current, alter the
 frequency of an oscillator, cause my phone
-to loose the Bluetooth link to my door look, and made me swear a number of
+to loose the Bluetooth link to my door lock, and made me swear a number of
 times until the Bluetooth link finally reconnected, many, many, many seconds later.
 
 And yet, Jayn's story doesn't end. Because Jayn, like all electrons, never really
@@ -108,7 +108,9 @@ identical to all the siblings.
 
 The only differences between the electrons are where they are, their momentum and yes, their "spin". 
 They are responsible for all chemical reactions in the universe. And their
-path through space-time described by the complex mathematics of the Schrödinger equation.
+path through space-time described by the complex mathematics of the Schrödinger
+equation. Or if you want to include relativity, the Lagrangian of Quantum
+Electrodynamics. 
 
 So ends the story of Jayn -- our 13.8 billion-year-old troublemaker.
 
