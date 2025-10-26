@@ -23,6 +23,7 @@ FILES = l00_jayn \
 	lr0_passives \
 	lr0_noise \
 	lr0_tools \
+	lr0_tut1 \
 	#l00_ades \
 	l02_esd \
 	l03_refbias \
