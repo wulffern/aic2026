@@ -372,7 +372,7 @@ Re-run the measurement and result generation
 make typical OPT="--no-run"
 ```
 
-Open `result/tran_Sch_typical.html`
+Open `results/tran_Sch_typical.html`
 
 
 ### Check waveforms
