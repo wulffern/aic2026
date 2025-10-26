@@ -214,10 +214,16 @@ CicPy is used to generate layout
 
 ``` bash
 cd aicex/ip/cicpy 
+git checkout master
+git pull
+python3 -m pip install -e .
+cd ../..
+cd aicex/ip/cicspi 
 git checkout main 
 git pull
 python3 -m pip install -e .
 cd ../..
+
 ```
 
 ---
