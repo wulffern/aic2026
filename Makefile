@@ -24,6 +24,8 @@ FILES = l00_jayn \
 	lr0_noise \
 	lr0_tools \
 	lr0_tut1 \
+	l01_project \
+	l13_thoughts \
 	#l00_ades \
 	l02_esd \
 	l03_refbias \
