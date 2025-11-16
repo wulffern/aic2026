@@ -16,13 +16,13 @@ date: 2026-01-09
 
 > _AIC is likely one of the most rewarding courses I’ve attended at NTNU. It gave me a lot of valuable knowledge on different types of circuits, IC design workflows and open source EDA tools that I greatly appreciate. It is also one of the most challenging courses, due to the amount of effort and time I had to spend in order to figure things out._ - Tord, AIC2025
 
+> A fantastic project/course that just might turn your world upside down, push you to re-evaluate your life choices, and stare briefly into the existential void… all while being deeply enjoyable and engaging! - Domen, AIC2025 
+
 
 ---
 <!--pan_ski: -->
 
-The goal is for  you to experience a full mixed signal integrated circuit design, with the option of tapeout!
-
-
+The goal of the project is for you to experience a full mixed signal integrated circuit design, with the option of tapeout!
 
 In 2025, two groups reached a tapeout of their design <http://analogicus.com/jnw-tt-2025/> on the <https://tinytapeout.com/chips/ttsky25a/> Tiny Tapeout shuttle.
 
@@ -56,6 +56,12 @@ In this document I'll go through the problem (what we're trying to solve), and t
 -->
 
 #[fit] The problem 
+
+---
+
+We want to know the temperature of the die to control complex power systems that have
+to adapt to high dynamic current load, and orders of magnitude change in leakage
+current over temperature. 
 
 ---
 
@@ -149,7 +155,7 @@ It would be good if we could know temperature.
 
 ### There are proposed solutions 
 
-In [@tang20] they used a leakage based digital ring oscillator.  
+In [@tang20] they used a leakage based digital ring oscillator. 
 
 # The Project: Design a temperature sensor 
 
