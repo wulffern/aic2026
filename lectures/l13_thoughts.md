@@ -11,26 +11,23 @@ date: 2026-05-06
 
 
 
-
+# Advice
 This is some advice, use it, or ignore it, who cares.
 
-## Life
-- Try to figure out what makes you happy, and do more of that
-- If you don't know how to say sorry when you do something stupid, learn.
-- When life sucks, run, or exercise, it's the only thing that works
+Try to figure out what makes you happy, and do more of that
 
-## Computers
-- Get a mac, time capsule,  time machine, and offsite backup. That ensures you'll never loose data.
-- Learn Emacs, [Doom Emacs](https://github.com/hlissner/doom-emacs) is cool, but be sure to
-  disable evil-mode.
+If you don't know how to say sorry when you do something stupid, learn.
 
-## Programming
+When life sucks, run, or exercise, it's the only thing that works
+
+Get a mac, time machine, and offsite backup. That ensures you'll never loose data.
+
 Find a problem that you really want to solve, and learn a programming language to solve it. There is absolutely no point in saying "I want to learn programming", then sitting
 down with a book to read about programming, and expect that you will learn programming that way. It will not happen. The only way to learn programming is to program, a lot.
 
-## Circuits
-- Learn to check your assumptions. You will make mistakes, and you need to get good at finding the mistakes you made.
-- Take your time to write a verification plan. And stick to it. Without sufficient simulation your circuit will not work.
+Learn to check your assumptions. You will make mistakes, and you need to get good at finding the mistakes you made.
+
+Take your time to write a verification plan. And stick to it. Without sufficient simulation your circuit will not work.
 
 
 ---
@@ -44,7 +41,6 @@ down with a book to read about programming, and expect that you will learn progr
 | :white_check_mark: | Cell        | Netlist/JSON  | compiled     | Few analog interfaces, few digital interfaces           |
 | :white_check_mark: | Device      | JSON          | compiled     | Polygon pushing                                         |
 | :white_check_mark: | Technology  | JSON/Rules    | compiled     | Custom for each technology                              |
-
 
 
 ---
@@ -162,23 +158,6 @@ s/programming/analog design/ig
 ---
 
 
-## Emacs
-
-| Commands | What |
-| -------  | ---- |
-| auto-fill-mode | Disables line wrapping|
-  
-## One-liners
-
-| Commands | What does it do?|
-| -------- | ---------------|
-|`find ./ -name "*.cdslck" -exec rm {} \;`| Removes cds lock files|
-|`ssh-keygen -t rsa` | Make a public RSA key|
-|`cat ~/.ssh/id_rsa.pub | ssh my_host " cat > .ssh/authorized_keys"`| Copies your public RSA key to the authorized keys, so you won't have to type the password anymore|
-|`alias ssh-x='ssh -c aes128-cbc -YC -o "ForwardX11Timeout 4W" '`| Fast ssh when using X|
-
-
-
 # Stuff to ponder
 
 Over a period of 10 months I was fortunate to spend some time at Electronics and
@@ -194,21 +173,14 @@ indeed which student. So here goes
 
 *This is important:** Do not worry about unknowns. Make a list of unknowns and find a test to check whether the unknown is a problem. Fixing things based on guesses will cause trouble.
 
-## On Simulators
-
-Use SMASH for simulation, it's the best SPICE simulator
-
-SMASH is a simulator from Dolphin Integration. It's supposed to be on of the best SPICE simulators in the market. I have not personally tried it, mainly because the license is expensive compared to other simulators we have available.
-
-## AC open, DC closed switch
+### AC open, DC closed switch
 
 In SPICE there is usually a switch or capacitor/inductor that has the behavior
 of being open at AC and closed at DC or visa versa. Useful for setting common
 mode voltages in simulation of differential operational transconductance
 amplifiers.
 
-
-## Measure capacitance
+### Measure capacitance
 
 To measure capacitance on a node in a circuit simulation.
 
@@ -218,7 +190,7 @@ Measure the delta V over a short time period
 Calculate capacitance from i = C dv/dt
 Always include a replica with a know capacitance value, i.e. a capacitor, to check your testbench.
 
-## On Analog Design
+### On Analog Design
 
 Normally source jitter will dominate
 
@@ -230,7 +202,7 @@ the chip. Using differential signaling will help with possible interference from
 nearby lines.
 
 
-## Distortion from ESD protection circuits
+### Distortion from ESD protection circuits
 
 When you go to high resolutions (> 10 bit) and high speed (>50MHz) the
 non-linear capacitance of the ESD protection starts to matter. If you're doing
@@ -238,11 +210,11 @@ an ADC above this area you should read [Analysis and Measurement of Signal
 Distortion due to ESD Protection Circuits](https://ieeexplore.ieee.org/document/1703690).
 
 
-## Add net names in layout
+### Add net names in layout
 
 Always add net names to layout nets, this will help LVS to match nets. It will also save you when tracking down shorts.
 
-## Decouple to source node
+### Decouple to source node
 
 In current mirrors, decouple to the source node. By decoupling between source
 and for example vss, any high frequency jumps on vss will also appear on the
@@ -250,7 +222,7 @@ gate, thus the gate source voltage will stay constant and current will not
 change
 
 
-## Worry about current densities when routing > 20um
+### Worry about current densities when routing > 20um
 
 Metal wires on-chip have a maximum allowed dc current. This is due, among other
 things, to electromigration. At high current densities the aluminum atoms may
@@ -260,14 +232,14 @@ as a rule of thumb. Current densities are usually around 1mA/square, but varies
 with technology
 
 
-## Always shield signal lines above 10 bit level
+### Always shield signal lines above 10 bit level
 
 If you're doing an ADC, or indeed any circuit, that requires > 10 bit accuracy
 you should shield your signal lines. On chip you use metal below, above and
 sides. The same for PCBs. Sensitive signals can be routed in in-between layers.
 
 
-## Use a current source to feed inverter based oscillators
+### Use a current source to feed inverter based oscillators
 
 Check non-overlapping clocks in slow, high temp and low vdd
 
@@ -277,25 +249,25 @@ to rise when the other is almost at zero. Supposedly this PVT corner is the
 worst for non-overlap, but I have not checked.
 
 
-## Analog Sampling
+### Analog Sampling
 
 If possible, you should sample analog just before digital IO switches. In other words, sample during quiet time.
 
-## Cascode devices should be minimum size
+### Cascode devices should be minimum size
 
 You get less capacitance this way.
 
-## The unit transistor W/L should be around 10-20
+### The unit transistor W/L should be around 10-20
 
-## Place noisy digital blocks in deep N-well
+### Place noisy digital blocks in deep N-well
 
 By separating substrates you improve noise immunity
 
-## Shield analog blocks with deep N-well ring
+### Shield analog blocks with deep N-well ring
 
 Same thing as above
 
-## Always route differential signals differentially
+### Always route differential signals differentially
 
 Mismatch between parasitic capacitances/resistors in differential signal routing
 ( differential means; two signals where one signal is phase shifted 180 degrees)
@@ -303,33 +275,28 @@ can introduce errors. The error is reduced if the parasitics are matched, since
 the differential system cancels some of the errors.
 
 
-## On-chip decoupling
+### On-chip decoupling
 
 Remember to check whether you need on-chip decoupling of references and power.
 In most designs you do need decoupling, especially if you run at high speeds (>
 10MHz).
 
 
-## Variable delayed clock
+### Variable delayed clock
 
 If jitter is not important, and you want a variable delayed clock, you can use a
 current starved inverter Place a current source inside or on the outside of your
 inverter, and use a current mirror to control the maximum current.
 
 
-## Cascode current mirrors
-
-Current mirrors should be cascoded if possible. This is not possible in 90nm or
-65nm technology unless you use wide swing cascode current mirrors.
 
 
-## Normal current density for NMOS is in the range 5-15uA/square
 
-## On Calibration & Test
+### On Calibration & Test
 
 Use serial shift registers for calibration bits
 
-It is very common to include some off-line startup calibration circuits in ICs.
+It is common to include some off-line startup calibration circuits in ICs.
 For example to tune transconductances, resistances, capacitances, offset
 voltages etc. Usually this leads to some form of DAC that needs a digital input.
 For these digital inputs a serial shift register should be used. Indeed for any
@@ -356,12 +323,11 @@ Especially since the input data and clock may be feed from a computer with slow
 rise and fall times.
 
 
-## Design for test
+### Design for test
 
 Make sure that all on-chip DC voltages (bias points, power, references) are
 available off-chip for measurement. Either through probe pads or analog test
 multiplexers.
-
 
 Use analog test multiplexer
 
@@ -375,36 +341,33 @@ NMOS grounds the long line between the transmission gates, thus preventing
 leakage between different test points of the analog multiplexer.
 
 
-## Calibration currents
+### Calibration currents
 
 If you have a current source with off-line calibration, the calibration current
 should be +- 50% versus nominal.
 
 
-## Calibration DACs
+### Calibration DACs
 
 For calibration DACs use 3 or 4 thermometer encoded bits and the LSBs binary
 encoded.
 
 
-## Access to gain boosters
+### Access to gain boosters
 
 If you're using gain boosters the boost voltage should be accessible off-chip.
 
-## Default calibration state
+### Default calibration state
 
 The calibration DACs should start up in a default state close to the expected
 state. Use inverters between the calibration register and calibration DACs to
 set the default state.
 
 
-## On ADC Measurement
-
 ### Crystal Oscillators
 
 Crystal oscillators are used to generate a clean, low phase noise (low jitter),
-clock signal. Two suppliers of such oscillators are Vectron International and
-ECS INC International
+clock signal. 
 
 
 ### Careful circuit board design
@@ -425,7 +388,7 @@ to track down the problem. And the solution was to redo the circuit board and
 take better care of the input signal.
 
 
-### Short circuit input on your ADC to measure noise floor
+Short circuit input on your ADC to measure noise floor
 
 ### Single ended to differential converter
 
