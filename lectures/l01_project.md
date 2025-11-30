@@ -14,7 +14,7 @@ date: 2026-01-09
 ---
 
 
-> _AIC is likely one of the most rewarding courses I’ve attended at NTNU. It gave me a lot of valuable knowledge on different types of circuits, IC design workflows and open source EDA tools that I greatly appreciate. It is also one of the most challenging courses, due to the amount of effort and time I had to spend in order to figure things out._ - Tord, AIC2025
+> AIC is likely one of the most rewarding courses I’ve attended at NTNU. It gave me a lot of valuable knowledge on different types of circuits, IC design workflows and open source EDA tools that I greatly appreciate. It is also one of the most challenging courses, due to the amount of effort and time I had to spend in order to figure things out. - Tord, AIC2025
 
 > A fantastic project/course that just might turn your world upside down, push you to re-evaluate your life choices, and stare briefly into the existential void… all while being deeply enjoyable and engaging! - Domen, AIC2025 
 
@@ -59,13 +59,20 @@ In this document I'll go through the problem (what we're trying to solve), and t
 
 ---
 
-We want to know the temperature of the die to control complex power systems that have
-to adapt to high dynamic current load, and orders of magnitude change in leakage
-current over temperature. 
+The assignment is 
+
+> Design an oscillator that has a frequency that varies with temperature 
+
+<!--pan_doc: 
+
+But why? I'll try to explain.
+
+
+-->
 
 ---
 
-### Complex System-on-chip have complex regulator systems 
+## System-on-chip have complex regulator systems 
 
 <!--pan_doc:  
 
@@ -74,7 +81,7 @@ See the example in Figure 2 from Nordic Semiconductor's nRF54L15 product specifi
 VDD is the supply from the battery (1.7 V - 3.6 V). While the DECD, DECA and DECRF are the low voltage supplies for the digital, analog and radio. 
 
 The VREGMAIN has both a DC/DC, and a LDO. We'll learn about those in the course. For now it's sufficient to know that the DC/DC converts 
-power drawn on the low supply (DECA,DECD,DECRF) to power drawn from the high supply (VDD), while the LDO has the samme current on low supply as the high supply, but the voltage is different. 
+power drawn on the low supply (DECA, DECD, DECRF) to power drawn from the high supply (VDD), while the LDO has the samme current on low supply as the high supply, but the voltage is different. 
 
 You will learn in the course that the typical systems inside VREGMAIN are complicated, and sometimes complex, analog circuits. 
 
@@ -86,12 +93,20 @@ From the datasheet you'll see that the lowest power state is about 700 nA, while
 
 <!--pan_doc: 
 <sub>Figure 2: Power system of nRF54L15 </sub>
+
+
+Those numbers are the total current consumption. That includes switching currents from digital,
+analog bias currents, and leakage currents. In modern technologies, because of the low threshold voltage, the leakage currents can be a large part of the total current budget.
+
+
 -->
+
+
 
 ---
 
 
-### Leakage current varies orders of magnitude over temperature
+## Leakage current varies orders of magnitude over temperature
 
 <!--pan_doc: 
 
@@ -139,23 +154,35 @@ Based on the previous curves we could run a thought experiment.
 
 ---
 
-### We would like to know the temperature on die
+## We would like to know the temperature on die
+
+<!--pan_doc: 
+
+Expanding on the thought experiment. 
+
+-->
 
 - Assume we use 1 % of the load current for the regulator 
 
-- At 25 C => 1 uA 
+- At 25 C => 1 uA for LDO
 
-- At 125 C => 1 mA 
+- At 125 C => 1 mA for LDO
 
-Insanely difficult to design a regulator that is efficient across the full range. 
+It's insanely difficult to design a regulator that is efficient across the full range of leakage currents at any temperature. 
 
 It would be good if we could know temperature. 
 
 ---
 
-### There are proposed solutions 
+## How to measure temperature?
 
-In [@tang20] they used a leakage based digital ring oscillator. 
+There are a multitude of ways to make a temperature sensor. In [@tang20] they used a leakage based digital ring oscillator, in [@jeong2014] they used a two-transistor MOSFET sensing element, in [@pertijs2005] they had a more complicated sigma-delta ADC sensing bipolar transistors. 
+
+The design of a temperature sensor is signficiantly more difficult than you think. As such, I would suggest that you don't go too crazy in your choice of sensor. So far, none has gotten close to the finish line with a sigma-delta ADC based sensor. 
+
+
+In the previous years of Advanced Integrated Circuits most groups have chosen an architecture similar to [@park2022] Fig. 2. I would recommend you do the same, and that's what I'll target in the milestones. 
+
 
 # The Project: Design a temperature sensor 
 

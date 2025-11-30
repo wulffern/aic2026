@@ -1,10 +1,10 @@
-footer: Carsten Wulff 2024
+footer: Carsten Wulff 2026
 slidenumbers:true
 autoscale:true
 theme: Plain Jane, 1
 text:  Helvetica
 header:  Helvetica
-date: 2025-02-13
+date: 2026-02-13
 
 <!--pan_skip: -->
 

@@ -1,8 +1,8 @@
-footer: Carsten Wulff 2024
+footer: Carsten Wulff 2026
 slidenumbers:true
 autoscale:true
 theme:Plain Jane,1
-date: 2025-04-03
+date: 2026-04-10
 
 <!--pan_skip: -->
 

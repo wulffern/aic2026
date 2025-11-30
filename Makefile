@@ -25,8 +25,6 @@ FILES = l00_jayn \
 	lr0_tools \
 	lr0_tut1 \
 	l01_project \
-	l13_thoughts \
-	#l00_ades \
 	l02_esd \
 	l03_refbias \
 	l04_afe \
@@ -41,9 +39,11 @@ FILES = l00_jayn \
 	lp_project_report \
 	lr0_layout \
 	l00_spice \
-	lr0_logic \
 	l00_sv \
-	l04_mac
+	l04_mac\
+	l00_ades \
+	lr0_logic \
+	l13_thoughts
 
 
 
