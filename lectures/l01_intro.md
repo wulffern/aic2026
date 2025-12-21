@@ -409,14 +409,14 @@ my understanding is wrong, then I'll happily discuss.
 # Plan
 
 **Lectures:**
-Thursday at XX
+Friday at 08:15
 
 Read the introduction before the lectures at [aic2026](https://analogicus.com/aic2026)
 
 The "lectures" will be Q & A's on the topic. If no questions, then I'll ramble on.
 
 **Project Hours:**
-Thursday at XX
+Friday at 10:15
 
 Groups meet, and work on project. 
 
@@ -497,7 +497,7 @@ Counts for 45 % of the grade
 
 No exam without project.
 
-Strict deadline 30'th of April. If you hand in 1'th of May at 00:00:01, then you fail the course.
+Strict deadline 1'st of May. If you hand in 2'nd of May at 00:00:01, then you fail the course.
 
 ---
 
@@ -540,15 +540,6 @@ Expect that you will spend at least $$2\pi$$ times more time than planned *(most
 
 #[fit] Questions 
 
----
-
-<!--pan_skip: -->
-
-# Do
-- google
-- ask a someone in your class
-- use the "øvingstime and labratorieøvelse" to talk to teaching assistants and hopefully me. 
-- come to the office (B311) on Thursday's
 
 ---
 

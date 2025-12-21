@@ -196,7 +196,7 @@ The principle of the temperature sensor is: 1) Create a current that is proporti
 | Active current   | < 100 | uA   |                                                                |
 | Average current  | < 50  | nA   | Active current x conversion time/sample rate + leakage current |
 | Accuracy 0 - 70C | +-10  | C    | One temperature (25C) calibration                              |
-| Accuracy 0 - 70C | +-1   | C    | Two temperature (25C, 85C) calibration                         |
+| Accuracy 0 - 70C | +-5   | C    | Two temperature (25C, 85C) calibration                         |
 
 ---
 
@@ -208,8 +208,7 @@ Milestones are important, and Milestone 0 - 5 will count towards your final grad
 
 That means, you have to start working right away. 
 
-The points below has been
-designed such that you can miss one, but it is impossible to get an A without
+The points have been designed such that it's impossible to get an A without
 getting some points on the layout
 -->
 
@@ -246,19 +245,100 @@ For example, my repository:
 
 ## Milestone 1: 
 
-You need to learn how to make a current that is proportional to absolute temperature. If your're before we've talked about references and bias, then you should read
-<https://analogicus.com/aic2026/2026/01/09/Lecture-3-References-and-bias.html> and ask me questions in reference and bias lecture
+The goal of the first milestone is to create a circuit that can transform a
+temperature on the IC to a current proportional to temperature (PTAT), and a voltage
+complementary to temperature (CTAT). 
 
-__Deliver__ On blackboard link to your github repository with a description of how the bandgap works in the README.md file
+$$ I = f(T) $$
 
+For this purpose it's common to use "Bandgap" circuits. We'll learn about them
+in the course, but if you don't want to wait then  you should read
+<https://analogicus.com/aic2026/2026/01/09/Lecture-3-References-and-bias.html>
+and ask me questions in reference and bias lecture.
+
+In the git repository for your group you'll create schematics for the bandgap
+circuits, and you'll make testbenches to check that the bandgap circuit works.
+
+If you don't know what you should simulate, it's good to have a chat to chat.
+See <https://chatgpt.com/share/69481b11-8830-8007-9986-c9e41d735cfc>. 
+
+Or check my testbenches at https://github.com/wulffern/lelo_temp_sky130a/tree/main/sim/LELOTEMP_BIAS_IBP
+
+
+__Delivery__ On blackboard link to your github repository with a description of
+how the bandgap works. 
 
 ## Milestone 2:
 
+The goal of milestone 2 is to use the PTAT current, and the CTAT voltage an
+create a oscillator. 
+
+$$ t = f(I) $$
+
+One way is to charge a capacitor with the current, and have a comparator trigger
+when the voltage on the capacitor reaches a voltage (CTAT voltage for example). 
+
+When the comparator triggers, then we can reset the capacitor. This is similar
+to what group 7 did last year (one of the groups got all the way to tapeout).
+
+One difference, though, is that group 7 used VDD/2 as the reference. I would
+recommend you use the CTAT voltage from the bandgap instead. That way, the
+oscillation frequency is independent (to first order) from the VDD.
+
+![](https://raw.githubusercontent.com/analogicus/JNW_GR07_SKY130A/refs/heads/main//Images/TempToPWM.png)
+
+__Delivery__ On blackboard, link to your github repository with description on
+how your oscillator works. 
+
 ## Milestone 3:
 
-## Milestone 4:
+The goal of milestone 3 is to figure out how to measure the frequency of the
+oscillator. 
+
+In the system we can assume we have an accurate 32768 Hz clock source. One way
+to find the frequency is to run the oscillator for a fixed number of clock
+cycles on the 32768 Hz clock, and have a counter that can count the output
+pulses. 
+
+Assume we counted 128 clock cycles over 2 clock periods of the 32768 Hz clock.
+That would mean the frequency of the oscillator was approximately 2.09 MHz. Once
+we have the frequency we can calculate the temperature. 
+
+I would recommend that you write in verilog the system to start the oscillator,
+count for a number of 32768 Hz clock cycles, and transform the frequency into a
+temeprature. 
+
+__Delivery__ On blackboard, link to your github repository where you describe
+how you measure the frequency of the oscillator.  
+
+## Milestone 4 (Optional):
+
+The last design milestone is to do the physical layout of your oscillator, and
+prove that it still works with the layout parasitics. 
+
+Those students that follow the course at NTNU will be able to tapeout if the
+design is complete. I've gotten [Nordic Semiconductor](https://nordicsemi.com)
+to sponsor the tapeout for 2026.  
+
+If you do the layout, then your design must fit within a digital 1x1 tinytapeout
+block. I've made a template at
+<https://github.com/wulffern/lelo_temp_sky130a/blob/main/design/LELO_TEMP_SKY130A/tt_block_1x1_pg.mag>
+that you can use. If the design does not fit within that space, then you won't
+be able to tapeout.
+
+When your design is complete, then the DRC, LVS, GDS actions should be passing
+on github. 
+
+__Delivery__ On blackboard, link to your github repository with passing GDS,
+DRC, LVS actions. 
 
 ## Milestone 5:
+
+The last milestone is the report. You shall deliver a PDF of the report in
+Inspera. You'll all write an individual report. The report shall be in the IEEE
+template. 
+
+See further details in <https://analogicus.com/aic2026/2023/10/26/How-to-write-a-project-report.html>
 
 
 

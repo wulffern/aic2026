@@ -21,7 +21,7 @@ permalink: /plan/
 | 13   | Slides               | M3      | Low-power radio receivers | GFSK, QPSK, PSK, QAM, radio blocks                               |
 | 14   |                      |         | Easter                    |                                                                  |
 | 15   |                      |         | Energy Sources            | Energy Harvesting,                                               |
-| 16   |                      | M4      | Analog SystemVerilog      | analog system verilog behavioral models                          |
+| 16   |                      | M4      | Analog SystemVerilog      | Analog system verilog behavioral models                          |
 | 17   |                      |         | Q & A                     |                                                                  |
 | 18   |                      | M5      |                           | Project deadline is May 1'st                                     |
 |      |                      |         |                           | TTSKY26b (June 2026)                                             |

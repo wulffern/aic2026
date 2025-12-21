@@ -860,10 +860,7 @@ equal to the bandgap of silicon. Diodes don't work at 0 K though.
 From the diode voltage relation we can calculate the derivative (ask chat to
 explain it to you ), and you'll get
 
-\[
-\frac{dV_D}{dT}
-= \frac{k}{q}\bigl(\ell - 3 \ln T - 3\bigr).
-\]
+$$ \frac{dV_D}{dT} = \frac{k}{q}\bigl(\ell - 3 \ln T - 3\bigr). $$
 
 and we can see the slope is negative with a factor of $\ln(T)$, which turns out
 to be very close to linear for the temperature range we're interested in (-40C

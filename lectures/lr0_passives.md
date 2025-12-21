@@ -298,6 +298,8 @@ Resistors and Capacitors can be matched extremely well
 
 ---
 
+<!--
+
 [.column]
 
 ![inline 50% ](../media/l6/pres_bad.pdf)
@@ -333,6 +335,7 @@ Reverse bias diodes to ground are useful for signals with long routing to transi
 
 ---
 
+-->
 
 
 
