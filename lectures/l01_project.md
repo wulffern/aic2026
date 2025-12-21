@@ -183,19 +183,21 @@ The design of a temperature sensor is signficiantly more difficult than you thin
 
 In the previous years of Advanced Integrated Circuits most groups have chosen an architecture similar to [@park2022] Fig. 2. I would recommend you do the same, and that's what I'll target in the milestones. 
 
+The principle of the temperature sensor is: 1) Create a current that is proportional to temperature (Lecture 3), 2) Convert current to frequency with a relaxation oscillator (Lecture 9). 3) Check the frequency to read the temperature.
+
 
 # The Project: Design a temperature sensor 
 
-| Parameter       | Value | Unit | Description                                                    |
-|-----------------|-------|------|----------------------------------------------------------------|
-| Area            | <10   | km^2 |                                                                |
-| Conversion time | < 30  | us   | Should finish in one 32768 Hz clock period                     |
-| Sample rate     | 100   | ms   |                                                                |
-| Leakage current | < 1   | nA   |                                                                |
-| Active current  | < 100 | uA   |                                                                |
-| Average current | < 50  | nA   | Active current x conversion time/sample rate + leakage current |
-| Accuracy        | +-5   | C    | One temperature (25C) calibration                              |
-| Accuracy        | +-1   | C    | Two temperature (25C, 85C) calibration                         |
+| Parameter        | Value | Unit | Description                                                    |
+|------------------|-------|------|----------------------------------------------------------------|
+| Area             | < 10  | km^2 |                                                                |
+| Conversion time  | < 30  | us   | Analog should only be active for one 32768 Hz period           |
+| Sample rate      | 100   | ms   |                                                                |
+| Leakage current  | < 1   | nA   |                                                                |
+| Active current   | < 100 | uA   |                                                                |
+| Average current  | < 50  | nA   | Active current x conversion time/sample rate + leakage current |
+| Accuracy 0 - 70C | +-10  | C    | One temperature (25C) calibration                              |
+| Accuracy 0 - 70C | +-1   | C    | Two temperature (25C, 85C) calibration                         |
 
 ---
 
