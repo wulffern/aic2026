@@ -180,7 +180,6 @@ There are a multitude of ways to make a temperature sensor. In [@tang20] they us
 
 The design of a temperature sensor is signficiantly more difficult than you think. As such, I would suggest that you don't go too crazy in your choice of sensor. So far, none has gotten close to the finish line with a sigma-delta ADC based sensor. 
 
-
 In the previous years of Advanced Integrated Circuits most groups have chosen an architecture similar to [@park2022] Fig. 2. I would recommend you do the same, and that's what I'll target in the milestones. 
 
 The principle of the temperature sensor is: 1) Create a current that is proportional to temperature (Lecture 3), 2) Convert current to frequency with a relaxation oscillator (Lecture 9). 3) Check the frequency to read the temperature.
@@ -201,14 +200,38 @@ The principle of the temperature sensor is: 1) Create a current that is proporti
 
 ---
 
+## Grade
+
+Milestones are important, and Milestone 0 - 5 will count towards your final grade!
+
+<!--pan_doc: 
+
+That means, you have to start working right away. 
+
+The points below has been
+designed such that you can miss one, but it is impossible to get an A without
+getting some points on the layout
+-->
+
+| Milestone | What does it mean                                                        | Condition for more than 0 points                                         | Possible Points |
+|:----------|:-------------------------------------------------------------------------|:-------------------------------------------------------------------------|:----------------|
+| M0        | You have completed the tutorial                                          | Link on blackboard                                                       | 5               |
+| M1 I=f(T) | Circuit that can convert a temperature into a current                    | Description of the sub circuit on github docs                            | 5               |
+| M2 T=f(I) | Circuit that can convert a current into a frequency                      | Description of the sub circuit on github docs. Demonstrate that it works | 10              |
+| M3 D=f(T) | A verilog testbench that can convert your frequency into a digital value | Description of the TB in README.md                                       | 10              |
+| M4 Layout | Layout of your circuit                                                   | DRC/LVS/GDS passing  on github                                           | 20              |
+| M5 Report | Individual report                                                        | Uploaded to blackboard                                                   | 48              |
+| Coolness  | Extra points that I may choose to award                                  |                                                                          | 10              |
+| Total     |                                                                          |                                                                          | 108             |
+
+
 ## Milestone 0: The tutorial 
 
 <!--pan_doc: 
 
-The goal of milestone 0 is to force you to install the tools, and get 
+The goal of milestone 0 is to force you to install the tools, and get you started. 
 
 -->
-
 
 Follow: [Sky130nm Tutorial](https://analogicus.com/aic2025/2025/01/01/Sky130nm-tutorial.html)
 
@@ -222,6 +245,12 @@ For example, my repository:
 ---
 
 ## Milestone 1: 
+
+You need to learn how to make a current that is proportional to absolute temperature. If your're before we've talked about references and bias, then you should read
+<https://analogicus.com/aic2026/2026/01/09/Lecture-3-References-and-bias.html> and ask me questions in reference and bias lecture
+
+__Deliver__ On blackboard link to your github repository with a description of how the bandgap works in the README.md file
+
 
 ## Milestone 2:
 
