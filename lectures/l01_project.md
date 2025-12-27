@@ -13,11 +13,12 @@ date: 2026-01-09
 
 ---
 
-
+<!--pan_doc:
 > AIC is likely one of the most rewarding courses I’ve attended at NTNU. It gave me a lot of valuable knowledge on different types of circuits, IC design workflows and open source EDA tools that I greatly appreciate. It is also one of the most challenging courses, due to the amount of effort and time I had to spend in order to figure things out. - Tord, AIC2025
 
-> A fantastic project/course that just might turn your world upside down, push you to re-evaluate your life choices, and stare briefly into the existential void… all while being deeply enjoyable and engaging! - Domen, AIC2025 
+-->
 
+> A fantastic project/course that just might turn your world upside down, push you to re-evaluate your life choices, and stare briefly into the existential void… all while being deeply enjoyable and engaging! - Domen, AIC2025 
 
 ---
 <!--pan_ski: -->
@@ -44,7 +45,7 @@ Below is the layout of group 6 <https://analogicus.github.io/jnw_gr06_sky130a/> 
 
 The project will walk you through the full analog/digital design process. From specification all the way to a finished layout, and a potential tapeout. 
 
-The project is not easy, it's rather hard. You'll experience frustration, desperation, epic wins, epic losses, stress, collaboration,
+The project is not easy, it's rather hard. You'll experience frustration, despair, epic wins, epic losses, stress, collaboration,
 and you will figure out whether you love analog design, or digital design or neither. 
 
 I promise that the design project closely matches how we would develop a circuit in industry. 
@@ -55,22 +56,25 @@ In this document I'll go through the problem (what we're trying to solve), and t
 
 -->
 
-#[fit] The problem 
+<!--pan_skip: -->
+
+#[fit] The challenge
+#[fit] Design a temperature sensor
 
 ---
 
-The assignment is 
-
-> Design an oscillator that has a frequency that varies with temperature 
 
 <!--pan_doc: 
 
-But why? I'll try to explain.
+# The challenge
 
+The assignment is to  Design a temperature sensor
+
+But why? I'll try to explain.
 
 -->
 
----
+
 
 ## System-on-chip have complex regulator systems 
 
@@ -81,11 +85,11 @@ See the example in Figure 2 from Nordic Semiconductor's nRF54L15 product specifi
 VDD is the supply from the battery (1.7 V - 3.6 V). While the DECD, DECA and DECRF are the low voltage supplies for the digital, analog and radio. 
 
 The VREGMAIN has both a DC/DC, and a LDO. We'll learn about those in the course. For now it's sufficient to know that the DC/DC converts 
-power drawn on the low supply (DECA, DECD, DECRF) to power drawn from the high supply (VDD), while the LDO has the samme current on low supply as the high supply, but the voltage is different. 
+power drawn on the low supply (DECA, DECD, DECRF) to power drawn from the high supply (VDD), while the LDO has the same current on low supply as the high supply, but the voltage is different. 
 
 You will learn in the course that the typical systems inside VREGMAIN are complicated, and sometimes complex, analog circuits. 
 
-From the datasheet you'll see that the lowest power state is about 700 nA, while the highest power state is about 10 mA. The high power state is 14 thousand times higher than the low power state!
+From the data-sheet you'll see that the lowest power state is about 700 nA, while the highest power state is about 10 mA. The high power state is 14 thousand times higher than the low power state!
 
 -->
 
@@ -154,7 +158,7 @@ Based on the previous curves we could run a thought experiment.
 
 ---
 
-## We would like to know the temperature on die
+## Why we would like to know the temperature on die
 
 <!--pan_doc: 
 
@@ -176,16 +180,77 @@ It would be good if we could know temperature.
 
 ## How to measure temperature?
 
+<!--pan_doc:
 There are a multitude of ways to make a temperature sensor. In [@tang20] they used a leakage based digital ring oscillator, in [@jeong2014] they used a two-transistor MOSFET sensing element, in [@pertijs2005] they had a more complicated sigma-delta ADC sensing bipolar transistors. 
 
-The design of a temperature sensor is signficiantly more difficult than you think. As such, I would suggest that you don't go too crazy in your choice of sensor. So far, none has gotten close to the finish line with a sigma-delta ADC based sensor. 
+The design of a temperature sensor is more difficult than you think. As such, I would suggest that you don't go too crazy in your choice of sensor. So far, none has gotten close to the finish line with a sigma-delta ADC based sensor. 
 
 In the previous years of Advanced Integrated Circuits most groups have chosen an architecture similar to [@park2022] Fig. 2. I would recommend you do the same, and that's what I'll target in the milestones. 
 
 The principle of the temperature sensor is: 1) Create a current that is proportional to temperature (Lecture 3), 2) Convert current to frequency with a relaxation oscillator (Lecture 9). 3) Check the frequency to read the temperature.
 
+In Figure 4 below you can see an illustration of the temperature sensor. 
 
-# The Project: Design a temperature sensor 
+A bandgap circuit is used to make a current that is proportional to absolute
+temperature ($I_{PTAT}$) and a voltage that is complementary to absolute
+temperature ($V_{CTAT}$). A relaxation oscillator converts the current and
+voltage into a frequency ($f_{OSC}$). A digital finite-state-machine and a
+counter converts the frequency to a digital value that is proportional to
+temperature. 
+
+I've made an example temperature sensor at [lelo\_temp\_sky130a](https://analogicus.com/lelo_temp_sky130a/). Feel free to steal ideas, and circuits, from that design.
+-->
+
+
+![inline](../media/aic2026_project_analog.pdf)
+
+<!--pan_doc: 
+<sub>Figure 4: Leakage simulation </sub>
+-->
+
+
+---
+
+
+
+# The Project
+
+<!--pan_doc: 
+
+I'm going to lead you through the design of a, to you, complicated mixed signal
+circuit design. You will despair, you will not understand, but you will learn. 
+
+In order to make the problem possible to learn, we're going to focus on one
+milestone at a time. I hope that will enable you to not drown before we get
+started. 
+
+An illustration of the milestones can be seen in Figure 5. 
+
+The first milestone is the design of the bandgap circuit, a pure analog design. The second milestone is the design of the relaxation oscillator. The third milestone is how you measure the frequency of the oscillator, and is usually done in SystemVerilog. 
+
+The fourth milestone is optional, but you can't get an A in the course if you don't have some points from the layout and parasitic simulation milestone. 
+
+The fifth milestone is an individual report. I will force you to work in groups. As such, it may be that some contribute more than others. To ensure that the grading is fair, the report will be individual. It's OK to share figures, tables, and so on, but the PDF shall be written by you and you alone.
+
+-->
+
+--- 
+
+![fit](../media/aic2026_project.pdf) 
+
+<!--pan_doc: 
+<sub>Figure 5: Project overview </sub>
+-->
+---
+
+<!--pan_doc: 
+
+## Specification 
+
+The temperature sensor shall be design to fit with the specification below. 
+
+-->
+
 
 | Parameter        | Value | Unit | Description                                                    |
 |------------------|-------|------|----------------------------------------------------------------|
@@ -202,26 +267,32 @@ The principle of the temperature sensor is: 1) Create a current that is proporti
 
 ## Grade
 
-Milestones are important, and Milestone 0 - 5 will count towards your final grade!
+
 
 <!--pan_doc: 
+
+Milestones are important, and Milestone 0 - 5 will count towards your final grade!
 
 That means, you have to start working right away. 
 
 The points have been designed such that it's impossible to get an A without
 getting some points on the layout
+
 -->
 
-| Milestone | What does it mean                                                        | Condition for more than 0 points                                         | Possible Points |
-|:----------|:-------------------------------------------------------------------------|:-------------------------------------------------------------------------|:----------------|
-| M0        | You have completed the tutorial                                          | Link on blackboard                                                       | 5               |
-| M1 I=f(T) | Circuit that can convert a temperature into a current                    | Description of the sub circuit on github docs                            | 5               |
-| M2 T=f(I) | Circuit that can convert a current into a frequency                      | Description of the sub circuit on github docs. Demonstrate that it works | 10              |
-| M3 D=f(T) | A verilog testbench that can convert your frequency into a digital value | Description of the TB in README.md                                       | 10              |
-| M4 Layout | Layout of your circuit                                                   | DRC/LVS/GDS passing  on github                                           | 20              |
-| M5 Report | Individual report                                                        | Uploaded to blackboard                                                   | 48              |
-| Coolness  | Extra points that I may choose to award                                  |                                                                          | 10              |
-| Total     |                                                                          |                                                                          | 108             |
+| Milestone | What does it mean                                                     | Condition for more than 0 points                                       | Possible Points |
+|:----------|:----------------------------------------------------------------------|:-----------------------------------------------------------------------|:----------------|
+| M0        | You have completed the tutorial                                       | Link on blackboard                                                     | 5               |
+| M1        | Circuit that can convert a temperature into a current and voltage     | Description of the circuit on github docs                              | 5               |
+| M2        | Circuit that can convert a temperature into a frequency               | Description of the circuit on github docs. Demonstrate that it works   | 10              |
+| M3        | A verilog testbench that can convert a frequency into a digital value | Description of the testbench on github docs. Demonstrate that it works | 10              |
+| M4        | Layout of your circuit                                                | DRC/LVS/GDS passing on github                                          | 20              |
+| M5        | Individual report                                                     | Uploaded to Inspera                                                    | 48              |
+| M6        | Tapeout                                                               | None                                                                   | 0               |
+| Coolness  | Extra points that I may choose to award                               |                                                                        | 10              |
+| Total     |                                                                       |                                                                        | 108             |
+
+---
 
 
 ## Milestone 0: The tutorial 
@@ -236,20 +307,19 @@ Follow: [Sky130nm Tutorial](https://analogicus.com/aic2025/2025/01/01/Sky130nm-t
 
 Submit link to your github repository on blackboard
 
-For example, my repository:
-[LELO\_EX\_SKY130A](http://analogicus.com/lelo_ex_sky130a/)
+For example, my repository: [LELO\_EX\_SKY130A](http://analogicus.com/lelo_ex_sky130a/)
 
-**The exercise will  teach you the skills you need to do the project**
+**The exercise will teach you the skills you need to do the project**
 
 ---
 
-## Milestone 1: 
+## Milestone 1: The bandgap
 
-The goal of the first milestone is to create a circuit that can transform a
-temperature on the IC to a current proportional to temperature (PTAT), and a voltage
+__Goal__: Create a circuit that can transform a
+temperature on the integrated circuit to a current proportional to temperature (PTAT), and a voltage
 complementary to temperature (CTAT). 
 
-$$ I = f(T) $$
+<!--pan_doc: 
 
 For this purpose it's common to use "Bandgap" circuits. We'll learn about them
 in the course, but if you don't want to wait then  you should read
@@ -257,23 +327,26 @@ in the course, but if you don't want to wait then  you should read
 and ask me questions in reference and bias lecture.
 
 In the git repository for your group you'll create schematics for the bandgap
-circuits, and you'll make testbenches to check that the bandgap circuit works.
+circuits, and you'll make test-benches to check that the bandgap circuit works.
 
-If you don't know what you should simulate, it's good to have a chat to chat.
+If you don't know what you should simulate and verify, it's good to have a chat to chat.
 See <https://chatgpt.com/share/69481b11-8830-8007-9986-c9e41d735cfc>. 
 
-Or check my testbenches at https://github.com/wulffern/lelo_temp_sky130a/tree/main/sim/LELOTEMP_BIAS_IBP
+Or check my test-benches at <https://github.com/wulffern/lelo_temp_sky130a/tree/main/sim/LELOTEMP_BIAS_IBP>
 
+-->
 
-__Delivery__ On blackboard link to your github repository with a description of
+__Delivery__: Link to your github repository with a description of
 how the bandgap works. 
 
-## Milestone 2:
+---
 
-The goal of milestone 2 is to use the PTAT current, and the CTAT voltage an
+## Milestone 2: The oscillator
+
+__Goal__: Use the PTAT current, and the CTAT voltage an
 create a oscillator. 
 
-$$ t = f(I) $$
+<!--pan_doc: 
 
 One way is to charge a capacitor with the current, and have a comparator trigger
 when the voltage on the capacitor reaches a voltage (CTAT voltage for example). 
@@ -285,16 +358,20 @@ One difference, though, is that group 7 used VDD/2 as the reference. I would
 recommend you use the CTAT voltage from the bandgap instead. That way, the
 oscillation frequency is independent (to first order) from the VDD.
 
-![](https://raw.githubusercontent.com/analogicus/JNW_GR07_SKY130A/refs/heads/main//Images/TempToPWM.png)
+-->
 
-__Delivery__ On blackboard, link to your github repository with description on
-how your oscillator works. 
+![right fit](https://raw.githubusercontent.com/analogicus/JNW_GR07_SKY130A/refs/heads/main//Images/TempToPWM.png)
 
-## Milestone 3:
+__Delivery__ Link to your github repository with description on
+how your oscillator works. There should be proof on how it works.
 
-The goal of milestone 3 is to figure out how to measure the frequency of the
-oscillator. 
+---
 
+## Milestone 3: The measurement
+
+__Goal__: Measure the frequency of the oscillator. 
+
+<!--pan_doc: 
 In the system we can assume we have an accurate 32768 Hz clock source. One way
 to find the frequency is to run the oscillator for a fixed number of clock
 cycles on the 32768 Hz clock, and have a counter that can count the output
@@ -306,19 +383,24 @@ we have the frequency we can calculate the temperature.
 
 I would recommend that you write in verilog the system to start the oscillator,
 count for a number of 32768 Hz clock cycles, and transform the frequency into a
-temeprature. 
+temperature. 
 
-__Delivery__ On blackboard, link to your github repository where you describe
-how you measure the frequency of the oscillator.  
+-->
 
-## Milestone 4 (Optional):
+![right fit](https://raw.githubusercontent.com/wulffern/LELO_TEMP_SKY130A/refs/heads/main/sim/tb_lelo_temp/tempFsm.svg)
 
-The last design milestone is to do the physical layout of your oscillator, and
+__Delivery__: Link to your github repository where you describe
+how you measure the frequency of the oscillator.
+
+---
+
+## Milestone 4 (Optional): The physical design
+
+
+__Goal__: Do the physical layout of your oscillator, and
 prove that it still works with the layout parasitics. 
 
-Those students that follow the course at NTNU will be able to tapeout if the
-design is complete. I've gotten [Nordic Semiconductor](https://nordicsemi.com)
-to sponsor the tapeout for 2026.  
+<!--pan_doc:
 
 If you do the layout, then your design must fit within a digital 1x1 tinytapeout
 block. I've made a template at
@@ -329,16 +411,35 @@ be able to tapeout.
 When your design is complete, then the DRC, LVS, GDS actions should be passing
 on github. 
 
-__Delivery__ On blackboard, link to your github repository with passing GDS,
+-->
+
+__Delivery__: Link to your github repository with passing GDS,
 DRC, LVS actions. 
 
-## Milestone 5:
+---
 
-The last milestone is the report. You shall deliver a PDF of the report in
-Inspera. You'll all write an individual report. The report shall be in the IEEE
-template. 
+## Milestone 5: The Report
+
+__Goal__: Write a report 
+
+
+__Delivery__: A PDF copy of the report in Inspera. You'll all write an individual report. The report shall be in the IEEE template. 
 
 See further details in <https://analogicus.com/aic2026/2023/10/26/How-to-write-a-project-report.html>
+
+
+--- 
+
+## Milestone 6 (Optional): The Tapeout
+
+Target TTSKY26b tapeout (June 2026) on <https://tinytapeout.com/chips/>
+
+Those students that follow the course at NTNU will be able to tapeout if the design is complete. I've gotten [Nordic Semiconductor](https://nordicsemi.com) to sponsor the tapeout for 2026.
+
+---
+
+#[fit] Thanks!
+
 
 
 
