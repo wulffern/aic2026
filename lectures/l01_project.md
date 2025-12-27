@@ -339,7 +339,9 @@ Or check my test-benches at <https://github.com/wulffern/lelo_temp_sky130a/tree/
 -->
 
 __Delivery__: Link to your github repository with a description of
-how the bandgap works. 
+how the bandgap works.
+
+![right fit](../media/l03_ptat.pdf)
 
 ---
 
@@ -352,17 +354,17 @@ create a oscillator.
 
 One way is to charge a capacitor with the current, and have a comparator trigger
 when the voltage on the capacitor reaches a voltage (CTAT voltage for example). 
+When the comparator triggers, then we can reset the capacitor.
 
-When the comparator triggers, then we can reset the capacitor. This is similar
+This is similar
 to what group 7 did last year (one of the groups got all the way to tapeout).
-
 One difference, though, is that group 7 used VDD/2 as the reference. I would
 recommend you use the CTAT voltage from the bandgap instead. That way, the
 oscillation frequency is independent (to first order) from the VDD.
 
 -->
 
-![right fit](https://raw.githubusercontent.com/analogicus/JNW_GR07_SKY130A/refs/heads/main//Images/TempToPWM.png)
+![right fit](../media/rcosc.pdf)
 
 __Delivery__ Link to your github repository with description on
 how your oscillator works. There should be proof on how it works.
@@ -414,6 +416,8 @@ When your design is complete, then the DRC, LVS, GDS actions should be passing
 on github. 
 
 -->
+
+![right fit](../media/l00_layout.pdf)
 
 __Delivery__: Link to your github repository with passing GDS,
 DRC, LVS actions. 
