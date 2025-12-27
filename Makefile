@@ -38,12 +38,13 @@ FILES = l00_jayn \
 	l11_aver \
 	lp_project_report \
 	lr0_layout \
+	l13_thoughts \
 	l00_spice \
 	l00_sv \
 	l04_mac\
 	l00_ades \
-	lr0_logic \
-	l13_thoughts
+	lr0_logic
+
 
 
 
