@@ -232,6 +232,8 @@ The fourth milestone is optional, but you can't get an A in the course if you do
 
 The fifth milestone is an individual report. I will force you to work in groups. As such, it may be that some contribute more than others. To ensure that the grading is fair, the report will be individual. It's OK to share figures, tables, and so on, but the PDF shall be written by you and you alone.
 
+The sixth and last milestone is the tapeout on <tinytapeout.com>. It's optional, and not everyone will get to that stage.
+
 -->
 
 --- 
