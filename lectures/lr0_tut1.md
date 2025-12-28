@@ -10,7 +10,13 @@ date: 2025-10-26
 
 **Status:** 0.5
 
-If the commands don't work, then you have not installed the tools. Check [The Tools](https://analogicus.com/aic2026/the_tools) chapter first.
+Before you start the tutorial you need to have the tools installed. 
+
+If you're a student of mine, then you must install the tools locally on your PC.
+Read check [The Tools](https://analogicus.com/aic2026/the_tools) chapter first.
+
+If you're the impatient kind, then check <https://analogicus.com/aicex/> which
+shows how to start the docker image. 
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/8VkmzaZebnc?si=Y7ziwT6FGafCHC6j" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
