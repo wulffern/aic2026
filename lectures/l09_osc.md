@@ -9,7 +9,7 @@ date: 2026-03-20
 ## TFE4188 -  Lecture 9
 # Oscillators
 
-<!--pan_title: Lecture 9 - Oscillators -->
+<!--pan_title: Oscillators -->
 
 ---
 

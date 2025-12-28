@@ -7,7 +7,7 @@ header:  Helvetica
 date: 2026-01-09
     
 
-<!--pan_title: Lecture 1 -  Introduction -->
+<!--pan_title: Introduction -->
 
 <!--pan_skip: -->
 ## TFE4188 - Advanced Integrated Circuits  
@@ -434,9 +434,13 @@ Groups meet, and work on project.
 
 - [Syllabus](https://wulffern.github.io/aic2026/syllabus/)
 
-- [Youtube Videos](https://www.youtube.com/playlist?list=PLybHXZ9FyEhbm9-A3QR1NRlt6VxeTXYr5)
+- [Youtube Videos](https://youtube.com/playlist?list=PLybHXZ9FyEhYuu3SJjXBncbR3BEImeZ0H&si=1lManZwmgQJrOQ9q)
 
 - [AIC2024](http://analogicus.com/aic2024/)
+
+- [AIC2025](http://analogicus.com/aic2025/)
+
+- [AIC2026](http://analogicus.com/aic2026/)
 
 ---
 
@@ -478,7 +482,7 @@ Buy a hard-copy of the book if you don't have that. Don't expect to understand t
 
 ## Compulsory exercises
 
-Follow: [Sky130nm Tutorial](https://analogicus.com/aic2026/2025/01/01/Sky130nm-tutorial.html)
+Follow: [Sky130nm Tutorial](https://analogicus.com/aic2026/sky130nm_tutorial.html)
 
 Submit link to your github repository on blackboard
 
@@ -515,7 +519,7 @@ I've made a rather detailed (at least I think so myself) tutorial on how to make
 I strongly recommend you start with that first. 
 -->
 
- [Skywater 130 nm Tutorial](https://analogicus.com/aic2026/2025/01/01/Sky130nm-tutorial.html)
+ [Skywater 130 nm Tutorial](https://analogicus.com/aic2026/sky130nm_tutorial.html)
  
  
 <!--pan_doc:

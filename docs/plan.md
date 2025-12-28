@@ -24,4 +24,4 @@ permalink: /plan/
 | 16   |                      | M4      | Analog SystemVerilog      | Analog system verilog behavioral models                          |
 | 17   |                      |         | Q & A                     |                                                                  |
 | 18   |                      | M5      |                           | Project deadline is May 1'st                                     |
-|      |                      |         |                           | TTSKY26b (June 2026)                                             |
+|      |                      | M6      |                           | TTSKY26b (June 2026)                                             |

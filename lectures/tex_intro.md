@@ -75,16 +75,16 @@ milestone actions worked well.
 
 For 2026 I should do the following changes:
 
-- Add GPT as part of learning: generate verification plan, checklists etc. 
-- Wait until after M0 for group selection
-- Talk about layout early. Force full M0 tutorial
-- Make them do TR layout early
-- Re-introduce milestone 3 
-- Write a detailed project description and milestone and expectation description
-- Reduce time for milestone 1. Maybe make a ready schematic hierarchy to force names? ideal OTA?
-- Find a good sigma delta intro circuit
-- Add to analog systemverilog
-- Write about FFTs
+- [x] Add GPT as part of learning: generate verification plan, checklists etc. 
+- [x] Wait until after M0 for group selection
+- [ ] Talk about layout early. Force full M0 tutorial
+- [ ] Make them do TR layout early
+- [x] Re-introduce milestone 3 
+- [x] Write a detailed project description and milestone and expectation description
+- [x] Reduce time for milestone 1. Maybe make a ready schematic hierarchy to force names? ideal OTA?
+- [ ] Find a good sigma delta intro circuit
+- [ ] Add to analog systemverilog
+- [ ] Write about FFTs
 
 I love programming and automation. Not much makes me more happy than using the
 same source (the [slide

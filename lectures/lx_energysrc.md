@@ -9,7 +9,7 @@ date: 2026-04-10
 # TFE4188 - Lecture X
 # Energy Sources
 
-<!--pan_title: Lecture X - Energy Sources -->
+<!--pan_title: Energy Sources -->
 
 ---
 

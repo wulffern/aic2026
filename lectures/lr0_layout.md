@@ -24,7 +24,7 @@ There are a few things, though, that could help you on the way.
 I assume that you have the latest and greatest `aicex\ip` setup. 
 
 See [SKY130NM
-Tutorial](https://analogicus.com/aic2025/2025/01/01/Sky130nm-tutorial.html) if
+Tutorial](https://analogicus.com/aic2026/sky130nm_tutorial) if
 aicex is unfamiliar.
 
 

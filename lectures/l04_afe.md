@@ -125,7 +125,7 @@ All digital processing can be made with the NOT(A AND B) function!
 
 ---
 
-<!--pan_title: Lecture 4 - Analog frontend and filters -->
+<!--pan_title: Analog frontend and filters -->
 
 
 

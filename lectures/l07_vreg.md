@@ -9,7 +9,7 @@ date: 2026-03-06
 ## TFE4188 - Lecture 7
 # Voltage regulation
 
-<!--pan_title: Lecture 7 - Voltage regulation -->
+<!--pan_title: Voltage regulation -->
 
 ---
 

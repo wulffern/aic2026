@@ -26,7 +26,7 @@ Introduction to **circuit architectures**
 
 ---
 
-<!--pan_title: Lecture 3 - References and bias -->
+<!--pan_title: References and bias -->
 
 <!--pan_doc:
 
@@ -223,7 +223,7 @@ To see the temperature coefficient, I find it easier to re-arrange the equation 
 
 ---
 
-Some algebra (see [Diodes](https://analogicus.com/aic2025/2024/10/25/Diodes.html))
+Some algebra (see [Diodes](https://analogicus.com/aic2026/diodes))
  
  $$ V_{BE} = \frac{kT}{q}(\ell  - 3 \ln T) + V_G $$ 
 

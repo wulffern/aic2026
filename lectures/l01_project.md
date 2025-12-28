@@ -282,32 +282,29 @@ getting some points on the layout
 
 -->
 
-| Milestone | What does it mean                                                     | Condition for more than 0 points                                       | Possible Points |
-|:----------|:----------------------------------------------------------------------|:-----------------------------------------------------------------------|:----------------|
-| M0        | You have completed the tutorial                                       | Link on blackboard                                                     | 5               |
-| M1        | Circuit that can convert a temperature into a current and voltage     | Description of the circuit on github docs                              | 5               |
-| M2        | Circuit that can convert a temperature into a frequency               | Description of the circuit on github docs. Demonstrate that it works   | 10              |
-| M3        | A verilog testbench that can convert a frequency into a digital value | Description of the testbench on github docs. Demonstrate that it works | 10              |
-| M4        | Layout of your circuit                                                | DRC/LVS/GDS passing on github                                          | 20              |
-| M5        | Individual report                                                     | Uploaded to Inspera                                                    | 48              |
-| M6        | Tapeout                                                               | None                                                                   | 0               |
-| Coolness  | Extra points that I may choose to award                               |                                                                        | 10              |
-| Total     |                                                                       |                                                                        | 108             |
+| Week | Deadline   | Milestone | Task                                                                       | Condition for more than 0 points                                       | Possible Points |
+|:-----|------------|:----------|:---------------------------------------------------------------------------|:-----------------------------------------------------------------------|:----------------|
+| 4    | 2026-01-23 | M0        | Complete tutorial                                                          | Link on blackboard                                                     | 5               |
+| 7    | 2026-02-13 | M1        | Design a circuit that can convert a temperature into a current and voltage | Description of the circuit on github docs                              | 5               |
+| 10   | 2026-03-06 | M2        | Design a circuit that can convert a temperature into a frequency           | Description of the circuit on github docs. Demonstrate that it works   | 10              |
+| 13   | 2026-03-27 | M3        | A verilog testbench that can convert a frequency into a digital value      | Description of the testbench on github docs. Demonstrate that it works | 10              |
+| 16   | 2026-04-17 | M4        | Layout of your circuit                                                     | DRC/LVS/GDS passing on github                                          | 20              |
+| 18   | 2026-05-01 | M5        | Individual report                                                          | Uploaded to Inspera                                                    | 48              |
+| ?    |            | M6        | Tapeout                                                                    | None                                                                   | 0               |
+|      |            | Coolness  | Extra points that I may choose to award                                    |                                                                        | 10              |
+|      |            | Total     |                                                                            |                                                                        | 108             |
 
 ---
 
 
 ## Milestone 0: The tutorial 
 
-<!--pan_doc: 
 
-The goal of milestone 0 is to force you to install the tools, and get you started. 
+__Goal__: force you to install the tools, and get you started. 
 
--->
+Follow [Sky130nm Tutorial](https://analogicus.com/aic2026/sky130nm_tutorial)
 
-Follow: [Sky130nm Tutorial](https://analogicus.com/aic2025/2025/01/01/Sky130nm-tutorial.html)
-
-Submit link to your github repository on blackboard
+__Delivery__: Submit link to your github repository on blackboard
 
 For example, my repository: [LELO\_EX\_SKY130A](http://analogicus.com/lelo_ex_sky130a/)
 
@@ -325,7 +322,7 @@ complementary to temperature (CTAT).
 
 For this purpose it's common to use "Bandgap" circuits. We'll learn about them
 in the course, but if you don't want to wait then  you should read
-<https://analogicus.com/aic2026/2026/01/09/Lecture-3-References-and-bias.html>
+<https://analogicus.com/aic2026/references_and_bias>
 and ask me questions in reference and bias lecture.
 
 In the git repository for your group you'll create schematics for the bandgap
@@ -431,7 +428,7 @@ __Goal__: Write a report
 
 __Delivery__: A PDF copy of the report in Inspera. You'll all write an individual report. The report shall be in the IEEE template. 
 
-See further details in <https://analogicus.com/aic2026/2023/10/26/How-to-write-a-project-report.html>
+See further details in <https://analogicus.com/aic2026/how_to_write_a_project_report>
 
 
 --- 

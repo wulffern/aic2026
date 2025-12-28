@@ -9,7 +9,7 @@ date: 2026-03-13
 ## TFE4188 - Lecture 8
 # Clocks and PLLs
 
-<!--pan_title: Lecture 8 - Clocks and PLLs -->
+<!--pan_title: Clocks and PLLs -->
 
 
 ---

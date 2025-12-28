@@ -9,7 +9,7 @@ date: 2026-04-17
 # TFE4188 - Lecture 11
 # Analog SystemVerilog
 
-<!--pan_title: Lecture 11 - Analog SystemVerilog -->
+<!--pan_title: Analog SystemVerilog -->
 
 ---
 

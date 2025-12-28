@@ -12,7 +12,7 @@ date: 2026-02-27
 ## TFE4188 - Lecture 6
 # Oversampling and Sigma-Delta ADCs
 
-<!--pan_title: Lecture 6 - Oversampling and Sigma-Delta ADCs -->
+<!--pan_title: Oversampling and Sigma-Delta ADCs -->
 
 ---
 

@@ -10,7 +10,7 @@ date: 2025-10-26
 
 **Status:** 0.5
 
-If the commands don't work, then you have not installed the tools. Check [The Tools](https://analogicus.com/aic2026/2025/10/25/The-Tools.html) chapter first.
+If the commands don't work, then you have not installed the tools. Check [The Tools](https://analogicus.com/aic2026/the_tools) chapter first.
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/YoJCkAmBo44?si=PA9Td0lBYERgkOrS" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
