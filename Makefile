@@ -16,6 +16,7 @@ endif
 
 FILES = l00_jayn \
 	l01_intro \
+	lr0_excellence \
 	l00_refresher \
 	l00_diode \
 	lr0_mosfet \

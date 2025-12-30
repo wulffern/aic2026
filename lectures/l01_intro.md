@@ -42,7 +42,7 @@ I finished my Masters in 2002, and did a Ph.D on analog-to-digital converters fi
 Since that time, I've had a three axis in my work/hobby life.
 
 I work at  [Nordic Semiconductor](https://www.nordicsemi.com) where I've been since 2008. The first 7 years I did analog design
-  (ADCs, DC/DCs, GPIO). The next 7 years I was the Wireless Group Manager. The Wireless group make most
+  (ADCs, DC/DCs, GPIO). The next 7 years I was the Wireless Group Manager. The Wireless group made most
   of the analog and RF designs for Nordic's short-range products. Now I'm the IC
   Scientist, and focus on technical issues with our integrated circuits that
   occur before we go into volume production. 
@@ -122,11 +122,9 @@ Someone must take over, and to do that, they need to know most of what I know, a
 That's were some of you come in. Some of you will find integrated circuits interesting to make, and in addition, you have 
 the stamina, patience, and brain necessary to learn some of the hardest topics in the world.
 
-> Making integrated circuits (that work reliably) is not rocket science, it's much harder.
-
-
-
 -->
+
+
 
 ---
 
@@ -135,9 +133,40 @@ the stamina, patience, and brain necessary to learn some of the hardest topics i
 [.text: #FFFFFF]
 # There will always be analog circuits, because the real world is analog
 
+<!--pan_doc:
+
+In this course, we'll focus on analog ICs, because the real world is analog, and all ICs must have some 
+analog components, otherwise they won't work.
+
+The steps to make integrated circuits is split in two. We have an analog flow, and a digital flow, as shown in Figure 3. 
+
+It's rare to find a single human that do both flows well. Usually people choose, and I think it's based on what they like and their personality.
+
+If you like the world to be ordered, with definite answers, then it's likely that you'll find the digital flow interesting.
+
+If you're comfortable with not knowing, and an insatiable desire to understand how the world *really* works at a fundamental level, then 
+it's likely that you'll find analog flow interesting. 
+
+
+![inline](../media/dig_des.svg)
+
+<!--pan_doc:
+<sub>Figure 3: Analog and Digital design process  </sub>
+-->
+
+
 <!--pan_skip: -->
 
 ---
+
+<!--pan_skip: -->
+
+![inline](../media/analog_world.png)
+
+<sub> [https://circuitcellar.com/insights/tech-the-future/kinget-the-world-is-analog/](https://circuitcellar.com/insights/tech-the-future/kinget-the-world-is-analog/)</sub>
+
+---
+
 
 <!--pan_skip: -->
 
@@ -178,43 +207,6 @@ the stamina, patience, and brain necessary to learn some of the hardest topics i
 ---
 
 
-[.column]
-
-
-
-
-<!--pan_doc:
-
-In this course, we'll focus on analog ICs, because the real world is analog, and all ICs must have some 
-analog components, otherwise they won't work.
-
-The steps to make integrated circuits is split in two. We have an analog flow, and a digital flow, as shown in Figure 3. 
-
-It's rare to find a single human that do both flows well. Usually people choose, and I think it's based on what they like and their personality.
-
-If you like the world to be ordered, with definite answers, then it's likely that you'll find the digital flow interesting.
-
-If you're comfortable with not knowing, and an insatiable desire to understand how the world *really* works at a fundamental level, then 
-it's likely that you'll find analog flow interesting. 
-
-
-![inline](../media/dig_des.svg)
-
-<!--pan_doc:
-<sub>Figure 3: Analog and Digital design process  </sub>
--->
-
-
--->
-
-<!--pan_skip: -->
-
-![inline](../media/analog_world.png)
-
-<sub> [https://circuitcellar.com/insights/tech-the-future/kinget-the-world-is-analog/](https://circuitcellar.com/insights/tech-the-future/kinget-the-world-is-analog/)</sub>
-
----
-
 <!--pan_skip: -->
 
 ![inline](../media/dig_des_lr.svg)
@@ -232,8 +224,7 @@ It's now possible without signing an NDA or buying expensive software licenses.
 In 2020 Google and Skywater joined forces to release a 130 nm process design kit to the public. In addition, they 
 have fueled a renaissance of open source software tools.
 
-Together with [Efabless](https://https://efabless.com) there are cheap alternatives, like [tinytapeout](https://tinytapeout.com),
-which makes it possible for a private citizen to tape-out their own integrated circuit.
+It's possible to tapeout on [tinytapeout](https://tinytapeout.com) for a resonable amount of money. 
 
 -->
 
@@ -324,22 +315,19 @@ Here is some guiding principles that you'll likely forget.
 <!--pan_doc: 
 ## IC design mantra 
 
-To copy an old mantra I have on learning programming 
+To copy an old mantra I have on learning programming (run it in a bash/zsh/cshrc terminal, our in your brain) 
 
 -->
-
-> Find a problem that you really want to solve, and learn programming to solve it. There is  no point in saying "I want to learn programming", then sit down with a book to read about programming, and expect that you will learn programming that way. It will not happen. The only way to learn programming is to do it, a lot. 
--- Carsten Wulff 
-
-<!--pan_doc:
-
-And run the perl program 
-
--->
-
 
 ``` perl
-s/programming/analog design/ig
+echo "Find a problem that you really want to solve,"\
+     "and learn programming to solve it."\
+     "There is no point in saying 'I want to learn programming',"\
+     "then sit down with a book to read about programming,"\
+     "and expect that you will learn programming that way."\
+     "It will not happen. The only way to learn programming"\
+     "is to do it, a lot." \
+     |perl -pe 's/programming/analog design/ig'
 ```
 
 ---
@@ -349,9 +337,8 @@ s/programming/analog design/ig
 [.column]
 - Define the problem, what are you trying to solve?
 - Find a circuit that can solve the problem (papers, books)
-- Find right transistor sizes. What transistors should be weak inversion, strong
-  inversion, or don't care?
-- Write a verification plan. Plan to simulate everything that could go wrong.
+- Find right transistor sizes. What transistors should be weak inversion, strong inversion, or don't care?
+- Write a verification plan (ask chat). Plan to simulate everything that could go wrong. 
 - Check operating region of transistors (.op)
 - Check key parameters (.dc, .ac, .tran)
 - Check function. Exercise all inputs. Check all control signals
@@ -377,13 +364,18 @@ s/programming/analog design/ig
 
 Don't expect that I'll magically take information and put it inside your head, and you'll suddenly understand everything about making ICs.
 
+-->
+
 **You are the one that must teach yourself everything.**
+
+<!--pan_doc: 
 
 I consider my role as a guide, similar to a mountain guide. I can't carry you up the mountain, you need to walk up the mountain
 , but I know the safe path to take and increase the likelihood that you'll come back alive. 
 
-I want to:
 -->
+
+My guide role:
 
 - Enable you to read the books on integrated circuits
 - Enable you to read papers (latest research)
@@ -409,14 +401,14 @@ my understanding is wrong, then I'll happily discuss.
 # Plan
 
 **Lectures:**
-Friday at 08:15
+Friday at 08:15 in R90
 
-Read the introduction before the lectures at [aic2026](https://analogicus.com/aic2026)
+It helps if you read the notes before the lecture, and have questions. Notes at [aic2026](https://analogicus.com/aic2026)
 
 The "lectures" will be Q & A's on the topic. If no questions, then I'll ramble on.
 
 **Project Hours:**
-Friday at 10:15
+Friday at 10:15 in KJL4
 
 Groups meet, and work on project. 
 
@@ -435,10 +427,6 @@ Groups meet, and work on project.
 - [Syllabus](https://wulffern.github.io/aic2026/syllabus/)
 
 - [Youtube Videos](https://youtube.com/playlist?list=PLybHXZ9FyEhYuu3SJjXBncbR3BEImeZ0H&si=1lManZwmgQJrOQ9q)
-
-- [AIC2024](http://analogicus.com/aic2024/)
-
-- [AIC2025](http://analogicus.com/aic2025/)
 
 - [AIC2026](http://analogicus.com/aic2026/)
 
@@ -480,9 +468,9 @@ Buy a hard-copy of the book if you don't have that. Don't expect to understand t
 
 <!--pan_skip: -->
 
-## Compulsory exercises
+## Compulsory exercise (Milestone 0)
 
-Follow: [Sky130nm Tutorial](https://analogicus.com/aic2026/sky130nm_tutorial.html)
+Follow: [Sky130nm Tutorial](https://analogicus.com/aic2026/sky130nm_tutorial)
 
 Submit link to your github repository on blackboard
 
@@ -511,15 +499,15 @@ Strict deadline 1'st of May. If you hand in 2'nd of May at 00:00:01, then you fa
 
 We'll use professional 
 -->
-Open source software (xschem, ngspice, sky130A PDK, Magic VLSI, netgen)
+Open source software (xschem, ngspice, sky130A PDK, Magic VLSI, netgen, surfer, iverilog, verilator)
 
 <!--pan_doc:
 
 I've made a rather detailed (at least I think so myself) tutorial on how to make a current mirror with the open source tools.
-I strongly recommend you start with that first. 
+You have to do that tutorial. It's Milestone 0 of the project and does count towards your final grade.
 -->
 
- [Skywater 130 nm Tutorial](https://analogicus.com/aic2026/sky130nm_tutorial.html)
+ [Skywater 130 nm Tutorial](https://analogicus.com/aic2026/sky130nm_tutorial)
  
  
 <!--pan_doc:

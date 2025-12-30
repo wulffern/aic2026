@@ -5,7 +5,7 @@ digraph G{
 node [margin=0.5 color=blue fontcolor=black fontsize=20 width=0.5 shape=box fontname="Helvetica"]
 I [label="Idea",shape=egg]
 D [label="Digital Design \n SystemVerilog"]
-S [label="Digital Simulation \n iverilog/vpp/verilator/gtkwave"]
+S [label="Digital Simulation \n iverilog/vpp/verilator/gtkwave/surfer"]
 PNR [label="RTL to GDSII \nOpenLane"]
 TO [label="Tapeout",shape=egg]
 
