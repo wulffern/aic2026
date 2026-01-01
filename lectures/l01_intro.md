@@ -16,11 +16,31 @@ date: 2026-01-09
 
 ---
 
+<!-- 
+
+00:00 Introduction
+00:30 Who am I
+04:20 My role 
+07:30 What you'll learn
+10:15 Analog design flow
+23:58 Full chip flow 
+28:26 Will you tapeout?
+32:30 Lecture Notes
+39:40 Philosophy
+45:00 Analog design process
+48:40 My goal
+49:30 Plan 
+56:00 The Exercise
+59:38 The Project 
+1:00:00 The Tools
+-->
+
 <!--pan_doc:
 
 **Status:** 1.0
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/DVBnfpi90Cs?si=nQKU0RLHBnv4NMzY" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/CekM_kFgMas?si=vb5L-XivOrUgLw0A" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
 
 -->
 

@@ -18,7 +18,7 @@ date: 2026-01-09
 
 -->
 
-> A fantastic project/course that just might turn your world upside down, push you to re-evaluate your life choices, and stare briefly into the existential void… all while being deeply enjoyable and engaging! - Domen, AIC2025 
+> A fantastic project that just might turn your world upside down, push you to re-evaluate your life choices, and stare briefly into the existential void… all while being deeply enjoyable and engaging! - Domen, AIC2025 
 
 ---
 <!--pan_ski: -->
