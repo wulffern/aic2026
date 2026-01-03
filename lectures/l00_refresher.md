@@ -13,7 +13,7 @@ date: 2024-10-25
 ---
 
 <!--pan_doc:
-<iframe width="560" height="315" src="https://www.youtube.com/embed/FbqfuE3tzF0?si=TiVId-ovoHPeDURM" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/F1-piS8uL1w?si=wnFQ83kHPuYBtYS2" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 **Status:** 0.8
 
@@ -199,7 +199,9 @@ The discrete energy levels of the electron transition into bands of allowed ener
 -->
 
 <!--![right fit](https://upload.wikimedia.org/wikipedia/commons/thumb/e/ef/Solid_state_electronic_band_structure.svg/640px-Solid_state_electronic_band_structure.svg.png)-->
+
 ![right fit](../media/Solid_state_electronic_band_structure.png)
+
 <!--pan_doc:
 
 <sub>Figure 3: [Electronic band structure, Wikipedia](https://en.wikipedia.org/wiki/Electronic_band_structure)</sub>
@@ -219,6 +221,7 @@ faces, and 4 atoms inside the unit cell at a nearest neighbor distance of 0.235 
 
 <!--![left fit](https://upload.wikimedia.org/wikipedia/commons/f/f1/Silicon-unit-cell-3D-balls.png)-->
 ![left fit](../media/503px-Silicon-unit-cell-3D-balls.png)
+
 <!--pan_doc:
 <sub>Figure 4: [Silicon, Wikipedia](https://en.wikipedia.org/wiki/Silicon)</sub>
 -->
@@ -306,6 +309,7 @@ In metals, the band splitting of the energy levels causes the valence band and c
 
 <!--![left fit](https://upload.wikimedia.org/wikipedia/commons/thumb/9/9d/Band_filling_diagram.svg/1024px-Band_filling_diagram.svg.png)-->
 ![left fit](../media/Band_filling_diagram.png)
+
 <!--pan_doc:
 
 <sub>Figure 6: Band splitting in materials. [Electronic Band Structure, Wikipedia](https://en.wikipedia.org/wiki/Electronic_band_structure)</sub>
@@ -366,6 +370,7 @@ of distance in the material.
 <!--![right fit](https://upload.wikimedia.org/wikipedia/commons/4/43/Pn-junction_zero_bias.png)-->
 
 ![right fit](../media/Pn-junction_zero_bias.png)
+
 <!--pan_doc:
 <sub>Figure 7: [Band diagram of a PN junction, Wikipedia](https://en.wikipedia.org/wiki/Band_diagram)</sub>
 -->
@@ -680,6 +685,10 @@ and store energy in the magnetic fields in a loop of a conductor.
 [^1]: Although you do have to keep your symbols straight. We use "C" for Capacitance, but C can also mean Columbs. Context matters.
 
 -->
+
+---
+
+#[fit] Thanks!
 
 
 

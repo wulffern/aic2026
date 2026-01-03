@@ -7,6 +7,32 @@ header:  Helvetica
 date: 2026-01-09
 
 
+<!--
+
+AIC26 - The Project
+
+Notes: https://analogicus.com/aic2026/the_project
+Example of temperature sensor: https://analogicus.com/lelo_temp_sky130a/
+Tutorial: https://analogicus.com/aic2026/sky130nm_tutorial
+
+00:00 Introduction
+01:55 The challenge: design a temperature sensor
+02:15 Why temperature sensor?
+09:45 How to measure temperature
+13:30 Milestone Overview
+18:05 The specification
+20:54 The Grade
+23:00 Milestone 0: Sky130nm tutorial 
+23:52 Milestone 1: The bandgap
+27:33 Milestone 2: The oscillator
+29:33 Milestone 3: The measurement
+30:49 Milestone 4: The layout
+32:45 Milestone 5: The report
+33:18 Milestone 6: The tapeout
+34:00 Example of a temperature sensor
+
+-->
+
 <!--pan_skip: --> 
 
 #[fit] The Project
@@ -14,6 +40,9 @@ date: 2026-01-09
 ---
 
 <!--pan_doc:
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/t8WSP1tzUpA?si=a9G_2buMEIOvUuyJ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
 > AIC is likely one of the most rewarding courses I’ve attended at NTNU. It gave me a lot of valuable knowledge on different types of circuits, IC design workflows and open source EDA tools that I greatly appreciate. It is also one of the most challenging courses, due to the amount of effort and time I had to spend in order to figure things out. - Tord, AIC2025
 
 -->
@@ -256,7 +285,7 @@ The temperature sensor shall be design to fit with the specification below.
 
 | Parameter        | Value | Unit | Description                                                    |
 |------------------|-------|------|----------------------------------------------------------------|
-| Area             | < 10  | km^2 |                                                                |
+| Area             | < 15  | km^2 | Must fit in 161 um x 111 um tiny tapeout 1x1 block             |
 | Conversion time  | < 30  | us   | Analog should only be active for one 32768 Hz period           |
 | Sample rate      | 100   | ms   |                                                                |
 | Leakage current  | < 1   | nA   |                                                                |
