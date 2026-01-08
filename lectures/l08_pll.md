@@ -2,14 +2,14 @@ footer: Carsten Wulff 2024
 slidenumbers:true
 autoscale:true
 theme:Plain Jane,1
-date: 2025-03-13
+date: 2026-03-13
 
 <!--pan_skip: -->
 
 ## TFE4188 - Lecture 8
 # Clocks and PLLs
 
-<!--pan_title: Lecture 8 - Clocks and PLLs -->
+<!--pan_title: Clocks and PLLs -->
 
 
 ---

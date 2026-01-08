@@ -1,8 +1,8 @@
-footer: Carsten Wulff 2024
+footer: Carsten Wulff 2026
 slidenumbers:true
 autoscale:true
 theme:Plain Jane,1
-date: 2025-03-27
+date: 2026-03-27
 
 
 
@@ -11,7 +11,7 @@ date: 2025-03-27
 ## TFE4188 - Lecture 10
 # Low Power Radio
 
-<!--pan_title: Lecture 10 - Low Power Radio -->
+<!--pan_title: Low Power Radio -->
 
 ---
 

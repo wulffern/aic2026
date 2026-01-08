@@ -1,5 +1,5 @@
 ---
-date: 2023-10-26
+date: 2026-01-10
 ---
 
 <!--pan_title: How to write a project report-->
@@ -25,11 +25,6 @@ It's fine to share figures between reports, and also references.
 
 I'm also forcing you to use a report format that matches well with what would be
 expected if you were to publish a paper. 
-
-Should you make a fantastic temperature sensor, and maybe even reach close to a
-tapeout I would strongly suggest you submit a paper to 
-[NorCas](https://events.tuni.fi/uploads/2023/12/8af07ce6-norcas2024_cfp.pdf).
-The deadline is August 15 2024.
 
 # On writing English
 

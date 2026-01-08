@@ -1,15 +1,15 @@
-footer: Carsten Wulff 2024
+footer: Carsten Wulff 2026
 slidenumbers:true
 autoscale:true
 theme:Plain Jane,1
-date: 2025-04-10
+date: 2026-04-17
 
 <!--pan_skip: -->
 
 # TFE4188 - Lecture 11
 # Analog SystemVerilog
 
-<!--pan_title: Lecture 11 - Analog SystemVerilog -->
+<!--pan_title: Analog SystemVerilog -->
 
 ---
 

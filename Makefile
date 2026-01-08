@@ -16,6 +16,7 @@ endif
 
 FILES = l00_jayn \
 	l01_intro \
+	lr0_excellence \
 	l00_refresher \
 	l00_diode \
 	lr0_mosfet \
@@ -25,8 +26,6 @@ FILES = l00_jayn \
 	lr0_tools \
 	lr0_tut1 \
 	l01_project \
-	l13_thoughts \
-	#l00_ades \
 	l02_esd \
 	l03_refbias \
 	l04_afe \
@@ -40,10 +39,14 @@ FILES = l00_jayn \
 	l11_aver \
 	lp_project_report \
 	lr0_layout \
+	l13_thoughts \
 	l00_spice \
-	lr0_logic \
 	l00_sv \
-	l04_mac
+	l00_ades \
+	lr0_logic
+	#l04_mac\
+
+
 
 
 
@@ -100,7 +103,9 @@ tagpush:
 	docker push wulffern/aic:${YEAR}_latest
 
 cish:
-	docker run --rm  -it -v `pwd`:/workspace/ -i wulffern/aic:${YEAR}_latest bash --login
+
+	docker run --rm  -it -v $(shell pwd):/workdir/  wulffern/aic:${YEAR}_latest bash --login
+
 
 equations:
 	${foreach f,${FILES},cat lectures/${f}.md |perl -pe 's/\n//ig;'| perl -ne 'print "\n# ${f}\n\n";while(m/\$$\$$([^\$$]+)\$$\$$/ig){print "\n\$$\$$".$$1."\$$\$$\n"}';}

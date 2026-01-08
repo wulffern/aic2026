@@ -1,12 +1,12 @@
-footer: Carsten Wulff 2023
+footer: Carsten Wulff 2026
 slidenumbers:true
 autoscale:true
 theme: Plain Jane, 1
 text:  Helvetica
 header:  Helvetica
-date: 2025-01-23
+date: 2026-01-23
 
-<!--pan_title: Lecture 2 - IC and ESD  -->
+<!--pan_title: IC and ESD  -->
 
 <!--pan_doc:
 

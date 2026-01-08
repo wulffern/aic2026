@@ -1,15 +1,15 @@
-footer: Carsten Wulff 2024
+footer: Carsten Wulff 2026
 slidenumbers:true
 autoscale:true
 theme: Plain Jane, 1
 text:  Helvetica
 header:  Helvetica
-date: 2025-02-13
+date: 2026-02-13
 
 <!--pan_skip: -->
 
 
-<!--pan_title: Lecture 5 - Switched-Capacitor Circuits -->
+<!--pan_title: Switched-Capacitor Circuits -->
 
 ## TFE4188 - Lecture 5
 # Switched-Capacitor Circuits
@@ -196,7 +196,7 @@ The impedance, from [Ohm's law](https://en.wikipedia.org/wiki/Ohm%27s_law) is
  
 <!--pan_doc:
 
-And from [SI units](https://analogicus.com/aic2024/2023/10/26/A-refresher.html#there-are-standard-units-of-measurement) units we can see current is 
+And from [SI units](https://analogicus.com/aic2026/a_refresher#there-are-standard-units-of-measurement) units we can see current is 
 -->
 
  $$ I_{I} = \frac{Q}{dt} = Q f_{\phi}$$

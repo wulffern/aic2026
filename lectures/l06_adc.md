@@ -1,10 +1,10 @@
-footer: Carsten Wulff 2024
+footer: Carsten Wulff 2026
 slidenumbers:true
 autoscale:true
 theme: Plain Jane, 1
 text:  Helvetica
 header:  Helvetica
-date: 2025-02-20
+date: 2026-02-27
 
 
 <!--pan_skip: -->
@@ -12,7 +12,7 @@ date: 2025-02-20
 ## TFE4188 - Lecture 6
 # Oversampling and Sigma-Delta ADCs
 
-<!--pan_title: Lecture 6 - Oversampling and Sigma-Delta ADCs -->
+<!--pan_title: Oversampling and Sigma-Delta ADCs -->
 
 ---
 

@@ -4,7 +4,7 @@ autoscale:true
 theme: Plain Jane, 1
 text:  Helvetica
 header:  Helvetica
-date: 2025-02-06
+date: 2026-02-06
 
 <!--
 
@@ -16,7 +16,7 @@ References:
 -->
 
 
-<!--pan_title: Lecture 4 - Analog Neural Networks and Translinear Circuits -->
+<!--pan_title: Analog Neural Networks and Translinear Circuits -->
 
 <!--pan_skip: -->
 ## TFE4188

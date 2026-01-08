@@ -1,15 +1,15 @@
-footer: Carsten Wulff 2023
+footer: Carsten Wulff 2026
 slidenumbers:true
 autoscale:true
 theme:Plain Jane,1
-date: 2025-02-27
+date: 2026-03-06
 
 <!--pan_skip: -->
 
 ## TFE4188 - Lecture 7
 # Voltage regulation
 
-<!--pan_title: Lecture 7 - Voltage regulation -->
+<!--pan_title: Voltage regulation -->
 
 ---
 

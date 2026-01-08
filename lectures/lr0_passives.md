@@ -285,11 +285,12 @@ Absolute value for resistors and capacitors $$ \approx \pm 10 $$ % to $$ \pm 20 
 
 Relative precision for closely spaced devices $$ \approx $$ 0.1 % to  1 % 
 
-Relative precision for devices on same die $$ > 2 $$% or more 
+Relative precision for devices on same die $$ > 2 $$% or Relative 
 
 ---
 
-# Relative precision
+
+# Relative precision 
 
 Resistors and Capacitors can be matched extremely well
 
@@ -297,6 +298,8 @@ Resistors and Capacitors can be matched extremely well
 
 
 ---
+
+<!--
 
 [.column]
 
@@ -333,6 +336,7 @@ Reverse bias diodes to ground are useful for signals with long routing to transi
 
 ---
 
+-->
 
 
 

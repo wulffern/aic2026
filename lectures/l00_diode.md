@@ -17,7 +17,7 @@ date: 2024-10-25
 
 **Status:** 1.0
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/ibByzO02OLY?si=z4kiNzZ16dVcZlhs" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/F1-piS8uL1w?si=wnFQ83kHPuYBtYS2&amp;start=3200" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 -->
 
@@ -853,14 +853,24 @@ $$ \ell= \ln{I_D} - \ln{\left (Aq\frac{D_n}{L_n N_A} +
 ---
 
 
-
 From  equations above we can see that at 0 K, we expect the diode voltage to be
 equal to the bandgap of silicon. Diodes don't work at 0 K though. 
 
+<!--pan_doc: 
 
+From the diode voltage relation we can calculate the derivative (ask chat to -->
+<!--explain it to you ), and you'll get
 
-Although it's not trivial to see that the diode voltage has a negative temperature coefficient, if you do compute it as in
-[vd.py](https://github.com/wulffern/memos/blob/main/2021-07-08_diodes/vd.py), then you'll see it decreases. 
+-->
+
+$$ \frac{dV_D}{dT} = \frac{k}{q}\bigl(\ell - 3 \ln T - 3\bigr). $$
+
+<!--pan_doc:
+and we can see the slope is negative with a factor of $\ln(T)$, which turns out
+to be very close to linear for the temperature range we're interested in (-40C
+to 125C)
+
+-->
 
 The slope of the diode voltage can be seen to depend on the area, the current,
 doping, diffusion constant, diffusion length and the effective masses. 
