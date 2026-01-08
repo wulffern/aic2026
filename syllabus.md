@@ -4,8 +4,6 @@ title: Syllabus
 permalink: /syllabus/ 
 ---
 
-
-
 ## Book: Analog Integrated Circuit Design
 Authors: Carusone, Tony Chan Johns, David Martin, Kenneth [at akademia.no](https://www.akademika.no/analog-integrated-circuit-design/carusone-tony-chan/johns-david/martin-kenneth/9781118092330)
 

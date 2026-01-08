@@ -99,8 +99,6 @@ might be possible
 
 ---
 
-
-
 <!--pan_skip: -->
 
 #[fit] Why
@@ -123,8 +121,6 @@ That's were some of you come in. Some of you will find integrated circuits inter
 the stamina, patience, and brain necessary to learn some of the hardest topics in the world.
 
 > Making integrated circuits (that work reliably) is not rocket science, it's much harder.
-
-
 
 -->
 
@@ -174,13 +170,10 @@ the stamina, patience, and brain necessary to learn some of the hardest topics i
 | :white_check_mark: | Device      | JSON          | compiled     | Polygon pushing                                         |
 | :white_check_mark: | Technology  | JSON/Rules    | compiled     | Custom for each technology                              |
 
-
 ---
 
 
 [.column]
-
-
 
 
 <!--pan_doc:
@@ -232,7 +225,7 @@ It's now possible without signing an NDA or buying expensive software licenses.
 In 2020 Google and Skywater joined forces to release a 130 nm process design kit to the public. In addition, they 
 have fueled a renaissance of open source software tools.
 
-Together with [Efabless](https://https://efabless.com) there are cheap alternatives, like [tinytapeout](https://tinytapeout.com),
+[tinytapeout](https://tinytapeout.com) runs cheap shuttles
 which makes it possible for a private citizen to tape-out their own integrated circuit.
 
 -->
