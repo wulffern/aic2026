@@ -119,8 +119,6 @@ might be possible
 
 ---
 
-
-
 <!--pan_skip: -->
 
 #[fit] Why
@@ -223,9 +221,43 @@ it's likely that you'll find analog flow interesting.
 | :white_check_mark: | Device      | JSON          | compiled     | Polygon pushing                                         |
 | :white_check_mark: | Technology  | JSON/Rules    | compiled     | Custom for each technology                              |
 
-
 ---
 
+
+[.column]
+
+
+<!--pan_doc:
+
+In this course, we'll focus on analog ICs, because the real world is analog, and all ICs must have some 
+analog components, otherwise they won't work.
+
+The steps to make integrated circuits is split in two. We have an analog flow, and a digital flow, as shown in Figure 3. 
+
+It's rare to find a single human that do both flows well. Usually people choose, and I think it's based on what they like and their personality.
+
+If you like the world to be ordered, with definite answers, then it's likely that you'll find the digital flow interesting.
+
+If you're comfortable with not knowing, and an insatiable desire to understand how the world *really* works at a fundamental level, then 
+it's likely that you'll find analog flow interesting. 
+
+
+![inline](../media/dig_des.svg)
+
+<!--pan_doc:
+<sub>Figure 3: Analog and Digital design process  </sub>
+-->
+
+
+-->
+
+<!--pan_skip: -->
+
+![inline](../media/analog_world.png)
+
+<sub> [https://circuitcellar.com/insights/tech-the-future/kinget-the-world-is-analog/](https://circuitcellar.com/insights/tech-the-future/kinget-the-world-is-analog/)</sub>
+
+---
 
 <!--pan_skip: -->
 
@@ -244,7 +276,8 @@ It's now possible without signing an NDA or buying expensive software licenses.
 In 2020 Google and Skywater joined forces to release a 130 nm process design kit to the public. In addition, they 
 have fueled a renaissance of open source software tools.
 
-It's possible to tapeout on [tinytapeout](https://tinytapeout.com) for a resonable amount of money. 
+[tinytapeout](https://tinytapeout.com) runs cheap shuttles
+which makes it possible for a private citizen to tape-out their own integrated circuit.
 
 -->
 
