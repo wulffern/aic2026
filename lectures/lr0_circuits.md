@@ -436,7 +436,10 @@ $$
 
 There are usually three amplifiers that we consider when we talk about single transistors. Common Source, Common Gate and Source Follower. 
 
-For two transistors there are a few more possiblities. I'd highly recommend [Fifty Nifty Variations of Two-Transistor Circuits: A tribute to the versatility of MOSFETs
+For two transistors there are a few more possiblities. I'd highly recommend [Fifty Nifty Variations of Two-Transistor Circuits: A tribute to the versatility of MOSFETs](https://ieeexplore.ieee.org/document/9523464)
+
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/jL7MVr5wY5w?si=kMQN5iOJYzmTbg3e" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 
 -->
