@@ -533,16 +533,6 @@ I would really recommend that you have a look at Mark Lundstrom's lecture series
 
 
 
-# How should I size my transistor?
-
-The method that makes most sense to me, is to use the inversion-coefficient method, described in [Nanoscale MOSFET Modeling: Part 1](https://ieeexplore.ieee.org/document/8016485) and [Nanoscale MOSFET Modeling: Part 2](https://ieeexplore.ieee.org/document/8110872).
-
-The inversion coefficient tells us how strongly inverted the MOSFET channel (inversion layer) is. A number below 0.1 is weak inversion, between 0.1 and 10 is moderate inversion. A number above 10 is strong inversion.
-
-There are also some blog posts worth looking at [Inversion Coefficient Based Circuit Design](https://kevinfronczak.com/blog/inversion-coefficient-based-circuit-design) and  [My Circuit Design Methodology](https://kevinfronczak.com/blog/my-circuit-design-methodology).
-
-I should caveat my proposal for method. For the past 7 years I've not had the luxury to do full time, hardcore, analog design. As my career progressed, most of my time is now spent telling others what I think is a good idea to do, and not doing hardcore analog design myself. I think, however, I have a pretty decent understanding of analog circuits, and how to design them, so I think I'm correct in the proposal. If I were to start hardcore analog design now, I would go all in on inversion-coefficient based transistor size selection.
-
 -->
 
 
