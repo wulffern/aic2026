@@ -534,6 +534,13 @@ $$ \Delta V  = Q/C  = -1.6 \times 10^{-19} \times 100 / (1\times 10^{-12}) = - 1
 
 ![inline fit](../media/l9/why_sf_not.png)
 
+
+<!--pan_doc: 
+
+Another example of a source follower can be found in [A 92.5mW 205MS/s 10b Pipeline IF ADC Implemented in 1.2V/3.3V 0.13μm CMOS](https://ieeexplore.ieee.org/document/4242465)
+
+-->
+
 ---
 
 #[fit] Common gate
