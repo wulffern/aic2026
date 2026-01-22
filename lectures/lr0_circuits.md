@@ -34,9 +34,9 @@ But first, how should transistors be used, and sized.
 <!--pan_doc:
 
 In Figure 1 and Figure 2 we can see two transistors. One with short gate length (approximately 1F2 = 1.2 x minimum gate length) and 
-one with longer gate length (approxmiately 5F0 = 5.0 x minimum gate length). The width of both transistors is sufficient to have 2 contacts on the drain/source (2C). 
+one with longer gate length (approximately 5F0 = 5.0 x minimum gate length). The width of both transistors is sufficient to have 2 contacts on the drain/source (2C). 
 
-These transistors come from a standard transistor library I've made, and that can be found at [JNW_ATR_SKY130A](https://analogicus.github.io/jnw_atr_sky130A/).
+These transistors come from a standard transistor library I've made, and that can be found at [JNW\_ATR\_SKY130A](https://analogicus.github.io/jnw_atr_sky130A/).
 
 -->
 
@@ -62,9 +62,9 @@ weak inversion, moderate inversion and strong inversion. These names correspond 
 charge carriers in the thin inversion layer underneath the oxide in the channel. See [MOSFETs](https://analogicus.com/aic2026/mosfets) 
 lecture for details. 
 
-In Figure 3 we can see how the log of the current changes behavior at low $V_{GS}$ versus at large $V_{GS}$. 
-As such, when we pick the transistor size we should be consioucs of which region we operate the transistor in. The 
-regions (weak, moderate, strong) have behavior differences. 
+In Figure 3 we can see how the log of the current changes behavior at low $V_{GS}$ versus at high $V_{GS}$. 
+As such, when we pick the transistor size we should be conscious of which region we operate the transistor in. The 
+regions (weak, moderate, strong) have different behaviours. 
 
 -->
 
@@ -88,7 +88,7 @@ $$ g_m/I_D \approx 1/n/V_T \approx 1/1.5/26\text{ mV} \approx 25$$
 
 While in strong inversion 
 
-$$ \frac{g_m}{I_D} = 2 \frac{1}{V_{eff}}$$
+$$ \frac{g_m}{I_D} = \frac{2}{V_{eff}}$$
 
 where the effective overdrive is 
 
@@ -139,7 +139,7 @@ to operate in saturation.
 
 <!--pan_doc: 
 
-The choice of $g_m/I_D$ also determine how much the gate source voltage will be. It's actually rare we control 
+The choice of $g_m/I_D$ also determine what the gate source voltage is. It's actually rare we control 
 the gate voltage directly to set the bias point of the transistor. It's more common to bias transistors with 
 a current, and let the $V_{GS}$ be whatever the $V_{GS}$ needs to be. 
 
@@ -163,7 +163,9 @@ For current mirrors we really don't want the output current to change with $V_{D
 so we want a small conductance ($g_{ds}$), or a large intrinsic gain ($g_m/g_{ds}$).
 
 In Figure 7 we can see how the intrinsic gain of the two transistors is different. For the 1F2 we can also see
-there is some funky behavior above gm/id of 20, I don't know why, but I suspect something funky in the model (non-physical)
+there is some funky behavior above gm/id of 20, I don't know why, but I suspect something funky in the model (non-physical). 
+
+For a larger intrinsic gain we should pick a longer transistor.
 
 -->
 
@@ -211,12 +213,18 @@ There are also some blog posts worth looking at [Inversion Coefficient Based Cir
 It's a bad idea!
 
 If you're inexperienced with transistor sizing I would highly recommend to pick a few transistors, and compute 
-the parameters ($V_{GS}$, $V_{dsat}, ...) for the transistor, and then use a limited set. 
+the parameters ($V_{GS}$, $V_{dsat}$, ...) for the transistor, and then use a limited set. 
 
-That's exactly what I've done in 
+That's exactly what I've done i
 -->
 
 [JNW\_ATR\_SKY130A](https://analogicus.github.io/jnw_atr_sky130A/)
+
+<!--pan_doc: 
+
+I would encourage you to only use transistors from that library in your design. I always do that when I do design, in any technology. 
+
+-->
 
 ---
 
@@ -227,8 +235,21 @@ That's exactly what I've done in
 
 <!--pan_doc: _
 
-The reason is usually that the transistors are not operating in the right region. So either the $V_{GS}$ is causing problems
-or the $V_{VDS}$ is not high enough. 
+The reason is usually that the transistors are not operating in the correct region. So either the $V_{GS}$ is causing problems
+or the $V_{DS}$ is not high enough. 
+
+In Figure 8 we can seee how the $V_{GS}$ of transistors change with corner. It's usually highest for slow-slow and low temperature, and the lowest for 
+fast-fast and high temperature. But event that statement is obviously not always correct. For a gm/Id of 6 we can see that it's the low temperature that has the lowest $V_{GS}$.
+
+If we observe the equation for the current in strong inversion 
+
+$$ I_D = \frac{1}{2} \mu_n C_{ox} \frac{W}{L}\left( V_{GS} - V_{TH}\right)^2$$
+
+we can see that the current decreses if the $V_{TH}$ increases, and we can see that current increases if the mobility ($\mu_n$) increases. The threshold voltage increases
+at low temperature. The mobilty increases at low temperature. At a gm/Id of a bit more than 8 we can see that from Figure 8 the two effects cancel each other. While for lower gm/Id 
+the mobility becomes dominant, and lowers the $V_{GS}$.
+
+
 
 -->
 
@@ -239,6 +260,12 @@ or the $V_{VDS}$ is not high enough.
 -->
 
 ---
+
+<!--pan_doc: 
+
+The drain-source voltage does not change that much with corner, but it does change. The deeper into strong inversion we go, the larger the change. 
+
+-->
 
 ![fit](../media/jnw_vdsat_gmid_corners.pdf)
 
@@ -303,7 +330,7 @@ If the two transistors are the same size, threshold voltage, mobility, etc, and 
 A current pushed into $M_1$ will cause the $V_{GS1}$ to rise, and at some point, find a stable point where the current pushed in is equal to the current in $M_1$
 
 $M_2$ will see the same $V_{GS1} = V_{GS2}$ so the current will be the same, provided the voltage at $i_o$ is sufficient to pinch-off the channel of $M_2$, or 
-the $V_{DS2} \approx 3 kT/q$ if the transitor is in weak-inversion.
+the $V_{DS2} \approx 3 kT/q$ if the transistor is in weak-inversion.
 
 The output resistance of a normal current mirror is simply the $r_{ds}$ of the output transistor. 
 
@@ -325,7 +352,7 @@ The output resistance of a normal current mirror is simply the $r_{ds}$ of the o
 In most modern technologies, and if we care about the output current accuracy, then a normal current mirror 
 cannot give us a sufficient independence of the drain/source voltage. 
 
-For more advanced current mirrors, it's almost always to increase the output resistance, and make it more like a 
+When we use more advanced current mirrors, it's almost always to increase the output resistance, and make the current mirror more like a 
 current source. 
 
 In Figure 12 we can see a current mirror with resistors on source. 
@@ -438,7 +465,7 @@ $$
 
 There are usually three amplifiers that we consider when we talk about single transistors. Common Source, Common Gate and Source Follower. 
 
-For two transistors there are a few more possiblities. I'd highly recommend [Fifty Nifty Variations of Two-Transistor Circuits: A tribute to the versatility of MOSFETs](https://ieeexplore.ieee.org/document/9523464)
+For two transistors there are a few more possibilities. I'd highly recommend [Fifty Nifty Variations of Two-Transistor Circuits: A tribute to the versatility of MOSFETs](https://ieeexplore.ieee.org/document/9523464)
 
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/jL7MVr5wY5w?si=kMQN5iOJYzmTbg3e" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
