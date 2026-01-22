@@ -15,6 +15,76 @@ with open("version") as fi:
 
 year = aic_version.replace("aic","")
 
+class Bibtex():
+
+    def __init__(self,filename):
+        self.filename = filename
+
+        self._read()
+
+
+    def _parse(self,buffer):
+
+        data = dict()
+        buffer = buffer.strip("}").strip()
+        print(buffer)
+        key = ""
+        ignore = False
+        collect = False
+        token = ""
+        name = ""
+        for c in buffer:
+            #if(c == '}' and not ignore):
+            #    collect = False
+            if(collect):
+                #print(token)
+                if(c == "=" and not ignore):
+                    key = token.strip()
+                    token = ""
+                elif(c == "\""):
+                    ignore = not ignore
+                elif(c == "," and not ignore):
+
+                    if(key == ""):
+                        name = token.strip()
+                    else:
+                        data[key] = token.strip()
+                       # print(data[name])
+                        #print(name,key,token)
+        #                data[name][key] == token.strip()
+                        pass
+                    token = ""
+                    key = ""
+
+
+            if(re.search('^\s*\@[^{]+{',token) and not ignore):
+         #       print(token)
+                collect = True
+                token = ""
+                name = ""
+                key = ""
+
+            token += c
+        #print(name, data)
+
+
+
+    def _read(self):
+
+        with open(self.filename) as fi:
+            item = False
+            buffer = ""
+            for line in fi:
+                if(re.search("^\@",line)):
+                    item = True
+                if(item):
+                    line = re.sub("\s+"," ",line)
+                    buffer += line.strip() + " "
+
+                if(re.search("}\s*;?\s*$",line)):
+                    self._parse(buffer)
+                    buffer = ""
+
 class Image():
 
     def __init__(self,imgsrc,options):
@@ -125,7 +195,11 @@ class Lecture():
             r"#(.*) Thanks!" : ""
         }
 
+        self.bibtext = Bibtex("pdf/aic.bib")
+
         self._read()
+        if("Latex" not in str(self.__class__)):
+            self._replaceCites()
 
     def copyAssets(self):
         with open("images.txt","a") as fo:
@@ -135,6 +209,13 @@ class Lecture():
                     fo.write(image.src +"\n")
                 image.copy()
 
+    def _replaceCites(self):
+
+        for line in self.buffer:
+            #- Find references
+            m = re.search(r"\s+\[\@([^\]]+)\]\s+",line)
+            if(m):
+                print(m.groups())
 
     def _read(self):
 
