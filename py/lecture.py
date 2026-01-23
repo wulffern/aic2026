@@ -88,6 +88,7 @@ class Bibtex(dict):
                 if(item):
                     line = re.sub(r"\s+"," ",line)
                     buffer += line.strip() + " "
+            self._parse(buffer)
 
     def addFootNote(self,nr):
         self.counter.append(int(nr))
@@ -206,7 +207,7 @@ class Image():
                     if("svg" in self.src):
                          shutil.copyfile(os.path.join(self.options["dir"],self.src.replace(".svg",".pdf")),  self.options["latex"] + "media/" + self.filesrc.replace(".svg",".pdf") )
             except Exception as e:
-                print(e)
+                print("Image.copy: ",e)
     def __str__(self):
 
         if(self.skip):
@@ -571,6 +572,8 @@ def post(filename,root,date):
     if(not os.path.exists("docs/_posts")):
         os.mkdir("docs/_posts")
 
+
+    print(f"Info: {filename}")
     #- Post
     l = Lecture(filename,options=options)
 
