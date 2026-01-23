@@ -15,19 +15,20 @@ with open("version") as fi:
 
 year = aic_version.replace("aic","")
 
-class Bibtex():
+class Bibtex(dict):
 
     def __init__(self,filename):
         self.filename = filename
 
+        self.counter = list()
+        self.counter.append(0)
+        self.referenced = dict()
         self._read()
 
 
     def _parse(self,buffer):
 
-        data = dict()
         buffer = buffer.strip("}").strip()
-        print(buffer)
         key = ""
         ignore = False
         collect = False
@@ -41,31 +42,36 @@ class Bibtex():
                 if(c == "=" and not ignore):
                     key = token.strip()
                     token = ""
-                elif(c == "\""):
+                    continue
+                elif(c == "\"" or c == "{" or c == "}"):
                     ignore = not ignore
                 elif(c == "," and not ignore):
-
                     if(key == ""):
                         name = token.strip()
+                        self[name] = dict()
                     else:
-                        data[key] = token.strip()
-                       # print(data[name])
-                        #print(name,key,token)
-        #                data[name][key] == token.strip()
+                        self[name][key] = token.replace("\"","").replace("{","").replace("}","").strip()
                         pass
                     token = ""
                     key = ""
+                    continue
 
-
-            if(re.search('^\s*\@[^{]+{',token) and not ignore):
-         #       print(token)
+            if(re.search(r'^\s*\@[^{]+{',token) and not ignore):
                 collect = True
                 token = ""
                 name = ""
                 key = ""
 
             token += c
-        #print(name, data)
+
+
+
+        if(name == ""):
+            print(buffer)
+        else:
+            self[name][key] = token.replace("\"","").replace("{","").replace("}","").strip()
+
+        #print("\ndata = ",name, data, "\n\n")
 
 
 
@@ -75,15 +81,63 @@ class Bibtex():
             item = False
             buffer = ""
             for line in fi:
-                if(re.search("^\@",line)):
+                if(re.search(r"^\@[^\s]+\{",line)):
                     item = True
-                if(item):
-                    line = re.sub("\s+"," ",line)
-                    buffer += line.strip() + " "
-
-                if(re.search("}\s*;?\s*$",line)):
                     self._parse(buffer)
                     buffer = ""
+                if(item):
+                    line = re.sub(r"\s+"," ",line)
+                    buffer += line.strip() + " "
+
+    def addFootNote(self,nr):
+        self.counter.append(int(nr))
+
+    def sort(self):
+        self.counter = sorted(self.counter)
+
+    def toMarkdownCite(self,key):
+
+
+        if("cite_nr" not in self[key]):
+            self[key]["cite_nr"] = int(self.counter[-1]) + 1
+            self.counter.append(self[key]["cite_nr"])
+
+
+        nr = self[key]["cite_nr"]
+
+        if(key not in self.referenced):
+            self.referenced[key] = 0
+
+        self.referenced[key] += 1
+
+
+        return f"[^{nr}]"
+
+
+    def toMarkdownRef(self):
+
+        ss = ""
+        for key in self.referenced:
+            item = self[key]
+
+            ss += "[^" + str(item["cite_nr"]) + "]: "
+
+            if("author" in item):
+                ss += item["author"] + ","
+            if("title" in item):
+                ss += " _" + item["title"] + "_ "
+            if("year" in item):
+                ss += " " + item["year"] + " "
+            if("url" in item):
+                ss += "<" + item["url"] + ">"
+            if("doi" in item):
+                ss += "<doi.org/" + item["doi"] + ">"
+
+            ss += "\n"
+
+        return ss
+
+
 
 class Image():
 
@@ -195,7 +249,7 @@ class Lecture():
             r"#(.*) Thanks!" : ""
         }
 
-        self.bibtext = Bibtex("pdf/aic.bib")
+        self.bibtex = Bibtex("pdf/aic.bib")
 
         self._read()
         if("Latex" not in str(self.__class__)):
@@ -212,10 +266,24 @@ class Lecture():
     def _replaceCites(self):
 
         for line in self.buffer:
+            m = re.search(r"\s+\[\^(\d+)\]",line)
+            if(m):
+                nr = m.groups()[0]
+                mr = self.bibtex.addFootNote(nr)
+
+        #- Sort so the last footnote is correct
+        self.bibtex.sort()
+
+        for i in range(0,len(self.buffer)):
+            line = self.buffer[i]
             #- Find references
             m = re.search(r"\s+\[\@([^\]]+)\]\s+",line)
             if(m):
-                print(m.groups())
+                for key in m.groups():
+                    md = self.bibtex.toMarkdownCite(key)
+                    self.buffer[i] = line.replace(f"[@{key}]",md)
+
+        self.buffer.append(self.bibtex.toMarkdownRef())
 
     def _read(self):
 
