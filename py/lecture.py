@@ -132,7 +132,7 @@ class Bibtex(dict):
             if("url" in item):
                 ss += "<" + item["url"] + ">"
             if("doi" in item):
-                ss += "<doi.org/" + item["doi"] + ">"
+                ss += "<https://doi.org/" + item["doi"] + ">"
 
             ss += "\n"
 
