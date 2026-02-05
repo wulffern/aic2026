@@ -57,7 +57,7 @@ class Bibtex():
                     key = ""
 
 
-            if(re.search('^\s*\@[^{]+{',token) and not ignore):
+            if(re.search(r'^\s*\@[^{]+{',token) and not ignore):
          #       print(token)
                 collect = True
                 token = ""
@@ -75,13 +75,13 @@ class Bibtex():
             item = False
             buffer = ""
             for line in fi:
-                if(re.search("^\@",line)):
+                if(re.search(r"^\@",line)):
                     item = True
                 if(item):
-                    line = re.sub("\s+"," ",line)
+                    line = re.sub(r"\s+"," ",line)
                     buffer += line.strip() + " "
 
-                if(re.search("}\s*;?\s*$",line)):
+                if(re.search(r"}\s*;?\s*$",line)):
                     self._parse(buffer)
                     buffer = ""
 
@@ -272,7 +272,7 @@ class Lecture():
                 # 3. When -->, assume that's the end of the pan_doc, and go back to normal
                 self.removeComment = True
             else:
-                print(f"Uknown key {key}")
+                print(f"Unknown key {key}")
 
             return None
 

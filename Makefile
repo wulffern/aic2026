@@ -29,6 +29,7 @@ FILES = l00_jayn \
 	l02_esd \
 	l03_refbias \
 	l04_afe \
+ 	l04_dac \
 	l05_sc \
 	l06_adc \
 	l07_vreg \
