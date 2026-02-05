@@ -44,7 +44,8 @@ FILES = l00_jayn \
 	l00_spice \
 	l00_sv \
 	l00_ades \
-	lr0_logic
+	lr0_logic \
+	l00_questions
 	#l04_mac\
 
 

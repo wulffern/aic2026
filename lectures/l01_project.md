@@ -231,7 +231,7 @@ I've made an example temperature sensor at [lelo\_temp\_sky130a](https://analogi
 -->
 
 
-![inline](../media/aic2026_project_analog.pdf)
+![inline](../media/aic2026_project_analog.svg)
 
 <!--pan_doc: 
 <sub>Figure 4: Leakage simulation </sub>
@@ -267,7 +267,7 @@ The sixth and last milestone is the tapeout on <tinytapeout.com>. It's optional,
 
 --- 
 
-![fit](../media/aic2026_project.pdf) 
+![fit](../media/aic2026_project.svg) 
 
 <!--pan_doc: 
 <sub>Figure 5: Project overview </sub>
