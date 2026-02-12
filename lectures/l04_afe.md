@@ -132,7 +132,7 @@ All digital processing can be made with the NOT(A AND B) function!
 
 <!--pan_doc: 
 
-**Keywords:** H(s**, BiQuad, Gm-C, Active-RC, OTA
+**Keywords:** H(s), BiQuad, Gm-C, Active-RC, OTA
 
 **Status:** 0.5
 
@@ -158,7 +158,7 @@ close to zero as we need.
 
 -->
 
-![fit](../media/l4_achai.pdf)
+![fit](../media/l4_achai.svg)
 
 ---
 
@@ -167,7 +167,7 @@ close to zero as we need.
 
 <!--pan_doc:
 
-One example of an analog frontend is the recieve chain of a typical bluetooth radio. The signal
+One example of an analog frontend is the receive chain of a typical Bluetooth radio. The signal
 that arrives at the antenna, or the "sensor", can be  weak, maybe -90 dBm.
 
 At the same time, at another frequency, there could be a unwanted signal, or blocker,  of -30 dBm
@@ -175,7 +175,7 @@ At the same time, at another frequency, there could be a unwanted signal, or blo
 Assume for the moment we actually 
 used an ADC at the antenna, how many bits would we need?
 
-Bluetooth uses Gaussian Frequency Shift Keying, which is a constant envelope binary modulation, and it's ususally sufficient with low number of bits, assume 8-bits for the signal is more than enough.
+Bluetooth uses Gaussian Frequency Shift Keying, which is a constant envelope binary modulation, and it's usually sufficient with low number of bits, assume 8-bits for the signal is more than enough.
 
 If we assume the maximum of the ADC should be the blocker in the table below, and the resolution of the digital should be given by
 
@@ -252,7 +252,7 @@ I can't tell you how the Nordic radio works, but I can tell you how others usual
 
 ---
 
-![fit](../media/l4_radio.pdf)
+![fit](../media/l4_radio.svg)
 
 
 <!--pan_doc:
@@ -325,7 +325,7 @@ I would encourage you to try and derive from the signal flow graph the $H(s)$ an
 
 -->
 
-![left fit](../media/l4_first_order.pdf)
+![left fit](../media/l4_first_order.svg)
 
 <!--pan_doc:
 
@@ -371,7 +371,7 @@ to our wanted $H(s)$ we can proceed with the circuit implementation.
 
 -->
 
-![left fit](../media/l4_biquad.pdf)
+![left fit](../media/l4_biquad.svg)
 
 
  $$ H(s) = \frac{k_2 s^2 + k_1 s + k_0}{s^2 + \frac{\omega_0}{Q} s +
@@ -422,7 +422,7 @@ In a Gm-C filter the input and output nodes can have significant swing, and thus
 
 
 
-![left fit](../media/l4_gmc.pdf)
+![left fit](../media/l4_gmc.svg)
 
 
 $$ V_o = \frac{I_o}{s C} = \frac{\omega_{ti}}{s} V_i $$
@@ -440,7 +440,7 @@ In a real IC we would almost always use differential circuit, as shown below. Th
 
 -->
 
-![fit left ](../media/l4_gmc_diff.pdf)
+![fit left ](../media/l4_gmc_diff.svg)
 
 $$ s C V_o = G_m Vi $$
 
@@ -455,7 +455,7 @@ the qualities I like the most is that the outputs can be flipped to implement ne
 
 -->
 
-![fit left ](../media/l4_gmc_diff1.pdf)
+![fit left ](../media/l4_gmc_diff1.svg)
 
 $$ H(s) = \frac{V_o}{V_i} = -\frac{G_m}{sC}$$
 
@@ -471,7 +471,7 @@ I would encourage you to try and calculate the transfer function.
 -->
 
 
-![left fit](../media/l4_gmc1st.pdf)
+![left fit](../media/l4_gmc1st.svg)
 
 
 <!--pan_doc: 
@@ -496,7 +496,7 @@ Below is a general purpose Gm-C bi-quadratic system.
 
 -->
 
-![fit right](../media/l4_gmcbi.pdf)
+![fit right](../media/l4_gmcbi.svg)
 
 
 $$ H(s) = \frac{k_2 s^2 + k_1 s + k_0}{s^2 + \frac{\omega_0}{Q} s +
@@ -531,7 +531,7 @@ I would probably spend a bit more time to see if any have done it, maybe expandi
 I know of [Pieter Harpe](https://scholar.google.nl/citations?user=nLhKSsMAAAAJ&hl=nl), and his work is usually superb, 
 so I would take a closer look at [A 77.3-dB SNDR 62.5-kHz Bandwidth Continuous-Time Noise-Shaping SAR ADC With Duty-Cycled Gm-C Integrator](https://ieeexplore.ieee.org/document/9989513)
 
-And from Figure 10 a) we can see it's a similar Gm-C cell as chapter 12.5.4 in CJM. 
+And from Figure 10 a) we can see it's a similar Gm-C cell as chapter 12.5.4 in [@cjm11]. 
 
 One of my Ph.d's used the transonductor below on his master thesis [Design Considerations for a Low-Power Control-Bounded A/D Converter](https://ntnuopen.ntnu.no/ntnu-xmlui/handle/11250/2824253).
 
@@ -571,7 +571,7 @@ you're trying to come up with a clever idea, or I decide to give this exact prob
 -->
 
 
-![left fit](../media/l4_activerc_first.pdf)
+![left fit](../media/l4_activerc_first.svg)
 
 $$ H(s) = \frac{ k_1 s + k_0 }{s + w_o}$$
 
@@ -620,10 +620,10 @@ you will not have a library of OTAs that you just plug in, and they work.
 I would be very suspicious of working anywhere that had an OTA library I was supposed to use for integrated filter design. 
 I'm not saying it's impossible that some company actually has an OTA library, but I think it's a bad strategy. First of all, 
 if an OTA is generic enough to be used "everywhere", then the OTA is likely using too much power, consumes too much area, 
-and is too complex. And the company runs the risk that the designer have not really checked that the OTA works porperly 
+and is too complex. And the company runs the risk that the designer have not really checked that the OTA works properly 
 in the filter because "Someone else designed the OTA, I just used in my design". 
 
-But, for now, to make our lifes simpler, we assume the OTA is ideal. That makes the equations pretty, and we know what 
+But, for now, to make our lives simpler, we assume the OTA is ideal. That makes the equations pretty, and we know what 
 we should get if the OTA actually was ideal. 
 
 ### Step 4: Do the algebra
@@ -667,7 +667,7 @@ Imagine you wanted to make a filter, any filter. You'd decompose into first and 
 -->
 
 
-![left fit](../media/l4_activebiquad.pdf)
+![left fit](../media/l4_activebiquad.svg)
 
 <!--pan_doc:
 
@@ -683,7 +683,7 @@ $$H(s) = \frac{\left[ \frac{C_1}{C_B}s^2 + \frac{G_2}{C_B}s + (\frac{G_1G_3}{C_A
 
 # The OTA is not ideal
 
-![left fit](../media/l4_activerc.pdf)
+![left fit](../media/l4_activerc.svg)
  
  $$ H(s) \approx \frac{A_0}{(1 + s A_o R C)(1 + \frac{s}{w_{ta}})}$$
  
@@ -695,7 +695,7 @@ $$H(s) = \frac{\left[ \frac{C_1}{C_B}s^2 + \frac{G_2}{C_B}s + (\frac{G_1G_3}{C_A
 
 At frequencies above $\frac{1}{A_0RC}$ and below $w_{ta}$ the circuit above is a good approximation of an ideal integrator. 
 
-See page 511 in CJM (chapter 5.8.1)
+See page 511 in [@cjm11] (chapter 5.8.1)
 
 
 # Example circuit
@@ -737,7 +737,7 @@ It's possible to show that if the gain from $V(Vpi,Vpm)$ to ADC1i input is large
 -->
 
 
-![inline](../media/qt_sd.png) ![inline](../media/qt_sd_response.png)
+![inline](../media/qt_sd.png) 
 
 ---
 
@@ -755,7 +755,7 @@ Below is the differential current mirror OTA.
 
 ---
 
-![fit](../media/l04_ota_diff.pdf)
+![fit](../media/l04_ota_diff.svg)
 
 <!--pan_doc:
 
@@ -769,7 +769,7 @@ The reference for the common mode can be from a bandgap, or in the case below, V
 
 ---
 
-![fit](../media/l04_ota_vsens.pdf)
+![fit](../media/l04_ota_vsens.svg)
 
 ---
 
@@ -781,7 +781,7 @@ The nice thing about the circuit below is that the common mode feedback loop has
 
 -->
 
-![fit](../media/l04_ota_vcmfb.pdf)
+![fit](../media/l04_ota_vcmfb.svg)
 
 ---
 
@@ -793,7 +793,7 @@ You can find the schematic for the OTA at
 
 [CNR\_OTA\_SKY130NM](https://github.com/wulffern/cnr_ota_sky130nm)
 
-![fit inline](../media/l04_ota_sch.pdf)
+![fit inline](../media/l04_ota_sch.svg)
 
 
 <!--pan_doc:

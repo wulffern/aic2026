@@ -50,7 +50,7 @@ A general purpose Active-RC bi-quadratic (two-quadratic equations) filter is sho
 
 -->
 
-![left fit](../media/l4_activebiquad.pdf)
+![left fit](../media/l4_activebiquad.svg)
 
 <!--pan_doc:
 
@@ -129,7 +129,7 @@ Active-RC filters are great for linearity, but if we need accurate time constant
 # Gm-C
 
 
-![fit right](../media/l4_gmcbi.pdf)
+![fit right](../media/l4_gmcbi.svg)
 
 $$ H(s) = \frac{\left[ s^2\frac{C_X}{C_X + C_B} + s\frac{G_{m5}}{C_X + C_B} + \frac{G_{m2}G_{m4}}{C_A(C_X + C_B)}\right]}
 {\left[s^2 + s\frac{G_{m2}}{C_X + C_B} + \frac{G_{m1}G_{m2}}{C_A(C_X + C_B)} \right]}$$
@@ -165,7 +165,7 @@ The first time you encounter Switched Capacitor (SC) circuits, they do require s
 Consider the circuit below. Assume that the two transistors are ideal (no-charge injection, no resistance). 
 
 -->
-![left fit](../media/l05_fund1.pdf)
+![left fit](../media/l05_fund1.svg)
 
 <!--pan_doc:
 
@@ -239,7 +239,7 @@ The circuit below is drawn slightly differently, but the same equation applies.
 
 -->
 
-![left fit](../media/l05_fund2.pdf)
+![left](../media/l05_fund2.svg)
  
 
 <!--pan_doc:
@@ -271,7 +271,7 @@ Which should not be surprising, as all I've done is to rotate the circuit and ca
 Let's try the circuit below.
 -->
 
-![left fit](../media/l05_fund3.pdf)
+![left fit](../media/l05_fund3.svg)
 
 $$ Z_{I} = \frac{ V_{I} - V_{O} }{ \left(Q_{\phi1\$} - Q_{\phi2\$}\right) f_{\phi}}$$
 
@@ -409,7 +409,7 @@ With mathematics we can prove things, and know we're correct.
 
 [.column]
 
-Define $$ x_c$$ as a continuous time, continuous value signal
+Define $$ x_c (t)$$ as a continuous time, continuous value signal
 
 Define $$ 
 \ell(t) = \begin{cases}
@@ -431,7 +431,9 @@ Define $$ x_s(t) = \sum_{n=-\infty}^{\infty}{x_{sn}(t)}$$
 <!--pan_doc:
 
 where $x_s(t)$ is the sampled, continuous time, signal. 
+
 -->
+
 
 [.column]
 
@@ -461,7 +463,7 @@ And  $$ X_s(s) = \frac{1}{\tau}\frac{1 - e^{-s\tau}}{s} \sum_{n=-\infty}^{\infty
 
 Thus $$ \lim_{\tau \to 0} \rightarrow X_s(s) = \sum_{n=-\infty}^{\infty}x_c(nT)e^{-snT}$$
 
-Or $$ X_s(j\omega) = \frac{1}{T}\sum_{k=-\infty}^{\infty} X_c\left(j\omega - \frac{j k 2 \pi}{T}\right)$$
+<!-- Or $$ X_s(j\omega) = \frac{1}{T}\sum_{k=-\infty}^{\infty} X_c\left(j\omega - \frac{j k 2 \pi}{T}\right)$$ -->
 
 [.column]
 
@@ -546,7 +548,7 @@ The spectral copies can be seen bottom right. How many spectral copies, and the 
 Try to play around with the code and see what happens.
 -->
 
-![fit](../media/l5_dtfig.pdf)
+![fit](../media/l5_dtfig.svg)
 
 ---
 
@@ -563,7 +565,7 @@ appear in-band. That's why it's important to band limit analog signals before th
 
 -->
 
-![fit](../media/l5_sh.pdf)
+![fit](../media/l5_sh.svg)
 
 ---
 
@@ -574,7 +576,7 @@ our wanted signal (green) is undisturbed.
 
 -->
 
-![fit](../media/l5_shaaf.pdf)
+![fit](../media/l5_shaaf.svg)
 
 ---
 
@@ -593,7 +595,7 @@ a good place to start to delve into the latest on signal reconstruction.
 
 -->
 
-![fit](../media/l5_subsample.pdf)
+![fit](../media/l5_subsample.svg)
 
 ---
 
@@ -670,7 +672,7 @@ Growing without bounds is the same as "being unstable".
 
 -->
 
-![left fit](../media/l5_sdomain.pdf)
+![left fit](../media/l5_sdomain.svg)
 
 ---
 ##[fit] Z-domain
@@ -693,7 +695,7 @@ $$ s = \frac{z -1}{z + 1}$$
 <sub>Warning: First-order approximation [https://en.wikipedia.org/wiki/Bilinear_transform](https://en.wikipedia.org/wiki/Bilinear_transform)</sub>
 
 
-![left fit](../media/l5_zdomain.pdf)
+![left fit](../media/l5_zdomain.svg)
 
 ---
 ## First order filter 
@@ -737,7 +739,7 @@ the filter should be stable.
 
 -->
 
-![left fit](../media/l5_zunstable.pdf)
+![left fit](../media/l5_zunstable.svg)
 
 
 <!--pan_doc:
@@ -756,7 +758,7 @@ From the plot below we can see the sampled time domain and spectra on the left, 
 
 ---
 
-![ fit ](../media/l5_iir.pdf)
+![ fit ](../media/l5_iir.svg)
 
 <!--pan_doc:
 
@@ -799,7 +801,7 @@ Our abilities to use computers for design has improved a bit the last three deca
 
 $$ H(z) = \frac{1}{3}\sum_{i=0}^2 z^{-1}$$
 
-![left fit](../media/l5_fir.pdf)
+![left fit](../media/l5_fir.svg)
 
 ---
 
@@ -815,7 +817,7 @@ Think of the two phases as two different configurations of a circuit, each with 
 
 --->
 
-![left fit](../media/l5_scintro1.pdf)
+![left fit](../media/l5_scintro1.svg)
 
 <!--pan_doc:
 
@@ -844,7 +846,7 @@ Imagine we (very carefully) open the circuit around $C_2$ and close the circuit 
 -->
 ---
 
-![left fit](../media/l5_scintro2.pdf)
+![left fit](../media/l5_scintro2.svg)
 
 <!--pan_doc:
 
@@ -900,7 +902,7 @@ During phase 2 we configure the circuit to leverage the OTA to do the charge tra
 
 --> 
 
-![left fit](../media/l5_scamp.pdf)
+![left fit](../media/l5_scamp.svg)
 
 
 <!--pan_doc:
@@ -912,7 +914,7 @@ For charge to be conserved the clocks for the switch phases must never be high a
 
 -->
 
-![right fit](../media/l5_scfig.pdf)
+![right fit](../media/l5_scfig.svg)
 
 ---
 
@@ -946,7 +948,7 @@ accumulate the input charge every cycle.
 
 ---
 
-![left fit](../media/l5_scint.pdf)
+![left fit](../media/l5_scint.svg)
 
 <!--pan_doc:
 
@@ -955,7 +957,7 @@ is feedback to control the voltage swing at the output of the OTA.
 
 -->
 
-![right fit](../media/l5_scifig.pdf)
+![right fit](../media/l5_scifig.svg)
 
 ---
 
@@ -1113,7 +1115,7 @@ but usually we don't have enough headroom to use a single NMOS or PMOS. We may n
 
 -->
 
-![original fit](../media/l5_sw1.pdf)
+![original fit](../media/l5_sw1.svg)
 
 ---
 
@@ -1140,7 +1142,7 @@ as shown on the right.
 
 -->
 
-![original fit](../media/l5_sw2.pdf)
+![original fit](../media/l5_sw2.svg)
 
 ---
 
@@ -1163,7 +1165,7 @@ looks like the one below.
 
 -->
 
-![original fit](../media/l5_sw3.pdf)
+![original fit](../media/l5_sw3.svg)
 
 ---
 
@@ -1182,7 +1184,7 @@ The non-overlap generator is standard. Use the one shown below. Make sure you si
 
 -->
 
-![original fit](../media/l5_novl.pdf)
+![original fit](../media/l5_novl.svg)
 
 ---
 
@@ -1200,7 +1202,7 @@ $$ V_O(z) = 10 \frac{kT}{q} \ln (N)z^{-1} $$
 
 -->
 
-![fit](../media/l5_scex.pdf)
+![fit](../media/l5_scex.svg)
 
 
 <!--pan_doc:
