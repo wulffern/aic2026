@@ -283,16 +283,27 @@ The temperature sensor shall be design to fit with the specification below.
 -->
 
 
-| Parameter        | Value | Unit | Description                                                    |
-|------------------|-------|------|----------------------------------------------------------------|
-| Area             | < 15  | km^2 | Must fit in 161 um x 111 um tiny tapeout 1x1 block             |
-| Conversion time  | < 30  | us   | Analog should only be active for one 32768 Hz period           |
-| Sample rate      | 100   | ms   |                                                                |
-| Leakage current  | < 1   | nA   |                                                                |
-| Active current   | < 100 | uA   |                                                                |
-| Average current  | < 50  | nA   | Active current x conversion time/sample rate + leakage current |
-| Accuracy 0 - 70C | +-10  | C    | One temperature (25C) calibration                              |
-| Accuracy 0 - 70C | +-5   | C    | Two temperature (25C, 85C) calibration                         |
+| Key       | Parameter        | Value | Unit | Description                                                    |
+|-----------|------------------|-------|------|----------------------------------------------------------------|
+| Area        | Area             | < 15  | km^2 | Must fit in 161 um x 111 um tiny tapeout 1x1 block             |
+| Tc        | Conversion time  | < 30  | us   | Analog should only be active for one 32768 Hz period           |
+| Ts        | Sample rate      | 100   | ms   |                                                                |
+| Ileak       | Leakage current  | < 1   | nA   |                                                                |
+| Iact      | Active current   | < 100 | uA   |                                                                |
+| Iavg      | Average current  | < 50  | nA   | Active current x conversion time/sample rate + leakage current |
+| Kerrone | Accuracy 0 - 70C | +-10  | C    | One temperature (25C) calibration                              |
+| Kerrtwo | Accuracy 0 - 70C | +-5   | C    | Two temperature (25C, 85C) calibration                         |
+
+
+---
+
+## Figure of Merit
+
+$$FOM = V_{DD} \left(T_{c}I_{act} + T_{s}I_{leak}\right) K_{errtwo} $$
+
+
+
+
 
 ---
 
