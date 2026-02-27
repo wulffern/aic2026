@@ -299,7 +299,12 @@ The temperature sensor shall be design to fit with the specification below.
 
 ## Figure of Merit
 
-$$FOM = V_{DD} \left(T_{c}I_{act} + T_{s}I_{leak}\right) K_{errtwo} $$
+A figure of merit allows us to compare circuits with different performance
+specifications, and try to answer the question. Which one is better?
+
+The figure of merit for our temperature sensor will be
+
+$$FOM = \left(\frac{T_{c}}{T_s}I_{act} + I_{leak}\right) K_{errtwo} \text{ [AK]}$$
 
 
 
