@@ -294,7 +294,9 @@ calculated as
 
 $$SNR = 10
   \log\left(\frac{Signal\:power}{Noise\:power\:-\:6
-\:first\:harmonics}\right)$$ And SNDR is calculated as
+\:first\:harmonics}\right)$$ 
+
+And SNDR is calculated as
 
 $$SNDR = 10\log\left(\frac{Signal\:power}{Noise\:  power}\right)$$
 
@@ -305,9 +307,9 @@ defined as
 
 $$F =
   \frac{\overline{v_o^2}}{source\:contribution\:to\:\overline{v_o^2}}$$
-where $\overline{v_o^2}$ is the total output noise.
+where $\overline{v_o^2}$ 
 
-The noise figure is defined as (noise factor in dB)
+is the total output noise. The noise figure is defined as (noise factor in dB)
 
 $$NF = 10 \log(F)$$ The noise factor can also be defined as
 
@@ -320,7 +322,9 @@ multistage system, for example several amplifiers in cascade, the total
 noise figure of the system is defined as
 
 $$F = 1 + F_1 - 1 + \frac{F_2 -1}{G_{1}} +
-  \frac{F_3-1}{G_{1}G_{2}} + ....$$ Here $F_i$ is the noise figures of
+  \frac{F_3-1}{G_{1}G_{2}} + ....$$ 
+  
+Here $F_i$ is the noise figures of
 the individual stages and $G_i$ is the available gain of each stage.
 This can be rewritten as
 

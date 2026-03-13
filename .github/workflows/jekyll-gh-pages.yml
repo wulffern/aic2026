@@ -37,35 +37,33 @@ jobs:
       options: --user root
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           submodules: recursive
-      - name: Posts
+      - name: Prepare sources
         shell: bash
         run: |
-          git config --global --add safe.directory `pwd`
-          make version posts texfiles
-      - name: Standalone PDF
+          git config --global --add safe.directory $(pwd)
+          make version posts-parallel texfiles-parallel
+          cd pdf && git clone https://github.com/fmarotta/kaobook.git
+      - name: Standalone PDFs (parallel)
+        shell: bash
+        run: make standalone-parallel
+      - name: Book PDF and EBook
         shell: bash
         run: |
-          make -j 3 standalone
-      - name: Book PDF
-        shell: bash
-        run: |
-          make latex
-      - name: EBook
-        shell: bash
-        run: |
-          make book
+          (cd pdf && make one && cp aic.pdf ../docs/assets/) &
+          (cd pdf && make ebook && cp aic.epub ../docs/assets/) &
+          wait
       - name: Setup Pages
-        uses: actions/configure-pages@v2
+        uses: actions/configure-pages@v5
       - name: Build with Jekyll
         uses: actions/jekyll-build-pages@v1
         with:
           source: ./docs/
           destination: ./_site
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@main
+        uses: actions/upload-pages-artifact@v3
 
 
   # Deployment job
@@ -78,4 +76,4 @@ jobs:
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@main
+        uses: actions/deploy-pages@v4
