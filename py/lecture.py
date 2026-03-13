@@ -97,6 +97,7 @@ class Bibtex(dict):
                     line = re.sub(r"\s+"," ",line)
                     buffer += line.strip() + " "
             self._parse(buffer)
+        #    print(self)
 
     def addFootNote(self,nr):
         self.counter.append(int(nr))
@@ -106,13 +107,15 @@ class Bibtex(dict):
 
     def toMarkdownCite(self,key):
 
-
+        #print(self[key])
         if("cite_nr" not in self[key]):
             self[key]["cite_nr"] = int(self.counter[-1]) + 1
             self.counter.append(self[key]["cite_nr"])
 
 
+        #print(key)
         nr = self[key]["cite_nr"]
+        #print(nr)
 
         if(key not in self.referenced):
             self.referenced[key] = 0
@@ -286,11 +289,15 @@ class Lecture():
         for i in range(0,len(self.buffer)):
             line = self.buffer[i]
             #- Find references
-            m = re.search(r"\s+\[\@([^\]]+)\]\s+",line)
+            m = re.search(r"\s*\[\@([^\]]+)\]\s*",line)
             if(m):
+                #print(m)
                 for key in m.groups():
+                    #print(key)
                     md = self.bibtex.toMarkdownCite(key)
+                    #print(md)
                     self.buffer[i] = line.replace(f"[@{key}]",md)
+                    #print(self.buffer[i])
 
         self.buffer.append(self.bibtex.toMarkdownRef())
 

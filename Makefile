@@ -52,7 +52,15 @@ FILES = l00_jayn \
 
 
 
-all: version posts texfiles latex standalone book
+all: version posts-parallel texfiles-parallel standalone-parallel latex-nobuild book-nobuild
+
+latex-nobuild:
+	cd pdf; make one
+	cp pdf/aic.pdf docs/assets/
+
+book-nobuild:
+	cd pdf; make ebook
+	cp pdf/aic.epub docs/assets/
 
 version:
 	echo "aic${YEAR}" > version
