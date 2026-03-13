@@ -313,7 +313,9 @@ $$NF = 10 \log(F)$$ The noise factor can also be defined as
 
 $$F = \frac{SNR_{input}}{SNR_{output}}$$
 
-This brings us right into what is known as Friis formula. If we have a
+This brings us right into what is known as Friis formula. The noise factor
+definition above is only correct at room temperature, for more details, see [@friis].
+If we have a
 multistage system, for example several amplifiers in cascade, the total
 noise figure of the system is defined as
 

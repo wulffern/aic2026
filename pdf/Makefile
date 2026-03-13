@@ -49,7 +49,8 @@ compress:
 ebook:
 	cat aic.tex |perl -pe "s/chapters/chapters_epub/ig" > aic_epub.latex
 	cat chapters.tex |perl -pe "s/fiximg/fiximg_png/ig" > chapters_epub.tex
-	pandoc aic_epub.latex -t native | pandoc -f native -t epub3 -o aic.epub --mathml#pandoc --gladtex -o aic.epub aic_epub.latex
+	pandoc aic_epub.latex -t native | pandoc -f native -t epub3 -o aic.epub --mathml
+#pandoc --gladtex -o aic.epub aic_epub.latex
 
 standalone:
 	pdflatex -draftmode ${FNAME}
