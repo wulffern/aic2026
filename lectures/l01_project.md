@@ -283,14 +283,14 @@ The temperature sensor shall be design to fit with the specification below.
 -->
 
 
-| Key       | Parameter        | Value | Unit | Description                                                    |
-|-----------|------------------|-------|------|----------------------------------------------------------------|
-| Area        | Area             | < 15  | km^2 | Must fit in 161 um x 111 um tiny tapeout 1x1 block             |
-| Tc        | Conversion time  | < 30  | us   | Analog should only be active for one 32768 Hz period           |
-| Ts        | Sample rate      | 100   | ms   |                                                                |
-| Ileak       | Leakage current  | < 1   | nA   |                                                                |
-| Iact      | Active current   | < 100 | uA   |                                                                |
-| Iavg      | Average current  | < 50  | nA   | Active current x conversion time/sample rate + leakage current |
+| Key     | Parameter        | Value | Unit | Description                                                    |
+|---------|------------------|-------|------|----------------------------------------------------------------|
+| Area    | Area             | < 15  | km^2 | Must fit in 161 um x 111 um tiny tapeout 1x1 block             |
+| Tc      | Conversion time  | < 30  | us   | Analog should only be active for one 32768 Hz period           |
+| Ts      | Sample rate      | 100   | ms   |                                                                |
+| Ileak   | Leakage current  | < 1   | nA   | Typical temperature (25 C)                                     |
+| Iact    | Active current   | < 100 | uA   |                                                                |
+| Iavg    | Average current  | < 50  | nA   | Active current x conversion time/sample rate + leakage current |
 | Kerrone | Accuracy 0 - 70C | +-10  | C    | One temperature (25C) calibration                              |
 | Kerrtwo | Accuracy 0 - 70C | +-5   | C    | Two temperature (25C, 85C) calibration                         |
 
@@ -305,8 +305,6 @@ specifications, and try to answer the question. Which one is better?
 The figure of merit for our temperature sensor will be
 
 $$FOM = \left(\frac{T_{c}}{T_s}I_{act} + I_{leak}\right) K_{errtwo} \text{ [AK]}$$
-
-
 
 
 

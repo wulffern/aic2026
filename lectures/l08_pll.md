@@ -326,7 +326,8 @@ The $A_m$ is the amplitude modulation, while the $\phi_m$ is the phase modulatio
 
 One option is shown below. We could modulate our frequency reference directly. That could maybe be a sigma-delta divider on the reference, or directly modulating the oscillator. 
 
--->_
+-->
+
 
 ---
 
