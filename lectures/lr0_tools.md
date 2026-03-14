@@ -152,6 +152,16 @@ make ngspice_compile # Sometimes fails
 make ngspice_compile ngspice_install
 ```
 
+For later versions of ngspice, they have modified the build system, so you may
+have to run 
+
+```
+make ngspice2_compile
+make ngspice2_install
+```
+
+
+
 On Mac, do 
 
 ```bash 
