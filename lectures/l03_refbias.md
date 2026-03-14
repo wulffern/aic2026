@@ -59,6 +59,7 @@ I want you to think about how you would route a current, or a voltage on an IC.
 ![fit](../media/l3_sources.svg)
 
 <!--pan_doc:
+
 <sub>Figure 1: Symbols for voltage source and current source  </sub>
 -->
 
@@ -100,6 +101,7 @@ If we choose to route a reference as a voltage we need to be careful with the gr
 ![fit](../media/l3_vsrc.svg)
 
 <!--pan_doc:
+
 <sub>Figure 2: Voltage source with ground impedance. Routing long distances it's not possible to have
 guarantee we have the same ground impedance at the destination.</sub>
 -->
@@ -187,6 +189,7 @@ $$ I_D = I_S \left(e^{\frac{V_{BE}}{V_T}} - 1\right)  + I_B \approx I_S e^{\frac
 ![left fit](../media/l3_bjtonly.svg)
 
 <!--pan_doc:
+
 <sub>Figure 4: Diode connected bipolar transistor </sub>
 -->
  
@@ -255,6 +258,7 @@ And if we plot the diode voltage, we can see that the voltage decreases as a fun
 ![fit](../media/vd.svg)
 
 <!--pan_doc:
+
 <sub>Figure 5: Diode voltage versus temperature. Bottom plot shows deviation from a straight line. </sub>
 -->
 
@@ -316,6 +320,7 @@ as such, $R_2$ would be bigger than $R_1$.
 ![fit](../media/l03_vref1.pdf)
 
 <!--pan_doc:
+
 <sub>Figure 7: A bandgap voltage reference with a constant output voltage. </sub>
 -->
 
@@ -331,6 +336,7 @@ Another method would be to stack the $R_2$ on top of $R_1$ as shown in Figure 8.
 
 
 <!--pan_doc:
+
 <sub>Figure 8: Another  bandgap voltage reference with a constant output voltage. </sub>
 -->
 
@@ -353,9 +359,10 @@ which I think was first published in
 
 -->
 
-![left fit](../media/l3_brokaw.pdf) 
+![left fit](../media/l3_brokaw.pdf)
 
 <!--pan_doc:
+
 <sub>Figure 9: Brokaw bandgap voltage reference  </sub>
 -->
 
@@ -399,6 +406,7 @@ $$ V_{BG} = V_{G0} + (m-1)\frac{kT}{q}\ln{\frac{T_0}{T}} $$
 ![original](../media/l3_bgsim.pdf)
 
 <!--pan_doc:
+
 <sub>Figure 10: Simulation of a Brokaw reference in GF 130 nm.  </sub>
 -->
 
@@ -416,7 +424,7 @@ IC, which too expensive for low-cost devices.
 
 -->
 
-![original](../media/l3_bgsimtfs.pdf)   
+![original](../media/l3_bgsimtfs.pdf)
 
 <!--pan_doc:
 <sub>Figure 11: Typical, Slow, Fast simulation of the Brokaw bandgap </sub>
@@ -454,9 +462,10 @@ and we know the current increases with temperature, since $\Delta V_D$ increases
 
 -->
 
-![left fit](../media/l3_ptat.pdf) 
+![left fit](../media/l3_ptat.pdf)
 
 <!--pan_doc:
+
 <sub>Figure 12: PTAT current generator </sub>
 -->
 
@@ -483,9 +492,10 @@ then we can get a current that does not change with temperature.
 -->
 
 
-![right fit](../media/l3_ptat1.pdf) 
+![right fit](../media/l3_ptat1.pdf)
 
 <!--pan_doc:
+
 <sub>Figure 13: Extending the PTAT current generator </sub>
 -->
 
@@ -504,6 +514,7 @@ of the fact that this does not change $I_1$.
 ![right fit](../media/l3_ptat2.pdf)
 
 <!--pan_doc:
+
 <sub>Figure 14: The Banba bandgap voltage reference core </sub>
 -->
 
@@ -564,9 +575,12 @@ until the current is what we want.
 
 -->
 
-![inline 200%](../media/l3_vi.pdf)
+![inline 200%](../media/l3_vi_tikz.pdf)
 
 
+<!--pan_doc:
+<sub>Figure 16: Voltage to current converter</sub>
+-->
 
 ---
 
@@ -586,6 +600,7 @@ we can use a GM cell, as shown in Figure 17.
 ![left fit](../media/l3_gmcell.pdf)
 
 <!--pan_doc:
+
 <sub>Figure 17: GM cell. </sub>
 
 The top PMOS current mirror ensures that both branches have the same current. The middle NMOS current mirror copies

@@ -1,0 +1,734 @@
+
+
+\newcommand{\grid}{1.6}
+
+
+% ---------------------------------------------------------
+% Elementals
+% ---------------------------------------------------------
+
+\newcommand{\cicVcIsDown}[1]{
+  ++(0,\grid) to []
+}
+
+\newcommand{\hresistor}[1]{
+  ++(0,0) coordinate (cStart)
+  to [short,-] ++(0.5,0)
+  to [short,-] ++(0.05,0.1)
+  to [short,-] ++(0.1,-0.2)
+  to [short,-] ++(0.1,0.2)
+  to [short,-] ++(0.1,-0.2)
+  to [short,-] ++(0.1,0.2)
+  to [short,-] ++(0.1,-0.2)
+  to [short,-] ++(0.05,0.1)
+  to [short,-] ++(0.5,0)
+  coordinate (resEnd)
+  ++(-0.8,0.1)
+  node [anchor=south] {#1}
+  (resEnd)
+}
+
+\newcommand{\vresistor}[1]{
+  ++(0,0) coordinate (cStart)
+  to [short,-] ++(0,0.5)
+  to [short,-] ++(0.1,0.05)
+  to [short,-] ++(-0.2,0.1)
+  to [short,-] ++(0.2,0.1)
+  to [short,-] ++(-0.2,0.1)
+  to [short,-] ++(0.2,0.1)
+  to [short,-] ++(-0.2,0.1)
+  to [short,-] ++(0.1,0.05)
+  to [short,-] ++(0,0.5)
+  coordinate (resEnd)
+  ++(0.1,-0.8)
+  node [anchor=west] {#1}
+  (resEnd)
+}
+
+\newcommand{\vimpedance}[1]{
+  ++(0,0) coordinate (cStart)
+  -- ++(0,0.5)
+  -- ++(0.25,0)
+  -- ++(0,0.6)
+  -- ++(-0.50,0)
+  -- ++(-0,-0.6)
+  -- ++(0.25,0)
+  ++(0,0.6)
+  -- ++(0,0.5)
+  coordinate (impEnd)
+  ++(0,-0.8)
+  node [anchor=center] {#1}
+  (impEnd)
+}
+
+\newcommand{\himpedance}[1]{
+  ++(0,0) coordinate (cStart)
+  -- ++(0.5,0)
+  -- ++(0,0.25)
+  -- ++(0.6,0)
+  -- ++(-0.0,-0.5)
+  -- ++(-0.6,-0)
+  -- ++(0.0,0.25)
+  ++(0.6,0)
+  -- ++(0.5,0)
+  coordinate (impEnd)
+  ++(-0.8,-0)
+  node [anchor=center] {#1}
+  (impEnd)
+}
+
+\newcommand{\vnmos}[1]{
+ to [Tnmos, n=#1, l=#1] ++(0,\grid)
+}
+
+\newcommand{\vmnmos}[1]{
+ to [Tnmos, n=#1, l=#1,mirror] ++(0,\grid)
+}
+
+\newcommand{\vpmos}[1]{
+ to [Tpmos, n=#1, l=#1] ++(0,\grid)
+}
+
+\newcommand{\vvsource}[1]{
+  to [V,l_=#1] ++(0,-\grid*1.5)
+}
+
+\newcommand{\vmpmos}[1]{
+ to [Tpmos, n=#1, l=#1,mirror] ++(0,\grid)
+}
+
+\newcommand{\lvnmos}[2]{
+ to [Tnmos, n=#1] ++(0,\grid) coordinate (cicmos) \if \relax\detokenize{#2}\relax \else (#1.gate)
+ \portIn{#2} \fi (cicmos)
+}
+
+\newcommand{\lvmnmos}[2]{
+  to [Tnmos, n=#1,mirror] ++(0,\grid) coordinate (cicmos) \if \relax\detokenize{#2}\relax \else (#1.gate)
+ \portmIn{#2} \fi (cicmos)
+}
+
+\newcommand{\hinv}[1]{
+  ++(0.7,0) node[not port] (#1) {} ++(0.7,0)
+
+}
+
+\newcommand{\lvpmos}[2]{
+  to [Tpmos, n=#1] ++(0,\grid) coordinate (cicmos) (#1.gate)  \if \relax\detokenize{#2}\relax \else (#1.gate)
+ \portIn{#2} \fi (cicmos)
+}
+
+\newcommand{\lvmpmos}[2]{
+  to [Tpmos, n=#1,mirror] ++(0,\grid) coordinate (cicmos)  \if \relax\detokenize{#2}\relax \else (#1.gate)
+ \portmIn{#2} \fi (cicmos)
+}
+
+
+\newcommand{\vsupply}{
+  ++(0,0) coordinate (vSupplyStart)
+  -- ++(0,\grid/4)
+  ++(-\grid/8,-\grid/16) to [short,-] ++(\grid/4,\grid/8)
+  (vSupplyStart)
+}
+
+\newcommand{\vground}{
+  ++(0,0) coordinate (cStart)
+  ++(-0.2,0) to [short,-] ++(0.4,0)
+  ++(-0.3,-0.1) to [short,-] ++(0.2,0)
+  ++(-0.15,-0.1) to [short,-] ++(0.1,0)
+  %++(-0.5,0.05) to [short,-] ++(0.5,0)
+  (cStart)
+}
+
+
+\newcommand{\vcapacitor}[1]{
+  ++(0,0) coordinate (cStart)
+  to [short,-] ++(0,0.75)
+  ++(-0.2,0) to [short,-] ++(0.4,0)
+  ++(-0.4,0.1) to [short,-] ++(0.4,0)
+  ++(-0.2,0)
+  to [short,-] ++(0,0.75)
+  coordinate (capEnd)
+  ++(0.1,-0.8)
+  node [anchor=west] {#1}
+  (capEnd)
+}
+
+\newcommand{\hcapacitor}[1]{
+  ++(0,0) coordinate (cStart)
+  to [short,-] ++(0.75,0)
+  ++(0,-0.2) to [short,-] ++(0,0.4)
+  ++(0.1,-0.4) to [short,-] ++(0,0.4)
+  ++(0,-0.2)
+  to [short,-] ++(0.75,0)
+  coordinate (capEnd)
+  ++(-0.8,0.1)
+  node [anchor=south] {#1}
+  (capEnd)
+}
+
+
+\newcommand{\portDiffIn}[1]{
+ ++(0,0) coordinate (cStart)
+ to [short,o-] ++(0,0)
+ node [anchor=north] {$+$}
+ ++(0,-1.6)
+  to [short,o-] ++(0,0)
+  node [anchor=south] {$-$}
+  ++(0,0.8)
+  node [anchor=center] {#1} ++(0,0)
+  (cStart)
+}
+
+\newcommand{\portDiffComplexIn}[1]{
+ ++(0,0) coordinate (cicComplexStart)
+ \portDiffIn{I #1}
+ (cicComplexStart)
+ ++(0,-\grid*3)
+ \portDiffIn{Q #1}
+ (cicComplexStart)
+}
+
+\newcommand{\portDiffComplexOut}[1]{
+  ++(0,0) coordinate (cicComplexStart)
+ \portDiffOut{I #1}
+ (cicComplexStart)
+ ++(0,-\grid*3)
+ \portDiffOut{Q #1}
+ (cicComplexStart)
+}
+
+
+\newcommand{\portDiffOut}[1]{
+ ++(0,0) coordinate (cStart)
+
+ to [short,-o] ++(0.5,0)
+ node [anchor=north] {$+$}
+ ++(-0.5,-1.6)
+ to [short,-o] ++(0.5,0)
+ node [anchor=south] {$-$}
+ ++(0,0.8)
+ node [anchor=center] {#1} ++(0,0)
+ (cStart)
+}
+
+\newcommand{\portIn}[1]{
+ ++(0,0) coordinate (cStart)
+  node [anchor=east] {#1} ++(0,0)
+  to [short,o-] ++(0,0)
+}
+
+\newcommand{\portmIn}[1]{
+ ++(0,0)
+  node [anchor=west] {#1} ++(0,0)
+  to [short,o-] ++(0,0)
+}
+
+\newcommand{\portBox}{
+  ++(-0.1,0.2) -- ++(0.2,0)
+  -- ++(0,-0.2)
+  -- ++(-0.2,0)
+  -- ++(0,0.2)
+  -- ++(0.2,-0.2)
+  ++(-0.2,0) -- ++(0.2,0.2)
+  ++(-0.1,0)
+}
+
+\newcommand{\portOut}[1]{
+  ++(0,0) coordinate (cStart)
+  to [short,*-o] ++(0.5,0)
+  node [anchor=west] {#1}
+}
+
+\newcommand{\portOutDown}[1]{
+  ++(0,0) coordinate (cStart)
+  to [short,-o] ++(0,-\grid/2)
+  node [anchor=west] {#1}
+}
+
+\newcommand{\curDown}[1]{
+  ++(0,0) [short,i>=#1] ++(0,-\grid/2)
+}
+
+\newcommand{\portCurDown}[1]{
+  ++(0,0) [short,i>=#1] ++(0,-\grid/2)
+  node [anchor=west] {#1}
+}
+
+\newcommand{\cicAdd}{
+  ++(0,0) ++(\grid/8,0) node [anchor=center] {+} circle (\grid/8) ++(\grid/8,0)
+}
+
+\newcommand{\cicH}[1]{
+  ++(0,0) ++(\grid/4,0) node [anchor=center] {#1} ++(-\grid/4,-\grid/4)
+  rectangle ++(\grid/2,\grid/2) ++(0,-\grid/4)
+}
+
+%---------------------------------------------------------
+% OTA
+% ---------------------------------------------------------
+
+% Current mirror OTA
+
+\newcommand{\cicOtaCM}{
+  ++(0,0) coordinate (cicOtaStart)
+
+  \vground
+  \vnmos{M0}
+  %Left branch
+  coordinate (cicOtaSource)
+  to [short,-] ++(-\grid/2,0)
+  \vnmos{M1}
+  to [short,-] ++(0,\grid/4)
+  coordinate (cicOta_vbpp)
+  \vpmos{M3}
+  coordinate (cicOtaSupplyLeft)
+  to [short,-] ++(\grid/2,0)
+  \vsupply
+  to [short,-] ++(\grid/2,0)
+  coordinate (cicOtaSupplyRight)
+
+  % Right branch
+  (cicOtaSource)
+  to [short,-] ++(\grid/2,0)
+  \vmnmos{M2}
+  to [short,-] ++(0,\grid/4)
+  coordinate (cicOta_vbpn)
+  \vmpmos{M4}
+  to [short,-] ++(-\grid/2,0)
+
+  % Current mirror left
+  (cicOtaStart)
+  ++(-\grid*2,-\grid)
+  \vground
+  \vmnmos{M5}
+  to [short,-] ++(0,\grid*1.5)
+  coordinate (cicOta_outp)
+  to [short,-] ++(0,\grid*0.75)
+  \vmpmos{M6}
+  -- (cicOtaSupplyLeft)
+
+  % Current mirror left
+  (cicOtaStart)
+  ++(\grid*2,-\grid)
+  \vground
+  \vnmos{M7}
+  to [short,-] ++(0,\grid*1.5)
+  coordinate (cicOta_outn)
+  to [short,-] ++(0,\grid*0.75)
+  \vpmos{M8}
+  -- (cicOtaSupplyRight)
+
+
+
+  (M5.gate) -- (M7.gate) ++(-\grid*1.4,0) to [short,o-] ++(0,0) node
+  [anchor=south] {$V_{cmb}$}
+  (M6.gate) -- (M3.gate)
+  (M4.gate) -- (M8.gate)
+  (M3.gate) |- (cicOta_vbpp)
+  (M4.gate) |- (cicOta_vbpn)
+  
+  (M0.gate) to [short,o-] ++(0,0) node [anchor=east] {$V_{bn}$}
+  (M1.gate) to [short,o-] ++(0,0) node [anchor=east] {$V_{ip}$}
+  (M2.gate) to [short,-o] ++(0,0) node [anchor=west] {$V_{in}$}
+
+  (cicOta_outn) to [short,-o] ++(\grid/4,0) node [anchor=west] {$V_{outn}$}
+  (cicOta_outp) to [short,-o] ++(-\grid/4,0) node [anchor=east] {$V_{outp}$}
+  %\vmpmos{m4}
+
+}
+
+\newcommand*{\cicOta}{
+
+  ++(0,0) coordinate (cicOta_inp)
+
+  % Positive input
+  to [short,-] ++(0.5,0)
+  node [anchor=west] {$+$}
+
+  % Negative input
+  to [short,-] ++(0,-\grid)
+  node [anchor=west] {$-$}
+
+  to [short,-] ++(-0.5,0)
+  coordinate (cicOta_inn)
+  ++(0.5,0)
+
+  % Bottom
+  to [short,-] ++(0,-0.4)
+  to [short,-] ++(1.2,0)
+  to [short,-] ++(0.4,0.3)
+  -- ++(0,0.1)
+
+  % Right
+  node [anchor=east] {$+$}
+  -- ++(0.5,0)
+  coordinate (cicOta_outp)
+  ++(-0.5,0)
+  to [short,-] ++(0,1.6)
+  node [anchor=east] {$-$}
+  -- ++(0.5,0)
+
+  coordinate (cicOta_outn)
+  ++(-0.5,0)
+
+  % Top
+  -- ++(0,0.1)
+  -- ++(-0.4,0.3)
+  -- ++(-1.2,0)
+  -- ++(0,-0.4)
+  (cicOta_inp)
+}
+
+\newcommand*{\cicOtaSSWP}[2]{
+
+  ++(0,0) coordinate (cicOtaS_inp)
+
+  % Positive input
+  to [short,-] ++(0.5,0)
+  node [anchor=west] {#1}
+
+  % Negative input
+  to [short,-] ++(0,-\grid/2)
+  node [anchor=west] {#2}
+
+  to [short,-] ++(-0.5,0)
+  coordinate (cicOtaS_inn)
+  ++(0.5,0)
+
+  % Bottom
+  to [short,-] ++(0,-0.4)
+  to [short,-] ++(\grid,\grid/2)
+
+  % Right
+  -- ++(0.5,0)
+  coordinate (cicOtaS_out)
+  ++(-0.5,0)
+
+  to [short,-] ++(-\grid,\grid/2)
+
+  -- ++(0,-0.5)
+  % Top
+  (cicOtaS_inp)
+}
+
+
+\newcommand*{\cicOtaSWP}[4]{
+
+  ++(0,0) coordinate (cicOta_inp)
+
+  % Positive input
+  to [short,-] ++(0.5,0)
+  node [anchor=west] {#1}
+
+  % Negative input
+  to [short,-] ++(0,-\grid)
+  node [anchor=west] {#2}
+
+  to [short,-] ++(-0.5,0)
+  coordinate (cicOta_inn)
+  ++(0.5,0)
+
+  % Bottom
+  to [short,-] ++(0,-0.4)
+  to [short,-] ++(1.2,0)
+  to [short,-] ++(0.4,0.3)
+  -- ++(0,0.1)
+
+  % Right
+  node [anchor=east] {#3}
+  -- ++(0.5,0)
+  coordinate (cicOta_outp)
+  ++(-0.5,0)
+  to [short,-] ++(0,1.6)
+  node [anchor=east] {#4}
+  -- ++(0.5,0)
+
+  coordinate (cicOta_outn)
+  ++(-0.5,0)
+
+  % Top
+  -- ++(0,0.1)
+  -- ++(-0.4,0.3)
+  -- ++(-1.2,0)
+  -- ++(0,-0.4)
+  (cicOta_inp)
+}
+
+
+%---------------------------------------------------------
+% Filters
+% ---------------------------------------------------------
+
+\newcommand{\filtLP}[2]{
+  \hresistor{#1}
+  ++(0,-1.6)
+  \vground
+  \vcapacitor{#2}
+}
+
+
+\newcommand{\filtHP}[2]{
+  \hcapacitor{#1}
+  ++(0,-1.6)
+  \vground
+  \vresistor{#2}
+}
+
+
+\newcommand{\filtActLP}[2]{
+
+  +(0,0) coordinate (cicStart)
+  \hresistor{#1}
+  \cicOta
+  (cicOta_inp) to [short,*-] ++(0,1)
+  -- ++(0.5,0)
+  \hcapacitor{#2}
+  -| (cicOta_outn)
+  (cicOta_inn) -- ++(0,-0.1)\vground
+  (cicOta_outn)
+}
+
+\newcommand{\filtActZ}[2]{
+  ++(0,0) coordinate (cicStart)
+  \himpedance{#1}
+  \cicOta
+  (cicOta_inp) to [short,*-] ++(0,\grid/2)
+  -- ++(0.5,0)
+  \himpedance{#2}
+  -| (cicOta_outn)
+  (cicOta_inn) -- ++(0,-0.1)\vground
+  (cicOta_outn)
+}
+
+
+\newcommand{\filtActDiffZ}[2]{
+  ++(0,0) coordinate (cicStart)
+  \himpedance{#1}
+  \cicOta
+  (cicOta_inp)
+  to [short,*-] ++(0,\grid/2)
+  -- ++(0.5,0)
+  \himpedance{#2}
+  -| (cicOta_outn)
+  to [short,*-] ++(0,0)
+  (cicOta_inn) ++(-1.6,0)
+  \himpedance{#1}
+  to [short,*-] ++(0,-\grid/2)
+  -- ++(0.5,0)
+  \himpedance{#2}
+  -| (cicOta_outp)
+  to [short,*-] ++(0,0)
+  (cicOta_outn)
+}
+
+\newcommand{\filtActComplexDiffZOne}[1]{
+  ++(0,0) coordinate (cicStart)
+  \filtActDiffZ{#1}{#1}
+  (cicOta_inp)
+  ++(-\grid,0)
+  coordinate (cicComplex_in2)
+  ++(0,+\grid/2)
+  coordinate (cicComplex_in1)
+  \himpedance{#1}
+  (cicOta_inn)
+  ++(-\grid,0)
+  coordinate (cicComplex_in3)
+  ++(0,-\grid/2)
+  coordinate (cicComplex_in4)
+  \himpedance{#1}
+  (cicOta_inp)
+}
+
+\newcommand{\filtActComplexDiffZ}[1]{
+   ++(0,0) coordinate (cicStart)
+    ++(\grid/2,0)
+    \filtActComplexDiffZOne{Z}
+    (cicComplex_in1) coordinate (cicI_in1)
+    (cicComplex_in2) coordinate (cicI_in2)
+    (cicComplex_in3) coordinate (cicI_in3)
+    (cicComplex_in4) coordinate (cicI_in4)
+    (cicOta_outn) coordinate(cicI_outn)
+    (cicI_in2)
+    ++(0,-\grid*3)
+    \filtActComplexDiffZOne{Z}
+    (cicComplex_in1) coordinate (cicQ_in1)
+    (cicComplex_in2) coordinate (cicQ_in2)
+    (cicComplex_in3) coordinate (cicQ_in3)
+    (cicComplex_in4) coordinate (cicQ_in4)
+
+    (cicI_in2) -- ++(-\grid/2,0) ++(\grid/4,0)
+    to [short,*-] (cicQ_in1)
+
+    (cicI_in3) -- ++(-\grid/2,0) ++(\grid/4,0)
+    to [short,*-] (cicQ_in4)
+
+    (cicQ_in2) -- ++(-\grid/2,0) ++(\grid/4,0)
+    to [short,*-] (cicI_in1)
+
+    (cicQ_in3) -- ++(-\grid/2,0) ++(\grid/4,0)
+    to [short,*-] (cicI_in4)
+
+    (cicI_outn)
+
+}
+
+
+
+%---------------------------------------------------------
+% Transistors
+%---------------------------------------------------------
+
+\newcommand{\trNmos}{
+
+++(0,0) coordinate (cStart)
+to [Tnmos, n=mn1, l=$M_{1}$] ++(0,1.6)
+(mn1.gate) to [short,o-] ++(0,0) node [anchor=east] {$Gate$}
+(mn1.drain) to [short,o-] ++(0,0) node [anchor=east] {$Drain$}
+(mn1.source) to [short,o-] ++(0,0) node [anchor=east] {$Source$}
+;
+}
+
+
+\newcommand{\trSmallSignal}{ % Incomplete
+    ++(0,0) coordinate (cStart) to [short,o-] ++(1,0) node [anchor=north] {$+$} ++(0,-0.8)
+    node [anchor=east] {$v_i$}
+     (cStart)    ++(0,-1.6) node [rground] {} to [short] ++(1,0) node [anchor=south] {$-$}
+    (cStart) ++(2,0)
+    to [cI, n=mn1, l=$gm_{1} \times v_i$] ++(0,-1.6)
+    to [short] ++(3,0) to [R,l=$r_o$] ++(0,1.6)
+    node [anchor=south] {$v_o$}
+    to [short] ++(-3.0,0)
+
+}
+
+
+%---------------------------------------------------------
+% ESD
+%---------------------------------------------------------
+
+\newcommand{\esdGgnmos}{
+
+++(0,0) coordinate (cStart)
+node [ground,rotate=-90,anchor=west] {}     to [Tnmos,
+  n=mn1, l=$M_{1}$] ++(0,3.2) to [short,-*] ++(0,0)
+coordinate (top) to
+[short,-o] ++(0.5,0)  node [anchor=west] {To pin}
+
+(top) to [short,-o] ++(-1,0) node [anchor=east] {To core}
+(mn1.gate) to [short,-] ++(-1,0) to [resistor] ++(0,-1.6) node
+[ground,rotate=-90,anchor=west] {}
+(cStart)
+
+}
+
+
+
+%---------------------------------------------------------
+%  Analog Question
+% ---------------------------------------------------------
+
+\newcommand{\anaQuestion}{
+          +(0,0) coordinate (cStart)
+          node [ground,rotate=-90,anchor=west] {}     to [Tnmos,
+            n=mn1, l=$M_{1}$,mirror] ++(0,1.6) to [short]
+          ++(0,3.2) node [rground,yscale=-1] {} to [I,l=$20 \mu A$,] ++(0,-1.6)
+
+          (cStart) ++(4,0)
+          node [ground,rotate=-90,anchor=west] {}     to [Tnmos,
+            n=mn2, l=$M_{2}$] ++(0,1.6) to [short,-o] ++(0,0.8)
+          node [short,anchor=west] {$V_X$} to [short] ++(0,0.8)
+          to [Tnmos, n=mn3, l=$M_{3}$] ++(0,1.6)
+          node [rground,yscale=-1] {} ++(0,0.4) node [anchor=south] {$V_{DD} = 1.2 V$}
+
+          (mn3.gate) to [short,-] ++(-0.8,0) to [V,l=$ 1 V$]
+          ++(0,-1.6) node [ground,rotate=-90] {}
+
+          (mn1.gate) to [short,*-] ++(0,0.78) to [short,-*] (mn1.drain)
+          (mn1.gate) to [short,-] (mn2.gate)
+          (cStart)
+}
+
+
+%---------------------------------------------------------
+%  Current mirrors
+% ---------------------------------------------------------
+
+\newcommand{\cmStd}{
+
+    ++(0,0) coordinate (cStart)
+    node [ground,rotate=-90,anchor=west] {}     to [Tnmos,
+      n=mn1, l=$M_{1}$,mirror] ++(0,1.6) ++(0,0.5) to [short,-,i=$i_{i}$] ++(0,-0.5)
+    (cStart) ++(2,0)
+    node [ground,rotate=-90,anchor=west] {}     to [Tnmos,
+      n=mn2, l=$M_{2}$] ++(0,1.6) ++(0,0.5) to [short,i=$i_o$] ++(0,-0.5)
+
+    (mn1.gate) to [short,*-] ++(0,0.78) to [short,-*] (mn1.drain)
+    (mn1.gate) to [short,-] (mn2.gate)
+    (cStart)
+}
+
+
+\newcommand{\cmSfCascode}{
+
+  ++(0,0) coordinate (cStart)
+    node [ground,rotate=-90,anchor=west] {}     to [Tnmos,
+      n=mn1, l=$M_{3}$,mirror] ++(0,1.6) to [Tnmos,n=mn3,l=$M_1$,mirror] ++(0,1.6) ++(0,0.5) to [short,-,i=$i_{i}$] ++(0,-0.5)
+
+    (cStart) ++(2,0)
+    node [ground,rotate=-90,anchor=west] {}     to [Tnmos,
+      n=mn2, l=$M_{4}$] ++(0,1.6) to [Tnmos,n=mn4,l=$M_2$] ++(0,1.6) ++(0,0.5) to [short,i=$i_o$] ++(0,-0.5)
+
+    (mn1.gate) to [short,*-*] (mn3.gate) to [short,*-] +(0,0.78) to [short,-*] (mn3.drain)
+    (mn1.gate) to [short,-] (mn2.gate)
+    (cStart)
+  }
+
+\newcommand{\cmSourceDeg}{
+
+    ++(0,0) coordinate (cStart)
+    \vground \vresistor{$R_{s}$} \vmnmos{M1} ++(0,0.5) to [short,-,i=$i_{i}$] ++(0,-0.5)
+    (cStart) ++(2,0)
+    \vground \vresistor{$R_{s}$} \vnmos{M2} ++(0,0.5) to [short,i=$i_o$] ++(0,-0.5)
+
+    (M2.gate) to [short,-*] (M1.gate) to [short,*-] +(0,\grid/2-0.02) to [short,-*] (M1.drain)
+    (cStart)
+  }
+
+
+\newcommand{\cmCascode}{
+
+
+    ++(0,0) coordinate (cStart)
+    node [ground,rotate=-90,anchor=west] {}     to [Tnmos,
+      n=mn1, l=$M_{1}$,mirror] ++(0,1.6) to [Tnmos,n=mn3,l=$M_3$,mirror] ++(0,1.6) ++(0,0.5) to [short,-,i=$i_{i}$] ++(0,-0.5)
+
+    (cStart) ++(2.5,0)
+    node [ground,rotate=-90,anchor=west] {}     to [Tnmos,
+      n=mn2, l=$M_{2}$] ++(0,1.6) to [Tnmos,n=mn4,l=$M_4$] ++(0,1.6) ++(0,0.5) to [short,i=$i_o$] ++(0,-0.5)
+
+    (mn1.gate) to [short,*-] (mn3.gate) to [short,-] +(0,0.78) to
+    [short,-*] (mn3.drain)
+    (mn3.gate) to [short,-] (mn4.gate) to [short,-o,l=$v_b$] ++(-0.3,0)
+    (mn1.gate) to [short,-] (mn2.gate)
+    (cStart)
+}
+
+\newcommand{\cmRCascode}{
+
+    ++(0,0) coordinate (cStart)
+    node [ground,rotate=-90,anchor=west] {}     to [Tnmos,
+      n=mn1, l=$M_{1}$,mirror] ++(0,1.6) to
+    [Tnmos,n=mn3,l=$M_3$,mirror] ++(0,1.6)
+    to [resistor] ++(0,1)  coordinate (resCon) ++(0,0.5) to [short,-,i=$i_{i}$] ++(0,-0.5)
+
+    (cStart) ++(2.5,0)
+    node [ground,rotate=-90,anchor=west] {}     to [Tnmos,
+      n=mn2, l=$M_{2}$] ++(0,1.6) to [Tnmos,n=mn4,l=$M_4$] ++(0,1.6) ++(0,0.5) to [short,i=$i_o$] ++(0,-0.5)
+
+    (mn1.gate) to [short,*-] (mn3.gate) to [short,-] +(0,0.78) to
+    [short,-*] (mn3.drain)
+    (mn3.gate) to [short,-] (mn4.gate) ++(-0.3,0) coordinate (cascCon)
+    (resCon) to [short,*-] ++(1.2,0) to [short,-*] (cascCon)
+    (mn1.gate) to [short,-] (mn2.gate)
+    (cStart)
+  }

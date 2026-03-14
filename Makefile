@@ -10,7 +10,7 @@ ifneq ($(wildcard /pyenv/bin/.*),)
 	PYTHON=/pyenv/bin/python3
 endif
 
-.PHONY:  slides version
+.PHONY:  slides version tikz
 
 #	lr0_logic \
 
@@ -29,7 +29,7 @@ FILES = l00_jayn \
 	l02_esd \
 	l03_refbias \
 	l04_afe \
- 	l04_dac \
+	l04_dac \
 	l05_sc \
 	l06_adc \
 	l07_vreg \
@@ -47,7 +47,6 @@ FILES = l00_jayn \
 	lr0_logic \
 	l00_questions
 	#l04_mac\
-
 
 
 
@@ -111,3 +110,24 @@ cish:
 
 equations:
 	${foreach f,${FILES},cat lectures/${f}.md |perl -pe 's/\n//ig;'| perl -ne 'print "\n# ${f}\n\n";while(m/\$$\$$([^\$$]+)\$$\$$/ig){print "\n\$$\$$".$$1."\$$\$$\n"}';}
+
+tikz:
+	-mkdir -p tikz/build
+	-mkdir -p pdf/media
+	@set -e; \
+	for f in tikz/l3_vi.tex ; do \
+		[ -f "$$f" ] || continue; \
+		b=$$(basename "$$f" .tex); \
+		[ "$$b" = "ckt_lib" ] && continue; \
+		echo "Building $$b"; \
+		pdflatex -interaction=nonstopmode -halt-on-error -output-directory tikz/build "$$f"; \
+		cp "tikz/build/$$b.pdf" "media/$${b}_tikz.pdf"; \
+		cp "tikz/build/$$b.pdf" "pdf/media/$${b}_tikz.pdf"; \
+		if command -v pdf2svg >/dev/null 2>&1; then \
+			pdf2svg "tikz/build/$$b.pdf" "media/$${b}_tikz.svg" || true; \
+			if [ -f "media/$${b}_tikz.svg" ]; then cp "media/$${b}_tikz.svg" "pdf/media/$${b}_tikz.svg"; fi; \
+		elif command -v dvisvgm >/dev/null 2>&1; then \
+			dvisvgm --pdf "tikz/build/$$b.pdf" -n -o "media/$${b}_tikz.svg" >/dev/null 2>&1 || true; \
+			if [ -f "media/$${b}_tikz.svg" ]; then cp "media/$${b}_tikz.svg" "pdf/media/$${b}_tikz.svg"; fi; \
+		fi; \
+	done

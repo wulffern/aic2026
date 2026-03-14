@@ -1,0 +1,47 @@
+\input{tikz/fig_header.tex}
+
+\begin{circuitikz}[american,circuit logic US, thick,
+transform shape,circuit ee IEC,set make contact graphic= var make
+contact IEC graphic]
+
+  \input{tikz/ckt_lib.tex}
+%\begin{tikzpicture}[>=Stealth, line width=0.9pt]
+  % Reference source on the left.
+  \draw (0,\grid) coordinate (vsource)  \vvsource{$1.2\,\mathrm{V}$} \vground;
+
+  % OTA symbol from the local circuit library.
+  \draw (\grid,\grid*1.75) \cicOtaSSWP{$-$}{$+$};
+  %\node at ($(cicOtaS_inp)+(0.95,-0.8)$) {OTA};
+
+  % Negative input to the reference source.
+  \draw (vsource) |- (cicOtaS_inp);
+  % PMOS bias core using the library transistor/supply symbols.
+  \draw (\grid*3,\grid) \lvpmos{MP1}{} coordinate (mp1top);
+  \draw (\grid*4,\grid) \lvpmos{MP2}{} coordinate (mp2top);
+  \draw (mp1top) \vsupply;
+  \draw (mp2top) \vsupply;
+
+  % OTA output drives the PMOS mirror gates.
+  \draw (cicOtaS_out) |- (MP1.gate) -- (MP2.gate);
+
+  % Diode-connect the left PMOS and use it to generate the resistor current.
+  %\draw (MP1.gate) |- (MP1.drain);
+  %\fill (MP1.drain) circle (2.2pt);
+
+  % Feedback from the resistor node to the positive OTA input.
+  %\draw (MP1.drain) |- ++(-4.3,0) |- (cicOtaS_inn);
+
+  % Resistor to ground using the local resistor/ground style.
+  \draw (MP1.drain) ++(0,-\grid*1.5) \vresistor{$R$}  coordinate (vr) ++(0,-1.6) \vground;
+
+  \draw (MP1.drain) -- (vr) -| (cicOtaS_inn);
+  \fill (vr) circle (2.2pt);
+  %\draw (resEnd) \vground;
+
+  % Output branch current on the mirrored PMOS.
+  %\draw (MP2.drain) -- ++(0,-0.9);
+  \draw (MP2.drain) \portOutDown{$I_{OUT}$};
+  %\draw[->] ($(MP2.drain)+(0.55,-0.05)$) -- ++(0,-0.9) node[midway,right] {$I$};
+
+\end{circuitikz}
+\end{document}
