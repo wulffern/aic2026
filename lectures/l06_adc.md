@@ -98,7 +98,7 @@ In the plot below you can see the ISSCC and VLSI ADCs.
 
 -->
 
-![left fit](../media/l6_mwald.pdf) 
+![left fit](../media/l6_mwald.svg) 
 
 ---
 
@@ -173,7 +173,7 @@ For further details see the paper.
 
 -->
 
-![inline](../media/fig_sar_logic.pdf)
+![inline](../media/fig_sar_logic.svg)
 
 ---
 
@@ -187,7 +187,7 @@ I was not sure what would actually be state of the art. As a result, I taped out
 
 -->
 
-![200%](../media/l06_fig_layout.pdf)
+![200%](../media/l06_fig_layout.svg)
 
 ---
 
@@ -198,7 +198,7 @@ was made with core-transistors. Notice that the layout of the two is quite simil
 
 -->
 
-![inline](../media/l06_fig_toplevel.pdf)
+![inline](../media/l06_fig_toplevel.svg)
 
 ---
 
@@ -209,7 +209,7 @@ for the best conference, and luckily the best journal.
 
 -->
 
-![inline](../media/l06_fig_core_meas.pdf)
+![inline](../media/l06_fig_core_meas.svg)
 
 ---
 
@@ -233,7 +233,7 @@ The big thing was how I made the ADC. I started with a definition of a transisto
 
 -->
 
-![inline](../media/l06_fig_dmos.pdf)
+![inline](../media/l06_fig_dmos.svg)
 
 ---
 
@@ -260,7 +260,7 @@ What I really like is the fact that the compilation could generate GDSII or SKIL
 
 -->
 
-![inline](../media/l06_fig_process.pdf)
+![inline](../media/l06_fig_process.svg)
 
 ---
 
@@ -285,16 +285,10 @@ One of my Ph.D students built on-top on my work, and made a noise-shaped compile
 
 -->
 
-![inline fit](../media/harald_layout.pdf)
+![inline fit](../media/harald_layout.svg)
 
 ---
 
-<!--pan_skip: -->
-
-[.background-color: #000000]
-[.text: #FFFFFF]
-
----
 
 <!--pan_doc:
 
@@ -319,7 +313,7 @@ $$FOM_S = SNDR + 10\log\left(\frac{f_s/2}{P}\right)$$
 
 Above 180 dB is extreme
 
-![right fit](../media/l6_msch.pdf)
+![right fit](../media/l6_msch.svg)
 
 ---
 
@@ -340,7 +334,7 @@ and we add some "noise", or "quantization noise" $e[n]$, where $x[n] = y[n] - e[
 
 -->
 
-![inline fit](../media/l6_adc.pdf)
+![inline fit](../media/l6_adc.svg)
 
 ---
 
@@ -364,7 +358,7 @@ The figure below shows the input signal x and the quantized signal y.
 
 -->
 
-![inline fit](../media/l6_ct.pdf)
+![inline fit](../media/l6_ct.svg)
 
 ---
 
@@ -380,7 +374,7 @@ This noise does not look random to me, but I can't see what it is, and I'm prett
 -->
 
 
-![inline fit](../media/l6_cten.pdf)
+![inline fit](../media/l6_cten.svg)
 
 ---
 
@@ -458,7 +452,7 @@ A Bessel function of the first kind looks like this
 
 ---
 
-![fit](../media/Bessel.pdf)
+![fit](../media/Bessel.svg)
 
 
 <!--pan_doc:
@@ -536,14 +530,14 @@ Can you see how the noise (what is not the two spikes) is not white? White noise
 
 ---
 
-![fit](../media/l6_q_1.pdf)
+![fit](../media/l6_q_1.svg)
 
 <!--pan_doc:
 If you run the python script you can zoom in and check the highest spikes. The fundamental is at 127, so odd harmonics would be 381, 635, 889, and from the function of the quantization noise we would expect those to be the highest harmonics (at least when we look at the Bessel function), however, we can see that it's close, but that bin 396 is the highest. Is the math's wrong? 
 
 No, the math is correct. Never bet against mathematics. If you change the python script to reduce the frequency, `fdivide=2**9`, and increase number of points, `N=2**16`, as in the plot below, you'll see it's the 11'th harmonic that is highest. 
 
-![fit](../media/l6_q_1_fharm.pdf)
+![fit](../media/l6_q_1_fharm.svg)
 
 All the other spikes are the odd harmonics above the sample rate that fold. The infinite sum of harmonics will fold, some in-phase, some out of phase, depending on the sign of the Bessel function. 
 
@@ -559,7 +553,7 @@ A consequence is that the quantization noise becomes more and more uniform, as c
 
 ---
 
-![fit](../media/l6_q_10.pdf)
+![fit](../media/l6_q_10.svg)
 
 
 <!--pan_doc:
@@ -723,7 +717,7 @@ The noise has all frequencies, and it's the high frequency components that start
 
 -->
 
-![fit](../media/l6_osr_2.pdf)
+![fit](../media/l6_osr_2.svg)
 
 ---
 
@@ -735,7 +729,7 @@ For an OSR of 4 we can notice how the noise floor has 4 zero's.
 
 -->
 
-![fit](../media/l6_osr_4.pdf)
+![fit](../media/l6_osr_4.svg)
 
 
 <!--pan_doc:
@@ -777,7 +771,7 @@ Do you see now why a circuit like the one below is useful? If not, you should re
 
 ---
 
-![inline fit](../media/l4_sdloop.pdf)
+![inline fit](../media/l4_sdloop.svg)
 
 ---
 
@@ -798,7 +792,7 @@ But how can we now calculate the transfer function $\frac{D_o}{V_i}$? Both $adc$
 
 -->
 
-![inline fit](../media/l4_sd.pdf)
+![inline fit](../media/l4_sd.svg)
 
 ---
 
@@ -843,7 +837,7 @@ $$ y[n] = e[n] + h*(u[n] - y[n])$$
 
 which could be drawn in a signal flow graph as below.
 
-![left fit](../media/l6_sdadc.pdf)
+![left fit](../media/l6_sdadc.svg)
 
 in the Z-domain the equation would turn into 
 
@@ -855,7 +849,7 @@ The whole point of this exercise was to somehow shape the quantization noise, an
 
 <!--pan_skip: -->
 
-![left fit](../media/l6_sdadc.pdf)
+![left fit](../media/l6_sdadc.svg)
 
 
 ## Sample domain 
@@ -1117,7 +1111,7 @@ If we look at the noise we can also see the non-white quantization noise, which 
 
 -->
 
-![fit](../media/l6_sd_d0_b1.pdf)
+![fit](../media/l6_sd_d0_b1.svg)
 
 ---
 
@@ -1127,7 +1121,7 @@ In the figure below I've turned on dither, and we can see how the noise looks "b
 
 -->
 
-![fit](../media/l6_sd_d1_b1.pdf)
+![fit](../media/l6_sd_d1_b1.svg)
 
 ---
 
@@ -1138,7 +1132,7 @@ frequencies of the FFT. From the shape of the quantization noise we can also see
 
 -->
 
-![fit](../media/l6_sdlog_d1_b5.pdf)
+![fit](../media/l6_sdlog_d1_b5.svg)
 
 ---
 
@@ -1166,7 +1160,7 @@ order filter one can use a lower OSR, and still achieve high ENOB.
 
 -->
 
-![inline](../media/l06_osd21.pdf)
+![inline](../media/l06_osd21.svg)
 
 
 <!--pan_doc:
@@ -1228,7 +1222,7 @@ infer the state of the input $u(t)$ using a form of [Bayesian Statistics](https:
 
 -->
 
-![inline](../media/l6_fredrik_arch.pdf)
+![inline](../media/l6_fredrik_arch.svg)
 
 ---
 
@@ -1238,7 +1232,7 @@ Below we can see a power spectral density plot of the ADC, and we can observe ho
 a third order NTF with a zero at zero frequency and a complex conjugate pole at 8 MHzish.
 -->
 
-![inline](../media/l6_fredrik_psd.pdf)
+![inline](../media/l6_fredrik_psd.svg)
 
 ---
 

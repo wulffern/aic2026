@@ -97,6 +97,7 @@ class Bibtex(dict):
                     line = re.sub(r"\s+"," ",line)
                     buffer += line.strip() + " "
             self._parse(buffer)
+        #    print(self)
 
     def addFootNote(self,nr):
         self.counter.append(int(nr))
@@ -106,13 +107,15 @@ class Bibtex(dict):
 
     def toMarkdownCite(self,key):
 
-
+        #print(self[key])
         if("cite_nr" not in self[key]):
             self[key]["cite_nr"] = int(self.counter[-1]) + 1
             self.counter.append(self[key]["cite_nr"])
 
 
+        #print(key)
         nr = self[key]["cite_nr"]
+        #print(nr)
 
         if(key not in self.referenced):
             self.referenced[key] = 0
@@ -264,8 +267,8 @@ class Lecture():
         if("Latex" not in str(self.__class__)):
             self._replaceCites()
 
-    def copyAssets(self):
-        with open("images.txt","a") as fo:
+    def copyAssets(self, images_file="images.txt"):
+        with open(images_file,"a") as fo:
             for image in self.images:
                 if(not image.skip and not image.isUrl):
                     fo.write(image.orgsrc + "\n")
@@ -286,11 +289,15 @@ class Lecture():
         for i in range(0,len(self.buffer)):
             line = self.buffer[i]
             #- Find references
-            m = re.search(r"\s+\[\@([^\]]+)\]\s+",line)
+            m = re.search(r"\s*\[\@([^\]]+)\]\s*",line)
             if(m):
+                #print(m)
                 for key in m.groups():
+                    #print(key)
                     md = self.bibtex.toMarkdownCite(key)
+                    #print(md)
                     self.buffer[i] = line.replace(f"[@{key}]",md)
+                    #print(self.buffer[i])
 
         self.buffer.append(self.bibtex.toMarkdownRef())
 
@@ -569,17 +576,14 @@ def cli():
 @click.argument("filename")
 @click.option("--root",default=f"/{aic_version}/",help="Root of jekyll site")
 @click.option("--date",default=None,help="Date to use")
-def post(filename,root,date):
+@click.option("--images-file",default="images.txt",help="File to write image list to")
+def post(filename,root,date,images_file):
     options = dict()
     options["jekyll"] = root
     options["dir"] = os.path.dirname(filename)
 
-    if(not os.path.exists("docs/assets/media/")):
-        os.mkdir("docs/assets/media/")
-
-    if(not os.path.exists("docs/_posts")):
-        os.mkdir("docs/_posts")
-
+    os.makedirs("docs/assets/media/", exist_ok=True)
+    os.makedirs("docs/_posts", exist_ok=True)
 
     print(f"Info: {filename}")
     #- Post
@@ -590,7 +594,7 @@ def post(filename,root,date):
     else:
         raise Exception(f"I need a date, either in the frontmatter, or the option for {filename}")
 
-    l.copyAssets()
+    l.copyAssets(images_file=images_file)
     fname = "docs/_posts/" + date +"-"+ l.title.strip().replace(" ","-") + ".markdown"
 
     with open(fname,"w") as fo:
@@ -604,7 +608,8 @@ def post(filename,root,date):
 @cli.command()
 @click.argument("filename")
 @click.option("--root",default="pdf/",help="output root")
-def latex(filename,root):
+@click.option("--no-append",is_flag=True,default=False,help="Skip appending to shared files (for parallel builds)")
+def latex(filename,root,no_append):
     options = dict()
     options["latex"] = root
     options["downloadImage"] = True
@@ -624,28 +629,34 @@ def latex(filename,root):
     foname_fixed = p.title.strip().replace(" ","_").lower()+"_fiximg.tex"
     foname = os.path.basename(filename).replace(".md",".tex")
 
-    with open("pdf/chapters.tex","a") as fo:
-        fo.write(r"\setchapterstyle{kao}" + "\n")
-        fo.write(r"\setchapterpreamble[u]{\margintoc}"+ "\n")
-        title = p.title.strip()
-        title = re.sub(r"Lecture\s+[\d|X]*\s+-\s+","",title)
-        fo.write(r"\chapter{"+title+"}"+ "\n")
-        fo.write(r"\input{"+foname_fixed + "}"+ "\n\n")
+    title = p.title.strip()
+    title = re.sub(r"Lecture\s+[\d|X]*\s+-\s+","",title)
 
-    #-Get version text
+    chapter_text = (r"\setchapterstyle{kao}" + "\n"
+        + r"\setchapterpreamble[u]{\margintoc}" + "\n"
+        + r"\chapter{" + title + "}" + "\n"
+        + r"\input{" + foname_fixed + "}" + "\n\n")
+
+    download_text = f"- [{title}](/{aic_version}/assets/{basename}.pdf)\n"
+
+    with open(f"pdf/{basename}_chapter.inc","w") as fo:
+        fo.write(chapter_text)
+    with open(f"pdf/{basename}_download.inc","w") as fo:
+        fo.write(download_text)
+
+    if not no_append:
+        with open("pdf/chapters.tex","a") as fo:
+            fo.write(chapter_text)
+        with open("docs/downloads.md","a") as fo:
+            fo.write(download_text)
+
     with open("pdf/version_short.tex") as fi:
         version = fi.read()
 
-
-    #- Write short
     with open("pdf/short_tmplt.tex") as fi:
         buff = fi.read()
         with open("pdf/" + foname,"w") as fo:
             fo.write(buff.replace("__title__",title).replace("__file__",foname_fixed).replace("__version__",version))
-
-
-    with open("docs/downloads.md","a") as fo:
-        fo.write(f"- [{title}](/{aic_version}/assets/{basename}.pdf)\n")
 
     flatex = fname.replace(".md",".latex")
     cmd = f"pandoc --citeproc --bibliography=pdf/aic.bib --csl=pdf/ieee-with-url.csl  -o {flatex} {fname}  "

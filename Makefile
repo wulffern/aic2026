@@ -51,7 +51,16 @@ FILES = l00_jayn \
 
 
 
-all: version posts texfiles latex standalone book
+
+all: version posts-parallel texfiles-parallel standalone-parallel latex-nobuild book-nobuild
+
+latex-nobuild:
+	cd pdf; make one
+	cp pdf/aic.pdf docs/assets/
+
+book-nobuild:
+	cd pdf; make ebook
+	cp pdf/aic.epub docs/assets/
 
 version:
 	echo "aic${YEAR}" > version
@@ -63,6 +72,16 @@ posts:
 	cp plan.md docs/plan.md
 	${foreach f, ${FILES}, ${PYTHON} py/lecture.py post lectures/${f}.md || exit; }
 	cd lectures; cat ../images.txt |xargs git add -f
+
+posts-parallel:
+	-rm -f images.txt *_images.inc
+	-mkdir -p docs/assets/media docs/_posts
+	cp syllabus.md docs/syllabus.md
+	cp plan.md docs/plan.md
+	printf '%s\n' ${FILES} | xargs -P 4 -I{} ${PYTHON} py/lecture.py post lectures/{}.md --images-file {}_images.inc
+	cat ${addsuffix _images.inc,${FILES}} > images.txt 2>/dev/null; true
+	cd lectures; cat ../images.txt |xargs git add -f
+	-rm -f *_images.inc
 
 
 jstart:
@@ -79,12 +98,29 @@ texfiles:
 	${foreach f, ${FILES}, ${PYTHON} py/lecture.py latex lectures/${f}.md || exit ; }
 	cd pdf; make fix hash pandoc.tex
 
+texfiles-parallel:
+	-mkdir pdf/media
+	-rm -f pdf/chapters.tex
+	cd pdf; make hash_short
+	${PYTHON} py/lecture.py latex --no-append lectures/tex_intro.md
+	-rm docs/downloads.md
+	cat downloads.md > docs/downloads.md
+	printf '%s\n' ${FILES} | xargs -P 4 -I{} ${PYTHON} py/lecture.py latex --no-append lectures/{}.md
+	cat pdf/tex_intro_chapter.inc > pdf/chapters.tex
+	${foreach f, ${FILES}, cat pdf/${f}_chapter.inc >> pdf/chapters.tex;}
+	${foreach f, ${FILES}, cat pdf/${f}_download.inc >> docs/downloads.md;}
+	cd pdf; make fix hash pandoc.tex
+
 images:
 	${foreach f, ${FILES}, echo ${f} && egrep "^!.*\(https://" lectures/${f}.md;}
 
-standalone: texfiles
+standalone: texfiles standalone-nobuild
+standalone-nobuild:
 	${foreach f, ${FILES}, cd pdf; make standalone FNAME=${f}.tex;}
 	${foreach f, ${FILES}, cp pdf/${f}.pdf docs/assets/;}
+
+standalone-parallel:
+	printf '%s\n' ${FILES} | xargs -P 4 -I{} sh -c 'cd pdf && make standalone FNAME={}.tex && cp {}.pdf ../docs/assets/'
 
 latex: texfiles
 	cd pdf; make one
