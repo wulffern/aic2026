@@ -289,8 +289,8 @@ The temperature sensor shall be design to fit with the specification below.
 | Tc      | Conversion time  | < 30  | us   | Analog should only be active for one 32768 Hz period           |
 | Ts      | Sample rate      | 100   | ms   |                                                                |
 | Ileak   | Leakage current  | < 1   | nA   | Typical temperature (25 C)                                     |
-| Iact    | Active current   | < 100 | uA   |                                                                |
-| Iavg    | Average current  | < 50  | nA   | Active current x conversion time/sample rate + leakage current |
+| Iact    | Active current   | < 100 | uA   | Typical temperature (25 C)                                                                  |
+| Iavg    | Average current  | < 50  | nA   | Active current x conversion time/sample rate + leakage current. Typical temperature (25 C)   |
 | Kerrone | Accuracy 0 - 70C | +-10  | C    | One temperature (25C) calibration                              |
 | Kerrtwo | Accuracy 0 - 70C | +-5   | C    | Two temperature (25C, 85C) calibration                         |
 
