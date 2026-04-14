@@ -466,6 +466,7 @@ Vibrations on a piezoelectric material will result in a AC voltage across the su
 
 <!--![fit](https://upload.wikimedia.org/wikipedia/commons/c/c4/SchemaPiezo.gif)-->
 ![fit](../media/SchemaPiezo.gif)
+
 ---
 
 <!--pan_doc:
