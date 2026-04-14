@@ -1,0 +1,29 @@
+\input{tikz/fig_header.tex}
+
+\begin{circuitikz}[american, thick, transform shape, circuit ee IEC]
+
+  \input{tikz/ckt_lib.tex}
+
+  \node[npn, anchor=E] (q1) at (0,0) {};
+
+  % Collector and base are shorted for a diode-connected BJT.
+  \draw (q1.C) -- ++(0,0.5) coordinate (collector_top);
+  \coordinate (diode_corner) at ($(collector_top)+(-0.9,0)$);
+  \coordinate (base_join) at ($(q1.B)+(0.25,0)$);
+  \coordinate (base_y) at ($(diode_corner |- base_join)$);
+  \draw (collector_top) -- (diode_corner) -- (base_y) -- (base_join) -- (q1.B);
+
+  % Emitter to ground.
+  \draw (q1.E) -- ++(0,-0.8) coordinate (egnd);
+  \draw (egnd) \vground;
+
+  % Bias current forces the operating point.
+  \draw ($(collector_top)+(-2.1,0)$) to [I, l=$I_D$, invert] ($(egnd)+(-2.1,0)$) coordinate (ibot);
+  \draw ($(collector_top)+(-2.1,0)$) -- (diode_corner);
+  \draw (ibot) \vground;
+
+  % V_BE across the diode-connected transistor.
+  \draw ($(collector_top)+(1.0,0)$) to [open, v^>=$V_{BE}$] ($(egnd)+(1.0,0)$);
+
+\end{circuitikz}
+\end{document}

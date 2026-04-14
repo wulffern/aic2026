@@ -1,0 +1,20 @@
+\input{tikz/fig_header.tex}
+
+\begin{circuitikz}[american, thick, transform shape, circuit ee IEC]
+
+  \input{tikz/ckt_lib.tex}
+
+  % Voltage source (left) - drawn top to bottom (flipped)
+  \draw (0,2.8) to [short, -o] ++(0,0) node[anchor=south] {$+$}
+    to [V, l=$V_S$] ++(0,-2.4)
+    to [short, -o] ++(0,-0.4) node[anchor=north] {$-$};
+  \node at (0,-1.2) {Voltage source};
+
+  % Current source (right) - drawn top to bottom (flipped)
+  \draw (3.2,2.8) to [short, -o] ++(0,0)
+    to [I, l=$I_S$] ++(0,-2.4)
+    to [short, -o] ++(0,-0.4);
+  \node at (3.2,-1.2) {Current source};
+
+\end{circuitikz}
+\end{document}

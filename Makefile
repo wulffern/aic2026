@@ -151,7 +151,7 @@ tikz:
 	-mkdir -p tikz/build
 	-mkdir -p pdf/media
 	@set -e; \
-	for f in tikz/l3_vi.tex ; do \
+	for f in tikz/l*.tex ; do \
 		[ -f "$$f" ] || continue; \
 		b=$$(basename "$$f" .tex); \
 		[ "$$b" = "ckt_lib" ] && continue; \
@@ -167,3 +167,29 @@ tikz:
 			if [ -f "media/$${b}_tikz.svg" ]; then cp "media/$${b}_tikz.svg" "pdf/media/$${b}_tikz.svg"; fi; \
 		fi; \
 	done
+
+tikz-one:
+	@test -n "${FNAME}" || (echo "Usage: make tikz-one FNAME=l3_bjtonly"; exit 1)
+	-mkdir -p tikz/build
+	-mkdir -p pdf/media
+	@set -e; \
+	if [ -f "${FNAME}" ]; then \
+		f="${FNAME}"; \
+	elif [ -f "tikz/${FNAME}.tex" ]; then \
+		f="tikz/${FNAME}.tex"; \
+	else \
+		echo "Could not find TikZ source for FNAME=${FNAME}"; \
+		exit 1; \
+	fi; \
+	b=$$(basename "$$f" .tex); \
+	echo "Building $$b"; \
+	pdflatex -interaction=nonstopmode -halt-on-error -output-directory tikz/build "$$f"; \
+	cp "tikz/build/$$b.pdf" "media/$${b}_tikz.pdf"; \
+	cp "tikz/build/$$b.pdf" "pdf/media/$${b}_tikz.pdf"; \
+	if command -v pdf2svg >/dev/null 2>&1; then \
+		pdf2svg "tikz/build/$$b.pdf" "media/$${b}_tikz.svg" || true; \
+		if [ -f "media/$${b}_tikz.svg" ]; then cp "media/$${b}_tikz.svg" "pdf/media/$${b}_tikz.svg"; fi; \
+	elif command -v dvisvgm >/dev/null 2>&1; then \
+		dvisvgm --pdf "tikz/build/$$b.pdf" -n -o "media/$${b}_tikz.svg" >/dev/null 2>&1 || true; \
+		if [ -f "media/$${b}_tikz.svg" ]; then cp "media/$${b}_tikz.svg" "pdf/media/$${b}_tikz.svg"; fi; \
+	fi

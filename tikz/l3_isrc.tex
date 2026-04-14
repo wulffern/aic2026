@@ -1,0 +1,60 @@
+\input{tikz/fig_header.tex}
+
+\begin{circuitikz}[american, thick, transform shape, circuit ee IEC]
+
+  \input{tikz/ckt_lib.tex}
+
+  % Layout constants
+  \def\wy{3.2}     % main wire y-level
+  \def\mid{1.6}    % intermediate y for lower reference node
+
+  \newcommand{\widehimpedance}[1]{
+    ++(0,0) coordinate (cStart)
+    -- ++(0.6,0)
+    -- ++(0,0.25)
+    -- ++(0.9,0)
+    -- ++(0,-0.5)
+    -- ++(-0.9,0)
+    -- ++(0,0.25)
+    ++(0.9,0)
+    -- ++(0.6,0)
+    coordinate (impEnd)
+    ++(-1.05,0)
+    node [anchor=center] {#1}
+    (impEnd)
+  }
+
+  % ----- Source side -----
+  \draw (0,0) \vground;
+  \draw (0,0) to [generic, l=$Z_g$] (0,\mid);
+  \draw (0,\mid) to [I, l_=$I_S$] (0,\wy);
+
+  % Source impedance
+  \draw (0,\wy) \widehimpedance{$Z_{src}$} coordinate (pi_left);
+
+  % ----- PI wire model -----
+  \fill (pi_left) circle (2pt);
+  \draw (pi_left) to [C, l=$\frac{C}{2}$] ($(pi_left)+(0,-\wy)$);
+  \draw ($(pi_left)+(0,-\wy)$) \vground;
+
+  \draw (pi_left) \widehimpedance{$Z_w$} coordinate (pi_right);
+
+  \fill (pi_right) circle (2pt);
+  \draw (pi_right) to [C, l=$\frac{C}{2}$] ($(pi_right)+(0,-\wy)$);
+  \draw ($(pi_right)+(0,-\wy)$) \vground;
+
+  % ----- Destination side -----
+  \draw (pi_right) \widehimpedance{$Z_{dst}$} coordinate (dst);
+
+  \draw (dst) to [short, -o] ++(0.8,0) node[anchor=west] {$V_{ref,+}$};
+
+  \coordinate (dst_refm) at ($(dst)+(0,-\mid)$);
+  \draw (dst_refm) to [short, -o] ++(0.8,0) node[anchor=west] {$V_{ref,-}$};
+
+  % The routed current is converted back to a voltage across R.
+  \draw (dst) to [generic, l=$R$] (dst_refm);
+  \draw (dst_refm) to [generic, l=$Z_g$] ($(dst_refm)+(0,-\mid)$);
+  \draw ($(dst_refm)+(0,-\mid)$) \vground;
+
+\end{circuitikz}
+\end{document}
