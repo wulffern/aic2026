@@ -13,14 +13,25 @@ concurrency:
 jobs:
   prepare:
     runs-on: ubuntu-latest
-    container:
-      image: wulffern/aic:2025_latest
-      options: --user root
     steps:
       - name: Checkout
         uses: actions/checkout@v4
         with:
           submodules: recursive
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: "pip"
+
+      - name: Install prepare dependencies
+        shell: bash
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y pandoc poppler-utils wget imagemagick ghostscript
+          python -m pip install --upgrade pip
+          python -m pip install click svglib numpy pandas matplotlib
 
       - name: Prepare shared sources
         shell: bash
