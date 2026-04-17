@@ -34,8 +34,6 @@ one: kaobook
 	chmod -R 755  media
 	TEXINPUTS=".:kaobook:" pdflatex -draftmode aic
 	#TEXINPUTS=".:kaobook:" makeindex aic.nlo
-	#-pdflatex -interaction nonstopmode --shell-escape aic.latex
-	-TEXINPUTS=".:kaobook:" bibtex aic
 	TEXINPUTS=".:kaobook:" pdflatex -draftmode aic
 	TEXINPUTS=".:kaobook:" pdflatex aic
 	#TEXINPUTS=".:kaobook:" pdflatex aic.tex
@@ -54,7 +52,6 @@ ebook:
 
 standalone:
 	pdflatex -draftmode ${FNAME}
-	-bibtex ${FNAME}
 	pdflatex -draftmode ${FNAME}
 	pdflatex  ${FNAME}
 	#dvipdf ${FNAME}
