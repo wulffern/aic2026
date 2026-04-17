@@ -6,6 +6,9 @@ on:
 permissions:
   contents: read
 
+env:
+  AIC_TEX_IMAGE: texlive/texlive:TL2022-historic
+
 concurrency:
   group: "docs-artifact-parallel"
   cancel-in-progress: true
@@ -101,7 +104,7 @@ jobs:
       - plan_matrix
     runs-on: ubuntu-latest
     container:
-      image: wulffern/aic:2025_latest
+      image: ${{ env.AIC_TEX_IMAGE }}
       options: --user root
     strategy:
       fail-fast: false
@@ -118,6 +121,12 @@ jobs:
         with:
           name: prepared-sources
           path: .
+
+      - name: Install TeX job dependencies
+        shell: bash
+        run: |
+          apt-get update
+          apt-get install -y ghostscript poppler-utils pandoc wget imagemagick python3-svglib python3-venv
 
       - name: Build standalone shard
         shell: bash
@@ -144,7 +153,7 @@ jobs:
     needs: prepare
     runs-on: ubuntu-latest
     container:
-      image: wulffern/aic:2025_latest
+      image: ${{ env.AIC_TEX_IMAGE }}
       options: --user root
     steps:
       - name: Checkout
@@ -157,6 +166,12 @@ jobs:
         with:
           name: prepared-sources
           path: .
+
+      - name: Install TeX job dependencies
+        shell: bash
+        run: |
+          apt-get update
+          apt-get install -y ghostscript poppler-utils pandoc wget imagemagick python3-svglib python3-venv
 
       - name: Build book PDF
         shell: bash
@@ -181,7 +196,7 @@ jobs:
     needs: prepare
     runs-on: ubuntu-latest
     container:
-      image: wulffern/aic:2025_latest
+      image: ${{ env.AIC_TEX_IMAGE }}
       options: --user root
     steps:
       - name: Checkout
@@ -194,6 +209,12 @@ jobs:
         with:
           name: prepared-sources
           path: .
+
+      - name: Install TeX job dependencies
+        shell: bash
+        run: |
+          apt-get update
+          apt-get install -y ghostscript poppler-utils pandoc wget imagemagick python3-svglib python3-venv
 
       - name: Build EPUB
         shell: bash
