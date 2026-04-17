@@ -65,8 +65,13 @@ book-nobuild:
 version:
 	echo "aic${YEAR}" > version
 
-prepare-docs: version posts-parallel texfiles-parallel
+prepare-docs: clean-prepared version posts-parallel texfiles-parallel
 	cd pdf; [ -d kaobook ] || git clone https://github.com/fmarotta/kaobook.git
+
+clean-prepared:
+	-rm -f docs/downloads.md images.txt *_images.inc
+	-rm -f docs/assets/*.pdf docs/assets/*.epub
+	-rm -f pdf/*.aux pdf/*.log pdf/*.pdf pdf/*.epub pdf/*.bbl pdf/*.blg pdf/*.toc pdf/*.bcf pdf/*.xml pdf/*.mw
 
 print-files:
 	@printf '%s\n' ${FILES}
@@ -86,7 +91,7 @@ posts-parallel:
 	cp plan.md docs/plan.md
 	printf '%s\n' ${FILES} | xargs -P 4 -I{} ${PYTHON} py/lecture.py post lectures/{}.md --images-file {}_images.inc
 	cat ${addsuffix _images.inc,${FILES}} > images.txt 2>/dev/null; true
-	cd lectures; cat ../images.txt |xargs git add -f
+	@if [ -z "$$CI" ] && [ -s images.txt ]; then cd lectures && cat ../images.txt | xargs git add -f; fi
 	-rm -f *_images.inc
 
 

@@ -1,13 +1,28 @@
-name: Docs Artifact Parallel
+name: Docs
 
 on:
+  push:
+    branches: ["main"]
+    paths:
+      - 'lectures/**.md'
+      - 'docs/*.*'
+      - 'media/*.*'
+      - 'pdf/*.*'
+      - '**.md'
+      - '**.py'
+      - 'Makefile'
+      - 'requirements-ci.txt'
+      - '.github/workflows/*.yml'
+      - '.github/workflows/*.yaml'
   workflow_dispatch:
 
 permissions:
   contents: read
+  pages: write
+  id-token: write
 
 concurrency:
-  group: "docs-artifact-parallel"
+  group: "pages"
   cancel-in-progress: true
 
 jobs:
@@ -58,6 +73,16 @@ jobs:
             docs/plan.md
             docs/syllabus.md
             pdf
+            !pdf/*.aux
+            !pdf/*.log
+            !pdf/*.pdf
+            !pdf/*.epub
+            !pdf/*.bbl
+            !pdf/*.blg
+            !pdf/*.toc
+            !pdf/*.bcf
+            !pdf/*.xml
+            !pdf/*.mw
             version
           if-no-files-found: error
 
@@ -279,9 +304,18 @@ jobs:
           source: ./docs/
           destination: ./_site
 
-      - name: Upload preview site
-        uses: actions/upload-artifact@v4
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
         with:
-          name: jekyll-preview-site
           path: _site
-          if-no-files-found: error
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: jekyll_preview
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
