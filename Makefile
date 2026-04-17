@@ -159,10 +159,7 @@ tikz:
 		pdflatex -interaction=nonstopmode -halt-on-error -output-directory tikz/build "$$f"; \
 		cp "tikz/build/$$b.pdf" "media/$${b}_tikz.pdf"; \
 		cp "tikz/build/$$b.pdf" "pdf/media/$${b}_tikz.pdf"; \
-		if command -v pdf2svg >/dev/null 2>&1; then \
-			pdf2svg "tikz/build/$$b.pdf" "media/$${b}_tikz.svg" || true; \
-			if [ -f "media/$${b}_tikz.svg" ]; then cp "media/$${b}_tikz.svg" "pdf/media/$${b}_tikz.svg"; fi; \
-		elif command -v dvisvgm >/dev/null 2>&1; then \
+		if command -v dvisvgm >/dev/null 2>&1; then \
 			dvisvgm --pdf "tikz/build/$$b.pdf" -n -o "media/$${b}_tikz.svg" >/dev/null 2>&1 || true; \
 			if [ -f "media/$${b}_tikz.svg" ]; then cp "media/$${b}_tikz.svg" "pdf/media/$${b}_tikz.svg"; fi; \
 		fi; \

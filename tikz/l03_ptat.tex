@@ -1,0 +1,63 @@
+\input{tikz/fig_header.tex}
+
+\begin{circuitikz}[american, thick, transform shape, circuit ee IEC]
+
+  \input{tikz/ckt_lib.tex}
+
+  % Column x positions
+  \def\xl{0}
+  \def\xr{\grid*3}
+  \def\pdlevel{5}    % y-level for both PMOS drains
+
+  % ---- PNP bipolar transistors (collectors at ground) ----
+  % Q1: unit PNP, collector at ground, B=E diode-connect
+  \node[pnp, anchor=C] (Q1) at (\xl, 0) {};
+  \draw (Q1.C) -- ++(0,-0.2) \vground;
+  \draw (Q1.B) |- (Q1.C);   % emitter-collector connected (diode)
+
+  % Q2: xN PNP, collector at ground, E=C diode-connect
+  \node[pnp, anchor=C, label=right:${\times N}$] (Q2) at (\xr, 0) {};
+  \draw (Q2.C) -- ++(0,-0.2)\vground;
+  \draw (Q2.B) |- (Q2.C);   % emitter-collector connected (diode)
+
+  % ---- R above Q2 emitter, wire from Q1.E to pdlevel ----
+  \draw (Q2.E) \vresistor{$R_{1}$};   % draws upward by \grid, coordinate resEnd
+
+  % ---- PMOS drain nodes ----
+  \coordinate (mp1drain) at (\xl, \pdlevel);
+  \coordinate (mp2drain) at (\xr, \pdlevel);
+
+  % ---- OTA centered between branches, rotated 90° (output upward) ----
+  \def\xota{-\grid*1.8}
+  \def\yota{ 3}
+  \begin{scope}[xscale=-1]
+  \begin{scope}[rotate around={90:(\xota,\yota)}]
+    \draw (\xota, \yota) \cicOtaSSWP{$+$}{$-$};
+  \end{scope}
+  \end{scope}
+  % Horizontal routing — no diagonals
+  \draw (cicOtaS_inp) -| (mp2drain);
+  \draw (cicOtaS_inn) -| (mp1drain);
+  \draw (cicOtaS_inn) -| (Q1.E);
+
+  % ---- PMOS current mirror (horizontally flipped) ----
+  \draw (mp1drain) \lvmpmos{MP1}{};
+  \draw (MP1.source) \vsupply;
+
+  \draw (mp2drain) \lvpmos{MP2}{};
+  \draw (MP2.source) \vsupply;
+
+  % OTA output drives both PMOS gates
+  \draw (cicOtaS_out) |- (MP1.gate);
+  \draw (MP1.gate) -- (MP2.gate);
+
+  % PTAT current label on right branch
+  \draw (mp2drain) to [short, i=$I_{PTAT}$] ++(0,-0.4);
+
+  % Voltage labels
+  \draw ($(Q1.C)+(-0.2,0.8)$) to [open, l=$V_{D1}$] ($(Q1.E)+(-0.2,0.8)$);
+  \draw ($(Q2.C)+(1.2,0.8)$)  to [open, l=$V_{D2}$] ($(Q2.E)+(1.2,0.8)$);
+  \draw ($(Q2.E)+(1.2,0.8)$)  to [open, l=$V_{R1}$] ($(resEnd)+(1.2,0.8)$);
+
+\end{circuitikz}
+\end{document}

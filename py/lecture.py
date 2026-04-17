@@ -7,6 +7,7 @@ from sys import platform
 import shutil
 import urllib.parse
 import hashlib
+import subprocess
 
 aic_version = "aicXX"
 
@@ -176,10 +177,24 @@ class Image():
         if(not self.skip and ".pdf" in self.src and "latex" not in self.options):
             #- I've changed to svg, hopefully better images
             svg = self.src.replace(".pdf",".svg")
+            svg_created = os.path.exists(os.path.join(self.directory,svg))
             if(not os.path.exists(os.path.join(self.directory,svg))):
-                cmd = f"cd {self.directory}; pdftocairo -svg {self.src} {svg}"
-                os.system(cmd)
-            self.src = svg
+                pdf_path = os.path.join(self.directory, self.src)
+                svg_path = os.path.join(self.directory, svg)
+                converters = [
+                    ["pdftocairo", "-svg", pdf_path, svg_path],
+                    ["dvisvgm", "--pdf", pdf_path, "-n", "-o", svg_path],
+                ]
+                for cmd in converters:
+                    try:
+                        result = subprocess.run(cmd, check=False, capture_output=True, text=True)
+                    except FileNotFoundError:
+                        continue
+                    if result.returncode == 0 and os.path.exists(svg_path):
+                        svg_created = True
+                        break
+            if(svg_created):
+                self.src = svg
 
         if(self.isUrl and "downloadImage" in self.options):
 #            print(self.src)
