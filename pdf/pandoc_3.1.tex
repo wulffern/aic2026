@@ -96,6 +96,10 @@
  % avoid brackets around text for \cite:
  \def\@biblabel#1{}
  \def\@cite#1#2{{#1\if@tempswa , #2\fi}}
+ % pandoc citeproc has emitted both \bibitem-based and bare CSL item formats.
+ % Swallow \bibitem and let \CSLLeftMargin start the actual list item so both work.
+ \def\@bibitem#1{}
+ \def\@lbibitem[#1]#2{}
 \makeatother
 \newlength{\cslhangindent}
 \setlength{\cslhangindent}{1.5em}
@@ -116,7 +120,7 @@
  {\end{list}}
 \usepackage{calc}
 \newcommand{\CSLBlock}[1]{#1\hfill\break}
-\newcommand{\CSLLeftMargin}[1]{\parbox[t]{\csllabelwidth}{#1}}
+\newcommand{\CSLLeftMargin}[1]{\item\parbox[t]{\csllabelwidth}{#1}}
 \newcommand{\CSLRightInline}[1]{\parbox[t]{\linewidth - \csllabelwidth}{#1}\break}
 \newcommand{\CSLIndent}[1]{\hspace{\cslhangindent}#1}
 \ifLuaTeX

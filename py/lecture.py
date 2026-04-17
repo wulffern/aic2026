@@ -676,6 +676,21 @@ def latex(filename,root,no_append):
     flatex = fname.replace(".md",".latex")
     cmd = f"pandoc --citeproc --bibliography=pdf/aic.bib --csl=pdf/ieee-with-url.csl  -o {flatex} {fname}  "
     os.system(cmd)
+    with open(flatex) as fi:
+        buff = fi.read()
+
+    # Pandoc citeproc changed the LaTeX emitted for CSL references from
+    # \bibitem-based entries to bare hypertarget-prefixed blocks. The local
+    # templates and standalone/book builds expect the legacy form, so normalize
+    # the generated references immediately after pandoc runs.
+    buff = re.sub(
+        r"\\leavevmode\\vadjust pre\{\\hypertarget\{(ref-[^}]+)\}\{\}\}%",
+        r"\\bibitem[\\citeproctext]{\1}",
+        buff,
+    )
+
+    with open(flatex,"w") as fo:
+        fo.write(buff)
     #cmd = f"pandoc -s --citeproc --bibliography=pdf/aic.bib --csl=pdf/ieee-with-url.csl  -o {flatex}_standalone.tex {fname}  "
     #os.system(cmd)
 
