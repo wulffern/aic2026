@@ -10,7 +10,7 @@ ifneq ($(wildcard /pyenv/bin/.*),)
 	PYTHON=/pyenv/bin/python3
 endif
 
-.PHONY:  slides version tikz
+.PHONY:  slides version tikz prepare-docs standalone-one standalone-list book-pdf book-epub
 
 #	lr0_logic \
 
@@ -64,6 +64,9 @@ book-nobuild:
 
 version:
 	echo "aic${YEAR}" > version
+
+prepare-docs: version posts-parallel texfiles-parallel
+	cd pdf; [ -d kaobook ] || git clone https://github.com/fmarotta/kaobook.git
 
 
 posts:
@@ -122,12 +125,44 @@ standalone-nobuild:
 standalone-parallel:
 	printf '%s\n' ${FILES} | xargs -P 4 -I{} sh -c 'cd pdf && make standalone FNAME={}.tex && cp {}.pdf ../docs/assets/'
 
+standalone-one:
+	@test -n "${FNAME}" || (echo "Usage: make standalone-one FNAME=l03_refbias"; exit 1)
+	-mkdir -p docs/assets
+	@set -e; \
+	f="${FNAME}"; \
+	f="$${f%.tex}"; \
+	echo "Building $$f"; \
+	cd pdf && $(MAKE) standalone FNAME="$$f.tex"; \
+	cp "pdf/$$f.pdf" "docs/assets/"
+
+standalone-list:
+	@test -n "${FILES}" || (echo "Usage: make standalone-list FILES=\"l03_refbias l04_afe\""; exit 1)
+	-mkdir -p docs/assets
+	@set -e; \
+	for f in ${FILES}; do \
+		name="$${f%.tex}"; \
+		echo "Building $$name"; \
+		cd pdf && $(MAKE) standalone FNAME="$$name.tex"; \
+		cd ..; \
+		cp "pdf/$$name.pdf" "docs/assets/"; \
+	done
+
 latex: texfiles
 	cd pdf; make one
 	cp pdf/aic.pdf docs/assets/
 
 book:
 	cd pdf; make ebook
+	cp pdf/aic.epub docs/assets/
+
+book-pdf:
+	-mkdir -p docs/assets
+	cd pdf; $(MAKE) one
+	cp pdf/aic.pdf docs/assets/
+
+book-epub:
+	-mkdir -p docs/assets
+	cd pdf; $(MAKE) ebook
 	cp pdf/aic.epub docs/assets/
 
 
