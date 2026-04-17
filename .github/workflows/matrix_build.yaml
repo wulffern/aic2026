@@ -6,9 +6,6 @@ on:
 permissions:
   contents: read
 
-env:
-  AIC_TEX_IMAGE: texlive/texlive:TL2022-historic
-
 concurrency:
   group: "docs-artifact-parallel"
   cancel-in-progress: true
@@ -104,7 +101,7 @@ jobs:
       - plan_matrix
     runs-on: ubuntu-latest
     container:
-      image: ${{ env.AIC_TEX_IMAGE }}
+      image: texlive/texlive:TL2022-historic
       options: --user root
     strategy:
       fail-fast: false
@@ -153,7 +150,7 @@ jobs:
     needs: prepare
     runs-on: ubuntu-latest
     container:
-      image: ${{ env.AIC_TEX_IMAGE }}
+      image: texlive/texlive:TL2022-historic
       options: --user root
     steps:
       - name: Checkout
@@ -196,7 +193,7 @@ jobs:
     needs: prepare
     runs-on: ubuntu-latest
     container:
-      image: ${{ env.AIC_TEX_IMAGE }}
+      image: texlive/texlive:TL2022-historic
       options: --user root
     steps:
       - name: Checkout
