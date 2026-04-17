@@ -256,19 +256,19 @@ jobs:
         with:
           pattern: standalone-*
           merge-multiple: true
-          path: .
+          path: docs/assets
 
       - name: Download book PDF
         uses: actions/download-artifact@v4
         with:
           name: book-pdf
-          path: .
+          path: docs/assets
 
       - name: Download EPUB
         uses: actions/download-artifact@v4
         with:
           name: book-epub
-          path: .
+          path: docs/assets
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
