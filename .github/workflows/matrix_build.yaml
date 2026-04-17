@@ -23,8 +23,14 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-          cache: "pip"
-          cache-dependency-path: requirements-ci.txt
+
+      - name: Cache pip downloads
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('requirements-ci.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
 
       - name: Install prepare dependencies
         shell: bash
@@ -54,8 +60,44 @@ jobs:
             version
           if-no-files-found: error
 
+  plan_matrix:
+    runs-on: ubuntu-latest
+    outputs:
+      shards: ${{ steps.shards.outputs.shards }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Generate shard matrix from Makefile
+        id: shards
+        shell: bash
+        run: |
+          python3 - <<'PY' >> "$GITHUB_OUTPUT"
+          import json
+          import math
+          import subprocess
+
+          files = [line.strip() for line in subprocess.check_output(["make", "print-files"], text=True).splitlines() if line.strip()]
+          shard_count = 4
+          shard_size = math.ceil(len(files) / shard_count)
+          shards = []
+          for idx in range(shard_count):
+            group = files[idx * shard_size:(idx + 1) * shard_size]
+            if not group:
+              continue
+            shards.append({
+              "shard": f"core-{idx + 1}",
+              "files": " ".join(group),
+            })
+          print(f"shards={json.dumps(shards)}")
+          PY
+
   standalone:
-    needs: prepare
+    needs:
+      - prepare
+      - plan_matrix
     runs-on: ubuntu-latest
     container:
       image: wulffern/aic:2025_latest
@@ -63,15 +105,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        include:
-          - shard: core-1
-            files: "l00_jayn l01_intro lr0_excellence l00_refresher l00_diode lr0_mosfet lr0_circuits lr0_passives"
-          - shard: core-2
-            files: "lr0_noise lr0_tools lr0_tut1 l01_project l02_esd l03_refbias l04_afe l04_dac"
-          - shard: core-3
-            files: "l05_sc l06_adc l07_vreg l08_pll l09_osc l10_lpradio lx_energysrc l11_aver"
-          - shard: core-4
-            files: "lp_project_report lr0_layout l13_thoughts l00_spice l00_sv l00_ades lr0_logic l00_questions"
+        include: ${{ fromJSON(needs.plan_matrix.outputs.shards) }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4

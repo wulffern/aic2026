@@ -10,7 +10,7 @@ ifneq ($(wildcard /pyenv/bin/.*),)
 	PYTHON=/pyenv/bin/python3
 endif
 
-.PHONY:  slides version tikz prepare-docs standalone-one standalone-list book-pdf book-epub
+.PHONY:  slides version tikz prepare-docs standalone-one standalone-list book-pdf book-epub print-files
 
 #	lr0_logic \
 
@@ -67,6 +67,9 @@ version:
 
 prepare-docs: version posts-parallel texfiles-parallel
 	cd pdf; [ -d kaobook ] || git clone https://github.com/fmarotta/kaobook.git
+
+print-files:
+	@printf '%s\n' ${FILES}
 
 
 posts:
