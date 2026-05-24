@@ -362,7 +362,7 @@ People have been creative over the last 50 years in terms of encoding bits onto 
 | Quadrature phase-shift keying | QPSK |2bits/symbol| Not constant envelope|
 | Offset QPSK |OQPSK| 2bits/symbol | Constant envelope with half-sine pulse shaping|
 | Gaussian Frequency Shift Keying | GFSK | 1 bit/symbol| Constant envelope|
-| Quadrature amplitude modulation| QAM | > 1024 bits/symbol| Really non-constant envelope|
+| Quadrature amplitude modulation| QAM | > 10 bits/symbol| Really non-constant envelope|
 
 ---
 
@@ -740,7 +740,7 @@ Bluetooth LE is the perfect standard for wireless mice.
 
 ---
 
-png further information [Building a Bluetooth application on nRF Connect SDK](https://devzone.nordicsemi.com/guides/nrf-connect-sdk-guides/b/software/posts/building-a-ble-application-on-ncs-comparing-and-contrasting-to-softdevice-based-ble-applications)
+further information [Building a Bluetooth application on nRF Connect SDK](https://devzone.nordicsemi.com/guides/nrf-connect-sdk-guides/b/software/posts/building-a-ble-application-on-ncs-comparing-and-contrasting-to-softdevice-based-ble-applications)
 
 [Bluetooth Specifications in Development](https://www.bluetooth.com/specifications/specifications-in-development/) 
 
@@ -828,7 +828,7 @@ In a LNA the input impedance must be matched to what is required by the antenna/
 
 -->
 
-![left](../media/l10_lna.pdf)
+![left fit](../media/l10_lna.pdf)
 
 ---
 
@@ -918,7 +918,9 @@ If I were to pick, I'd make something like [A 68 dB SNDR Compiled Noise-Shaping 
 
 ---
 
-![fit](../media/l6_harald_arch.gif)
+![left fit](../media/l6_harald_arch.gif)
+
+![right fit](../media/l6_fig_harald_circuit.gif)
 
 ---
 

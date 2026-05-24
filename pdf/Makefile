@@ -28,19 +28,21 @@ PANDOC=pandoc_$(shell pandoc --version|head -n 1|cut -d " " -f 2|cut -d "." -f "
 pandoc.tex:
 	ln -s ${PANDOC} pandoc.tex
 
+MAIN_AUX = aic.aux aic.blg aic.log aic.toc aic.lof aic.lot aic.out aic.mw aic.nlo aic.nls aic.ilg aic.ind aic.idx aic.fff aic.ttt aic.loi aic.lol
+PDFLATEX = ulimit -n 4096; TEXINPUTS=".:kaobook:" pdflatex
 
-one: kaobook
-	export
+one: kaobook clean-main-aux
 	chmod -R 755  media
-	TEXINPUTS=".:kaobook:" pdflatex -draftmode aic
+	${PDFLATEX} -draftmode aic
 	#TEXINPUTS=".:kaobook:" makeindex aic.nlo
-	#-pdflatex -interaction nonstopmode --shell-escape aic.latex
-	-TEXINPUTS=".:kaobook:" bibtex aic
-	TEXINPUTS=".:kaobook:" pdflatex -draftmode aic
-	TEXINPUTS=".:kaobook:" pdflatex aic
+	${PDFLATEX} -draftmode aic
+	${PDFLATEX} aic
 	#TEXINPUTS=".:kaobook:" pdflatex aic.tex
 	#-pdflatex -interaction nonstopmode --shell-escape aic.latex
 	#${MAKE} compress
+
+clean-main-aux:
+	-rm -f ${MAIN_AUX}
 
 compress:
 	gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS=/ebook \
@@ -54,7 +56,6 @@ ebook:
 
 standalone:
 	pdflatex -draftmode ${FNAME}
-	-bibtex ${FNAME}
 	pdflatex -draftmode ${FNAME}
 	pdflatex  ${FNAME}
 	#dvipdf ${FNAME}

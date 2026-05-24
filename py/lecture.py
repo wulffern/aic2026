@@ -7,6 +7,7 @@ from sys import platform
 import shutil
 import urllib.parse
 import hashlib
+import subprocess
 
 aic_version = "aicXX"
 
@@ -176,10 +177,24 @@ class Image():
         if(not self.skip and ".pdf" in self.src and "latex" not in self.options):
             #- I've changed to svg, hopefully better images
             svg = self.src.replace(".pdf",".svg")
+            svg_created = os.path.exists(os.path.join(self.directory,svg))
             if(not os.path.exists(os.path.join(self.directory,svg))):
-                cmd = f"cd {self.directory}; pdftocairo -svg {self.src} {svg}"
-                os.system(cmd)
-            self.src = svg
+                pdf_path = os.path.join(self.directory, self.src)
+                svg_path = os.path.join(self.directory, svg)
+                converters = [
+                    ["pdftocairo", "-svg", pdf_path, svg_path],
+                    ["dvisvgm", "--pdf", pdf_path, "-n", "-o", svg_path],
+                ]
+                for cmd in converters:
+                    try:
+                        result = subprocess.run(cmd, check=False, capture_output=True, text=True)
+                    except FileNotFoundError:
+                        continue
+                    if result.returncode == 0 and os.path.exists(svg_path):
+                        svg_created = True
+                        break
+            if(svg_created):
+                self.src = svg
 
         if(self.isUrl and "downloadImage" in self.options):
 #            print(self.src)
@@ -661,6 +676,21 @@ def latex(filename,root,no_append):
     flatex = fname.replace(".md",".latex")
     cmd = f"pandoc --citeproc --bibliography=pdf/aic.bib --csl=pdf/ieee-with-url.csl  -o {flatex} {fname}  "
     os.system(cmd)
+    with open(flatex) as fi:
+        buff = fi.read()
+
+    # Pandoc citeproc changed the LaTeX emitted for CSL references from
+    # \bibitem-based entries to bare hypertarget-prefixed blocks. The local
+    # templates and standalone/book builds expect the legacy form, so normalize
+    # the generated references immediately after pandoc runs.
+    buff = re.sub(
+        r"\\leavevmode\\vadjust pre\{\\hypertarget\{(ref-[^}]+)\}\{\}\}%",
+        r"\\bibitem[\\citeproctext]{\1}",
+        buff,
+    )
+
+    with open(flatex,"w") as fo:
+        fo.write(buff)
     #cmd = f"pandoc -s --citeproc --bibliography=pdf/aic.bib --csl=pdf/ieee-with-url.csl  -o {flatex}_standalone.tex {fname}  "
     #os.system(cmd)
 

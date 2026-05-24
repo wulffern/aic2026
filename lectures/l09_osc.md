@@ -144,6 +144,8 @@ __A rubidium clock is basically a crystal oscillator locked to an atomic referen
 
 <!--![left fit](https://cdn.sparkfun.com/r/455-455/assets/parts/1/3/1/0/0/14830-Atomic_Clock-04.jpg)-->
 ![left fit](../media/14830-Atomic_Clock-04.jpg)
+
+
 ---
 
 <!--pan_doc:
@@ -159,6 +161,7 @@ The negative feedback loop ensures that the 5 MHz clock coming out is proportion
 
 <!--![ fit](https://upload.wikimedia.org/wikipedia/commons/0/0a/Rubidium-oscillator.jpg)-->
 ![fit](../media/Rubidium-oscillator.jpg)
+
 ---
 
 

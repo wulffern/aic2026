@@ -10,7 +10,7 @@ ifneq ($(wildcard /pyenv/bin/.*),)
 	PYTHON=/pyenv/bin/python3
 endif
 
-.PHONY:  slides version tikz
+.PHONY:  slides version tikz prepare-docs standalone-one standalone-list book-pdf book-epub print-files
 
 #	lr0_logic \
 
@@ -65,6 +65,17 @@ book-nobuild:
 version:
 	echo "aic${YEAR}" > version
 
+prepare-docs: clean-prepared version posts-parallel texfiles-parallel
+	cd pdf; [ -d kaobook ] || git clone https://github.com/fmarotta/kaobook.git
+
+clean-prepared:
+	-rm -f docs/downloads.md images.txt *_images.inc
+	-rm -f docs/assets/*.pdf docs/assets/*.epub
+	-rm -f pdf/*.aux pdf/*.log pdf/*.pdf pdf/*.epub pdf/*.bbl pdf/*.blg pdf/*.toc pdf/*.bcf pdf/*.xml pdf/*.mw
+
+print-files:
+	@printf '%s\n' ${FILES}
+
 
 posts:
 	-rm images.txt
@@ -80,7 +91,7 @@ posts-parallel:
 	cp plan.md docs/plan.md
 	printf '%s\n' ${FILES} | xargs -P 4 -I{} ${PYTHON} py/lecture.py post lectures/{}.md --images-file {}_images.inc
 	cat ${addsuffix _images.inc,${FILES}} > images.txt 2>/dev/null; true
-	cd lectures; cat ../images.txt |xargs git add -f
+	@if [ -z "$$CI" ] && [ -s images.txt ]; then cd lectures && cat ../images.txt | xargs git add -f; fi
 	-rm -f *_images.inc
 
 
@@ -122,12 +133,44 @@ standalone-nobuild:
 standalone-parallel:
 	printf '%s\n' ${FILES} | xargs -P 4 -I{} sh -c 'cd pdf && make standalone FNAME={}.tex && cp {}.pdf ../docs/assets/'
 
+standalone-one:
+	@test -n "${FNAME}" || (echo "Usage: make standalone-one FNAME=l03_refbias"; exit 1)
+	-mkdir -p docs/assets
+	@set -e; \
+	f="${FNAME}"; \
+	f="$${f%.tex}"; \
+	echo "Building $$f"; \
+	cd pdf && $(MAKE) standalone FNAME="$$f.tex"; \
+	cp "pdf/$$f.pdf" "docs/assets/"
+
+standalone-list:
+	@test -n "${FILES}" || (echo "Usage: make standalone-list FILES=\"l03_refbias l04_afe\""; exit 1)
+	-mkdir -p docs/assets
+	@set -e; \
+	for f in ${FILES}; do \
+		name="$${f%.tex}"; \
+		echo "Building $$name"; \
+		cd pdf && $(MAKE) standalone FNAME="$$name.tex"; \
+		cd ..; \
+		cp "pdf/$$name.pdf" "docs/assets/"; \
+	done
+
 latex: texfiles
 	cd pdf; make one
 	cp pdf/aic.pdf docs/assets/
 
 book:
 	cd pdf; make ebook
+	cp pdf/aic.epub docs/assets/
+
+book-pdf:
+	-mkdir -p docs/assets
+	cd pdf; $(MAKE) one
+	cp pdf/aic.pdf docs/assets/
+
+book-epub:
+	-mkdir -p docs/assets
+	cd pdf; $(MAKE) ebook
 	cp pdf/aic.epub docs/assets/
 
 
@@ -151,7 +194,7 @@ tikz:
 	-mkdir -p tikz/build
 	-mkdir -p pdf/media
 	@set -e; \
-	for f in tikz/l3_vi.tex ; do \
+	for f in tikz/l*.tex ; do \
 		[ -f "$$f" ] || continue; \
 		b=$$(basename "$$f" .tex); \
 		[ "$$b" = "ckt_lib" ] && continue; \
@@ -159,11 +202,34 @@ tikz:
 		pdflatex -interaction=nonstopmode -halt-on-error -output-directory tikz/build "$$f"; \
 		cp "tikz/build/$$b.pdf" "media/$${b}_tikz.pdf"; \
 		cp "tikz/build/$$b.pdf" "pdf/media/$${b}_tikz.pdf"; \
-		if command -v pdf2svg >/dev/null 2>&1; then \
-			pdf2svg "tikz/build/$$b.pdf" "media/$${b}_tikz.svg" || true; \
-			if [ -f "media/$${b}_tikz.svg" ]; then cp "media/$${b}_tikz.svg" "pdf/media/$${b}_tikz.svg"; fi; \
-		elif command -v dvisvgm >/dev/null 2>&1; then \
+		if command -v dvisvgm >/dev/null 2>&1; then \
 			dvisvgm --pdf "tikz/build/$$b.pdf" -n -o "media/$${b}_tikz.svg" >/dev/null 2>&1 || true; \
 			if [ -f "media/$${b}_tikz.svg" ]; then cp "media/$${b}_tikz.svg" "pdf/media/$${b}_tikz.svg"; fi; \
 		fi; \
 	done
+
+tikz-one:
+	@test -n "${FNAME}" || (echo "Usage: make tikz-one FNAME=l3_bjtonly"; exit 1)
+	-mkdir -p tikz/build
+	-mkdir -p pdf/media
+	@set -e; \
+	if [ -f "${FNAME}" ]; then \
+		f="${FNAME}"; \
+	elif [ -f "tikz/${FNAME}.tex" ]; then \
+		f="tikz/${FNAME}.tex"; \
+	else \
+		echo "Could not find TikZ source for FNAME=${FNAME}"; \
+		exit 1; \
+	fi; \
+	b=$$(basename "$$f" .tex); \
+	echo "Building $$b"; \
+	pdflatex -interaction=nonstopmode -halt-on-error -output-directory tikz/build "$$f"; \
+	cp "tikz/build/$$b.pdf" "media/$${b}_tikz.pdf"; \
+	cp "tikz/build/$$b.pdf" "pdf/media/$${b}_tikz.pdf"; \
+	if command -v pdf2svg >/dev/null 2>&1; then \
+		pdf2svg "tikz/build/$$b.pdf" "media/$${b}_tikz.svg" || true; \
+		if [ -f "media/$${b}_tikz.svg" ]; then cp "media/$${b}_tikz.svg" "pdf/media/$${b}_tikz.svg"; fi; \
+	elif command -v dvisvgm >/dev/null 2>&1; then \
+		dvisvgm --pdf "tikz/build/$$b.pdf" -n -o "media/$${b}_tikz.svg" >/dev/null 2>&1 || true; \
+		if [ -f "media/$${b}_tikz.svg" ]; then cp "media/$${b}_tikz.svg" "pdf/media/$${b}_tikz.svg"; fi; \
+	fi

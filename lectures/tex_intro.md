@@ -86,6 +86,15 @@ For 2026 I should do the following changes:
 - [ ] Add to analog systemverilog
 - [ ] Write about FFTs
 
+
+For 2027
+
+- [ ] People go home the Friday before easter
+- [ ] In 2026 AIC collided with antenna technique & digital communcation. Review
+      timeplan next time
+- [ ] Use ISSCC template to force students to be concise in their writing.
+
+
 I love programming and automation. Not much makes me more happy than using the
 same source (the [slide
 markdowns](https://github.com/wulffern/aic2026/tree/main/lectures)), to generate the [lecture notes](https://analogicus.com/aic2026/), to translate

@@ -2,6 +2,7 @@
 __pycache__/
 *.py[cod]
 *$py.class
+pdf/media/*
 pandoc
 ex/*.pdf
 lectures/*.pdf

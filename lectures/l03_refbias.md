@@ -56,7 +56,7 @@ I want you to think about how you would route a current, or a voltage on an IC.
 
 -->
 
-![fit](../media/l3_sources.svg)
+![fit](../media/l3_sources_tikz.pdf)
 
 <!--pan_doc:
 
@@ -98,7 +98,7 @@ If we choose to route a reference as a voltage we need to be careful with the gr
 
 -->
 
-![fit](../media/l3_vsrc.svg)
+![fit](../media/l3_vsrc_tikz.pdf)
 
 <!--pan_doc:
 
@@ -118,7 +118,7 @@ then we'll know what the voltage is.
 
 -->
 
-![fit](../media/l3_isrc.svg)
+![fit](../media/l3_isrc_tikz.pdf)
 
 <!--pan_doc:
 <sub>Figure 3: Routing a reference as a current. </sub>
@@ -186,7 +186,7 @@ assuming a fixed current, will have a voltage across that is temperature depende
 
 $$ I_D = I_S \left(e^{\frac{V_{BE}}{V_T}} - 1\right)  + I_B \approx I_S e^{\frac{ V_{BE}}{V_T}}$$
 
-![left fit](../media/l3_bjtonly.svg)
+![left fit](../media/l3_bjtonly_tikz.pdf)
 
 <!--pan_doc:
 

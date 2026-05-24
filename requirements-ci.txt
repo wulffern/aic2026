@@ -1,0 +1,5 @@
+click
+svglib
+numpy
+pandas
+matplotlib
