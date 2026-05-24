@@ -92,6 +92,7 @@ For 2027
 - [ ] People go home the Friday before easter
 - [ ] In 2026 AIC collided with antenna technique & digital communcation. Review
       timeplan next time
+- [ ] Use ISSCC template to force students to be concise in their writing.
 
 
 I love programming and automation. Not much makes me more happy than using the
