@@ -1,0 +1,22 @@
+\documentclass[tikz,border=2pt]{standalone}
+\usepackage{tikz}
+\usepackage[european]{circuitikz}
+\usetikzlibrary{arrows.meta,positioning,calc}
+\input{tikz/ckt_lib.tex}
+\begin{document}
+\begin{tikzpicture}[>=Stealth, line width=0.9pt]
+  \draw (0,4.4) -- (7.8,4.4) node[right] {$V_{DD}$};
+  \draw (1.4,0.0) node[ground] {};
+  \draw (1.4,0.2) \vnmos{M1} \vpmos{MP1} coordinate (left_top);
+  \draw (left_top) -- (1.4,4.4);
+
+  \draw (5.4,0.0) node[ground] {};
+  \draw (5.4,0.2) \vnmos{M2} \vpmos{MP2} coordinate (right_top);
+  \draw (right_top) -- (5.4,4.4);
+
+  \draw (M1.drain) -- (M2.drain) coordinate[midway] (z_top);
+  \draw (M1.source) -- (M2.source) coordinate[midway] (z_bot);
+  \draw (z_top) to[capacitor] (z_bot);
+  \node at ($(z_top)!0.5!(z_bot)+(-1.0,0.0)$) {$Z\approx 1/(C_{sw}f)$};
+\end{tikzpicture}
+\end{document}

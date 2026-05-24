@@ -1,0 +1,20 @@
+\documentclass[tikz,border=2pt]{standalone}
+\usepackage{tikz}
+\usepackage[european]{circuitikz}
+\usetikzlibrary{arrows.meta,positioning,calc}
+\input{tikz/ckt_lib.tex}
+\begin{document}
+\begin{tikzpicture}[line width=0.8pt]
+  \draw[->] (0,0) -- (6,0) node[right] {$T$};
+  \draw[->] (0,0) -- (0,3.2) node[above] {$V_D$};
+  \draw[smooth] plot coordinates {(0.4,2.9) (2,2.2) (4,1.45) (5.6,0.9)};
+  \draw[dashed] (0.4,2.8) -- (5.6,1.0);
+  \node at (4.6,2.4) {CTAT slope};
+
+  \begin{scope}[yshift=-3.8cm]
+    \draw[->] (0,0) -- (6,0) node[right] {$T$};
+    \draw[->] (0,-0.8) -- (0,0.8) node[above] {error};
+    \draw[smooth] plot coordinates {(0.4,0.2) (2,0.05) (3.5,-0.02) (5.6,0.18)};
+  \end{scope}
+\end{tikzpicture}
+\end{document}

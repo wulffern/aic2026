@@ -1,0 +1,20 @@
+\documentclass[tikz,border=2pt]{standalone}
+\usepackage{tikz}
+\usepackage[european]{circuitikz}
+\usetikzlibrary{arrows.meta,positioning,calc}
+\input{tikz/ckt_lib.tex}
+\begin{document}
+\begin{tikzpicture}[>=Stealth, line width=0.9pt]
+  \draw (0,3.0) -- (6.4,3.0);
+  \draw (1.0,3.0) to[resistor,l=$R_1$] (1.0,1.0);
+  \draw (2.5,3.0) to[resistor,l=$R_2$] (2.5,1.0);
+  \draw (0.4,1.0) -- (2.5,1.0);
+  \draw (0.6,1.0) -- (0.6,0.2) node[ground] {};
+  \draw (1.4,1.0) -- (1.4,0.2) node[ground] {};
+  \draw (2.5,1.0) -- (2.5,0.2) node[ground] {};
+  \node at (0.6,0.6) {$D_1$};
+  \node at (1.4,0.6) {$D_2$};
+  \draw[->] (3.0,2.4) -- (6.0,2.4) node[midway,above] {$I_{PMOS}=I_1+I_2$};
+  \node at (3.8,1.4) {$I_2=V_D/R_2$};
+\end{tikzpicture}
+\end{document}

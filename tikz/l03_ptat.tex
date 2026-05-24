@@ -1,0 +1,22 @@
+\documentclass[tikz,border=2pt]{standalone}
+\usepackage{tikz}
+\usepackage[european]{circuitikz}
+\usetikzlibrary{arrows.meta,positioning,calc}
+\input{tikz/ckt_lib.tex}
+\begin{document}
+\begin{tikzpicture}[>=Stealth, line width=0.9pt]
+  \draw (0,2.4) -- (6,2.4);
+  \draw (1.0,2.4) to[resistor,l=$R_1$] (1.0,0.4);
+  \draw (0.2,0.4) -- (2.0,0.4);
+  \draw (0.6,0.4) -- (0.6,-0.2) node[ground] {};
+  \draw (1.4,0.4) -- (1.4,-0.2) node[ground] {};
+  \node at (0.6,0.1) {$D_1$};
+  \node at (1.4,0.1) {$D_2=N\!\times\!D_1$};
+  \draw (3.2,1.6) \cicOtaSWP{$+$}{$-$}{}{};
+  \node at ($(cicOta_inp)+(1.0,-0.8)$) {OTA};
+  \draw[->] (2.0,0.4) -- (cicOta_inn);
+  \draw[->] (2.0,0.4) -- (cicOta_inp);
+  \draw[->] (cicOta_outn) -- ++(1.2,0);
+  \node at (5.8,1.2) {$I_{PTAT}$};
+\end{tikzpicture}
+\end{document}
