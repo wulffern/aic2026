@@ -1,0 +1,42 @@
+name: Antenna Diode Leakage
+
+on:
+  push:
+    branches: ["main", "claude/**"]
+    paths:
+      - 'ex/antenna_diode_leakage.py'
+      - '.github/workflows/antenna-diode-leakage.yml'
+  pull_request:
+    paths:
+      - 'ex/antenna_diode_leakage.py'
+      - '.github/workflows/antenna-diode-leakage.yml'
+  workflow_dispatch:
+
+jobs:
+  plot:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        shell: bash
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install numpy scipy matplotlib
+
+      - name: Generate leakage plot
+        shell: bash
+        run: python ex/antenna_diode_leakage.py
+
+      - name: Upload plot artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: antenna-diode-leakage
+          path: media/antenna_diode_leak.pdf
+          if-no-files-found: error

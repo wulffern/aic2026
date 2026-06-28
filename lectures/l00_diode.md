@@ -935,6 +935,70 @@ with the small exception of the non-linear component of $V_D$.
 
 ---
 
+## Reverse leakage and antenna diodes
+
+<!--pan_doc:
+
+So far we have used the diode equation in forward bias, where it is
+dominated by the diffusion current $I_S$. In integrated circuits we also
+care about the reverse-biased behavior, in particular for the small
+*antenna diodes* that are added to protect gate oxide from
+plasma-induced charging during fabrication. An antenna diode is just a
+small n+ implant in the doped p-substrate (or p-well), normally
+reverse-biased to the supply.
+
+For an n+/p-substrate junction the n+ side is so heavily doped that
+practically all of the depletion region $W$ sits on the substrate
+side. Two reverse-bias current mechanisms matter:
+
+1. Shockley *diffusion* saturation current,
+$$
+I_S = q A n_i^2 \left(\frac{1}{N_A} \sqrt{\frac{D_n}{\tau_n}} + \frac{1}{N_D} \sqrt{\frac{D_p}{\tau_p}} \right)
+$$
+which scales with $n_i^2$.
+
+2. Sah-Noyce-Shockley *generation* current in the depletion region,
+$$
+I_{gen} = \frac{q A n_i W}{\tau_g}, \quad
+W = \sqrt{\frac{2 \varepsilon_{si} (\Phi_0 + V_R)}{q N_A}}
+$$
+which scales with $n_i$ and so dominates at low and moderate
+temperatures, where $n_i$ is small.
+
+The total reverse leakage is $I_{leak} = I_S + I_{gen}$.
+
+Figure 5 plots the leakage for a small $0.2 \times 0.2\, \mu m^2$
+antenna ndiode in a doped p-substrate ($N_A = 10^{17}\, cm^{-3}$,
+$N_D = 10^{20}\, cm^{-3}$) at $V_R = 1\, V$, swept from 200 K to 600 K.
+The script is `ex/antenna_diode_leakage.py` and reuses the same
+$n_i(T)$ derivation as `ex/vd.py`.
+
+A few things worth noticing:
+
+- Generation current dominates over the full temperature range. The two
+  curves only cross near the upper end where $n_i$ becomes large enough
+  that the $n_i^2$ diffusion term catches up.
+- The leakage of a $0.04\, \mu m^2$ junction is in the
+  $\mathrm{aA}$ range around room temperature, but climbs by many
+  decades at $600\, K$. For arrayed circuits (DRAM, image sensors,
+  switched-capacitor sample nodes) this is what sets retention and hold
+  time at high temperature.
+- The slope on a log axis is set by the $\exp(-E_g/(2kT))$ term in
+  $n_i$, so reverse leakage doubles roughly every 8-10 K for the
+  generation-dominated regime, and every 4-5 K once diffusion takes
+  over.
+
+-->
+
+![right fit Reverse leakage of a 0.2x0.2 um$^2$ antenna ndiode\label{fig:antenna_leak}](../media/antenna_diode_leak.pdf)
+
+<!--pan_doc:
+<sub>Figure 5: Reverse leakage of a 0.2 x 0.2 um$^2$ antenna ndiode in
+a doped p-substrate from 200 K to 600 K.</sub>
+-->
+
+---
+
 <!--pan_skip: -->
 
 #[fit] Thanks!
