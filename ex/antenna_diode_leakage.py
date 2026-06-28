@@ -52,11 +52,19 @@ if __name__ == "__main__":
     # per side.
     A = 1e-8
 
-    # Minority-carrier transport in moderately doped silicon
-    Dn = 36      # cm^2/s
-    Dp = 12      # cm^2/s
-    tau_n = 1e-7 # s
-    tau_p = 1e-7 # s
+    # Minority-carrier transport. Reference values at 300 K from
+    # ex/vd.py. Both D and tau depend on temperature:
+    #   phonon-limited mobility mu ~ T^-2.4, and Einstein gives
+    #   D = mu*kT/q ~ T^-1.4
+    #   SRH lifetime tau = 1/(sigma*v_th*N_t), v_th ~ sqrt(T) so
+    #   tau ~ T^-1/2
+    T_REF = 300.0
+    Dn_300, Dp_300 = 36.0, 12.0          # cm^2/s at 300 K
+    tau_n_300, tau_p_300 = 1e-7, 1e-7    # s at 300 K
+    Dn = Dn_300 * (T/T_REF)**(-1.4)
+    Dp = Dp_300 * (T/T_REF)**(-1.4)
+    tau_n = tau_n_300 * (T/T_REF)**(-0.5)
+    tau_p = tau_p_300 * (T/T_REF)**(-0.5)
 
     ni = calc_ni(T)
 

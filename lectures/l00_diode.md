@@ -1012,6 +1012,20 @@ For an n+/p-well antenna diode, the $1/N_D$ term is negligible
 because $N_D \gg N_A$, and $I_S$ is set almost entirely by
 electron injection from the p-well.
 
+Both $D$ and $\tau$ depend on temperature too, and that matters once
+the sweep is several hundred kelvin wide. Phonon-limited mobility
+goes as $\mu \propto T^{-2.4}$ above $\sim 300\, K$, so via the
+Einstein relation $D = \mu k T/q \propto T^{-1.4}$. The SRH lifetime
+goes as $\tau = 1/(\sigma v_{th} N_t)$ with $v_{th} \propto
+\sqrt{T}$, so $\tau \propto T^{-1/2}$ (taking $\sigma$ and $N_t$
+constant). The combination $\sqrt{D/\tau}$ in $I_S$ therefore drifts
+as $T^{-0.45}$, so $I_S$ at $1000\, K$ is about $0.6\times$ what a
+"constant $D$, $\tau$" model would predict. That is small compared
+to the many decades of swing in $n_i^2$, but it is the dominant
+reason the diffusion curve in Figure 5 starts to flatten at the top
+end. The script `ex/antenna_diode_leakage.py` includes both
+$T$-dependencies.
+
 -->
 
 ---
@@ -1053,6 +1067,12 @@ At low and moderate temperatures, where $n_i$ is small, this
 slower-scaling term still dominates because it has the smaller
 exponent. As temperature rises and $n_i$ grows by many decades, the
 steeper $I_S \propto n_i^2$ eventually overtakes it.
+
+The $1/\tau_g$ in $I_{gen}$ also drifts with temperature: with
+$\tau \propto T^{-1/2}$ the generation term picks up an extra
+$\sqrt{T}$ factor on top of the $n_i W$ scaling, which is why at the
+top of the sweep $I_{gen}$ does not flatten out as much as one might
+expect from $n_i$ alone.
 
 The reverse bias $V_R$ enters through $W$, so $I_{gen}$ has a weak
 $\sqrt{V_R}$ dependence. Diffusion current $I_S$ is essentially
