@@ -3,3 +3,4 @@ svglib
 numpy
 pandas
 matplotlib
+scipy
