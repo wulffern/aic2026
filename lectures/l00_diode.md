@@ -1122,23 +1122,37 @@ plotted *per $1\, \mu m^2$ of junction area*, so a $0.2 \times 0.2\,
 `ex/antenna_diode_leakage.py` and reuses the $n_i(T)$ derivation
 from `ex/vd.py`.
 
+The two shaded bands mark where plasma-induced damage actually
+happens during fabrication, which is the *only* time an antenna
+diode does any work. The cooler band is plasma etch (reactive ion
+etch, with the wafer chuck cooled to roughly $25$-$100\, ^\circ C$,
+so $\sim 300$-$375\, K$); the hotter band is plasma deposition
+steps such as PECVD, HDP-CVD and sputter ($\sim 200$-$400\,
+^\circ C$, so $\sim 470$-$675\, K$, with $400\, ^\circ C$ a hard
+upper limit set by BEOL metal reliability). Across this span the
+leakage available to bleed plasma charge ranges from roughly
+$0.5\, \mathrm{fA}/\mu m^2$ at room-temperature etch to
+$\sim 1\, \mathrm{nA}/\mu m^2$ at $400\, ^\circ C$ deposition - six
+decades of variation depending only on which process step you are
+in.
+
 Three things to take away from the figure:
 
 - Generation current dominates from cryogenic temperatures up to
-  roughly $600\, K$, exactly where the steeper $n_i^2$ slope of the
+  roughly $640\, K$, exactly where the steeper $n_i^2$ slope of the
   diffusion term catches up. Above that the diode is in the
-  "diffusion-limited" regime.
-- Per $\mu m^2$, the leakage is in the $\mathrm{fA}$ range at room
-  temperature and climbs many decades by $1000\, K$. A
-  $0.2 \times 0.2\, \mu m^2$ antenna ndiode is $25\times$ smaller
-  again. For arrayed circuits that rely on stored charge (DRAM,
-  image sensors, switched-capacitor sample-and-holds, dynamic CMOS
-  logic) this junction leakage ultimately sets retention and hold
-  time at elevated temperature.
+  "diffusion-limited" regime. The crossover happens to fall right
+  in the middle of the plasma-deposition band, so antenna diodes
+  during deposition steps see contributions from both mechanisms.
+- The leakage per $\mu m^2$ swings six decades over the wafer-fab
+  thermal range. An antenna diode that easily sinks the plasma
+  charge during a $400\, ^\circ C$ HDP-CVD step may be orders of
+  magnitude too small during a room-temperature metal etch. The
+  worst case for sizing is therefore the *coldest* plasma step.
 - The slope on a log axis is set by the $\exp(-E_g/(2kT))$ in $n_i$
   plus the $T^{3/2}$ density-of-states prefactor. Every junction in
-  a given silicon process scales with temperature the same way; only
-  the absolute level changes with area, doping and lifetime.
+  a given silicon process scales with temperature the same way;
+  only the absolute level changes with area, doping and lifetime.
 
 It is also worth noting that at the upper end of the sweep $n_i$
 approaches and eventually exceeds $N_A$. The diode then loses
@@ -1153,7 +1167,10 @@ wide-bandgap materials such as silicon carbide.
 <!--pan_doc:
 <sub>Figure 5: Reverse leakage of an n+/p-well antenna ndiode per
 1 um$^2$ of junction area, from 200 K to 1000 K, $V_R = 1$ V.
-Multiply by your actual diode area in um$^2$.</sub>
+Multiply by your actual diode area in um$^2$. Shaded bands are the
+wafer temperature during plasma etch (300-375 K) and plasma
+deposition (470-675 K), the steps at which plasma-induced gate
+damage occurs.</sub>
 -->
 
 ---

@@ -90,10 +90,21 @@ if __name__ == "__main__":
     ax.semilogy(T, I_s,   label=r"Diffusion $I_S$")
     ax.semilogy(T, I_gen, label=r"Generation $I_{gen}$")
     ax.semilogy(T, I_leak, label="Total", linewidth=2)
+
+    # Temperature ranges where plasma-induced damage occurs during
+    # wafer processing. Antenna diodes only protect the gate during
+    # these steps, so the leakage in these bands is what matters.
+    #   Plasma etch (RIE, chuck cooled): ~300-375 K (25-100 C)
+    #   PECVD / HDP-CVD / sputter:       ~470-675 K (200-400 C),
+    #                                    400 C is a hard BEOL ceiling
+    ax.axvspan(300, 375, color="C3", alpha=0.12, label="Plasma etch")
+    ax.axvspan(470, 675, color="C4", alpha=0.12,
+               label="Plasma deposition")
+
     ax.set_xlabel("Temperature [K]")
     ax.set_ylabel(r"Reverse leakage per 1 $\mu m^2$ [A]")
     ax.grid(True, which="both")
-    ax.legend()
+    ax.legend(loc="upper left")
     ax.set_title(r"n+/p-well antenna ndiode, $V_R = 1$ V, "
                  r"per 1 $\mu m^2$, 200-1000 K")
     plt.tight_layout()
