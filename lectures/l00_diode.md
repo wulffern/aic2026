@@ -1056,24 +1056,19 @@ A useful integrated-circuit example is the *antenna diode*. During
 plasma etch and ion-implant steps in fabrication, long metal traces
 collect charge. If the trace is connected to a transistor gate, the
 gate dielectric can break down before the chip ever sees a power
-supply. The problem becomes severe in nanoscale high-k metal-gate
-(HKMG) CMOS, where equivalent oxide thickness is below $1\, nm$,
-breakdown voltage is only a few volts, and the dozen-plus metal
-layers above each gate offer plenty of opportunity to collect plasma
-charge. Foundry design rules specify maximum *antenna ratios* (metal
+supply. Foundry design rules specify maximum *antenna ratios* (metal
 area to gate area) per layer; if a net exceeds the ratio, the routing
 tool inserts an *antenna diode* on the net to bleed the plasma charge
 to substrate. In normal operation that diode sits reverse-biased and
 must contribute negligible static current.
 
 The diode itself is simply an n+ source/drain implant placed in the
-NMOS p-well. In a nanoscale HKMG process the relevant doping is:
+NMOS p-well. The relevant doping is:
 
 - p-substrate (handle wafer): $N_{sub} \approx 10^{15}\, cm^{-3}$
 - p-well (retrograde, set by short-channel control):
   $N_A \approx 10^{17}-10^{18}\, cm^{-3}$
-- n+ S/D (often raised SiP/SiC for nFETs):
-  $N_D \approx 10^{20}\, cm^{-3}$
+- n+ source/drain: $N_D \approx 10^{20}\, cm^{-3}$
 
 It is the p-well doping that matters at the junction, because the n+
 sits inside the well, not directly on substrate. The effective $N_A$
