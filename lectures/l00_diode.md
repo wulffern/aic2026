@@ -935,58 +935,182 @@ with the small exception of the non-linear component of $V_D$.
 
 ---
 
-## Reverse leakage and antenna diodes
+## Reverse leakage
 
 <!--pan_doc:
 
-So far we have used the diode equation in forward bias, where it is
-dominated by the diffusion current $I_S$. In integrated circuits we also
-care about the reverse-biased behavior, in particular for the small
-*antenna diodes* that are added to protect gate oxide from
-plasma-induced charging during fabrication. An antenna diode is just a
-small n+ implant in the doped p-substrate (or p-well), normally
-reverse-biased to the supply.
+So far we have only looked at the diode in forward bias, where the
+exponential term dominates and the current is set by the diffusion
+saturation $I_S$. In integrated circuits we equally often care about
+what happens when the diode is reverse biased, with $V_D < 0$. The
+exponential term is then negligible, and you might expect the current
+to be zero. It is not.
 
-For an n+/p-substrate junction the n+ side is so heavily doped that
-practically all of the depletion region $W$ sits on the substrate
-side. Two reverse-bias current mechanisms matter:
+What happens physically is that the reverse bias lifts the Fermi level
+on the n-side relative to the p-side. The built-in field grows, the
+depletion region widens, and any minority carrier that wanders into
+that region is immediately swept across to the other side. The
+question of "how much current" is therefore really the question of
+"how many minority carriers are produced per second, and where".
 
-1. Shockley *diffusion* saturation current,
-$$
-I_S = q A n_i^2 \left(\frac{1}{N_A} \sqrt{\frac{D_n}{\tau_n}} + \frac{1}{N_D} \sqrt{\frac{D_p}{\tau_p}} \right)
-$$
-which scales with $n_i^2$.
+In a real n+/p-substrate junction there are two places where minority
+carriers appear:
 
-2. Sah-Noyce-Shockley *generation* current in the depletion region,
-$$
-I_{gen} = \frac{q A n_i W}{\tau_g}, \quad
-W = \sqrt{\frac{2 \varepsilon_{si} (\Phi_0 + V_R)}{q N_A}}
-$$
-which scales with $n_i$ and so dominates at low and moderate
-temperatures, where $n_i$ is small.
+1. In the *quasi-neutral* p-substrate, a short diffusion length away
+   from the junction. These thermally generated electrons diffuse to
+   the depletion edge and are then collected.
+2. *Inside* the depletion region itself, through generation at
+   Shockley-Read-Hall trap centers in the silicon bandgap.
 
-The total reverse leakage is $I_{leak} = I_S + I_{gen}$.
+The first gives the Shockley diffusion saturation current $I_S$, the
+second gives the Sah-Noyce-Shockley generation current $I_{gen}$.
+They have different temperature dependencies, and which one dominates
+depends on temperature, doping, and how clean the silicon is.
 
-Figure 5 plots the leakage for a small $0.2 \times 0.2\, \mu m^2$
-antenna ndiode in a doped p-substrate ($N_A = 10^{17}\, cm^{-3}$,
-$N_D = 10^{20}\, cm^{-3}$) at $V_R = 1\, V$, swept from 200 K to 1000 K.
-The script is `ex/antenna_diode_leakage.py` and reuses the same
-$n_i(T)$ derivation as `ex/vd.py`.
+-->
 
-A few things worth noticing:
+---
 
-- Generation current dominates from cryogenic up to roughly 600 K,
-  where $I_S \propto n_i^2$ catches up and the diffusion term takes
-  over.
+## Diffusion leakage
+
+[.column]
+
+$$ I_S = q A n_i^2 \left( \frac{1}{N_A}\sqrt{\frac{D_n}{\tau_n}} + \frac{1}{N_D}\sqrt{\frac{D_p}{\tau_p}} \right) $$
+
+<!--pan_doc:
+
+This is exactly the $I_S$ from the forward-bias derivation, just
+re-interpreted. Under reverse bias the minority-carrier concentration
+at the edge of the depletion region is forced to *zero* (every carrier
+that arrives is swept across). The concentration gradient between the
+bulk equilibrium $n_p = n_i^2/N_A$ on the p-side and zero at the
+depletion edge drives a steady diffusion of electrons toward the
+junction, and similarly of holes from the n-side.
+
+The factor that matters for temperature is $n_i^2$, which through
+Equation \eqref{eq:ni} carries an $\exp(-E_g/kT)$ dependence. The
+diffusion current therefore doubles roughly every $4$-$5\, K$ near
+room temperature, which is the familiar "reverse current doubles
+every 10 K" rule of thumb for ideal junctions [^4].
+
+For an n+/p-substrate antenna diode, the $1/N_D$ term is negligible
+because $N_D \gg N_A$, and $I_S$ is set almost entirely by
+electron injection from the p-substrate.
+
+-->
+
+---
+
+## Generation in the depletion region
+
+[.column]
+
+$$ I_{gen} = \frac{q A n_i W}{\tau_g} $$
+
+$$ W = \sqrt{\frac{2 \varepsilon_{si} (\Phi_0 + V_R)}{q} \cdot \frac{N_A + N_D}{N_A N_D}} $$
+
+<!--pan_doc:
+
+Real silicon is not a perfect crystal. Process damage, residual
+metallic impurities and dangling bonds at interfaces create trap
+levels somewhere in the bandgap. A trap near mid-gap can capture an
+electron from the valence band (creating a hole) and then emit it to
+the conduction band (creating an electron). Inside a reverse-biased
+depletion region, both carriers are immediately swept apart by the
+field, the trap empties, and the cycle repeats. The net effect is a
+steady generation of electron-hole pairs that shows up as reverse
+current.
+
+The Sah-Noyce-Shockley analysis gives the result above, where $W$ is
+the depletion width and $\tau_g$ is an effective generation lifetime
+(typically a few $\tau_n$). For a one-sided n+/p junction with
+$N_A \ll N_D$ the depletion width simplifies to
+
+$$ W \approx \sqrt{\frac{2 \varepsilon_{si} (\Phi_0 + V_R)}{q N_A}} $$
+
+which sits almost entirely on the lightly doped substrate side.
+
+The temperature scaling is now $n_i$, not $n_i^2$. The exponential
+in $n_i$ has $E_g/(2kT)$, so $I_{gen}$ doubles roughly every
+$8$-$10\, K$ near room temperature, which is half as steep as the
+diffusion term. At low and moderate temperatures, where $n_i$ is
+small, this slower-scaling term still dominates because it has
+the smaller exponent. As temperature rises and $n_i$ grows by many
+decades, the steeper $I_S \propto n_i^2$ eventually overtakes it.
+
+The reverse bias $V_R$ enters through $W$, so $I_{gen}$ has a weak
+$\sqrt{V_R}$ dependence. Diffusion current $I_S$ is essentially
+independent of bias once the junction is reverse-biased by more than
+a few $kT/q$. This is the standard way to separate the two
+experimentally: $I_S$ saturates, $I_{gen}$ grows with $\sqrt{V_R}$.
+
+-->
+
+---
+
+## Antenna ndiode, 200 K to 1000 K
+
+<!--pan_doc:
+
+A useful integrated-circuit example is the *antenna diode*. During
+plasma etch and ion-implant steps in fabrication, long metal traces
+collect charge. If the trace is connected to a transistor gate, the
+gate dielectric can break down before the chip ever sees a power
+supply. The problem becomes severe in nanoscale high-k metal-gate
+(HKMG) CMOS, where equivalent oxide thickness is below $1\, nm$,
+breakdown voltage is only a few volts, and the dozen-plus metal
+layers above each gate offer plenty of opportunity to collect plasma
+charge. Foundry design rules specify maximum *antenna ratios* (metal
+area to gate area) per layer; if a net exceeds the ratio, the routing
+tool inserts an *antenna diode* on the net to bleed the plasma charge
+to substrate. In normal operation that diode sits reverse-biased and
+must contribute negligible static current.
+
+The diode itself is simply an n+ source/drain implant placed in the
+NMOS p-well. In a nanoscale HKMG process the relevant doping is:
+
+- p-substrate (handle wafer): $N_{sub} \approx 10^{15}\, cm^{-3}$
+- p-well (retrograde, set by short-channel control):
+  $N_A \approx 10^{17}-10^{18}\, cm^{-3}$
+- n+ S/D (often raised SiP/SiC for nFETs):
+  $N_D \approx 10^{20}\, cm^{-3}$
+
+It is the p-well doping that matters at the junction, because the n+
+sits inside the well, not directly on substrate. The effective $N_A$
+seen by the antenna ndiode is therefore one to two orders of
+magnitude higher than the wafer doping, which makes the depletion
+narrower and the reverse leakage *smaller* than a naive
+"n+/p-substrate" estimate would suggest.
+
+Figure 5 plots the reverse leakage of such a junction:
+$N_A = 10^{17}\, cm^{-3}$ (p-well), $N_D = 10^{20}\, cm^{-3}$
+(n+ S/D), a $0.2 \times 0.2\, \mu m^2$ junction, and $V_R = 1\, V$,
+swept from 200 K to 1000 K. The script is
+`ex/antenna_diode_leakage.py` and reuses the $n_i(T)$ derivation
+from `ex/vd.py`.
+
+Three things to take away from the figure:
+
+- Generation current dominates from cryogenic temperatures up to
+  roughly $600\, K$, exactly where the steeper $n_i^2$ slope of the
+  diffusion term catches up. Above that the diode is in the
+  "diffusion-limited" regime.
 - The leakage of a $0.04\, \mu m^2$ junction is in the
-  $\mathrm{aA}$ range around room temperature, but climbs many decades
-  by 1000 K. For arrayed circuits (DRAM, image sensors,
-  switched-capacitor sample nodes) this is what sets retention and hold
-  time at high temperature.
-- The slope on a log axis is set by the $\exp(-E_g/(2kT))$ term in
-  $n_i$, so reverse leakage doubles roughly every 8-10 K for the
-  generation-dominated regime, and every 4-5 K once diffusion takes
-  over.
+  $\mathrm{aA}$ range at room temperature, but climbs many decades
+  by $1000\, K$. For arrayed circuits that rely on stored charge
+  (DRAM, image sensors, switched-capacitor sample-and-holds, dynamic
+  CMOS logic) this is what ultimately sets retention and hold time at
+  elevated temperature.
+- The slope on a log axis is set by the $\exp(-E_g/(2kT))$ in $n_i$,
+  not by anything circuit-specific. Every junction in a given silicon
+  process scales with temperature the same way; only the prefactor
+  changes with area, doping and lifetime.
+
+It is also worth noting that at the upper end of the sweep $n_i$
+approaches and eventually exceeds $N_A$. The diode then loses
+junction behaviour and the silicon behaves as an intrinsic resistor.
+This is why high-temperature electronics typically uses
+wide-bandgap materials such as silicon carbide.
 
 -->
 
@@ -1060,4 +1184,5 @@ But most of the time, the behavior is similar.
 <!--pan_doc:
 [^2]: Simplify as much as possible, but no more. Einstein
 [^3]: From the Einstein relation $D = \mu k T$ it does appear that the diffusion coefficient increases with temperature, however, the mobility decreases with temperature. I'm unsure of whether the mobility decreases with the same rate though.
+[^4]: This rule of thumb applies to the diffusion-dominated regime. For the generation-dominated regime, which is where most small junctions actually live at room temperature, the doubling interval is closer to 8-10 K because $I_{gen} \propto n_i$ rather than $n_i^2$.
 -->
