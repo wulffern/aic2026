@@ -10,7 +10,7 @@ ifneq ($(wildcard /pyenv/bin/.*),)
 	PYTHON=/pyenv/bin/python3
 endif
 
-.PHONY:  slides version tikz prepare-docs standalone-one standalone-list book-pdf book-epub print-files
+.PHONY:  slides version tikz figures prepare-docs standalone-one standalone-list book-pdf book-epub print-files
 
 #	lr0_logic \
 
@@ -65,8 +65,13 @@ book-nobuild:
 version:
 	echo "aic${YEAR}" > version
 
-prepare-docs: clean-prepared version posts-parallel texfiles-parallel
+prepare-docs: clean-prepared version figures posts-parallel texfiles-parallel
 	cd pdf; [ -d kaobook ] || git clone https://github.com/fmarotta/kaobook.git
+
+figures: media/antenna_diode_leak.pdf
+
+media/antenna_diode_leak.pdf: ex/antenna_diode_leakage.py
+	${PYTHON} ex/antenna_diode_leakage.py
 
 clean-prepared:
 	-rm -f docs/downloads.md images.txt *_images.inc

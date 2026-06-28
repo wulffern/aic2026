@@ -969,18 +969,18 @@ The total reverse leakage is $I_{leak} = I_S + I_{gen}$.
 
 Figure 5 plots the leakage for a small $0.2 \times 0.2\, \mu m^2$
 antenna ndiode in a doped p-substrate ($N_A = 10^{17}\, cm^{-3}$,
-$N_D = 10^{20}\, cm^{-3}$) at $V_R = 1\, V$, swept from 200 K to 600 K.
+$N_D = 10^{20}\, cm^{-3}$) at $V_R = 1\, V$, swept from 200 K to 1000 K.
 The script is `ex/antenna_diode_leakage.py` and reuses the same
 $n_i(T)$ derivation as `ex/vd.py`.
 
 A few things worth noticing:
 
-- Generation current dominates over the full temperature range. The two
-  curves only cross near the upper end where $n_i$ becomes large enough
-  that the $n_i^2$ diffusion term catches up.
+- Generation current dominates from cryogenic up to roughly 600 K,
+  where $I_S \propto n_i^2$ catches up and the diffusion term takes
+  over.
 - The leakage of a $0.04\, \mu m^2$ junction is in the
-  $\mathrm{aA}$ range around room temperature, but climbs by many
-  decades at $600\, K$. For arrayed circuits (DRAM, image sensors,
+  $\mathrm{aA}$ range around room temperature, but climbs many decades
+  by 1000 K. For arrayed circuits (DRAM, image sensors,
   switched-capacitor sample nodes) this is what sets retention and hold
   time at high temperature.
 - The slope on a log axis is set by the $\exp(-E_g/(2kT))$ term in
@@ -994,7 +994,7 @@ A few things worth noticing:
 
 <!--pan_doc:
 <sub>Figure 5: Reverse leakage of a 0.2 x 0.2 um$^2$ antenna ndiode in
-a doped p-substrate from 200 K to 600 K.</sub>
+a doped p-substrate from 200 K to 1000 K.</sub>
 -->
 
 ---

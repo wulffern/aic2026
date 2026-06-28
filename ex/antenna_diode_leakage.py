@@ -35,7 +35,7 @@ def calc_ni(T):
 
 
 if __name__ == "__main__":
-    T = np.linspace(200, 600, 401)
+    T = np.linspace(200, 1000, 801)
 
     # Antenna ndiode: n+ in a doped p-substrate / p-well
     NA = 1e17    # p-substrate doping [1/cm^3]
@@ -80,7 +80,7 @@ if __name__ == "__main__":
     ax.grid(True, which="both")
     ax.legend()
     ax.set_title(r"0.2$\times$0.2 $\mu m^2$ antenna ndiode (n+/p-sub), "
-                 r"$V_R = 1$ V")
+                 r"$V_R = 1$ V, 200-1000 K")
     plt.tight_layout()
 
     here = os.path.dirname(os.path.abspath(__file__))
