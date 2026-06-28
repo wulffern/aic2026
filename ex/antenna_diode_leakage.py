@@ -102,11 +102,11 @@ if __name__ == "__main__":
                label="Plasma deposition")
 
     ax.set_xlabel("Temperature [K]")
-    ax.set_ylabel(r"Reverse leakage per 1 $\mu m^2$ [A]")
+    ax.set_ylabel(r"Reverse leakage [A/$\mu m^2$]")
     ax.grid(True, which="both")
     ax.legend(loc="upper left")
     ax.set_title(r"n+/p-well antenna ndiode, $V_R = 1$ V, "
-                 r"per 1 $\mu m^2$, 200-1000 K")
+                 r"200-1000 K")
     plt.tight_layout()
 
     here = os.path.dirname(os.path.abspath(__file__))
