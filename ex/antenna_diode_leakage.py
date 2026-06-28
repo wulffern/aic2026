@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-# Reverse leakage current of an antenna ndiode
-# (n+ implant in a doped p-substrate) from 200 K to 600 K
-# for a 0.2 x 0.2 um^2 junction. Based on ex/vd.py.
+# Reverse leakage current of an n+/p-well antenna ndiode from
+# 200 K to 1000 K, normalised to a 1 um^2 junction so it can be
+# scaled to any diode area. Based on ex/vd.py.
 
 import os
 from scipy import constants
@@ -46,9 +46,11 @@ if __name__ == "__main__":
     NA = 1e17    # p-well doping under n+ [1/cm^3]
     ND = 1e20    # n+ source/drain doping  [1/cm^3]
 
-    # 0.2 x 0.2 um^2 junction area in cm^2
-    side_um = 0.2
-    A = (side_um*1e-4)**2
+    # 1 um^2 reference junction area in cm^2 (same as ex/vd.py).
+    # Reverse leakage scales linearly with area, so for a real diode
+    # multiply by A_real_in_um2. A typical antenna ndiode is 0.2-1 um
+    # per side.
+    A = 1e-8
 
     # Minority-carrier transport in moderately doped silicon
     Dn = 36      # cm^2/s
@@ -81,11 +83,11 @@ if __name__ == "__main__":
     ax.semilogy(T, I_gen, label=r"Generation $I_{gen}$")
     ax.semilogy(T, I_leak, label="Total", linewidth=2)
     ax.set_xlabel("Temperature [K]")
-    ax.set_ylabel("Reverse leakage current [A]")
+    ax.set_ylabel(r"Reverse leakage per 1 $\mu m^2$ [A]")
     ax.grid(True, which="both")
     ax.legend()
-    ax.set_title(r"0.2$\times$0.2 $\mu m^2$ antenna ndiode (n+/p-sub), "
-                 r"$V_R = 1$ V, 200-1000 K")
+    ax.set_title(r"n+/p-well antenna ndiode, $V_R = 1$ V, "
+                 r"per 1 $\mu m^2$, 200-1000 K")
     plt.tight_layout()
 
     here = os.path.dirname(os.path.abspath(__file__))

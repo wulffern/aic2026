@@ -987,15 +987,30 @@ bulk equilibrium $n_p = n_i^2/N_A$ on the p-side and zero at the
 depletion edge drives a steady diffusion of electrons toward the
 junction, and similarly of holes from the n-side.
 
-The factor that matters for temperature is $n_i^2$, which through
-Equation \eqref{eq:ni} carries an $\exp(-E_g/kT)$ dependence. The
-diffusion current therefore doubles roughly every $4$-$5\, K$ near
-room temperature, which is the familiar "reverse current doubles
-every 10 K" rule of thumb for ideal junctions [^4].
+The factor that matters for temperature is $n_i^2$. From Equation
+\eqref{eq:ni}, $n_i^2 \propto T^3 \exp(-E_g/kT)$. The $T^3$ comes
+from the densities of states $N_c, N_v \propto T^{3/2}$, which is a
+genuine quantum-mechanical effect: as temperature rises, more
+states become thermally accessible above $E_c$ and below $E_v$. The
+$\exp(-E_g/kT)$ dominates the slope, but the $T^3$ prefactor
+contributes a non-trivial correction that is bigger than people
+usually admit. The log-derivative of $n_i^2$ is
 
-For an n+/p-substrate antenna diode, the $1/N_D$ term is negligible
+$$ \frac{d \ln n_i^2}{dT} = \frac{E_g}{kT^2} + \frac{3}{T} $$
+
+At $T = 300\, K$ the $3/T$ term is about $7\, \%$ of the
+exponential term; at $T = 1000\, K$ it is about $25\, \%$. So the
+density-of-states prefactor visibly steepens the leakage curve at
+high temperature, and you cannot drop it if you care about anything
+beyond a back-of-envelope estimate.
+
+The diffusion current doubles roughly every $4$-$5\, K$ near room
+temperature, which is the familiar "reverse current doubles every
+10 K" rule of thumb for ideal junctions [^4].
+
+For an n+/p-well antenna diode, the $1/N_D$ term is negligible
 because $N_D \gg N_A$, and $I_S$ is set almost entirely by
-electron injection from the p-substrate.
+electron injection from the p-well.
 
 -->
 
@@ -1031,12 +1046,13 @@ $$ W \approx \sqrt{\frac{2 \varepsilon_{si} (\Phi_0 + V_R)}{q N_A}} $$
 which sits almost entirely on the lightly doped substrate side.
 
 The temperature scaling is now $n_i$, not $n_i^2$. The exponential
-in $n_i$ has $E_g/(2kT)$, so $I_{gen}$ doubles roughly every
-$8$-$10\, K$ near room temperature, which is half as steep as the
-diffusion term. At low and moderate temperatures, where $n_i$ is
-small, this slower-scaling term still dominates because it has
-the smaller exponent. As temperature rises and $n_i$ grows by many
-decades, the steeper $I_S \propto n_i^2$ eventually overtakes it.
+in $n_i$ has $E_g/(2kT)$ and the density-of-states prefactor is
+$T^{3/2}$ rather than $T^3$, so the slope is roughly half that of
+$I_S$. $I_{gen}$ doubles every $8$-$10\, K$ near room temperature.
+At low and moderate temperatures, where $n_i$ is small, this
+slower-scaling term still dominates because it has the smaller
+exponent. As temperature rises and $n_i$ grows by many decades, the
+steeper $I_S \propto n_i^2$ eventually overtakes it.
 
 The reverse bias $V_R$ enters through $W$, so $I_{gen}$ has a weak
 $\sqrt{V_R}$ dependence. Diffusion current $I_S$ is essentially
@@ -1079,8 +1095,10 @@ narrower and the reverse leakage *smaller* than a naive
 
 Figure 5 plots the reverse leakage of such a junction:
 $N_A = 10^{17}\, cm^{-3}$ (p-well), $N_D = 10^{20}\, cm^{-3}$
-(n+ S/D), a $0.2 \times 0.2\, \mu m^2$ junction, and $V_R = 1\, V$,
-swept from 200 K to 1000 K. The script is
+(n+ S/D), $V_R = 1\, V$, swept from 200 K to 1000 K. The current is
+plotted *per $1\, \mu m^2$ of junction area*, so a $0.2 \times 0.2\,
+\mu m^2$ antenna ndiode is the curve times $0.04$, and a $1 \times
+1\, \mu m^2$ diode reads off directly. The script is
 `ex/antenna_diode_leakage.py` and reuses the $n_i(T)$ derivation
 from `ex/vd.py`.
 
@@ -1090,16 +1108,17 @@ Three things to take away from the figure:
   roughly $600\, K$, exactly where the steeper $n_i^2$ slope of the
   diffusion term catches up. Above that the diode is in the
   "diffusion-limited" regime.
-- The leakage of a $0.04\, \mu m^2$ junction is in the
-  $\mathrm{aA}$ range at room temperature, but climbs many decades
-  by $1000\, K$. For arrayed circuits that rely on stored charge
-  (DRAM, image sensors, switched-capacitor sample-and-holds, dynamic
-  CMOS logic) this is what ultimately sets retention and hold time at
-  elevated temperature.
-- The slope on a log axis is set by the $\exp(-E_g/(2kT))$ in $n_i$,
-  not by anything circuit-specific. Every junction in a given silicon
-  process scales with temperature the same way; only the prefactor
-  changes with area, doping and lifetime.
+- Per $\mu m^2$, the leakage is in the $\mathrm{fA}$ range at room
+  temperature and climbs many decades by $1000\, K$. A
+  $0.2 \times 0.2\, \mu m^2$ antenna ndiode is $25\times$ smaller
+  again. For arrayed circuits that rely on stored charge (DRAM,
+  image sensors, switched-capacitor sample-and-holds, dynamic CMOS
+  logic) this junction leakage ultimately sets retention and hold
+  time at elevated temperature.
+- The slope on a log axis is set by the $\exp(-E_g/(2kT))$ in $n_i$
+  plus the $T^{3/2}$ density-of-states prefactor. Every junction in
+  a given silicon process scales with temperature the same way; only
+  the absolute level changes with area, doping and lifetime.
 
 It is also worth noting that at the upper end of the sweep $n_i$
 approaches and eventually exceeds $N_A$. The diode then loses
@@ -1112,8 +1131,9 @@ wide-bandgap materials such as silicon carbide.
 ![right fit Reverse leakage of a 0.2x0.2 um$^2$ antenna ndiode\label{fig:antenna_leak}](../media/antenna_diode_leak.pdf)
 
 <!--pan_doc:
-<sub>Figure 5: Reverse leakage of a 0.2 x 0.2 um$^2$ antenna ndiode in
-a doped p-substrate from 200 K to 1000 K.</sub>
+<sub>Figure 5: Reverse leakage of an n+/p-well antenna ndiode per
+1 um$^2$ of junction area, from 200 K to 1000 K, $V_R = 1$ V.
+Multiply by your actual diode area in um$^2$.</sub>
 -->
 
 ---
