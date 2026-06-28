@@ -1239,6 +1239,61 @@ damage occurs.</sub>
 
 ---
 
+## Wires below 1 mm
+
+[.column]
+
+$$ I_{ant} = J_{net} \cdot W_{wire} \cdot L_{wire} $$
+
+<!--pan_doc:
+
+The antenna current scales linearly with wire length, so for wire
+lengths below $1\, \mathrm{mm}$ - which covers practically everything
+that stays inside a single block or hierarchical cell - the sizing
+problem is concrete. Take a minimum-width interconnect, $W_{wire}
+\approx 0.1\, \mu m$, and the worst-case cold-etch net plasma
+current density, $J_{net} \approx 10\, \mu\mathrm{A/cm^2}$:
+
+| $L_{wire}$    | $A_{antenna}$    | $I_{ant}$ at room-T etch |
+| -----------   | -----------      | ----------------         |
+| $1\, \mu m$   | $0.1\, \mu m^2$  | $\sim 1\, \mathrm{fA}$   |
+| $10\, \mu m$  | $1\, \mu m^2$    | $\sim 10\, \mathrm{fA}$  |
+| $100\, \mu m$ | $10\, \mu m^2$   | $\sim 100\, \mathrm{fA}$ |
+| $1\, mm$      | $100\, \mu m^2$  | $\sim 1\, \mathrm{pA}$   |
+
+Now compare with Figure 5. At room temperature the antenna ndiode
+leaks only $\sim 0.5\, \mathrm{fA}/\mu m^2$. A $1\, \mathrm{mm}$
+wire collecting $1\, \mathrm{pA}$ would therefore need a diode
+active area of $\sim 2000\, \mu m^2$ (a $45 \times 45\, \mu m$
+device) to keep the gate clamped during cold etch, which is
+clearly impractical. The same $1\, \mathrm{mm}$ wire is comfortably
+protected by a $0.3\, \mu m^2$ diode at a $200\, ^\circ C$
+deposition step ($\sim 3\, \mathrm{pA}/\mu m^2$) and by a
+sub-$0.01\, \mu m^2$ diode at $400\, ^\circ C$.
+
+Two consequences:
+
+- For wires shorter than a few $\mu m$, the collected charging
+  current is below the room-temperature diode leakage even for the
+  smallest practical antenna ndiode. No protection is needed -
+  which is why foundry antenna rules always have a length-threshold
+  exemption.
+- For long wires the cold-etch step dominates the sizing, and a
+  single big diode is rarely the right answer. The routing tool
+  instead *jumps* the long net up to a higher metal layer (patterned
+  only after the lower stack already protects the gate), or
+  distributes many small antenna ndiodes along the wire so each one
+  only has to drain its local section of the antenna current.
+
+Wider metals (upper-stack power and clock) scale antenna area
+linearly with width, so a $1\, \mu m$-wide, $1\, \mathrm{mm}$-long
+top-metal trace collects $10\, \mathrm{pA}$ rather than $1$, and the
+same conclusions apply with one decade less margin.
+
+-->
+
+---
+
 <!--pan_skip: -->
 
 #[fit] Thanks!
