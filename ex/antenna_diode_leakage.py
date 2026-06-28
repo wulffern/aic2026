@@ -37,8 +37,14 @@ def calc_ni(T):
 if __name__ == "__main__":
     T = np.linspace(200, 1000, 801)
 
-    # Antenna ndiode: n+ in a doped p-substrate / p-well
-    NA = 1e17    # p-substrate doping [1/cm^3]
+    # Antenna ndiode: n+ in a doped p-substrate / p-well.
+    # Typical doping ranges (bulk CMOS):
+    #   bare p-substrate ~ 2e14 - 1e15 1/cm^3
+    #   p-well           ~ 1e16 - 1e17 1/cm^3
+    #   n+ source/drain  ~ 1e19 - 1e20 1/cm^3
+    # We pick a doped p-substrate / shallow p-well midpoint, and a
+    # canonical n+ source/drain.
+    NA = 1e16    # p-substrate doping [1/cm^3]
     ND = 1e20    # n+ implant doping  [1/cm^3]
 
     # 0.2 x 0.2 um^2 junction area in cm^2
