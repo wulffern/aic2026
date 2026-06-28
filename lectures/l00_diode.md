@@ -1179,12 +1179,13 @@ narrower and the reverse leakage *smaller* than a naive
 
 Figure 5 plots the reverse leakage of such a junction:
 $N_A = 10^{17}\, cm^{-3}$ (p-well), $N_D = 10^{20}\, cm^{-3}$
-(n+ S/D), $V_R = 1\, V$, swept from 200 K to 1000 K. The current is
-plotted *per $1\, \mu m^2$ of junction area*, so a $0.2 \times 0.2\,
-\mu m^2$ antenna ndiode is the curve times $0.04$, and a $1 \times
-1\, \mu m^2$ diode reads off directly. The script is
-`ex/antenna_diode_leakage.py` and reuses the $n_i(T)$ derivation
-from `ex/vd.py`.
+(n+ S/D), $V_R = 1\, V$, swept from 200 K to 1000 K. The current
+is plotted as a *leakage density* in $\mathrm{A}/\mu m^2$, so
+multiplying by the actual junction area in $\mu m^2$ gives the
+absolute current - a $0.2 \times 0.2\, \mu m^2$ antenna ndiode is
+the curve times $0.04$, a $1 \times 1\, \mu m^2$ diode reads off
+directly. The script is `ex/antenna_diode_leakage.py` and reuses
+the $n_i(T)$ derivation from `ex/vd.py`.
 
 The two shaded bands mark where plasma-induced damage actually
 happens during fabrication, which is the *only* time an antenna
@@ -1229,12 +1230,11 @@ wide-bandgap materials such as silicon carbide.
 ![right fit Reverse leakage of a 0.2x0.2 um$^2$ antenna ndiode\label{fig:antenna_leak}](../media/antenna_diode_leak.pdf)
 
 <!--pan_doc:
-<sub>Figure 5: Reverse leakage of an n+/p-well antenna ndiode per
-1 um$^2$ of junction area, from 200 K to 1000 K, $V_R = 1$ V.
-Multiply by your actual diode area in um$^2$. Shaded bands are the
-wafer temperature during plasma etch (300-375 K) and plasma
-deposition (470-675 K), the steps at which plasma-induced gate
-damage occurs.</sub>
+<sub>Figure 5: Reverse leakage density (A/um$^2$) of an n+/p-well
+antenna ndiode, from 200 K to 1000 K, $V_R = 1$ V. Multiply by your
+actual diode area in um$^2$. Shaded bands are the wafer temperature
+during plasma etch (300-375 K) and plasma deposition (470-675 K),
+the steps at which plasma-induced gate damage occurs.</sub>
 -->
 
 ---
