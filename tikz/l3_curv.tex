@@ -1,0 +1,85 @@
+\input{tikz/fig_header.tex}
+
+% Curvature correction for the current-mode (Banba) reference of l3_ptat3.
+%
+% Two identical PNPs are biased at currents with different temperature
+% exponents: Q_A from a PTAT current, Q_B from the compensated current the core
+% already makes. Their V_BE difference is exactly (kT/q) ln(I_A/I_B), and since
+% that ratio is itself proportional to T, the difference carries a
+% (kT/q) ln(T/T0) term -- the T ln T shape the residual curvature needs.
+%
+% The OTA holds the right end of R4 at V_BE,A while its left end sits at
+% V_BE,B, so I_NL = (V_BE,A - V_BE,B)/R4. MP_C is the pass device in that loop
+% and MP_D copies I_NL into the R3 summing node from Figure 15.
+%
+% Feedback polarity: raising the OTA output turns MP_C off, which lowers the
+% node it feeds. The sensed node is therefore the + input and the fixed V_BE,A
+% is the - input, or the loop latches instead of settling.
+
+\begin{circuitikz}[american, thick, transform shape, circuit ee IEC]
+
+  \input{tikz/ckt_lib.tex}
+
+  \def\xa{0}             % Q_A, biased by a PTAT current
+  \def\xb{\grid*2.5}     % Q_B, biased by the compensated current
+  \def\xn{\grid*6}       % MP_C, pass device of the R4 loop
+  \def\xd{\grid*8.5}     % MP_D, the copy into the output node
+  \def\ynl{4.2}          % R4 / node X level, also the PMOS drain level
+  \def\ypds{5.8}         % PMOS source level
+  \def\ytop{5.4}         % bottom of the two bias current sources
+  \def\ysup{7.0}         % supply rail
+  \def\yo{3.4}           % OTA + input
+
+  % ---- Q_A: diode connected PNP at a PTAT current ----
+  \node[pnp, anchor=C, label=right:$Q_{A}$] (QA) at (\xa,0) {};
+  \draw (QA.C) -- ++(0,-0.2) \vground;
+  \draw (QA.B) |- (QA.C);
+  \draw (QA.E) -- (\xa,\ytop);
+  \draw (\xa,\ysup) to [I, l=$I_{PTAT}$] (\xa,\ytop);
+  \draw (\xa,\ysup) \vsupply;
+
+  % ---- Q_B: same device, biased by the temperature compensated current ----
+  \node[pnp, anchor=C, label=right:$Q_{B}$] (QB) at (\xb,0) {};
+  \draw (QB.C) -- ++(0,-0.2) \vground;
+  \draw (QB.B) |- (QB.C);
+  \draw (QB.E) -- (\xb,\ytop);
+  \draw (\xb,\ysup) to [I, l=$I_{REF}$] (\xb,\ytop);
+  \draw (\xb,\ysup) \vsupply;
+
+  % ---- R4 from node b out to node X ----
+  \draw (\xb,\ynl) \hresistor{$R_{4}$};
+  \coordinate (r4right) at (resEnd);
+  \draw (\xn,\ynl) to [short, i=$I_{NL}$] (r4right);
+  \fill (\xb,\ynl) circle (0.06);
+
+  % ---- OTA: + senses node X, - sits on V_BE,A ----
+  \draw (\xa+\grid*4,\yo) \cicOtaSSWP{$+$}{$-$};
+  \draw (cicOtaS_inp) -- (\xb+1.8,\yo) -- (\xb+1.8,\ynl);
+  \fill (\xb+1.8,\ynl) circle (0.06);
+  % Crosses the Q_B branch on the way to node a -- no dot there.
+  \draw (cicOtaS_inn) -- (\xa,\yo-0.8);
+  \fill (\xa,\yo-0.8) circle (0.06);
+
+  % ---- Pass device and the mirrored copy ----
+  \draw (\xn,\ynl) \lvmpmos{MPC}{};
+  \draw (MPC.source) \vsupply;
+  \draw (\xd,\ynl) \lvpmos{MPD}{};
+  \draw (MPD.source) \vsupply;
+  \draw (MPC.gate) -- (MPD.gate);
+
+  \draw (cicOtaS_out) -- (\xn+1.8,\yo-0.4);
+  \draw (\xn+1.8,\yo-0.4) |- (MPC.gate);
+  \fill (\xn+1.8,5.0) circle (0.06);
+
+  % ---- Output: I_NL lands on the summing node of Figure 15 ----
+  \draw (\xd,\ynl) to [short, i=$I_{NL}$] (\xd,2.2);
+  \draw (\xd,0) \vground;
+  \draw (\xd,0) -- ++(0,0.4);
+  \draw (\xd,0.4) \vresistor{$R_{3}$};
+  \draw (resEnd) -- (\xd,2.2);
+  \draw (\xd,2.2) \portOut{$V_{REF}$};
+  \draw (\xd,2.2) to [short,*-o] (\xd-1.4,2.2);
+  \node[anchor=east] at (\xd-1.5,2.2) {$I_{PTAT}+I_{CTAT}$};
+
+\end{circuitikz}
+\end{document}
