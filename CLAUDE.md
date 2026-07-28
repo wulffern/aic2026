@@ -54,7 +54,8 @@ files to standalone HTML decks: `pan_doc`/`pan_latex` bodies are dropped, the
 `pan_skip` title slides are kept, and the Deckset directives (`---`, `#[fit]`,
 `![left fit]`, `[.column]`, `[.background-color:]`) become CSS. Open the HTML
 in a browser; arrow keys or space to navigate, `f` for fullscreen, Cmd-P to
-print to PDF. Maths is typeset by a vendored MathJax (`slides/vendor/`), not a
+print to PDF. A lecture written as prose rather than a deck (fewer than five
+`---` breaks) is split on its headings instead, so it still presents. Maths is typeset by a vendored MathJax (`slides/vendor/`), not a
 CDN, so a deck works with no network. Needs `markdown` (in
 `requirements-ci.txt`) and `pdftocairo` from poppler to turn PDF figures into
 SVG for the browser.

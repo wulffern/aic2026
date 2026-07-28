@@ -44,6 +44,13 @@ FG_RE = re.compile(r"^\s*\[\.text:\s*([^\]]+)\]\s*$", re.I)
 COLUMN_RE = re.compile(r"^\s*\[\.column\]\s*$", re.I)
 DROP_DIRECTIVE_RE = re.compile(r"^\s*\[\.[^\]]*\]\s*$")
 FIT_HEADING_RE = re.compile(r"^(#+)\s*\[\s*fit\s*\]\s*(.*)$", re.M)
+# A top level heading, including Deckset's #[fit] form.
+HEADING_RE = re.compile(r"^#{1,2}(?=[\s\[])")
+
+# Below this, a lecture was written as a document rather than a deck, and its
+# headings are used as slide breaks instead. Five is deliberately generous:
+# nothing anyone actually presents has four slide breaks in it.
+AUTOSPLIT_BELOW = 5
 
 # pan_doc bodies are dropped, pan_skip bodies are kept.
 DROP_PAN = {"doc", "latex"}
@@ -117,6 +124,13 @@ class Deck:
 
         body = self._frontmatter(lines)
         body = self._strip_pan(body)
+
+        # Several lectures are prose notes with no --- breaks at all, which
+        # would otherwise render as one unreadable wall. Fall back to breaking
+        # on headings for those, and leave real decks alone.
+        breaks = sum(1 for line in body if SLIDE_BREAK_RE.match(line))
+        self.autosplit = breaks < AUTOSPLIT_BELOW
+
         self._split(body)
 
     def _frontmatter(self, lines):
@@ -184,6 +198,10 @@ class Deck:
                 continue
             if DROP_DIRECTIVE_RE.match(line):
                 continue
+
+            if self.autosplit and HEADING_RE.match(line) and not slide.isempty():
+                self.slides.append(slide)
+                slide = Slide()
 
             line = self._hoist_images(line, slide)
             slide.add(line)
@@ -330,13 +348,20 @@ TEMPLATE = r"""<!doctype html>
 html, body { margin:0; padding:0; height:100%; background:#222; }
 body { font-family: Helvetica, Arial, sans-serif; }
 
-.slide { display:none; width:100vw; height:100vh; align-items:center; justify-content:center; }
-.slide.on { display:flex; }
+.slide { display:flex; width:100vw; height:100vh; align-items:center; justify-content:center; }
+/* Single-slide mode is opt-in, switched on by the script once it is running.
+   If the script never runs, or throws, the deck degrades to a scrollable
+   stack of slides instead of a blank page. */
+.js .slide { display:none; }
+.js .slide.on { display:flex; }
 
 .canvas {
   position:relative;
   width:min(100vw, 177.78vh);
   height:min(56.25vw, 100vh);
+  /* JS resets --u in px per slide; this keeps the deck readable if it never
+     does, because every size below is calc()ed from it. */
+  --u: 1vw;
   background:var(--bg); color:var(--fg);
   padding: calc(var(--u) * 5) calc(var(--u) * 6);
   font-size: calc(var(--u) * 2.6);
@@ -427,7 +452,13 @@ function show(n) {
   const canvas = slides[idx].querySelector('.canvas');
   unit(canvas);
   autoscale(canvas);
-  if (location.hash !== '#' + (idx + 1)) history.replaceState(null, '', '#' + (idx + 1));
+  // Safari throws a SecurityError for the history API on file:// URLs, and a
+  // deep link is never worth losing the deck over.
+  try {
+    if (location.hash !== '#' + (idx + 1)) {
+      history.replaceState(null, '', '#' + (idx + 1));
+    }
+  } catch (e) { /* deep linking unavailable, keep presenting */ }
 }
 
 addEventListener('keydown', e => {
@@ -435,7 +466,11 @@ addEventListener('keydown', e => {
   else if (['ArrowLeft', 'ArrowUp', 'PageUp'].includes(e.key)) { show(idx - 1); e.preventDefault(); }
   else if (e.key === 'Home') show(0);
   else if (e.key === 'End') show(slides.length - 1);
-  else if (e.key === 'f') document.documentElement.requestFullscreen?.();
+  else if (e.key === 'f') {
+    const el = document.documentElement;
+    // Safari still only has the prefixed call.
+    (el.requestFullscreen || el.webkitRequestFullscreen)?.call(el);
+  }
 });
 addEventListener('resize', () => show(idx));
 addEventListener('hashchange', () => show((parseInt(location.hash.slice(1)) || 1) - 1));
@@ -451,7 +486,17 @@ window.MathJax = {
 };
 </script>
 <script src="vendor/tex-svg.js"></script>
-<script>show((parseInt(location.hash.slice(1)) || 1) - 1);</script>
+<script>
+// Only claim single-slide mode once it is known to work: if show() throws on
+// this browser, drop back to the stacked fallback rather than a blank deck.
+try {
+  document.documentElement.classList.add('js');
+  show((parseInt(location.hash.slice(1)) || 1) - 1);
+} catch (e) {
+  document.documentElement.classList.remove('js');
+  console.error('slide navigation unavailable, falling back to a stacked deck', e);
+}
+</script>
 </body>
 </html>
 """
