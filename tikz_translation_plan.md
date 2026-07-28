@@ -339,7 +339,8 @@ In `lectures/l03_refbias.md`:
 That is 10 figures, in three lectures.
 
 ### Pending approval
-- none
+- `l3_curv`, `l3_widlar`, `l3_mosref` — the three new-content figures below.
+  Sources and PDFs are committed; no lecture text references them yet.
 
 Also converted and switched: `l3_ptat`, `l3_ptat1`, `l3_ptat2` — 13 figures total.
 
@@ -371,6 +372,14 @@ need lecture text as well as figures, and the text is the harder half.
 **Start here next session, in this order: curvature correction first**, then
 Widlar, then the MOS-based reference. Take them ahead of `l05_sc` and ahead of
 the remaining `l03_refbias` conversion work.
+
+All three figures are now drawn and rendered: `tikz/l3_curv.tex`,
+`tikz/l3_widlar.tex`, `tikz/l3_mosref.tex`. The proposed lecture text sits in
+the review directory as `preview/proposed_l03_refbias_text.md` and is **not**
+merged into `lectures/l03_refbias.md` yet. The plan is to insert all three
+sections between the Banba section (Figure 15) and the `#[fit] Bias` divider,
+in the order above, which renumbers the existing Figure 16 (`l3_vi`) to 19 and
+Figure 17 (`l3_gmcell`) to 20.
 
 1. **Curvature correction.** `l3_bgsimtfs` and `vd` already show the residual
    curvature; nothing in the lecture corrects it. This closes that loop.
