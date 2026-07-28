@@ -565,7 +565,7 @@ appear in-band. That's why it's important to band limit analog signals before th
 
 -->
 
-![fit](../media/l5_sh.svg)
+![fit](../media/l5_sh_tikz.pdf)
 
 ---
 
