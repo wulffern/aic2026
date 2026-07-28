@@ -27,40 +27,6 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  tikz:
-    runs-on: ubuntu-latest
-    container:
-      image: texlive/texlive:TL2022-historic
-      options: --user root
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          submodules: recursive
-
-      - name: Install preview dependencies
-        shell: bash
-        run: |
-          apt-get update
-          apt-get install -y poppler-utils
-
-      - name: Compile TikZ figure sources
-        shell: bash
-        run: |
-          git config --global --add safe.directory "$(pwd)"
-          make tikz-check
-
-      - name: Render figure previews
-        shell: bash
-        run: make tikz-preview
-
-      - name: Upload figure previews
-        uses: actions/upload-artifact@v4
-        with:
-          name: tikz-previews
-          path: preview
-          if-no-files-found: error
-
   prepare:
     runs-on: ubuntu-latest
     steps:

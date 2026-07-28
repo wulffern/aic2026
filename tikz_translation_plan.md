@@ -258,15 +258,20 @@ Root `Makefile` targets:
 Discovery is `find tikz -name '*.tex'` minus `fig_header.tex` and `ckt_lib.tex`,
 so a new figure needs no Makefile edit regardless of its name or depth.
 
-CI: the `tikz` job in `.github/workflows/matrix_build.yaml` runs `make tikz-check`
-on the `texlive/texlive:TL2022-historic` image. It fails the build when a figure
-source stops compiling. It does not regenerate or commit artwork — `media/*_tikz.pdf`
-is still produced locally and committed, so keep source and PDF in the same commit.
-
-The same job then runs `make tikz-preview` and uploads `preview/` as the
+CI: `.github/workflows/tikz.yaml` runs `make tikz-check` on the
+`texlive/texlive:TL2022-historic` image, failing the build when a figure source
+stops compiling. It then runs `make tikz-preview` and uploads `preview/` as the
 `tikz-previews` artifact, one PNG per figure, downloadable from the run summary.
-That is the way to look at a figure drafted by someone without a local TeX
-install: push the source, let CI build it, download the artifact, review.
+
+It runs on **every branch and pull request**, not just `main` — the review loop
+depends on pushing a draft and reading its preview before the lecture reference
+is switched. It is a separate workflow from `matrix_build.yaml` for that reason;
+the docs workflow is `main`-only and deploys Pages.
+
+CI does not regenerate or commit artwork. `media/*_tikz.pdf` is still produced
+locally with `make tikz-one` and committed, so keep source and PDF in the same
+commit. A figure drafted without `pdflatex` to hand therefore lands in two steps:
+push the source, review the CI preview, then commit the built PDF once approved.
 
 ## Reviewing Figures Without a TeX Install
 `py/preview.py` renders committed artwork to PNG — PDF via `pypdfium2`, SVG via

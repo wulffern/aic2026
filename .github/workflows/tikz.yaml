@@ -1,0 +1,57 @@
+name: TikZ figures
+
+# Runs on every branch, not just main: the review loop in
+# tikz_translation_plan.md depends on being able to push a draft figure and
+# download its rendered preview before the lecture reference is switched.
+on:
+  push:
+    paths:
+      - 'tikz/**.tex'
+      - 'Makefile'
+      - '.github/workflows/tikz.yaml'
+  pull_request:
+    paths:
+      - 'tikz/**.tex'
+      - 'Makefile'
+      - '.github/workflows/tikz.yaml'
+  workflow_dispatch:
+
+concurrency:
+  group: tikz-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  figures:
+    runs-on: ubuntu-latest
+    container:
+      image: texlive/texlive:TL2022-historic
+      options: --user root
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install preview dependencies
+        shell: bash
+        run: |
+          apt-get update
+          apt-get install -y poppler-utils
+
+      - name: Compile TikZ figure sources
+        shell: bash
+        run: |
+          git config --global --add safe.directory "$(pwd)"
+          make tikz-check
+
+      - name: Render figure previews
+        shell: bash
+        run: make tikz-preview
+
+      - name: Upload figure previews
+        uses: actions/upload-artifact@v4
+        with:
+          name: tikz-previews
+          path: preview
+          if-no-files-found: error
