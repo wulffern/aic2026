@@ -3,46 +3,74 @@
 % A reference built on the difference between two threshold voltages.
 % Included so it can be recognised, not so it can be copied.
 %
-% M1 is a depletion device with its gate tied to its source, so V_GS1 = 0 and
-% it still conducts because V_t1 < 0. M2 is an ordinary enhancement device,
-% diode connected. Equal currents in strong inversion give
-% V_REF = V_t2 - V_t1 sqrt(W1 L2 / L1 W2), and with equal shapes V_REF is
-% simply the difference of the two thresholds.
+% Deliberately drawn as the same loop as l3_gmcell, because that is the point
+% of the slide: identical topology, and the only difference is where the number
+% comes from. The GM cell gets it from a 4:1 size ratio, which lithography
+% controls. This gets it from two different channel implants, which nothing
+% controls together.
 %
-% Both gates sit on the same V_REF node, drawn as one bus on the left so the
-% right hand side stays free for the annotations.
+% MN1 (right) is a standard Vt device with its source at ground, diode
+% connected. MN2 (left) is a native device with R in its source. The PMOS
+% mirror forces equal currents, and with equal W/L the overdrives cancel, so
+% I*R = V_t1 - V_t2.
+%
+% Row spacing matches \grid = 1.6 so a device drawn by the \lv*mos macros spans
+% exactly one row.
 
 \begin{circuitikz}[american, thick, transform shape, circuit ee IEC]
 
   \input{tikz/ckt_lib.tex}
 
-  \def\x{0}
-  \def\xg{-1.1}      % gate bus
-  \def\ymid{2.0}     % V_REF tap on the shared node
+  \def\xl{0}          % native device, R in its source
+  \def\xr{\grid*2.5}  % standard Vt device, source at ground
 
-  % ---- M2: diode connected enhancement device ----
-  \draw (\x,0) \vground;
-  \draw (\x,0) \lvnmos{M2}{};
+  \def\ybot{2.0}      % NMOS source level     (top of R)
+  \def\ybotd{3.6}     % NMOS drain level      (\ybot + \grid)
+  \def\ytop{4.4}      % PMOS drain level
+  \def\ytops{6.0}     % PMOS source level     (\ytop + \grid)
 
-  % ---- Shared node: source of M1, drain of M2, and both gates ----
-  \draw (\x,\grid) -- (\x,\grid+0.8);
+  % ---- Left branch: R, native NMOS, PMOS ----
+  \draw (\xl,0) \vground;
+  \draw (\xl,0) -- ++(0,0.4);
+  \draw (\xl,0.4) \vresistor{$R$};
+  \draw (resEnd) -- (\xl,\ybot);
 
-  % ---- M1: depletion device, gate on its own source ----
-  \draw (\x,\grid+0.8) \lvnmos{M1}{};
-  \draw (\x,\grid*2+0.8) \vsupply;
+  \draw (\xl,\ybot) \lvmnmos{MN2}{};
+  \draw (\xl,\ybotd) -- (\xl,\ytop);
+  \draw (\xl,\ytop) \lvmpmos{MP2}{};
+  \draw (\xl,\ytops) \vsupply;
 
-  % ---- Gate bus ----
-  \draw (M1.gate) -- (\xg,3.2) -- (\xg,0.8) -- (M2.gate);
-  \draw (\xg,\ymid) -- (\x,\ymid);
-  \fill (\xg,\ymid) circle (0.06);
+  % ---- Right branch: standard NMOS straight to ground, PMOS ----
+  \draw (\xr,0) \vground;
+  \draw (\xr,0) -- (\xr,\ybot);
 
-  % ---- Output ----
-  \draw (\x,\ymid) \portOut{$V_{REF}$};
+  \draw (\xr,\ybot) \lvnmos{MN1}{};
+  \draw (\xr,\ybotd) -- (\xr,\ytop);
+  \draw (\xr,\ytop) \lvpmos{MP1}{};
+  \draw (\xr,\ytops) \vsupply;
 
-  % ---- Annotations ----
-  \node[anchor=east] at (\xg-0.2,3.2) {$V_{GS1}=0$};
-  \node[anchor=west] at (\x+0.55,3.2) {$M_{1}$: depletion, $V_{t1}<0$};
-  \node[anchor=west] at (\x+0.55,0.8) {$M_{2}$: enhancement, $V_{t2}>0$};
+  % ---- Gate lines: NMOS diode connected on the right, PMOS on the left ----
+  \draw (MN2.gate) -- (MN1.gate);
+  \coordinate (gBot) at ($(MN2.gate)!0.5!(MN1.gate)$);
+  \draw (gBot) |- (\xr,\ybotd);
+
+  \draw (MP2.gate) -- (MP1.gate);
+  \coordinate (gTop) at ($(MP2.gate)!0.5!(MP1.gate)$);
+  \draw (gTop) |- (\xl,\ytop);
+
+  % ---- What sets the current ----
+  \node[anchor=south] at ($(gTop)+(0,0.15)$) {$1:1$};
+  \node[anchor=north] at ($(gBot)+(0,-0.15)$) {same $W/L$};
+
+  \node[anchor=east] at (\xl-0.45,\ybot+0.8) {native, $V_{t2}$};
+  \node[anchor=west] at (\xr+0.45,\ybot+0.8) {standard, $V_{t1}$};
+
+  % ---- The whole reference is this one voltage ----
+  % Drawn as plain nodes rather than a circuitikz `v=' annotation, same as the
+  % V_o marks in l3_gmcell.
+  \node[anchor=east] at (\xl-0.55,1.9) {$+$};
+  \node[anchor=east] at (\xl-0.55,1.1) {$\Delta V_{t}$};
+  \node[anchor=east] at (\xl-0.55,0.3) {$-$};
 
 \end{circuitikz}
 \end{document}
