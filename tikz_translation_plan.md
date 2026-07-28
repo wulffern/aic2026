@@ -423,6 +423,16 @@ range, not a resistivity; and none of it is visible to a process control that
 watches implants. One end of the subtraction is an implanter recipe in the fab,
 the other is a crystal grower at another company.
 
+The ingot argument is a **bulk** argument, and the section says so. Two slides
+follow it on FD-SOI, where the channel is undoped and the threshold comes from
+the gate work function and the back plane instead. The conclusion survives —
+two unrelated recipes, and the wafer-supplier dependence moves from resistivity
+to silicon film thickness rather than disappearing — but the reasoning is
+different and the section must not be left implying bulk everywhere. The same
+slides correct the "use the parasitic vertical PNP every CMOS process has"
+advice, which is false in the thin film: in FD-SOI the bandgap goes in a hybrid
+opening.
+
 ### Deck vs book structure
 Content inside `<!--pan_doc: ... -->` is book/web only. A slide whose entire
 body is a `pan_doc` block renders **blank** in the deck. Either give the slide

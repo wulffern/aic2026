@@ -908,6 +908,61 @@ each other.
 
 ---
 
+## FD-SOI moves the problem, it does not remove it
+
+<!--pan_doc:
+
+Everything on the last slide was a bulk story, and you should ask what happens
+in a fully depleted process. In FD-SOI the channel is undoped silicon a few
+nanometres thick sitting on buried oxide, and the threshold is not set by
+channel doping at all. It is set by the work function of the gate stack, and by
+the doping of the back plane under the oxide, which is what a regular well and
+a flip well actually are.
+
+That fixes something real. An undoped channel has no random dopant
+fluctuation, and random dopant fluctuation is the dominant source of local
+$V_t$ mismatch in bulk. Two FD-SOI devices side by side match far better than
+two bulk devices of the same area. If mismatch were the objection, FD-SOI would
+answer it.
+
+Mismatch was never the objection. The objection is that the two ends of the
+subtraction are set by unrelated recipes, and in FD-SOI they still are: one by
+a metal gate work function, the other by an implant under the oxide. Those two
+have no more reason to track each other than two channel implants did.
+
+The supplier problem does not go away either, it changes address. Fully
+depleted means the threshold depends on how thick the silicon film is, and that
+film is a few nanometres of silicon bonded onto oxide by the wafer maker rather
+than grown by your fab. You have traded a resistivity specification you do not
+control for a thickness specification you do not control.
+
+-->
+
+---
+
+## The back gate is a trimming knob, not a reference
+
+<!--pan_doc:
+
+The back gate is the genuinely interesting part of FD-SOI here. It moves $V_t$
+by tens of millivolts per volt, and it moves it electrically, after the wafer
+is finished. That is a wonderful trimming knob, and it is one of the better
+reasons to be in FD-SOI at all. It is not a reference, though. Setting a
+threshold with a voltage means generating that voltage first, and you are back
+where you started.
+
+One footnote on the advice I just gave, since it was written for bulk. The
+vertical PNP does not exist in the thin film, so in FD-SOI you cannot simply
+reach for it. What you do instead is put the bandgap in a hybrid opening, where
+the film and the buried oxide are removed and you are looking at ordinary bulk
+silicon again. Every FD-SOI process gives you those, because the I/O and the
+ESD need them too. The circuit is the same circuit. It just needs somewhere to
+live.
+
+-->
+
+---
+
 
 
 #[fit] Bias
