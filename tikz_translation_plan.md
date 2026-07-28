@@ -370,6 +370,10 @@ than trusting the queue to be complete. The ~117 total understates the work.
 These are new teaching content for `l03_refbias`, requested by the user. They
 need lecture text as well as figures, and the text is the harder half.
 
+**Start here next session, in this order: curvature correction first**, then
+Widlar, then the MOS-based reference. Take them ahead of `l05_sc` and ahead of
+the remaining `l03_refbias` conversion work.
+
 1. **Curvature correction.** `l3_bgsimtfs` and `vd` already show the residual
    curvature; nothing in the lecture corrects it. This closes that loop.
 2. **Widlar reference.** Historical breadth alongside the Brokaw citation
