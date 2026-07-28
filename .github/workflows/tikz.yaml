@@ -3,17 +3,12 @@ name: TikZ figures
 # Runs on every branch, not just main: the review loop in
 # tikz_translation_plan.md depends on being able to push a draft figure and
 # see it built before the lecture reference is switched.
+# No paths filter: a push touching tikz/ and Makefile was silently skipped
+# once, and an unexplained miss is worse than a ~90s no-op run. The job
+# commits nothing when the figures are unchanged, so running it always is cheap.
 on:
   push:
-    paths:
-      - 'tikz/**.tex'
-      - 'Makefile'
-      - '.github/workflows/tikz.yaml'
   pull_request:
-    paths:
-      - 'tikz/**.tex'
-      - 'Makefile'
-      - '.github/workflows/tikz.yaml'
   workflow_dispatch:
 
 concurrency:
@@ -59,10 +54,10 @@ jobs:
           if-no-files-found: error
 
       # Commit the generated PDFs so a figure can be authored without a local
-      # TeX install. Only on push — a pull_request checkout is a merge commit
-      # and has no branch to push back to.
+      # TeX install. Everything except pull_request, whose checkout is a merge
+      # commit with no branch to push back to.
       - name: Commit generated figures
-        if: github.event_name == 'push'
+        if: github.event_name != 'pull_request'
         shell: bash
         env:
           BRANCH: ${{ github.ref_name }}
