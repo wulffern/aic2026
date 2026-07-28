@@ -1,0 +1,67 @@
+\input{tikz/fig_header.tex}
+
+% PTAT current source. Same circuit as l03_ptat, redrawn here for the build-up
+% sequence that leads to the Banba reference (l3_ptat1 .. l3_ptat3).
+%
+% NOTE ON POLARITY: this artwork marks the OTA + on the LEFT input (unit device)
+% and - on the RIGHT (xN device through R1). That is the opposite of l03_ptat,
+% l03_vref1 and l03_vref2, where the original artwork left the polarity
+% unmarked and it was assigned the other way round. This file follows the
+% marking the author actually drew; the other three need flipping to match.
+
+\begin{circuitikz}[american, thick, transform shape, circuit ee IEC]
+
+  \input{tikz/ckt_lib.tex}
+
+  \def\xl{0}
+  \def\xr{\grid*2.5}
+  \def\pdlevel{5}
+
+  % ---- Diode-connected PNPs, unit on the left and xN on the right ----
+  \node[pnp, anchor=C] (Q1) at (\xl, 0) {};
+  \draw (Q1.C) -- ++(0,-0.2) \vground;
+  \draw (Q1.B) |- (Q1.C);
+
+  \node[pnp, anchor=C, label=right:${\times N}$] (Q2) at (\xr, 0) {};
+  \draw (Q2.C) -- ++(0,-0.2)\vground;
+  \draw (Q2.B) |- (Q2.C);
+
+  % ---- R1 above the xN device ----
+  \draw (Q2.E) \vresistor{$R_{1}$};
+
+  \coordinate (mp1drain) at (\xl, \pdlevel);
+  \coordinate (mp2drain) at (\xr, \pdlevel);
+
+  % ---- OTA, rotated 90 degrees so the output points up ----
+  \def\xota{-\grid*1.5}
+  \def\yota{ 3}
+  \begin{scope}[xscale=-1]
+  \begin{scope}[rotate around={90:(\xota,\yota)}]
+    % Polarity marks are drawn outside this scope — see l03_ptat for why.
+    \draw (\xota, \yota) \cicOtaSSWP{}{};
+    \coordinate (otaRight) at ($(\xota,\yota)+(0.5,0)$);
+    \coordinate (otaLeft)  at ($(\xota,\yota)+(0.5,-\grid/2)$);
+  \end{scope}
+  \end{scope}
+  % + on the left input, - on the right, as marked in the original.
+  \node at ($(otaLeft)+(0,0.3)$)  {$+$};
+  \node at ($(otaRight)+(0,0.3)$) {$-$};
+
+  \draw (cicOtaS_inp) -| (mp2drain);
+  \draw (cicOtaS_inn) -| (mp1drain);
+  \draw (cicOtaS_inn) -| (Q1.E);
+
+  % ---- PMOS mirror ----
+  \draw (mp1drain) \lvmpmos{MP1}{};
+  \draw (MP1.source) \vsupply;
+  \draw (mp2drain) \lvpmos{MP2}{};
+  \draw (MP2.source) \vsupply;
+
+  \draw (cicOtaS_out) |- (MP1.gate);
+  \draw (MP1.gate) -- (MP2.gate);
+
+  % Current direction in the xN branch, unlabelled as in the original.
+  \draw[->] (\xr+0.9,\pdlevel-0.1) -- ++(0,-0.9);
+
+\end{circuitikz}
+\end{document}
