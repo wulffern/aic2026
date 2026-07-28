@@ -780,12 +780,6 @@ is the only one that lands anywhere near zero.
 So the modern version of the idea pairs two of those flavours, and it looks
 like Figure 18.
 
--->
-
----
-
-<!--pan_doc:
-
 You have seen this loop before, or rather you are about to see it: it is the GM
 cell from later in this chapter, with the size ratio taken out and a second
 implant put in its place. The PMOS mirror forces the same current down both
@@ -818,15 +812,14 @@ $$ I = \frac{V_{t1} - V_{t2}}{R} = \frac{\Delta V_t}{R} $$
 
 ---
 
+**MOS based references that rely on the difference between two threshold
+voltages are very risky and should not be attempted.**
+
 <!--pan_doc:
 
 I want you to leave this slide able to recognise that circuit, and unwilling to
-build it.
-
-**MOS based references that rely on the difference between two threshold
-voltages are very risky and should not be attempted.** Process control over the
-two threshold sources is poor, and their stability is poor, so the difference
-is neither well controlled nor stable.
+build it. Process control over the two threshold sources is poor, and their
+stability is poor, so the difference is neither well controlled nor stable.
 
 Put Figure 18 next to Figure 20 and the problem is visible in one look. They
 are the same loop. The GM cell puts a 4:1 size ratio in it, and a size ratio is
@@ -836,12 +829,6 @@ implants in the same place. Those are two separate recipes, aimed separately,
 monitored separately, and drifting separately. Nothing makes them move
 together.
 
--->
-
----
-
-<!--pan_doc:
-
 Watch what the numbers do. Take standard against low $V_t$: two devices at
 maybe 450 mV and 350 mV, each with a spread of $\pm 50$ mV over process. Each
 threshold on its own is known to about $\pm 12$ %. The difference you actually
@@ -850,22 +837,51 @@ $\pm 70$ %. If they happen to move in opposite directions it is worse than
 that, and nothing in the process says they will not. Subtracting two similar,
 poorly known numbers is the worst thing you can do to an error budget.
 
-Reach for the native device to get a bigger difference and you have picked the
-least controlled transistor in the process. Its threshold is whatever is left
-when you leave the channel implant out, so it is set by background doping and
-well proximity, and in most PDKs it comes with the widest corners and the
-thinnest model guarantees of anything on the menu.
-
-Compare that with what a bandgap does. A bandgap gets its number from $E_g$ of
-silicon. That is a property of the material, it is the same in every fab on
-earth, and no process engineer can move it. This circuit gets its number from
-the difference between two implant recipes.
-
 -->
 
 ---
 
+## The native threshold is set when the ingot is grown
+
 <!--pan_doc:
+
+Reach for the native device to get a bigger difference and you have picked the
+least controlled transistor in the process. Its threshold is whatever is left
+when you leave the channel implant out, which means it rides on the doping of
+the silicon underneath it, and that is not a number the fab sets.
+
+Think about where it does get set. Not in an implanter, where the dose is
+metered to about a percent and measured on every lot. It is fixed when the
+ingot is grown, by how much boron went into the melt before the crystal was
+pulled out of it, and the boule is usually not even grown by the company that
+builds your chip. You buy wafers, and what you buy is a resistivity range, not
+a resistivity.
+
+It is worse than a range. Boron has a segregation coefficient below one, so it
+would rather stay in the melt than join the crystal. As the boule is pulled the
+melt gets steadily richer, and the silicon that freezes out near the tail end
+is more heavily doped than the silicon at the seed end, by tens of percent over
+the length of one crystal. Wafers sliced from the two ends of the same boule
+are not the same wafer. There is a radial gradient across each wafer on top of
+that, and well proximity and STI stress move it again locally.
+
+None of this is visible to the fab's process control, which watches implants
+and etches, and none of it is correctable there either. So one end of your
+subtraction is set by an implanter recipe inside the fab, and the other end is
+set by a crystal grower at a different company, to a different specification,
+probably on a different continent. Those two numbers have no reason on earth to
+move together. In most PDKs the native device duly comes with the widest
+corners and the thinnest model guarantees of anything on the menu.
+
+If the process runs on epitaxial wafers the native device sees the epi layer
+rather than the bulk, and epi doping is better controlled than a pulled
+crystal. It is still a deposition specification rather than a metered implant,
+and it is still usually somebody else's specification.
+
+Compare that with what a bandgap does. A bandgap gets its number from $E_g$ of
+silicon. That is a property of the material, it is the same in every fab on
+earth, and no process engineer can move it. This circuit gets its number from
+the difference between an implant recipe and a crystal pull.
 
 Stability is the other half, and trimming does not save you. You can trim out
 the initial spread in production test, once. Then the thresholds move over the

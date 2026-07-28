@@ -413,6 +413,29 @@ parallel if either is re-laid-out.
 When writing about device flavours in this course, use the PDK vocabulary —
 standard/low/high $V_t$ and native — not enhancement/depletion.
 
+The section's strongest argument, added at the user's request, is where the
+native threshold actually comes from: with no channel implant it rides on the
+substrate doping, which is fixed when the ingot is grown rather than by any
+step the fab controls. Boron's segregation coefficient is below one, so the
+melt enriches as the boule is pulled and the tail end is more heavily doped
+than the seed end by tens of percent; the wafer vendor sells a resistivity
+range, not a resistivity; and none of it is visible to a process control that
+watches implants. One end of the subtraction is an implanter recipe in the fab,
+the other is a crystal grower at another company.
+
+### Deck vs book structure
+Content inside `<!--pan_doc: ... -->` is book/web only. A slide whose entire
+body is a `pan_doc` block renders **blank** in the deck. Either give the slide
+something bare — a heading, a figure, an equation, or in this case the warning
+sentence itself — or drop the `---` and let the prose ride along with the
+previous slide, which is what the lecture already does for the long `l3_isrc`
+discussion. A `##` heading inside `pan_doc` gives the book structure without
+creating a slide; a bare `##` heading gives both.
+
+Check with: split the lecture on `\n---\n`, strip the comment blocks, and flag
+any slide whose remainder is empty. Only the file's trailing fragment should
+come up.
+
 1. **Curvature correction.** `l3_bgsimtfs` and `vd` already show the residual
    curvature; nothing in the lecture corrects it. This closes that loop.
 2. **Widlar reference.** Historical breadth alongside the Brokaw citation
