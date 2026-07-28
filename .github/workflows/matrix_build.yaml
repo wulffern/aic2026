@@ -70,6 +70,7 @@ jobs:
           path: |
             docs/_posts
             docs/assets/media
+            docs/assets/html
             docs/downloads.md
             docs/plan.md
             docs/syllabus.md

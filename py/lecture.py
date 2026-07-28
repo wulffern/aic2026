@@ -419,6 +419,9 @@ class Lecture():
             if("lectures" in self.filename ):
                 #slides = "[Slides](" +  self.options["jekyll"] + self.filename.replace("lectures","assets/slides").replace(".md",".pdf") +")"
                 slides = " [PDF](" +  self.options["jekyll"] + self.filename.replace("lectures","assets/").replace(".md",".pdf") +")"
+                #- The HTML deck built by py/slides.py, see `make slides`
+                slides += " [Slides](" + self.options["jekyll"] + "assets/html/" \
+                    + os.path.basename(self.filename).replace(".md",".html") + ")"
 
             ss += f"""---
 layout: post

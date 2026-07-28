@@ -45,7 +45,7 @@ make jstart   # Runs Jekyll in Docker on port 3002 (http://localhost:3002)
 
 ### Slide decks
 ```sh
-make slides              # Render every lecture to docs/assets/slides/<name>.html
+make slides              # Render every lecture to docs/assets/html/<name>.html
 make slides-parallel     # Same, 4 workers
 make slides-one FNAME=l05_sc
 ```

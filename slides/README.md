@@ -1,6 +1,6 @@
 # Slide deck assets
 
-Static files copied into `docs/assets/slides/` by `make slides`. That directory
+Static files copied into `docs/assets/html/` by `make slides`. That directory
 is generated and gitignored (`.gitignore` ignores `assets/`), so anything the
 decks need at runtime has to live here and be copied, the same way `media/` is
 the source for `docs/assets/media/`.

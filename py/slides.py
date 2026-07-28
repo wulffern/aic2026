@@ -459,7 +459,7 @@ window.MathJax = {
 
 @click.command()
 @click.argument("filename")
-@click.option("--outdir", default="docs/assets/slides", help="Where to write the deck")
+@click.option("--outdir", default="docs/assets/html", help="Where to write the deck")
 def slides(filename, outdir):
     """Render FILENAME, a Deckset lecture, to an HTML slide deck."""
     options = dict()

@@ -65,7 +65,7 @@ book-nobuild:
 version:
 	echo "aic${YEAR}" > version
 
-prepare-docs: clean-prepared version figures posts-parallel texfiles-parallel
+prepare-docs: clean-prepared version figures posts-parallel texfiles-parallel slides-parallel
 	cd pdf; [ -d kaobook ] || git clone https://github.com/fmarotta/kaobook.git
 
 figures: media/antenna_diode_leak.pdf
@@ -76,6 +76,7 @@ media/antenna_diode_leak.pdf: ex/antenna_diode_leakage.py
 clean-prepared:
 	-rm -f docs/downloads.md images.txt *_images.inc
 	-rm -f docs/assets/*.pdf docs/assets/*.epub
+	-rm -rf docs/assets/html
 	-rm -f pdf/*.aux pdf/*.log pdf/*.pdf pdf/*.epub pdf/*.bbl pdf/*.blg pdf/*.toc pdf/*.bcf pdf/*.xml pdf/*.mw
 
 print-files:
@@ -216,10 +217,11 @@ TIKZ_SOURCES = $(shell find tikz -name '*.tex' -not -path 'tikz/build/*' \
 #
 # docs/assets/ is gitignored, so slides/vendor is the source for anything the
 # decks need at runtime and gets copied in, the same way media/ is the source
-# for docs/assets/media/.
+# for docs/assets/media/. The decks land in docs/assets/html/ and are published
+# with the site; prepare-docs builds them so CI picks them up.
 # ---------------------------------------------------------------------------
 
-SLIDEDIR = docs/assets/slides
+SLIDEDIR = docs/assets/html
 
 slides-vendor:
 	-mkdir -p ${SLIDEDIR}/vendor docs/assets/media
