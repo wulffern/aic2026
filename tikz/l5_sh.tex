@@ -13,36 +13,39 @@
 % preserved, because that is what the arithmetic gives.
 %
 % No ckt_lib here: nothing in this figure is a circuit element.
+%
+% Every macro below is prefixed. \th is a LaTeX built-in (thorn) and silently
+% redefining it is a fatal error, so short generic names are not safe here.
 
 \definecolor{axisblue}{rgb}{0.16,0.16,0.55}
 \definecolor{specgreen}{rgb}{0.00,0.45,0.20}
 \definecolor{tonered}{rgb}{0.85,0.22,0.10}
 \definecolor{tonemag}{rgb}{0.90,0.20,0.75}
 
-\newcommand{\half}{1.2}     % f_s/2
-\newcommand{\xmax}{3.5}     % axis half length
-\newcommand{\vh}{1.9}       % vertical axis height
-\newcommand{\th}{1.05}      % tone height
+\newcommand{\shHalf}{1.2}     % f_s/2
+\newcommand{\shXmax}{3.5}     % axis half length
+\newcommand{\shVh}{1.9}       % vertical axis height
+\newcommand{\shToneh}{1.05}      % tone height
 
 % One frequency axis with its Nyquist ticks. #1 is the baseline.
-\newcommand{\specaxis}[1]{%
-  \draw[axisblue, thick, <->] (-\xmax,#1) -- (\xmax,#1);
-  \draw[axisblue, thick, ->] (0,#1) -- (0,#1+\vh);
+\newcommand{\shAxis}[1]{%
+  \draw[axisblue, thick, <->] (-\shXmax,#1) -- (\shXmax,#1);
+  \draw[axisblue, thick, ->] (0,#1) -- (0,#1+\shVh);
   \foreach \p/\lbl in {-2/{-f_{s}}, -1/{-f_{s}/2}, 1/{f_{s}/2}, 2/{f_{s}}} {
-    \draw[axisblue, thick] (\p*\half,#1+0.13) -- (\p*\half,#1-0.13);
-    \node[axisblue, anchor=north] at (\p*\half,#1-0.22) {$\lbl$};
+    \draw[axisblue, thick] (\p*\shHalf,#1+0.13) -- (\p*\shHalf,#1-0.13);
+    \node[axisblue, anchor=north] at (\p*\shHalf,#1-0.22) {$\lbl$};
   }
 }
 
 % The wanted signal, centred on DC. #1 is the baseline.
-\newcommand{\bump}[1]{%
+\newcommand{\shBump}[1]{%
   \draw[specgreen, very thick] plot[smooth, tension=0.7] coordinates
     {(-1.05,#1) (-0.75,#1+0.80) (-0.35,#1+1.30) (0,#1+1.45)
      (0.35,#1+1.30) (0.75,#1+0.80) (1.05,#1)};
 }
 
 % A tone: colour, position, baseline.
-\newcommand{\tone}[3]{\draw[#1, very thick, ->] (#2,#3) -- (#2,#3+\th);}
+\newcommand{\shTone}[3]{\draw[#1, very thick, ->] (#2,#3) -- (#2,#3+\shToneh);}
 
 \begin{circuitikz}[american, transform shape]
 
@@ -50,21 +53,21 @@
   \def\ybot{0}
 
   % ---- Before sampling: two pairs of tones outside the Nyquist band ----
-  \specaxis{\ytop}
-  \bump{\ytop}
-  \tone{tonered}{-2.88}{\ytop}     % -1.2 fs
-  \tone{tonemag}{-1.68}{\ytop}     % -0.7 fs
-  \tone{tonemag}{1.68}{\ytop}
-  \tone{tonered}{2.88}{\ytop}
+  \shAxis{\ytop}
+  \shBump{\ytop}
+  \shTone{tonered}{-2.88}{\ytop}     % -1.2 fs
+  \shTone{tonemag}{-1.68}{\ytop}     % -0.7 fs
+  \shTone{tonemag}{1.68}{\ytop}
+  \shTone{tonered}{2.88}{\ytop}
   \node[anchor=west] at (1.45,\ytop+1.62) {Before sampling};
 
   % ---- After sampling: both pairs have folded inside ----
-  \specaxis{\ybot}
-  \bump{\ybot}
-  \tone{tonered}{-0.48}{\ybot}     % 1.2 fs - fs = 0.2 fs
-  \tone{tonemag}{-0.72}{\ybot}     % 0.7 fs - fs = -0.3 fs
-  \tone{tonemag}{0.72}{\ybot}
-  \tone{tonered}{0.48}{\ybot}
+  \shAxis{\ybot}
+  \shBump{\ybot}
+  \shTone{tonered}{-0.48}{\ybot}     % 1.2 fs - fs = 0.2 fs
+  \shTone{tonemag}{-0.72}{\ybot}     % 0.7 fs - fs = -0.3 fs
+  \shTone{tonemag}{0.72}{\ybot}
+  \shTone{tonered}{0.48}{\ybot}
   \node[anchor=west] at (1.45,\ybot+1.62) {After sampling};
 
   % ---- The sample and hold doing it ----

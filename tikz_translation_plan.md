@@ -512,6 +512,10 @@ so the period, pulse width and height are single `\def`s at the top of the
 block.
 
 ### Notes
+- Prefix every `\newcommand` in a figure. `l5_sh` first used `\th` for a tone
+  height, which is a LaTeX built-in (thorn), and the redefinition is a *fatal*
+  error, not a warning — it cost a CI round trip. `\shHalf`, `\shTone` and so
+  on are safe; `\th`, `\vh`, `\tone` are not obviously so.
 - `l3_bjtonly` final geometry includes manual fixes by the user; preserve current source unless explicitly changing it.
 - `l03_ptat` redraws the original's plain diodes as diode-connected PNPs, adds OTA
   input polarity the artwork did not specify, and labels the right-hand node `V_R1`
