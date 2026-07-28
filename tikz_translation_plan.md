@@ -312,20 +312,23 @@ In `lectures/l03_refbias.md`:
 - `l3_isrc`
 - `l3_bjtonly`
 - `l3_vi`
+- `l03_ptat` — shared figure, also switched in `lectures/l01_project.md` and
+  `lectures/g03.md`
 
-That is 5 of the ~117 queued figures. All are in one lecture.
+That is 6 of the ~117 queued figures, in three lectures.
 
 ### Pending approval
-- `l03_ptat` — `tikz/l03_ptat.tex` is drawn and compiles to `media/l03_ptat_tikz.pdf`,
-  but no lecture references it yet. It is a shared figure: approving it switches
-  three references, in `lectures/l03_refbias.md`, `lectures/l01_project.md`, and
-  `lectures/g03.md`.
+- none
 
 ### Current next figure
 - `l03_vref1` — to be drawn from scratch.
 
 ### Notes
 - `l3_bjtonly` final geometry includes manual fixes by the user; preserve current source unless explicitly changing it.
+- `l03_ptat` redraws the original's plain diodes as diode-connected PNPs, adds OTA
+  input polarity the artwork did not specify, and labels the right-hand node `V_R1`
+  rather than carrying over the original's `V_e1 ~ V_o1` equality annotation.
+  Approved as drawn.
 - `media/l03_vref1_tikz.pdf` was committed in `db7c3db` without a `tikz/l03_vref1.tex`
   source; that source is in no commit in the repository. The orphan PDF has been
   removed and `l03_vref1` returns to the queue as a fresh draw. Never commit a

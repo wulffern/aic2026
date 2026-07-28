@@ -381,7 +381,7 @@ Or check my test-benches at <https://github.com/wulffern/lelo_temp_sky130a/tree/
 __Delivery__: Link to your github repository with a description of
 how the bandgap works.
 
-![right fit](../media/l03_ptat.pdf)
+![right fit](../media/l03_ptat_tikz.pdf)
 
 ---
 

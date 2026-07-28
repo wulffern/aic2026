@@ -298,7 +298,7 @@ $\Delta V_{BE}$ with a $V_D$ voltage, then we should get a constant voltage.
 
 -->
 
-![left fit](../media/l03_ptat.pdf)
+![left fit](../media/l03_ptat_tikz.pdf)
 
 <!--pan_doc:
 <sub>Figure 6: Circuit to create a PTAT current controlled by the resistor and $\Delta V_{BE}$ </sub>
