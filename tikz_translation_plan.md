@@ -339,7 +339,8 @@ In `lectures/l03_refbias.md`:
 That is 10 figures, in three lectures.
 
 ### Pending approval
-- none
+- `l05_fund1` — source and PDF committed, lecture still points at
+  `l05_fund1.svg`.
 
 Also converted and switched: `l3_ptat`, `l3_ptat1`, `l3_ptat2` — 13 figures total.
 
@@ -462,8 +463,36 @@ come up.
    copy. The warning is the point of including it.
 
 ### Current next figure
-- `l05_sc`, reprioritised ahead of `l04_afe` at the user's request. The
-  switched-capacitor idiom established in `l3_gmcap` carries straight over.
+- `l05_fund2`, once `l05_fund1` is approved. `l05_fund2` and `l05_fund3` are
+  the same circuit rearranged, so draw them as a set and keep their geometry in
+  step.
+
+### `l05_sc` triage
+`l05_sc` is reprioritised ahead of `l04_afe` at the user's request. The
+switched-capacitor idiom established in `l3_gmcap` carries straight over.
+
+The lecture references 29 figures. The queue in this document listed 23 and,
+as with `l03_refbias`, was not exhaustive:
+
+- Out of scope, bitmaps: `lewis.png`, `diff_ota.png`, `diff_ota_bias.png`,
+  `l00_SAR9B_CV.png`.
+- Shared with `l04_afe`: `l4_activebiquad`, `l4_gmcbi`. Whichever lecture gets
+  there first draws them, and the reference switch then has to cover both
+  lectures in the same round.
+- The remaining 23 are the listed queue and are all in scope, though
+  `l5_sdomain`, `l5_zdomain` and `l5_zunstable` are pole/zero plane diagrams
+  rather than schematics — clean line work that TikZ suits, but confirm they
+  are wanted before spending time on them.
+
+The `l05_fund1`/`2`/`3` originals are hand-drawn, unlike the `l03_refbias`
+artwork, so the redraws will not look like the source at all. That is the
+point, but it makes a side-by-side comparison less useful than it was for
+`l03_refbias`; judge these on whether the topology and labels survive.
+
+`l05_fund1` carries a non-overlapping clock diagram under the schematic. It is
+drawn with a `\foreach` inside the path rather than as a list of coordinates,
+so the period, pulse width and height are single `\def`s at the top of the
+block.
 
 ### Notes
 - `l3_bjtonly` final geometry includes manual fixes by the user; preserve current source unless explicitly changing it.
