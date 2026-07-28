@@ -296,7 +296,7 @@ class Deck:
         if self.meta.get("slidenumbers", "").lower() == "true":
             chrome += f'<div class="number">{number}</div>'
 
-        return (f'<section class="slide"{attr}>'
+        return (f'<section class="slide" id="s{number}"{attr}>'
                 f'<div class="canvas">{inner}{chrome}</div></section>')
 
     def html(self):
@@ -345,15 +345,24 @@ TEMPLATE = r"""<!doctype html>
 <style>
 :root { --bg:#ffffff; --fg:#111111; --accent:#0b5cad; }
 * { box-sizing: border-box; }
-html, body { margin:0; padding:0; height:100%; background:#222; }
+html {
+  height:100%;
+  overflow-y:scroll;
+  scroll-snap-type: y mandatory;
+}
+body { margin:0; padding:0; background:#222; }
 body { font-family: Helvetica, Arial, sans-serif; }
 
-.slide { display:flex; width:100vw; height:100vh; align-items:center; justify-content:center; }
-/* Single-slide mode is opt-in, switched on by the script once it is running.
-   If the script never runs, or throws, the deck degrades to a scrollable
-   stack of slides instead of a blank page. */
-.js .slide { display:none; }
-.js .slide.on { display:flex; }
+/* Navigation is the browser's own scrolling, snapped one slide at a time.
+   Scroll wheel, trackpad, swipe, arrows, space and Page Up/Down therefore all
+   work with no JavaScript at all, in every browser. The script only sizes
+   text and adds fullscreen; if it fails the deck still presents. */
+.slide {
+  display:flex; width:100vw; height:100vh;
+  align-items:center; justify-content:center;
+  scroll-snap-align:start;
+  scroll-snap-stop:always;   /* a fast swipe advances one slide, not five */
+}
 
 .canvas {
   position:relative;
@@ -423,80 +432,92 @@ sub sub { font-size:0.7em; }
 <body>
 %%SLIDES%%
 <script>
+// Everything here is an enhancement. Navigation is native scrolling (see the
+// scroll-snap rules above), so a failure in this block costs text fitting and
+// the fullscreen key, never the deck itself.
 const slides = [...document.querySelectorAll('.slide')];
-let idx = 0;
-
-function unit(canvas) {
-  // Everything is sized off --u so a slide scales with the viewport, and so
-  // autoscale can shrink an overfull slide by shrinking one number.
-  canvas.style.setProperty('--u', (canvas.clientWidth / 100) + 'px');
-}
+const fitted = new Set();
 
 function autoscale(canvas) {
+  // Sizes are calc()ed from --u, so shrinking one number shrinks the slide.
   const base = canvas.clientWidth / 100;
   let k = 1;
   canvas.style.setProperty('--u', base + 'px');
-  // Overflow can be either way round: too much text, or one equation too wide
-  // to wrap. 24 steps of 3% is plenty; bail out rather than loop forever.
+  // Overflow goes both ways: too much text, or one equation too wide to wrap.
   const over = () => canvas.scrollHeight > canvas.clientHeight + 1
                   || canvas.scrollWidth > canvas.clientWidth + 1;
   for (let i = 0; i < 24 && over(); i++) {
     k *= 0.97;
     canvas.style.setProperty('--u', (base * k) + 'px');
   }
+  fitted.add(canvas);
 }
 
-function show(n) {
-  idx = Math.max(0, Math.min(slides.length - 1, n));
-  slides.forEach((s, i) => s.classList.toggle('on', i === idx));
-  const canvas = slides[idx].querySelector('.canvas');
-  unit(canvas);
-  autoscale(canvas);
-  // Safari throws a SecurityError for the history API on file:// URLs, and a
-  // deep link is never worth losing the deck over.
-  try {
-    if (location.hash !== '#' + (idx + 1)) {
-      history.replaceState(null, '', '#' + (idx + 1));
+function fitAll() { slides.forEach(s => autoscale(s.querySelector('.canvas'))); }
+
+// Fit slides as they come near the viewport rather than all at once: the
+// longest deck here is 121 slides, and each fit costs a few forced layouts.
+if (window.IntersectionObserver) {
+  const io = new IntersectionObserver(entries => {
+    for (const e of entries) {
+      const canvas = e.target.querySelector('.canvas');
+      if (e.isIntersecting && !fitted.has(canvas)) autoscale(canvas);
     }
-  } catch (e) { /* deep linking unavailable, keep presenting */ }
+  }, { rootMargin: '200% 0px' });
+  slides.forEach(s => io.observe(s));
+} else {
+  fitAll();
 }
 
+let resizeTimer;
+addEventListener('resize', () => {
+  clearTimeout(resizeTimer);
+  resizeTimer = setTimeout(() => { fitted.clear(); fitAll(); }, 150);
+});
+
+function current() {
+  const mid = innerHeight / 2;
+  return Math.max(0, slides.findIndex(s => {
+    const r = s.getBoundingClientRect();
+    return r.top <= mid && r.bottom > mid;
+  }));
+}
+function go(n) {
+  const t = slides[Math.max(0, Math.min(slides.length - 1, n))];
+  if (t) t.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// The browser already scrolls on these keys; taking them over just makes each
+// press move exactly one slide.
 addEventListener('keydown', e => {
-  if (['ArrowRight', 'ArrowDown', 'PageDown', ' '].includes(e.key)) { show(idx + 1); e.preventDefault(); }
-  else if (['ArrowLeft', 'ArrowUp', 'PageUp'].includes(e.key)) { show(idx - 1); e.preventDefault(); }
-  else if (e.key === 'Home') show(0);
-  else if (e.key === 'End') show(slides.length - 1);
-  else if (e.key === 'f') {
+  if (e.metaKey || e.ctrlKey || e.altKey) return;
+  const k = e.key;
+  if (['ArrowRight', 'ArrowDown', 'PageDown', ' '].includes(k)) { go(current() + 1); e.preventDefault(); }
+  else if (['ArrowLeft', 'ArrowUp', 'PageUp'].includes(k)) { go(current() - 1); e.preventDefault(); }
+  else if (k === 'Home') { go(0); e.preventDefault(); }
+  else if (k === 'End') { go(slides.length - 1); e.preventDefault(); }
+  else if (k === 'f') {
     const el = document.documentElement;
     // Safari still only has the prefixed call.
     (el.requestFullscreen || el.webkitRequestFullscreen)?.call(el);
   }
 });
-addEventListener('resize', () => show(idx));
-addEventListener('hashchange', () => show((parseInt(location.hash.slice(1)) || 1) - 1));
 
-// Vendored, not a CDN: a deck is presented in a lecture room and a failed
-// script fetch turns every equation into raw TeX. See slides/README.md.
 window.MathJax = {
   tex: { inlineMath: [['\\(', '\\)']], displayMath: [['\\[', '\\]']] },
   svg: { fontCache: 'local' },
-  // Re-run the layout once the maths is typeset, so autoscale measures the
-  // rendered equations rather than the placeholder text.
-  startup: { pageReady: () => MathJax.startup.defaultPageReady().then(() => show(idx)) }
+  // Refit once the maths is typeset, so the measurements are of the rendered
+  // equations rather than the placeholder text.
+  startup: {
+    pageReady: () => MathJax.startup.defaultPageReady().then(() => {
+      fitted.clear();
+      fitAll();
+      if (location.hash) document.querySelector(location.hash)?.scrollIntoView();
+    })
+  }
 };
 </script>
 <script src="vendor/tex-svg.js"></script>
-<script>
-// Only claim single-slide mode once it is known to work: if show() throws on
-// this browser, drop back to the stacked fallback rather than a blank deck.
-try {
-  document.documentElement.classList.add('js');
-  show((parseInt(location.hash.slice(1)) || 1) - 1);
-} catch (e) {
-  document.documentElement.classList.remove('js');
-  console.error('slide navigation unavailable, falling back to a stacked deck', e);
-}
-</script>
 </body>
 </html>
 """

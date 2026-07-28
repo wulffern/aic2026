@@ -5,6 +5,10 @@ is generated and gitignored (`.gitignore` ignores `assets/`), so anything the
 decks need at runtime has to live here and be copied, the same way `media/` is
 the source for `docs/assets/media/`.
 
+Navigation is CSS scroll-snap, not JavaScript. The script only fits text to
+each slide and handles the fullscreen key, so a deck still presents with
+JavaScript disabled or broken.
+
 ## vendor/tex-svg.js
 
 MathJax 3.2.2, SVG output build, vendored deliberately rather than loaded from
