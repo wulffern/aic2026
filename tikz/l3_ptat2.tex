@@ -15,7 +15,9 @@
   \def\xrl{-\grid*1.5}   % left R2 leg
   \def\xl{0}             % unit diode branch
   \def\xr{\grid*2.5}     % R1 + xN diode branch
-  \def\xrr{\grid*4}      % right R2 leg
+  % The right R2 leg is pushed out to leave room for the I_1 expression, which
+  % sits between it and the R1 branch as in the original.
+  \def\xrr{\grid*5}      % right R2 leg
   \def\ynode{3.0}
   \def\pdlevel{5}
 
@@ -74,12 +76,14 @@
   \draw (MP1.gate) -- (MP2.gate);
 
   % ---- Branch currents ----
+  % Inline \frac, not \dfrac: the display-size fractions were wide enough to
+  % run through the neighbouring R2 leg.
   \draw[->] (\xr-0.7,2.4) -- ++(0,-0.9);
   \draw[->] (\xrr-0.7,2.4) -- ++(0,-0.9);
-  \node[anchor=west] at (\xr+0.6,1.5)
-        {$I_{1} = \dfrac{\Delta V_{BE}}{R_{1}}$};
-  \node[anchor=west] at (\xrr+0.6,1.5)
-        {$I_{2} = \dfrac{V_{BE1}}{R_{2}}$};
+  \node[anchor=west] at (\xr+0.8,1.5)
+        {$I_{1} = \frac{\Delta V_{BE}}{R_{1}}$};
+  \node[anchor=west] at (\xrr+0.9,1.5)
+        {$I_{2} = \frac{V_{BE1}}{R_{2}}$};
 
 \end{circuitikz}
 \end{document}
