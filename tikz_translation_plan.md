@@ -341,6 +341,11 @@ That is 10 figures, in three lectures.
 ### Pending approval
 - none
 
+Also converted and switched: `l3_ptat`, `l3_ptat1`, `l3_ptat2` — 13 figures total.
+
+Development now happens directly on `main` at the user's request; the CI job
+commits rebuilt figures back to whichever branch it runs on.
+
 ### Still to do in `l03_refbias`
 The queue below was **not exhaustive**. Every figure it listed for `l03_refbias`
 is now converted, but the lecture still references five schematics the queue

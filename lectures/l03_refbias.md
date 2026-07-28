@@ -462,7 +462,7 @@ and we know the current increases with temperature, since $\Delta V_D$ increases
 
 -->
 
-![left fit](../media/l3_ptat.pdf)
+![left fit](../media/l3_ptat_tikz.pdf)
 
 <!--pan_doc:
 
@@ -492,7 +492,7 @@ then we can get a current that does not change with temperature.
 -->
 
 
-![right fit](../media/l3_ptat1.pdf)
+![right fit](../media/l3_ptat1_tikz.pdf)
 
 <!--pan_doc:
 
@@ -511,7 +511,7 @@ of the fact that this does not change $I_1$.
 
 -->
 
-![right fit](../media/l3_ptat2.pdf)
+![right fit](../media/l3_ptat2_tikz.pdf)
 
 <!--pan_doc:
 
