@@ -668,7 +668,7 @@ We can use other things for Z, like  a switched capacitor
 
 ---
 
-![original fit](../media/l3_gmcap.pdf)
+![original fit](../media/l3_gmcap_tikz.pdf)
 
 ---
 

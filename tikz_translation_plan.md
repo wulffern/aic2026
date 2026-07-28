@@ -334,16 +334,33 @@ In `lectures/l03_refbias.md`:
 - `l03_vref1`
 - `l03_vref2`
 - `l3_gmcell`
+- `l3_gmcap`
 
-That is 9 of the ~117 queued figures, in three lectures. `l3_gmcap` is the last
-figure in `l03_refbias`.
+That is 10 figures, in three lectures.
 
 ### Pending approval
-- `l3_gmcap` — drafted, not yet reviewed; `lectures/l03_refbias.md:671` still
-  points at the original artwork.
+- none
+
+### Still to do in `l03_refbias`
+The queue below was **not exhaustive**. Every figure it listed for `l03_refbias`
+is now converted, but the lecture still references five schematics the queue
+never mentioned:
+- `l3_brokaw` — Brokaw cell with an OTA
+- `l3_ptat`, `l3_ptat1`, `l3_ptat2`, `l3_ptat3` — PTAT variants
+
+These are drawn in a different style from the hand-sketched figures (thin lines
+on a dark background, apparently a schematic-capture export) but they are
+schematics and belong in scope. Three further figures in the lecture —
+`l3_bgsim`, `l3_bgsimtfs`, `vd` — are simulation and measurement plots and are
+correctly excluded.
+
+Before starting any lecture, list its figures with
+`grep -o '](\.\./media/[^)]*)' lectures/<lecture>.md` and triage them, rather
+than trusting the queue to be complete. The ~117 total understates the work.
 
 ### Current next figure
-- after `l03_refbias`, the queue moves to `l04_afe`
+- `l05_sc`, reprioritised ahead of `l04_afe` at the user's request. The
+  switched-capacitor idiom established in `l3_gmcap` carries straight over.
 
 ### Notes
 - `l3_bjtonly` final geometry includes manual fixes by the user; preserve current source unless explicitly changing it.
