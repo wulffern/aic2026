@@ -10,7 +10,7 @@ ifneq ($(wildcard /pyenv/bin/.*),)
 	PYTHON=/pyenv/bin/python3
 endif
 
-.PHONY:  slides version tikz tikz-one tikz-check tikz-preview preview print-tikz figures prepare-docs standalone-one standalone-list book-pdf book-epub print-files
+.PHONY:  slides slides-one slides-parallel version tikz tikz-one tikz-check tikz-preview preview print-tikz figures prepare-docs standalone-one standalone-list book-pdf book-epub print-files
 
 #	lr0_logic \
 
@@ -206,6 +206,35 @@ TIKZ_REPRODUCIBLE = SOURCE_DATE_EPOCH=1700000000 FORCE_SOURCE_DATE=1
 # Every figure source under tikz/, at any depth, minus the shared includes.
 TIKZ_SOURCES = $(shell find tikz -name '*.tex' -not -path 'tikz/build/*' \
 	$(foreach i,${TIKZ_INCLUDES},-not -name '${i}') | sort)
+
+# ---------------------------------------------------------------------------
+# Slide decks
+#
+# The lectures in lectures/ are Deckset source. These targets render the same
+# files to standalone HTML decks, dropping the pan_doc prose that belongs to
+# the book and keeping the pan_skip title slides that the web build hides.
+#
+# docs/assets/ is gitignored, so slides/vendor is the source for anything the
+# decks need at runtime and gets copied in, the same way media/ is the source
+# for docs/assets/media/.
+# ---------------------------------------------------------------------------
+
+SLIDEDIR = docs/assets/slides
+
+slides-vendor:
+	-mkdir -p ${SLIDEDIR}/vendor docs/assets/media
+	cp -f slides/vendor/* ${SLIDEDIR}/vendor/
+
+slides: slides-vendor
+	${foreach f, ${FILES}, ${PYTHON} py/slides.py lectures/${f}.md || exit; }
+
+slides-parallel: slides-vendor
+	printf '%s\n' ${FILES} | xargs -P 4 -I{} ${PYTHON} py/slides.py lectures/{}.md
+
+slides-one: slides-vendor
+	@test -n "${FNAME}" || (echo "Usage: make slides-one FNAME=l05_sc"; exit 1)
+	${PYTHON} py/slides.py lectures/${FNAME}.md
+
 
 print-tikz:
 	${foreach f,${TIKZ_SOURCES},echo ${f};}
