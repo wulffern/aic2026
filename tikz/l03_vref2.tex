@@ -34,7 +34,9 @@
   \draw (resEnd) -- ++(0,0.5) coordinate (vrefnode);
 
   % ---- Left branch: plain wire to the sense node, then the matched R2 ----
-  \draw (Q1.E) -- (\xl |- senseR) coordinate (senseL);
+  % Same rise as the right branch (R1 plus the gap), so both sense nodes sit at
+  % one height and the OTA connects with a straight line.
+  \draw (Q1.E) -- ++(0,\grid+0.8) coordinate (senseL);
   \draw (senseL) \vresistor{$R_{2}$};
   \coordinate (r2topL) at (resEnd);
 
