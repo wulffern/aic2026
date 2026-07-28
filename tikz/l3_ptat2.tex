@@ -51,8 +51,11 @@
   \coordinate (mp2drain) at (\xr, \pdlevel);
 
   % ---- OTA ----
+  % \yota must stay at 3: the OTA output terminal then sits just below the PMOS
+  % gate line and lands on it. Raising it pushes the terminal above the gate
+  % wire, and the macro's own output stub pokes through instead of meeting it.
   \def\xota{-\grid*1.5}
-  \def\yota{ 3.6}
+  \def\yota{ 3}
   \begin{scope}[xscale=-1]
   \begin{scope}[rotate around={90:(\xota,\yota)}]
     \draw (\xota, \yota) \cicOtaSSWP{}{};
