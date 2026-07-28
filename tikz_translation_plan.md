@@ -323,10 +323,15 @@ In `lectures/l03_refbias.md`:
 That is 6 of the ~117 queued figures, in three lectures.
 
 ### Pending approval
-- none
+- `l03_vref1` — `tikz/l03_vref1.tex` drafted, compiles clean in CI. Not yet built
+  into `media/`, and `lectures/l03_refbias.md:320` still points at the original
+  `l03_vref1.pdf`. Two deliberate departures from the artwork: the third branch's
+  node is labelled `V_D3` where the original says `V_D2` (a slip — the prose at
+  `l03_refbias.md:317` says $V_{D3}$), and `V_R2` is added to match `V_R1` in
+  `l03_ptat` and to name the quantity the prose argues about.
 
 ### Current next figure
-- `l03_vref1` — to be drawn from scratch.
+- `l03_vref2`, after `l03_vref1` is approved.
 
 ### Notes
 - `l3_bjtonly` final geometry includes manual fixes by the user; preserve current source unless explicitly changing it.
