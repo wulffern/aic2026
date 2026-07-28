@@ -53,7 +53,8 @@
   \draw (cicOtaS_out) |- (MP1.gate);
   \draw (MP1.gate) -- (MP2.gate);
 
-  \draw[->] (\xr+0.9,\pdlevel-0.1) -- ++(0,-0.9);
+  % Short, and kept above the buffer tap wire at \ybuf.
+  \draw[->] (\xr+0.9,\pdlevel-0.05) -- ++(0,-0.65);
 
   % ---- Buffer: senses the xN branch node, drives R2 ----
   % Drawn unrotated, so the macro's own +/- labels are upright and can be

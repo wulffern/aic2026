@@ -1,0 +1,85 @@
+\input{tikz/fig_header.tex}
+
+% Banba-style combination: each branch carries a diode leg and an R2 leg in
+% parallel off the same node, so the PMOS current is I_1 + I_2 with
+% I_1 = dV_BE/R1 (PTAT, through R1) and I_2 = V_BE1/R2 (CTAT, through R2).
+% Four legs left to right: R2, unit diode, R1 + xN diode, R2.
+%
+% OTA polarity corrected as in l3_ptat — the artwork marks + on the left, but
+% the right-hand node is the one that rises with current through R1.
+
+\begin{circuitikz}[american, thick, transform shape, circuit ee IEC]
+
+  \input{tikz/ckt_lib.tex}
+
+  \def\xrl{-\grid*1.5}   % left R2 leg
+  \def\xl{0}             % unit diode branch
+  \def\xr{\grid*2.5}     % R1 + xN diode branch
+  \def\xrr{\grid*4}      % right R2 leg
+  \def\ynode{3.0}
+  \def\pdlevel{5}
+
+  % ---- Diode legs ----
+  \node[pnp, anchor=C] (Q1) at (\xl, 0) {};
+  \draw (Q1.C) -- ++(0,-0.2) \vground;
+  \draw (Q1.B) |- (Q1.C);
+  \draw (Q1.E) -- (\xl,\pdlevel);
+
+  \node[pnp, anchor=C, label=right:${\times N}$] (Q2) at (\xr, 0) {};
+  \draw (Q2.C) -- ++(0,-0.2)\vground;
+  \draw (Q2.B) |- (Q2.C);
+  \draw (Q2.E) \vresistor{$R_{1}$};
+  \draw (resEnd) -- (\xr,\pdlevel);
+
+  % ---- R2 legs, one per branch, tied in at the sense node ----
+  \draw (\xrl,0) \vground;
+  \draw (\xrl,0) -- ++(0,0.4);
+  \draw (\xrl,0.4) \vresistor{$R_{2}$};
+  \draw (resEnd) -- (\xrl,\ynode) -- (\xl,\ynode);
+
+  \draw (\xrr,0) \vground;
+  \draw (\xrr,0) -- ++(0,0.4);
+  \draw (\xrr,0.4) \vresistor{$R_{2}$};
+  \draw (resEnd) -- (\xrr,\ynode) -- (\xr,\ynode);
+
+  \fill (\xl,\ynode) circle (0.06);
+  \fill (\xr,\ynode) circle (0.06);
+
+  \coordinate (mp1drain) at (\xl, \pdlevel);
+  \coordinate (mp2drain) at (\xr, \pdlevel);
+
+  % ---- OTA ----
+  \def\xota{-\grid*1.5}
+  \def\yota{ 3.6}
+  \begin{scope}[xscale=-1]
+  \begin{scope}[rotate around={90:(\xota,\yota)}]
+    \draw (\xota, \yota) \cicOtaSSWP{}{};
+    \coordinate (otaRight) at ($(\xota,\yota)+(0.5,0)$);
+    \coordinate (otaLeft)  at ($(\xota,\yota)+(0.5,-\grid/2)$);
+  \end{scope}
+  \end{scope}
+  \node at ($(otaRight)+(0,0.3)$) {$+$};
+  \node at ($(otaLeft)+(0,0.3)$)  {$-$};
+
+  \draw (cicOtaS_inp) -| (mp2drain);
+  \draw (cicOtaS_inn) -| (mp1drain);
+
+  % ---- PMOS mirror ----
+  \draw (mp1drain) \lvmpmos{MP1}{};
+  \draw (MP1.source) \vsupply;
+  \draw (mp2drain) \lvpmos{MP2}{};
+  \draw (MP2.source) \vsupply;
+
+  \draw (cicOtaS_out) |- (MP1.gate);
+  \draw (MP1.gate) -- (MP2.gate);
+
+  % ---- Branch currents ----
+  \draw[->] (\xr-0.7,2.4) -- ++(0,-0.9);
+  \draw[->] (\xrr-0.7,2.4) -- ++(0,-0.9);
+  \node[anchor=west] at (\xr+0.6,1.5)
+        {$I_{1} = \dfrac{\Delta V_{BE}}{R_{1}}$};
+  \node[anchor=west] at (\xrr+0.6,1.5)
+        {$I_{2} = \dfrac{V_{BE1}}{R_{2}}$};
+
+\end{circuitikz}
+\end{document}
