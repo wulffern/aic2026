@@ -540,7 +540,7 @@ We can choose the output voltage freely, and it be lower than 1.2 V.
 
 -->
 
-![original fit](../media/l3_ptat3.pdf)
+![original fit](../media/l3_ptat3_tikz.pdf)
 
 <!--pan_doc:
 <sub>Figure 15: The Banba bandgap voltage reference </sub>

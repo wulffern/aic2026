@@ -366,6 +366,25 @@ Before starting any lecture, list its figures with
 `grep -o '](\.\./media/[^)]*)' lectures/<lecture>.md` and triage them, rather
 than trusting the queue to be complete. The ~117 total understates the work.
 
+## New Figures Requested (not conversions)
+These are new teaching content for `l03_refbias`, requested by the user. They
+need lecture text as well as figures, and the text is the harder half.
+
+1. **Curvature correction.** `l3_bgsimtfs` and `vd` already show the residual
+   curvature; nothing in the lecture corrects it. This closes that loop.
+2. **Widlar reference.** Historical breadth alongside the Brokaw citation
+   already in the lecture at line 362.
+3. **MOS-based reference.** The user is explicit that this must be presented
+   with a strong caveat, not as a recommendation:
+
+   > MOS-based references that rely on the difference between two threshold
+   > voltages are very risky and should not be attempted. Process control over
+   > the separate Vt sources is poor and their stability is poor, so the
+   > difference is neither well controlled nor stable.
+
+   Draw and explain it as something to recognise and avoid, not as a design to
+   copy. The warning is the point of including it.
+
 ### Current next figure
 - `l05_sc`, reprioritised ahead of `l04_afe` at the user's request. The
   switched-capacitor idiom established in `l3_gmcap` carries straight over.
