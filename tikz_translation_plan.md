@@ -331,26 +331,35 @@ In `lectures/l03_refbias.md`:
 - `l3_vi`
 - `l03_ptat` — shared figure, also switched in `lectures/l01_project.md` and
   `lectures/g03.md`
+- `l03_vref1`
 
-That is 6 of the ~117 queued figures, in three lectures.
+That is 7 of the ~117 queued figures, in three lectures.
 
 ### Pending approval
-- `l03_vref1` — `tikz/l03_vref1.tex` drafted, compiles clean in CI. Not yet built
-  into `media/`, and `lectures/l03_refbias.md:320` still points at the original
-  `l03_vref1.pdf`. Two deliberate departures from the artwork: the third branch's
-  node is labelled `V_D3` where the original says `V_D2` (a slip — the prose at
-  `l03_refbias.md:317` says $V_{D3}$), and `V_R2` is added to match `V_R1` in
-  `l03_ptat` and to name the quantity the prose argues about.
+- none
 
 ### Current next figure
-- `l03_vref2`, after `l03_vref1` is approved.
+- `l03_vref2`
 
 ### Notes
 - `l3_bjtonly` final geometry includes manual fixes by the user; preserve current source unless explicitly changing it.
 - `l03_ptat` redraws the original's plain diodes as diode-connected PNPs, adds OTA
   input polarity the artwork did not specify, and labels the right-hand node `V_R1`
   rather than carrying over the original's `V_e1 ~ V_o1` equality annotation.
-  Approved as drawn.
+- `l03_vref1` labels the output branch's node `V_D3`; the original artwork says
+  `V_D2` there while drawing `D3`, and the prose at `l03_refbias.md:317` says
+  $V_{D3}$, so the artwork is the thing that is wrong. There is no `V_R2` — the
+  node above `R2` is `V_REF`, which already names it.
+- `l03_ptat` and `l03_vref1` share a 2.5-grid column spacing so the part of the
+  circuit they have in common reads identically across the two slides. Keep them
+  in step if either is re-laid-out.
+- The OTA sits in a 90-degree rotated scope, and `circuitikz` is set up with
+  `transform shape`, so any label passed to `\cicOtaSSWP` is rotated with the
+  body — which turns a minus sign into a vertical bar. Both figures therefore
+  call the macro with empty labels and draw `+`/`-` afterwards as plain nodes,
+  at coordinates captured inside the scope. Do the same in any future rotated
+  OTA. Setting `transform shape=false` on the scope is not a fix: it un-rotates
+  the glyphs but recomputes their anchors, which displaces them.
 - `media/l03_vref1_tikz.pdf` was committed in `db7c3db` without a `tikz/l03_vref1.tex`
   source; that source is in no commit in the repository. The orphan PDF has been
   removed and `l03_vref1` returns to the queue as a fresh draw. Never commit a
