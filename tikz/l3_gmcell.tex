@@ -15,8 +15,11 @@
 
   \input{tikz/ckt_lib.tex}
 
+  % Wider than the l03_* figures: the V_GS annotations live in the middle
+  % column, between the branches, and need the room. The circuit is a tall
+  % three-row stack, so the extra width helps the proportions too.
   \def\xl{0}
-  \def\xr{\grid*2.5}
+  \def\xr{\grid*3}
 
   \def\ybot{2.0}     % bottom row source
   \def\ybotd{3.6}    % bottom row drain      (\ybot + \grid)
@@ -73,9 +76,21 @@
   \node[anchor=west]  at (\xr+0.35,\ybot+0.8) {$1$};
 
   % ---- Voltages ----
-  \draw ($(zbot)+(-1.0,0)$)     to [open, v=$V_{o}$]    ($(ztop)+(-1.0,0)$);
-  \draw ($(\xl,\ybot)+(0.45,0)$) to [open, v=$V_{GS2}$] ($(MN2.gate)+(0,0)$);
-  \draw ($(\xr,\ybot)+(-0.45,0)$) to [open, v=$V_{GS1}$] ($(MN1.gate)+(0,0)$);
+  % Drawn as plain nodes rather than circuitikz `v=' annotations: those came out
+  % with the polarity reversed and sat on top of the transistors.
+  % V_o across Z, + at the top node as in the original.
+  \node[anchor=east] at (\xl-0.55, 1.9) {$+$};
+  \node[anchor=east] at (\xl-0.55, 1.1) {$V_{o}$};
+  \node[anchor=east] at (\xl-0.55, 0.3) {$-$};
+
+  % V_GS of each bottom device: + at the gate, - at the source.
+  \node               at (\xl+0.95, \ybot+0.65) {$+$};
+  \node               at (\xl+0.95, \ybot+0.05) {$-$};
+  \node[anchor=west]  at (\xl+1.15, \ybot+0.35) {$V_{GS2}$};
+
+  \node               at (\xr-0.95, \ybot+0.65) {$+$};
+  \node               at (\xr-0.95, \ybot+0.05) {$-$};
+  \node[anchor=east]  at (\xr-1.15, \ybot+0.35) {$V_{GS1}$};
 
 \end{circuitikz}
 \end{document}
