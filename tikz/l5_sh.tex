@@ -7,10 +7,14 @@
 % band fold inside it, which is the whole point of the slide.
 %
 % The redraw makes the folding arithmetically right, which the hand-drawn
-% original only suggests. A tone at 1.2 fs lands on 0.2 fs and one at 0.7 fs
-% lands on -0.3 fs, so the colours let you trace which tone went where. The
+% original only suggests. A tone at 1.1 fs lands on 0.1 fs and one at 0.6 fs
+% lands on -0.4 fs, so the colours let you trace which tone went where. The
 % relative order the original shows -- magenta ending up outside red -- is
 % preserved, because that is what the arithmetic gives.
+%
+% Those two input frequencies are chosen so the aliases land far enough apart
+% to read. 1.2 fs and 0.7 fs alias to 0.2 fs and 0.3 fs, which is correct but
+% draws four arrowheads on top of each other.
 %
 % No ckt_lib here: nothing in this figure is a circuit element.
 %
@@ -55,27 +59,27 @@
   % ---- Before sampling: two pairs of tones outside the Nyquist band ----
   \shAxis{\ytop}
   \shBump{\ytop}
-  \shTone{tonered}{-2.88}{\ytop}     % -1.2 fs
-  \shTone{tonemag}{-1.68}{\ytop}     % -0.7 fs
-  \shTone{tonemag}{1.68}{\ytop}
-  \shTone{tonered}{2.88}{\ytop}
+  \shTone{tonered}{-2.64}{\ytop}     % -1.1 fs
+  \shTone{tonemag}{-1.44}{\ytop}     % -0.6 fs
+  \shTone{tonemag}{1.44}{\ytop}
+  \shTone{tonered}{2.64}{\ytop}
   \node[anchor=west] at (1.45,\ytop+1.62) {Before sampling};
 
   % ---- After sampling: both pairs have folded inside ----
   \shAxis{\ybot}
   \shBump{\ybot}
-  \shTone{tonered}{-0.48}{\ybot}     % 1.2 fs - fs = 0.2 fs
-  \shTone{tonemag}{-0.72}{\ybot}     % 0.7 fs - fs = -0.3 fs
-  \shTone{tonemag}{0.72}{\ybot}
-  \shTone{tonered}{0.48}{\ybot}
+  \shTone{tonered}{-0.24}{\ybot}     % 1.1 fs - fs = 0.1 fs
+  \shTone{tonemag}{-0.96}{\ybot}     % 0.6 fs - fs = -0.4 fs
+  \shTone{tonemag}{0.96}{\ybot}
+  \shTone{tonered}{0.24}{\ybot}
   \node[anchor=west] at (1.45,\ybot+1.62) {After sampling};
 
   % ---- The sample and hold doing it ----
-  \def\bx{4.9}
+  \def\bx{5.8}
   \def\by{2.0}
   \draw[axisblue, thick] (\bx,\by-0.5) rectangle ++(1.5,1.0);
   \node[axisblue] at (\bx+0.75,\by) {S/H};
-  \draw[axisblue, thick, ->] (\bx-1.0,\by) -- (\bx,\by);
+  \draw[axisblue, thick, ->] (\bx-0.9,\by) -- (\bx,\by);
   \draw[axisblue, thick, ->] (\bx+1.5,\by) -- (\bx+2.5,\by);
 
 \end{circuitikz}
