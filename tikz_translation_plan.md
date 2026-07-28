@@ -462,7 +462,8 @@ come up.
    copy. The warning is the point of including it.
 
 ### Current next figure
-- `l5_dtfig`.
+- `l5_sh`, then `l5_shaaf` and `l5_subsample`, which are the same spectrum
+  diagram with a filter added in front and should share its geometry.
 
 Approved and switched in `lectures/l05_sc.md`: `l05_fund1`, `l05_fund2`,
 `l05_fund3`.
@@ -489,7 +490,11 @@ as with `l03_refbias`, was not exhaustive:
 - Shared with `l04_afe`: `l4_activebiquad`, `l4_gmcbi`. Whichever lecture gets
   there first draws them, and the reference switch then has to cover both
   lectures in the same round.
-- The remaining 23 are the listed queue and are all in scope. That includes
+- `l5_dtfig` and `l5_iir` are **out** of scope: both are matplotlib plots of
+  simulated data with thousands of points, not line drawings. They were listed
+  in the queue and I initially waved the whole list through as in scope without
+  opening them, which was wrong. Open every figure before triaging it.
+- The remaining 21 are in scope. That includes
   `l5_sdomain`, `l5_zdomain` and `l5_zunstable`, which are pole/zero plane
   diagrams rather than circuit schematics: the user confirmed they are wanted.
   So the "circuit schematics only" rule at the top of this document is not
