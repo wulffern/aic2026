@@ -339,8 +339,8 @@ In `lectures/l03_refbias.md`:
 That is 10 figures, in three lectures.
 
 ### Pending approval
-- `l5_sh` — source and PDF committed, `lectures/l05_sc.md` still points at
-  `l5_sh.svg`.
+- `l5_shaaf` and `l5_subsample` — sources and PDFs committed,
+  `lectures/l05_sc.md` still points at their SVGs.
 
 Also converted and switched: `l3_ptat`, `l3_ptat1`, `l3_ptat2` — 13 figures total.
 
@@ -463,8 +463,18 @@ come up.
    copy. The warning is the point of including it.
 
 ### Current next figure
-- `l5_sh`, then `l5_shaaf` and `l5_subsample`, which are the same spectrum
-  diagram with a filter added in front and should share its geometry.
+- `l5_sdomain`, `l5_zdomain` and `l5_zunstable` — the s-plane and z-plane
+  diagrams, another set that should share geometry.
+
+Approved and switched in `lectures/l05_sc.md`: `l05_fund1`, `l05_fund2`,
+`l05_fund3`, `l5_sh`.
+
+`tikz/spec_lib.tex` holds the sampling-spectrum pieces shared by `l5_sh`,
+`l5_shaaf` and `l5_subsample`: the axis with its Nyquist ticks, the wanted
+signal, a tone, a filter trapezoid, and the chain blocks. The three slides
+argue by looking alike, so keep them on one geometry. Any new shared include
+must be added to `TIKZ_INCLUDES` in the Makefile or the build will try to
+compile it as a figure and fail.
 
 Approved and switched in `lectures/l05_sc.md`: `l05_fund1`, `l05_fund2`,
 `l05_fund3`.
