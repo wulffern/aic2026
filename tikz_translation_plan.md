@@ -268,10 +268,22 @@ depends on pushing a draft and reading its preview before the lecture reference
 is switched. It is a separate workflow from `matrix_build.yaml` for that reason;
 the docs workflow is `main`-only and deploys Pages.
 
-CI does not regenerate or commit artwork. `media/*_tikz.pdf` is still produced
-locally with `make tikz-one` and committed, so keep source and PDF in the same
-commit. A figure drafted without `pdflatex` to hand therefore lands in two steps:
-push the source, review the CI preview, then commit the built PDF once approved.
+On a push (not a pull request) the job then runs `make tikz` and commits any
+changed `media/*_tikz.pdf` back to the branch as "Rebuild TikZ figures [skip ci]".
+So authoring a figure needs no local TeX install: commit `tikz/<basename>.tex`
+alone and CI produces the PDF beside it.
+
+Two consequences worth knowing:
+- `make tikz-one` pins `SOURCE_DATE_EPOCH` and `FORCE_SOURCE_DATE`, because
+  pdfTeX otherwise stamps a fresh `/CreationDate` into every PDF and CI would
+  re-commit all the figures on each run. Rebuilds are byte-identical, so a
+  no-op run commits nothing. Always build through the Makefile, never by
+  calling `pdflatex` directly, or the next CI run will churn the file.
+- The push is non-force. If the branch moves while the job runs, the push is
+  rejected and the job fails; re-running it is the fix.
+
+If you do have TeX locally, `make tikz-one FNAME=<basename>` still produces the
+same bytes, and committing source and PDF together stays the tidier history.
 
 ## Reviewing Figures Without a TeX Install
 `py/preview.py` renders committed artwork to PNG — PDF via `pypdfium2`, SVG via

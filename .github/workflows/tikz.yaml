@@ -2,7 +2,7 @@ name: TikZ figures
 
 # Runs on every branch, not just main: the review loop in
 # tikz_translation_plan.md depends on being able to push a draft figure and
-# download its rendered preview before the lecture reference is switched.
+# see it built before the lecture reference is switched.
 on:
   push:
     paths:
@@ -21,7 +21,7 @@ concurrency:
   cancel-in-progress: true
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   figures:
@@ -39,11 +39,13 @@ jobs:
           apt-get update
           apt-get install -y poppler-utils
 
-      - name: Compile TikZ figure sources
+      # pdflatex runs with -halt-on-error, so a figure that stops compiling
+      # fails the job here.
+      - name: Build figures
         shell: bash
         run: |
           git config --global --add safe.directory "$(pwd)"
-          make tikz-check
+          make tikz
 
       - name: Render figure previews
         shell: bash
@@ -55,3 +57,28 @@ jobs:
           name: tikz-previews
           path: preview
           if-no-files-found: error
+
+      # Commit the generated PDFs so a figure can be authored without a local
+      # TeX install. Only on push — a pull_request checkout is a merge commit
+      # and has no branch to push back to.
+      - name: Commit generated figures
+        if: github.event_name == 'push'
+        shell: bash
+        env:
+          BRANCH: ${{ github.ref_name }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          find media -name '*_tikz.pdf' -print0 | xargs -0 --no-run-if-empty git add --
+
+          if git diff --cached --quiet; then
+            echo "Figures unchanged, nothing to commit."
+            exit 0
+          fi
+
+          git diff --cached --name-only
+          git commit -m "Rebuild TikZ figures [skip ci]"
+          # Non-force: if the branch moved while this ran, fail rather than
+          # clobber it. Re-running the workflow is the fix.
+          git push origin "HEAD:refs/heads/${BRANCH}"

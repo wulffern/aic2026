@@ -198,6 +198,11 @@ equations:
 # Shared TikZ preamble/library files, included by the figures rather than built.
 TIKZ_INCLUDES = fig_header.tex ckt_lib.tex
 
+# pdfTeX stamps /CreationDate into every PDF, so an unchanged figure would
+# still produce a different file on each run — and CI commits what it builds.
+# Pinning the epoch keeps rebuilds byte-identical, locally and in CI alike.
+TIKZ_REPRODUCIBLE = SOURCE_DATE_EPOCH=1700000000 FORCE_SOURCE_DATE=1
+
 # Every figure source under tikz/, at any depth, minus the shared includes.
 TIKZ_SOURCES = $(shell find tikz -name '*.tex' -not -path 'tikz/build/*' \
 	$(foreach i,${TIKZ_INCLUDES},-not -name '${i}') | sort)
@@ -242,7 +247,7 @@ tikz-check:
 		rel=$${f#tikz/}; \
 		echo "Checking $${rel%.tex}"; \
 		mkdir -p "tikz/build/$$(dirname "$${rel}")"; \
-		pdflatex -interaction=nonstopmode -halt-on-error \
+		${TIKZ_REPRODUCIBLE} pdflatex -interaction=nonstopmode -halt-on-error \
 			-output-directory "tikz/build/$$(dirname "$${rel}")" "$$f"; \
 	done
 
@@ -263,7 +268,7 @@ tikz-one:
 	if [ "$$sub" = "." ]; then sub=""; else sub="/$$sub"; fi; \
 	mkdir -p "tikz/build$$sub" "media$$sub"; \
 	echo "Building $$rel"; \
-	pdflatex -interaction=nonstopmode -halt-on-error -output-directory "tikz/build$$sub" "$$f"; \
+	${TIKZ_REPRODUCIBLE} pdflatex -interaction=nonstopmode -halt-on-error -output-directory "tikz/build$$sub" "$$f"; \
 	cp "tikz/build$$sub/$$b.pdf" "media$$sub/$${b}_tikz.pdf"; \
 	if command -v pdf2svg >/dev/null 2>&1; then \
 		pdf2svg "tikz/build$$sub/$$b.pdf" "media$$sub/$${b}_tikz.svg" || true; \
