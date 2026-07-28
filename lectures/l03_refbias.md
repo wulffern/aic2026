@@ -597,7 +597,7 @@ we can use a GM cell, as shown in Figure 17.
 
 -->
 
-![left fit](../media/l3_gmcell.pdf)
+![left fit](../media/l3_gmcell_tikz.pdf)
 
 <!--pan_doc:
 

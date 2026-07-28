@@ -333,15 +333,17 @@ In `lectures/l03_refbias.md`:
   `lectures/g03.md`
 - `l03_vref1`
 - `l03_vref2`
+- `l3_gmcell`
 
-That is 8 of the ~117 queued figures, in three lectures. `l03_refbias` has
-`l3_gmcell` and `l3_gmcap` left before it is fully converted.
+That is 9 of the ~117 queued figures, in three lectures. `l3_gmcap` is the last
+figure in `l03_refbias`.
 
 ### Pending approval
-- none
+- `l3_gmcap` — drafted, not yet reviewed; `lectures/l03_refbias.md:671` still
+  points at the original artwork.
 
 ### Current next figure
-- `l3_gmcell`
+- after `l03_refbias`, the queue moves to `l04_afe`
 
 ### Notes
 - `l3_bjtonly` final geometry includes manual fixes by the user; preserve current source unless explicitly changing it.
