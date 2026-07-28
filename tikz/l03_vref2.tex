@@ -1,0 +1,86 @@
+\input{tikz/fig_header.tex}
+
+% Bandgap voltage reference, stacked variant of l03_vref1: R2 sits on top of R1
+% rather than in a separate output branch. Both branches carry a matched R2 so
+% the PMOS drains see the same drop; only the xN branch has R1 beneath it. The
+% OTA holds V_D1 equal to the R2/R1 junction, so R1 sees dV_BE and
+% V_REF = V_D1 + (dV_BE/R1) * R2.
+%
+% Column spacing and OTA placement follow l03_ptat / l03_vref1 so all three
+% figures read as the same circuit family.
+
+\begin{circuitikz}[american, thick, transform shape, circuit ee IEC]
+
+  \input{tikz/ckt_lib.tex}
+
+  % Column x positions
+  \def\xl{0}
+  \def\xr{\grid*2.5}
+  \def\pdlevel{6}    % y-level for both PMOS drains
+
+  % ---- PNP bipolar transistors (collectors at ground) ----
+  \node[pnp, anchor=C] (Q1) at (\xl, 0) {};
+  \draw (Q1.C) -- ++(0,-0.2) \vground;
+  \draw (Q1.B) |- (Q1.C);   % emitter-collector connected (diode)
+
+  \node[pnp, anchor=C, label=right:${\times N}$] (Q2) at (\xr, 0) {};
+  \draw (Q2.C) -- ++(0,-0.2)\vground;
+  \draw (Q2.B) |- (Q2.C);   % emitter-collector connected (diode)
+
+  % ---- Right branch: R1 above Q2, then R2 above the sense node ----
+  \draw (Q2.E) \vresistor{$R_{1}$};
+  \draw (resEnd) -- ++(0,0.8) coordinate (senseR);
+  \draw (senseR) \vresistor{$R_{2}$};
+  \draw (resEnd) -- ++(0,0.5) coordinate (vrefnode);
+
+  % ---- Left branch: plain wire to the sense node, then the matched R2 ----
+  \draw (Q1.E) -- (\xl |- senseR) coordinate (senseL);
+  \draw (senseL) \vresistor{$R_{2}$};
+  \coordinate (r2topL) at (resEnd);
+
+  % ---- PMOS drain nodes ----
+  \coordinate (mp1drain) at (\xl, \pdlevel);
+  \coordinate (mp2drain) at (\xr, \pdlevel);
+
+  \draw (r2topL)   -- (mp1drain);
+  \draw (vrefnode) -- (mp2drain);
+  \draw (vrefnode) \portOut{$V_{REF}$};
+
+  % ---- OTA between the branches, rotated 90 degrees (output upward) ----
+  \def\xota{-\grid*1.5}
+  \def\yota{ 3}
+  \begin{scope}[xscale=-1]
+  \begin{scope}[rotate around={90:(\xota,\yota)}]
+    % Polarity marks are left off here and drawn below instead: the circuitikz
+    % environment sets transform shape, so a label passed to the macro is
+    % rotated with the OTA body and the minus sign comes out a vertical bar.
+    \draw (\xota, \yota) \cicOtaSSWP{}{};
+    % Input terminals, carried out of the rotated scope as plain coordinates.
+    \coordinate (otaPlus)  at ($(\xota,\yota)+(0.5,0)$);
+    \coordinate (otaMinus) at ($(\xota,\yota)+(0.5,-\grid/2)$);
+  \end{scope}
+  \end{scope}
+  \node at ($(otaPlus)+(0,0.3)$)  {$+$};
+  \node at ($(otaMinus)+(0,0.3)$) {$-$};
+
+  % Sense both branches just below their R2, as in the original
+  \draw (cicOtaS_inn) -| (senseL);
+  \draw (cicOtaS_inp) -| (senseR);
+
+  % ---- PMOS current mirror (horizontally flipped) ----
+  \draw (mp1drain) \lvmpmos{MP1}{};
+  \draw (MP1.source) \vsupply;
+
+  \draw (mp2drain) \lvpmos{MP2}{};
+  \draw (MP2.source) \vsupply;
+
+  % OTA output drives both PMOS gates
+  \draw (cicOtaS_out) |- (MP1.gate);
+  \draw (MP1.gate) -- (MP2.gate);
+
+  % Voltage labels
+  \draw ($(Q1.C)+(-0.2,0.8)$) to [open, l=$V_{D1}$] ($(Q1.E)+(-0.2,0.8)$);
+  \draw ($(Q2.C)+(1.2,0.8)$)  to [open, l=$V_{D2}$] ($(Q2.E)+(1.2,0.8)$);
+
+\end{circuitikz}
+\end{document}
