@@ -3,11 +3,12 @@
 % PTAT current source. Same circuit as l03_ptat, redrawn here for the build-up
 % sequence that leads to the Banba reference (l3_ptat1 .. l3_ptat3).
 %
-% NOTE ON POLARITY: this artwork marks the OTA + on the LEFT input (unit device)
-% and - on the RIGHT (xN device through R1). That is the opposite of l03_ptat,
-% l03_vref1 and l03_vref2, where the original artwork left the polarity
-% unmarked and it was assigned the other way round. This file follows the
-% marking the author actually drew; the other three need flipping to match.
+% NOTE ON POLARITY: the source artwork marks + on the LEFT input and - on the
+% RIGHT. That is backwards. Rising current raises the right-hand node by I*R1
+% more than it raises the left, so + must be on the right for the OTA output to
+% push the PMOS gates up and pull the current back down. Drawn here with + on
+% the right, matching l03_ptat, l03_vref1 and l03_vref2. The same error is in
+% the l3_ptat1 artwork.
 
 \begin{circuitikz}[american, thick, transform shape, circuit ee IEC]
 
@@ -43,9 +44,9 @@
     \coordinate (otaLeft)  at ($(\xota,\yota)+(0.5,-\grid/2)$);
   \end{scope}
   \end{scope}
-  % + on the left input, - on the right, as marked in the original.
-  \node at ($(otaLeft)+(0,0.3)$)  {$+$};
-  \node at ($(otaRight)+(0,0.3)$) {$-$};
+  % + on the right input — see the polarity note above.
+  \node at ($(otaRight)+(0,0.3)$) {$+$};
+  \node at ($(otaLeft)+(0,0.3)$)  {$-$};
 
   \draw (cicOtaS_inp) -| (mp2drain);
   \draw (cicOtaS_inn) -| (mp1drain);

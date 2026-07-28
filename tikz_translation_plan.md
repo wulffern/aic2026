@@ -348,11 +348,14 @@ never mentioned:
 - `l3_brokaw` — Brokaw cell with an OTA
 - `l3_ptat`, `l3_ptat1`, `l3_ptat2`, `l3_ptat3` — PTAT variants
 
-These are drawn in a different style from the hand-sketched figures (thin lines
-on a dark background, apparently a schematic-capture export) but they are
-schematics and belong in scope. Three further figures in the lecture —
-`l3_bgsim`, `l3_bgsimtfs`, `vd` — are simulation and measurement plots and are
-correctly excluded.
+They are the same hand-drawn style as the rest of the lecture. Three further
+figures — `l3_bgsim`, `l3_bgsimtfs`, `vd` — are simulation and measurement plots
+and are correctly excluded.
+
+The `l3_ptat` and `l3_ptat1` artwork marks the OTA polarity backwards: + on the
+left input, - on the right. Rising current raises the right-hand node by I*R1
+more than the left, so + belongs on the right for the loop to settle. The
+redraws correct this and match `l03_ptat`, `l03_vref1` and `l03_vref2`.
 
 Before starting any lecture, list its figures with
 `grep -o '](\.\./media/[^)]*)' lectures/<lecture>.md` and triage them, rather

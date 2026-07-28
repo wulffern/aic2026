@@ -24,12 +24,27 @@ import click
 RASTER = (".png", ".jpg", ".jpeg", ".gif")
 
 
+def flatten(im):
+    """Composite onto white. The lecture artwork has a transparent background,
+    and dropping the alpha channel instead would leave it black — which makes a
+    dark-stroked drawing look like a light-on-dark export rather than the
+    hand-drawn figure it is."""
+    from PIL import Image
+
+    if im.mode not in ("RGBA", "LA", "P"):
+        return im.convert("RGB")
+    im = im.convert("RGBA")
+    canvas = Image.new("RGB", im.size, "white")
+    canvas.paste(im, mask=im.split()[-1])
+    return canvas
+
+
 def render_pdf(src, dst, scale):
     import pypdfium2 as pdfium
 
     pdf = pdfium.PdfDocument(src)
     page = pdf[0]
-    page.render(scale=scale).to_pil().save(dst)
+    flatten(page.render(scale=scale).to_pil()).save(dst)
     pdf.close()
     return dst
 
@@ -37,7 +52,8 @@ def render_pdf(src, dst, scale):
 def render_svg(src, dst, scale):
     import cairosvg
 
-    cairosvg.svg2png(url=src, write_to=dst, scale=scale)
+    cairosvg.svg2png(url=src, write_to=dst, scale=scale,
+                     background_color="white")
     return dst
 
 
@@ -56,7 +72,10 @@ def render(src, outdir, scale=2.0):
     if ext == ".svg":
         return render_svg(src, dst, scale)
     if ext in RASTER:
-        shutil.copyfile(src, dst)
+        from PIL import Image
+
+        with Image.open(src) as im:
+            flatten(im).save(dst)
         return dst
     raise click.ClickException(f"Cannot render {ext} figures: {src}")
 
