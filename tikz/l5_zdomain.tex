@@ -1,0 +1,28 @@
+\input{tikz/fig_header.tex}
+
+% The z-plane. The unit circle is drawn heavy because it plays the part the
+% jw axis plays in l5_sdomain: it is where the frequency response is read.
+%
+% Second of three. Geometry comes from tikz/plane_lib.tex, so this sits on the
+% same axes as l5_sdomain and l5_zunstable.
+
+\input{tikz/plane_lib.tex}
+
+\begin{circuitikz}[american, transform shape]
+
+  \planeAxes{$a$}{$b$}
+  \planeCircle
+
+  % A conjugate pole pair inside the circle.
+  \planePole{axisblue}{0.50}{0.28}
+  \planePole{axisblue}{0.50}{-0.28}
+
+  % Point at the circle itself, since that is the object being named.
+  \node[axisblue, anchor=west] at (1.95,1.95) {$e^{j\omega}$};
+  \draw[axisblue, thick, ->] (1.90,1.90) -- (1.36,1.36);
+
+  \node[axisblue, anchor=west] at (1.15,2.85) {z-plane};
+  \node[axisblue, anchor=west] at (1.15,2.35) {$z = a + jb$};
+
+\end{circuitikz}
+\end{document}
