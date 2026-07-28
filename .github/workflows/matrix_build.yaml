@@ -8,6 +8,7 @@ on:
       - 'docs/*.*'
       - 'media/*.*'
       - 'pdf/*.*'
+      - 'tikz/**.tex'
       - '**.md'
       - '**.py'
       - 'Makefile'
@@ -26,6 +27,23 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  tikz:
+    runs-on: ubuntu-latest
+    container:
+      image: texlive/texlive:TL2022-historic
+      options: --user root
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Compile TikZ figure sources
+        shell: bash
+        run: |
+          git config --global --add safe.directory "$(pwd)"
+          make tikz-check
+
   prepare:
     runs-on: ubuntu-latest
     steps:

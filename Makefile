@@ -10,7 +10,7 @@ ifneq ($(wildcard /pyenv/bin/.*),)
 	PYTHON=/pyenv/bin/python3
 endif
 
-.PHONY:  slides version tikz figures prepare-docs standalone-one standalone-list book-pdf book-epub print-files
+.PHONY:  slides version tikz tikz-one tikz-check print-tikz figures prepare-docs standalone-one standalone-list book-pdf book-epub print-files
 
 #	lr0_logic \
 
@@ -195,28 +195,37 @@ cish:
 equations:
 	${foreach f,${FILES},cat lectures/${f}.md |perl -pe 's/\n//ig;'| perl -ne 'print "\n# ${f}\n\n";while(m/\$$\$$([^\$$]+)\$$\$$/ig){print "\n\$$\$$".$$1."\$$\$$\n"}';}
 
+# Shared TikZ preamble/library files, included by the figures rather than built.
+TIKZ_INCLUDES = fig_header.tex ckt_lib.tex
+
+# Every figure source under tikz/, at any depth, minus the shared includes.
+TIKZ_SOURCES = $(shell find tikz -name '*.tex' -not -path 'tikz/build/*' \
+	$(foreach i,${TIKZ_INCLUDES},-not -name '${i}') | sort)
+
+print-tikz:
+	${foreach f,${TIKZ_SOURCES},echo ${f};}
+
 tikz:
-	-mkdir -p tikz/build
-	-mkdir -p pdf/media
 	@set -e; \
-	for f in tikz/l*.tex ; do \
-		[ -f "$$f" ] || continue; \
-		b=$$(basename "$$f" .tex); \
-		[ "$$b" = "ckt_lib" ] && continue; \
-		echo "Building $$b"; \
-		pdflatex -interaction=nonstopmode -halt-on-error -output-directory tikz/build "$$f"; \
-		cp "tikz/build/$$b.pdf" "media/$${b}_tikz.pdf"; \
-		cp "tikz/build/$$b.pdf" "pdf/media/$${b}_tikz.pdf"; \
-		if command -v dvisvgm >/dev/null 2>&1; then \
-			dvisvgm --pdf "tikz/build/$$b.pdf" -n -o "media/$${b}_tikz.svg" >/dev/null 2>&1 || true; \
-			if [ -f "media/$${b}_tikz.svg" ]; then cp "media/$${b}_tikz.svg" "pdf/media/$${b}_tikz.svg"; fi; \
-		fi; \
+	for f in ${TIKZ_SOURCES}; do \
+		${MAKE} --no-print-directory tikz-one FNAME="$$f"; \
+	done
+
+# Compile every figure without touching media/ — for CI, where the only
+# question is whether the sources still build.
+tikz-check:
+	-mkdir -p tikz/build
+	@set -e; \
+	for f in ${TIKZ_SOURCES}; do \
+		rel=$${f#tikz/}; \
+		echo "Checking $${rel%.tex}"; \
+		mkdir -p "tikz/build/$$(dirname "$${rel}")"; \
+		pdflatex -interaction=nonstopmode -halt-on-error \
+			-output-directory "tikz/build/$$(dirname "$${rel}")" "$$f"; \
 	done
 
 tikz-one:
-	@test -n "${FNAME}" || (echo "Usage: make tikz-one FNAME=l3_bjtonly"; exit 1)
-	-mkdir -p tikz/build
-	-mkdir -p pdf/media
+	@test -n "${FNAME}" || (echo "Usage: make tikz-one FNAME=l3_bjtonly (also accepts l13/pdpu or tikz/l3_bjtonly.tex)"; exit 1)
 	@set -e; \
 	if [ -f "${FNAME}" ]; then \
 		f="${FNAME}"; \
@@ -226,15 +235,18 @@ tikz-one:
 		echo "Could not find TikZ source for FNAME=${FNAME}"; \
 		exit 1; \
 	fi; \
-	b=$$(basename "$$f" .tex); \
-	echo "Building $$b"; \
-	pdflatex -interaction=nonstopmode -halt-on-error -output-directory tikz/build "$$f"; \
-	cp "tikz/build/$$b.pdf" "media/$${b}_tikz.pdf"; \
-	cp "tikz/build/$$b.pdf" "pdf/media/$${b}_tikz.pdf"; \
+	rel=$${f#tikz/}; rel=$${rel%.tex}; \
+	b=$$(basename "$$rel"); \
+	sub=$$(dirname "$$rel"); \
+	if [ "$$sub" = "." ]; then sub=""; else sub="/$$sub"; fi; \
+	mkdir -p "tikz/build$$sub" "media$$sub" "pdf/media$$sub"; \
+	echo "Building $$rel"; \
+	pdflatex -interaction=nonstopmode -halt-on-error -output-directory "tikz/build$$sub" "$$f"; \
+	cp "tikz/build$$sub/$$b.pdf" "media$$sub/$${b}_tikz.pdf"; \
+	cp "tikz/build$$sub/$$b.pdf" "pdf/media$$sub/$${b}_tikz.pdf"; \
 	if command -v pdf2svg >/dev/null 2>&1; then \
-		pdf2svg "tikz/build/$$b.pdf" "media/$${b}_tikz.svg" || true; \
-		if [ -f "media/$${b}_tikz.svg" ]; then cp "media/$${b}_tikz.svg" "pdf/media/$${b}_tikz.svg"; fi; \
+		pdf2svg "tikz/build$$sub/$$b.pdf" "media$$sub/$${b}_tikz.svg" || true; \
 	elif command -v dvisvgm >/dev/null 2>&1; then \
-		dvisvgm --pdf "tikz/build/$$b.pdf" -n -o "media/$${b}_tikz.svg" >/dev/null 2>&1 || true; \
-		if [ -f "media/$${b}_tikz.svg" ]; then cp "media/$${b}_tikz.svg" "pdf/media/$${b}_tikz.svg"; fi; \
-	fi
+		dvisvgm --pdf "tikz/build$$sub/$$b.pdf" -n -o "media$$sub/$${b}_tikz.svg" >/dev/null 2>&1 || true; \
+	fi; \
+	if [ -f "media$$sub/$${b}_tikz.svg" ]; then cp "media$$sub/$${b}_tikz.svg" "pdf/media$$sub/$${b}_tikz.svg"; fi
