@@ -1,0 +1,81 @@
+\input{tikz/fig_header.tex}
+
+% GM cell (beta-multiplier style bias). Three stacked mirrors:
+%   top    PMOS 1:1, diode-connected on the LEFT branch
+%   middle NMOS 1:1, diode-connected on the RIGHT branch — equalises the drain
+%          voltages of the bottom pair
+%   bottom NMOS, x4 on the left with Z in its source, x1 on the right to ground,
+%          diode-connected on the RIGHT
+% The loop sets V_o = V_GS1 - V_GS2 = V_eff1 - V_eff2 across Z.
+%
+% \grid is 1.6; the y levels below are spaced to match it, so a device drawn by
+% the \lv*mos macros spans exactly one row.
+
+\begin{circuitikz}[american, thick, transform shape, circuit ee IEC]
+
+  \input{tikz/ckt_lib.tex}
+
+  \def\xl{0}
+  \def\xr{\grid*2.5}
+
+  \def\ybot{2.0}     % bottom row source
+  \def\ybotd{3.6}    % bottom row drain      (\ybot + \grid)
+  \def\ymid{4.4}     % middle row source
+  \def\ymidd{6.0}    % middle row drain      (\ymid + \grid)
+  \def\ytop{6.8}     % top row drain
+  \def\ytops{8.4}    % top row source        (\ytop + \grid)
+
+  % ---- Left branch: Z, then x4 NMOS, cascode NMOS, diode-connected PMOS ----
+  \draw (\xl,0) \vground;
+  \draw (\xl,0) -- ++(0,0.3) coordinate (zbot);
+  \draw (zbot) \vimpedance{$Z$};
+  \coordinate (ztop) at (impEnd);
+  \draw (ztop) -- (\xl,\ybot);
+
+  \draw (\xl,\ybot) \lvmnmos{MN2}{};
+  \draw (\xl,\ybotd) -- (\xl,\ymid);
+  \draw (\xl,\ymid) \lvmnmos{MN4}{};
+  \draw (\xl,\ymidd) -- (\xl,\ytop);
+  \draw (\xl,\ytop) \lvmpmos{MP2}{};
+  \draw (\xl,\ytops) \vsupply;
+
+  % ---- Right branch: x1 NMOS to ground, cascode NMOS, PMOS ----
+  \draw (\xr,0) \vground;
+  \draw (\xr,0) -- (\xr,\ybot);
+
+  \draw (\xr,\ybot) \lvnmos{MN1}{};
+  \draw (\xr,\ybotd) -- (\xr,\ymid);
+  \draw (\xr,\ymid) \lvnmos{MN3}{};
+  \draw (\xr,\ymidd) -- (\xr,\ytop);
+  \draw (\xr,\ytop) \lvpmos{MP1}{};
+  \draw (\xr,\ytops) \vsupply;
+
+  % ---- Gate lines and the three diode connections ----
+  % Bottom pair: gates tied, taken to the right branch drain.
+  \draw (MN2.gate) -- (MN1.gate);
+  \coordinate (gBot) at ($(MN2.gate)!0.5!(MN1.gate)$);
+  \draw (gBot) |- (\xr,\ybotd);
+
+  % Middle pair: gates tied, taken to the right branch drain.
+  \draw (MN4.gate) -- (MN3.gate);
+  \coordinate (gMid) at ($(MN4.gate)!0.5!(MN3.gate)$);
+  \draw (gMid) |- (\xr,\ymidd);
+
+  % Top pair: gates tied, taken to the left branch drain.
+  \draw (MP2.gate) -- (MP1.gate);
+  \coordinate (gTop) at ($(MP2.gate)!0.5!(MP1.gate)$);
+  \draw (gTop) |- (\xl,\ytop);
+
+  % ---- Mirror ratios and device sizes ----
+  \node[anchor=south] at ($(gTop)+(0,0.15)$) {$1:1$};
+  \node[anchor=north] at ($(gMid)+(0,-0.15)$) {$1:1$};
+  \node[anchor=east]  at (\xl-0.35,\ybot+0.8) {$4$};
+  \node[anchor=west]  at (\xr+0.35,\ybot+0.8) {$1$};
+
+  % ---- Voltages ----
+  \draw ($(zbot)+(-1.0,0)$)     to [open, v=$V_{o}$]    ($(ztop)+(-1.0,0)$);
+  \draw ($(\xl,\ybot)+(0.45,0)$) to [open, v=$V_{GS2}$] ($(MN2.gate)+(0,0)$);
+  \draw ($(\xr,\ybot)+(-0.45,0)$) to [open, v=$V_{GS1}$] ($(MN1.gate)+(0,0)$);
+
+\end{circuitikz}
+\end{document}
