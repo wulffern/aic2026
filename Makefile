@@ -227,11 +227,15 @@ slides-vendor:
 	-mkdir -p ${SLIDEDIR}/vendor docs/assets/media
 	cp -f slides/vendor/* ${SLIDEDIR}/vendor/
 
+# tex_intro is not in FILES, but it is a chapter and downloads.md links a deck
+# for it, so it has to be rendered too or that link is dead.
+SLIDEFILES = ${FILES} tex_intro
+
 slides: slides-vendor
-	${foreach f, ${FILES}, ${PYTHON} py/slides.py lectures/${f}.md || exit; }
+	${foreach f, ${SLIDEFILES}, ${PYTHON} py/slides.py lectures/${f}.md || exit; }
 
 slides-parallel: slides-vendor
-	printf '%s\n' ${FILES} | xargs -P 4 -I{} ${PYTHON} py/slides.py lectures/{}.md
+	printf '%s\n' ${SLIDEFILES} | xargs -P 4 -I{} ${PYTHON} py/slides.py lectures/{}.md
 
 slides-one: slides-vendor
 	@test -n "${FNAME}" || (echo "Usage: make slides-one FNAME=l05_sc"; exit 1)

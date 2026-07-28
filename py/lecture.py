@@ -655,7 +655,9 @@ def latex(filename,root,no_append):
         + r"\chapter{" + title + "}" + "\n"
         + r"\input{" + foname_fixed + "}" + "\n\n")
 
-    download_text = f"- [{title}](/{aic_version}/assets/{basename}.pdf)\n"
+    #- The chapter PDF and, beside it, the HTML deck built by py/slides.py
+    download_text = (f"- [{title}](/{aic_version}/assets/{basename}.pdf)"
+                     f" [[slides]](/{aic_version}/assets/html/{basename}.html)\n")
 
     with open(f"pdf/{basename}_chapter.inc","w") as fo:
         fo.write(chapter_text)
