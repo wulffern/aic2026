@@ -339,9 +339,7 @@ In `lectures/l03_refbias.md`:
 That is 10 figures, in three lectures.
 
 ### Pending approval
-- `l3_mosref` — the last of the three new-content figures below. Source and PDF
-  are committed; no lecture text references it yet. The proposed text is in
-  `preview/proposed_l03_refbias_text.md`.
+- none
 
 Also converted and switched: `l3_ptat`, `l3_ptat1`, `l3_ptat2` — 13 figures total.
 
@@ -377,16 +375,17 @@ the remaining `l03_refbias` conversion work.
 All three figures are drawn and rendered: `tikz/l3_curv.tex`,
 `tikz/l3_widlar.tex`, `tikz/l3_mosref.tex`.
 
-**Widlar and curvature correction are approved and merged.**
+**All three are approved and merged.**
 
 Widlar went in *before* the Brokaw section at the user's request, rather than
 after the Banba material, so it is Figure 9 and every figure from Brokaw onward
-shifted up by one. Curvature correction went in where it was drafted, between
-the Banba section and the `#[fit] Bias` divider, as a `##[fit]` subsection of
-the bandgap part, and is Figure 17.
+shifted up by one. Curvature correction and the MOS reference went in where
+they were drafted, between the Banba section and the `#[fit] Bias` divider, as
+`##[fit]` subsections of the bandgap part.
 
-Current numbering: 9 Widlar, 10 Brokaw, 11 `l3_bgsim`, 12 `l3_bgsimtfs`,
-13–16 the Banba sequence, 17 curvature, 18 `l3_vi`, 19 `l3_gmcell`.
+Final numbering: 9 Widlar, 10 Brokaw, 11 `l3_bgsim`, 12 `l3_bgsimtfs`, 13–16
+the Banba sequence, 17 curvature, 18 MOS reference, 19 `l3_vi`,
+20 `l3_gmcell`.
 
 Renumbering a lecture means bumping two forms — the `<sub>Figure N:` captions
 and the in-text "as shown in Figure N" references. A regex over `Figure (\d+)`
@@ -395,11 +394,24 @@ Rebuild with `python3 py/lecture.py post lectures/l03_refbias.md` afterwards
 and read the generated markdown; it catches a mangled `pan_doc` block that a
 diff review will not.
 
-The MOS-based reference is still pending. Its proposed text is in
-`preview/proposed_l03_refbias_text.md`, written for insertion after the
-curvature section. Inserting it there makes it Figure 18 and pushes `l3_vi` to
-19 and `l3_gmcell` to 20. Note that draft still carries the pre-Widlar
-numbering internally and needs the same remap the curvature text got.
+### On the MOS reference figure
+The first draft used the textbook enhancement/depletion pair, with the
+depletion device conducting at $V_{GS}=0$ because its threshold is negative.
+The user rejected the framing: in nanoscale CMOS essentially every device sits
+at 300 mV or more, the native device is the only exception, and
+enhancement/depletion is not language this course should use. The redraw is the
+$\Delta V_t$ loop — a 1:1 PMOS mirror over a standard-$V_t$ device and a native
+device of equal $W/L$, with $R$ in the native device's source, so
+$IR = V_{t1}-V_{t2}$.
+
+It is deliberately the same topology as `l3_gmcell`, because that carries the
+argument better than any amount of prose: same loop, but the GM cell's number
+comes from a 4:1 size ratio (lithography, a ratio of like things) and this
+one's comes from two unrelated channel implants. Keep the two figures visually
+parallel if either is re-laid-out.
+
+When writing about device flavours in this course, use the PDK vocabulary —
+standard/low/high $V_t$ and native — not enhancement/depletion.
 
 1. **Curvature correction.** `l3_bgsimtfs` and `vd` already show the residual
    curvature; nothing in the lecture corrects it. This closes that loop.

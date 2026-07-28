@@ -754,6 +754,144 @@ is worth the area when you need 10 ppm/$^\circ$C. It is a waste of area when
 
 ---
 
+##[fit] MOS references
+
+<sub><sub> Recognise this one. Do not build it. </sub></sub>
+
+---
+
+<!--pan_doc:
+
+Everything so far has needed a bipolar. In a pure CMOS process that is
+irritating, and the temptation is obvious. The MOS transistor has a threshold
+voltage, thresholds fall with temperature at roughly $-1$ mV/K, and if two
+devices have different thresholds then the difference between them ought to be
+flat. A reference with no bipolar in it.
+
+If you read older books you will find this done with an enhancement device and
+a depletion device. Forget that circuit. It relied on a threshold below zero,
+so that a device with its gate tied to its own source still conducted, and in a
+nanoscale CMOS process there is no such device. Essentially everything on the
+menu sits at 300 mV or more. What you get instead is a handful of implant
+flavours, standard, low $V_t$ and high $V_t$, separated by a hundred millivolts
+or so, plus the native device, which skips the channel implant altogether and
+is the only one that lands anywhere near zero.
+
+So the modern version of the idea pairs two of those flavours, and it looks
+like Figure 18.
+
+-->
+
+---
+
+<!--pan_doc:
+
+You have seen this loop before, or rather you are about to see it: it is the GM
+cell from later in this chapter, with the size ratio taken out and a second
+implant put in its place. The PMOS mirror forces the same current down both
+branches, $M_1$ and $M_2$ have the same $W/L$, and the only thing left that
+distinguishes them is which channel implant they were given.
+
+Both gates sit on the same node, so $V_{GS1} = V_{GS2} + I R$, and writing each
+gate-source voltage as a threshold plus an overdrive
+
+-->
+
+![left fit](../media/l3_mosref_tikz.pdf)
+
+<!--pan_doc:
+
+<sub>Figure 18: A reference built on the difference between two threshold
+voltages. Learn to recognise it. Do not build it. </sub>
+-->
+
+$$ I R = (V_{t1} + V_{eff1}) - (V_{t2} + V_{eff2}) $$
+
+<!--pan_doc:
+
+Equal current in equal $W/L$ means equal overdrive, so the $V_{eff}$ terms
+cancel and what is left is the entire reference
+
+-->
+
+$$ I = \frac{V_{t1} - V_{t2}}{R} = \frac{\Delta V_t}{R} $$
+
+---
+
+<!--pan_doc:
+
+I want you to leave this slide able to recognise that circuit, and unwilling to
+build it.
+
+**MOS based references that rely on the difference between two threshold
+voltages are very risky and should not be attempted.** Process control over the
+two threshold sources is poor, and their stability is poor, so the difference
+is neither well controlled nor stable.
+
+Put Figure 18 next to Figure 20 and the problem is visible in one look. They
+are the same loop. The GM cell puts a 4:1 size ratio in it, and a size ratio is
+lithography, two drawings of the same thing, which is about as well controlled
+as anything on a die gets. This circuit puts the difference of two channel
+implants in the same place. Those are two separate recipes, aimed separately,
+monitored separately, and drifting separately. Nothing makes them move
+together.
+
+-->
+
+---
+
+<!--pan_doc:
+
+Watch what the numbers do. Take standard against low $V_t$: two devices at
+maybe 450 mV and 350 mV, each with a spread of $\pm 50$ mV over process. Each
+threshold on its own is known to about $\pm 12$ %. The difference you actually
+use is 100 mV, and if the two spreads are independent it is known to about
+$\pm 70$ %. If they happen to move in opposite directions it is worse than
+that, and nothing in the process says they will not. Subtracting two similar,
+poorly known numbers is the worst thing you can do to an error budget.
+
+Reach for the native device to get a bigger difference and you have picked the
+least controlled transistor in the process. Its threshold is whatever is left
+when you leave the channel implant out, so it is set by background doping and
+well proximity, and in most PDKs it comes with the widest corners and the
+thinnest model guarantees of anything on the menu.
+
+Compare that with what a bandgap does. A bandgap gets its number from $E_g$ of
+silicon. That is a property of the material, it is the same in every fab on
+earth, and no process engineer can move it. This circuit gets its number from
+the difference between two implant recipes.
+
+-->
+
+---
+
+<!--pan_doc:
+
+Stability is the other half, and trimming does not save you. You can trim out
+the initial spread in production test, once. Then the thresholds move over the
+life of the part. NBTI and hot carrier stress shift them, and they shift by
+different amounts, because the two devices see different fields, different bias
+and different channel doping. Nothing anchors the difference, so it walks.
+
+The derivation has a hole in it as well. It assumed the two devices are
+identical apart from $V_t$, which is the only reason the overdrives cancelled.
+They are not. The implant that moves the threshold also moves the mobility, the
+body effect coefficient and the subthreshold slope, so $V_{eff1}$ and
+$V_{eff2}$ do not quite cancel, and what is left over has its own temperature
+dependence. On top of that $M_2$ has its source $\Delta V_t$ above ground while
+its bulk is at ground, so the body effect raises $V_{t2}$ by an amount that
+depends on the answer.
+
+If you need a reference in a pure CMOS process, use the parasitic vertical PNP
+that every CMOS process has, in the circuits from earlier in this chapter. If
+what you actually need is a bias current rather than a reference, use the GM
+cell a few slides from here. Neither of those asks two implants to agree with
+each other.
+
+-->
+
+---
+
 
 
 #[fit] Bias
@@ -766,7 +904,7 @@ is worth the area when you need 10 ppm/$^\circ$C. It is a waste of area when
 
 <!--pan_doc: 
 
-With a known voltage, we can convert to a known current with the circuit in Figure 18. 
+With a known voltage, we can convert to a known current with the circuit in Figure 19. 
 
 On-chip we don't have accurate resistors, 
 but for bias currents, it's usually ok with $+- 20 %$ variation  (the variation of R). 
@@ -784,7 +922,7 @@ until the current is what we want.
 
 
 <!--pan_doc:
-<sub>Figure 18: Voltage to current converter</sub>
+<sub>Figure 19: Voltage to current converter</sub>
 -->
 
 ---
@@ -798,7 +936,7 @@ until the current is what we want.
 <!--pan_doc: 
 
 Sometimes we don't need a full bandgap reference. In those cases, 
-we can use a GM cell, as shown in Figure 19. 
+we can use a GM cell, as shown in Figure 20. 
 
 -->
 
@@ -806,7 +944,7 @@ we can use a GM cell, as shown in Figure 19.
 
 <!--pan_doc:
 
-<sub>Figure 19: GM cell. </sub>
+<sub>Figure 20: GM cell. </sub>
 
 The top PMOS current mirror ensures that both branches have the same current. The middle NMOS current mirror copies
 the drain voltage on top of the diode connected bottom NMOS to the left NMOS.
