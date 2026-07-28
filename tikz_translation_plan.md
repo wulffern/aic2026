@@ -339,8 +339,7 @@ In `lectures/l03_refbias.md`:
 That is 10 figures, in three lectures.
 
 ### Pending approval
-- `l5_shaaf` and `l5_subsample` — sources and PDFs committed,
-  `lectures/l05_sc.md` still points at their SVGs.
+- none
 
 Also converted and switched: `l3_ptat`, `l3_ptat1`, `l3_ptat2` — 13 figures total.
 
@@ -467,7 +466,7 @@ come up.
   diagrams, another set that should share geometry.
 
 Approved and switched in `lectures/l05_sc.md`: `l05_fund1`, `l05_fund2`,
-`l05_fund3`, `l5_sh`.
+`l05_fund3`, `l5_sh`, `l5_shaaf`, `l5_subsample`.
 
 `tikz/spec_lib.tex` holds the sampling-spectrum pieces shared by `l5_sh`,
 `l5_shaaf` and `l5_subsample`: the axis with its Nyquist ticks, the wanted

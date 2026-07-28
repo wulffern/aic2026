@@ -576,7 +576,7 @@ our wanted signal (green) is undisturbed.
 
 -->
 
-![fit](../media/l5_shaaf.svg)
+![fit](../media/l5_shaaf_tikz.pdf)
 
 ---
 
@@ -595,7 +595,7 @@ a good place to start to delve into the latest on signal reconstruction.
 
 -->
 
-![fit](../media/l5_subsample.svg)
+![fit](../media/l5_subsample_tikz.pdf)
 
 ---
 
