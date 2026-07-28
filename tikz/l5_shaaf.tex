@@ -1,0 +1,46 @@
+\input{tikz/fig_header.tex}
+
+% Anti-alias filtering: the same picture as l5_sh with a low pass in front of
+% the sample and hold, so the tones outside the Nyquist band never reach it.
+%
+% Second of three. Geometry comes from tikz/spec_lib.tex, so the axes, the
+% wanted signal and the tone positions are identical to l5_sh and l5_subsample
+% and the three slides can be compared directly.
+%
+% The after panel carries no tones at all. That is the point: the filter
+% removed them before sampling, so there is nothing left to fold in. Contrast
+% with l5_sh, where the same four tones land inside the band.
+
+\input{tikz/spec_lib.tex}
+
+\begin{circuitikz}[american, transform shape]
+
+  % ---- Before sampling: the low pass passes the signal, not the tones ----
+  \specAxis{\specYtop}
+  \specBand{0}{1.15}{1.70}{\specYtop}
+  \specBump{\specYtop}
+  \specTone{tonered}{-2.64}{\specYtop}     % -1.1 fs
+  \specTone{tonemag}{-1.44}{\specYtop}     % -0.6 fs
+  \specTone{tonemag}{1.44}{\specYtop}
+  \specTone{tonered}{2.64}{\specYtop}
+  \node[bandorange, anchor=east] at (-1.55,\specYtop+1.95) {LP filter};
+  \draw[bandorange, thick, ->] (-1.5,\specYtop+1.90) -- (-1.15,\specYtop+1.75);
+  \node[anchor=west] at (1.45,\specYtop+1.62) {Before sampling};
+
+  % ---- After sampling: the tones are gone, so nothing folds in ----
+  \specAxis{\specYbot}
+  \specBump{\specYbot}
+  \node[anchor=west] at (1.45,\specYbot+1.62) {After sampling};
+
+  % ---- Low pass, then sample and hold ----
+  \specWire{4.2}{4.9}{2.0}
+  \specBlock{4.9}{2.0}{LP}
+  \specWire{6.4}{7.0}{2.0}
+  \specBlock{7.0}{2.0}{S/H}
+  \specWire{8.5}{9.2}{2.0}
+
+  \node[annotblue, anchor=south] at (5.65,3.3) {Anti-alias};
+  \draw[annotblue, thick, ->] (5.65,3.25) -- (5.65,2.55);
+
+\end{circuitikz}
+\end{document}

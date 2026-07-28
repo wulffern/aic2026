@@ -1,0 +1,45 @@
+\input{tikz/fig_header.tex}
+
+% Subsampling: a bandpass around f_s selects the tones instead of rejecting
+% them, and sampling folds that band down to baseband deliberately.
+%
+% Third of three. Geometry comes from tikz/spec_lib.tex, so it lines up with
+% l5_sh and l5_shaaf. Read as a set: l5_sh aliases by accident, l5_shaaf
+% prevents it, and this one uses it on purpose.
+%
+% The after panel keeps only the red pair. The bandpass rejected the wanted
+% baseband hump and the magenta tones, so the only thing left to fold is the
+% band that was selected -- which is the whole trick.
+
+\input{tikz/spec_lib.tex}
+
+\begin{circuitikz}[american, transform shape]
+
+  % ---- Before sampling: the bandpass sits on the tones at +-1.1 fs ----
+  \specAxis{\specYtop}
+  \specBand{-2.64}{0.55}{1.25}{\specYtop}
+  \specBand{2.64}{0.55}{1.25}{\specYtop}
+  \specBump{\specYtop}
+  \specTone{tonered}{-2.64}{\specYtop}     % -1.1 fs, inside the passband
+  \specTone{tonemag}{-1.44}{\specYtop}     % -0.6 fs, rejected
+  \specTone{tonemag}{1.44}{\specYtop}
+  \specTone{tonered}{2.64}{\specYtop}
+  \node[bandorange, anchor=west] at (-2.05,\specYtop+1.55) {BP filter};
+  \draw[bandorange, thick, ->] (-2.1,\specYtop+1.50) -- (-2.45,\specYtop+1.32);
+  \node[anchor=west] at (1.45,\specYtop+1.62) {Before sampling};
+
+  % ---- After sampling: only the selected band folded down ----
+  \specAxis{\specYbot}
+  \specTone{tonered}{-0.24}{\specYbot}     % 1.1 fs - fs = 0.1 fs
+  \specTone{tonered}{0.24}{\specYbot}
+  \node[anchor=west] at (1.45,\specYbot+1.62) {After sampling};
+
+  % ---- Bandpass, then sample and hold ----
+  \specWire{4.2}{4.9}{2.0}
+  \specBlock{4.9}{2.0}{BP}
+  \specWire{6.4}{7.0}{2.0}
+  \specBlock{7.0}{2.0}{S/H}
+  \specWire{8.5}{9.2}{2.0}
+
+\end{circuitikz}
+\end{document}
