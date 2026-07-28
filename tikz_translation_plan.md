@@ -339,8 +339,9 @@ In `lectures/l03_refbias.md`:
 That is 10 figures, in three lectures.
 
 ### Pending approval
-- `l3_curv`, `l3_widlar`, `l3_mosref` — the three new-content figures below.
-  Sources and PDFs are committed; no lecture text references them yet.
+- `l3_curv`, `l3_mosref` — two of the three new-content figures below. Sources
+  and PDFs are committed; no lecture text references them yet. The proposed
+  text for both is in `preview/proposed_l03_refbias_text.md`.
 
 Also converted and switched: `l3_ptat`, `l3_ptat1`, `l3_ptat2` — 13 figures total.
 
@@ -373,13 +374,20 @@ need lecture text as well as figures, and the text is the harder half.
 Widlar, then the MOS-based reference. Take them ahead of `l05_sc` and ahead of
 the remaining `l03_refbias` conversion work.
 
-All three figures are now drawn and rendered: `tikz/l3_curv.tex`,
-`tikz/l3_widlar.tex`, `tikz/l3_mosref.tex`. The proposed lecture text sits in
-the review directory as `preview/proposed_l03_refbias_text.md` and is **not**
-merged into `lectures/l03_refbias.md` yet. The plan is to insert all three
-sections between the Banba section (Figure 15) and the `#[fit] Bias` divider,
-in the order above, which renumbers the existing Figure 16 (`l3_vi`) to 19 and
-Figure 17 (`l3_gmcell`) to 20.
+All three figures are drawn and rendered: `tikz/l3_curv.tex`,
+`tikz/l3_widlar.tex`, `tikz/l3_mosref.tex`.
+
+**Widlar is approved and merged.** At the user's request it went in *before*
+the Brokaw section rather than after the Banba material, so it is Figure 9 and
+every figure from Brokaw onward shifted up by one (old 9–17 are now 10–18).
+Both the captions and the in-text `Figure N` references were bumped; there are
+no `Figure N` references outside those two forms in this lecture.
+
+Curvature correction and the MOS-based reference are still pending. Their
+proposed text is in `preview/proposed_l03_refbias_text.md`, written for
+insertion between the Banba section (now Figure 16) and the `#[fit] Bias`
+divider. That text still carries the old numbering — inserting it there now
+makes them Figures 17 and 18, and pushes `l3_vi` to 19 and `l3_gmcell` to 20.
 
 1. **Curvature correction.** `l3_bgsimtfs` and `vd` already show the residual
    curvature; nothing in the lecture corrects it. This closes that loop.

@@ -349,6 +349,81 @@ Another method would be to stack the $R_2$ on top of $R_1$ as shown in Figure 8.
 
 <!--pan_doc:
 
+## Widlar reference
+
+The first bandgap reference was not Brokaw's. Bob Widlar built one in 1971 for
+the LM113, three years before the cell on the next slide, and it is worth
+starting here. Partly for the history, and partly because it does the entire
+job with three transistors, three resistors, and no amplifier anywhere. It was
+published in
+[New developments in IC voltage regulators](https://ieeexplore.ieee.org/document/1050151).
+
+Figure 9 is the circuit. It is a two terminal shunt reference: you feed it a
+bias current down from the supply and it holds its own terminal at $V_{REF}$,
+the way a zener does, except that it does it at 1.2 V, where no zener will.
+
+-->
+
+![left fit](../media/l3_widlar_tikz.pdf)
+
+<!--pan_doc:
+
+<sub>Figure 9: Widlar's bandgap reference, the first one, from 1971 </sub>
+-->
+
+<!--pan_doc:
+
+$Q_1$ is diode connected, so its collector sits one $V_{BE}$ above ground.
+$Q_3$ holds its own base, which is the collector of $Q_2$, one $V_{BE}$ above
+ground as well. Both $R_1$ and $R_2$ therefore have very nearly the same
+voltage across them, and the current ratio falls out of the resistors alone.
+
+-->
+
+$$ \frac{I_1}{I_2} = \frac{R_2}{R_1} $$
+
+<!--pan_doc:
+
+$Q_1$ and $Q_2$ are the same size and share a base, so that difference in
+current density lands across $R_3$
+
+$$ I_2 R_3 = V_{BE1} - V_{BE2} = \frac{kT}{q}\ln{\frac{I_1}{I_2}} = \frac{kT}{q}\ln{\frac{R_2}{R_1}} $$
+
+which is PTAT, and depends only on a resistor ratio, so it is as accurate as
+your matching. That current runs up through $R_2$, and the output is that drop
+stacked on top of the $V_{BE}$ of $Q_3$.
+
+-->
+
+$$ V_{REF} = V_{BE3} + \frac{R_2}{R_3}\frac{kT}{q}\ln{\frac{R_2}{R_1}} $$
+
+<!--pan_doc:
+
+CTAT plus PTAT, and we are about to do it again with an amplifier. With
+$R_2/R_1 = 10$ the log term is about 60 mV at room temperature, $R_2/R_3 = 10$
+scales that to 600 mV, and stacked on a 600 mV $V_{BE}$ you land at the 1.22 V
+the LM113 was sold as.
+
+Notice what is doing the job of the OTA. $Q_3$ is the gain element. If the
+terminal tries to rise, the collector of $Q_2$ follows it up, $Q_3$ conducts
+harder, and shunts the extra current away. The loop closes through a single
+transistor. That is why the circuit fits in a process where you count your
+transistors, and it is also why it has less loop gain, and therefore worse line
+regulation, than the amplifier based cells that came after it. Widlar was not
+short of ideas, he was short of devices.
+
+One more thing worth taking from this circuit is where the current density
+ratio comes from. Here it is $R_2/R_1$, a ratio of resistors. In the Brokaw
+cell it is an emitter area ratio instead. Both work, and both are asking a
+ratio of like things to be accurate, which is the only kind of accuracy an
+integrated circuit actually has.
+
+-->
+
+---
+
+<!--pan_doc:
+
 ## Brokaw reference 
 
 Paul Brokaw was a pioneer within reference circuits 
@@ -363,7 +438,7 @@ which I think was first published in
 
 <!--pan_doc:
 
-<sub>Figure 9: Brokaw bandgap voltage reference  </sub>
+<sub>Figure 10: Brokaw bandgap voltage reference  </sub>
 -->
 
 <!--pan_doc:
@@ -407,7 +482,7 @@ $$ V_{BG} = V_{G0} + (m-1)\frac{kT}{q}\ln{\frac{T_0}{T}} $$
 
 <!--pan_doc:
 
-<sub>Figure 10: Simulation of a Brokaw reference in GF 130 nm.  </sub>
+<sub>Figure 11: Simulation of a Brokaw reference in GF 130 nm.  </sub>
 -->
 
 
@@ -415,7 +490,7 @@ $$ V_{BG} = V_{G0} + (m-1)\frac{kT}{q}\ln{\frac{T_0}{T}} $$
 
 <!--pan_doc: 
 
-Over corners, I do expect that there is variation, as we can see from Figure 11. It may be that the $V_D$ modeling is not perfect, 
+Over corners, I do expect that there is variation, as we can see from Figure 12. It may be that the $V_D$ modeling is not perfect, 
 which means the cancellation of the last term is incomplete. 
 
 We could include trimming of PTAT to calibrate for the remaining error, however, if we 
@@ -427,7 +502,7 @@ IC, which too expensive for low-cost devices.
 ![original](../media/l3_bgsimtfs.pdf)
 
 <!--pan_doc:
-<sub>Figure 11: Typical, Slow, Fast simulation of the Brokaw bandgap </sub>
+<sub>Figure 12: Typical, Slow, Fast simulation of the Brokaw bandgap </sub>
 -->
 
 
@@ -448,7 +523,7 @@ In real ICs though, you should ask yourself long and hard whether you
 really need these low-voltage references. 
 Most ICs today still have a high voltage, either 1.8 V or 3.0 V. 
 
-If you do need them, consider the circuit in Figure 12. We have two diodes at different current densities.
+If you do need them, consider the circuit in Figure 13. We have two diodes at different current densities.
 The $\Delta V_D$ will be across $R_1$. The voltage at the input of the OTA will be $V_D$ 
 and the OTA will ensure the both inputs are equal. 
 
@@ -466,7 +541,7 @@ and we know the current increases with temperature, since $\Delta V_D$ increases
 
 <!--pan_doc:
 
-<sub>Figure 12: PTAT current generator </sub>
+<sub>Figure 13: PTAT current generator </sub>
 -->
 
 ---
@@ -477,7 +552,7 @@ and we know the current increases with temperature, since $\Delta V_D$ increases
 
 I use $\Delta V_{BE}$ and $\Delta V_D$ interchangeably, appologies. 
 
-In Figure 13 we copy the $V_D$ to another node, and place it across a second resistor $R_2$.
+In Figure 14 we copy the $V_D$ to another node, and place it across a second resistor $R_2$.
 
 The current in this second resistor is then 
 
@@ -496,7 +571,7 @@ then we can get a current that does not change with temperature.
 
 <!--pan_doc:
 
-<sub>Figure 13: Extending the PTAT current generator </sub>
+<sub>Figure 14: Extending the PTAT current generator </sub>
 -->
 
 
@@ -504,7 +579,7 @@ then we can get a current that does not change with temperature.
 
 <!--pan_doc:
 
-Let's remove the OTA, and connect $R_2$ directly to $V_D$ nodes, as shown in Figure 14. 
+Let's remove the OTA, and connect $R_2$ directly to $V_D$ nodes, as shown in Figure 15. 
 
 You should convince yourself 
 of the fact that this does not change $I_1$. 
@@ -515,7 +590,7 @@ of the fact that this does not change $I_1$.
 
 <!--pan_doc:
 
-<sub>Figure 14: The Banba bandgap voltage reference core </sub>
+<sub>Figure 15: The Banba bandgap voltage reference core </sub>
 -->
 
 <!--pan_doc:
@@ -532,7 +607,7 @@ $$ I_{PMOS} = \frac{V_D}{R_2} + \frac{\Delta V_D}{R_1}$$
 
 <!--pan_doc:
 
-Assuming we copy the current into another resistor $R_3$, as shown in Figure 15, we can get a voltage that is 
+Assuming we copy the current into another resistor $R_3$, as shown in Figure 16, we can get a voltage that is 
 
 $$ V_{OUT} = R_3\left[\frac{V_D}{R_2} + \frac{\Delta V_D}{R_1}\right]$$
 
@@ -543,7 +618,7 @@ We can choose the output voltage freely, and it be lower than 1.2 V.
 ![original fit](../media/l3_ptat3_tikz.pdf)
 
 <!--pan_doc:
-<sub>Figure 15: The Banba bandgap voltage reference </sub>
+<sub>Figure 16: The Banba bandgap voltage reference </sub>
 -->
 
 
@@ -561,7 +636,7 @@ We can choose the output voltage freely, and it be lower than 1.2 V.
 
 <!--pan_doc: 
 
-With a known voltage, we can convert to a known current with the circuit in Figure 16. 
+With a known voltage, we can convert to a known current with the circuit in Figure 17. 
 
 On-chip we don't have accurate resistors, 
 but for bias currents, it's usually ok with $+- 20 %$ variation  (the variation of R). 
@@ -579,7 +654,7 @@ until the current is what we want.
 
 
 <!--pan_doc:
-<sub>Figure 16: Voltage to current converter</sub>
+<sub>Figure 17: Voltage to current converter</sub>
 -->
 
 ---
@@ -593,7 +668,7 @@ until the current is what we want.
 <!--pan_doc: 
 
 Sometimes we don't need a full bandgap reference. In those cases, 
-we can use a GM cell, as shown in Figure 17. 
+we can use a GM cell, as shown in Figure 18. 
 
 -->
 
@@ -601,7 +676,7 @@ we can use a GM cell, as shown in Figure 17.
 
 <!--pan_doc:
 
-<sub>Figure 17: GM cell. </sub>
+<sub>Figure 18: GM cell. </sub>
 
 The top PMOS current mirror ensures that both branches have the same current. The middle NMOS current mirror copies
 the drain voltage on top of the diode connected bottom NMOS to the left NMOS.
@@ -675,6 +750,8 @@ We can use other things for Z, like  a switched capacitor
 
 
 # Want to learn more?
+
+[New developments in IC voltage regulators](https://ieeexplore.ieee.org/document/1050151)
 
 [A simple three-terminal IC bandgap reference](https://ieeexplore.ieee.org/document/1050532)
 
