@@ -17,7 +17,9 @@
 
   % ---- Before sampling: the low pass passes the signal, not the tones ----
   \specAxis{\specYtop}
-  \specBand{0}{1.15}{1.70}{\specYtop}
+  % Flat top matched to the signal band, so the magenta tones at 0.6 fs sit
+  % visibly outside the skirt rather than on it.
+  \specBand{0}{1.05}{1.70}{\specYtop}
   \specBump{\specYtop}
   \specTone{tonered}{-2.64}{\specYtop}     % -1.1 fs
   \specTone{tonemag}{-1.44}{\specYtop}     % -0.6 fs

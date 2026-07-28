@@ -21,6 +21,7 @@
 \newcommand{\specXmax}{3.5}      % axis half length
 \newcommand{\specVh}{1.9}        % vertical axis height
 \newcommand{\specToneH}{1.05}    % tone height
+\newcommand{\specSkirt}{0.20}   % filter roll-off width
 
 % Panel baselines, so the two rows line up across all three figures.
 \newcommand{\specYtop}{3.9}
@@ -51,7 +52,8 @@
 % bandpass, so the two read as the same kind of object.
 \newcommand{\specBand}[4]{%
   \draw[bandorange, very thick, rounded corners=3pt]
-    (#1-#2-0.30,#4) -- (#1-#2,#4+#3) -- (#1+#2,#4+#3) -- (#1+#2+0.30,#4);
+    (#1-#2-\specSkirt,#4) -- (#1-#2,#4+#3)
+    -- (#1+#2,#4+#3) -- (#1+#2+\specSkirt,#4);
 }
 
 % A block in the signal chain: left edge x, centre y, label.
