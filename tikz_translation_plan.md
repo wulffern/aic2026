@@ -339,8 +339,7 @@ In `lectures/l03_refbias.md`:
 That is 10 figures, in three lectures.
 
 ### Pending approval
-- `l05_fund1` — source and PDF committed, lecture still points at
-  `l05_fund1.svg`.
+- none
 
 Also converted and switched: `l3_ptat`, `l3_ptat1`, `l3_ptat2` — 13 figures total.
 
@@ -463,9 +462,10 @@ come up.
    copy. The warning is the point of including it.
 
 ### Current next figure
-- `l05_fund2`, once `l05_fund1` is approved. `l05_fund2` and `l05_fund3` are
-  the same circuit rearranged, so draw them as a set and keep their geometry in
-  step.
+- `l05_fund2` and `l05_fund3`. They are the same circuit rearranged, so they
+  are drawn as a set with their geometry kept in step.
+
+Approved and switched in `lectures/l05_sc.md`: `l05_fund1`.
 
 ### `l05_sc` triage
 `l05_sc` is reprioritised ahead of `l04_afe` at the user's request. The

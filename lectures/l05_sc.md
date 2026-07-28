@@ -165,7 +165,7 @@ The first time you encounter Switched Capacitor (SC) circuits, they do require s
 Consider the circuit below. Assume that the two transistors are ideal (no-charge injection, no resistance). 
 
 -->
-![left fit](../media/l05_fund1.svg)
+![left fit](../media/l05_fund1_tikz.pdf)
 
 <!--pan_doc:
 
