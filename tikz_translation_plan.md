@@ -339,9 +339,9 @@ In `lectures/l03_refbias.md`:
 That is 10 figures, in three lectures.
 
 ### Pending approval
-- `l3_curv`, `l3_mosref` — two of the three new-content figures below. Sources
-  and PDFs are committed; no lecture text references them yet. The proposed
-  text for both is in `preview/proposed_l03_refbias_text.md`.
+- `l3_mosref` — the last of the three new-content figures below. Source and PDF
+  are committed; no lecture text references it yet. The proposed text is in
+  `preview/proposed_l03_refbias_text.md`.
 
 Also converted and switched: `l3_ptat`, `l3_ptat1`, `l3_ptat2` — 13 figures total.
 
@@ -377,17 +377,29 @@ the remaining `l03_refbias` conversion work.
 All three figures are drawn and rendered: `tikz/l3_curv.tex`,
 `tikz/l3_widlar.tex`, `tikz/l3_mosref.tex`.
 
-**Widlar is approved and merged.** At the user's request it went in *before*
-the Brokaw section rather than after the Banba material, so it is Figure 9 and
-every figure from Brokaw onward shifted up by one (old 9–17 are now 10–18).
-Both the captions and the in-text `Figure N` references were bumped; there are
-no `Figure N` references outside those two forms in this lecture.
+**Widlar and curvature correction are approved and merged.**
 
-Curvature correction and the MOS-based reference are still pending. Their
-proposed text is in `preview/proposed_l03_refbias_text.md`, written for
-insertion between the Banba section (now Figure 16) and the `#[fit] Bias`
-divider. That text still carries the old numbering — inserting it there now
-makes them Figures 17 and 18, and pushes `l3_vi` to 19 and `l3_gmcell` to 20.
+Widlar went in *before* the Brokaw section at the user's request, rather than
+after the Banba material, so it is Figure 9 and every figure from Brokaw onward
+shifted up by one. Curvature correction went in where it was drafted, between
+the Banba section and the `#[fit] Bias` divider, as a `##[fit]` subsection of
+the bandgap part, and is Figure 17.
+
+Current numbering: 9 Widlar, 10 Brokaw, 11 `l3_bgsim`, 12 `l3_bgsimtfs`,
+13–16 the Banba sequence, 17 curvature, 18 `l3_vi`, 19 `l3_gmcell`.
+
+Renumbering a lecture means bumping two forms — the `<sub>Figure N:` captions
+and the in-text "as shown in Figure N" references. A regex over `Figure (\d+)`
+with a lower bound catches both, and there are no other forms in this lecture.
+Rebuild with `python3 py/lecture.py post lectures/l03_refbias.md` afterwards
+and read the generated markdown; it catches a mangled `pan_doc` block that a
+diff review will not.
+
+The MOS-based reference is still pending. Its proposed text is in
+`preview/proposed_l03_refbias_text.md`, written for insertion after the
+curvature section. Inserting it there makes it Figure 18 and pushes `l3_vi` to
+19 and `l3_gmcell` to 20. Note that draft still carries the pre-Widlar
+numbering internally and needs the same remap the curvature text got.
 
 1. **Curvature correction.** `l3_bgsimtfs` and `vd` already show the residual
    curvature; nothing in the lecture corrects it. This closes that loop.

@@ -624,6 +624,136 @@ We can choose the output voltage freely, and it be lower than 1.2 V.
 
 ---
 
+##[fit] Curvature correction
+
+---
+
+<!--pan_doc:
+
+Go back and look at Figure 12 again. Over corners the reference is not flat,
+and even the typical curve in Figure 11 has a bend in it. That bend is not
+noise, and it is not a mistake in the design. It is a term we agreed to ignore,
+and it is time to stop ignoring it.
+
+We picked the resistor ratio so the bracket that multiplies $T$ is zero, which
+removes everything linear in temperature. It does nothing at all to what is
+left,
+
+-->
+
+$$ V_{BG} = V_{G0} + (m-1)\frac{kT}{q}\ln{\frac{T_0}{T}} $$
+
+<!--pan_doc:
+
+and that is the bow you can see in Figure 12. It comes from the temperature
+dependence of $I_S$, the $-3\ln{T}$ we carried through the $V_{BE}$ algebra
+earlier, so $m \approx 3$ and the coefficient is about 2.
+
+No choice of $R_2/R_1$ can remove it. A resistor ratio can only add something
+proportional to $T$, and what is left over is proportional to $T\ln{T}$. If we
+want to cancel it, we have to build a $T\ln{T}$ term.
+
+-->
+
+---
+
+<!--pan_doc:
+
+Here is where one comes from. Take two identical bipolars at the same
+temperature. The difference of their base-emitter voltages is
+
+-->
+
+$$ V_{BE,A} - V_{BE,B} = \frac{kT}{q}\ln{\frac{I_A}{I_B}} $$
+
+<!--pan_doc:
+
+and this one is exact, not an approximation. $I_S$ cancels completely, because
+it is the same device at the same temperature.
+
+This is the same $\Delta V_{BE}$ we have used all chapter, and every time so
+far the current ratio has been a fixed number set by device sizes. That is what
+made it PTAT. So make the ratio depend on temperature instead: bias $Q_A$ with
+a PTAT current, and $Q_B$ with the temperature compensated current the
+reference already produces. Then $I_A/I_B = K T/T_0$ and
+
+-->
+
+$$ V_{BE,A} - V_{BE,B} = \frac{kT}{q}\ln{K} + \frac{kT}{q}\ln{\frac{T}{T_0}} $$
+
+<!--pan_doc:
+
+The first term is PTAT, and we know what to do with those. The second term is
+the $T\ln{T}$ we needed, and it comes with the right sign.
+
+-->
+
+---
+
+<!--pan_doc:
+
+Figure 17 turns that voltage into a current. The OTA holds the right hand end
+of $R_4$ at $V_{BE,A}$, the left hand end sits on $V_{BE,B}$, and $M_{PC}$
+supplies whatever current that requires. $M_{PD}$ copies it into the summing
+node from Figure 16, so the $V_{OUT}$ of that circuit becomes
+
+-->
+
+![fit](../media/l3_curv_tikz.pdf)
+
+<!--pan_doc:
+
+<sub>Figure 17: Curvature correction. $Q_A$ and $Q_B$ are the same device at
+different bias currents, so the voltage across $R_4$ carries a $T\ln{T}$ term.
+</sub>
+-->
+
+$$ I_{NL} = \frac{V_{BE,A} - V_{BE,B}}{R_4} = \frac{kT}{qR_4}\left[\ln{K} + \ln{\frac{T}{T_0}}\right] $$
+
+$$ V_{REF} = R_3\left[\frac{V_D}{R_2} + \frac{\Delta V_D}{R_1} + I_{NL}\right] $$
+
+---
+
+<!--pan_doc:
+
+The curvature the $V_D$ term brings in is
+$\frac{R_3}{R_2}(m-1)\frac{kT}{q}\ln{\frac{T_0}{T}}$, the curvature the new
+branch adds is $\frac{R_3}{R_4}\frac{kT}{q}\ln{\frac{T}{T_0}}$, and they cancel
+when
+
+-->
+
+$$ R_4 = \frac{R_2}{m-1} $$
+
+<!--pan_doc:
+
+which is a nice result. The correction is set by a resistor ratio, like
+everything else in this chapter, and with $m \approx 3$ it makes $R_4$ about
+half of $R_2$. The $\frac{kT}{q}\ln{K}$ half of $I_{NL}$ is PTAT, so it simply
+adds to the PTAT current already there, and you retrim $R_1$ to take it back
+out.
+
+Three things to watch.
+
+$I_{NL}$ leaves $R_4$ and flows into the emitter of $Q_B$, so $Q_B$ does not
+carry exactly $I_{REF}$. It is a small perturbation, but it is real, and it
+makes the sizing slightly iterative.
+
+$V_{BE,A}$ has to stay above $V_{BE,B}$ across the whole temperature range, or
+the current in $R_4$ reverses and the loop runs out of room. The ratio is
+$K T/T_0$, so pick $K$ large enough that it is still comfortably above one at
+the cold end.
+
+And $m$ is not a number the foundry hands you to three digits. Curvature
+correction typically buys a factor of five to ten in temperature drift, not a
+factor of a thousand, and what it buys is limited by how well you know $m$. It
+is worth the area when you need 10 ppm/$^\circ$C. It is a waste of area when
+50 ppm/$^\circ$C is fine, which it usually is.
+
+-->
+
+---
+
 
 
 #[fit] Bias
@@ -636,7 +766,7 @@ We can choose the output voltage freely, and it be lower than 1.2 V.
 
 <!--pan_doc: 
 
-With a known voltage, we can convert to a known current with the circuit in Figure 17. 
+With a known voltage, we can convert to a known current with the circuit in Figure 18. 
 
 On-chip we don't have accurate resistors, 
 but for bias currents, it's usually ok with $+- 20 %$ variation  (the variation of R). 
@@ -654,7 +784,7 @@ until the current is what we want.
 
 
 <!--pan_doc:
-<sub>Figure 17: Voltage to current converter</sub>
+<sub>Figure 18: Voltage to current converter</sub>
 -->
 
 ---
@@ -668,7 +798,7 @@ until the current is what we want.
 <!--pan_doc: 
 
 Sometimes we don't need a full bandgap reference. In those cases, 
-we can use a GM cell, as shown in Figure 18. 
+we can use a GM cell, as shown in Figure 19. 
 
 -->
 
@@ -676,7 +806,7 @@ we can use a GM cell, as shown in Figure 18.
 
 <!--pan_doc:
 
-<sub>Figure 18: GM cell. </sub>
+<sub>Figure 19: GM cell. </sub>
 
 The top PMOS current mirror ensures that both branches have the same current. The middle NMOS current mirror copies
 the drain voltage on top of the diode connected bottom NMOS to the left NMOS.
