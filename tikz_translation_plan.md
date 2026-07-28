@@ -42,8 +42,8 @@ For every figure in the queue:
    - CircuitikZ/TikZ primitives
    - simplified, maintainable geometry rather than literal SVG tracing
 4. Compile only that figure with `make tikz-one FNAME=<basename>`, which builds to
-   `tikz/build/<basename>.pdf` and copies the outputs to `media/` and `pdf/media/`
-   (including SVG mirrors when `pdf2svg` or `dvisvgm` is available).
+   `tikz/build/<basename>.pdf` and copies the outputs to `media/` (including an SVG
+   mirror when `pdf2svg` or `dvisvgm` is available).
 5. Open:
    - original SVG/PDF source
    - proposed TikZ PDF
@@ -221,14 +221,16 @@ Naming convention:
 - source: `media/<basename>.svg` or existing equivalent
 - TikZ source: `tikz/<basename>.tex`
 - generated PDF: `media/<basename>_tikz.pdf`
-- mirrored PDF: `pdf/media/<basename>_tikz.pdf`
+- optional SVG mirror: `media/<basename>_tikz.svg`
 
 Figures whose artwork lives in a `media/` subdirectory keep that structure: the
 `lr0_logic` figures are `tikz/l13/<basename>.tex` → `media/l13/<basename>_tikz.pdf`.
 
-Only `media/` is version controlled. `pdf/media/` is gitignored and repopulated
-from `media/` by `py/lecture.py` during the docs build, so generated PDFs are
-committed to `media/` only.
+`media/` is the only output location. Nothing in the TikZ workflow writes to
+`pdf/media/` — that directory is gitignored and `Image.copy()` in `py/lecture.py`
+repopulates it from `media/` on every latex build, flattening subdirectories to a
+basename as it goes. Writing there by hand would only produce stale or
+wrongly-nested duplicates.
 
 Lecture markdown interface:
 - approved figures reference `../media/<basename>_tikz.pdf`
@@ -244,8 +246,8 @@ Root `Makefile` targets:
 - `make tikz-one FNAME=<basename>` — build one figure. Accepts a bare basename, a
   subdirectory path (`l13/pdpu`), or a full path (`tikz/l3_vsrc.tex`).
 - `make tikz` — build every figure under `tikz/`, at any depth.
-- `make tikz-check` — compile every figure into `tikz/build/` without writing to
-  `media/`. This is what CI runs.
+- `make tikz-check` — compile every figure into `tikz/build/` without writing any
+  output to `media/`. This is what CI runs.
 - `make print-tikz` — list the discovered figure sources.
 
 Discovery is `find tikz -name '*.tex'` minus `fig_header.tex` and `ckt_lib.tex`,

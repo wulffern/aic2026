@@ -239,14 +239,12 @@ tikz-one:
 	b=$$(basename "$$rel"); \
 	sub=$$(dirname "$$rel"); \
 	if [ "$$sub" = "." ]; then sub=""; else sub="/$$sub"; fi; \
-	mkdir -p "tikz/build$$sub" "media$$sub" "pdf/media$$sub"; \
+	mkdir -p "tikz/build$$sub" "media$$sub"; \
 	echo "Building $$rel"; \
 	pdflatex -interaction=nonstopmode -halt-on-error -output-directory "tikz/build$$sub" "$$f"; \
 	cp "tikz/build$$sub/$$b.pdf" "media$$sub/$${b}_tikz.pdf"; \
-	cp "tikz/build$$sub/$$b.pdf" "pdf/media$$sub/$${b}_tikz.pdf"; \
 	if command -v pdf2svg >/dev/null 2>&1; then \
 		pdf2svg "tikz/build$$sub/$$b.pdf" "media$$sub/$${b}_tikz.svg" || true; \
 	elif command -v dvisvgm >/dev/null 2>&1; then \
 		dvisvgm --pdf "tikz/build$$sub/$$b.pdf" -n -o "media$$sub/$${b}_tikz.svg" >/dev/null 2>&1 || true; \
-	fi; \
-	if [ -f "media$$sub/$${b}_tikz.svg" ]; then cp "media$$sub/$${b}_tikz.svg" "pdf/media$$sub/$${b}_tikz.svg"; fi
+	fi
