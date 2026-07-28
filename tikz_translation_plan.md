@@ -339,8 +339,7 @@ In `lectures/l03_refbias.md`:
 That is 10 figures, in three lectures.
 
 ### Pending approval
-- `l05_fund2` and `l05_fund3` — sources and PDFs committed, the lecture still
-  points at `l05_fund2.svg` and `l05_fund3.svg`.
+- none
 
 Also converted and switched: `l3_ptat`, `l3_ptat1`, `l3_ptat2` — 13 figures total.
 
@@ -463,9 +462,10 @@ come up.
    copy. The warning is the point of including it.
 
 ### Current next figure
-- `l5_dtfig`, once `l05_fund2` and `l05_fund3` are approved.
+- `l5_dtfig`.
 
-Approved and switched in `lectures/l05_sc.md`: `l05_fund1`.
+Approved and switched in `lectures/l05_sc.md`: `l05_fund1`, `l05_fund2`,
+`l05_fund3`.
 
 `l05_fund1`, `l05_fund2` and `l05_fund3` are the same circuit three ways, and
 the slides make their point by looking alike. `l05_fund2` and `l05_fund3`
@@ -489,10 +489,12 @@ as with `l03_refbias`, was not exhaustive:
 - Shared with `l04_afe`: `l4_activebiquad`, `l4_gmcbi`. Whichever lecture gets
   there first draws them, and the reference switch then has to cover both
   lectures in the same round.
-- The remaining 23 are the listed queue and are all in scope, though
-  `l5_sdomain`, `l5_zdomain` and `l5_zunstable` are pole/zero plane diagrams
-  rather than schematics — clean line work that TikZ suits, but confirm they
-  are wanted before spending time on them.
+- The remaining 23 are the listed queue and are all in scope. That includes
+  `l5_sdomain`, `l5_zdomain` and `l5_zunstable`, which are pole/zero plane
+  diagrams rather than circuit schematics: the user confirmed they are wanted.
+  So the "circuit schematics only" rule at the top of this document is not
+  absolute — a clean line drawing that TikZ can express as geometry counts,
+  and only traced artwork and real plots of data stay out.
 
 The `l05_fund1`/`2`/`3` originals are hand-drawn, unlike the `l03_refbias`
 artwork, so the redraws will not look like the source at all. That is the

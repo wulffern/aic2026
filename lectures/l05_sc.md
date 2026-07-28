@@ -239,7 +239,7 @@ The circuit below is drawn slightly differently, but the same equation applies.
 
 -->
 
-![left](../media/l05_fund2.svg)
+![left](../media/l05_fund2_tikz.pdf)
  
 
 <!--pan_doc:
@@ -271,7 +271,7 @@ Which should not be surprising, as all I've done is to rotate the circuit and ca
 Let's try the circuit below.
 -->
 
-![left fit](../media/l05_fund3.svg)
+![left fit](../media/l05_fund3_tikz.pdf)
 
 $$ Z_{I} = \frac{ V_{I} - V_{O} }{ \left(Q_{\phi1\$} - Q_{\phi2\$}\right) f_{\phi}}$$
 
