@@ -51,13 +51,18 @@
   \def\xota{-\grid*1.5}   % same 0.6 fraction of \xr as in l03_ptat
   \def\yota{ 3}
   \begin{scope}[xscale=-1]
-  % transform shape (set on the circuitikz environment) would rotate the input
-  % labels with the OTA body, turning the minus sign into a vertical bar.
-  \begin{scope}[rotate around={90:(\xota,\yota)},
-                every node/.append style={transform shape=false}]
-    \draw (\xota, \yota) \cicOtaSSWP{$+$}{$-$};
+  \begin{scope}[rotate around={90:(\xota,\yota)}]
+    % Polarity marks are left off here and drawn below instead: the circuitikz
+    % environment sets transform shape, so a label passed to the macro is
+    % rotated with the OTA body and the minus sign comes out a vertical bar.
+    \draw (\xota, \yota) \cicOtaSSWP{}{};
+    % Input terminals, carried out of the rotated scope as plain coordinates.
+    \coordinate (otaPlus)  at ($(\xota,\yota)+(0.5,0)$);
+    \coordinate (otaMinus) at ($(\xota,\yota)+(0.5,-\grid/2)$);
   \end{scope}
   \end{scope}
+  \node at ($(otaPlus)+(0,0.3)$)  {$+$};
+  \node at ($(otaMinus)+(0,0.3)$) {$-$};
   % Horizontal routing — no diagonals
   \draw (cicOtaS_inp) -| (mp2drain);
   \draw (cicOtaS_inn) -| (mp1drain);
