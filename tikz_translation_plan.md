@@ -332,14 +332,16 @@ In `lectures/l03_refbias.md`:
 - `l03_ptat` — shared figure, also switched in `lectures/l01_project.md` and
   `lectures/g03.md`
 - `l03_vref1`
+- `l03_vref2`
 
-That is 7 of the ~117 queued figures, in three lectures.
+That is 8 of the ~117 queued figures, in three lectures. `l03_refbias` has
+`l3_gmcell` and `l3_gmcap` left before it is fully converted.
 
 ### Pending approval
 - none
 
 ### Current next figure
-- `l03_vref2`
+- `l3_gmcell`
 
 ### Notes
 - `l3_bjtonly` final geometry includes manual fixes by the user; preserve current source unless explicitly changing it.

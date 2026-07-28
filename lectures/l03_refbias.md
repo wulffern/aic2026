@@ -332,7 +332,7 @@ Another method would be to stack the $R_2$ on top of $R_1$ as shown in Figure 8.
 
 -->
 
-![fit](../media/l03_vref2.pdf)
+![fit](../media/l03_vref2_tikz.pdf)
 
 
 <!--pan_doc:
