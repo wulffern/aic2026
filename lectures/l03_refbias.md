@@ -359,7 +359,7 @@ which I think was first published in
 
 -->
 
-![left fit](../media/l3_brokaw.pdf)
+![left fit](../media/l3_brokaw_tikz.pdf)
 
 <!--pan_doc:
 

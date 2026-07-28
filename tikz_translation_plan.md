@@ -346,21 +346,19 @@ Also converted and switched: `l3_ptat`, `l3_ptat1`, `l3_ptat2` — 13 figures to
 Development now happens directly on `main` at the user's request; the CI job
 commits rebuilt figures back to whichever branch it runs on.
 
-### Still to do in `l03_refbias`
-The queue below was **not exhaustive**. Every figure it listed for `l03_refbias`
-is now converted, but the lecture still references five schematics the queue
-never mentioned:
-- `l3_brokaw` — Brokaw cell with an OTA
-- `l3_ptat`, `l3_ptat1`, `l3_ptat2`, `l3_ptat3` — PTAT variants
+### `l03_refbias` is complete
+Every schematic in the lecture is now a TikZ redraw — 15 figures. The only
+remaining references are `l3_bgsim`, `l3_bgsimtfs` and `vd`, which are
+simulation and measurement plots and correctly out of scope.
 
-They are the same hand-drawn style as the rest of the lecture. Three further
-figures — `l3_bgsim`, `l3_bgsimtfs`, `vd` — are simulation and measurement plots
-and are correctly excluded.
+The queue in this document was **not exhaustive**: five schematics it never
+listed (`l3_brokaw`, `l3_ptat`, `l3_ptat1`, `l3_ptat2`, `l3_ptat3`) were found
+only by listing the lecture's figures directly.
 
-The `l3_ptat` and `l3_ptat1` artwork marks the OTA polarity backwards: + on the
-left input, - on the right. Rising current raises the right-hand node by I*R1
-more than the left, so + belongs on the right for the loop to settle. The
-redraws correct this and match `l03_ptat`, `l03_vref1` and `l03_vref2`.
+The `l3_ptat`, `l3_ptat1` and `l3_ptat2` artwork marks the OTA polarity
+backwards: + on the left input, - on the right. Rising current raises the
+right-hand node by I*R1 more than the left, so + belongs on the right for the
+loop to settle. The redraws correct this.
 
 Before starting any lecture, list its figures with
 `grep -o '](\.\./media/[^)]*)' lectures/<lecture>.md` and triage them, rather
