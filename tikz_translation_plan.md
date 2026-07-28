@@ -339,7 +339,8 @@ In `lectures/l03_refbias.md`:
 That is 10 figures, in three lectures.
 
 ### Pending approval
-- none
+- `l5_sh` — source and PDF committed, `lectures/l05_sc.md` still points at
+  `l5_sh.svg`.
 
 Also converted and switched: `l3_ptat`, `l3_ptat1`, `l3_ptat2` — 13 figures total.
 
