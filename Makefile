@@ -10,7 +10,7 @@ ifneq ($(wildcard /pyenv/bin/.*),)
 	PYTHON=/pyenv/bin/python3
 endif
 
-.PHONY:  slides version tikz tikz-one tikz-check print-tikz figures prepare-docs standalone-one standalone-list book-pdf book-epub print-files
+.PHONY:  slides version tikz tikz-one tikz-check tikz-preview preview print-tikz figures prepare-docs standalone-one standalone-list book-pdf book-epub print-files
 
 #	lr0_logic \
 
@@ -210,6 +210,28 @@ tikz:
 	for f in ${TIKZ_SOURCES}; do \
 		${MAKE} --no-print-directory tikz-one FNAME="$$f"; \
 	done
+
+# Rasterise the figures left in tikz/build/ by tikz-check, so they can be
+# reviewed without a PDF viewer. CI uploads the result as an artifact.
+tikz-preview:
+	-mkdir -p preview
+	@set -e; \
+	for f in ${TIKZ_SOURCES}; do \
+		rel=$${f#tikz/}; rel=$${rel%.tex}; \
+		b=$$(basename "$$rel"); \
+		pdf="tikz/build/$$rel.pdf"; \
+		if [ ! -f "$$pdf" ]; then \
+			echo "$$pdf missing — run 'make tikz-check' first"; exit 1; \
+		fi; \
+		echo "Rendering $$rel"; \
+		pdftoppm -png -r 150 -singlefile "$$pdf" "preview/$${b}_tikz"; \
+	done
+
+# Compare one figure's original artwork against its TikZ redraw, as PNG.
+# Needs requirements-preview.txt.
+preview:
+	@test -n "${FNAME}" || (echo "Usage: make preview FNAME=l03_ptat"; exit 1)
+	${PYTHON} py/preview.py --compare ${FNAME} -o preview
 
 # Compile every figure without touching media/ — for CI, where the only
 # question is whether the sources still build.

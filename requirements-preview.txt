@@ -1,0 +1,5 @@
+# Dependencies for py/preview.py, the local figure review helper.
+# Not needed for the docs build; CI renders previews with poppler instead.
+click
+pypdfium2
+cairosvg

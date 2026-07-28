@@ -248,6 +248,11 @@ Root `Makefile` targets:
 - `make tikz` — build every figure under `tikz/`, at any depth.
 - `make tikz-check` — compile every figure into `tikz/build/` without writing any
   output to `media/`. This is what CI runs.
+- `make tikz-preview` — rasterise the `tikz/build/` PDFs to `preview/*.png`
+  (needs `pdftoppm` from poppler). Run after `tikz-check`.
+- `make preview FNAME=<basename>` — render a figure's original artwork and its
+  TikZ redraw side by side into `preview/`, for the approval gate. Needs
+  `pip install -r requirements-preview.txt`.
 - `make print-tikz` — list the discovered figure sources.
 
 Discovery is `find tikz -name '*.tex'` minus `fig_header.tex` and `ckt_lib.tex`,
@@ -257,6 +262,24 @@ CI: the `tikz` job in `.github/workflows/matrix_build.yaml` runs `make tikz-chec
 on the `texlive/texlive:TL2022-historic` image. It fails the build when a figure
 source stops compiling. It does not regenerate or commit artwork — `media/*_tikz.pdf`
 is still produced locally and committed, so keep source and PDF in the same commit.
+
+The same job then runs `make tikz-preview` and uploads `preview/` as the
+`tikz-previews` artifact, one PNG per figure, downloadable from the run summary.
+That is the way to look at a figure drafted by someone without a local TeX
+install: push the source, let CI build it, download the artifact, review.
+
+## Reviewing Figures Without a TeX Install
+`py/preview.py` renders committed artwork to PNG — PDF via `pypdfium2`, SVG via
+`cairosvg`, bitmaps by copy. It reads what is already in `media/`; it does not
+compile TikZ.
+
+    pip install -r requirements-preview.txt
+    make preview FNAME=l03_ptat        # original and redraw, side by side
+    python3 py/preview.py media/l5_scamp.svg -o preview/
+
+This covers two things the workflow needs: inspecting source artwork before
+drafting a redraw, and reviewing any figure whose `_tikz.pdf` is committed.
+Compiling a *new* draft still needs `pdflatex`, locally or through the CI job.
 
 ## Acceptance Criteria and Tests
 For each proposal:
