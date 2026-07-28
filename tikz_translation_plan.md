@@ -339,7 +339,8 @@ In `lectures/l03_refbias.md`:
 That is 10 figures, in three lectures.
 
 ### Pending approval
-- none
+- `l05_fund2` and `l05_fund3` — sources and PDFs committed, the lecture still
+  points at `l05_fund2.svg` and `l05_fund3.svg`.
 
 Also converted and switched: `l3_ptat`, `l3_ptat1`, `l3_ptat2` — 13 figures total.
 
@@ -462,10 +463,19 @@ come up.
    copy. The warning is the point of including it.
 
 ### Current next figure
-- `l05_fund2` and `l05_fund3`. They are the same circuit rearranged, so they
-  are drawn as a set with their geometry kept in step.
+- `l5_dtfig`, once `l05_fund2` and `l05_fund3` are approved.
 
 Approved and switched in `lectures/l05_sc.md`: `l05_fund1`.
+
+`l05_fund1`, `l05_fund2` and `l05_fund3` are the same circuit three ways, and
+the slides make their point by looking alike. `l05_fund2` and `l05_fund3`
+share a column grid — V_I port at `-\grid*1.5`, phi_1 switch from 0 to
+`\grid`, C1 spanning `\grid` to `\grid*2`, V_O column at `\grid*3`, common
+ground rail at -2.8. Keep them in step if either is re-laid-out.
+
+An NMOS drawn along a left-to-right path puts its gate on **top**, which is
+what these figures want; `mirror` would put it underneath. That is the
+horizontal counterpart of `\lvnmos` having its gate on the left.
 
 ### `l05_sc` triage
 `l05_sc` is reprioritised ahead of `l04_afe` at the user's request. The
