@@ -4,9 +4,10 @@
 
   \input{tikz/ckt_lib.tex}
 
-  % Column x positions
+  % Column x positions. Same spacing as l03_vref1 so the shared part of the two
+  % circuits reads identically across the adjacent slides.
   \def\xl{0}
-  \def\xr{\grid*3}
+  \def\xr{\grid*2.5}
   \def\pdlevel{5}    % y-level for both PMOS drains
 
   % ---- PNP bipolar transistors (collectors at ground) ----
@@ -28,10 +29,13 @@
   \coordinate (mp2drain) at (\xr, \pdlevel);
 
   % ---- OTA centered between branches, rotated 90° (output upward) ----
-  \def\xota{-\grid*1.8}
+  \def\xota{-\grid*1.5}
   \def\yota{ 3}
   \begin{scope}[xscale=-1]
-  \begin{scope}[rotate around={90:(\xota,\yota)}]
+  % transform shape (set on the circuitikz environment) would rotate the input
+  % labels with the OTA body, turning the minus sign into a vertical bar.
+  \begin{scope}[rotate around={90:(\xota,\yota)},
+                every node/.append style={transform shape=false}]
     \draw (\xota, \yota) \cicOtaSSWP{$+$}{$-$};
   \end{scope}
   \end{scope}

@@ -317,7 +317,7 @@ as such, $R_2$ would be bigger than $R_1$.
 
 -->
 
-![fit](../media/l03_vref1.pdf)
+![fit](../media/l03_vref1_tikz.pdf)
 
 <!--pan_doc:
 

@@ -51,7 +51,10 @@
   \def\xota{-\grid*1.5}   % same 0.6 fraction of \xr as in l03_ptat
   \def\yota{ 3}
   \begin{scope}[xscale=-1]
-  \begin{scope}[rotate around={90:(\xota,\yota)}]
+  % transform shape (set on the circuitikz environment) would rotate the input
+  % labels with the OTA body, turning the minus sign into a vertical bar.
+  \begin{scope}[rotate around={90:(\xota,\yota)},
+                every node/.append style={transform shape=false}]
     \draw (\xota, \yota) \cicOtaSSWP{$+$}{$-$};
   \end{scope}
   \end{scope}
