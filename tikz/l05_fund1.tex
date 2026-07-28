@@ -1,0 +1,77 @@
+\input{tikz/fig_header.tex}
+
+% The first switched-capacitor circuit in the lecture: C1 is charged to V_I
+% through the phi_1 switch and discharged to ground through the phi_2 switch,
+% which makes the input look like a resistance 1/(C1 f_phi).
+%
+% Both switches are NMOS drawn vertically with their gates facing right, as in
+% the original artwork, so the two clock ports line up down the right hand side.
+%
+% The non-overlapping clock diagram underneath is part of the figure in the
+% original and is what makes the two charge states well defined, so it is kept.
+
+\begin{circuitikz}[american, thick, transform shape, circuit ee IEC]
+
+  \input{tikz/ckt_lib.tex}
+
+  \def\xa{0}            % C1 branch, phi_1 switch above it
+  \def\xb{\grid*2}      % phi_2 branch
+  \def\ygnd{2.6}        % ground rail
+  \def\ynode{5.4}       % the switched node, top plate of C1
+  \def\ytop{7.0}        % input rail
+
+  % ---- Input: V_I in through the phi_1 switch ----
+  \draw (\xa-1.6,\ytop) to [short,o-] (\xa,\ytop);
+  \node[anchor=east] at (\xa-1.75,\ytop) {$V_{I}$};
+
+  \draw[->] (\xa-1.45,\ytop-0.55) -- ++(1.0,0);
+  \node[anchor=north] at (\xa-0.95,\ytop-0.65) {$Z_{I} = ?$};
+
+  \draw (\xa,\ynode) \lvmnmos{MS1}{};
+  \draw (MS1.gate) to [short,-o] ++(0.75,0)
+        node [anchor=west] {$\phi_{1}$};
+
+  % ---- C1 down to ground ----
+  \draw (\xa,\ygnd) \vground;
+  \draw (\xa,\ygnd) -- ++(0,0.4);
+  \draw (\xa,\ygnd+0.4) \vcapacitor{$C_{1}$};
+  \draw (capEnd) -- (\xa,\ynode);
+  \node[anchor=east] at (\xa-0.35,\ygnd+0.25) {$V_{GND}$};
+
+  % ---- phi_2 switch, discharging C1 ----
+  \draw (\xa,\ynode) to [short,*-] (\xb,\ynode);
+  \draw (\xb,\ynode-\grid) \lvmnmos{MS2}{};
+  \draw (MS2.gate) to [short,-o] ++(0.75,0)
+        node [anchor=west] {$\phi_{2}$};
+  \draw (\xb,\ynode-\grid) -- (\xb,\ygnd);
+  \draw (\xb,\ygnd) \vground;
+
+  % ---- Non-overlapping clocks ----
+  % One period is \wt wide: phi_1 high for \wp, a gap, then phi_2 high for \wp,
+  % then a gap. The gaps are the non-overlap, and they are why the charge on C1
+  % is well defined at the end of each phase.
+  \def\wt{1.8}          % period
+  \def\wp{0.7}          % pulse width
+  \def\wh{0.55}         % pulse height
+  \def\wone{1.0}        % phi_1 baseline
+  \def\wtwo{0.0}        % phi_2 baseline
+
+  \draw (\xa,\wone)
+    \foreach \k in {0,1,2} {
+      -- (\xa+\k*\wt+0.1,\wone) -- (\xa+\k*\wt+0.1,\wone+\wh)
+      -- (\xa+\k*\wt+0.1+\wp,\wone+\wh) -- (\xa+\k*\wt+0.1+\wp,\wone)
+    }
+    -- (\xa+3*\wt,\wone);
+
+  \draw (\xa,\wtwo)
+    \foreach \k in {0,1,2} {
+      -- (\xa+\k*\wt+\wt/2+0.1,\wtwo) -- (\xa+\k*\wt+\wt/2+0.1,\wtwo+\wh)
+      -- (\xa+\k*\wt+\wt/2+0.1+\wp,\wtwo+\wh) -- (\xa+\k*\wt+\wt/2+0.1+\wp,\wtwo)
+    }
+    -- (\xa+3*\wt,\wtwo);
+
+  \node[anchor=east] at (\xa-0.2,\wone+\wh/2) {$\phi_{1}$};
+  \node[anchor=east] at (\xa-0.2,\wtwo+\wh/2) {$\phi_{2}$};
+
+\end{circuitikz}
+\end{document}
