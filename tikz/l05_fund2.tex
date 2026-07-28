@@ -1,0 +1,66 @@
+\input{tikz/fig_header.tex}
+
+% The same switched capacitor as l05_fund1, rotated: C1 now floats between the
+% phi_1 switch and V_O, and phi_2 shorts it out instead of pulling it to
+% ground. The charge difference per cycle is the same, so Z_I is again
+% 1/(C1 f_phi) -- which is the point the slide makes.
+%
+% Geometry is shared with l05_fund3 -- same V_I port at -\grid*1.5, same phi_1
+% switch from 0 to \grid, same C1 span from \grid to \grid*2, same V_O column
+% at \grid*3, same ground rail. Keep them in step if either is re-laid-out.
+%
+% C1's label goes underneath here rather than above, because the phi_2 switch
+% sits over it.
+
+\begin{circuitikz}[american, thick, transform shape, circuit ee IEC]
+
+  \input{tikz/ckt_lib.tex}
+
+  \def\xin{-\grid*1.5}   % V_I port
+  \def\xa{0}             % phi_1 switch, left end
+  \def\xna{\grid}        % left plate of C1
+  \def\xnb{\grid*2}      % right plate of C1
+  \def\xout{\grid*3}     % V_O column
+  \def\ysig{0}           % signal rail
+  \def\yphi{\grid}       % the shorting switch, one grid above the signal
+  \def\ygnd{-2.8}        % ground rail
+
+  % ---- Input ----
+  \draw (\xin,\ysig) to [short,o-] (\xa,\ysig);
+  \node[anchor=east] at (\xin-0.15,\ysig) {$V_{I}$};
+
+  \draw[->] (\xin+0.1,\ysig-0.55) -- ++(1.0,0);
+  \node[anchor=north] at (\xin+0.6,\ysig-0.65) {$Z_{I} = \;?$};
+
+  % ---- phi_1 switch ----
+  \draw (\xa,\ysig) to [Tnmos, n=MS1] (\xna,\ysig);
+  \draw (MS1.gate) to [short,-o] ++(0,0.9)
+        node [anchor=south, inner sep=5pt] {$\phi_{1}$};
+
+  % ---- C1 floating between the two nodes ----
+  \draw (\xna,\ysig) \hcapacitor{};
+  \draw (capEnd) -- (\xnb,\ysig);
+  \node[anchor=north] at (\xna+\grid/2,\ysig-0.3) {$C_{1}$};
+
+  % ---- phi_2 shorts C1 out ----
+  \draw (\xna,\ysig) -- (\xna,\yphi);
+  \draw (\xna,\yphi) to [Tnmos, n=MS2] (\xnb,\yphi);
+  \draw (\xnb,\yphi) -- (\xnb,\ysig);
+  \draw (MS2.gate) to [short,-o] ++(0,0.9)
+        node [anchor=south, inner sep=5pt] {$\phi_{2}$};
+
+  \fill (\xna,\ysig) circle (0.06);
+  \fill (\xnb,\ysig) circle (0.06);
+
+  % ---- Output, held by a source as in the original ----
+  \draw (\xnb,\ysig) -- (\xout,\ysig);
+  \draw (\xout,\ysig) to [short,*-o] ++(0.6,0)
+        node [anchor=west, inner sep=5pt] {$V_{O}$};
+
+  \draw (\xout,\ysig) -- ++(0,-0.4);
+  \draw (\xout,\ysig-0.4) to [V] (\xout,\ygnd+0.4);
+  \draw (\xout,\ygnd+0.4) -- (\xout,\ygnd);
+  \draw (\xout,\ygnd) \vground;
+
+\end{circuitikz}
+\end{document}

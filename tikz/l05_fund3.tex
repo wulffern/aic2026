@@ -1,0 +1,61 @@
+\input{tikz/fig_header.tex}
+
+% The series-shunt switched capacitor: C1 is charged to V_I through phi_1 and
+% dumped into V_O through phi_2, so the input again looks like 1/(C1 f_phi).
+%
+% Geometry is shared with l05_fund2 on purpose -- same V_I port at -\grid*1.5,
+% same phi_1 switch from 0 to \grid, same C1 span, same V_O column at \grid*3,
+% same ground rail -- because the two slides are the same circuit rearranged
+% and should read as such. Keep them in step if either is re-laid-out.
+%
+% Switches are NMOS drawn along a horizontal path, which puts the gate on top
+% and lets the clock ports sit above the signal line as in the original.
+
+\begin{circuitikz}[american, thick, transform shape, circuit ee IEC]
+
+  \input{tikz/ckt_lib.tex}
+
+  \def\xin{-\grid*1.5}   % V_I port
+  \def\xa{0}             % phi_1 switch, left end
+  \def\xna{\grid}        % switched node, left
+  \def\xnb{\grid*2}      % switched node, right
+  \def\xout{\grid*3}     % V_O column
+  \def\ysig{0}           % signal rail
+  \def\ygnd{-2.8}        % ground rail
+
+  % ---- Input ----
+  \draw (\xin,\ysig) to [short,o-] (\xa,\ysig);
+  \node[anchor=east] at (\xin-0.15,\ysig) {$V_{I}$};
+
+  \draw[->] (\xin+0.1,\ysig-0.55) -- ++(1.0,0);
+  \node[anchor=north] at (\xin+0.6,\ysig-0.65) {$Z_{I} = \;?$};
+
+  % ---- phi_1 switch, then the switched node, then the phi_2 switch ----
+  \draw (\xa,\ysig) to [Tnmos, n=MS1] (\xna,\ysig);
+  \draw (MS1.gate) to [short,-o] ++(0,0.9)
+        node [anchor=south, inner sep=5pt] {$\phi_{1}$};
+
+  \draw (\xna,\ysig) -- (\xnb,\ysig);
+
+  \draw (\xnb,\ysig) to [Tnmos, n=MS2] (\xout,\ysig);
+  \draw (MS2.gate) to [short,-o] ++(0,0.9)
+        node [anchor=south, inner sep=5pt] {$\phi_{2}$};
+
+  % ---- C1 from the switched node to ground ----
+  \draw (\xna+\grid/2,\ygnd) \vground;
+  \draw (\xna+\grid/2,\ygnd) -- ++(0,0.4);
+  \draw (\xna+\grid/2,\ygnd+0.4) \vcapacitor{$C_{1}$};
+  \draw (capEnd) -- (\xna+\grid/2,\ysig);
+  \fill (\xna+\grid/2,\ysig) circle (0.06);
+
+  % ---- Output, held by a source as in the original ----
+  \draw (\xout,\ysig) to [short,*-o] ++(0.6,0)
+        node [anchor=west, inner sep=5pt] {$V_{O}$};
+
+  \draw (\xout,\ysig) -- ++(0,-0.4);
+  \draw (\xout,\ysig-0.4) to [V] (\xout,\ygnd+0.4);
+  \draw (\xout,\ygnd+0.4) -- (\xout,\ygnd);
+  \draw (\xout,\ygnd) \vground;
+
+\end{circuitikz}
+\end{document}
