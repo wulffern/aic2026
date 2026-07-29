@@ -15,13 +15,13 @@
 
   % The jw axis itself, drawn heavy: this is the line the frequency response
   % is read along, and it is what maps to the unit circle in the z-plane.
-  \draw[axisblue, line width=4pt] (0,-2.2) -- (0,2.2);
+  \draw[line width=4pt] (0,-2.2) -- (0,2.2);
 
   % A conjugate pole pair in the left half plane.
-  \planePole{axisblue}{-0.55}{0.32}
-  \planePole{axisblue}{-0.55}{-0.32}
+  \planePole{black}{-0.55}{0.32}
+  \planePole{black}{-0.55}{-0.32}
 
-  \node[axisblue, anchor=west] at (1.35,2.60) {$s = a + j\omega$};
+  \node[anchor=west] at (1.35,2.60) {$s = a + j\omega$};
 
 \end{circuitikz}
 \end{document}

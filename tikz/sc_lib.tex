@@ -12,10 +12,6 @@
 %% parses as \scXc followed by a 2 and fails at use, not at definition.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\definecolor{axisblue}{rgb}{0.16,0.16,0.55}
-\definecolor{capgreen}{rgb}{0.00,0.45,0.20}
-\definecolor{polred}{rgb}{0.85,0.22,0.10}
-
 \newcommand{\scYgnd}{0}       % ground rail
 \newcommand{\scYin}{1.8}      % OTA inverting input, and the C1 level
 \newcommand{\scXota}{4.6}     % OTA input x
@@ -28,44 +24,44 @@
 % A switch, drawn as a hinged blade so open and closed read at a glance.
 % #1 is the left end x, #2 the y; both span 1.0.
 \newcommand{\scSwOpen}[2]{%
-  \draw[axisblue, thick] (#1,#2) -- (#1+0.15,#2);
-  \fill[axisblue] (#1+0.15,#2) circle (0.055);
-  \draw[axisblue, thick] (#1+0.15,#2) -- (#1+0.88,#2+0.48);
-  \fill[axisblue] (#1+0.85,#2) circle (0.055);
-  \draw[axisblue, thick] (#1+0.85,#2) -- (#1+1.0,#2);
+  \draw[thick] (#1,#2) -- (#1+0.15,#2);
+  \fill (#1+0.15,#2) circle (0.055);
+  \draw[thick] (#1+0.15,#2) -- (#1+0.88,#2+0.48);
+  \fill (#1+0.85,#2) circle (0.055);
+  \draw[thick] (#1+0.85,#2) -- (#1+1.0,#2);
 }
-\newcommand{\scSwClosed}[2]{\draw[axisblue, thick] (#1,#2) -- (#1+1.0,#2);}
+\newcommand{\scSwClosed}[2]{\draw[thick] (#1,#2) -- (#1+1.0,#2);}
 
 % Everything l5_scintro1 and l5_scintro2 have in common. The caller fills the
 % C1-to-OTA gap (2.6..3.6 at \scYin) and the short over C2 (4.8..5.8 at
 % \scYsh) with either \scSwClosed or \scSwOpen.
 \newcommand{\scIntroFrame}{%
   % C1, plus its return along the ground rail
-  \draw[axisblue, thick] (0.6,\scYin) \hcapacitor{};
-  \draw[axisblue, thick] (0.6,\scYin) -- (0.0,\scYin) -- (0.0,\scYgnd) -- (3.4,\scYgnd);
-  \draw[axisblue, thick] (2.2,\scYin) -- (2.6,\scYin);
-  \draw[axisblue, thick] (3.6,\scYin) -- (\scXota,\scYin);
-  \node[capgreen, anchor=north] at (1.4,\scYin-0.28) {$C_{1}$};
-  \node[polred, anchor=east]    at (0.5,\scYin+0.42) {$+$};
-  \node[polred, anchor=west]    at (2.3,\scYin+0.42) {$-$};
+  \draw[thick] (0.6,\scYin) \hcapacitor{};
+  \draw[thick] (0.6,\scYin) -- (0.0,\scYin) -- (0.0,\scYgnd) -- (3.4,\scYgnd);
+  \draw[thick] (2.2,\scYin) -- (2.6,\scYin);
+  \draw[thick] (3.6,\scYin) -- (\scXota,\scYin);
+  \node[anchor=north] at (1.4,\scYin-0.28) {$C_{1}$};
+  \node[anchor=east]    at (0.5,\scYin+0.42) {$+$};
+  \node[anchor=west]    at (2.3,\scYin+0.42) {$-$};
 
   % OTA, inverting input on top as in the original
   \draw (\scXota,\scYin) \cicOtaSSWP{$-$}{$+$};
-  \draw[axisblue, thick] (cicOtaS_inn) -- (3.4,\scYin-0.8) -- (3.4,\scYgnd);
-  \draw[axisblue, thick] (2.6,\scYgnd) \vground;
+  \draw[thick] (cicOtaS_inn) -- (3.4,\scYin-0.8) -- (3.4,\scYgnd);
+  \draw[thick] (2.6,\scYgnd) \vground;
 
   % C2 across the OTA
-  \draw[axisblue, thick] (\scXctwo,\scYin) -- (\scXctwo,\scYctwo);
-  \fill[axisblue] (\scXctwo,\scYin) circle (0.07);
-  \draw[axisblue, thick] (\scXctwo,\scYctwo) \hcapacitor{};
-  \draw[axisblue, thick] (5.6,\scYctwo) -- (\scXout,\scYctwo) -- (\scXout,\scYin-0.4);
-  \draw[axisblue, thick] (\scXout,\scYin-0.4) -- (cicOtaS_out);
-  \node[capgreen, anchor=south] at (5.8,\scYctwo+0.15) {$C_{2}$};
-  \node[polred, anchor=east]    at (3.9,\scYctwo-0.45) {$-$};
-  \node[polred, anchor=west]    at (5.7,\scYctwo-0.45) {$+$};
+  \draw[thick] (\scXctwo,\scYin) -- (\scXctwo,\scYctwo);
+  \fill (\scXctwo,\scYin) circle (0.07);
+  \draw[thick] (\scXctwo,\scYctwo) \hcapacitor{};
+  \draw[thick] (5.6,\scYctwo) -- (\scXout,\scYctwo) -- (\scXout,\scYin-0.4);
+  \draw[thick] (\scXout,\scYin-0.4) -- (cicOtaS_out);
+  \node[anchor=south] at (5.8,\scYctwo+0.15) {$C_{2}$};
+  \node[anchor=east]    at (3.9,\scYctwo-0.45) {$-$};
+  \node[anchor=west]    at (5.7,\scYctwo-0.45) {$+$};
 
   % The path that shorts C2, minus its switch
-  \draw[axisblue, thick] (\scXctwo,\scYctwo) -- (\scXctwo,\scYsh) -- (4.8,\scYsh);
-  \draw[axisblue, thick] (5.8,\scYsh) -- (\scXshr,\scYsh) -- (\scXshr,\scYctwo);
-  \fill[axisblue] (\scXshr,\scYctwo) circle (0.07);
+  \draw[thick] (\scXctwo,\scYctwo) -- (\scXctwo,\scYsh) -- (4.8,\scYsh);
+  \draw[thick] (5.8,\scYsh) -- (\scXshr,\scYsh) -- (\scXshr,\scYctwo);
+  \fill (\scXshr,\scYctwo) circle (0.07);
 }

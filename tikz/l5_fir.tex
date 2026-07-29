@@ -6,8 +6,6 @@
 % The three taps enter the summer from three different directions -- left,
 % lower left, below -- so they stay separable where they converge.
 
-\definecolor{axisblue}{rgb}{0.16,0.16,0.55}
-
 \begin{circuitikz}[american, transform shape]
 
   \def\ysig{0}
@@ -16,42 +14,42 @@
   \def\rsum{0.32}
 
   % ---- Signal path: two delays in series, centred on the wire ----
-  \draw[axisblue, thick] (-2.0,\ysig) -- (-0.5,\ysig);
-  \draw[axisblue, thick, ->] (-0.5,\ysig) -- (0.0,\ysig);
-  \node[axisblue, anchor=east] at (-2.1,\ysig) {$x[n]$};
+  \draw[thick] (-2.0,\ysig) -- (-0.5,\ysig);
+  \draw[thick, ->] (-0.5,\ysig) -- (0.0,\ysig);
+  \node[anchor=east] at (-2.1,\ysig) {$x[n]$};
 
-  \draw[axisblue, thick] (0.0,\ysig-0.5) rectangle ++(1.5,1.0);
-  \node[axisblue] at (0.75,\ysig) {$z^{-1}$};
+  \draw[thick] (0.0,\ysig-0.5) rectangle ++(1.5,1.0);
+  \node at (0.75,\ysig) {$z^{-1}$};
 
-  \draw[axisblue, thick, ->] (1.5,\ysig) -- (2.7,\ysig);
+  \draw[thick, ->] (1.5,\ysig) -- (2.7,\ysig);
 
-  \draw[axisblue, thick] (2.7,\ysig-0.5) rectangle ++(1.5,1.0);
-  \node[axisblue] at (3.45,\ysig) {$z^{-1}$};
+  \draw[thick] (2.7,\ysig-0.5) rectangle ++(1.5,1.0);
+  \node at (3.45,\ysig) {$z^{-1}$};
 
-  \draw[axisblue, thick] (4.2,\ysig) -- (4.7,\ysig);
+  \draw[thick] (4.2,\ysig) -- (4.7,\ysig);
 
   % ---- Summing node ----
-  \draw[axisblue, thick] (\xsum,\ysum) circle (\rsum);
-  \node[axisblue] at (\xsum,\ysum) {$+$};
-  \draw[axisblue, thick, ->] (\xsum+\rsum,\ysum) -- (\xsum+1.2,\ysum);
-  \node[axisblue, anchor=west] at (\xsum+1.3,\ysum) {$y[n]$};
+  \draw[thick] (\xsum,\ysum) circle (\rsum);
+  \node at (\xsum,\ysum) {$+$};
+  \draw[thick, ->] (\xsum+\rsum,\ysum) -- (\xsum+1.2,\ysum);
+  \node[anchor=west] at (\xsum+1.3,\ysum) {$y[n]$};
 
   % ---- Tap after two delays: straight in from the left ----
-  \draw[axisblue, thick] (4.7,\ysig) -- (4.7,\ysum);
-  \draw[axisblue, thick, ->] (4.7,\ysum) -- (\xsum-\rsum,\ysum);
-  \node[axisblue, anchor=east] at (4.6,\ysum+0.85) {$\frac{1}{3}$};
+  \draw[thick] (4.7,\ysig) -- (4.7,\ysum);
+  \draw[thick, ->] (4.7,\ysum) -- (\xsum-\rsum,\ysum);
+  \node[anchor=east] at (4.6,\ysum+0.85) {$\frac{1}{3}$};
 
   % ---- Tap after one delay: in from the lower left ----
-  \fill[axisblue] (2.1,\ysig) circle (0.07);
-  \draw[axisblue, thick] (2.1,\ysig) -- (2.1,\ysum-1.0) -- (5.15,\ysum-1.0);
-  \draw[axisblue, thick, ->] (5.15,\ysum-1.0) -- (\xsum-0.24,\ysum-0.24);
-  \node[axisblue, anchor=south] at (3.6,\ysum-0.95) {$\frac{1}{3}$};
+  \fill (2.1,\ysig) circle (0.07);
+  \draw[thick] (2.1,\ysig) -- (2.1,\ysum-1.0) -- (5.15,\ysum-1.0);
+  \draw[thick, ->] (5.15,\ysum-1.0) -- (\xsum-0.24,\ysum-0.24);
+  \node[anchor=south] at (3.6,\ysum-0.95) {$\frac{1}{3}$};
 
   % ---- Tap straight through: in from below ----
-  \fill[axisblue] (-1.1,\ysig) circle (0.07);
-  \draw[axisblue, thick] (-1.1,\ysig) -- (-1.1,\ysum-2.0) -- (\xsum,\ysum-2.0);
-  \draw[axisblue, thick, ->] (\xsum,\ysum-2.0) -- (\xsum,\ysum-\rsum);
-  \node[axisblue, anchor=south] at (2.4,\ysum-1.95) {$\frac{1}{3}$};
+  \fill (-1.1,\ysig) circle (0.07);
+  \draw[thick] (-1.1,\ysig) -- (-1.1,\ysum-2.0) -- (\xsum,\ysum-2.0);
+  \draw[thick, ->] (\xsum,\ysum-2.0) -- (\xsum,\ysum-\rsum);
+  \node[anchor=south] at (2.4,\ysum-1.95) {$\frac{1}{3}$};
 
 \end{circuitikz}
 \end{document}

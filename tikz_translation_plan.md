@@ -549,6 +549,14 @@ so the period, pulse width and height are single `\def`s at the top of the
 block.
 
 ### Notes
+- **Draw in black.** The hand-drawn originals are in dark blue ink with green
+  and red annotations, and the first `l05_sc` redraws copied that. The user
+  does not want it: the redraws are not meant to imitate the pen. Use the
+  default black for every line and every ordinary label, and reach for colour
+  only where it *encodes* something the reader has to tell apart — the green
+  signal against the red and magenta tones and the orange filter in the
+  sampling spectra, and stable against unstable in `l5_zunstable`. Those stay
+  because the figure argues with them; nothing else does.
 - A TeX macro name is **letters only**. `\newcommand{\scXc2}{...}` does not
   fail where it is defined; it fails later as "Undefined control sequence
   `\scXc`", because TeX read the name as `\scXc` and left the `2` behind.
