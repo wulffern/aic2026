@@ -517,6 +517,15 @@ Drawing both on the integrator's axis strands the gain stage's trace, which
 only ever reaches V_i, in the bottom fifth of an empty box. The originals do
 scale per plot; it is not a liberty.
 
+`l5_scex`'s reference core is drawn to match `l03_ptat`: diode-connected PNPs
+rather than the artwork's plain diodes, the area ratio marked on the device as
+`xN` rather than as a floating "1 : N", and + on the branch carrying the
+resistor. A student meets this circuit in `l03_refbias` first, so the two
+should be recognisably the same drawing. The two figures are not shared source
+and should not be — `l03_ptat` is a tall standalone built on `ckt_lib`'s grid
+macros with a rotated OTA, while `l5_scex` needs a short wide core so the
+switched-capacitor stage fits beside it on one slide.
+
 `l5_sw2`'s two bulk networks end in bare symbols in the original. They are the
 supply rails: the n-well to V_DD and the p-substrate to ground while the switch
 is off, which is the only bias that keeps both junctions reverse biased, and
