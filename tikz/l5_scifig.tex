@@ -1,0 +1,26 @@
+\input{tikz/fig_header.tex}
+
+% Output of the l5_scint integrator. Nothing resets C2, so each cycle adds
+% another V_i and the output climbs a staircase instead of returning to zero.
+%
+% Same axes and clock as l5_scfig through \scWaveFrame, so the two slides can
+% be set side by side and the difference is the trace alone.
+
+\begin{circuitikz}[american, transform shape]
+
+  \input{tikz/ckt_lib.tex}
+  \input{tikz/sc_lib.tex}
+
+  \scWaveFrame
+
+  % One V_i step per cycle, each settling exponentially, none of it thrown away
+  \draw[thick] (0,0) -- (0.48,0);
+  \foreach \k in {0,1,2,3} {
+    \scWaveEdge{\k*\scWavT+0.48}{\k*\scWavVi}{(\k+1)*\scWavVi}{0.36}
+    \draw[thick] ({\k*\scWavT+0.84},{(\k+1)*\scWavVi})
+              -- ({\k*\scWavT+\scWavT+0.48},{(\k+1)*\scWavVi});
+  }
+  \draw[thick] ({4*\scWavT+0.48},{4*\scWavVi}) -- (5.6,{4*\scWavVi});
+
+\end{circuitikz}
+\end{document}

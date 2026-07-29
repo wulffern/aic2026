@@ -148,3 +148,58 @@
   \fill (8.2,\scYin-0.4) circle (0.07);
   \scPort{8.69,\scYin-0.4}{west}{\;\;$V_{o}[n]$}
 }
+
+
+% ---------------------------------------------------------------------------
+% Output waveforms: l5_scfig for the gain stage, l5_scifig for the integrator.
+%
+% Same axes, same clock, same V_i reference; only the V_o trace differs, and
+% that difference -- reset to zero every cycle versus accumulate -- is the
+% comparison the two slides are making. So \scWaveFrame draws everything they
+% share.
+%
+% The originals sketch the settling freehand. These use a real exponential, so
+% the flat top actually is the settled value and the eye can see that the
+% output is only valid at the end of phase 2, which is what the prose says.
+%
+% V_i is dashed rather than coloured: it is a reference level, and a dash
+% separates it from the trace without reaching for a second colour.
+% ---------------------------------------------------------------------------
+
+\newcommand{\scWavT}{1.2}        % clock period
+\newcommand{\scWavVi}{0.85}      % one V_i step
+\newcommand{\scWavTop}{4.3}      % top of the V_o axis
+\newcommand{\scWavClk}{-1.25}    % clock baseline
+\newcommand{\scWavClkH}{0.55}    % clock height
+
+% An exponential settling edge: from (#1,#2) up to #3 over a width #4.
+\newcommand{\scWaveEdge}[4]{%
+  \draw[thick] plot[domain=0:1, samples=32]
+    ({#1+#4*\x}, {#2+(#3-#2)*(1-exp(-4.5*\x))});
+}
+
+\newcommand{\scWaveFrame}{%
+  \draw[thick,->] (-0.3,0) -- (5.8,0);
+  \node[anchor=north west] at (5.5,-0.28) {$t$};
+  \draw[thick,->] (0,-0.2) -- (0,\scWavTop);
+  \node[anchor=east] at (-0.12,\scWavTop-0.12) {$V_{o}$};
+
+  \foreach \k/\lbl in {0/{n=0},1/{1},2/{2},3/{3},4/{4}} {
+    \draw[thick] ({\k*\scWavT},0.13) -- ({\k*\scWavT},-0.13);
+    \node[anchor=north] at ({\k*\scWavT},-0.22) {\small $\lbl$};
+  }
+
+  \draw[thick, dashed] (-0.2,\scWavVi) -- (5.6,\scWavVi);
+  \node[anchor=east] at (-0.22,\scWavVi) {$V_{i}$};
+  \node[anchor=south] at (2.4,{\scWavTop+0.05}) {$C_{1} = C_{2}$};
+
+  \node[anchor=east] at (-0.3,{\scWavClk+\scWavClkH/2}) {$\phi_{2}$};
+  \draw[thick] (-0.2,\scWavClk)
+    \foreach \k in {0,1,2,3,4} {
+      -- ({\k*\scWavT+0.5*\scWavT},\scWavClk)
+      -- ({\k*\scWavT+0.5*\scWavT},{\scWavClk+\scWavClkH})
+      -- ({\k*\scWavT+\scWavT},{\scWavClk+\scWavClkH})
+      -- ({\k*\scWavT+\scWavT},\scWavClk)
+    }
+    -- (5.6,\scWavClk);
+}

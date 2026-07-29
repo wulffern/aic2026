@@ -1,0 +1,28 @@
+\input{tikz/fig_header.tex}
+
+% Output of the l5_scamp gain stage. C2 is reset every phase 1, so the output
+% returns to zero and settles to V_i again each cycle -- with C1 = C2 the gain
+% is one, so the settled value sits exactly on the V_i reference.
+%
+% Pairs with l5_scifig, the integrator's output, through \scWaveFrame.
+
+\begin{circuitikz}[american, transform shape]
+
+  \input{tikz/ckt_lib.tex}
+  \input{tikz/sc_lib.tex}
+
+  \scWaveFrame
+
+  % Reset to zero through phase 1, settle to V_i through phase 2, drop at the
+  % period boundary. Only the end of phase 2 is a valid output.
+  \foreach \k in {0,1,2,3} {
+    \draw[thick] ({\k*\scWavT},0) -- ({\k*\scWavT+0.5*\scWavT},0);
+    \scWaveEdge{\k*\scWavT+0.5*\scWavT}{0}{\scWavVi}{0.36}
+    \draw[thick] ({\k*\scWavT+0.5*\scWavT+0.36},\scWavVi)
+              -- ({\k*\scWavT+\scWavT},\scWavVi)
+              -- ({\k*\scWavT+\scWavT},0);
+  }
+  \draw[thick] (4*\scWavT,0) -- (5.6,0);
+
+\end{circuitikz}
+\end{document}
