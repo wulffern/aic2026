@@ -97,16 +97,89 @@
     <div class="m">ex/pv.py, ex/pv_v.py &middot; energy sources</div>
   </a>
 
+  <a class="card" href="biquad.html">
+    <div class="t">BIQUAD</div>
+    <div class="d">
+      One denominator, five responses. Low-pass, band-pass, high-pass, notch and
+      all-pass all share the same poles &mdash; switching between them only
+      moves the zeros.
+    </div>
+    <div class="m">jupyter/biquad.ipynb &middot; analog front end</div>
+  </a>
+
+  <a class="card" href="buck.html">
+    <div class="t">BUCK CONVERTER</div>
+    <div class="d">
+      A PWM buck integrated one time step at a time. Watch the output settle on
+      VDDH&middot;D, and watch a cold start draw hundreds of times the current
+      it will ever need.
+    </div>
+    <div class="m">jupyter/buck.ipynb &middot; voltage regulators</div>
+  </a>
+
+  <a class="card" href="buck-pfm.html">
+    <div class="t">PFM BUCK</div>
+    <div class="d">
+      The same power stage with no clock: a three-state machine that fires a
+      fixed packet of charge whenever the output sags. Switching frequency
+      tracks the load, which is the whole point.
+    </div>
+    <div class="m">jupyter/buck_pfm.ipynb &middot; voltage regulators</div>
+  </a>
+
+  <a class="card" href="buck-type3.html">
+    <div class="t">VOLTAGE MODE BUCK</div>
+    <div class="d">
+      The closed loop the buck notebook stops just short of: a type 3
+      compensator placed by the K-factor method, then the switching converter
+      run against a line step and a load step to see whether the design was
+      right.
+    </div>
+    <div class="m">closed loop on jupyter/buck.ipynb &middot; voltage regulators</div>
+  </a>
+
+  <a class="card" href="pll.html">
+    <div class="t">PLL LOOP</div>
+    <div class="d">
+      A charge pump PLL as one open-loop gain: phase margin, closed-loop
+      peaking, the step response, and which noise source each part of the
+      spectrum belongs to.
+    </div>
+    <div class="m">sun_pll_sky130nm/jupyter/pll.ipynb &middot; phase locked loops</div>
+  </a>
+
+  <a class="card" href="xosc.html">
+    <div class="t">CRYSTAL IMPEDANCE</div>
+    <div class="d">
+      Series and parallel resonance a few kilohertz apart on a ten megahertz
+      part, the narrow inductive window an oscillator has to live in, and how
+      little you can pull it.
+    </div>
+    <div class="m">jupyter/xosc.ipynb &middot; oscillators</div>
+  </a>
+
+  <a class="card" href="https://wulffern.github.io/cicadc/">
+    <div class="t">CICADC &nearr;</div>
+    <div class="d">
+      The full ADC visualiser: Nyquist, first and second order sigma-delta and
+      leapfrog modulators, a real decimation filter, quantization noise and
+      spectrum &mdash; with a car driving along the waveform.
+    </div>
+    <div class="m">wulffern/cicadc &middot; a separate project</div>
+  </a>
+
 </div>
 
 <div class="doc">
   <h2>ABOUT THESE PAGES</h2>
   <p>
     Each page is an interactive version of one of the Python scripts in
-    <a href="https://github.com/wulffern/aic2026/tree/main/ex">ex/</a>. The
-    plots are the same plots; the difference is that the constants at the top
-    of the script are sliders, so you can find out what happens when you change
-    them without waiting for matplotlib.
+    <a href="https://github.com/wulffern/aic2026/tree/main/ex">ex/</a> or one of
+    the notebooks in
+    <a href="https://github.com/wulffern/aic2026/tree/main/jupyter">jupyter/</a>.
+    The plots are the same plots; the difference is that the constants at the
+    top of the script are sliders, so you can find out what happens when you
+    change them without waiting for matplotlib.
   </p>
   <p>
     They are plain HTML, CSS and JavaScript with no dependencies and no network
@@ -116,9 +189,14 @@
     plots.
   </p>
   <p>
-    For the full ADC story with second-order and leapfrog loops, a real
-    decimator and a car driving along the waveform, see
-    <a href="https://wulffern.github.io/cicadc/">cicadc</a>.
+    Four notebooks have no page here.
+    <code>jupyter/dt.ipynb</code> and <code>jupyter/diode_voltage.ipynb</code>
+    are the same models as <code>ex/dt.py</code> and <code>ex/vd.py</code>, so
+    the <a href="sampling.html">sampling</a> and
+    <a href="diode.html">diode</a> pages already cover them.
+    <code>jupyter/circuits.ipynb</code> and
+    <code>sun_pll_sky130nm/jupyter/pfd.ipynb</code> plot real SPICE output
+    rather than a model, so there is nothing to turn into a slider.
   </p>
 </div>
 

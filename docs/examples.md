@@ -5,10 +5,12 @@ permalink: /examples/
 ---
 
 The Python scripts in [`ex/`](https://github.com/wulffern/aic2026/tree/main/ex)
-also exist as interactive pages. The plots are the same plots; the difference is
-that the constants at the top of the script are sliders, so you can find out
-what happens when you change them without waiting for matplotlib. Each page says
-which script it came from and where it deviates from it.
+and the notebooks in
+[`jupyter/`](https://github.com/wulffern/aic2026/tree/main/jupyter) also exist
+as interactive pages. The plots are the same plots; the difference is that the
+constants at the top of the script are sliders, so you can find out what happens
+when you change them without waiting for matplotlib. Each page says which source
+it came from and where it deviates from it.
 
 **[Open the gallery](/aic2026/assets/examples/index.html)**
 
@@ -33,6 +35,33 @@ which script it came from and where it deviates from it.
 - [Noise shaping](/aic2026/assets/examples/sigma-delta.html) — a first order
   sigma-delta loop, its integrator state, its bitstream, and nine dB per octave.
   <sub>`ex/sd_1st.py`</sub>
+
+# Filters, loops and oscillators
+
+- [Biquad](/aic2026/assets/examples/biquad.html) — one denominator, five
+  responses. The poles never move; only the zeros do.
+  <sub>`jupyter/biquad.ipynb`</sub>
+- [PLL loop](/aic2026/assets/examples/pll.html) — a charge pump PLL as one
+  open-loop gain: phase margin, peaking, settling, and where each noise source
+  lands.
+  <sub>`sun_pll_sky130nm/jupyter/pll.ipynb`</sub>
+- [Crystal impedance](/aic2026/assets/examples/xosc.html) — the narrow inductive
+  window between series and parallel resonance, and how little you can pull it.
+  <sub>`jupyter/xosc.ipynb`</sub>
+
+# Voltage regulators
+
+- [Buck converter](/aic2026/assets/examples/buck.html) — a PWM buck integrated
+  one time step at a time, including the cold start that draws hundreds of times
+  the current it will ever need.
+  <sub>`jupyter/buck.ipynb`</sub>
+- [PFM buck](/aic2026/assets/examples/buck-pfm.html) — the same power stage with
+  no clock, where the switching frequency tracks the load.
+  <sub>`jupyter/buck_pfm.ipynb`</sub>
+- [Voltage mode buck](/aic2026/assets/examples/buck-type3.html) — type 3
+  compensation by the K-factor method, checked against line and load steps on
+  the real switching converter.
+  <sub>the closed loop `jupyter/buck.ipynb` describes but does not build</sub>
 
 # Diodes, references and energy sources
 

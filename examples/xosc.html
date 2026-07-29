@@ -1,0 +1,375 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Crystal impedance &mdash; aic2026</title>
+<link rel="stylesheet" href="common/aic.css">
+</head>
+<body>
+
+<header>
+  <h1>CRYSTAL IMPEDANCE</h1>
+  <div class="sub">
+    <a href="index.html">&larr; all examples</a> &middot;
+    interactive version of
+    <a href="https://github.com/wulffern/aic2026/blob/main/jupyter/xosc.ipynb">jupyter/xosc.ipynb</a> &middot;
+    oscillators
+  </div>
+</header>
+
+<div id="chain">
+  <div class="cb on">MOTIONAL R + sL + 1/sC_F</div><span class="ca">&#8741;</span>
+  <div class="cb on">STATIC C_P</div><span class="ca">&rarr;</span>
+  <div class="cb on">Z_in</div>
+</div>
+
+<canvas id="c"></canvas>
+
+<div id="ctrl">
+  <div class="cg">
+    <div class="cgt">MOTIONAL ARM</div>
+    <div class="cr">
+      <label>C_F</label>
+      <input type="range" data-bind="cf" id="sl-cf" min="0.5" max="30" step="0.1" value="5">
+      <span class="v" id="v-cf"></span>
+    </div>
+    <div class="cr">
+      <label>L</label>
+      <input type="range" data-bind="l" id="sl-l" min="1" max="200" step="1" value="50">
+      <span class="v" id="v-l"></span>
+    </div>
+    <div class="cr">
+      <label>R (ESR)</label>
+      <input type="range" data-bind="r" id="sl-r" min="1" max="300" step="1" value="50">
+      <span class="v" id="v-r"></span>
+    </div>
+    <div class="note">
+      The motional arm is the mechanical resonance written as an electrical
+      circuit. C_F is femtofarads because the coupling is weak &mdash; that
+      weakness is what makes the Q enormous.
+    </div>
+  </div>
+
+  <div class="cg">
+    <div class="cgt">STATIC / LOAD</div>
+    <div class="cr">
+      <label>C_P</label>
+      <input type="range" data-bind="cp" id="sl-cp" min="1" max="30" step="0.1" value="5">
+      <span class="v" id="v-cp"></span>
+    </div>
+    <div class="note">
+      C_P is the electrode capacitance plus whatever the circuit loads the
+      crystal with. It is the only thing here you can change after the crystal
+      is made, and the pulling panels show how much good that does.
+    </div>
+  </div>
+
+  <div class="cg">
+    <div class="cgt">VIEW</div>
+    <div class="cr">
+      <label>Span &times;</label>
+      <input type="range" data-bind="span" id="sl-span" min="1" max="10" step="0.5" value="3">
+      <span class="v" id="v-span"></span>
+    </div>
+    <div class="ckrow">
+      <input type="checkbox" data-bind="marks" id="sl-marks" checked>
+      <label for="sl-marks">Mark f_s and f_p</label>
+    </div>
+  </div>
+</div>
+
+<div id="readout">
+  <div class="ro"><span class="k">f_s (SERIES)</span><span class="n" id="ro-fs"></span></div>
+  <div class="ro"><span class="k">f_p (PARALLEL)</span><span class="n" id="ro-fp"></span></div>
+  <div class="ro"><span class="k">f_p - f_s</span><span class="n" id="ro-df"></span></div>
+  <div class="ro"><span class="k">Q</span><span class="n" id="ro-q"></span></div>
+  <div class="ro"><span class="k">C_P/C_F</span><span class="n" id="ro-ratio"></span></div>
+  <div class="ro"><span class="k">PULLING</span><span class="n" id="ro-pull"></span></div>
+</div>
+
+<div id="legend">
+  <div class="leg"><div class="lsw" style="background:var(--curve)"></div>|Z| and phase</div>
+  <div class="leg"><div class="lsw" style="background:var(--quant)"></div>Reactance Im{Z}</div>
+  <div class="leg"><div class="lsw" style="background:var(--sample)"></div>f_s</div>
+  <div class="leg"><div class="lsw" style="background:var(--error)"></div>f_p</div>
+  <div class="leg"><div class="lsw" style="background:var(--alt2)"></div>Inductive region</div>
+</div>
+
+<div class="doc">
+  <h2>WHAT YOU ARE LOOKING AT</h2>
+  <p>
+    The notebook this comes from opens with a confession: <em>"I have a problem
+    with calculating input impedances and transfer functions. I don't trust my
+    own brain when it comes to the algebra."</em> It then uses sympy to expand
+    the input impedance of the standard crystal model and compare the answer
+    against a published one, to settle whether the textbook or the reader is
+    wrong. (Neither, as it turns out &mdash; the published version drops a term
+    that barely moves near resonance.)
+  </p>
+  <p>
+    That expansion is one line, so this page does it directly rather than
+    shipping a computer algebra system to your browser:
+  </p>
+  <p style="text-align:center">
+    <code>Z_in = 1 / ( 1/(R + sL + 1/(sC_F)) + sC_P )</code>
+  </p>
+  <p>
+    A quartz crystal is a mechanical resonator that happens to be reachable
+    through electrodes. The motional arm &mdash; R, L, C_F in series &mdash; is
+    the mechanical resonance in electrical clothing, and C_P is the plain
+    capacitance of the electrodes. Because the electromechanical coupling is
+    weak, C_F comes out in femtofarads and L in millihenries: values you could
+    never build from actual components, which is exactly why the Q is in the
+    tens of thousands and why crystals are worth their cost.
+  </p>
+  <p>
+    Two resonances fall out. At <b>f_s</b> the motional arm's L and C_F cancel
+    and the impedance collapses to R. Slightly above it, the now-inductive
+    motional arm resonates with C_P and the impedance peaks at <b>f_p</b>.
+    Between the two, and only between the two, the crystal looks inductive
+    &mdash; and a Pierce oscillator needs it to look inductive. That window is
+    a few kilohertz wide on a ten megahertz part, which is the entire reason
+    crystal oscillators are accurate.
+  </p>
+
+  <h2>THINGS WORTH TRYING</h2>
+  <ul>
+    <li>
+      Look at the width of the shaded <b>inductive region</b> against the
+      frequency axis. On the default values it is about 5 kHz out of 10 MHz.
+      An oscillator has to land inside it, and everywhere else the crystal is
+      capacitive and the loop will not start.
+    </li>
+    <li>
+      Move <b>C_P</b> from 1 to 30 pF and watch f_p slide while f_s does not
+      move at all. That is crystal pulling, and it is the one adjustment you
+      get: f_s is fixed by the quartz, f_p by the quartz <em>and</em> your
+      circuit. The pulling panels quantify it &mdash; note that sensitivity
+      falls off as 1/C_P&sup2;, so trimming is far more effective at small
+      loads.
+    </li>
+    <li>
+      Drop <b>R</b> to 1 &ohm;. Q goes to the millions and the series notch
+      becomes narrower than the plot's frequency grid, so the drawn minimum
+      stops reaching R. The dashed markers are computed analytically rather
+      than by searching the curve, so they stay correct where the trace does
+      not &mdash; a good reminder that a sampled plot of a very high Q resonance
+      lies to you.
+    </li>
+    <li>
+      Raise <b>C_F</b> towards 30 fF. The gap between f_s and f_p widens
+      &mdash; it goes as &radic;(1 + C_F/C_P) &mdash; and the crystal becomes
+      easier to pull but less stable. This is the trade a MEMS resonator makes
+      against quartz.
+    </li>
+  </ul>
+
+  <h2>THE NOTEBOOK</h2>
+<pre><code>from sympy import symbols,expand,simplify,solve
+
+Gin,Zin, s,Cf,L,Cp,R,Z = symbols("G_{in} Z_{in} s C_F L C_P R Z")
+
+Gin = 1/(R + s*L + 1/(s*Cf)) + s*Cp
+Zin = expand(simplify(1/Gin))
+
+Z = Zin.subs({R:50,Cf:5e-15,Cp:5e-12,L:50e-3})
+func = lambdify(s, Z,'numpy')
+Znum = func(1j*2*np.pi*f)</code></pre>
+  <p class="src">
+    Source: <a href="https://github.com/wulffern/aic2026/blob/main/jupyter/xosc.ipynb">jupyter/xosc.ipynb</a>.
+    The notebook finds the peak by <code>np.argmax</code> on a 1000-point grid;
+    this page uses the closed forms
+    f_s = 1/(2&pi;&radic;(L&middot;C_F)) and f_p = f_s&middot;&radic;(1 + C_F/C_P)
+    instead, which do not depend on how finely the curve happens to be sampled.
+  </p>
+</div>
+
+<footer>
+  TFE4188 Advanced Integrated Circuits &middot; <a href="https://wulffern.github.io/aic2026/">aic2026</a>
+</footer>
+
+<script src="common/plot.js"></script>
+<script src="common/lti.js"></script>
+<script>
+'use strict';
+
+const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+
+const S = {};
+let D = null;
+
+const fmts = {
+  cf:   v => v.toFixed(1) + ' fF',
+  l:    v => v + ' mH',
+  r:    v => v + ' ohm',
+  cp:   v => v.toFixed(1) + ' pF',
+  span: v => '±' + v.toFixed(1) + ' df',
+};
+
+function eng(v, unit, digits = 4) {
+  const p = [[1e-3, 'm'], [1, ''], [1e3, 'k'], [1e6, 'M'], [1e9, 'G']];
+  for (let i = p.length - 1; i >= 0; i--) {
+    if (Math.abs(v) >= p[i][0]) return (v / p[i][0]).toPrecision(digits) + ' ' + p[i][1] + unit;
+  }
+  return v.toExponential(2) + ' ' + unit;
+}
+
+/** Z_in of the crystal model, at complex s. */
+function Zin(s, R, L, Cf, Cp) {
+  const motional = LTI.add(LTI.add([R, 0], LTI.scale(s, L)), LTI.inv(LTI.scale(s, Cf)));
+  const Y = LTI.add(LTI.inv(motional), LTI.scale(s, Cp));
+  return LTI.inv(Y);
+}
+
+/** Series and parallel resonance, in closed form. */
+const fSeries = (L, Cf) => 1 / (2 * Math.PI * Math.sqrt(L * Cf));
+const fParallel = (L, Cf, Cp) => fSeries(L, Cf) * Math.sqrt(1 + Cf / Cp);
+
+function compute() {
+  const Cf = S.cf * 1e-15;
+  const L = S.l * 1e-3;
+  const R = S.r;
+  const Cp = S.cp * 1e-12;
+
+  const fs = fSeries(L, Cf);
+  const fp = fParallel(L, Cf, Cp);
+  const df = fp - fs;
+  const ws = 2 * Math.PI * fs;
+  const Q = ws * L / R;
+
+  // Narrow window around the two resonances.
+  const half = Math.max(df * S.span, fs * 1e-6);
+  const f0 = fs - half, f1 = fp + half;
+  const n = 4000;
+  const f = new Float64Array(n), mag = new Float64Array(n),
+        ph = new Float64Array(n), re = new Float64Array(n), im = new Float64Array(n);
+  for (let i = 0; i < n; i++) {
+    f[i] = f0 + (f1 - f0) * i / (n - 1);
+    const z = Zin(LTI.jw(f[i]), R, L, Cf, Cp);
+    mag[i] = LTI.db(z);
+    ph[i] = LTI.deg(z);
+    re[i] = z[0];
+    im[i] = z[1];
+  }
+
+  // Wide band, to show that far from resonance the crystal is just C_P.
+  const fw = LTI.logf(fs / 1000, fs * 1000, 900);
+  const magw = new Float64Array(fw.length), cpOnly = new Float64Array(fw.length);
+  for (let i = 0; i < fw.length; i++) {
+    magw[i] = LTI.db(Zin(LTI.jw(fw[i]), R, L, Cf, Cp));
+    cpOnly[i] = LTI.db(LTI.inv(LTI.scale(LTI.jw(fw[i]), Cp)));
+  }
+
+  // Pulling: f_p against load capacitance, in ppm relative to f_s.
+  const nc = 300;
+  const cps = new Float64Array(nc), ppm = new Float64Array(nc), sens = new Float64Array(nc);
+  for (let i = 0; i < nc; i++) {
+    const c = (1 + 29 * i / (nc - 1)) * 1e-12;
+    cps[i] = c * 1e12;
+    ppm[i] = (fParallel(L, Cf, c) / fs - 1) * 1e6;
+    // ppm per pF, by central difference on the closed form.
+    const h = 1e-15;
+    sens[i] = ((fParallel(L, Cf, c + h) - fParallel(L, Cf, c - h)) / fs) * 1e6 / (2 * h * 1e12);
+  }
+
+  D = { f, mag, ph, re, im, fw, magw, cpOnly, cps, ppm, sens, fs, fp, df, Q, Cf, Cp, R, L };
+
+  const pullNow = LTI.interpAt(cps, sens, S.cp);
+  UI.readout('ro-fs', eng(fs, 'Hz', 8));
+  UI.readout('ro-fp', eng(fp, 'Hz', 8));
+  UI.readout('ro-df', eng(df, 'Hz', 3) + '  (' + (df / fs * 1e6).toFixed(0) + ' ppm)');
+  UI.readout('ro-q', Q.toExponential(2));
+  UI.readout('ro-ratio', (Cp / Cf).toFixed(0));
+  UI.readout('ro-pull', pullNow.toFixed(1) + ' ppm/pF');
+}
+
+function render(cx, W, H, narrow) {
+  if (!D) return;
+  const g = Plot.grid(W, H, narrow ? 6 : 2, narrow ? 1 : 3, { gapY: 24, gapX: 22 });
+  const M = 1e6;
+  const fm = Float64Array.from(D.f, v => v / M);
+  const lo = fm[0], hi = fm[fm.length - 1];
+
+  const marks = p => {
+    if (!S.marks) return;
+    p.vline(D.fs / M, css('--sample'), [3, 3]);
+    p.vline(D.fp / M, css('--error'), [3, 3]);
+  };
+
+  // ── |Z| near resonance ──────────────────────────────────────────────────
+  const p0 = new Plot.Panel(cx, g[0], {
+    title: 'Impedance near resonance', ylabel: '|Z| [dB ohm]', xlabel: 'Frequency [MHz]',
+  });
+  const [zlo, zhi] = Plot.padExtent(...Plot.extent(D.mag), 0.08);
+  p0.limits(lo, hi, zlo, zhi).frame();
+  band(p0);
+  marks(p0);
+  p0.line(fm, D.mag, css('--curve'), { width: 1.5 });
+
+  // ── Phase ───────────────────────────────────────────────────────────────
+  const p1 = new Plot.Panel(cx, g[1], {
+    title: 'Phase', ylabel: 'Phase [deg]', xlabel: 'Frequency [MHz]',
+  });
+  p1.limits(lo, hi, -100, 100).frame();
+  band(p1);
+  marks(p1);
+  p1.hline(0, css('--muted'), [3, 3]);
+  p1.line(fm, D.ph, css('--curve'), { width: 1.5 });
+  p1.note(0.03, 0.9, 'positive phase = inductive', css('--alt2'));
+
+  // ── Wideband ────────────────────────────────────────────────────────────
+  const p2 = new Plot.Panel(cx, g[2], {
+    title: 'Wideband', ylabel: '|Z| [dB ohm]', xlabel: 'Frequency [Hz]', xlog: true,
+  });
+  const [wlo, whi] = Plot.padExtent(...Plot.extent(D.magw), 0.08);
+  p2.limits(D.fw[0], D.fw[D.fw.length - 1], wlo, whi).frame();
+  p2.line(D.fw, D.cpOnly, css('--muted'), { dash: [4, 3] });
+  p2.line(D.fw, D.magw, css('--curve'), { width: 1.5 });
+  // The two traces sit on top of each other everywhere except a few kHz, which
+  // is the point of the panel rather than a drawing bug.
+  p2.note(0.03, 0.08, 'dashed: 1/(sC_P) alone - the crystal is\nindistinguishable from it except in a\nfew kHz around f_s', css('--muted'));
+
+  // ── Reactance ───────────────────────────────────────────────────────────
+  const p3 = new Plot.Panel(cx, g[3], {
+    title: 'Reactance', ylabel: 'Im{Z} [ohm]', xlabel: 'Frequency [MHz]',
+  });
+  const [xlo, xhi] = Plot.padExtent(...Plot.extent(D.im), 0.08);
+  p3.limits(lo, hi, xlo, xhi).frame();
+  band(p3);
+  marks(p3);
+  p3.hline(0, css('--muted'), [3, 3]);
+  p3.line(fm, D.im, css('--quant'), { width: 1.5 });
+  p3.note(0.03, 0.9, 'Im{Z} > 0 between f_s and f_p', css('--alt2'));
+
+  // ── Pulling ─────────────────────────────────────────────────────────────
+  const p4 = new Plot.Panel(cx, g[4], {
+    title: 'Pulling', ylabel: 'f_p - f_s [ppm]', xlabel: 'C_P [pF]', margin: { l: 58 },
+  });
+  const [plo, phi] = Plot.padExtent(...Plot.extent(D.ppm), 0.08);
+  p4.limits(D.cps[0], D.cps[D.cps.length - 1], 0, phi).frame();
+  p4.line(D.cps, D.ppm, css('--curve'), { width: 1.5 });
+  p4.vline(S.cp, css('--sample'), [3, 3]);
+
+  const p5 = new Plot.Panel(cx, g[5], {
+    title: 'Pulling sensitivity', ylabel: '[ppm/pF]', xlabel: 'C_P [pF]', margin: { l: 58 },
+  });
+  const [slo, shi] = Plot.padExtent(...Plot.extent(D.sens), 0.08);
+  p5.limits(D.cps[0], D.cps[D.cps.length - 1], slo, Math.min(shi, 0)).frame();
+  p5.line(D.cps, D.sens, css('--curve'), { width: 1.5 });
+  p5.vline(S.cp, css('--sample'), [3, 3]);
+  p5.note(0.04, 0.12, 'falls as 1/C_P^2', css('--muted'));
+}
+
+/** Shade f_s .. f_p, the only band where the crystal looks inductive. */
+function band(p) {
+  p.vspan(D.fs / 1e6, D.fp / 1e6, css('--alt2'), 0.16);
+}
+
+const chart = Plot.mount('c', { aspect: 0.5, aspectNarrow: 2.6, draw: render });
+UI.bind(S, fmts, () => { compute(); chart.redraw(); });
+compute();
+chart.redraw();
+</script>
+</body>
+</html>

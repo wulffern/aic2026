@@ -1,0 +1,455 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Buck converter (PFM) &mdash; aic2026</title>
+<link rel="stylesheet" href="common/aic.css">
+</head>
+<body>
+
+<header>
+  <h1>PFM BUCK</h1>
+  <div class="sub">
+    <a href="index.html">&larr; all examples</a> &middot;
+    interactive version of
+    <a href="https://github.com/wulffern/aic2026/blob/main/jupyter/buck_pfm.ipynb">jupyter/buck_pfm.ipynb</a> &middot;
+    voltage regulators
+  </div>
+</header>
+
+<div id="chain">
+  <div class="cb on" id="cb-idle">IDLE</div><span class="ca">&rarr;</span>
+  <div class="cb on" id="cb-up">UP (PMOS)</div><span class="ca">&rarr;</span>
+  <div class="cb on" id="cb-dwn">DOWN (NMOS)</div><span class="ca">&crarr;</span>
+  <div class="cb on">V_o &lt; VREF ?</div>
+</div>
+
+<canvas id="c"></canvas>
+
+<div id="ctrl">
+  <div class="cg">
+    <div class="cgt">CONTROL</div>
+    <div class="cr">
+      <label>VREF</label>
+      <input type="range" data-bind="vref" id="sl-vref" min="0.2" max="1.7" step="0.01" value="1">
+      <span class="v" id="v-vref"></span>
+    </div>
+    <div class="cr">
+      <label>t_switch</label>
+      <input type="range" data-bind="lts" id="sl-lts" min="-7.5" max="-5.5" step="0.02" value="-6.301">
+      <span class="v" id="v-lts"></span>
+    </div>
+    <div class="cr">
+      <label>VDDH</label>
+      <input type="range" data-bind="vddh" id="sl-vddh" min="0.5" max="4" step="0.05" value="1.8">
+      <span class="v" id="v-vddh"></span>
+    </div>
+    <div class="note">
+      One knob, not two: the PMOS is on for a fixed t_switch, and the only
+      thing the loop decides is <em>how often</em>. That is the whole idea of
+      pulse frequency modulation.
+    </div>
+  </div>
+
+  <div class="cg">
+    <div class="cgt">POWER STAGE</div>
+    <div class="cr">
+      <label>L</label>
+      <input type="range" data-bind="ll" id="sl-ll" min="-6.5" max="-4.5" step="0.05" value="-5.301">
+      <span class="v" id="v-ll"></span>
+    </div>
+    <div class="cr">
+      <label>C</label>
+      <input type="range" data-bind="lc" id="sl-lc" min="-7" max="-5" step="0.05" value="-6">
+      <span class="v" id="v-lc"></span>
+    </div>
+    <div class="cr">
+      <label>R_s (switch)</label>
+      <input type="range" data-bind="rs" id="sl-rs" min="0.1" max="5" step="0.05" value="1">
+      <span class="v" id="v-rs"></span>
+    </div>
+    <div class="cr">
+      <label>R load</label>
+      <input type="range" data-bind="lr" id="sl-lr" min="1.7" max="5.5" step="0.02" value="3">
+      <span class="v" id="v-lr"></span>
+    </div>
+  </div>
+
+  <div class="cg">
+    <div class="cgt">SIMULATION</div>
+    <div class="cr">
+      <label>t_end</label>
+      <input type="range" data-bind="lte" id="sl-lte" min="-4" max="-2.3" step="0.05" value="-3">
+      <span class="v" id="v-lte"></span>
+    </div>
+    <div class="cr">
+      <label>Samples N = 2^</label>
+      <input type="range" data-bind="nb" id="sl-nb" min="15" max="20" step="1" value="18">
+      <span class="v" id="v-nb"></span>
+    </div>
+    <div class="note">
+      Unlike the PWM buck this one needs no warm start: it begins just below
+      VREF, as the notebook does, and the loop stops pushing the moment V_o
+      passes VREF. The run has to be milliseconds long, though, or the
+      averaging window holds too few pulses to mean anything.
+    </div>
+  </div>
+</div>
+
+<div id="readout">
+  <div class="ro"><span class="k">V_o</span><span class="n" id="ro-vo"></span></div>
+  <div class="ro"><span class="k">RIPPLE</span><span class="n" id="ro-ripple"></span></div>
+  <div class="ro"><span class="k">I_o</span><span class="n" id="ro-io"></span></div>
+  <div class="ro"><span class="k">f_sw</span><span class="n" id="ro-fsw"></span></div>
+  <div class="ro"><span class="k">CHARGE/PULSE TO LOAD</span><span class="n" id="ro-q"></span></div>
+  <div class="ro"><span class="k">EFFICIENCY</span><span class="n" id="ro-eff"></span></div>
+</div>
+
+<div id="legend">
+  <div class="leg"><div class="lsw" style="background:var(--curve)"></div>Inductor current I_L</div>
+  <div class="leg"><div class="lsw" style="background:var(--quant)"></div>Load current I_o</div>
+  <div class="leg"><div class="lsw" style="background:var(--digi)"></div>Output voltage V_o</div>
+  <div class="leg"><div class="lsw" style="background:var(--sample)"></div>State machine</div>
+  <div class="leg"><div class="ldot" style="background:var(--error)"></div>Measured, as you sweep the load</div>
+</div>
+
+<div class="doc">
+  <h2>WHAT YOU ARE LOOKING AT</h2>
+  <p>
+    The same power stage as the <a href="buck.html">PWM buck</a> &mdash; same
+    inductor, same capacitor, same two switches &mdash; under a completely
+    different control law. There is no clock and no duty cycle. There is a
+    three-state machine:
+  </p>
+  <ul>
+    <li><b>IDLE</b> &mdash; both switches off, output coasting down through the load. When V_o falls below VREF, go to UP.</li>
+    <li><b>UP</b> &mdash; PMOS on for a fixed t_switch, dumping a packet of energy into the inductor. Then go to DOWN.</li>
+    <li><b>DOWN</b> &mdash; NMOS on, inductor current ramps back down. When it reaches zero, go to IDLE.</li>
+  </ul>
+  <p>
+    Every pulse delivers the same packet of charge, so the loop regulates by
+    changing <em>how often</em> it fires. Draw twice the current and it fires
+    twice as often. That is why the bottom right panel &mdash; switching
+    frequency against load current &mdash; is close to a straight line through
+    the origin, and it is the entire reason PFM exists: at light load a PWM
+    converter still switches at full rate and burns the gate charge to do it,
+    while a PFM converter simply goes quiet.
+  </p>
+  <p>
+    The price is ripple and spectrum. The output sawtooths between VREF and
+    wherever the pulse pushes it, and the switching frequency moves around with
+    the load, so the noise it makes is not at one predictable place. That is a
+    bad trade in a radio and a good one in a battery-powered sensor that is
+    asleep most of the time.
+  </p>
+
+  <h2>THINGS WORTH TRYING</h2>
+  <ul>
+    <li>
+      Sweep the <b>R load</b> slider across its range. Each stop is simulated
+      and dropped onto the bottom-right panel, so the f_sw against I_o curve
+      draws itself. The dashed line is I_o divided by the charge one pulse
+      delivers, anchored at whichever point you are sitting on. The other
+      points landing on that line is the real result: the charge per pulse does
+      not depend on the load, so the frequency has to be proportional to it.
+    </li>
+    <li>
+      Take the load to its lightest (highest R). The switching frequency falls
+      towards nothing while regulation holds. Now imagine a PWM converter at
+      the same load: still switching at 10&nbsp;MHz, still paying for every
+      transition. This one plot is the argument for PFM.
+    </li>
+    <li>
+      Increase <b>t_switch</b>. Each pulse carries more charge, so the
+      converter fires less often but the output ripple grows &mdash; the
+      packets are bigger. Pulse size against ripple is the main design
+      trade here, and there is no clock to hide behind.
+    </li>
+    <li>
+      Watch the <b>state machine</b> trace under the inductor current. The DOWN
+      state ends when the current crosses zero, not on a timer &mdash; that is
+      the zero-current detection a real converter needs a comparator for, and
+      getting it wrong means either dumping current back into the supply or
+      leaving energy in the inductor.
+    </li>
+    <li>
+      Set <b>VREF</b> close to <b>VDDH</b>. The converter cannot keep up: one
+      pulse per idle period is no longer enough, the state machine stops
+      returning to IDLE, and regulation fails. A buck can only step down, and
+      here you can find exactly where it gives up.
+    </li>
+  </ul>
+
+  <h2>THE PYTHON</h2>
+<pre><code>state = 0  #0 = IDLE, 1 = UP, DWN = 2
+for i in range(1,N):
+    if(state == 0): # IDLE
+        pmos = 0
+        vx[i] = -100*ix[i-1] # model a high impedance
+        if(vo[i-1] &lt; VREF):
+            state = 1
+            t_start = ts
+    elif(state == 1): # UP (PMOS on)
+        vx[i] = VDDH - Rs*ix[i-1] - vo[i-1]
+        pmos = 1
+        if(ts - t_start &gt; t_switch):
+            state = 2
+    elif(state == 2): # DOWN (NMOS on)
+        pmos = 0
+        vx[i] = 0 - Rs*ix[i-1] - vo[i-1]
+        if(ix[i-1] &lt; 0):
+            state = 0</code></pre>
+  <p class="src">
+    Source: <a href="https://github.com/wulffern/aic2026/blob/main/jupyter/buck_pfm.ipynb">jupyter/buck_pfm.ipynb</a>.
+    The state machine and the integration are the notebook's. Its own comment
+    on the IDLE branch &mdash; <em>"Want to model a high impedance. This works,
+    but a bit nasty"</em> &mdash; is worth reading: the 100&nbsp;&ohm; term is a
+    numerical stand-in for both switches being off, and it is why the inductor
+    current decays instead of sitting at exactly zero between pulses.
+  </p>
+</div>
+
+<footer>
+  TFE4188 Advanced Integrated Circuits &middot; <a href="https://wulffern.github.io/aic2026/">aic2026</a>
+</footer>
+
+<script src="common/plot.js"></script>
+<script>
+'use strict';
+
+const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+
+const S = {};
+let D = null;
+// Operating points collected as the load slider moves.
+let sweep = new Map();
+
+const fmts = {
+  vref: v => v.toFixed(2) + ' V',
+  lts:  v => eng(Math.pow(10, v), 's'),
+  vddh: v => v.toFixed(2) + ' V',
+  ll:   v => eng(Math.pow(10, v), 'H'),
+  lc:   v => eng(Math.pow(10, v), 'F'),
+  rs:   v => v.toFixed(2) + ' ohm',
+  lr:   v => eng(Math.pow(10, v), 'ohm'),
+  lte:  v => eng(Math.pow(10, v), 's'),
+  nb:   v => '2^' + v,
+};
+
+function eng(v, unit, digits = 3) {
+  const p = [[1e-15, 'f'], [1e-12, 'p'], [1e-9, 'n'], [1e-6, 'u'], [1e-3, 'm'],
+             [1, ''], [1e3, 'k'], [1e6, 'M']];
+  for (let i = p.length - 1; i >= 0; i--) {
+    if (Math.abs(v) >= p[i][0]) return (v / p[i][0]).toPrecision(digits) + ' ' + p[i][1] + unit;
+  }
+  return v.toExponential(2) + ' ' + unit;
+}
+
+/** The notebook's three-state machine, unchanged. */
+function simulate(p, keep = true) {
+  const N = p.N;
+  const dt = p.tEnd / (N - 1);
+  const t = keep ? new Float64Array(N) : null;
+  const vo = keep ? new Float64Array(N) : null;
+  const ix = keep ? new Float64Array(N) : null;
+  const io = keep ? new Float64Array(N) : null;
+  const stv = keep ? new Float64Array(N) : null;
+
+  let voP = p.vo0, ixP = 0, vxP = 0, ioP = p.vo0 / p.R;
+  let state = 0, tStart = 0;
+  if (keep) { vo[0] = voP; }
+
+  const h = N >> 1;
+  let sVo = 0, sIo = 0, sIv = 0, cnt = 0, pulses = 0;
+  let voMin = Infinity, voMax = -Infinity, qOut = 0;
+
+  for (let i = 1; i < N; i++) {
+    const ts = i * dt;
+    let pmos = 0, vx;
+
+    if (state === 0) {                       // IDLE
+      vx = -100 * ixP;                       // the notebook's high-impedance stand-in
+      if (voP < p.VREF) { state = 1; tStart = ts; pulses++; }
+    } else if (state === 1) {                // UP, PMOS on
+      vx = p.VDDH - p.Rs * ixP - voP;
+      pmos = 1;
+      if (ts - tStart > p.tSwitch) state = 2;
+    } else {                                 // DOWN, NMOS on
+      vx = -p.Rs * ixP - voP;
+      if (ixP < 0) state = 0;
+    }
+
+    const ixN = ixP + (vx + vxP) / 2 * dt / p.L;
+    const ioN = voP / p.R;
+    const voN = voP + ((ixN + ixP) / 2 - (ioN + ioP) / 2) * dt / p.C;
+
+    if (keep) { t[i] = ts; vo[i] = voN; ix[i] = ixN; io[i] = ioN; stv[i] = state; }
+
+    if (i >= h) {
+      sVo += voN; sIo += ioN; cnt++;
+      if (pmos) sIv += ixN;
+      qOut += ixN * dt;
+      if (voN < voMin) voMin = voN;
+      if (voN > voMax) voMax = voN;
+    }
+
+    voP = voN; ixP = ixN; vxP = vx; ioP = ioN;
+    if (!isFinite(voN)) break;
+  }
+
+  // Count pulses in the averaging window only, so the startup burst does not
+  // inflate the frequency.
+  let pulseCount = 0;
+  if (keep) {
+    for (let i = h + 1; i < N; i++) if (stv[i] === 1 && stv[i - 1] === 0) pulseCount++;
+  } else {
+    pulseCount = pulses;                     // cheap path: total, good enough for the sweep
+  }
+  const window = p.tEnd / 2;
+  const fsw = pulseCount / window;
+
+  const voAvg = sVo / cnt, ioAvg = sIo / cnt, ivAvg = sIv / cnt;
+  const eff = (voAvg * ioAvg) / (ivAvg * p.VDDH) * 100;
+
+  return { t, vo, ix, io, stv, dt, N, voAvg, ioAvg, ivAvg, eff,
+           ripple: voMax - voMin, fsw, pulseCount,
+           qPerPulse: pulseCount > 0 ? qOut / pulseCount : 0 };
+}
+
+function params() {
+  return {
+    N: 1 << Math.round(S.nb),
+    tEnd: Math.pow(10, S.lte),
+    tSwitch: Math.pow(10, S.lts),
+    VREF: S.vref,
+    VDDH: S.vddh,
+    vo0: S.vref * 0.99,
+    L: Math.pow(10, S.ll),
+    C: Math.pow(10, S.lc),
+    Rs: S.rs,
+    R: Math.pow(10, S.lr),
+  };
+}
+
+function compute() {
+  const p = params();
+  const r = simulate(p);
+
+  sweep.set(Math.round(S.lr * 100) / 100, { io: r.ioAvg, fsw: r.fsw, eff: r.eff });
+
+  D = { p, r };
+
+  UI.readout('ro-vo', r.voAvg.toFixed(4) + ' V');
+  UI.readout('ro-ripple', eng(r.ripple, 'V'));
+  UI.readout('ro-io', eng(r.ioAvg, 'A'));
+  UI.readout('ro-fsw', r.pulseCount > 1 ? eng(r.fsw, 'Hz')
+                                        : 'only ' + r.pulseCount + ' pulse(s) in window');
+  UI.readout('ro-q', eng(r.qPerPulse, 'C'));
+  UI.readout('ro-eff', isFinite(r.eff) ? r.eff.toFixed(1) + ' %' : '-');
+}
+
+function render(cx, W, H, narrow) {
+  if (!D) return;
+  const g = Plot.grid(W, H, narrow ? 6 : 2, narrow ? 1 : 3, { gapY: 24, gapX: 22 });
+  const { p, r } = D;
+  const us = 1e6;
+  const tus = Float64Array.from(r.t, v => v * us);
+  const tEnd = p.tEnd * us;
+
+  // Zoom on the last few pulses.
+  const zSpan = r.fsw > 0 ? Math.min(p.tEnd / 2, 4 / r.fsw) : p.tEnd / 4;
+  const i0 = Math.max(0, Math.min(r.N - 2, Math.floor((p.tEnd - zSpan) / r.dt)));
+  const zt = tus.subarray(i0), zvo = r.vo.subarray(i0), zix = r.ix.subarray(i0),
+        zst = r.stv.subarray(i0);
+
+  // ── Currents ────────────────────────────────────────────────────────────
+  const p0 = new Plot.Panel(cx, g[0], {
+    title: 'Currents', ylabel: 'Current [A]', xlabel: 'Time [us]', margin: { l: 58 },
+  });
+  const [ilo, ihi] = Plot.padExtent(...Plot.extent(r.ix), 0.08);
+  p0.limits(0, tEnd, Math.min(ilo, 0), ihi).frame();
+  p0.hline(0, css('--grid'));
+  p0.line(tus, r.ix, css('--curve'));
+  p0.line(tus, r.io, css('--quant'), { width: 1.5 });
+  p0.legend([
+    { label: 'I_L', color: css('--curve') },
+    { label: 'I_o', color: css('--quant') },
+  ], 'tr');
+
+  // ── Output voltage ──────────────────────────────────────────────────────
+  const p1 = new Plot.Panel(cx, g[1], {
+    title: 'Output voltage', ylabel: 'V_o [V]', xlabel: 'Time [us]',
+  });
+  const [vlo, vhi] = Plot.padExtent(...Plot.extent(r.vo), 0.1);
+  p1.limits(0, tEnd, vlo, vhi).frame();
+  p1.hline(p.VREF, css('--error'), [4, 3]);
+  p1.line(tus, r.vo, css('--digi'), { width: 1.5 });
+  p1.note(0.03, 0.9, 'dashed: VREF = ' + p.VREF.toFixed(2) + ' V', css('--error'));
+
+  // ── Zoom: voltage ───────────────────────────────────────────────────────
+  const p2 = new Plot.Panel(cx, g[2], {
+    title: 'A few pulses', ylabel: 'V_o [V]', xlabel: 'Time [us]',
+  });
+  const [zlo, zhi] = Plot.padExtent(...Plot.extent(zvo), 0.15);
+  p2.limits(zt[0], tEnd, zlo, zhi).frame();
+  p2.hline(p.VREF, css('--error'), [4, 3]);
+  p2.line(zt, zvo, css('--digi'), { width: 1.5 });
+  p2.note(0.03, 0.9, 'pk-pk ' + eng(r.ripple, 'V'), css('--digi'));
+
+  // ── Zoom: current and state ─────────────────────────────────────────────
+  const p3 = new Plot.Panel(cx, g[3], {
+    title: 'Inductor current and state', ylabel: 'I_L [A]', xlabel: 'Time [us]',
+    margin: { l: 58 },
+  });
+  const [xlo, xhi] = Plot.padExtent(...Plot.extent(zix), 0.4);
+  p3.limits(zt[0], tEnd, Math.min(xlo, 0), xhi).frame();
+  p3.hline(0, css('--grid'));
+  p3.line(zt, zix, css('--curve'), { width: 1.5 });
+  // State machine as a trace along the bottom: 0 IDLE, 1 UP, 2 DOWN.
+  const base = xlo + (xhi - xlo) * 0.02, span = (xhi - xlo) * 0.16;
+  const stTrace = new Float64Array(zst.length);
+  for (let i = 0; i < zst.length; i++) stTrace[i] = base + span * zst[i] / 2;
+  p3.line(zt, stTrace, css('--sample'));
+  p3.note(0.02, 0.2, 'state: IDLE / UP / DOWN', css('--sample'));
+
+  // ── f_sw against load ───────────────────────────────────────────────────
+  const pts = [...sweep.values()].filter(v => isFinite(v.fsw) && v.io > 0)
+                                 .sort((a, b) => a.io - b.io);
+  const p4 = new Plot.Panel(cx, g[4], {
+    title: 'Switching frequency against load', ylabel: 'f_sw [Hz]', xlabel: 'I_o [A]',
+    margin: { l: 62 },
+  });
+  const ios = pts.map(v => v.io), fs = pts.map(v => v.fsw);
+  const ihiP = Math.max(...ios, r.ioAvg) * 1.1 || 1e-3;
+  const fhiP = Math.max(...fs, r.fsw) * 1.15 || 1;
+  p4.limits(0, ihiP, 0, fhiP).frame();
+  // Each pulse carries the same charge, so f_sw should be I_o / Q_pulse.
+  if (r.qPerPulse > 0) {
+    p4.line([0, ihiP], [0, ihiP / r.qPerPulse], css('--quant'), { dash: [4, 3] });
+  }
+  p4.dots(ios, fs, css('--error'), 2.5);
+  p4.note(0.04, 0.9, 'dashed: I_o / charge per pulse,\nfixed by the point you are on', css('--quant'));
+  if (pts.length < 3) p4.note(0.04, 0.5, 'drag the R load slider\nto fill this in', css('--muted'));
+
+  // ── Efficiency against load ─────────────────────────────────────────────
+  const p5 = new Plot.Panel(cx, g[5], {
+    title: 'Efficiency against load', ylabel: 'Efficiency [%]', xlabel: 'I_o [A]',
+  });
+  const good = pts.filter(v => isFinite(v.eff) && v.eff > 0 && v.eff < 200);
+  p5.limits(0, ihiP, 0, 105).frame();
+  p5.dots(good.map(v => v.io), good.map(v => v.eff), css('--error'), 2.5);
+  if (good.length < 3) p5.note(0.04, 0.5, 'drag the R load slider\nto fill this in', css('--muted'));
+}
+
+const chart = Plot.mount('c', { aspect: 0.5, aspectNarrow: 2.6, draw: render });
+UI.bind(S, fmts, key => {
+  if (key !== 'lr') sweep = new Map();
+  compute();
+  chart.redraw();
+});
+compute();
+chart.redraw();
+</script>
+</body>
+</html>

@@ -229,7 +229,7 @@ Since the 1/(sCp) does not change much at resonance, then
 
 $$ Z_{in} \approx \frac{L C_F s^2 + 1}{L C_F C_p s^2 + C_F + C_P}$$
 
-See [Crystal oscillator impedance](https://github.com/wulffern/aic2026/blob/main/jupyter/xosc.ipynb) for a detailed explanation.
+See [Crystal oscillator impedance](https://github.com/wulffern/aic2026/blob/main/jupyter/xosc.ipynb) for a detailed explanation, or the [interactive version](https://wulffern.github.io/aic2026/assets/examples/xosc.html) where the motional and static elements are sliders and the pulling is worked out for you.
 
 ---
 
