@@ -1,0 +1,54 @@
+name: CI image
+
+# Builds the image every other workflow runs in and pushes it to GHCR, which
+# is co-located with the Actions runners and pulls much faster than
+# docker.io. Before this, every TeX job pulled texlive/texlive and re-ran
+# apt-get install — about half the runner-minutes of a Docs run.
+#
+# The image only changes when its inputs do, hence the paths filter.
+# workflow_dispatch covers the first build and manual rebuilds (e.g. to pick
+# up upstream security fixes).
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - 'docker/Dockerfile'
+      - 'requirements-ci.txt'
+      - '.github/workflows/docker.yaml'
+  workflow_dispatch:
+
+concurrency:
+  group: docker
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      # amd64 only: this image exists for the Actions runners. The multi-arch
+      # image for local use still comes from `make ci` / docker.io.
+      - name: Build and push
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: docker/Dockerfile
+          platforms: linux/amd64
+          push: true
+          tags: |
+            ghcr.io/${{ github.repository_owner }}/aic:2026_latest
+            ghcr.io/${{ github.repository_owner }}/aic:2026_${{ github.sha }}
