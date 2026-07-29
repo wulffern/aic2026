@@ -1,0 +1,427 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>First order sigma-delta &mdash; aic2026</title>
+<link rel="stylesheet" href="common/aic.css">
+</head>
+<body>
+
+<header>
+  <h1>NOISE SHAPING</h1>
+  <div class="sub">
+    <a href="index.html">&larr; all examples</a> &middot;
+    interactive version of <a href="https://github.com/wulffern/aic2026/blob/main/ex/sd_1st.py">ex/sd_1st.py</a> &middot;
+    data converters
+  </div>
+</header>
+
+<div id="chain">
+  <div class="cb on">u[n]</div><span class="ca">&rarr;</span>
+  <div class="cb on">&Sigma;</div><span class="ca">&rarr;</span>
+  <div class="cb on">INTEGRATOR x[n]</div><span class="ca">&rarr;</span>
+  <div class="cb on" id="cb-adc">QUANTISE <span id="cb-bits">1</span>b</div><span class="ca">&rarr;</span>
+  <div class="cb on">y[n]</div><span class="ca">&crarr;</span>
+  <div class="cb on">FEEDBACK</div>
+</div>
+
+<canvas id="c"></canvas>
+
+<div id="ctrl">
+  <div class="cg">
+    <div class="cgt">MODULATOR</div>
+    <div class="cr">
+      <label>Bits</label>
+      <input type="range" data-bind="bits" id="sl-bits" min="1" max="6" step="1" value="1">
+      <span class="v" id="v-bits"></span>
+    </div>
+    <div class="cr">
+      <label>Dither</label>
+      <input type="range" data-bind="dither" id="sl-dither" min="0" max="2" step="0.05" value="1">
+      <span class="v" id="v-dither"></span>
+    </div>
+    <div class="cr">
+      <label>OSR</label>
+      <input type="range" data-bind="osr" id="sl-osr" min="2" max="64" step="1" value="16">
+      <span class="v" id="v-osr"></span>
+    </div>
+    <div class="note">
+      One integrator, one quantizer, one feedback path. Y = U + E&middot;(1 &minus; z<sup>-1</sup>):
+      the signal passes, the quantization error gets differentiated.
+    </div>
+  </div>
+
+  <div class="cg">
+    <div class="cgt">SIGNAL</div>
+    <div class="cr">
+      <label>f_1 = f_c/2^</label>
+      <input type="range" data-bind="fdiv" id="sl-fdiv" min="5" max="12" step="1" value="9">
+      <span class="v" id="v-fdiv"></span>
+    </div>
+    <div class="cr">
+      <label>Amplitude</label>
+      <input type="range" data-bind="amp" id="sl-amp" min="0.05" max="1" step="0.01" value="0.7">
+      <span class="v" id="v-amp"></span>
+    </div>
+    <div class="cr">
+      <label>Sample &divide;</label>
+      <input type="range" data-bind="nfs" id="sl-nfs" min="1" max="16" step="1" value="4">
+      <span class="v" id="v-nfs"></span>
+    </div>
+    <div class="cr">
+      <label>Record N = 2^</label>
+      <input type="range" data-bind="nbits" id="sl-nbits" min="11" max="14" step="1" value="13">
+      <span class="v" id="v-nbits"></span>
+    </div>
+  </div>
+
+  <div class="cg">
+    <div class="cgt">VIEW</div>
+    <div class="cr">
+      <label>Time window</label>
+      <input type="range" data-bind="win" id="sl-win" min="32" max="1024" step="16" value="256">
+      <span class="v" id="v-win"></span>
+    </div>
+    <div class="ckrow">
+      <input type="checkbox" data-bind="hann" id="sl-hann" checked>
+      <label for="sl-hann">Hann window before the FFT</label>
+    </div>
+    <div class="ckrow">
+      <input type="checkbox" data-bind="ntf" id="sl-ntf" checked>
+      <label for="sl-ntf">Overlay |1 &minus; z<sup>-1</sup>|</label>
+    </div>
+    <div class="ckrow">
+      <input type="checkbox" data-bind="script" id="sl-script">
+      <label for="sl-script">Use the script's quantiser instead</label>
+    </div>
+  </div>
+</div>
+
+<div id="readout">
+  <div class="ro"><span class="k">SNR SHAPED</span><span class="n" id="ro-snr"></span></div>
+  <div class="ro"><span class="k">SNR PLAIN</span><span class="n" id="ro-snrp"></span></div>
+  <div class="ro"><span class="k">ENOB</span><span class="n" id="ro-enob"></span></div>
+  <div class="ro"><span class="k">|x| MAX</span><span class="n" id="ro-xmax"></span></div>
+  <div class="ro"><span class="k">OUTPUT</span><span class="n" id="ro-levels"></span></div>
+</div>
+
+<div id="legend">
+  <div class="leg"><div class="lsw" style="background:var(--curve)"></div>Input u[n]</div>
+  <div class="leg"><div class="lsw" style="background:var(--quant)"></div>Plain quantiser</div>
+  <div class="leg"><div class="lsw" style="background:var(--digi)"></div>Noise-shaped y_sd</div>
+  <div class="leg"><div class="lsw" style="background:var(--sample)"></div>|NTF| = |1 &minus; z<sup>-1</sup>|</div>
+  <div class="leg"><div class="lsw" style="background:var(--error)"></div>Band edge</div>
+</div>
+
+<div class="doc">
+  <h2>WHAT YOU ARE LOOKING AT</h2>
+  <p>
+    Noise-shaping modulators have a reputation for being mysterious. They are
+    six lines of Python. For each input sample, work out the quantizer input
+    x &mdash; the previous quantizer input plus the difference between the
+    current input and the previous output &mdash; then quantize it, optionally
+    with a bit of dither added.
+  </p>
+  <p>
+    Write the loop out in the z-domain with the quantization error called E and
+    the algebra collapses to <code>Y = U + E&middot;(1 &minus; z<sup>-1</sup>)</code>.
+    The signal transfer function is 1: the input passes straight through. The
+    noise transfer function is a differentiator: it is zero at DC and rises at
+    20 dB/decade, so the error gets pushed out of the low frequencies and piled
+    up near f<sub>s</sub>/2. If you only care about a small band near DC, the
+    error you kept is much smaller than the error a plain quantizer would have
+    left there.
+  </p>
+  <p>
+    The top row is the loop: input and modulator output, then the integrator
+    state, then the output decoded back &mdash; a sinc<sup>2</sup> average of
+    the same coarse samples, which lands on the input again. The bottom row is
+    why it works: the two spectra, the shaping law, and what it buys per octave
+    of oversampling.
+  </p>
+  <p>
+    One caveat about the word &ldquo;one-bit&rdquo;. The Python's quantizer is
+    <code>np.round(x*2**bits)/2**bits</code>, unclamped, so at bits = 1 it emits
+    seven levels rather than two and its output is not a bitstream at all. This
+    page defaults to a proper B-bit quantizer whose 2<sup>B</sup> levels reach
+    &plusmn;1 &mdash; at B = 1 that is <code>sign(x)</code>, a genuine
+    comparator. The <b>output</b> readout counts the levels that actually came
+    out, and ticking <b>use the script's quantiser</b> shows you the difference.
+  </p>
+
+  <h2>THINGS WORTH TRYING</h2>
+  <ul>
+    <li>
+      Compare the two <b>SNR readouts</b>. At OSR 16 the noise-shaped output
+      beats the plain one-bit quantizer by around 20 dB, from exactly the same
+      two-level converter. All that changed is where the error was put.
+    </li>
+    <li>
+      Push the <b>amplitude</b> to 1.0 and sweep the OSR again. The neat 9
+      dB/octave falls apart &mdash; 7, then 4, then 13. A one-bit first-order
+      loop cannot take a full-scale input: with only two levels to work with,
+      the integrator state runs away between corrections and the modulator
+      overloads. Real one-bit designs back off several dB from full scale, which
+      is why this page starts at 0.7. Watch <b>|x| max</b> as you go.
+    </li>
+    <li>
+      Sweep <b>OSR</b> and watch the two curves in the SNR panel. Theory says
+      3 dB per octave for a plain quantizer and 9 dB per octave for a
+      first-order modulator, because the shaped noise is not flat and the band
+      you throw away is where all of it went. The shaped curve does track 9
+      dB/octave. The plain curve does something stranger: almost nothing for
+      the first few octaves, then a sudden jump of nearly 30 dB. Its error is
+      harmonics, not white noise, so narrowing the band buys you nothing at all
+      until the edge finally passes the third harmonic, at which point that
+      harmonic leaves the band and the number leaps. Averaging arguments assume
+      noise; this is what happens when the error is not.
+    </li>
+    <li>
+      Tick <b>use the script's quantiser</b>. The output readout jumps from two
+      levels to seven, the SNR moves, and what you are modulating is no longer a
+      one-bit converter. Everything after the modulator is unchanged: the same
+      sinc<sup>2</sup> average reconstructs the sine either way, which is a
+      decent hint at how forgiving the decimator is.
+    </li>
+    <li>
+      Take <b>dither</b> to 0. Look at the low-frequency end of the log-frequency
+      panel: spurs appear. A one-bit loop with a slowly changing input falls into
+      repeating patterns, and those patterns are tones, not noise. Adding dither
+      breaks them up at the cost of a slightly higher floor. This is the tradeoff
+      the script's <code>dither</code> flag is there to show.
+    </li>
+    <li>
+      Push the <b>amplitude</b> to 1.0 and watch <b>|x| max</b>, the integrator
+      state. A single-bit first-order loop stays stable, but the state swings
+      well beyond full scale, and in a real circuit that integrator has to have
+      somewhere to put it. Drop the amplitude and the swing comes back down.
+    </li>
+    <li>
+      The green trace is the same converter with the loop taken away, on every
+      panel. For the unshaped case in more detail see the
+      <a href="oversampling.html">oversampling example</a>; for second-order and
+      leapfrog loops with a real decimator attached, see
+      <a href="https://wulffern.github.io/cicadc/">cicadc</a>.
+    </li>
+  </ul>
+
+  <h2>THE PYTHON</h2>
+<pre><code>dither = 1
+M = len(u)
+y_sd = np.zeros(M)
+x = np.zeros(M)
+for n in range(1,M):
+    x[n] = x[n-1] + (u[n]-y_sd[n-1])
+    y_sd[n] = np.round(x[n]*2**bits + dither*np.random.randn()/4)/2**bits</code></pre>
+  <p class="src">
+    Source: <a href="https://github.com/wulffern/aic2026/blob/main/ex/sd_1st.py">ex/sd_1st.py</a>.
+    The script trims the first two samples to skip the settling; this page keeps
+    them, because the Hann window is close to zero there anyway.
+  </p>
+</div>
+
+<footer>
+  TFE4188 Advanced Integrated Circuits &middot; <a href="https://wulffern.github.io/aic2026/">aic2026</a>
+</footer>
+
+<script src="common/plot.js"></script>
+<script src="common/dsp.js"></script>
+<script>
+'use strict';
+
+const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+
+const S = {};
+let D = null;
+
+const fmts = {
+  bits:    v => v + ' b',
+  dither:  v => (v === 0 ? 'off' : v.toFixed(2)),
+  osr:     v => '×' + v,
+  fdiv:    v => 'f_c/2^' + v,
+  amp:     v => v.toFixed(2) + ' FS',
+  nfs:     v => (v === 1 ? 'none' : '1/' + v),
+  nbits:   v => '2^' + v,
+  win:     v => v + ' smp',
+};
+
+function compute() {
+  const N = 1 << S.nbits;
+  const nfs = Math.round(S.nfs);
+  const bits = Math.round(S.bits);
+  const OSR = Math.round(S.osr);
+  const t = DSP.arange(N);                       // sd_1st.py uses np.arange
+  const f1 = 1 / Math.pow(2, S.fdiv) - 1 / N;
+  const noise = DSP.randn(N, 20260517);
+
+  const xs = new Float64Array(N);
+  for (let i = 0; i < N; i++) {
+    xs[i] = S.amp * Math.sin(2 * Math.PI * f1 * t[i]) + Math.pow(2, -15) * noise[i];
+  }
+
+  const u = DSP.decimate(xs, nfs);
+  const M = u.length;
+  // Plain quantiser at the same resolution, for reference.
+  const ysn = S.script ? DSP.quantize(u, bits) : DSP.quantizeBits(u, bits);
+  const sd = DSP.sigmaDelta1(u, bits, S.dither, 424242, S.script);
+  const ysd = sd.y;
+
+  const Ysn = DSP.toDb(DSP.normalise(DSP.magSpectrum(ysn, S.hann)));
+  const Ysd = DSP.toDb(DSP.normalise(DSP.magSpectrum(ysd, S.hann)));
+
+  const fM = new Float64Array(M);
+  for (let i = 0; i < M; i++) fM[i] = (i - M / 2) / M;
+
+  // Positive half only, for the log-frequency panel. The shifted spectrum has
+  // DC at index half, so the last usable bin is M-1 and there are half-1 of
+  // them above DC.
+  const half = M >> 1;
+  const P = half - 1;
+  const fpos = new Float64Array(P), sdPos = new Float64Array(P), snPos = new Float64Array(P);
+  for (let i = 0; i < P; i++) {
+    fpos[i] = (i + 1) / M;
+    sdPos[i] = Ysd[half + i + 1];
+    snPos[i] = Ysn[half + i + 1];
+  }
+
+  // Decode the bitstream with a sinc^2 average, the filter that matches a
+  // first-order modulator. Two forward-looking boxcars lead by OSR-1 samples,
+  // so shift the result back to line it up with the input.
+  const s2 = DSP.oversample(DSP.oversample(ysd, OSR), OSR);
+  const dec = new Float64Array(M);
+  for (let n = 0; n < M; n++) dec[n] = s2[Math.max(0, n - (OSR - 1))] / (OSR * OSR);
+
+  // In-band SNR against OSR, for both, from one spectrum each.
+  const oneP = DSP.magOneSided(ysn, S.hann);
+  const oneS = DSP.magOneSided(ysd, S.hann);
+  const sigBin = Math.round(f1 * nfs * M);
+  const maxOSR = Math.max(2, Math.floor(half / (sigBin + 6)));
+  const cP = [], cS = [];
+  for (let o = 2; o <= 64 && o <= maxOSR; o++) {
+    const band = Math.max(sigBin + 6, Math.floor(half / o));
+    const p = DSP.snr(oneP, sigBin, band, 3);
+    const s = DSP.snr(oneS, sigBin, band, 3);
+    if (isFinite(p)) cP.push([o, p]);
+    if (isFinite(s)) cS.push([o, s]);
+  }
+
+  const band = Math.max(sigBin + 6, Math.floor(half / OSR));
+  const snrS = OSR <= maxOSR ? DSP.snr(oneS, sigBin, band, 3) : NaN;
+  const snrP = OSR <= maxOSR ? DSP.snr(oneP, sigBin, band, 3) : NaN;
+
+  // The white floor a plain quantiser leaves, as a per-bin level, so the
+  // |NTF| overlay can be drawn at the right height rather than an arbitrary one.
+  let acc = 0, cnt = 0;
+  for (let i = Math.floor(P * 0.55); i < P; i++) { acc += Math.pow(10, snPos[i] / 10); cnt++; }
+  const floorDb = 10 * Math.log10(acc / Math.max(cnt, 1));
+  const ntf = new Float64Array(P);
+  for (let i = 0; i < P; i++) {
+    ntf[i] = floorDb + DSP.db20(2 * Math.sin(Math.PI * fpos[i]));
+  }
+
+  // From index 2, as the Python's `y_sd = y_sd[2:]` does: the loop starts at
+  // n = 1 so y[0] is still the zero it was initialised to, and counting it
+  // would report a level the quantiser never actually produces.
+  const levels = new Set();
+  for (let i = 2; i < M; i++) levels.add(ysd[i].toFixed(6));
+
+  D = { N, M, OSR, bits, u, ysn, ysd, x: sd.x, dec, Ysn, Ysd, fM, fpos, sdPos, snPos,
+        ntf, cP, cS, sigBin, maxOSR, half, f1, fs1: f1 * nfs, snrS, snrP };
+
+  UI.readout('ro-snr',  isFinite(snrS) ? snrS.toFixed(1) + ' dB' : 'tone out of band');
+  UI.readout('ro-snrp', isFinite(snrP) ? snrP.toFixed(1) + ' dB' : '-');
+  UI.readout('ro-enob', isFinite(snrS) ? DSP.enob(snrS).toFixed(2) + ' b' : '-');
+  UI.readout('ro-xmax', DSP.maxAbs(sd.x).toFixed(2) + ' FS');
+  UI.readout('ro-levels', levels.size + ' levels');
+  document.getElementById('cb-bits').textContent = bits;
+}
+
+function render(cx, W, H, narrow) {
+  if (!D) return;
+  const g = Plot.grid(W, H, narrow ? 6 : 2, narrow ? 1 : 3, { gapY: 22, gapX: 16 });
+  const win = Math.min(D.M, Math.round(S.win));
+  const edge = 0.5 / D.OSR;
+
+  // ── The loop ─────────────────────────────────────────────────────────────
+  const p0 = new Plot.Panel(cx, g[0], {
+    title: 'Input and bitstream', ylabel: 'Amplitude [FS]', xlabel: 'sample n',
+  });
+  p0.limits(0, win, -1.5, 1.5).frame();
+  p0.stairs(null, D.ysd.subarray(0, win), css('--digi'));
+  p0.line(null, D.u.subarray(0, win), css('--curve'), { width: 1.5 });
+  p0.legend([
+    { label: 'u[n]', color: css('--curve') },
+    { label: 'y_sd[n]', color: css('--digi') },
+  ], 'tr');
+
+  const [xl, xh] = Plot.padExtent(...Plot.extent(D.x.subarray(0, win)), 0.15);
+  const p1 = new Plot.Panel(cx, g[1], {
+    title: 'Integrator state x[n]', xlabel: 'sample n',
+  });
+  p1.limits(0, win, xl, xh).frame();
+  p1.hline(1, css('--muted'), [3, 3]);
+  p1.hline(-1, css('--muted'), [3, 3]);
+  p1.line(null, D.x.subarray(0, win), css('--sample'));
+  p1.note(0.02, 0.9, 'dashed: +/- full scale', css('--muted'));
+
+  const p2 = new Plot.Panel(cx, g[2], {
+    title: 'Bitstream decoded (sinc^2, OSR ' + D.OSR + ')', xlabel: 'sample n',
+  });
+  p2.limits(0, win, -1.5, 1.5).frame();
+  p2.line(null, D.dec.subarray(0, win), css('--digi'), { width: 1.5 });
+  p2.line(null, D.u.subarray(0, win), css('--curve'), { dash: [4, 3] });
+  p2.legend([
+    { label: 'decoded', color: css('--digi') },
+    { label: 'u[n]', color: css('--curve'), dash: [4, 3] },
+  ], 'tr');
+
+  // ── Why it works ─────────────────────────────────────────────────────────
+  const p3 = new Plot.Panel(cx, g[3], {
+    title: 'Plain vs noise-shaped', ylabel: 'Frequency domain [dB]', xlabel: 'f / f_s',
+  });
+  p3.limits(-0.5, 0.5, -160, 5).frame();
+  p3.line(D.fM, D.Ysn, css('--quant'));
+  p3.line(D.fM, D.Ysd, css('--digi'));
+  p3.vline(edge, css('--error'), [3, 3]);
+  p3.vline(-edge, css('--error'), [3, 3]);
+
+  const p4 = new Plot.Panel(cx, g[4], {
+    title: 'Noise shaping', ylabel: 'Magnitude [dB]', xlabel: 'f / f_s', xlog: true,
+  });
+  p4.limits(1 / D.M, 0.5, -160, 5).frame();
+  p4.line(D.fpos, D.snPos, css('--quant'));
+  p4.line(D.fpos, D.sdPos, css('--digi'));
+  if (S.ntf) p4.line(D.fpos, D.ntf, css('--sample'), { dash: [4, 3], width: 1.5 });
+  p4.vline(edge, css('--error'), [3, 3]);
+  p4.note(0.03, 0.86, '+20 dB/decade', css('--sample'));
+
+  const p5 = new Plot.Panel(cx, g[5], {
+    title: 'In-band SNR vs OSR', ylabel: 'SNR [dB]', xlabel: 'OSR', xlog: true,
+  });
+  const all = D.cP.concat(D.cS).map(c => c[1]);
+  const lo = all.length ? Math.min(...all) - 8 : 0;
+  const hi = all.length ? Math.max(...all) + 8 : 100;
+  p5.limits(2, 64, lo, hi).frame();
+  if (D.cP.length) {
+    p5.line(D.cP.map(c => c[0]), D.cP.map(c => c[1]), css('--quant'), { width: 1.5 });
+    p5.dots(D.cP.map(c => c[0]), D.cP.map(c => c[1]), css('--quant'), 2.5);
+  }
+  if (D.cS.length) {
+    p5.line(D.cS.map(c => c[0]), D.cS.map(c => c[1]), css('--digi'), { width: 1.5 });
+    p5.dots(D.cS.map(c => c[0]), D.cS.map(c => c[1]), css('--digi'), 2.5);
+  }
+  if (D.OSR <= D.maxOSR) p5.vline(D.OSR, css('--sample'), [3, 3]);
+  p5.legend([
+    { label: 'plain quantiser', color: css('--quant') },
+    { label: 'noise shaped', color: css('--digi') },
+  ], 'tl');
+}
+
+const chart = Plot.mount('c', { aspect: 0.5, aspectNarrow: 2.6, draw: render });
+UI.bind(S, fmts, () => { compute(); chart.redraw(); });
+compute();
+chart.redraw();
+</script>
+</body>
+</html>

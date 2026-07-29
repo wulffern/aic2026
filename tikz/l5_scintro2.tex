@@ -1,0 +1,26 @@
+\input{tikz/fig_header.tex}
+
+% Switched-capacitor amplifier, phase 2. The short across C2 is opened and C1
+% is connected to the OTA, so the charge that was on C1 is forced onto C2 and
+% V2/V1 = C1/C2.
+%
+% Same circuit and same geometry as l5_scintro1 via tikz/sc_lib.tex; only the
+% two switch states differ, which is the point of the pair.
+
+\begin{circuitikz}[american, transform shape]
+
+  \input{tikz/ckt_lib.tex}
+  \input{tikz/sc_lib.tex}
+
+  \scIntroFrame
+
+  % C1 now connected to the OTA
+  \scSwClosed{2.6}{\scYin}
+  % the short across C2 opened
+  \scSwOpen{4.8}{\scYsh}
+
+  \node[anchor=west] at (0.7,\scYin+1.05) {$V_{1} =$};
+  \node[anchor=west] at (4.1,\scYctwo-1.05) {$V_{2} =$};
+
+\end{circuitikz}
+\end{document}

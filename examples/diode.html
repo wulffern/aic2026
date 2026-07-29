@@ -1,0 +1,356 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Diode voltage over temperature &mdash; aic2026</title>
+<link rel="stylesheet" href="common/aic.css">
+</head>
+<body>
+
+<header>
+  <h1>DIODE VS TEMPERATURE</h1>
+  <div class="sub">
+    <a href="index.html">&larr; all examples</a> &middot;
+    interactive version of <a href="https://github.com/wulffern/aic2026/blob/main/ex/vd.py">ex/vd.py</a> &middot;
+    diodes, references and bias
+  </div>
+</header>
+
+<div id="chain">
+  <div class="cb on">n_i(T)</div><span class="ca">&rarr;</span>
+  <div class="cb on">I_S(T)</div><span class="ca">&rarr;</span>
+  <div class="cb on">V_D = (kT/q)&middot;ln(I_C/I_S)</div><span class="ca">&rarr;</span>
+  <div class="cb on">NON-LINEARITY</div>
+</div>
+
+<canvas id="c"></canvas>
+
+<div id="ctrl">
+  <div class="cg">
+    <div class="cgt">BIAS</div>
+    <div class="cr">
+      <label>I_C = 10^</label>
+      <input type="range" data-bind="ic" id="sl-ic" min="-9" max="-3" step="0.1" value="-6">
+      <span class="v" id="v-ic"></span>
+    </div>
+    <div class="cr">
+      <label>Area</label>
+      <input type="range" data-bind="area" id="sl-area" min="-1" max="3" step="0.1" value="0">
+      <span class="v" id="v-area"></span>
+    </div>
+    <div class="note">
+      The reference area is 1 &micro;m<sup>2</sup> = 10<sup>-8</sup> cm<sup>2</sup>,
+      as in the script. I_S scales with it, V_D with its logarithm.
+    </div>
+  </div>
+
+  <div class="cg">
+    <div class="cgt">DEVICE</div>
+    <div class="cr">
+      <label>N<sub>A</sub> = N<sub>D</sub> = 10^</label>
+      <input type="range" data-bind="dope" id="sl-dope" min="16" max="20" step="0.1" value="19">
+      <span class="v" id="v-dope"></span>
+    </div>
+    <div class="cr">
+      <label>Lifetime &tau;</label>
+      <input type="range" data-bind="tau" id="sl-tau" min="-9" max="-6" step="0.1" value="-7.1">
+      <span class="v" id="v-tau"></span>
+    </div>
+    <div class="cr">
+      <label>Bandgap E_g</label>
+      <input type="range" data-bind="eg" id="sl-eg" min="1.0" max="1.2" step="0.005" value="1.12">
+      <span class="v" id="v-eg"></span>
+    </div>
+  </div>
+
+  <div class="cg">
+    <div class="cgt">SWEEP</div>
+    <div class="cr">
+      <label>T from</label>
+      <input type="range" data-bind="tlo" id="sl-tlo" min="-60" max="0" step="5" value="-40">
+      <span class="v" id="v-tlo"></span>
+    </div>
+    <div class="cr">
+      <label>T to</label>
+      <input type="range" data-bind="thi" id="sl-thi" min="40" max="200" step="5" value="125">
+      <span class="v" id="v-thi"></span>
+    </div>
+    <div class="ckrow">
+      <input type="checkbox" data-bind="fit" id="sl-fit" checked>
+      <label for="sl-fit">Show the straight-line fit</label>
+    </div>
+  </div>
+</div>
+
+<div id="readout">
+  <div class="ro"><span class="k">V_D AT 27&deg;C</span><span class="n" id="ro-vd"></span></div>
+  <div class="ro"><span class="k">dV_D/dT</span><span class="n" id="ro-tc"></span></div>
+  <div class="ro"><span class="k">MAX NON-LIN</span><span class="n" id="ro-nl"></span></div>
+  <div class="ro"><span class="k">n_i AT 27&deg;C</span><span class="n" id="ro-ni"></span></div>
+  <div class="ro"><span class="k">I_S AT 27&deg;C</span><span class="n" id="ro-is"></span></div>
+  <div class="ro"><span class="k">(V_D-E_g/q-3kT/q)/T</span><span class="n" id="ro-pred"></span></div>
+</div>
+
+<div id="legend">
+  <div class="leg"><div class="lsw" style="background:var(--curve)"></div>Advanced (density of states)</div>
+  <div class="leg"><div class="lsw" style="background:var(--quant)"></div>Simple (doubles every 11 K)</div>
+  <div class="leg"><div class="lsw" style="background:var(--sample)"></div>BSIM 4.8</div>
+  <div class="leg"><div class="lsw" style="background:var(--digi)"></div>V_D(T)</div>
+  <div class="leg"><div class="lsw" style="background:var(--error)"></div>Deviation from straight</div>
+</div>
+
+<div class="doc">
+  <h2>WHAT YOU ARE LOOKING AT</h2>
+  <p>
+    A diode biased at a constant current has a voltage across it that falls
+    almost perfectly linearly with temperature. That is the basis of every
+    temperature sensor and every bandgap reference you will build, so it is
+    worth knowing where the slope comes from and how linear &ldquo;almost
+    perfectly&rdquo; really is.
+  </p>
+  <p>
+    The chain is short. The intrinsic carrier concentration
+    n<sub>i</sub>(T) comes from the density of states and the bandgap, and it
+    is a ferocious function of temperature &mdash; look at the log axis. The
+    saturation current goes as n<sub>i</sub><sup>2</sup>. And then
+  </p>
+  <p style="text-align:center">
+    <code>V<sub>D</sub> = (kT/q)&middot;ln(I<sub>C</sub>/I<sub>S</sub>)</code>
+  </p>
+  <p>
+    puts the two temperature dependences against each other: kT/q rising,
+    ln(1/I<sub>S</sub>) falling much faster. The result is the falling, nearly
+    straight line in the third panel. The fourth panel is what is left after
+    subtracting the best straight line through it &mdash; a couple of
+    millivolts of curvature, and that curvature is exactly the error a
+    first-order bandgap reference cannot correct.
+  </p>
+  <p>
+    The slope is not a constant of nature; it depends on where the diode is
+    biased, through
+    <code>dV<sub>D</sub>/dT = (V<sub>D</sub> &minus; E<sub>g</sub>/q &minus; 3kT/q)/T</code>.
+    The familiar &minus;2 mV/K belongs to a diode sitting near 0.7 V. With the
+    script's numbers &mdash; 1 &micro;m<sup>2</sup> of junction and
+    10<sup>19</sup> doping on both sides &mdash; I<sub>S</sub> comes out
+    extremely small, V<sub>D</sub> lands near 0.91 V, and the slope is only
+    &minus;0.95 mV/K. The last readout evaluates that formula so you can watch
+    it track the fitted slope as you move the bias. And notice where the fitted
+    line extrapolates to at 0 K: about E<sub>g</sub>/q + 3kT/q, which is where
+    a bandgap reference gets both its name and its output voltage.
+  </p>
+
+  <h2>THINGS WORTH TRYING</h2>
+  <ul>
+    <li>
+      Compare the three <b>n<sub>i</sub> models</b>. The rule of thumb
+      &mdash; doubles every 11 K &mdash; is a straight line on a log axis by
+      construction; the density-of-states calculation is not, because of the
+      T<sup>3/2</sup> prefactor. All three now agree to within about 30&nbsp;%
+      at room temperature, and the density-of-states one gives
+      9.0&times;10<sup>9</sup> cm<sup>-3</sup> at 27&nbsp;&deg;C against a
+      measured 9.65&times;10<sup>9</sup>.
+    </li>
+    <li>
+      That agreement is recent. Until this was written the script's
+      calculation returned 3.6&times;10<sup>9</sup>, a factor of &radic;6 low,
+      because it used (m<sub>l</sub>m<sub>t</sub><sup>2</sup>)<sup>1/3</sup>
+      for the electron density-of-states mass and left out the 6<sup>2/3</sup>
+      that accounts for silicon's <b>six equivalent conduction band minima</b>.
+      The density of states counts every valley. That one missing factor put
+      m<sub>n</sub><sup>*</sup> at 0.33&nbsp;m<sub>0</sub> instead of
+      1.08&nbsp;m<sub>0</sub>, which is a factor of six on I<sub>S</sub> and
+      about 46&nbsp;mV on V<sub>D</sub>. A good reminder that a model agreeing
+      with itself is not the same as a model agreeing with silicon.
+    </li>
+    <li>
+      Move <b>I<sub>C</sub></b> over its whole range. V<sub>D</sub> moves by
+      60 mV per decade, as it must, and the slope dV<sub>D</sub>/dT gets
+      shallower as the bias goes up: a hotter-biased diode is a less sensitive
+      thermometer. Two diodes at different currents give you the
+      &Delta;V<sub>BE</sub> that a bandgap adds back in.
+    </li>
+    <li>
+      Watch the <b>max non-linearity</b> readout as you change I<sub>C</sub> or
+      the area. A few millivolts over the industrial range is typical, and the
+      residual is curved rather than random, which is why curvature correction
+      is a standard trick and why it works.
+    </li>
+    <li>
+      Change the <b>bandgap</b> and watch the 0 K intercept follow it. The
+      script holds E<sub>g</sub> constant with temperature; a real bandgap
+      narrows by about 50 mV between &minus;40 and 125&nbsp;&deg;C, which adds
+      to the residual curvature you are looking at rather than cancelling it.
+    </li>
+  </ul>
+
+  <h2>THE PYTHON</h2>
+<pre><code>def calc_ni(T):
+    mn = (0.98*0.19*0.19)**(1/3)*m0
+    mp = 0.81*m0                       # heavy hole
+    Nc = 2*np.sqrt(np.power((2*pi*k*T*mn)/(h*h),3))
+    Nv = 2*np.sqrt(np.power((2*pi*k*T*mp)/(h*h),3))
+    ni = np.sqrt(Nc*Nv)*np.exp(-Eg/(2*k*T))
+    return ni*cm3
+
+I_s = q*A*n_i_adv**2*(1/NA*np.sqrt(Dn/tau_n) + 1/ND*np.sqrt(Dp/tau_n))
+Vd  = k*T/q*np.log(I_c/I_s)
+
+line = np.polynomial.polynomial.polyfit(T,Vd,1)
+vd_lin_err = Vd - (T*line[1] + line[0])</code></pre>
+  <p class="src">
+    Source: <a href="https://github.com/wulffern/aic2026/blob/main/ex/vd.py">ex/vd.py</a>,
+    based on Streetman. The diffusion constants are fixed at their 300 K values
+    (D<sub>n</sub> = 36, D<sub>p</sub> = 12 cm<sup>2</sup>/s), as in the script;
+    the <a href="antenna-leakage.html">antenna leakage example</a> adds their
+    temperature dependence.
+  </p>
+</div>
+
+<footer>
+  TFE4188 Advanced Integrated Circuits &middot; <a href="https://wulffern.github.io/aic2026/">aic2026</a>
+</footer>
+
+<script src="common/plot.js"></script>
+<script src="common/semi.js"></script>
+<script>
+'use strict';
+
+const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+
+const S = {};
+let D = null;
+
+const fmts = {
+  ic:   v => fmtEng(Math.pow(10, v), 'A'),
+  area: v => Math.pow(10, v).toPrecision(2) + ' um^2',
+  dope: v => '1e' + v.toFixed(1) + ' /cm3',
+  tau:  v => fmtEng(Math.pow(10, v), 's'),
+  eg:   v => v.toFixed(3) + ' eV',
+  tlo:  v => v + ' C',
+  thi:  v => v + ' C',
+};
+
+function fmtEng(v, unit) {
+  const p = [[1e-12, 'p'], [1e-9, 'n'], [1e-6, 'u'], [1e-3, 'm'], [1, '']];
+  for (let i = p.length - 1; i >= 0; i--) {
+    if (Math.abs(v) >= p[i][0]) return (v / p[i][0]).toPrecision(3) + ' ' + p[i][1] + unit;
+  }
+  return v.toExponential(2) + ' ' + unit;
+}
+
+function compute() {
+  const Ic = Math.pow(10, S.ic);
+  const A = Math.pow(10, S.area) * 1e-8;      // um^2 -> cm^2
+  const N = Math.pow(10, S.dope);
+  const tau = Math.pow(10, S.tau);
+  const Eg = S.eg * SEMI.eV;
+
+  const n = 400;
+  const T = new Float64Array(n), C = new Float64Array(n);
+  const Tlo = S.tlo + 273.15, Thi = S.thi + 273.15;
+  for (let i = 0; i < n; i++) {
+    T[i] = Tlo + (Thi - Tlo) * i / (n - 1);
+    C[i] = T[i] - 273.15;
+  }
+
+  const niAdv = new Float64Array(n), niSim = new Float64Array(n), niBs = new Float64Array(n);
+  const Is = new Float64Array(n), Vd = new Float64Array(n);
+  const dev = { A, NA: N, ND: N, Dn: 36, Dp: 12, tau_n: tau, tau_p: tau, Eg };
+  for (let i = 0; i < n; i++) {
+    niAdv[i] = SEMI.ni(T[i], Eg);
+    niSim[i] = SEMI.niSimple(T[i]);
+    niBs[i]  = SEMI.niBsim(T[i], Eg);
+    Is[i] = SEMI.isat(T[i], dev);
+    Vd[i] = SEMI.VT(T[i]) * Math.log(Ic / Is[i]);
+  }
+
+  // Best straight line through Vd(T), and what it fails to describe.
+  const [b, m] = SEMI.polyfit1(T, Vd);
+  const err = new Float64Array(n);
+  for (let i = 0; i < n; i++) err[i] = (Vd[i] - (b + m * T[i])) * 1e3;   // mV
+
+  D = { T, C, niAdv, niSim, niBs, Is, Vd, err, b, m, Ic, A, Eg };
+
+  const T27 = 300.15;
+  const is27 = SEMI.isat(T27, dev);
+  UI.readout('ro-vd', (SEMI.VT(T27) * Math.log(Ic / is27) * 1e3).toFixed(1) + ' mV');
+  UI.readout('ro-tc', (m * 1e3).toFixed(3) + ' mV/K');
+  UI.readout('ro-nl', (Math.max(...Array.from(err, Math.abs))).toFixed(2) + ' mV');
+  UI.readout('ro-ni', SEMI.ni(T27, Eg).toExponential(2) + ' /cm3');
+  UI.readout('ro-is', fmtEng(is27, 'A'));
+  // The textbook slope: dV_D/dT = (V_D - E_g/q - 3kT/q)/T. It should land on
+  // the fitted slope, which is a decent check that the model is behaving.
+  const vd27 = SEMI.VT(T27) * Math.log(Ic / is27);
+  const pred = (vd27 - Eg / SEMI.q - 3 * SEMI.VT(T27)) / T27;
+  UI.readout('ro-pred', (pred * 1e3).toFixed(3) + ' mV/K');
+}
+
+function render(cx, W, H, narrow) {
+  if (!D) return;
+  const g = Plot.grid(W, H, narrow ? 4 : 2, narrow ? 1 : 2, { gapY: 24, gapX: 22 });
+  const c0 = D.C[0], c1 = D.C[D.C.length - 1];
+
+  // ── n_i(T) ───────────────────────────────────────────────────────────────
+  const all = [].concat(Array.from(D.niAdv), Array.from(D.niSim), Array.from(D.niBs));
+  const p0 = new Plot.Panel(cx, g[0], {
+    title: 'Intrinsic carrier concentration',
+    ylabel: 'n_i [1/cm^3]', xlabel: 'Temperature [C]', ylog: true,
+    margin: { l: 62 },
+  });
+  p0.limits(c0, c1, Math.pow(10, Math.floor(Math.log10(Math.min(...all)))),
+                    Math.pow(10, Math.ceil(Math.log10(Math.max(...all))))).frame();
+  p0.line(D.C, D.niAdv, css('--curve'), { width: 1.5 });
+  p0.line(D.C, D.niSim, css('--quant'));
+  p0.line(D.C, D.niBs, css('--sample'), { dash: [4, 3] });
+  p0.legend([
+    { label: 'Advanced', color: css('--curve') },
+    { label: 'Simple 2^(dT/11)', color: css('--quant') },
+    { label: 'BSIM 4.8', color: css('--sample'), dash: [4, 3] },
+  ], 'tl');
+
+  // ── I_S(T) ───────────────────────────────────────────────────────────────
+  const p1 = new Plot.Panel(cx, g[1], {
+    title: 'Saturation current', ylabel: 'I_S [A]', xlabel: 'Temperature [C]', ylog: true,
+    margin: { l: 62 },
+  });
+  const [ilo, ihi] = Plot.extent(D.Is);
+  p1.limits(c0, c1, Math.pow(10, Math.floor(Math.log10(ilo))),
+                    Math.pow(10, Math.ceil(Math.log10(ihi)))).frame();
+  p1.line(D.C, D.Is, css('--curve'), { width: 1.5 });
+  p1.hline(D.Ic, css('--muted'), [4, 3]);
+  p1.note(0.03, 0.9, 'I_S goes as n_i^2', css('--muted'));
+
+  // ── V_D(T) ───────────────────────────────────────────────────────────────
+  const p2 = new Plot.Panel(cx, g[2], {
+    title: 'Diode voltage at constant current',
+    ylabel: 'V_D [V]', xlabel: 'Temperature [C]',
+  });
+  const [vlo, vhi] = Plot.padExtent(...Plot.extent(D.Vd), 0.1);
+  p2.limits(c0, c1, vlo, vhi).frame();
+  if (S.fit) {
+    const fit = Float64Array.from(D.T, T => D.b + D.m * T);
+    p2.line(D.C, fit, css('--muted'), { dash: [4, 3] });
+  }
+  p2.line(D.C, D.Vd, css('--digi'), { width: 1.5 });
+  p2.note(0.03, 0.1, (D.m * 1e3).toFixed(2) + ' mV/K\nextrapolates to ' +
+                     D.b.toFixed(3) + ' V at 0 K', css('--digi'));
+
+  // ── Residual ─────────────────────────────────────────────────────────────
+  const p3 = new Plot.Panel(cx, g[3], {
+    title: 'What the straight line misses',
+    ylabel: 'Non-linear part [mV]', xlabel: 'Temperature [C]',
+  });
+  const [elo, ehi] = Plot.padExtent(...Plot.extent(D.err), 0.15);
+  p3.limits(c0, c1, elo, ehi).frame();
+  p3.hline(0, css('--grid'));
+  p3.line(D.C, D.err, css('--error'), { width: 1.5 });
+}
+
+const chart = Plot.mount('c', { aspect: 0.52, aspectNarrow: 1.9, draw: render });
+UI.bind(S, fmts, () => { compute(); chart.redraw(); });
+compute();
+chart.redraw();
+</script>
+</body>
+</html>

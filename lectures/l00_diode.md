@@ -1028,7 +1028,9 @@ as $T^{-0.45}$, so $I_S$ at $1000\, K$ is about $0.6\times$ what a
 to the many decades of swing in $n_i^2$, but it is the dominant
 reason the diffusion curve in Figure 5 starts to flatten at the top
 end. The script `ex/antenna_diode_leakage.py` includes both
-$T$-dependencies.
+$T$-dependencies, and the [interactive version](https://wulffern.github.io/aic2026/assets/examples/antenna-leakage.html)
+lets you switch them off to see how little difference they make next to the
+bandgap.
 
 -->
 
@@ -1141,7 +1143,7 @@ process temperature exceeds the antenna-collected charging current,
 the gate voltage stays clamped well below the FN threshold and the
 oxide is safe. This is what makes Figure 5 a sizing tool: at the
 coldest plasma step the leakage per $\mu m^2$ is only
-$\sim 0.5\, \mathrm{fA}$, so a small antenna ratio or a generous
+$\sim 1\, \mathrm{fA}$, so a small antenna ratio or a generous
 diode area is required to maintain $I_{leak} \gtrsim I_{ant}$.
 
 -->
@@ -1185,7 +1187,10 @@ multiplying by the actual junction area in $\mu m^2$ gives the
 absolute current - a $0.2 \times 0.2\, \mu m^2$ antenna ndiode is
 the curve times $0.04$, a $1 \times 1\, \mu m^2$ diode reads off
 directly. The script is `ex/antenna_diode_leakage.py` and reuses
-the $n_i(T)$ derivation from `ex/vd.py`.
+the $n_i(T)$ derivation from `ex/vd.py`. Both exist as interactive pages:
+[antenna diode leakage](https://wulffern.github.io/aic2026/assets/examples/antenna-leakage.html), where the doping, the
+reverse bias and the junction area are sliders, and
+[diode vs temperature](https://wulffern.github.io/aic2026/assets/examples/diode.html) for the $n_i(T)$ model on its own.
 
 The two shaded bands mark where plasma-induced damage actually
 happens during fabrication, which is the *only* time an antenna
@@ -1196,15 +1201,15 @@ steps such as PECVD, HDP-CVD and sputter ($\sim 200$-$400\,
 ^\circ C$, so $\sim 470$-$675\, K$, with $400\, ^\circ C$ a hard
 upper limit set by BEOL metal reliability). Across this span the
 leakage available to bleed plasma charge ranges from roughly
-$0.5\, \mathrm{fA}/\mu m^2$ at room-temperature etch to
-$\sim 1\, \mathrm{nA}/\mu m^2$ at $400\, ^\circ C$ deposition - six
-decades of variation depending only on which process step you are
-in.
+$1\, \mathrm{fA}/\mu m^2$ at room-temperature etch to
+$\sim 6\, \mathrm{nA}/\mu m^2$ at $400\, ^\circ C$ deposition - nearly
+seven decades of variation depending only on which process step you
+are in.
 
 Three things to take away from the figure:
 
 - Generation current dominates from cryogenic temperatures up to
-  roughly $640\, K$, exactly where the steeper $n_i^2$ slope of the
+  roughly $575\, K$, exactly where the steeper $n_i^2$ slope of the
   diffusion term catches up. Above that the diode is in the
   "diffusion-limited" regime. The crossover happens to fall right
   in the middle of the plasma-deposition band, so antenna diodes
@@ -1262,12 +1267,12 @@ current density, $J_{net} \approx 10\, \mu\mathrm{A/cm^2}$:
 | $1\, mm$      | $100\, \mu m^2$  | $\sim 1\, \mathrm{pA}$   |
 
 Now compare with Figure 5. At room temperature the antenna ndiode
-leaks only $\sim 0.5\, \mathrm{fA}/\mu m^2$. A $1\, \mathrm{mm}$
+leaks only $\sim 1\, \mathrm{fA}/\mu m^2$. A $1\, \mathrm{mm}$
 wire collecting $1\, \mathrm{pA}$ would therefore need a diode
-active area of $\sim 2000\, \mu m^2$ (a $45 \times 45\, \mu m$
+active area of $\sim 900\, \mu m^2$ (a $30 \times 30\, \mu m$
 device) to keep the gate clamped during cold etch, which is
 clearly impractical. The same $1\, \mathrm{mm}$ wire is comfortably
-protected by a $0.3\, \mu m^2$ diode at a $200\, ^\circ C$
+protected by a $0.15\, \mu m^2$ diode at a $200\, ^\circ C$
 deposition step ($\sim 3\, \mathrm{pA}/\mu m^2$) and by a
 sub-$0.01\, \mu m^2$ diode at $400\, ^\circ C$.
 

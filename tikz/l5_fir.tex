@@ -1,0 +1,55 @@
+\input{tikz/fig_header.tex}
+
+% Three tap FIR: x[n] and two delayed copies, each weighted 1/3, summed.
+% Matches the transfer function on the same slide, H(z) = (1/3) sum z^-i.
+%
+% The three taps enter the summer from three different directions -- left,
+% lower left, below -- so they stay separable where they converge.
+
+\begin{circuitikz}[american, transform shape]
+
+  \def\ysig{0}
+  \def\ysum{-2.2}
+  \def\xsum{6.0}
+  \def\rsum{0.32}
+
+  % ---- Signal path: two delays in series, centred on the wire ----
+  \draw[thick] (-2.0,\ysig) -- (-0.5,\ysig);
+  \draw[thick, ->] (-0.5,\ysig) -- (0.0,\ysig);
+  \node[anchor=east] at (-2.1,\ysig) {$x[n]$};
+
+  \draw[thick] (0.0,\ysig-0.5) rectangle ++(1.5,1.0);
+  \node at (0.75,\ysig) {$z^{-1}$};
+
+  \draw[thick, ->] (1.5,\ysig) -- (2.7,\ysig);
+
+  \draw[thick] (2.7,\ysig-0.5) rectangle ++(1.5,1.0);
+  \node at (3.45,\ysig) {$z^{-1}$};
+
+  \draw[thick] (4.2,\ysig) -- (4.7,\ysig);
+
+  % ---- Summing node ----
+  \draw[thick] (\xsum,\ysum) circle (\rsum);
+  \node at (\xsum,\ysum) {$+$};
+  \draw[thick, ->] (\xsum+\rsum,\ysum) -- (\xsum+1.2,\ysum);
+  \node[anchor=west] at (\xsum+1.3,\ysum) {$y[n]$};
+
+  % ---- Tap after two delays: straight in from the left ----
+  \draw[thick] (4.7,\ysig) -- (4.7,\ysum);
+  \draw[thick, ->] (4.7,\ysum) -- (\xsum-\rsum,\ysum);
+  \node[anchor=east] at (4.6,\ysum+0.85) {$\frac{1}{3}$};
+
+  % ---- Tap after one delay: in from the lower left ----
+  \fill (2.1,\ysig) circle (0.07);
+  \draw[thick] (2.1,\ysig) -- (2.1,\ysum-1.0) -- (5.15,\ysum-1.0);
+  \draw[thick, ->] (5.15,\ysum-1.0) -- (\xsum-0.24,\ysum-0.24);
+  \node[anchor=south] at (3.6,\ysum-0.95) {$\frac{1}{3}$};
+
+  % ---- Tap straight through: in from below ----
+  \fill (-1.1,\ysig) circle (0.07);
+  \draw[thick] (-1.1,\ysig) -- (-1.1,\ysum-2.0) -- (\xsum,\ysum-2.0);
+  \draw[thick, ->] (\xsum,\ysum-2.0) -- (\xsum,\ysum-\rsum);
+  \node[anchor=south] at (2.4,\ysum-1.95) {$\frac{1}{3}$};
+
+\end{circuitikz}
+\end{document}

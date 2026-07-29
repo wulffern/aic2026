@@ -352,7 +352,7 @@ Another method would be to stack the $R_2$ on top of $R_1$ as shown in Figure 8.
 ## Widlar reference
 
 The first bandgap reference was not Brokaw's. Bob Widlar built one in 1971 for
-the LM113, three years before the cell on the next slide, and it is worth
+the LM113, three years before the Brokaw cell that follows, and it is worth
 starting here. Partly for the history, and partly because it does the entire
 job with three transistors, three resistors, and no amplifier anywhere. It was
 published in
@@ -817,7 +817,7 @@ voltages are very risky and should not be attempted.**
 
 <!--pan_doc:
 
-I want you to leave this slide able to recognise that circuit, and unwilling to
+I want you to leave this section able to recognise that circuit, and unwilling to
 build it. Process control over the two threshold sources is poor, and their
 stability is poor, so the difference is neither well controlled nor stable.
 
@@ -901,7 +901,7 @@ depends on the answer.
 If you need a reference in a pure CMOS process, use the parasitic vertical PNP
 that every CMOS process has, in the circuits from earlier in this chapter. If
 what you actually need is a bias current rather than a reference, use the GM
-cell a few slides from here. Neither of those asks two implants to agree with
+cell from later in this chapter. Neither of those asks two implants to agree with
 each other.
 
 -->
@@ -912,7 +912,7 @@ each other.
 
 <!--pan_doc:
 
-Everything on the last slide was a bulk story, and you should ask what happens
+Everything so far has been a bulk story, and you should ask what happens
 in a fully depleted process. In FD-SOI the channel is undoped silicon a few
 nanometres thick sitting on buried oxide, and the threshold is not set by
 channel doping at all. It is set by the work function of the gate stack, and by

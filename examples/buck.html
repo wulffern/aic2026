@@ -1,0 +1,485 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Buck converter (PWM) &mdash; aic2026</title>
+<link rel="stylesheet" href="common/aic.css">
+</head>
+<body>
+
+<header>
+  <h1>BUCK CONVERTER</h1>
+  <div class="sub">
+    <a href="index.html">&larr; all examples</a> &middot;
+    interactive version of
+    <a href="https://github.com/wulffern/aic2026/blob/main/jupyter/buck.ipynb">jupyter/buck.ipynb</a> &middot;
+    voltage regulators
+  </div>
+</header>
+
+<div id="chain">
+  <div class="cb on">VDDH</div><span class="ca">&rarr;</span>
+  <div class="cb on" id="cb-a">SWITCH A (D)</div><span class="ca">&rarr;</span>
+  <div class="cb on">L</div><span class="ca">&rarr;</span>
+  <div class="cb on">C</div><span class="ca">&rarr;</span>
+  <div class="cb on">LOAD R</div>
+</div>
+
+<canvas id="c"></canvas>
+
+<div id="ctrl">
+  <div class="cg">
+    <div class="cgt">CONTROL</div>
+    <div class="cr">
+      <label>Duty cycle D</label>
+      <input type="range" data-bind="dtc" id="sl-dtc" min="0.02" max="0.98" step="0.01" value="0.25">
+      <span class="v" id="v-dtc"></span>
+    </div>
+    <div class="cr">
+      <label>Period T</label>
+      <input type="range" data-bind="lt" id="sl-lt" min="-8" max="-5.5" step="0.05" value="-7">
+      <span class="v" id="v-lt"></span>
+    </div>
+    <div class="cr">
+      <label>VDDH</label>
+      <input type="range" data-bind="vddh" id="sl-vddh" min="0.5" max="6" step="0.1" value="4">
+      <span class="v" id="v-vddh"></span>
+    </div>
+    <div class="cr">
+      <label>V_o initial</label>
+      <input type="range" data-bind="vo0" id="sl-vo0" min="0" max="6" step="0.05" value="0">
+      <span class="v" id="v-vo0"></span>
+    </div>
+    <div class="ckrow">
+      <input type="checkbox" data-bind="warm" id="sl-warm" checked>
+      <label for="sl-warm">Start from steady state</label>
+    </div>
+  </div>
+
+  <div class="cg">
+    <div class="cgt">POWER STAGE</div>
+    <div class="cr">
+      <label>L</label>
+      <input type="range" data-bind="ll" id="sl-ll" min="-7" max="-4" step="0.05" value="-6">
+      <span class="v" id="v-ll"></span>
+    </div>
+    <div class="cr">
+      <label>C</label>
+      <input type="range" data-bind="lc" id="sl-lc" min="-8" max="-4" step="0.05" value="-6">
+      <span class="v" id="v-lc"></span>
+    </div>
+    <div class="cr">
+      <label>R_s (switch)</label>
+      <input type="range" data-bind="rs" id="sl-rs" min="0.05" max="10" step="0.05" value="1">
+      <span class="v" id="v-rs"></span>
+    </div>
+    <div class="cr">
+      <label>R load</label>
+      <input type="range" data-bind="lr" id="sl-lr" min="1" max="5" step="0.05" value="3">
+      <span class="v" id="v-lr"></span>
+    </div>
+  </div>
+
+  <div class="cg">
+    <div class="cgt">SIMULATION</div>
+    <div class="cr">
+      <label>t_end</label>
+      <input type="range" data-bind="lte" id="sl-lte" min="-5.7" max="-3" step="0.05" value="-4.3">
+      <span class="v" id="v-lte"></span>
+    </div>
+    <div class="cr">
+      <label>Samples N = 2^</label>
+      <input type="range" data-bind="nb" id="sl-nb" min="13" max="18" step="1" value="17">
+      <span class="v" id="v-nb"></span>
+    </div>
+    <div class="note">
+      The averages are taken over the second half of the run, as in the
+      notebook. R&middot;C and the switching period are four decades apart here,
+      so waiting out the startup transient <em>and</em> resolving the ripple in
+      one run is expensive &mdash; hence the warm start. Untick it for the
+      notebook's cold start.
+    </div>
+  </div>
+</div>
+
+<div id="readout">
+  <div class="ro"><span class="k">V_o</span><span class="n" id="ro-vo"></span></div>
+  <div class="ro"><span class="k">VDDH&middot;D</span><span class="n" id="ro-pred"></span></div>
+  <div class="ro"><span class="k">RIPPLE V_o</span><span class="n" id="ro-ripple"></span></div>
+  <div class="ro"><span class="k">RIPPLE I_L</span><span class="n" id="ro-rippleI"></span></div>
+  <div class="ro"><span class="k">I_L / I_o</span><span class="n" id="ro-cur"></span></div>
+  <div class="ro"><span class="k">EFFICIENCY</span><span class="n" id="ro-eff"></span></div>
+  <div class="ro"><span class="k">STATE</span><span class="n" id="ro-settled"></span></div>
+</div>
+
+<div id="legend">
+  <div class="leg"><div class="lsw" style="background:var(--curve)"></div>Inductor current I_L</div>
+  <div class="leg"><div class="lsw" style="background:var(--quant)"></div>Load current I_o</div>
+  <div class="leg"><div class="lsw" style="background:var(--digi)"></div>Output voltage V_o</div>
+  <div class="leg"><div class="lsw" style="background:var(--sample)"></div>Switch A</div>
+  <div class="leg"><div class="ldot" style="background:var(--error)"></div>Measured, as you sweep D</div>
+</div>
+
+<div class="doc">
+  <h2>WHAT YOU ARE LOOKING AT</h2>
+  <p>
+    A synchronous buck converter, simulated the most literal way possible: step
+    through time, work out which switch is on, integrate the inductor current,
+    integrate the output voltage, repeat. No averaged model, no small-signal
+    approximation &mdash; just the two state equations
+  </p>
+  <p style="text-align:center">
+    <code>V_o = (1/C) &int; (I_L &minus; I_o) dt</code>
+    &nbsp;&nbsp;
+    <code>I_L = (1/L) &int; V_x dt</code>
+  </p>
+  <p>
+    written as a loop. The output voltage settles near VDDH&middot;D, and the
+    reason is almost embarrassingly simple: in steady state the average voltage
+    across an inductor must be zero, so the switch node's average &mdash; which
+    is VDDH for a fraction D of the time and zero otherwise &mdash; has to equal
+    V_o.
+  </p>
+  <p>
+    Two things the averaged model in a textbook will not show you, and this one
+    will. The <b>startup transient</b>: the L and C form a resonant tank with
+    almost nothing damping it, so switching on into a discharged output produces
+    an inductor current far larger than anything in steady state. And the
+    <b>settling time</b>: that tank rings for a long time, so an average taken
+    too early is not an average of anything.
+  </p>
+
+  <h2>THINGS WORTH TRYING</h2>
+  <ul>
+    <li>
+      Drag the <b>duty cycle</b> slowly across its range. Every value you stop
+      at gets simulated and dropped onto the two bottom-right panels as a red
+      point, so the curve draws itself as you explore. Compare where the points
+      land against VDDH&middot;D, and against VDDH&middot;D &minus; R_s&middot;I_o
+      &mdash; the second line is the one that fits, and the gap between them is
+      the switch resistance.
+    </li>
+    <li>
+      Untick <b>start from steady state</b> and set <b>t_end</b> to its
+      minimum, around 10&nbsp;&micro;s. This is what the notebook used to do,
+      and the efficiency readout goes <em>negative</em> while the state readout
+      says the averages are unreliable. That is not a bug: the tank Q here is around a
+      thousand, the inductor current is still swinging when the second half of
+      the run begins, and averaging over a ring is not averaging over anything.
+      Wind t_end up and watch the numbers become sensible.
+    </li>
+    <li>
+      Still cold-starting, compare the peak inductor current on the first panel
+      against the load current. Switching on into a discharged output draws
+      hundreds of milliamps where the converter only ever needs one &mdash; the
+      notebook's warning that "these high currents can kill our device". Then
+      raise <b>V_o initial</b> towards the target and watch the overshoot go
+      away. That is what soft-start is for.
+    </li>
+    <li>
+      Look at <b>ripple I_L</b> against <b>I_L / I_o</b>. With a 1&nbsp;&micro;H
+      inductor at 10&nbsp;MHz the ripple current is tens of times the DC load
+      current, so the inductor current swings hard negative every cycle. The
+      converter works anyway because the capacitor absorbs it &mdash; but the
+      switches carry all of it, which is why the efficiency is what it is.
+    </li>
+    <li>
+      Raise <b>R_s</b>. V_o sags below VDDH&middot;D by R_s&middot;I_o and the
+      efficiency falls, because that is where the power is going. Then lower the
+      <b>R load</b> to draw more current and watch the sag grow in proportion.
+    </li>
+    <li>
+      Change <b>L</b> and <b>C</b> and watch only the ripple change, not the
+      average. Ripple current goes as 1/L and ripple voltage as 1/C, but the DC
+      output is set purely by the duty cycle. This is why picking the inductor
+      is a ripple-and-size question rather than a voltage question.
+    </li>
+  </ul>
+
+  <h2>THE PYTHON</h2>
+<pre><code>for i in range(1,N):
+    ts = t[i]
+
+    # Model switch
+    if(ts % T &lt; dtc*T):
+        pmos = 1
+    else:
+        pmos = 0
+
+    dt = (t[i]-t[i-1])
+
+    # Current voltage across the inductor
+    vx[i] = pmos*(VDDH) - Rs*ix[i-1] - vo[i-1]
+
+    # Current in inductor, trapezoidal approximation of area
+    ix[i] = ix[i-1] + 1/L * (vx[i] + vx[i-1])/2*dt
+
+    io[i] = 1/R * vo[i-1]
+    vo[i] = vo[i-1] + 1/C * ((ix[i] + ix[i-1])/2 - (io[i] + io[i-1])/2)*dt</code></pre>
+  <p class="src">
+    Source: <a href="https://github.com/wulffern/aic2026/blob/main/jupyter/buck.ipynb">jupyter/buck.ipynb</a>.
+    The integration is the notebook's, verbatim. Building this page turned up a
+    real problem in that notebook, since fixed: it averaged over the second half
+    of a 10&nbsp;&micro;s run while R&middot;C is 1&nbsp;ms, so the tank was
+    still ringing and it printed a <em>negative</em> efficiency. Its
+    <code>settled</code> mode now starts at the operating point and runs long
+    enough to mean something. You can still reproduce the old behaviour here by
+    unticking the warm start and shortening t_end. For the same power stage under a completely different control
+    scheme, see the <a href="buck-pfm.html">PFM buck</a>.
+  </p>
+</div>
+
+<footer>
+  TFE4188 Advanced Integrated Circuits &middot; <a href="https://wulffern.github.io/aic2026/">aic2026</a>
+</footer>
+
+<script src="common/plot.js"></script>
+<script>
+'use strict';
+
+const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+
+const S = {};
+let D = null;
+// Measured operating points, keyed by duty cycle, so dragging D draws a curve.
+let sweep = new Map();
+
+const fmts = {
+  dtc:  v => v.toFixed(2),
+  lt:   v => eng(Math.pow(10, v), 's'),
+  vddh: v => v.toFixed(1) + ' V',
+  vo0:  v => v.toFixed(2) + ' V',
+  ll:   v => eng(Math.pow(10, v), 'H'),
+  lc:   v => eng(Math.pow(10, v), 'F'),
+  rs:   v => v.toFixed(2) + ' ohm',
+  lr:   v => eng(Math.pow(10, v), 'ohm'),
+  lte:  v => eng(Math.pow(10, v), 's'),
+  nb:   v => '2^' + v,
+};
+
+function eng(v, unit, digits = 3) {
+  const p = [[1e-12, 'p'], [1e-9, 'n'], [1e-6, 'u'], [1e-3, 'm'], [1, ''], [1e3, 'k'], [1e6, 'M']];
+  for (let i = p.length - 1; i >= 0; i--) {
+    if (Math.abs(v) >= p[i][0]) return (v / p[i][0]).toPrecision(digits) + ' ' + p[i][1] + unit;
+  }
+  return v.toExponential(2) + ' ' + unit;
+}
+
+/**
+ * The notebook's loop, unchanged. Returns the state vectors plus the averages
+ * it prints at the end.
+ *
+ * `keep` false skips storing the waveforms, for the cheap sweep runs.
+ */
+function simulate(p, keep = true) {
+  const N = p.N;
+  const dt = p.tEnd / (N - 1);
+  const t = keep ? new Float64Array(N) : null;
+  const vo = keep ? new Float64Array(N) : null;
+  const ix = keep ? new Float64Array(N) : null;
+  const io = keep ? new Float64Array(N) : null;
+  const aa = keep ? new Float64Array(N) : null;
+
+  // A cold start has to ring down through an R*C that is four decades slower
+  // than the switching period, so by default begin at the operating point the
+  // converter is heading for and let the ripple establish itself.
+  let vo0 = p.vo0, ix0 = 0;
+  if (p.warm) {
+    vo0 = p.VDDH * p.dtc / (1 + p.Rs / p.R);
+    ix0 = vo0 / p.R;
+  }
+  let voP = vo0, ixP = ix0, vxP = 0, ioP = vo0 / p.R;
+  if (keep) { vo[0] = voP; ix[0] = ixP; io[0] = ioP; }
+
+  const h = N >> 1;
+  let sVo = 0, sIx = 0, sIo = 0, sIv = 0, cnt = 0;
+  let voMin = Infinity, voMax = -Infinity, ixPeak = 0;
+  let ixMin = Infinity, ixMax = -Infinity;
+
+  for (let i = 1; i < N; i++) {
+    const ts = i * dt;
+    const pmos = (ts % p.T) < p.dtc * p.T ? 1 : 0;
+
+    const vx = pmos * p.VDDH - p.Rs * ixP - voP;
+    const ixN = ixP + (vx + vxP) / 2 * dt / p.L;
+    const ioN = voP / p.R;
+    const voN = voP + ((ixN + ixP) / 2 - (ioN + ioP) / 2) * dt / p.C;
+
+    if (keep) { t[i] = ts; vo[i] = voN; ix[i] = ixN; io[i] = ioN; aa[i] = pmos; }
+    if (Math.abs(ixN) > ixPeak) ixPeak = Math.abs(ixN);
+
+    if (i >= h) {
+      sVo += voN; sIx += ixN; sIo += ioN; sIv += pmos ? ixN : 0; cnt++;
+      if (voN < voMin) voMin = voN;
+      if (voN > voMax) voMax = voN;
+      if (ixN < ixMin) ixMin = ixN;
+      if (ixN > ixMax) ixMax = ixN;
+    }
+
+    voP = voN; ixP = ixN; vxP = vx; ioP = ioN;
+    if (!isFinite(voN)) break;
+  }
+
+  const voAvg = sVo / cnt, ixAvg = sIx / cnt, ioAvg = sIo / cnt, ivAvg = sIv / cnt;
+  const eff = (voAvg * ioAvg) / (ivAvg * p.VDDH) * 100;
+  // In steady state the inductor's average current has to equal the load's.
+  // If it does not, the tank is still ringing and every average above is noise.
+  const mismatch = Math.abs(ioAvg) > 1e-15 ? (ixAvg - ioAvg) / ioAvg : 0;
+  const settled = Math.abs(mismatch) < 0.03;
+
+  return { t, vo, ix, io, aa, dt, N, voAvg, ixAvg, ioAvg, ivAvg, eff,
+           ripple: voMax - voMin, rippleI: ixMax - ixMin, ixPeak, settled, mismatch };
+}
+
+function params() {
+  return {
+    N: 1 << Math.round(S.nb),
+    tEnd: Math.pow(10, S.lte),
+    T: Math.pow(10, S.lt),
+    dtc: S.dtc,
+    VDDH: S.vddh,
+    vo0: S.vo0,
+    L: Math.pow(10, S.ll),
+    C: Math.pow(10, S.lc),
+    Rs: S.rs,
+    R: Math.pow(10, S.lr),
+    warm: S.warm,
+  };
+}
+
+function compute() {
+  const p = params();
+  const r = simulate(p);
+
+  sweep.set(Math.round(S.dtc * 100) / 100, { vo: r.voAvg, eff: r.eff, ok: r.settled });
+
+  D = { p, r };
+
+  UI.readout('ro-vo', r.voAvg.toFixed(4) + ' V');
+  UI.readout('ro-pred', (p.VDDH * p.dtc).toFixed(4) + ' V');
+  UI.readout('ro-ripple', eng(r.ripple, 'V'));
+  UI.readout('ro-rippleI', eng(r.rippleI, 'A') + ' pk-pk' +
+    (r.rippleI > 2 * Math.abs(r.ioAvg) ? '  (>> I_o)' : ''));
+  UI.readout('ro-cur', eng(r.ixAvg, 'A') + ' / ' + eng(r.ioAvg, 'A'));
+  UI.readout('ro-eff', isFinite(r.eff) ? r.eff.toFixed(1) + ' %' : '-');
+  UI.readout('ro-settled', r.settled ? 'settled'
+    : 'NOT SETTLED - I_L avg is ' + (r.mismatch * 100).toFixed(0) +
+      '% off I_o, averages unreliable');
+}
+
+function render(cx, W, H, narrow) {
+  if (!D) return;
+  const g = Plot.grid(W, H, narrow ? 6 : 2, narrow ? 1 : 3, { gapY: 24, gapX: 22 });
+  const { p, r } = D;
+  const us = 1e6;
+  const tus = Float64Array.from(r.t, v => v * us);
+  const tEnd = p.tEnd * us;
+
+  // Zoom window: the last few switching periods, where the ripple lives.
+  const zPeriods = 3;
+  const zStart = Math.max(0, p.tEnd - zPeriods * p.T);
+  const i0 = Math.min(r.N - 2, Math.floor(zStart / r.dt));
+  const zt = tus.subarray(i0), zvo = r.vo.subarray(i0), zix = r.ix.subarray(i0),
+        za = r.aa.subarray(i0);
+
+  // ── Currents ────────────────────────────────────────────────────────────
+  const p0 = new Plot.Panel(cx, g[0], {
+    title: 'Currents', ylabel: 'Current [A]', xlabel: 'Time [us]', margin: { l: 58 },
+  });
+  const [ilo, ihi] = Plot.padExtent(...Plot.extent(r.ix), 0.08);
+  p0.limits(0, tEnd, ilo, ihi).frame();
+  p0.hline(0, css('--grid'));
+  p0.line(tus, r.ix, css('--curve'));
+  p0.line(tus, r.io, css('--quant'), { width: 1.5 });
+  p0.legend([
+    { label: 'I_L', color: css('--curve') },
+    { label: 'I_o', color: css('--quant') },
+  ], 'tr');
+  if (!p.warm && r.ixPeak > 5 * (Math.abs(r.ioAvg) + r.rippleI / 2)) {
+    p0.note(0.03, 0.06, 'startup peak ' + eng(r.ixPeak, 'A') + ', load is only ' +
+            eng(Math.abs(r.ioAvg), 'A'), css('--error'));
+  }
+
+  // ── Output voltage ──────────────────────────────────────────────────────
+  const p1 = new Plot.Panel(cx, g[1], {
+    title: 'Output voltage', ylabel: 'V_o [V]', xlabel: 'Time [us]',
+  });
+  const [vlo, vhi] = Plot.padExtent(...Plot.extent(r.vo), 0.08);
+  p1.limits(0, tEnd, vlo, vhi).frame();
+  p1.hline(p.VDDH * p.dtc, css('--muted'), [4, 3]);
+  p1.line(tus, r.vo, css('--digi'), { width: 1.5 });
+  p1.note(0.03, 0.9, 'dashed: VDDH*D = ' + (p.VDDH * p.dtc).toFixed(3) + ' V', css('--muted'));
+
+  // ── Ripple zoom ─────────────────────────────────────────────────────────
+  const p2 = new Plot.Panel(cx, g[2], {
+    title: 'Steady state ripple', ylabel: 'V_o [V]', xlabel: 'Time [us]',
+  });
+  const [zlo, zhi] = Plot.padExtent(...Plot.extent(zvo), 0.15);
+  p2.limits(zt[0], tEnd, zlo, zhi).frame();
+  p2.line(zt, zvo, css('--digi'), { width: 1.5 });
+  p2.note(0.03, 0.9, 'pk-pk ' + eng(r.ripple, 'V'), css('--digi'));
+
+  // ── Inductor current zoom + switch ──────────────────────────────────────
+  const p3 = new Plot.Panel(cx, g[3], {
+    title: 'Inductor current and switch A', ylabel: 'I_L [A]', xlabel: 'Time [us]',
+    margin: { l: 58 },
+  });
+  const [xlo, xhi] = Plot.padExtent(...Plot.extent(zix), 0.35);
+  p3.limits(zt[0], tEnd, xlo, xhi).frame();
+  p3.line(zt, zix, css('--curve'), { width: 1.5 });
+  // Switch state as a clock trace along the bottom.
+  const lo = xlo + (xhi - xlo) * 0.02, hi = lo + (xhi - xlo) * 0.12;
+  const clk = new Float64Array(za.length);
+  for (let i = 0; i < za.length; i++) clk[i] = za[i] ? hi : lo;
+  p3.line(zt, clk, css('--sample'));
+  p3.note(0.02, 0.16, 'A', css('--sample'));
+
+  // ── Sweep: V_o vs duty ──────────────────────────────────────────────────
+  const p4 = new Plot.Panel(cx, g[4], {
+    title: 'V_o against duty cycle', ylabel: 'V_o [V]', xlabel: 'Duty cycle D',
+  });
+  p4.limits(0, 1, 0, p.VDDH * 1.05).frame();
+  const dd = [], ideal = [], drop = [];
+  for (let i = 0; i <= 100; i++) {
+    const d = i / 100;
+    dd.push(d);
+    ideal.push(p.VDDH * d);
+    // Solve V_o = VDDH*D - Rs*V_o/R for V_o.
+    drop.push(p.VDDH * d / (1 + p.Rs / p.R));
+  }
+  p4.line(dd, ideal, css('--muted'), { dash: [4, 3] });
+  p4.line(dd, drop, css('--quant'), { width: 1.5 });
+  const pts = [...sweep.entries()].sort((a, b) => a[0] - b[0]);
+  p4.dots(pts.map(e => e[0]), pts.map(e => e[1].vo), css('--error'), 2.5);
+  p4.legend([
+    { label: 'VDDH*D', color: css('--muted'), dash: [4, 3] },
+    { label: 'with R_s drop', color: css('--quant') },
+  ], 'tl');
+
+  // ── Sweep: efficiency ───────────────────────────────────────────────────
+  const p5 = new Plot.Panel(cx, g[5], {
+    title: 'Efficiency against duty cycle', ylabel: 'Efficiency [%]', xlabel: 'Duty cycle D',
+  });
+  const good = pts.filter(e => e[1].ok && isFinite(e[1].eff));
+  p5.limits(0, 1, 0, 105).frame();
+  p5.dots(good.map(e => e[0]), good.map(e => e[1].eff), css('--error'), 2.5);
+  if (good.length < 2) {
+    p5.note(0.05, 0.5, 'drag the duty cycle slider\nto fill this in', css('--muted'));
+  }
+  const bad = pts.filter(e => !e[1].ok).length;
+  if (bad) p5.note(0.05, 0.08, bad + ' point(s) hidden: not settled', css('--error'));
+}
+
+const chart = Plot.mount('c', { aspect: 0.5, aspectNarrow: 2.6, draw: render });
+UI.bind(S, fmts, key => {
+  // Any change other than the duty cycle invalidates the collected points.
+  if (key !== 'dtc') sweep = new Map();
+  compute();
+  chart.redraw();
+});
+compute();
+chart.redraw();
+</script>
+</body>
+</html>

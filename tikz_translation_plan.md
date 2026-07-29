@@ -3,11 +3,24 @@
 ## Summary
 Translate lecture figures from SVG/PDF artwork to maintainable hand-authored TikZ/CircuitikZ across the full course, but only for figures that are schematic-like and benefit from redraw.
 
-The process is strictly sequential and review-gated:
-1. Propose one figure.
-2. Open the original source and the proposed TikZ PDF.
-3. Wait for approval or comments.
-4. Only after approval, proceed to the next figure.
+**Approval authority changed.** The user delegated the per-figure decision:
+switch a reference in as soon as you have verified the redraw is a faithful
+match, and only stop to ask when you are genuinely unsure. That removes the
+human gate, so the verification step is now the only thing standing between a
+bad redraw and the live lecture. Do it properly:
+
+1. Open the original artwork and read what it actually says.
+2. Draw, build, and **render the result and look at it** — a green build says
+   nothing about whether the drawing is right.
+3. Check the redraw against the original point by point: topology, every label,
+   polarity and direction, and anything the surrounding lecture prose depends
+   on.
+4. Match verified → switch the reference and say what you checked.
+   Genuinely unsure, or the redraw deviates on purpose in a way that changes
+   the teaching → leave it pending and ask.
+
+A deliberate correction of an error in the original is still fine, and still
+has to be called out explicitly rather than slipped in.
 
 Already-established outputs remain the model:
 - `l3_sources_tikz`
@@ -25,7 +38,8 @@ Exclude by default:
 - figures where TikZ would become a path trace rather than a clean redraw
 
 Replacement policy:
-- Do not update lecture references until that specific figure is approved.
+- Update a lecture reference once the redraw is verified against the original,
+  per the authority note above.
 - Drawing, compiling, and committing `tikz/<basename>.tex` plus `media/<basename>_tikz.pdf` does **not** require approval — those artifacts are inert until a lecture points at them. Only the lecture reference switch is gated.
 - After approval, switch that figure's references to `../media/<basename>_tikz.pdf`.
 - A figure used by more than one lecture is approved once, then switched in **every** lecture that references it in the same round. Check with `grep -rn '<basename>\.pdf' lectures/` before switching so no stale reference is left behind.
@@ -49,12 +63,11 @@ For every figure in the queue:
    - proposed TikZ PDF
 6. Report the proposal briefly and stop.
 
-Approval gate:
-- `approve`: switch the lecture reference(s) per the replacement policy, move the figure to Approved in Saved Progress, then continue
-- `comment`: revise the same figure, recompile, reopen both files, and wait again
-- a figure that is drawn but not yet reviewed sits in Pending Approval; its lecture references stay on the original artwork until you say otherwise
-
-Never switch a lecture reference without an explicit approval for that figure.
+Outcome of the verification in step 6:
+- verified match: switch the lecture reference(s) per the replacement policy,
+  record it in Saved Progress, continue
+- unsure: leave it in Pending Approval, its references on the original
+  artwork, and ask
 
 ## Figure Queue by Lecture
 Process lectures in this order unless reprioritized later.
@@ -355,10 +368,14 @@ The queue in this document was **not exhaustive**: five schematics it never
 listed (`l3_brokaw`, `l3_ptat`, `l3_ptat1`, `l3_ptat2`, `l3_ptat3`) were found
 only by listing the lecture's figures directly.
 
-The `l3_ptat`, `l3_ptat1` and `l3_ptat2` artwork marks the OTA polarity
-backwards: + on the left input, - on the right. Rising current raises the
-right-hand node by I*R1 more than the left, so + belongs on the right for the
-loop to settle. The redraws correct this.
+The `l3_ptat`, `l3_ptat1`, `l3_ptat2` and `l5_scex` artwork marks the OTA
+polarity backwards: + on the left input, - on the right. Rising current raises
+the right-hand node by I*R1 more than the left, so + belongs on the right for
+the loop to settle. The redraws correct this. `l5_scex` first shipped with the
+artwork's polarity copied straight over, because this note was not checked
+against a figure in another lecture that happens to contain the same core.
+**Any figure containing a diode-ratio reference has this to check**, not just
+the `l03_refbias` ones.
 
 Before starting any lecture, list its figures with
 `grep -o '](\.\./media/[^)]*)' lectures/<lecture>.md` and triage them, rather
@@ -462,11 +479,129 @@ come up.
    copy. The warning is the point of including it.
 
 ### Current next figure
-- `l5_sdomain`, `l5_zdomain` and `l5_zunstable` — the s-plane and z-plane
-  diagrams, another set that should share geometry.
+- `l04_dac`, the first Phase 2 lecture. `l03_refbias`, `l05_sc` and `l04_afe`
+  are all complete. Triage `l04_dac`'s figures by listing them first; the
+  queue in this document is not exhaustive for any lecture.
 
-Approved and switched in `lectures/l05_sc.md`: `l05_fund1`, `l05_fund2`,
-`l05_fund3`, `l5_sh`, `l5_shaaf`, `l5_subsample`.
+### `l04_afe` is complete
+16 figures drawn and switched. `l4_activebiquad` and `l4_gmcbi` were the two
+shared with `l05_sc`, and switching them finished that lecture too;
+`l4_activebiquad` is also referenced as a **PDF** by `l10_lpradio` and
+`lp_radio_guest`, and those switched in the same round. `fig_inv` is used by
+four lectures (`l04_afe`, `l02_esd`, `l12_chinf`, `lr0_mosfet`) and all four
+switched together.
+
+`grep -o '](\.\./media/[^)]*)'` is not enough on its own: it finds `.pdf`
+references as well as `.svg` ones, and a figure can be referenced both ways in
+different lectures. Grep for the bare basename, not for `<basename>.svg`.
+
+Out of scope in `l04_afe`, after opening each one:
+- bitmaps: `503px-Silicon-unit-cell-3D-balls.png`, `inv_stick.png`,
+  `digital_shoulder.png`, `analog_designer.png`, `qt_sd.png`
+- `l04_ota_sch` — a four-panel schematic-capture screenshot of the design
+  database, instance names and all. Redrawing it would be a trace of a tool
+  window, not a redraw of a circuit.
+- `l04_ff_gm` — **undecided, needs the user.** It is a clean CMOS
+  transconductor schematic and would redraw easily, but it is a figure lifted
+  from a cited master's thesis, caption ("Figure 5.16: Transconductor
+  schematic") and all. Redrawing it turns "here is their figure" into "here is
+  my drawing of their circuit". That is the author's call, not a match
+  question, so it is left on the original.
+
+### New shared includes from this lecture
+- `tikz/gmc_lib.tex` — the trapezoid transconductor symbol (tall input edge,
+  short output edge) shared by `l4_gmc`, `l4_gmc_diff`, `l4_gmc_diff1` and
+  `l4_gmc1st`, plus `\gmcDiffFrame` for the `l4_gmc_diff`/`l4_gmc_diff1` pair,
+  which differ only in the output terminal marks and the arrow directions.
+  `\gmcBodyL` is the mirrored body, used for `l4_gmc1st`'s second cell.
+- `tikz/sfg_lib.tex` — the summing node and the `1/s` block shared by
+  `l4_first_order` and `l4_biquad`, which are the same size in the original
+  artwork too.
+
+Both were added to `TIKZ_INCLUDES` in the Makefile, without which the build
+tries to compile them as figures.
+
+`l4_gmcbi` uses a different transconductor symbol — the chamfered box with
+`+ +` and `- -` on two rails — because the original does. Do not unify it with
+`gmc_lib`'s trapezoid.
+
+### The l4_gmcbi damping term
+`l4_gmcbi`'s circuit puts `G_m3` across node B with its output crossed, which
+is a resistor of `1/G_m3` damping that node. Working the KCL through gives
+
+    v_out/v_in = [s^2 C_X/(C_X+C_B) + s Gm5/(C_X+C_B) + Gm2 Gm4/(C_A(C_X+C_B))]
+               / [s^2 + s Gm3/(C_X+C_B) + Gm1 Gm2/(C_A(C_X+C_B))]
+
+Every term matches the H(s) printed in `l04_afe.md` and `l05_sc.md` except the
+damping one, where both lectures write `G_{m2}`. It cannot be `G_m2`: that
+transconductor is already the one from node A to node B, and it appears in
+both the omega_0^2 term and the numerator. The redraw follows the circuit.
+**The lecture equations were left alone** — fixing prose is outside the figure
+migration, and the user should decide.
+
+### More LaTeX rules earned this round
+- **Brace every computed coordinate.** TikZ scans a coordinate for its closing
+  parenthesis, so `(#1+0.94,#2+(#4))` ends at the `)` after `#4` and the node
+  loses its label text: "A node must have a (possibly empty) label text".
+  Write `({#1+0.94},{#2+(#4)})`. Cost a CI round trip.
+- **`\def` stores text, so negate at the call site, not in the macro.**
+  `\def\xa{-4.8}` makes `-\xa` expand to `--4.8`. Store column offsets as
+  positive numbers and write `(-\xa,...)` for the left half of a symmetric
+  figure.
+- A wire that stops at a riser is not a wire that reaches the device.
+  `l4_activebiquad` first shipped with `G_1` ending at node X's riser instead
+  of continuing to the OTA input, which left the inverting input floating.
+  A green build says nothing about this; the render does.
+
+`tikz/boot_lib.tex` holds the bootstrapped switch, shared by `l5_sw2` (one of
+them) and `l5_sw3` (two). `\bootBlock` draws it above its input rail and
+`\bootBlockDn` below. `l5_sw3` needs the mirrored one: with both networks
+pointing the same way the lower one lands in the middle of the figure and the
+wires from `A_n` to the dummies have nowhere to run, which is exactly what
+makes the original crowded there. The circuit is symmetric, so mirroring costs
+nothing and buys the dummies the whole middle of the drawing.
+
+`tikz/sc_lib.tex` holds the switched-capacitor amplifier pieces. `\scIntroFrame`
+draws everything `l5_scintro1` and `l5_scintro2` share and leaves the two
+switch positions to the caller, because those two switch states are the entire
+difference between the phases and the whole point of the pair. `\scAmpFrame`
+does the same for `l5_scamp` and `l5_scint`: the integrator is the gain stage
+with the C2 reset switch removed, and the lecture makes that point explicitly,
+so only `l5_scamp` draws the reset.
+
+`tikz/plane_lib.tex` holds the s-plane and z-plane pieces: the axes, the unit
+circle, and pole and zero markers. Pole positions are given in units of the
+circle radius, so `(0.5,0.3)` means half a radius out, which is how you think
+about them. Same rule as `spec_lib.tex`: a new shared include must be added to
+`TIKZ_INCLUDES` in the Makefile or the build tries to compile it as a figure.
+
+`l05_sc` is complete: the last two figures, `l4_activebiquad` and `l4_gmcbi`,
+were drawn with `l04_afe` and switched in both lectures in the same round.
+
+Switched in `lectures/l05_sc.md`: `l05_fund1`, `l05_fund2`,
+`l05_fund3`, `l5_sh`, `l5_shaaf`, `l5_subsample`, `l5_sdomain`, `l5_zdomain`,
+`l5_zunstable`, `l5_fir`, `l5_sw1`, `l5_scintro1`, `l5_scintro2`, `l5_scamp`,
+`l5_scint`, `l5_scfig`, `l5_scifig`, `l5_sw2`, `l5_sw3`, `l5_novl`, `l5_scex`.
+
+The two waveform sketches scale each plot to its own trace: `\scWaveFrame`
+takes the top of the V_o axis, 1.6 for `l5_scfig` and 4.3 for `l5_scifig`.
+Drawing both on the integrator's axis strands the gain stage's trace, which
+only ever reaches V_i, in the bottom fifth of an empty box. The originals do
+scale per plot; it is not a liberty.
+
+`l5_scex`'s reference core is drawn to match `l03_ptat`: diode-connected PNPs
+rather than the artwork's plain diodes, the area ratio marked on the device as
+`xN` rather than as a floating "1 : N", and + on the branch carrying the
+resistor. A student meets this circuit in `l03_refbias` first, so the two
+should be recognisably the same drawing. The two figures are not shared source
+and should not be — `l03_ptat` is a tall standalone built on `ckt_lib`'s grid
+macros with a rotated OTA, while `l5_scex` needs a short wide core so the
+switched-capacitor stage fits beside it on one slide.
+
+`l5_sw2`'s two bulk networks end in bare symbols in the original. They are the
+supply rails: the n-well to V_DD and the p-substrate to ground while the switch
+is off, which is the only bias that keeps both junctions reverse biased, and
+the drawing has a ground on the lower one already.
 
 `tikz/spec_lib.tex` holds the sampling-spectrum pieces shared by `l5_sh`,
 `l5_shaaf` and `l5_subsample`: the axis with its Nyquist ticks, the wanted
@@ -522,6 +657,27 @@ so the period, pulse width and height are single `\def`s at the top of the
 block.
 
 ### Notes
+- **Draw in black.** The hand-drawn originals are in dark blue ink with green
+  and red annotations, and the first `l05_sc` redraws copied that. The user
+  does not want it: the redraws are not meant to imitate the pen. Use the
+  default black for every line and every ordinary label, and reach for colour
+  only where it *encodes* something the reader has to tell apart — the green
+  signal against the red and magenta tones and the orange filter in the
+  sampling spectra, and stable against unstable in `l5_zunstable`. Those stay
+  because the figure argues with them; nothing else does.
+- A TeX macro name is **letters only**. `\newcommand{\scXc2}{...}` does not
+  fail where it is defined; it fails later as "Undefined control sequence
+  `\scXc`", because TeX read the name as `\scXc` and left the `2` behind.
+  Spell the digit out: `\scXctwo`.
+- **`\input` a shared library *inside* `\begin{circuitikz}`, never above it.**
+  Every pre-existing figure does this with `ckt_lib.tex` and it is not a style
+  preference: a definitions file inputted into the document body of a
+  `standalone` document contributes an empty paragraph, and `crop` then sizes
+  the page around it. The figure still compiles and still looks right — it just
+  carries a wide blank margin. `l5_scintro1` wasted 45 % of its width that way,
+  and the spectrum and plane figures 13–16 % each, before this was spotted.
+  Worth checking: measure the ink bounding box of the rendered PNG against the
+  image size and expect a couple of per cent of margin, not fifteen.
 - Prefix every `\newcommand` in a figure. `l5_sh` first used `\th` for a tone
   height, which is a LaTeX built-in (thorn), and the redefinition is a *fatal*
   error, not a warning — it cost a CI round trip. `\shHalf`, `\shTone` and so

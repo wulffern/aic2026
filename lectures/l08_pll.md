@@ -584,7 +584,7 @@ $$ L(s) = \frac{ K_{osc} K_{pd} K_{lp} H_{lp}(s) }{N s} $$
 
 I've made a python model of the loop, you can find it at
 -->
-[sun\_pll\_sky130nm/jupyter/pll](https://github.com/wulffern/sun_pll_sky130nm/blob/main/jupyter/pll.ipynb)
+[sun\_pll\_sky130nm/jupyter/pll](https://github.com/wulffern/sun_pll_sky130nm/blob/main/jupyter/pll.ipynb) - [interactive](https://wulffern.github.io/aic2026/assets/examples/pll.html)
 
 <!--pan_doc:
 

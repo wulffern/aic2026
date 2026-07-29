@@ -1,0 +1,35 @@
+\input{tikz/fig_header.tex}
+
+% Single-ended Gm-C integrator: the transconductor drives I_o = G_m V_i into
+% C, so V_o = I_o/(sC) = (G_m/C) V_i / s.
+
+\begin{circuitikz}[american, thick, transform shape]
+
+  \input{tikz/ckt_lib.tex}
+  \input{tikz/gmc_lib.tex}
+
+  \gmcBody{1.2}{2.8}{$G_{m}$}
+
+  % Inputs: signal on +, ground on -
+  \draw (0.3,3.6) -- (1.2,3.6);
+  \gmcPlus{1.55}{3.6}
+  \draw (0.3,2.0) -- (1.2,2.0);
+  \gmcMinus{1.55}{2.0}
+  \draw (0.3,2.0) -- (0.3,1.45);
+  \draw (0.3,1.45) \vground;
+  \node[anchor=east] at (0.25,2.8) {$V_{i}$};
+
+  % Output into C
+  \draw (2.7,2.8) -- (4.3,2.8);
+  \draw[->] (3.0,3.12) -- (3.75,3.12);
+  \node[anchor=south] at (3.38,3.2) {$I_{o}$};
+
+  \gmcVcap{4.3}{2.8}{0.85}
+  \draw (4.3,0.85) \vground;
+
+  \node[anchor=west] at (4.42,2.8) {$+\ V_{o}$};
+  \node[anchor=west] at (4.72,1.83) {$C$};
+  \node[anchor=west] at (4.42,1.15) {$-$};
+
+\end{circuitikz}
+\end{document}

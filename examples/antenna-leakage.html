@@ -1,0 +1,351 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Antenna diode leakage &mdash; aic2026</title>
+<link rel="stylesheet" href="common/aic.css">
+</head>
+<body>
+
+<header>
+  <h1>ANTENNA DIODE LEAKAGE</h1>
+  <div class="sub">
+    <a href="index.html">&larr; all examples</a> &middot;
+    interactive version of
+    <a href="https://github.com/wulffern/aic2026/blob/main/ex/antenna_diode_leakage.py">ex/antenna_diode_leakage.py</a> &middot;
+    diodes and ESD
+  </div>
+</header>
+
+<div id="chain">
+  <div class="cb on">n_i(T)</div><span class="ca">&rarr;</span>
+  <div class="cb on">DIFFUSION I_S</div><span class="ca">+</span>
+  <div class="cb on">GENERATION I_gen</div><span class="ca">=</span>
+  <div class="cb on">REVERSE LEAKAGE</div>
+</div>
+
+<canvas id="c"></canvas>
+
+<div id="ctrl">
+  <div class="cg">
+    <div class="cgt">JUNCTION</div>
+    <div class="cr">
+      <label>N_A (p-well)</label>
+      <input type="range" data-bind="na" id="sl-na" min="14" max="19" step="0.1" value="17">
+      <span class="v" id="v-na"></span>
+    </div>
+    <div class="cr">
+      <label>N_D (n+)</label>
+      <input type="range" data-bind="nd" id="sl-nd" min="18" max="21" step="0.1" value="20">
+      <span class="v" id="v-nd"></span>
+    </div>
+    <div class="cr">
+      <label>Reverse bias</label>
+      <input type="range" data-bind="vr" id="sl-vr" min="0" max="3.6" step="0.05" value="1">
+      <span class="v" id="v-vr"></span>
+    </div>
+    <div class="cr">
+      <label>Area</label>
+      <input type="range" data-bind="area" id="sl-area" min="-2" max="2" step="0.05" value="-1.4">
+      <span class="v" id="v-area"></span>
+    </div>
+  </div>
+
+  <div class="cg">
+    <div class="cgt">TRANSPORT</div>
+    <div class="cr">
+      <label>&tau; at 300 K</label>
+      <input type="range" data-bind="tau" id="sl-tau" min="-9" max="-5" step="0.1" value="-7">
+      <span class="v" id="v-tau"></span>
+    </div>
+    <div class="cr">
+      <label>Bandgap E_g</label>
+      <input type="range" data-bind="eg" id="sl-eg" min="1.0" max="1.2" step="0.005" value="1.12">
+      <span class="v" id="v-eg"></span>
+    </div>
+    <div class="ckrow">
+      <input type="checkbox" data-bind="tdep" id="sl-tdep" checked>
+      <label for="sl-tdep">D and &tau; vary with T</label>
+    </div>
+    <div class="note">
+      Phonon-limited mobility goes as T<sup>-2.4</sup>, so D &prop; T<sup>-1.4</sup>
+      by Einstein; SRH lifetime goes as T<sup>-1/2</sup>.
+    </div>
+  </div>
+
+  <div class="cg">
+    <div class="cgt">PROCESS</div>
+    <div class="ckrow">
+      <input type="checkbox" data-bind="bands" id="sl-bands" checked>
+      <label for="sl-bands">Shade the plasma steps</label>
+    </div>
+    <div class="cr">
+      <label>Marker T</label>
+      <input type="range" data-bind="tmark" id="sl-tmark" min="200" max="1000" step="5" value="300">
+      <span class="v" id="v-tmark"></span>
+    </div>
+    <div class="note">
+      Plasma etch runs near 300-375 K on a cooled chuck; plasma deposition
+      470-675 K, with 400&nbsp;&deg;C a hard ceiling for the back end.
+    </div>
+  </div>
+</div>
+
+<div id="readout">
+  <div class="ro"><span class="k">LEAKAGE AT MARKER</span><span class="n" id="ro-leak"></span></div>
+  <div class="ro"><span class="k">DOMINANT TERM</span><span class="n" id="ro-dom"></span></div>
+  <div class="ro"><span class="k">CROSSOVER</span><span class="n" id="ro-cross"></span></div>
+  <div class="ro"><span class="k">W AT MARKER</span><span class="n" id="ro-w"></span></div>
+  <div class="ro"><span class="k">1 fF DROOPS 100 mV IN</span><span class="n" id="ro-droop"></span></div>
+</div>
+
+<div id="legend">
+  <div class="leg"><div class="lsw" style="background:var(--curve)"></div>Diffusion I_S</div>
+  <div class="leg"><div class="lsw" style="background:var(--quant)"></div>Generation I_gen</div>
+  <div class="leg"><div class="lsw" style="background:var(--digi)"></div>Total</div>
+  <div class="leg"><div class="lsw" style="background:var(--error)"></div>Plasma etch</div>
+  <div class="leg"><div class="lsw" style="background:var(--alt2)"></div>Plasma deposition</div>
+</div>
+
+<div class="doc">
+  <h2>WHAT YOU ARE LOOKING AT</h2>
+  <p>
+    An antenna diode is there to protect a gate during manufacturing. Plasma
+    steps &mdash; etch, deposition, implant &mdash; charge up whatever metal is
+    connected to that gate, and without somewhere for the charge to go the gate
+    oxide takes it. The diode is that somewhere: reverse biased in normal
+    operation, so it does nothing except leak, and forward biased or in
+    breakdown when the antenna charges up, so it clamps.
+  </p>
+  <p>
+    So there are two questions, and they pull in opposite directions. Does it
+    leak enough to matter when the chip is running? And does it conduct enough
+    to matter during the plasma step, which happens at a few hundred degrees
+    Celsius? The plot answers both by sweeping the reverse leakage from 200 K
+    to 1000 K.
+  </p>
+  <p>
+    The leakage has two parts. Minority carriers diffusing in from the neutral
+    regions give the Shockley saturation current, which goes as
+    n<sub>i</sub><sup>2</sup>. Carriers generated inside the depletion region
+    give the Sah-Noyce-Shockley generation current, which goes as
+    n<sub>i</sub> &mdash; one power, not two. At low temperature generation
+    wins because n<sub>i</sub> is tiny and n<sub>i</sub><sup>2</sup> is tinier.
+    At high temperature diffusion catches up and takes over. The crossover
+    readout tells you where.
+  </p>
+
+  <h2>THINGS WORTH TRYING</h2>
+  <ul>
+    <li>
+      Look at the two shaded bands. The leakage during a plasma <b>etch</b> is
+      not much different from room temperature; during plasma <b>deposition</b>
+      at 200-400&nbsp;&deg;C it is orders of magnitude higher, which is the
+      whole point &mdash; a diode that leaks nothing when cold conducts usefully
+      when the wafer is hot.
+    </li>
+    <li>
+      Move the <b>marker</b> to 300 K and read the leakage per
+      &micro;m<sup>2</sup>. Then look at the last readout: how long a 1 fF node
+      takes to droop 100 mV through that leakage. At room temperature the
+      answer is comfortable. Move the marker to 400&nbsp;&deg;C and it is not,
+      which is why an antenna diode on a high-impedance analog node is a real
+      design decision and not a formality.
+    </li>
+    <li>
+      Raise the <b>reverse bias</b>. The diffusion current does not care &mdash;
+      it saturates, which is what &ldquo;saturation current&rdquo; means. The
+      generation current does, because the depletion region gets wider and there
+      is more volume generating carriers. That is why reverse leakage in a real
+      junction is not quite flat with voltage.
+    </li>
+    <li>
+      Drop <b>N<sub>A</sub></b> towards 10<sup>15</sup>, i.e. put the diode in
+      the substrate instead of the well. The depletion region widens by more
+      than an order of magnitude, the generation current follows, and the
+      diffusion current rises too. The junction sees the well doping, not the
+      substrate, so getting this right matters.
+    </li>
+    <li>
+      Untick <b>D and &tau; vary with T</b> to get the fixed-coefficient model
+      of <a href="diode.html">ex/vd.py</a> back. Over 800 K the difference is
+      visible but small compared to the exponential: the bandgap dominates
+      everything.
+    </li>
+  </ul>
+
+  <h2>THE PYTHON</h2>
+<pre><code># Shockley diffusion saturation current
+I_s = q*A*ni**2 * (1/NA*np.sqrt(Dn/tau_n) + 1/ND*np.sqrt(Dp/tau_p))
+
+# Depletion width of a one-sided n+/p junction (NA &lt;&lt; ND)
+V_bi = (k*T/q) * np.log(NA*ND/(ni**2))
+W = np.sqrt(2*eps_si*(V_bi + V_R)/(q*NA))
+
+# Sah-Noyce-Shockley depletion-region generation current
+tau_g = 2*tau_n
+I_gen = q*A*ni*W/tau_g
+
+I_leak = I_s + I_gen</code></pre>
+  <p class="src">
+    Source:
+    <a href="https://github.com/wulffern/aic2026/blob/main/ex/antenna_diode_leakage.py">ex/antenna_diode_leakage.py</a>,
+    which reuses the n<sub>i</sub>(T) derivation from
+    <a href="https://github.com/wulffern/aic2026/blob/main/ex/vd.py">ex/vd.py</a>.
+    The script normalises to 1 &micro;m<sup>2</sup>; leakage scales linearly
+    with area, so the area slider just multiplies.
+  </p>
+</div>
+
+<footer>
+  TFE4188 Advanced Integrated Circuits &middot; <a href="https://wulffern.github.io/aic2026/">aic2026</a>
+</footer>
+
+<script src="common/plot.js"></script>
+<script src="common/semi.js"></script>
+<script>
+'use strict';
+
+const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+
+const S = {};
+let D = null;
+
+const T_REF = 300.0;
+const ETCH = [300, 375];        // plasma etch, cooled chuck
+const DEPO = [470, 675];        // PECVD / HDP-CVD / sputter
+
+const fmts = {
+  na:    v => '1e' + v.toFixed(1) + ' /cm3',
+  nd:    v => '1e' + v.toFixed(1) + ' /cm3',
+  vr:    v => v.toFixed(2) + ' V',
+  area:  v => Math.pow(10, v).toPrecision(2) + ' um^2',
+  tau:   v => eng(Math.pow(10, v), 's'),
+  eg:    v => v.toFixed(3) + ' eV',
+  tmark: v => v + ' K = ' + (v - 273.15).toFixed(0) + ' C',
+};
+
+function eng(v, unit) {
+  const p = [[1e-21, 'z'], [1e-18, 'a'], [1e-15, 'f'], [1e-12, 'p'], [1e-9, 'n'],
+             [1e-6, 'u'], [1e-3, 'm'], [1, ''], [1e3, 'k'], [1e6, 'M'], [1e9, 'G']];
+  for (let i = p.length - 1; i >= 0; i--) {
+    if (Math.abs(v) >= p[i][0]) return (v / p[i][0]).toPrecision(3) + ' ' + p[i][1] + unit;
+  }
+  return v.toExponential(2) + ' ' + unit;
+}
+
+/** Everything the model needs at one temperature. */
+function at(T) {
+  const NA = Math.pow(10, S.na), ND = Math.pow(10, S.nd);
+  const A = Math.pow(10, S.area) * 1e-8;         // um^2 -> cm^2
+  const Eg = S.eg * SEMI.eV;
+  const s = S.tdep ? Math.pow(T / T_REF, -1.4) : 1;
+  const st = S.tdep ? Math.pow(T / T_REF, -0.5) : 1;
+  const tau0 = Math.pow(10, S.tau);
+  const dev = { A, NA, ND, Dn: 36 * s, Dp: 12 * s, tau_n: tau0 * st, tau_p: tau0 * st, Eg };
+
+  const Is = SEMI.isat(T, dev);
+  const W = SEMI.depletionWidth(T, NA, ND, S.vr, Eg);
+  const Igen = SEMI.igen(T, A, W, 2 * dev.tau_n, Eg);
+  return { Is, Igen, leak: Is + Igen, W, vbi: SEMI.vbi(T, NA, ND, Eg), ni: SEMI.ni(T, Eg) };
+}
+
+function compute() {
+  const n = 401;
+  const T = new Float64Array(n);
+  const Is = new Float64Array(n), Igen = new Float64Array(n), leak = new Float64Array(n);
+  const W = new Float64Array(n), vbi = new Float64Array(n), ni = new Float64Array(n);
+  let cross = null;
+  for (let i = 0; i < n; i++) {
+    T[i] = 200 + 800 * i / (n - 1);
+    const r = at(T[i]);
+    Is[i] = r.Is; Igen[i] = r.Igen; leak[i] = r.leak;
+    W[i] = r.W * 1e7;                 // cm -> nm
+    vbi[i] = r.vbi; ni[i] = r.ni;
+    if (cross === null && i > 0 && Is[i] >= Igen[i]) cross = T[i];
+  }
+
+  const m = at(S.tmark);
+  D = { T, Is, Igen, leak, W, vbi, ni, cross, m };
+
+  UI.readout('ro-leak', eng(m.leak, 'A'));
+  UI.readout('ro-dom', m.Is > m.Igen
+    ? 'diffusion (' + (m.Is / m.leak * 100).toFixed(0) + '%)'
+    : 'generation (' + (m.Igen / m.leak * 100).toFixed(0) + '%)');
+  UI.readout('ro-cross', cross === null ? 'outside 200-1000 K'
+                                        : cross.toFixed(0) + ' K = ' + (cross - 273.15).toFixed(0) + ' C');
+  UI.readout('ro-w', (m.W * 1e7).toPrecision(3) + ' nm');
+  // Q = C dV, so t = C dV / I. A useful way to feel what the leakage means on
+  // a high-impedance node.
+  UI.readout('ro-droop', eng(1e-15 * 0.1 / m.leak, 's'));
+}
+
+function render(cx, W, H, narrow) {
+  if (!D) return;
+  const g = Plot.grid(W, H, narrow ? 4 : 2, narrow ? 1 : 2, { gapY: 24, gapX: 22 });
+
+  // ── Leakage ──────────────────────────────────────────────────────────────
+  const [llo, lhi] = Plot.extent(D.leak);
+  const p0 = new Plot.Panel(cx, g[0], {
+    title: 'Reverse leakage, n+/p-well antenna diode',
+    ylabel: 'Leakage [A]', xlabel: 'Temperature [K]', ylog: true, margin: { l: 66 },
+  });
+  p0.limits(200, 1000, Math.pow(10, Math.floor(Math.log10(Math.max(llo, 1e-30)))),
+                       Math.pow(10, Math.ceil(Math.log10(lhi)))).frame();
+  if (S.bands) {
+    p0.vspan(ETCH[0], ETCH[1], css('--error'), 0.13);
+    p0.vspan(DEPO[0], DEPO[1], css('--alt2'), 0.13);
+  }
+  p0.line(D.T, D.Is, css('--curve'));
+  p0.line(D.T, D.Igen, css('--quant'));
+  p0.line(D.T, D.leak, css('--digi'), { width: 2 });
+  p0.vline(S.tmark, css('--sample'), [3, 3]);
+  p0.legend([
+    { label: 'Diffusion I_S', color: css('--curve') },
+    { label: 'Generation I_gen', color: css('--quant') },
+    { label: 'Total', color: css('--digi'), width: 2 },
+  ], 'tl');
+
+  // ── n_i ──────────────────────────────────────────────────────────────────
+  const [nlo, nhi] = Plot.extent(D.ni);
+  const p1 = new Plot.Panel(cx, g[1], {
+    title: 'Intrinsic carrier concentration',
+    ylabel: 'n_i [1/cm^3]', xlabel: 'Temperature [K]', ylog: true, margin: { l: 66 },
+  });
+  p1.limits(200, 1000, Math.pow(10, Math.floor(Math.log10(nlo))),
+                       Math.pow(10, Math.ceil(Math.log10(nhi)))).frame();
+  p1.line(D.T, D.ni, css('--curve'), { width: 1.5 });
+  p1.vline(S.tmark, css('--sample'), [3, 3]);
+  p1.note(0.03, 0.9, 'I_S goes as n_i^2\nI_gen goes as n_i', css('--muted'));
+
+  // ── Built-in voltage ─────────────────────────────────────────────────────
+  const p2 = new Plot.Panel(cx, g[2], {
+    title: 'Built-in voltage', ylabel: 'V_bi [V]', xlabel: 'Temperature [K]',
+  });
+  const [vlo, vhi] = Plot.padExtent(...Plot.extent(D.vbi), 0.1);
+  p2.limits(200, 1000, Math.min(0, vlo), vhi).frame();
+  p2.hline(0, css('--grid'));
+  p2.line(D.T, D.vbi, css('--digi'), { width: 1.5 });
+  p2.vline(S.tmark, css('--sample'), [3, 3]);
+  p2.note(0.03, 0.32, 'V_bi collapses as n_i approaches\nthe doping: the junction stops\nbeing a junction',
+          css('--muted'));
+
+  // ── Depletion width ──────────────────────────────────────────────────────
+  const p3 = new Plot.Panel(cx, g[3], {
+    title: 'Depletion width', ylabel: 'W [nm]', xlabel: 'Temperature [K]',
+  });
+  const [wlo, whi] = Plot.padExtent(...Plot.extent(D.W), 0.1);
+  p3.limits(200, 1000, Math.min(0, wlo), whi).frame();
+  p3.line(D.T, D.W, css('--quant'), { width: 1.5 });
+  p3.vline(S.tmark, css('--sample'), [3, 3]);
+  p3.note(0.03, 0.12, 'one-sided junction: W set by N_A', css('--muted'));
+}
+
+const chart = Plot.mount('c', { aspect: 0.52, aspectNarrow: 1.9, draw: render });
+UI.bind(S, fmts, () => { compute(); chart.redraw(); });
+compute();
+chart.redraw();
+</script>
+</body>
+</html>

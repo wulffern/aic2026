@@ -1,0 +1,173 @@
+\input{tikz/fig_header.tex}
+
+% General-purpose fully differential Gm-C biquad.
+%
+% Topology, read off the original artwork and checked against the transfer
+% function.  v_A is the node C_A sits on, v_B = v_out is the node C_B sits on.
+%
+%   Gm1 senses v_out, output CROSSED into node A       -> -Gm1 v_out
+%   Gm4 drives node A straight from v_in                ->  +Gm4 v_in
+%   Gm2 drives node B straight from node A              ->  +Gm2 v_A
+%   Gm5 drives node B straight from v_in                ->  +Gm5 v_in
+%   Gm3 sits across node B with its output CROSSED, so it is a resistor
+%       of 1/Gm3 damping that node
+%   2C_X per rail couples v_in to v_out
+%
+%   s C_A v_A = Gm4 v_in - Gm1 v_out
+%   s(C_B+C_X) v_out + Gm3 v_out = Gm2 v_A + Gm5 v_in + s C_X v_in
+%
+%   v_out/v_in = [s^2 C_X/(C_X+C_B) + s Gm5/(C_X+C_B) + Gm2 Gm4/(C_A(C_X+C_B))]
+%                / [s^2 + s Gm3/(C_X+C_B) + Gm1 Gm2/(C_A(C_X+C_B))]
+%
+% which is the H(s) both lectures print, except that the damping term in the
+% denominator is Gm3 -- the transconductor actually wired across node B --
+% where the lecture text writes Gm2.  Gm2 already appears in the omega_0^2
+% term and in the numerator, so it cannot also be the damping element.
+%
+% The C_X capacitors are drawn one per rail and labelled 2C_X, as in the
+% original: a cross-connected C has half-circuit value 2C, so 2C_X per rail
+% and 2C_B across the rails put C_X and C_B on the same footing in H(s).
+
+\begin{circuitikz}[american, thick, transform shape]
+
+  % ---- rows ----
+  \def\yop{8.6}    % V_out+ rail
+  \def\yu{7.3}     % upper internal rail
+  \def\yl{6.0}     % lower internal rail
+  \def\yon{4.7}    % V_out- rail
+  \def\ybu{4.0}    % V_in+ carried across the bottom section
+  \def\yip{3.05}   % V_in+ rail
+  \def\yin{1.75}   % V_in- rail
+  \def\ybl{0.8}    % V_in- carried across the bottom section
+
+  % ---- a fully differential transconductor -------------------------------
+  % (#1,#2) is the left edge on the lower rail; the upper rail is 1.3 above.
+  % Body is 1.2 x 2.2 with the two right corners chamfered, as in the
+  % original.  Both left and right terminals are + on the upper rail and -
+  % on the lower one.
+  \newcommand{\gmBlock}[3]{%
+    \draw (#1,#2-0.45) -- (#1,#2+1.75) -- (#1+0.85,#2+1.75)
+       -- (#1+1.2,#2+1.4) -- (#1+1.2,#2-0.1) -- (#1+0.85,#2-0.45) -- cycle;
+    \draw (#1+0.08,#2+1.3) -- (#1+0.46,#2+1.3);
+    \draw (#1+0.27,#2+1.11) -- (#1+0.27,#2+1.49);
+    \draw (#1+0.74,#2+1.3) -- (#1+1.12,#2+1.3);
+    \draw (#1+0.93,#2+1.11) -- (#1+0.93,#2+1.49);
+    \draw (#1+0.08,#2) -- (#1+0.46,#2);
+    \draw (#1+0.74,#2) -- (#1+1.12,#2);
+    \node at (#1+0.6,#2+0.65) {#3};
+  }
+
+  % An output swap: the two rails cross between #1 and #1+0.7.
+  \newcommand{\gmCross}[3]{%
+    \draw (#1,#2) -- (#1+0.7,#3);
+    \draw (#1,#3) -- (#1+0.7,#2);
+  }
+
+  % A capacitor between the two rails at x=#1, label below right.
+  \newcommand{\gmVcap}[4]{%
+    \draw (#1,#3) -- (#1,#3-0.59);
+    \draw (#1-0.34,#3-0.59) -- (#1+0.34,#3-0.59);
+    \draw (#1-0.34,#3-0.71) -- (#1+0.34,#3-0.71);
+    \draw (#1,#3-0.71) -- (#1,#2);
+    \node[anchor=north west] at (#1+0.06,#3-0.72) {#4};
+  }
+
+  % A capacitor in a horizontal run, from #1 to #1+1.6 at height #2.  The
+  % label goes to the right of the plates, #4 units off the rail, so the two
+  % C_X labels sit clear of the rail each is drawn on.
+  \newcommand{\gmHcap}[4]{%
+    \draw (#1,#2) -- (#1+0.74,#2);
+    \draw (#1+0.74,#2-0.28) -- (#1+0.74,#2+0.28);
+    \draw (#1+0.86,#2-0.28) -- (#1+0.86,#2+0.28);
+    \draw (#1+0.86,#2) -- (#1+1.6,#2);
+    \node[anchor=west] at ({#1+0.94},{#2+(#4)}) {#3};
+  }
+
+  \newcommand{\gmDot}[2]{\fill (#1,#2) circle (0.075);}
+
+  % ======================= biquad core ====================================
+  % Outer rails carry V_out back to Gm1 and forward to the ports.
+  \draw (0.4,\yop) -- (13.0,\yop);
+  \draw (0.4,\yon) -- (13.0,\yon);
+  \draw (0.4,\yop) -- (0.4,\yu) -- (1.3,\yu);
+  \draw (0.4,\yon) -- (0.4,\yl) -- (1.3,\yl);
+
+  \gmBlock{1.3}{\yl}{$G_{m1}$}
+
+  % Gm1's output is crossed, which is what makes the loop negative
+  \draw (2.5,\yu) -- (3.2,\yu);
+  \draw (2.5,\yl) -- (3.2,\yl);
+  \gmCross{3.2}{\yl}{\yu}
+  \draw (3.9,\yu) -- (5.8,\yu);
+  \draw (3.9,\yl) -- (5.8,\yl);
+
+  \gmVcap{5.0}{\yl}{\yu}{$C_{A}$}
+  \gmDot{5.0}{\yu} \gmDot{5.0}{\yl}
+
+  \gmBlock{5.8}{\yl}{$G_{m2}$}
+
+  \draw (7.0,\yu) -- (9.8,\yu);
+  \draw (7.0,\yl) -- (9.8,\yl);
+
+  % Node B is the output node: C_B across it and a tap to each outer rail
+  \gmVcap{8.9}{\yl}{\yu}{$C_{B}$}
+  \draw (8.9,\yop) -- (8.9,\yu);
+  \draw (8.9,\yl) -- (8.9,\yon);
+  \gmDot{8.9}{\yop} \gmDot{8.9}{\yu} \gmDot{8.9}{\yl} \gmDot{8.9}{\yon}
+
+  % Gm3 across node B, output crossed: a 1/Gm3 damping resistor
+  \gmBlock{9.8}{\yl}{$G_{m3}$}
+  \draw (11.0,\yu) -- (11.5,\yu);
+  \draw (11.0,\yl) -- (11.5,\yl);
+  \gmCross{11.5}{\yl}{\yu}
+  \draw (12.2,\yu) -- (12.6,\yu) -- (12.6,\yop);
+  \draw (12.2,\yl) -- (12.6,\yl) -- (12.6,\yon);
+  \gmDot{12.6}{\yop} \gmDot{12.6}{\yon}
+
+  % Output ports
+  \draw (13.09,\yop) circle (0.09);
+  \draw (13.09,\yon) circle (0.09);
+  \node[anchor=west] at (13.28,\yop) {$+$};
+  \node[anchor=west] at (13.28,\yon) {$-$};
+  \node[anchor=west] at (13.3,6.65) {$V_{out}$};
+
+  % ======================= input transconductors ==========================
+  \draw (0.59,\yip) -- (1.5,\yip);
+  \draw (0.59,\yin) -- (1.5,\yin);
+  \draw (0.5,\yip) circle (0.09);
+  \draw (0.5,\yin) circle (0.09);
+  \node[anchor=east] at (0.3,\yip) {$+$};
+  \node[anchor=east] at (0.3,\yin) {$-$};
+  \node[anchor=east] at (0.44,2.4) {$V_{in}$};
+
+  \gmBlock{1.5}{\yin}{$G_{m4}$}
+
+  % Gm4 straight into node A
+  \draw (2.7,\yip) -- (3.2,\yip) -- (4.4,\yu);
+  \draw (2.7,\yin) -- (3.2,\yin) -- (4.4,\yl);
+  \gmDot{4.4}{\yu} \gmDot{4.4}{\yl}
+
+  % V_in carried across to Gm5 and to the C_X branches
+  \draw (1.0,\yip) -- (1.0,\ybu) -- (4.6,\ybu);
+  \draw (1.0,\yin) -- (1.0,\ybl) -- (4.6,\ybl);
+  \gmDot{1.0}{\yip} \gmDot{1.0}{\yin}
+  \draw (4.0,\ybu) -- (4.0,\yip) -- (4.6,\yip);
+  \draw (4.0,\ybl) -- (4.0,\yin) -- (4.6,\yin);
+  \gmDot{4.0}{\ybu} \gmDot{4.0}{\ybl}
+
+  \gmBlock{4.6}{\yin}{$G_{m5}$}
+
+  % 2C_X from V_in to V_out, one per rail
+  \gmHcap{4.6}{\ybu}{$2C_{X}$}{0.36}
+  \gmHcap{4.6}{\ybl}{$2C_{X}$}{-0.36}
+  \draw (6.2,\ybu) -- (6.6,\ybu) -- (6.6,\yip);
+  \draw (6.2,\ybl) -- (6.6,\ybl) -- (6.6,\yin);
+  \gmDot{6.6}{\yip} \gmDot{6.6}{\yin}
+
+  % Gm5 straight into node B
+  \draw (5.8,\yip) -- (6.9,\yip) -- (8.1,\yu);
+  \draw (5.8,\yin) -- (6.9,\yin) -- (8.1,\yl);
+  \gmDot{8.1}{\yu} \gmDot{8.1}{\yl}
+
+\end{circuitikz}
+\end{document}

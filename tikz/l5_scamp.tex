@@ -1,0 +1,25 @@
+\input{tikz/fig_header.tex}
+
+% Switched-capacitor gain stage. Phase 1 samples V_i onto C1 and resets C2;
+% phase 2 grounds C1's left plate and hands its charge to C2 through the OTA,
+% giving V_o[n+1] = (C1/C2) V_i[n].
+%
+% Shares \scAmpFrame with l5_scint, which is this circuit with the C2 reset
+% switch removed. That one switch is the whole difference between a gain and
+% an integrator.
+
+\begin{circuitikz}[american, transform shape]
+
+  \input{tikz/ckt_lib.tex}
+  \input{tikz/sc_lib.tex}
+
+  \scAmpFrame
+
+  % The reset across C2, closed in phase 1
+  \draw[thick] (\scAmpXrl,\scAmpYctwo) -- (\scAmpXrl,\scAmpYrst);
+  \scSwH{\scAmpXrl}{\scAmpYrst}{1}
+  \draw[thick] (5.9,\scAmpYrst) -- (\scAmpXrr,\scAmpYrst) -- (\scAmpXrr,\scAmpYctwo);
+  \fill (\scAmpXrr,\scAmpYctwo) circle (0.07);
+
+\end{circuitikz}
+\end{document}

@@ -501,7 +501,7 @@ You may have seen the last equation before, now you know where it comes from.
 
 ## Understanding quantization
 
-Below I've tried to visualize the quantization process [q.py](https://github.com/wulffern/aic2023/blob/main/ex/q.py). 
+Below I've tried to visualize the quantization process [q.py](https://github.com/wulffern/aic2026/blob/main/ex/q.py), which also exists as an [interactive page](https://wulffern.github.io/aic2026/assets/examples/quantization.html) where the number of bits is a slider and the SQNR is measured for you. 
 
 The left most plot is a sinusoid signal and random      Gaussian noise. The signal is not a continuous time signal, since that's not possible on a digital computer, but it's an approximation. 
 
@@ -734,7 +734,7 @@ For an OSR of 4 we can notice how the noise floor has 4 zero's.
 
 <!--pan_doc:
 
-The code for the plots is  [osr.py](https://github.com/wulffern/aic2023/blob/main/ex/osr.py). I would encourage you to play a bit with the code, and make sure you understand oversampling.
+The code for the plots is  [osr.py](https://github.com/wulffern/aic2026/blob/main/ex/osr.py). I would encourage you to play a bit with the code, and make sure you understand oversampling. If you would rather drag a slider than edit a file, the [interactive version](https://wulffern.github.io/aic2026/assets/examples/oversampling.html) plots the measured in-band SNR against OSR next to the ideal 3 dB per octave.
 
 -->
 
@@ -1076,7 +1076,7 @@ Assume 1-bit quantizer, what would be the maximum ENOB?
 ## Python noise-shaping 
 
 I want to demystify noise-shaping modulators. I think one way to do that is
-to show some code. You can find the code at [sd_1st.py](https://github.com/wulffern/aic2023/blob/main/ex/sd_1st.py) 
+to show some code. You can find the code at [sd_1st.py](https://github.com/wulffern/aic2026/blob/main/ex/sd_1st.py), and an [interactive version](https://wulffern.github.io/aic2026/assets/examples/sigma-delta.html) that runs the same loop in your browser and decodes the bitstream back into the input. 
 
 Below we can see an excerpt. Again pretty stupid code, and I'm sure it's possible to make a faster version (for loops in python are notoriously slow).
 
@@ -1241,14 +1241,14 @@ a third order NTF with a zero at zero frequency and a complex conjugate pole at 
 ### Complex Sigma-Delta
 
 There are cool sigma-delta modulators with crazy configurations 
-and that may look like an exercise in "Let's make something complex", however, most of them have a reasonable application. One example is the one below for radio recievers 
+and that may look like an exercise in "Let's make something complex", however, most of them have a reasonable application. One example is the one below for radio receivers 
 -->
 
 [A 56 mW Continuous-Time Quadrature Cascaded Sigma-Delta Modulator With 77 dB DR in a Near Zero-IF
 20 MHz Band](https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=4381437)
 
 
-![inline](../media/qt_sd.png)![inline](../media/qt_sd_response.png)
+![inline](../media/qt_sd.png)
 
 ---
 

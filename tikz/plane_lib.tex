@@ -12,7 +12,6 @@
 %% Every name is prefixed: short generic names collide with LaTeX built-ins.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\definecolor{axisblue}{rgb}{0.16,0.16,0.55}
 \definecolor{stablegreen}{rgb}{0.00,0.45,0.20}
 \definecolor{unstablered}{rgb}{0.90,0.20,0.10}
 
@@ -23,14 +22,14 @@
 
 % The two axes. #1 labels the real axis, #2 the imaginary one.
 \newcommand{\planeAxes}[2]{%
-  \draw[axisblue, thick, ->] (-\planeXmax,0) -- (\planeXmax,0);
-  \node[axisblue, anchor=north] at (\planeXmax-0.25,-0.22) {#1};
-  \draw[axisblue, thick, <->] (0,-\planeYmax) -- (0,\planeYmax);
-  \node[axisblue, anchor=west] at (0.22,\planeYmax-0.28) {#2};
+  \draw[thick, ->] (-\planeXmax,0) -- (\planeXmax,0);
+  \node[anchor=north] at (\planeXmax-0.25,-0.22) {#1};
+  \draw[thick, <->] (0,-\planeYmax) -- (0,\planeYmax);
+  \node[anchor=west] at (0.22,\planeYmax-0.28) {#2};
 }
 
 % The unit circle, drawn heavy because it is the thing that matters.
-\newcommand{\planeCircle}{\draw[axisblue, ultra thick] (0,0) circle (\planeR);}
+\newcommand{\planeCircle}{\draw[ultra thick] (0,0) circle (\planeR);}
 
 % A pole: colour, then position in units of the radius.
 \newcommand{\planePole}[3]{%

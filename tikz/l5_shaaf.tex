@@ -11,9 +11,9 @@
 % removed them before sampling, so there is nothing left to fold in. Contrast
 % with l5_sh, where the same four tones land inside the band.
 
-\input{tikz/spec_lib.tex}
-
 \begin{circuitikz}[american, transform shape]
+
+  \input{tikz/spec_lib.tex}
 
   % ---- Before sampling: the low pass passes the signal, not the tones ----
   \specAxis{\specYtop}
@@ -41,8 +41,8 @@
   \specBlock{7.0}{2.0}{S/H}
   \specWire{8.5}{9.2}{2.0}
 
-  \node[annotblue, anchor=south] at (5.65,3.3) {Anti-alias};
-  \draw[annotblue, thick, ->] (5.65,3.25) -- (5.65,2.55);
+  \node[anchor=south] at (5.65,3.3) {Anti-alias};
+  \draw[thick, ->] (5.65,3.25) -- (5.65,2.55);
 
 \end{circuitikz}
 \end{document}

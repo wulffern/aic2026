@@ -224,41 +224,6 @@ it's likely that you'll find analog flow interesting.
 ---
 
 
-[.column]
-
-
-<!--pan_doc:
-
-In this course, we'll focus on analog ICs, because the real world is analog, and all ICs must have some 
-analog components, otherwise they won't work.
-
-The steps to make integrated circuits is split in two. We have an analog flow, and a digital flow, as shown in Figure 3. 
-
-It's rare to find a single human that do both flows well. Usually people choose, and I think it's based on what they like and their personality.
-
-If you like the world to be ordered, with definite answers, then it's likely that you'll find the digital flow interesting.
-
-If you're comfortable with not knowing, and an insatiable desire to understand how the world *really* works at a fundamental level, then 
-it's likely that you'll find analog flow interesting. 
-
-
-![inline](../media/dig_des.svg)
-
-<!--pan_doc:
-<sub>Figure 3: Analog and Digital design process  </sub>
--->
-
-
--->
-
-<!--pan_skip: -->
-
-![inline](../media/analog_world.png)
-
-<sub> [https://circuitcellar.com/insights/tech-the-future/kinget-the-world-is-analog/](https://circuitcellar.com/insights/tech-the-future/kinget-the-world-is-analog/)</sub>
-
----
-
 <!--pan_skip: -->
 
 ![inline](../media/dig_des_lr.svg)

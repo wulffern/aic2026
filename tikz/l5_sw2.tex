@@ -1,0 +1,79 @@
+\input{tikz/fig_header.tex}
+
+% Two ways of stopping the on resistance from depending on the signal.
+%
+% Left: switch the bulks. Both wells follow the input while the gate is on, so
+% neither device sees a body effect, and both are returned to their supply rail
+% when the gate is off so the junctions stay reverse biased. It is cheap, and
+% sometimes it is enough.
+%
+% Right: bootstrap the gate. The capacitor is charged to V_DD while the switch
+% is off and then floated on top of the input, so V_GS is the supply no matter
+% where the input sits. The block itself is in tikz/boot_lib.tex, because
+% l5_sw3 draws two more of them.
+%
+% The original leaves the far ends of the two bulk networks as bare symbols.
+% They are the supply rails: the n-well goes to V_DD and the p-substrate to
+% ground when the switch is off, which is the only bias that keeps both
+% junctions reverse biased.
+
+\begin{circuitikz}[american, transform shape]
+
+  \input{tikz/boot_lib.tex}
+
+  % ================= Left: transmission gate with switched bulks =========
+
+  % ---- The two pass devices ----
+  \draw[thick] (-0.9,1.6) to [Tpmos, n=TP, bulk] (0.9,1.6);
+  \draw[thick] (TP.gate) -- (0,3.0);
+  \bootPort{0,3.1}{south}{$\overline{c}$}
+  \draw[thick] (-0.9,-1.6) to [Tnmos, n=TN, mirror, bulk] (0.9,-1.6);
+  \draw[thick] (TN.gate) -- (0,-3.0);
+  \bootPort{0,-3.1}{north}{$c$}
+
+  % ---- Source and drain rails ----
+  \draw[thick] (-2.6,1.6) -- (-0.9,1.6);
+  \draw[thick] (-2.6,-1.6) -- (-0.9,-1.6);
+  \draw[thick] (-2.6,1.6) -- (-2.6,-1.6);
+  \draw[thick] (0.9,1.6) -- (2.6,1.6);
+  \draw[thick] (0.9,-1.6) -- (2.6,-1.6);
+  \draw[thick] (2.6,1.6) -- (2.6,-1.6);
+  \draw[thick] (-3.3,0) -- (-2.6,0);
+  \fill (-2.6,0) circle (0.07);
+  \bootPort{-3.4,0}{east}{$A$\;}
+  \draw[thick] (2.6,0) -- (3.3,0);
+  \fill (2.6,0) circle (0.07);
+  \bootPort{3.4,0}{west}{\;$B$}
+
+  % ---- n-well: to A while the gate is on, to V_DD while it is off ----
+  \draw[thick] (TP.bulk) -- (0,0.8);
+  \draw[thick] (-2.6,0.8) -- (-2.3,0.8);
+  \fill (-2.6,0.8) circle (0.07);
+  \bootSwH{-2.3}{0.8}{$c$}
+  \draw[thick] (-1.3,0.8) -- (0.4,0.8);
+  \fill (0,0.8) circle (0.07);
+  \bootSwH{0.4}{0.8}{$\overline{c}$}
+  \draw[thick, ->] (1.4,0.8) -- (2.1,0.8);
+  \node[anchor=south] at (2.0,0.92) {$V_{DD}$};
+
+  % ---- p-substrate: to A while the gate is on, to ground while it is off ----
+  \draw[thick] (TN.bulk) -- (0,-0.8);
+  \draw[thick] (-2.6,-0.8) -- (-2.3,-0.8);
+  \fill (-2.6,-0.8) circle (0.07);
+  \bootSwH{-2.3}{-0.8}{$c$}
+  \draw[thick] (-1.3,-0.8) -- (0.4,-0.8);
+  \fill (0,-0.8) circle (0.07);
+  \bootSwH{0.4}{-0.8}{$\overline{c}$}
+  \draw[thick] (1.4,-0.8) -- (1.9,-0.8);
+  \bootGndR{1.9}{-0.8}
+
+  % ================= Right: bootstrapped gate =================
+
+  \begin{scope}[shift={(8.0,0)}]
+    \bootBlock{MB}
+    \bootPort{-3.3,0}{east}{$A$\;}
+    \bootPort{6.9,0}{west}{\;$B$}
+  \end{scope}
+
+\end{circuitikz}
+\end{document}

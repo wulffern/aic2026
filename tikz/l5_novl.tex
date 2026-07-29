@@ -1,0 +1,98 @@
+\input{tikz/fig_header.tex}
+
+% The non-overlap clock generator, and the waveforms it produces.
+%
+% Two cross-coupled NOR gates. Each output is fed back through a delay of two
+% inverters into the other gate, so neither output can go high until the other
+% has gone low and the delay has run out. That gap is the whole point of the
+% circuit, so the right hand panel marks it.
+%
+% The original draws the two phases in green and red. They sit on separate
+% baselines and carry their own labels, so the colour is not doing any work and
+% both are drawn in black here.
+%
+% The delay chain is two inverters, not one: an odd number would invert the
+% feedback and latch the generator.
+
+\newcommand{\novlT}{1.9}         % clock period in the waveform panel
+\newcommand{\novlX}{12.2}        % left edge of the waveform panel
+\newcommand{\novlH}{1.0}         % logic swing
+
+% One square wave: baseline, rising edge as a fraction of the period, falling
+% edge as a fraction of the period. Three periods.
+\newcommand{\novlWave}[3]{%
+  \foreach \k in {0,1,2} {
+    \draw[thick] ({\novlX+\k*\novlT},#1) -- ({\novlX+(\k+#2)*\novlT},#1)
+      -- ({\novlX+(\k+#2)*\novlT},#1+\novlH)
+      -- ({\novlX+(\k+#3)*\novlT},#1+\novlH)
+      -- ({\novlX+(\k+#3)*\novlT},#1)
+      -- ({\novlX+(\k+1)*\novlT},#1);
+  }
+}
+
+% A labelled terminal.
+\newcommand{\novlPort}[3]{%
+  \draw[thick] (#1) circle (0.09);
+  \node[anchor=#2] at (#1) {#3};
+}
+
+\begin{circuitikz}[american, transform shape]
+
+  \ctikzset{logic ports=american}
+
+  % ---- The two NOR gates ----
+  \node[nor port] (N1) at (5.6,2.4) {};
+  \node[nor port] (N2) at (5.6,-2.4) {};
+
+  % ---- Clock in, straight to the top gate and inverted to the bottom one ----
+  % The clock rail sits at the gate's own input height, so it arrives without a
+  % bend: a right-angle spur into the side of a gate reads as a second input.
+  \coordinate (CK) at (0.3,0 |- N1.in 1);
+  \coordinate (CKT) at (1.3,0 |- N1.in 1);
+  \novlPort{CK}{east}{$\mathrm{Clk}$\;}
+  \draw[thick] (CK) -- (N1.in 1);
+  \fill (CKT) circle (0.07);
+  \node[not port, rotate=-90] (INV) at (1.3,1.0) {};
+  \draw[thick] (CKT) -- (INV.in 1);
+  \draw[thick] (INV.out) |- (N2.in 2);
+
+  % ---- Outputs ----
+  \draw[thick] (N1.out) -- (10.4,2.4);
+  \novlPort{10.5,2.4}{west}{\;$\phi_{1}$}
+  \draw[thick] (N2.out) -- (10.4,-2.4);
+  \novlPort{10.5,-2.4}{west}{\;$\phi_{2}$}
+
+  % ---- phi_1 delayed by two inverters into the bottom gate ----
+  \fill (9.4,2.4) circle (0.07);
+  \draw[thick] (9.4,2.4) -- (9.4,1.0);
+  \node[not port, xscale=-1] (D1a) at (8.4,1.0) {};
+  \node[not port, xscale=-1] (D1b) at (6.8,1.0) {};
+  \draw[thick] (9.4,1.0) -- (D1a.in 1);
+  \draw[thick] (D1a.out) -- (D1b.in 1);
+  \draw[thick] (D1b.out) -- (3.8,1.0) |- (N2.in 1);
+
+  % ---- phi_2 delayed the same way into the top gate ----
+  \fill (9.4,-2.4) circle (0.07);
+  \draw[thick] (9.4,-2.4) -- (9.4,-1.0);
+  \node[not port, xscale=-1] (D2a) at (8.4,-1.0) {};
+  \node[not port, xscale=-1] (D2b) at (6.8,-1.0) {};
+  \draw[thick] (9.4,-1.0) -- (D2a.in 1);
+  \draw[thick] (D2a.out) -- (D2b.in 1);
+  \draw[thick] (D2b.out) -- (3.4,-1.0) |- (N1.in 2);
+
+  % ---- Waveforms ----
+  % phi_1 high over [0.05T, 0.45T], phi_2 over [0.55T, 0.95T]: a tenth of a
+  % period of dead time at every handover, in both directions.
+  \novlWave{1.5}{0.05}{0.45}
+  \node[anchor=east] at (\novlX-0.15,1.5+0.5*\novlH) {$\phi_{1}$};
+  \novlWave{-1.5}{0.55}{0.95}
+  \node[anchor=east] at (\novlX-0.15,-1.5+0.5*\novlH) {$\phi_{2}$};
+
+  % The gap between phi_1 falling and phi_2 rising.
+  \draw[dotted, thick] ({\novlX+1.45*\novlT},-2.0) -- ({\novlX+1.45*\novlT},3.4);
+  \draw[dotted, thick] ({\novlX+1.55*\novlT},-2.0) -- ({\novlX+1.55*\novlT},3.4);
+  \draw[thick, <-] ({\novlX+1.5*\novlT},3.5) -- ++(0.5,0.6);
+  \node[anchor=west] at ({\novlX+1.5*\novlT+0.55},4.15) {Non-overlap};
+
+\end{circuitikz}
+\end{document}

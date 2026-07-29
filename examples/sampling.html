@@ -1,0 +1,338 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sampling &mdash; aic2026</title>
+<link rel="stylesheet" href="common/aic.css">
+</head>
+<body>
+
+<header>
+  <h1>SAMPLING</h1>
+  <div class="sub">
+    <a href="index.html">&larr; all examples</a> &middot;
+    interactive version of <a href="https://github.com/wulffern/aic2026/blob/main/ex/dt.py">ex/dt.py</a>
+    and <a href="https://github.com/wulffern/aic2026/blob/main/ex/sub.py">ex/sub.py</a> &middot;
+    switched capacitor circuits
+  </div>
+</header>
+
+<div id="chain">
+  <div class="cb on">SIGNAL</div><span class="ca">&rarr;</span>
+  <div class="cb" id="cb-noise">NOISE</div><span class="ca">&rarr;</span>
+  <div class="cb" id="cb-side">SIDEBANDS</div><span class="ca">&times;</span>
+  <div class="cb on">PULSE TRAIN</div><span class="ca">&rarr;</span>
+  <div class="cb on">FFT</div>
+</div>
+
+<canvas id="c"></canvas>
+
+<div id="ctrl">
+  <div class="cg">
+    <div class="cgt">SIGNAL</div>
+    <div class="cr">
+      <label>f_1 bin</label>
+      <input type="range" data-bind="f1" id="sl-f1" min="1" max="2000" step="1" value="233">
+      <span class="v" id="v-f1"></span>
+    </div>
+    <div class="cr">
+      <label>&Delta;f bin</label>
+      <input type="range" data-bind="fd" id="sl-fd" min="0" max="600" step="1" value="119">
+      <span class="v" id="v-fd"></span>
+    </div>
+    <div class="cr">
+      <label>Sideband amp</label>
+      <input type="range" data-bind="side" id="sl-side" min="0" max="1" step="0.05" value="0.5">
+      <span class="v" id="v-side"></span>
+    </div>
+    <div class="cr">
+      <label>Noise</label>
+      <input type="range" data-bind="noisebits" id="sl-noisebits" min="0" max="16" step="1" value="10">
+      <span class="v" id="v-noisebits"></span>
+    </div>
+  </div>
+
+  <div class="cg">
+    <div class="cgt">SAMPLING</div>
+    <div class="cr">
+      <label>Period P</label>
+      <input type="range" data-bind="period" id="sl-period" min="2" max="64" step="1" value="8">
+      <span class="v" id="v-period"></span>
+    </div>
+    <div class="cr">
+      <label>On phases</label>
+      <input type="range" data-bind="on" id="sl-on" min="1" max="32" step="1" value="2">
+      <span class="v" id="v-on"></span>
+    </div>
+    <div class="note">
+      The sampler is <code>t_s_unit</code> tiled over the record: P samples long,
+      the first &ldquo;on phases&rdquo; of them 1 and the rest 0.
+    </div>
+  </div>
+
+  <div class="cg">
+    <div class="cgt">ANALYSIS</div>
+    <div class="cr">
+      <label>Record N = 2^</label>
+      <input type="range" data-bind="nbits" id="sl-nbits" min="10" max="14" step="1" value="13">
+      <span class="v" id="v-nbits"></span>
+    </div>
+    <div class="cr">
+      <label>Time window</label>
+      <input type="range" data-bind="win" id="sl-win" min="32" max="2048" step="32" value="256">
+      <span class="v" id="v-win"></span>
+    </div>
+    <div class="ckrow">
+      <input type="checkbox" data-bind="hann" id="sl-hann" checked>
+      <label for="sl-hann">Hann window before the FFT</label>
+    </div>
+    <div class="ckrow">
+      <input type="checkbox" data-bind="coh" id="sl-coh">
+      <label for="sl-coh">Coherent sampling (integer t)</label>
+    </div>
+    <div class="ckrow">
+      <input type="checkbox" data-bind="marks" id="sl-marks" checked>
+      <label for="sl-marks">Mark the sampling images</label>
+    </div>
+  </div>
+</div>
+
+<div id="readout">
+  <div class="ro"><span class="k">f_s/f_c</span><span class="n" id="ro-fs"></span></div>
+  <div class="ro"><span class="k">DUTY</span><span class="n" id="ro-duty"></span></div>
+  <div class="ro"><span class="k">f_1/f_s</span><span class="n" id="ro-f1fs"></span></div>
+  <div class="ro"><span class="k">ALIAS OF f_1</span><span class="n" id="ro-alias"></span></div>
+</div>
+
+<div id="legend">
+  <div class="leg"><div class="lsw" style="background:var(--curve)"></div>Continuous time</div>
+  <div class="leg"><div class="lsw" style="background:var(--quant)"></div>Sampled</div>
+  <div class="leg"><div class="lsw" style="background:var(--sample)"></div>Signal frequency</div>
+  <div class="leg"><div class="lsw" style="background:var(--alt)"></div>Images at k&middot;f_s</div>
+</div>
+
+<div class="doc">
+  <h2>WHAT YOU ARE LOOKING AT</h2>
+  <p>
+    A digital computer cannot hold a continuous-time signal, so the top left
+    panel is an approximation: a record of N points, sampled so fast that we can
+    pretend it is continuous. Call that rate f<sub>c</sub>. It carries a tone at
+    f<sub>1</sub> and, unless you turn them off, two sidebands at
+    f<sub>1</sub> &plusmn; &Delta;f, plus a little Gaussian noise.
+  </p>
+  <p>
+    Sampling is a multiplication in the time domain by a pulse train: P samples
+    long, the first few of them 1 and the rest 0. Multiplication in time is
+    convolution in frequency, and the spectrum of a pulse train is a comb of
+    lines at every multiple of f<sub>s</sub> = f<sub>c</sub>/P with a sinc
+    envelope set by the duty cycle. So the sampled spectrum, bottom right, is
+    the original spectrum copied to every multiple of f<sub>s</sub>.
+  </p>
+
+  <h2>THINGS WORTH TRYING</h2>
+  <ul>
+    <li>
+      Raise <b>f_1 bin</b> past N/(2P). The tone crosses the Nyquist
+      frequency f<sub>s</sub>/2 and its image walks back down towards DC:
+      that is aliasing, and after sampling you cannot tell the two apart.
+      The alias readout tells you where it lands.
+    </li>
+    <li>
+      Turn the <b>Hann window</b> off. With no window the FFT sees a record
+      that does not contain a whole number of periods, the discontinuity at the
+      wrap-around smears energy across every bin, and the floor rises far enough
+      to bury the sidebands. This is why <code>np.hanning</code> is in every one
+      of these scripts.
+    </li>
+    <li>
+      Now tick <b>coherent sampling</b> as well. The time vector becomes
+      0, 1, 2, &hellip; instead of the script's
+      <code>np.linspace(0,N,N)</code>, every tone lands exactly on a bin, the
+      record wraps around seamlessly, and the unwindowed spectrum is suddenly
+      the cleanest of the four combinations. Coherent sampling is the
+      alternative to windowing, and it is better when you can arrange it &mdash;
+      with several tones and several rates you often cannot.
+    </li>
+    <li>
+      Push the <b>duty cycle</b> towards 1 (on phases = P). The images do not
+      move, but the sinc envelope narrows and the high-frequency images fade:
+      a long sampling phase is a low-pass filter on the images. Drop it to one
+      phase in 64 and every image is nearly the same height.
+    </li>
+    <li>
+      Set the <b>sideband amplitude</b> to 0 to get <code>ex/sub.py</code>'s
+      single-tone case, and drop the record length to 2<sup>10</sup> to watch
+      the noise floor rise: fewer FFT bins means the same noise power is shared
+      between fewer of them.
+    </li>
+  </ul>
+
+  <h2>THE PYTHON</h2>
+<pre><code>#- Create the "continuous time" signal
+f1 = 233/N
+fd = 1/N*119
+x_s = np.sin(2*np.pi*f1*t) + 1/1024*np.random.randn(N) \
+    + 0.5*np.sin(2*np.pi*(f1-fd)*t) + 0.5*np.sin(2*np.pi*(f1+fd)*t)
+
+#- Create the sampling vector, and the sampled signal
+t_s_unit = [1,1,0,0,0,0,0,0]
+t_s = np.tile(t_s_unit,int(N/len(t_s_unit)))
+x_sn = x_s*t_s
+
+#- Hanning window to avoid FFT bin energy spread
+w = np.hanning(N+1)
+X_s  = np.fft.fftshift(np.fft.fft(np.multiply(w[0:N],x_s)))
+X_sn = np.fft.fftshift(np.fft.fft(np.multiply(w[0:N],x_sn)))</code></pre>
+  <p class="src">
+    Source: <a href="https://github.com/wulffern/aic2026/blob/main/ex/dt.py">ex/dt.py</a>,
+    <a href="https://github.com/wulffern/aic2026/blob/main/ex/sub.py">ex/sub.py</a>.
+    The page uses the same formulas; the noise is seeded so the floor stays put
+    while you drag a slider.
+  </p>
+</div>
+
+<footer>
+  TFE4188 Advanced Integrated Circuits &middot; <a href="https://wulffern.github.io/aic2026/">aic2026</a>
+</footer>
+
+<script src="common/plot.js"></script>
+<script src="common/dsp.js"></script>
+<script>
+'use strict';
+
+const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+
+const S = {};
+let D = null;
+
+const fmts = {
+  f1:        v => v + ' bin',
+  fd:        v => v + ' bin',
+  side:      v => v.toFixed(2),
+  noisebits: v => (v === 0 ? 'off' : '1/2^' + v),
+  period:    v => v + ' smp',
+  on:        v => v + ' smp',
+  nbits:     v => '2^' + v,
+  win:       v => v + ' smp',
+};
+
+/* Rebuild the two records and their spectra. Cheap enough (a 2^13 FFT is a
+   couple of ms) that every slider move can just recompute everything. */
+function compute() {
+  const N = 1 << S.nbits;
+  // The script's time vector is np.linspace(0,N,N), whose step is N/(N-1) and
+  // not 1, so no tone completes a whole number of periods inside the record.
+  // Integer indices make every tone here land exactly on a bin instead.
+  const t = S.coh ? DSP.arange(N) : DSP.linspace(0, N, N);
+  const f1 = S.f1 / N;
+  const fd = S.fd / N;
+  const na = S.noisebits === 0 ? 0 : Math.pow(2, -S.noisebits);
+  const noise = DSP.randn(N, 20260517);
+
+  const x = new Float64Array(N);
+  for (let i = 0; i < N; i++) {
+    const ti = t[i];
+    x[i] = Math.sin(2 * Math.PI * f1 * ti)
+         + na * noise[i]
+         + S.side * Math.sin(2 * Math.PI * (f1 - fd) * ti)
+         + S.side * Math.sin(2 * Math.PI * (f1 + fd) * ti);
+  }
+
+  const P = Math.round(S.period);
+  const ON = Math.min(Math.round(S.on), P);
+  const xs = new Float64Array(N);
+  const ts = new Float64Array(N);
+  for (let i = 0; i < N; i++) {
+    const on = (i % P) < ON ? 1 : 0;
+    ts[i] = on;
+    xs[i] = x[i] * on;
+  }
+
+  const X  = DSP.toDb(DSP.normalise(DSP.magSpectrum(x,  S.hann)));
+  const XS = DSP.toDb(DSP.normalise(DSP.magSpectrum(xs, S.hann)));
+
+  // Normalised frequency axis, -0.5 .. 0.5 of the "continuous time" rate.
+  const f = new Float64Array(N);
+  for (let i = 0; i < N; i++) f[i] = (i - N / 2) / N;
+
+  D = { N, P, ON, x, xs, ts, X, XS, f, f1, fs: 1 / P };
+
+  // f1 folded into the first Nyquist zone of the sampled signal.
+  const r = D.f1 % D.fs;
+  const alias = r > D.fs / 2 ? D.fs - r : r;
+
+  UI.readout('ro-fs',    (1 / P).toFixed(4) + '  (1/' + P + ')');
+  UI.readout('ro-duty',  (ON / P).toFixed(3) + '  (' + ON + '/' + P + ')');
+  UI.readout('ro-f1fs',  (D.f1 / D.fs).toFixed(3));
+  UI.readout('ro-alias', (alias * N).toFixed(0) + ' bin' +
+                         (Math.abs(alias - D.f1) > 1e-12 ? '  (aliased)' : ''));
+  UI.chain({ 'cb-noise': S.noisebits > 0, 'cb-side': S.side > 0 });
+}
+
+function render(cx, W, H, narrow) {
+  if (!D) return;
+  // Desktop: 2x2 as in the matplotlib version. Narrow: the same four panels
+  // stacked, which keeps each one wide enough to read a spectrum in.
+  const g = Plot.grid(W, H, narrow ? 4 : 2, narrow ? 1 : 2, { gapY: 22, gapX: 16 });
+  const box = i => g[i];
+
+  const win = Math.min(D.N, Math.round(S.win));
+  const amp = 1 + 2 * S.side + 0.4;
+
+  // ── Time domain ──────────────────────────────────────────────────────────
+  const p0 = new Plot.Panel(cx, box(0), {
+    title: 'Continuous time, continuous value',
+    ylabel: 'Time domain', xlabel: 'sample n',
+  });
+  p0.limits(0, win, -amp, amp).frame();
+  p0.line(null, D.x.subarray(0, win), css('--curve'));
+
+  const p1 = new Plot.Panel(cx, box(1), {
+    title: 'Discrete time, continuous value',
+    xlabel: 'sample n',
+  });
+  p1.limits(0, win, -amp, amp).frame();
+  p1.stem(null, D.xs.subarray(0, win), css('--quant'));
+  // The pulse train as a clock trace along the bottom, so the duty cycle is
+  // visible rather than inferred from the gaps between stems.
+  const lo = -amp * 0.97, hi = lo + amp * 0.2;
+  const clk = new Float64Array(win);
+  for (let i = 0; i < win; i++) clk[i] = D.ts[i] ? hi : lo;
+  p1.line(null, clk, css('--sample'));
+  p1.note(0.01, 0.13, 't_s', css('--sample'));
+
+  // ── Frequency domain ─────────────────────────────────────────────────────
+  const p2 = new Plot.Panel(cx, box(2), {
+    ylabel: 'Frequency domain [dB]', xlabel: 'f / f_c',
+  });
+  p2.limits(-0.5, 0.5, -140, 10).frame();
+  p2.line(D.f, D.X, css('--curve'));
+  if (S.marks) marks(p2, false);
+
+  const p3 = new Plot.Panel(cx, box(3), { xlabel: 'f / f_c' });
+  p3.limits(-0.5, 0.5, -140, 10).frame();
+  p3.line(D.f, D.XS, css('--quant'));
+  if (S.marks) marks(p3, true);
+}
+
+/** Signal frequency and, on the sampled spectrum, the images at k*fs. */
+function marks(p, images) {
+  if (images) {
+    for (let k = -Math.floor(0.5 / D.fs); k <= Math.floor(0.5 / D.fs); k++) {
+      if (k === 0) continue;
+      p.vline(k * D.fs, css('--alt'), [2, 4]);
+    }
+  }
+  p.vline(D.f1, css('--sample'), [3, 3]);
+  p.vline(-D.f1, css('--sample'), [3, 3]);
+  if (images) p.note(0.02, 0.05, 'images every f_s = f_c/' + D.P, css('--alt'));
+}
+
+const chart = Plot.mount('c', { aspect: 0.62, aspectNarrow: 1.8, draw: render });
+UI.bind(S, fmts, () => { compute(); chart.redraw(); });
+compute();
+chart.redraw();
+</script>
+</body>
+</html>

@@ -1,0 +1,423 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Biquad &mdash; aic2026</title>
+<link rel="stylesheet" href="common/aic.css">
+</head>
+<body>
+
+<header>
+  <h1>BIQUAD</h1>
+  <div class="sub">
+    <a href="index.html">&larr; all examples</a> &middot;
+    interactive version of
+    <a href="https://github.com/wulffern/aic2026/blob/main/jupyter/biquad.ipynb">jupyter/biquad.ipynb</a> &middot;
+    analog front end
+  </div>
+</header>
+
+<div id="chain">
+  <div class="cb on">v_i</div><span class="ca">&rarr;</span>
+  <div class="cb on">k2&middot;s&sup2; + k1&middot;s + k0</div><span class="ca">&divide;</span>
+  <div class="cb on">s&sup2; + (w0/Q)&middot;s + w0&sup2;</div><span class="ca">&rarr;</span>
+  <div class="cb on">v_o</div>
+</div>
+
+<canvas id="c"></canvas>
+
+<div id="ctrl">
+  <div class="cg">
+    <div class="cgt">RESPONSE</div>
+    <div class="moderow" id="modes">
+      <button class="modebtn" data-mode="lp">LP</button>
+      <button class="modebtn" data-mode="bp">BP</button>
+      <button class="modebtn" data-mode="hp">HP</button>
+      <button class="modebtn" data-mode="notch">Notch</button>
+      <button class="modebtn" data-mode="ap">Allpass</button>
+      <button class="modebtn" data-mode="free">Free</button>
+    </div>
+    <div class="note">
+      Every one of these is the same denominator with a different numerator.
+      The poles never move; only the zeros do.
+    </div>
+  </div>
+
+  <div class="cg">
+    <div class="cgt">POLES</div>
+    <div class="cr">
+      <label>f0</label>
+      <input type="range" data-bind="lf0" id="sl-lf0" min="1" max="9" step="0.05" value="6">
+      <span class="v" id="v-lf0"></span>
+    </div>
+    <div class="cr">
+      <label>Q</label>
+      <input type="range" data-bind="lq" id="sl-lq" min="-1.3" max="1.6" step="0.01" value="-0.15">
+      <span class="v" id="v-lq"></span>
+    </div>
+  </div>
+
+  <div class="cg">
+    <div class="cgt">ZEROS (NUMERATOR)</div>
+    <div class="cr">
+      <label>k0 / w0&sup2;</label>
+      <input type="range" data-bind="g0" id="sl-g0" min="-2" max="2" step="0.01" value="1">
+      <span class="v" id="v-g0"></span>
+    </div>
+    <div class="cr">
+      <label>k1 / (w0/Q)</label>
+      <input type="range" data-bind="g1" id="sl-g1" min="-2" max="2" step="0.01" value="0">
+      <span class="v" id="v-g1"></span>
+    </div>
+    <div class="cr">
+      <label>k2</label>
+      <input type="range" data-bind="g2" id="sl-g2" min="-2" max="2" step="0.01" value="0">
+      <span class="v" id="v-g2"></span>
+    </div>
+  </div>
+</div>
+
+<div id="readout">
+  <div class="ro"><span class="k">f0</span><span class="n" id="ro-f0"></span></div>
+  <div class="ro"><span class="k">Q</span><span class="n" id="ro-q"></span></div>
+  <div class="ro"><span class="k">POLES</span><span class="n" id="ro-poles"></span></div>
+  <div class="ro"><span class="k">PEAK</span><span class="n" id="ro-peak"></span></div>
+  <div class="ro"><span class="k">DC / HF GAIN</span><span class="n" id="ro-gain"></span></div>
+  <div class="ro"><span class="k">OVERSHOOT</span><span class="n" id="ro-os"></span></div>
+</div>
+
+<div id="legend">
+  <div class="leg"><div class="lsw" style="background:var(--curve)"></div>|H| and phase</div>
+  <div class="leg"><div class="ldot" style="background:var(--error)"></div>Poles</div>
+  <div class="leg"><div class="ldot" style="background:var(--digi)"></div>Zeros</div>
+  <div class="leg"><div class="lsw" style="background:var(--sample)"></div>f0</div>
+  <div class="leg"><div class="lsw" style="background:var(--quant)"></div>Step / group delay</div>
+</div>
+
+<div class="doc">
+  <h2>WHAT YOU ARE LOOKING AT</h2>
+  <p>
+    The notebook this comes from is not really about biquads. It is about not
+    trusting your own algebra. It writes a signal flow graph down as three
+    equations, hands them to sympy, and asks what transfer function falls out:
+  </p>
+<pre><code>u1 = -w0*vo + vi*k0/w0
+u2 = -w0/Q*vo + w0*u1/s + k1*vi + k2*s*vi
+vo = u2/s</code></pre>
+  <p>
+    Do that by hand and you get
+  </p>
+  <p style="text-align:center">
+    <code>H(s) = (k2&middot;s&sup2; + k1&middot;s + k0) / (s&sup2; + (w0/Q)&middot;s + w0&sup2;)</code>
+  </p>
+  <p>
+    which is the standard biquad. There is no computer algebra in this page
+    &mdash; that would mean shipping a CAS to a browser &mdash; so the
+    derivation was done once by hand and then checked numerically against the
+    three equations above at two hundred random points. They agree to fifteen
+    digits.
+  </p>
+  <p>
+    What is worth having interactively is the other half: what that expression
+    <em>does</em>. The denominator alone fixes the two poles, and therefore the
+    ringing, the peaking and the settling. The numerator only places zeros, and
+    that is the whole difference between a low-pass, a band-pass, a high-pass,
+    a notch and an all-pass. Press the buttons and watch the poles stay
+    exactly where they are.
+  </p>
+
+  <h2>THINGS WORTH TRYING</h2>
+  <ul>
+    <li>
+      Cycle <b>LP &rarr; BP &rarr; HP &rarr; Notch &rarr; Allpass</b> and keep your
+      eye on the s-plane. The red crosses never move. Five completely different
+      frequency responses, one set of poles. This is why filter design is
+      usually taught as "place the poles, then pick the numerator".
+    </li>
+    <li>
+      Raise <b>Q</b>. The poles swing towards the j&omega; axis, the magnitude
+      peak grows, the step response rings for longer, and the group delay
+      spikes at f0. At Q = 0.5 the poles are real and coincident and there is
+      no ringing at all; below that they split apart on the real axis.
+    </li>
+    <li>
+      Take <b>Q</b> negative &mdash; drag it below the marked line. The poles
+      cross into the right half plane and the step response runs away. The
+      Bode plot still looks perfectly reasonable, which is the point: a
+      magnitude plot cannot tell you a system is unstable.
+    </li>
+    <li>
+      Select <b>Allpass</b> and look at the magnitude: flat at 0 dB
+      everywhere. All that changes is phase, 0 to &minus;360&deg;, and the
+      group delay bump at f0. Allpass sections are how you fix phase without
+      touching amplitude &mdash; and why "it has no effect on the magnitude"
+      is not the same as "it has no effect".
+    </li>
+    <li>
+      In <b>Free</b> mode, put a zero exactly on a pole by matching the
+      numerator to the denominator (k0/w0&sup2; = 1, k1/(w0/Q) = 1, k2 = 1).
+      The response goes flat: the zero cancels the pole. In a real circuit that
+      cancellation is never exact, which is the whole reason pole-zero doublets
+      are something to worry about.
+    </li>
+  </ul>
+
+  <h2>THE NOTEBOOK</h2>
+  <p class="src">
+    Source: <a href="https://github.com/wulffern/aic2026/blob/main/jupyter/biquad.ipynb">jupyter/biquad.ipynb</a>,
+    which uses <a href="https://docs.sympy.org/latest/index.html">sympy</a> and
+    <code>sympy.physics.control</code> to expand the flow graph. Its first cell
+    does the same for a simpler single-integrator graph. For the discrete-time
+    equivalent of all this, see the <a href="iir.html">IIR example</a>, where
+    the same ideas live on the z-plane and the unit circle replaces the
+    j&omega; axis.
+  </p>
+</div>
+
+<footer>
+  TFE4188 Advanced Integrated Circuits &middot; <a href="https://wulffern.github.io/aic2026/">aic2026</a>
+</footer>
+
+<script src="common/plot.js"></script>
+<script src="common/lti.js"></script>
+<script>
+'use strict';
+
+const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+
+const S = { mode: 'lp' };
+let D = null;
+
+const fmts = {
+  lf0: v => eng(Math.pow(10, v), 'Hz'),
+  lq:  v => Math.pow(10, v).toFixed(2),
+  g0:  v => v.toFixed(2),
+  g1:  v => v.toFixed(2),
+  g2:  v => v.toFixed(2),
+};
+
+function eng(v, unit) {
+  const p = [[1e-3, 'm'], [1, ''], [1e3, 'k'], [1e6, 'M'], [1e9, 'G']];
+  for (let i = p.length - 1; i >= 0; i--) {
+    if (Math.abs(v) >= p[i][0]) return (v / p[i][0]).toPrecision(3) + ' ' + p[i][1] + unit;
+  }
+  return v.toExponential(2) + ' ' + unit;
+}
+
+// Numerator presets, as (k0/w0^2, k1/(w0/Q), k2). The denominator is untouched.
+const PRESETS = {
+  lp:    [1, 0, 0],
+  bp:    [0, 1, 0],
+  hp:    [0, 0, 1],
+  notch: [1, 0, 1],
+  ap:    [1, -1, 1],
+};
+
+function applyPreset(name) {
+  const p = PRESETS[name];
+  if (!p) return;
+  const ids = ['g0', 'g1', 'g2'];
+  ids.forEach((k, i) => {
+    S[k] = p[i];
+    const el = document.getElementById('sl-' + k);
+    if (el) el.value = p[i];
+    const out = document.getElementById('v-' + k);
+    if (out) out.textContent = fmts[k](p[i]);
+  });
+}
+
+function compute() {
+  const f0 = Math.pow(10, S.lf0);
+  const w0 = 2 * Math.PI * f0;
+  const Q = Math.pow(10, S.lq);
+
+  const k0 = S.g0 * w0 * w0;
+  const k1 = S.g1 * w0 / Q;
+  const k2 = S.g2;
+
+  const num = [k2, k1, k0];
+  const den = [1, w0 / Q, w0 * w0];
+  const H = LTI.tf(num, den);
+
+  const f = LTI.logf(f0 / 1000, f0 * 1000, 700);
+  const { mag, ph } = LTI.bode(f, H);
+
+  // Group delay is -d(phase)/d(omega), from the phase already computed.
+  const gd = new Float64Array(f.length);
+  for (let i = 0; i < f.length; i++) {
+    const a = Math.max(1, i) - 1, b = Math.min(f.length - 1, i + 1);
+    const dphi = (ph[b] - ph[a]) * Math.PI / 180;
+    const dw = 2 * Math.PI * (f[b] - f[a]);
+    gd[i] = dw !== 0 ? -dphi / dw : 0;
+  }
+
+  const poles = LTI.roots2(1, w0 / Q, w0 * w0);
+  const zeros = LTI.roots2(k2, k1, k0);
+
+  // Step response. dt from the fastest pole so the RK4 stays well resolved,
+  // and a window of a few time constants of the slowest.
+  const wmax = Math.max(...poles.map(p => LTI.abs(p)), w0);
+  const dt = 0.02 / wmax;
+  const nStep = 3000;
+  const st = LTI.step(num, den, dt, nStep);
+
+  const kpk = LTI.argmax(mag);
+  const dc = S.g0;                            // H(0) = k0/w0^2
+  const hf = S.g2;                            // H(inf) = k2
+
+  let os = NaN;
+  const fin = st.y[st.y.length - 1];
+  if (isFinite(fin) && Math.abs(fin) > 1e-12) {
+    let pk = -Infinity;
+    for (const v of st.y) if (isFinite(v)) pk = Math.max(pk, v);
+    os = (pk / fin - 1) * 100;
+  }
+
+  D = { f, mag, ph, gd, poles, zeros, st, f0, w0, Q, kpk, dc, hf, os, dt, nStep };
+
+  UI.readout('ro-f0', eng(f0, 'Hz'));
+  UI.readout('ro-q', Q.toFixed(2) + (Q < 0.5 ? '  (real poles)' : ''));
+  UI.readout('ro-poles', poles.map(p =>
+    (p[1] === 0 ? (p[0] / w0).toFixed(2) : (p[0] / w0).toFixed(2) + (p[1] < 0 ? '' : '+') + (p[1] / w0).toFixed(2) + 'j')
+  ).join(', ') + '  x w0');
+  UI.readout('ro-peak', mag[kpk] > Math.max(mag[0], mag[mag.length - 1]) + 0.05
+    ? mag[kpk].toFixed(1) + ' dB at ' + eng(f[kpk], 'Hz') : 'no peak');
+  UI.readout('ro-gain', (dc === 0 ? '-inf' : (20 * Math.log10(Math.abs(dc))).toFixed(1)) + ' / ' +
+                        (hf === 0 ? '-inf' : (20 * Math.log10(Math.abs(hf))).toFixed(1)) + ' dB');
+  UI.readout('ro-os', poles.some(p => p[0] > 0) ? 'unstable'
+                      : (isFinite(os) ? os.toFixed(1) + ' %' : '-'));
+}
+
+function render(cx, W, H, narrow) {
+  if (!D) return;
+  const g = Plot.grid(W, H, narrow ? 6 : 2, narrow ? 1 : 3, { gapY: 24, gapX: 20 });
+  const f0 = D.f0;
+
+  // ── Bode ────────────────────────────────────────────────────────────────
+  const p0 = new Plot.Panel(cx, g[0], {
+    title: 'Magnitude', ylabel: '|H| [dB]', xlabel: 'Frequency [Hz]', xlog: true,
+  });
+  const [mlo, mhi] = Plot.padExtent(...Plot.extent(D.mag), 0.1);
+  p0.limits(D.f[0], D.f[D.f.length - 1], Math.max(mlo, -120), Math.min(mhi, 80)).frame();
+  p0.vline(f0, css('--sample'), [3, 3]);
+  p0.line(D.f, D.mag, css('--curve'), { width: 1.5 });
+
+  const p1 = new Plot.Panel(cx, g[1], {
+    title: 'Phase', ylabel: 'Phase [deg]', xlabel: 'Frequency [Hz]', xlog: true,
+  });
+  const [plo, phi] = Plot.padExtent(...Plot.extent(D.ph), 0.1);
+  p1.limits(D.f[0], D.f[D.f.length - 1], plo, phi).frame();
+  p1.vline(f0, css('--sample'), [3, 3]);
+  p1.line(D.f, D.ph, css('--curve'), { width: 1.5 });
+
+  // ── s-plane ─────────────────────────────────────────────────────────────
+  const p2 = new Plot.Panel(cx, g[2], {
+    title: 's-plane (units of w0)', xlabel: 'Re{s}/w0', ylabel: 'Im{s}/w0',
+  });
+  const ar = (p2.right - p2.left) / (p2.bottom - p2.top);
+  p2.limits(-1.6 * ar, 1.6 * ar, -1.6, 1.6).frame();
+  splane(p2);
+
+  // ── Step ────────────────────────────────────────────────────────────────
+  const p3 = new Plot.Panel(cx, g[3], {
+    title: 'Step response', ylabel: 'v_o', xlabel: 'Time [s]',
+  });
+  const [slo, shi] = Plot.padExtent(...Plot.extent(D.st.y), 0.12);
+  const tEnd = D.st.t[D.st.t.length - 1];
+  p3.limits(0, tEnd, Math.min(slo, -0.1), Math.max(shi, 0.1)).frame();
+  p3.hline(0, css('--grid'));
+  p3.line(D.st.t, D.st.y, css('--quant'), { width: 1.5 });
+  if (D.poles.some(p => p[0] > 0)) p3.note(0.04, 0.9, 'poles in the right half plane', css('--error'));
+
+  // ── Group delay ─────────────────────────────────────────────────────────
+  const p4 = new Plot.Panel(cx, g[4], {
+    title: 'Group delay', ylabel: '-dphi/dw [s]', xlabel: 'Frequency [Hz]', xlog: true,
+  });
+  const [glo, ghi] = Plot.padExtent(...Plot.extent(D.gd), 0.12);
+  p4.limits(D.f[0], D.f[D.f.length - 1], Math.min(glo, 0), ghi).frame();
+  p4.hline(0, css('--grid'));
+  p4.vline(f0, css('--sample'), [3, 3]);
+  p4.line(D.f, D.gd, css('--quant'), { width: 1.5 });
+
+  // ── Impulse ─────────────────────────────────────────────────────────────
+  const p5 = new Plot.Panel(cx, g[5], {
+    title: 'Impulse response', ylabel: 'd/dt of step', xlabel: 'Time [s]',
+  });
+  const imp = new Float64Array(D.st.y.length);
+  for (let i = 1; i < imp.length; i++) imp[i] = (D.st.y[i] - D.st.y[i - 1]) / D.dt;
+  imp[0] = imp[1];
+  const [ilo, ihi] = Plot.padExtent(...Plot.extent(imp), 0.12);
+  p5.limits(0, tEnd, ilo, ihi).frame();
+  p5.hline(0, css('--grid'));
+  p5.line(D.st.t, imp, css('--quant'), { width: 1.5 });
+}
+
+/** Poles as crosses, zeros as circles, plus the |s| = w0 circle. */
+function splane(p) {
+  const cx = p.cx;
+  p.clip(() => {
+    cx.strokeStyle = css('--edge');
+    cx.lineWidth = 1;
+    cx.beginPath();
+    for (let i = 0; i <= 180; i++) {
+      const th = 2 * Math.PI * i / 180;
+      const x = p.px(Math.cos(th)), y = p.py(Math.sin(th));
+      if (i === 0) cx.moveTo(x, y); else cx.lineTo(x, y);
+    }
+    cx.stroke();
+    // The jw axis: everything to the right of it is unstable.
+    cx.strokeStyle = css('--muted');
+    cx.setLineDash([4, 4]);
+    cx.beginPath();
+    cx.moveTo(p.px(0), p.top); cx.lineTo(p.px(0), p.bottom);
+    cx.moveTo(p.left, p.py(0)); cx.lineTo(p.right, p.py(0));
+    cx.stroke();
+    cx.setLineDash([]);
+
+    for (const z of D.zeros) {
+      cx.strokeStyle = css('--digi');
+      cx.lineWidth = 1.5;
+      cx.beginPath();
+      cx.arc(p.px(z[0] / D.w0), p.py(z[1] / D.w0), 5, 0, 2 * Math.PI);
+      cx.stroke();
+    }
+    for (const q of D.poles) {
+      const x = p.px(q[0] / D.w0), y = p.py(q[1] / D.w0);
+      cx.strokeStyle = css('--error');
+      cx.lineWidth = 2;
+      cx.beginPath();
+      cx.moveTo(x - 5, y - 5); cx.lineTo(x + 5, y + 5);
+      cx.moveTo(x + 5, y - 5); cx.lineTo(x - 5, y + 5);
+      cx.stroke();
+    }
+  });
+  p.note(0.03, 0.94, 'circle is |s| = w0', css('--muted'));
+  if (D.poles.some(q => q[0] > 0)) p.note(0.03, 0.06, 'RIGHT HALF PLANE: unstable', css('--error'));
+}
+
+const chart = Plot.mount('c', { aspect: 0.5, aspectNarrow: 2.6, draw: render });
+UI.bind(S, fmts, key => {
+  // Touching a numerator slider means you have left the preset behind.
+  if (key === 'g0' || key === 'g1' || key === 'g2') setMode('free', false);
+  compute();
+  chart.redraw();
+});
+
+function setMode(name, apply = true) {
+  S.mode = name;
+  [...document.querySelectorAll('#modes .modebtn')]
+    .forEach(b => b.classList.toggle('on', b.dataset.mode === name));
+  if (apply && name !== 'free') applyPreset(name);
+}
+
+[...document.querySelectorAll('#modes .modebtn')].forEach(b => {
+  b.addEventListener('click', () => { setMode(b.dataset.mode); compute(); chart.redraw(); });
+});
+
+setMode('lp');
+compute();
+chart.redraw();
+</script>
+</body>
+</html>

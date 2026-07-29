@@ -1,0 +1,83 @@
+\input{tikz/fig_header.tex}
+
+% First-order Gm-C section.  There is only one node: G_m1's output, C_A,
+% C_X and G_m2's output all meet there, and the rail carries it on to V_O.
+% G_m2 is drawn mirrored -- it senses V_O on its tall right-hand edge and
+% drives the node from its short left-hand edge -- so it loads the node with
+% a conductance G_m2.
+%
+%   s C_A V_o = G_m1 V_i + s C_X (V_i - V_o) - G_m2 V_o
+%   V_o/V_i = [s C_X/(C_A+C_X) + G_m1/(C_A+C_X)] / [s + G_m2/(C_A+C_X)]
+%
+% which is the H(s) the lecture prints.  The i_0..i_3 blanks under the
+% drawing are the exercise the original poses; they are kept.
+
+\begin{circuitikz}[american, thick, transform shape]
+
+  \input{tikz/ckt_lib.tex}
+  \input{tikz/gmc_lib.tex}
+
+  \def\ynode{2.8}   % the one node, and the V_O rail
+  \def\xnode{4.35}
+
+  % ---- G_m1 ----
+  \gmcBody{1.1}{\ynode}{$G_{m1}$}
+  \draw (0.36,3.6) -- (1.1,3.6);
+  \gmcPlus{1.45}{3.6}
+  \draw (0.36,2.0) -- (1.1,2.0);
+  \gmcMinus{1.45}{2.0}
+  \draw (0.36,2.0) -- (0.36,1.45);
+  \draw (0.36,1.45) \vground;
+  \node[anchor=east] at (0.3,3.6) {$V_{i}(s)$};
+
+  % ---- C_X feeds the node directly from the input ----
+  \draw (0.72,3.6) -- (0.72,5.0);
+  \gmcHcap{0.72}{5.0}{2.83}
+  \node[anchor=south] at (1.78,5.42) {$C_{X}$};
+  \draw (2.83,5.0) -- (\xnode,\ynode);
+
+  % ---- G_m1 into the node ----
+  \draw (2.6,\ynode) -- (\xnode,\ynode);
+  \fill (\xnode,\ynode) circle (0.075);
+
+  % ---- C_A on the node ----
+  \gmcVcap{\xnode}{\ynode}{0.75}
+  \draw (\xnode,0.75) \vground;
+  \node[anchor=west] at (4.75,1.78) {$C_{A}$};
+
+  % ---- G_m2, mirrored: senses V_O, drives the node ----
+  \gmcBodyL{8.77}{5.0}{$G_{m2}$}
+  \gmcPlus{8.45}{5.8}
+  \gmcMinus{8.45}{4.2}
+  \draw (8.77,5.8) -- (9.5,5.8) -- (9.5,5.45);
+  \draw (9.5,5.45) \vground;
+  \draw (8.77,4.2) -- (9.5,4.2) -- (9.5,\ynode);
+  \draw (7.27,5.0) -- (\xnode,\ynode);
+
+  % ---- the output rail ----
+  \draw (\xnode,\ynode) -- (11.2,\ynode);
+  \fill (9.5,\ynode) circle (0.075);
+  \node[anchor=west] at (11.28,\ynode) {$V_{O}(s)$};
+  \node[anchor=north west] at (11.0,2.6) {$+$};
+  \node[anchor=north west] at (11.0,1.75) {$-$};
+  \draw (11.15,1.25) -- (11.15,1.02);
+  \draw (11.15,1.02) \vground;
+
+  % ---- the four branch currents the exercise asks for ----
+  \draw[->] (3.11,2.6) -- (3.84,2.6);
+  \node[anchor=north] at (3.45,2.52) {$i_{0}$};
+  \draw[->] (3.94,3.73) -- (4.39,3.27);
+  \node[anchor=west] at (4.5,3.55) {$i_{1}$};
+  \draw[->] (5.61,3.48) -- (5.15,3.12);
+  \node[anchor=west] at (5.72,3.32) {$i_{2}$};
+  \draw[->] (5.0,2.6) -- (5.61,2.6);
+  \node[anchor=north] at (5.3,2.52) {$i_{3}$};
+
+  % ---- the blanks the original leaves for the student ----
+  \node[anchor=west] at (1.2,-0.6) {$i_{0} =$};
+  \node[anchor=west] at (1.2,-1.3) {$i_{1} =$};
+  \node[anchor=west] at (1.2,-2.0) {$i_{2} =$};
+  \node[anchor=west] at (1.2,-2.7) {$i_{3} =$};
+
+\end{circuitikz}
+\end{document}

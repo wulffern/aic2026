@@ -71,6 +71,7 @@ jobs:
             docs/_posts
             docs/assets/media
             docs/assets/html
+            docs/assets/examples
             docs/downloads.md
             docs/plan.md
             docs/syllabus.md

@@ -6,23 +6,23 @@
 % Second of three. Geometry comes from tikz/plane_lib.tex, so this sits on the
 % same axes as l5_sdomain and l5_zunstable.
 
-\input{tikz/plane_lib.tex}
-
 \begin{circuitikz}[american, transform shape]
+
+  \input{tikz/plane_lib.tex}
 
   \planeAxes{$a$}{$b$}
   \planeCircle
 
   % A conjugate pole pair inside the circle.
-  \planePole{axisblue}{0.50}{0.28}
-  \planePole{axisblue}{0.50}{-0.28}
+  \planePole{black}{0.50}{0.28}
+  \planePole{black}{0.50}{-0.28}
 
   % Point at the circle itself, since that is the object being named.
-  \node[axisblue, anchor=west] at (1.95,1.95) {$e^{j\omega}$};
-  \draw[axisblue, thick, ->] (1.90,1.90) -- (1.36,1.36);
+  \node[anchor=south west] at (1.80,1.60) {$e^{j\omega}$};
+  \draw[thick, ->] (1.75,1.62) -- (1.34,1.30);
 
-  \node[axisblue, anchor=west] at (1.15,2.85) {z-plane};
-  \node[axisblue, anchor=west] at (1.15,2.35) {$z = a + jb$};
+  \node[anchor=west] at (1.35,2.85) {z-plane};
+  \node[anchor=west] at (1.35,2.35) {$z = a + jb$};
 
 \end{circuitikz}
 \end{document}

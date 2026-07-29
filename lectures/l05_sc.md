@@ -50,7 +50,7 @@ A general purpose Active-RC bi-quadratic (two-quadratic equations) filter is sho
 
 -->
 
-![left fit](../media/l4_activebiquad.svg)
+![left fit](../media/l4_activebiquad_tikz.pdf)
 
 <!--pan_doc:
 
@@ -129,10 +129,10 @@ Active-RC filters are great for linearity, but if we need accurate time constant
 # Gm-C
 
 
-![fit right](../media/l4_gmcbi.svg)
+![fit right](../media/l4_gmcbi_tikz.pdf)
 
 $$ H(s) = \frac{\left[ s^2\frac{C_X}{C_X + C_B} + s\frac{G_{m5}}{C_X + C_B} + \frac{G_{m2}G_{m4}}{C_A(C_X + C_B)}\right]}
-{\left[s^2 + s\frac{G_{m2}}{C_X + C_B} + \frac{G_{m1}G_{m2}}{C_A(C_X + C_B)} \right]}$$
+{\left[s^2 + s\frac{G_{m3}}{C_X + C_B} + \frac{G_{m1}G_{m2}}{C_A(C_X + C_B)} \right]}$$
 
 <!--pan_doc:
 
@@ -498,11 +498,16 @@ multiple signals and samplerates I did not bother to figure out whether it was p
 The alternative to coherent sampling is to apply a window function before the FFT, that's the reason for the 
 Hanning window below.
 
+There is an [interactive version of this example](https://wulffern.github.io/aic2026/assets/examples/sampling.html) where
+the tone frequency, the sampling pattern and the window are sliders. Turning the
+Hanning window off, and then turning coherent sampling on, is worth thirty
+seconds of your time.
+
 -->
 
 ---
 
-[dt.py](https://github.com/wulffern/aic2024/blob/main/ex/dt.py)
+[dt.py](https://github.com/wulffern/aic2026/blob/main/ex/dt.py) - [interactive](https://wulffern.github.io/aic2026/assets/examples/sampling.html)
 
 ```python 
 #- Create a time vector
@@ -672,7 +677,7 @@ Growing without bounds is the same as "being unstable".
 
 -->
 
-![left fit](../media/l5_sdomain.svg)
+![left fit](../media/l5_sdomain_tikz.pdf)
 
 ---
 ##[fit] Z-domain
@@ -695,7 +700,7 @@ $$ s = \frac{z -1}{z + 1}$$
 <sub>Warning: First-order approximation [https://en.wikipedia.org/wiki/Bilinear_transform](https://en.wikipedia.org/wiki/Bilinear_transform)</sub>
 
 
-![left fit](../media/l5_zdomain.svg)
+![left fit](../media/l5_zdomain_tikz.pdf)
 
 ---
 ## First order filter 
@@ -739,7 +744,7 @@ the filter should be stable.
 
 -->
 
-![left fit](../media/l5_zunstable.svg)
+![left fit](../media/l5_zunstable_tikz.pdf)
 
 
 <!--pan_doc:
@@ -752,9 +757,13 @@ There are smarter, and faster ways to do IIR filters (and FIR) in python, see [s
 
 From the plot below we can see the sampled time domain and spectra on the left, and the filtered time domain and spectra on the right.
 
+The [interactive version of this example](https://wulffern.github.io/aic2026/assets/examples/iir.html) adds the pole
+position as a slider, and draws the z-plane next to the spectrum, so you can
+watch the pole move inside the unit circle and the corner frequency follow it.
+
 -->
 
-[iir.py](https://github.com/wulffern/aic2024/blob/main/ex/iir.py)
+[iir.py](https://github.com/wulffern/aic2026/blob/main/ex/iir.py) - [interactive](https://wulffern.github.io/aic2026/assets/examples/iir.html)
 
 ---
 
@@ -801,7 +810,7 @@ Our abilities to use computers for design has improved a bit the last three deca
 
 $$ H(z) = \frac{1}{3}\sum_{i=0}^2 z^{-1}$$
 
-![left fit](../media/l5_fir.svg)
+![left fit](../media/l5_fir_tikz.pdf)
 
 ---
 
@@ -817,7 +826,7 @@ Think of the two phases as two different configurations of a circuit, each with 
 
 --->
 
-![left fit](../media/l5_scintro1.svg)
+![left fit](../media/l5_scintro1_tikz.pdf)
 
 <!--pan_doc:
 
@@ -846,7 +855,7 @@ Imagine we (very carefully) open the circuit around $C_2$ and close the circuit 
 -->
 ---
 
-![left fit](../media/l5_scintro2.svg)
+![left fit](../media/l5_scintro2_tikz.pdf)
 
 <!--pan_doc:
 
@@ -902,7 +911,7 @@ During phase 2 we configure the circuit to leverage the OTA to do the charge tra
 
 --> 
 
-![left fit](../media/l5_scamp.svg)
+![left fit](../media/l5_scamp_tikz.pdf)
 
 
 <!--pan_doc:
@@ -914,7 +923,7 @@ For charge to be conserved the clocks for the switch phases must never be high a
 
 -->
 
-![right fit](../media/l5_scfig.svg)
+![right fit](../media/l5_scfig_tikz.pdf)
 
 ---
 
@@ -948,7 +957,7 @@ accumulate the input charge every cycle.
 
 ---
 
-![left fit](../media/l5_scint.svg)
+![left fit](../media/l5_scint_tikz.pdf)
 
 <!--pan_doc:
 
@@ -957,7 +966,7 @@ is feedback to control the voltage swing at the output of the OTA.
 
 -->
 
-![right fit](../media/l5_scifig.svg)
+![right fit](../media/l5_scifig_tikz.pdf)
 
 ---
 
@@ -1115,7 +1124,7 @@ but usually we don't have enough headroom to use a single NMOS or PMOS. We may n
 
 -->
 
-![original fit](../media/l5_sw1.svg)
+![original fit](../media/l5_sw1_tikz.pdf)
 
 ---
 
@@ -1142,7 +1151,7 @@ as shown on the right.
 
 -->
 
-![original fit](../media/l5_sw2.svg)
+![original fit](../media/l5_sw2_tikz.pdf)
 
 ---
 
@@ -1165,7 +1174,7 @@ looks like the one below.
 
 -->
 
-![original fit](../media/l5_sw3.svg)
+![original fit](../media/l5_sw3_tikz.pdf)
 
 ---
 
@@ -1184,7 +1193,7 @@ The non-overlap generator is standard. Use the one shown below. Make sure you si
 
 -->
 
-![original fit](../media/l5_novl.svg)
+![original fit](../media/l5_novl_tikz.pdf)
 
 ---
 
@@ -1202,7 +1211,7 @@ $$ V_O(z) = 10 \frac{kT}{q} \ln (N)z^{-1} $$
 
 -->
 
-![fit](../media/l5_scex.svg)
+![fit](../media/l5_scex_tikz.pdf)
 
 
 <!--pan_doc:

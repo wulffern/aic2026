@@ -402,6 +402,11 @@ plt.show()
 From the plot below we can see that to optimize the power we could extract from the photovoltaic cell we'd want to have a current 
 of 0.9 mA in the model above.
 
+The [interactive version of this example](https://wulffern.github.io/aic2026/assets/examples/pv.html) plots the same
+equation both ways round, marks the maximum power point and reports the fill
+factor. Sweeping the photocurrent over six decades shows why harvesting in a
+dim room is a current problem rather than a voltage one.
+
 -->
 
 ![right fit](../media/pv.pdf)

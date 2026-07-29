@@ -221,7 +221,7 @@ Tutorial at [http://analogicus.com/jnw\_sv\_sky130a/](http://analogicus.com/jnw_
 
 Repository at [https://github.com/wulffern/jnw\_sv\_sky130a](https://github.com/wulffern/jnw_sv_sky130a)
 
-Assumes knowledge of [Tutorial](https://analogicus.com/aic2025/2025/01/01/Sky130nm-tutorial.html)
+Assumes knowledge of [Tutorial](https://analogicus.com/aic2026/sky130nm_tutorial)
 
 ---
 
