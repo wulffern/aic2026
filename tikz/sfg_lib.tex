@@ -1,0 +1,30 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Shared pieces for the l04_afe signal flow graphs, l4_first_order and
+%% l4_biquad.  The biquad is meant to read as the first-order graph with a
+%% second integrator added, so the summing node and the 1/s block have to be
+%% the same size and shape in both.  They are the same size in the original
+%% artwork too.
+%%
+%% Names are prefixed and letters only, and computed coordinates are braced:
+%% TikZ scans a coordinate for its closing parenthesis, so a '(' inside an
+%% expression ends it early.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\sfgR}{0.25}    % summing node radius
+\newcommand{\sfgBw}{1.0}    % half width of the 1/s block
+\newcommand{\sfgBh}{0.65}   % half height of the 1/s block
+
+% A summing node at (#1,#2).
+\newcommand{\sfgSum}[2]{%
+  \draw (#1,#2) circle (\sfgR);
+  \draw ({#1-0.17},#2) -- ({#1+0.17},#2);
+  \draw (#1,{#2-0.17}) -- (#1,{#2+0.17});
+}
+
+% A block centred at (#1,#2) carrying #3.
+\newcommand{\sfgBox}[3]{%
+  \draw ({#1-\sfgBw},{#2-\sfgBh}) rectangle ({#1+\sfgBw},{#2+\sfgBh});
+  \node at (#1,#2) {#3};
+}
+
+\newcommand{\sfgDot}[2]{\fill (#1,#2) circle (0.07);}
