@@ -48,11 +48,11 @@
 
   % ---- The dummies, gates grounded so they never turn on ----
   \draw[thick] (2.9,\swtYdp) to [Tnmos, n=DP] (4.5,\swtYdp);
-  \draw[thick] (DP.gate) -- (3.7,2.0) -- (4.0,2.0);
-  \draw[thick] (4.0,2.0) node[ground, rotate=90] {};
+  \draw[thick] (DP.gate) -- (3.7,2.0) -- (4.1,2.0);
+  \bootGndR{4.1}{2.0}
   \draw[thick] (2.9,\swtYdn) to [Tnmos, n=DN, mirror] (4.5,\swtYdn);
-  \draw[thick] (DN.gate) -- (3.7,-2.0) -- (4.0,-2.0);
-  \draw[thick] (4.0,-2.0) node[ground, rotate=90] {};
+  \draw[thick] (DN.gate) -- (3.7,-2.0) -- (4.1,-2.0);
+  \bootGndR{4.1}{-2.0}
 
   % ---- Cross coupled: p-side dummy to B_n, n-side dummy to B_p ----
   \draw[thick] (4.5,\swtYdp) -- (5.1,\swtYdp) -- (5.9,\swtYdn) -- (5.9,\swtYn);

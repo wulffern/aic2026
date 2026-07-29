@@ -61,6 +61,28 @@
   \node[anchor=east] at (#1-0.12,#2+0.5) {\small #3};
 }
 
+% Grounds, drawn by hand. circuitikz's `ground` node shape renders as nothing
+% at all in the TeX Live this repository builds with -- the wire simply ends --
+% so every figure here draws the bars itself, the way ckt_lib's \vground does.
+% Bars to the left of the terminal, for a wire arriving from the right.
+\newcommand{\bootGndL}[2]{%
+  \draw[thick] (#1,#2-0.20) -- (#1,#2+0.20);
+  \draw[thick] (#1-0.10,#2-0.13) -- (#1-0.10,#2+0.13);
+  \draw[thick] (#1-0.20,#2-0.06) -- (#1-0.20,#2+0.06);
+}
+% Bars to the right, for a wire arriving from the left.
+\newcommand{\bootGndR}[2]{%
+  \draw[thick] (#1,#2-0.20) -- (#1,#2+0.20);
+  \draw[thick] (#1+0.10,#2-0.13) -- (#1+0.10,#2+0.13);
+  \draw[thick] (#1+0.20,#2-0.06) -- (#1+0.20,#2+0.06);
+}
+% Bars below, for a wire arriving from above.
+\newcommand{\bootGndD}[2]{%
+  \draw[thick] (#1-0.20,#2) -- (#1+0.20,#2);
+  \draw[thick] (#1-0.13,#2-0.10) -- (#1+0.13,#2-0.10);
+  \draw[thick] (#1-0.06,#2-0.20) -- (#1+0.06,#2-0.20);
+}
+
 % A labelled terminal: coordinate, anchor, label.
 \newcommand{\bootPort}[3]{%
   \draw[thick] (#1) circle (0.09);
@@ -73,7 +95,7 @@
 % adds the terminals.
 \newcommand{\bootBlock}[1]{%
   % ---- Bottom plate: ground when off, the input when on ----
-  \draw[thick] (-1.6,1.8) node[ground, rotate=-90] {};
+  \bootGndL{-1.6}{1.8}
   \draw[thick] (-1.6,1.8) -- (-1.4,1.8);
   \bootSwH{-1.4}{1.8}{$\overline{c}$}
   \draw[thick] (-0.4,1.8) -- (0.0,1.8);
@@ -94,7 +116,7 @@
   \fill (3.7,1.8) circle (0.07);
   \bootSwH{4.0}{1.8}{$\overline{c}$}
   \draw[thick] (5.0,1.8) -- (5.2,1.8);
-  \draw[thick] (5.2,1.8) node[ground, rotate=90] {};
+  \bootGndR{5.2}{1.8}
   % ---- The pass device ----
   \draw[thick] (2.9,0) to [Tnmos, n=#1] (4.5,0);
   \draw[thick] (#1.gate) -- (3.7,1.8);
@@ -104,7 +126,7 @@
 
 % The same block drawn below its rail.
 \newcommand{\bootBlockDn}[1]{%
-  \draw[thick] (-1.6,-1.8) node[ground, rotate=-90] {};
+  \bootGndL{-1.6}{-1.8}
   \draw[thick] (-1.6,-1.8) -- (-1.4,-1.8);
   \bootSwHd{-1.4}{-1.8}{$\overline{c}$}
   \draw[thick] (-0.4,-1.8) -- (0.0,-1.8);
@@ -122,7 +144,7 @@
   \fill (3.7,-1.8) circle (0.07);
   \bootSwHd{4.0}{-1.8}{$\overline{c}$}
   \draw[thick] (5.0,-1.8) -- (5.2,-1.8);
-  \draw[thick] (5.2,-1.8) node[ground, rotate=90] {};
+  \bootGndR{5.2}{-1.8}
   \draw[thick] (2.9,0) to [Tnmos, n=#1, mirror] (4.5,0);
   \draw[thick] (#1.gate) -- (3.7,-1.8);
   \draw[thick] (-3.2,0) -- (2.9,0);
