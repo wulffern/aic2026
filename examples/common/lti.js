@@ -117,6 +117,66 @@ const LTI = (function () {
 
   const tf = (num, den) => s => div(poly(num, s), poly(den, s));
 
+  /**
+   * All roots of a polynomial in descending powers, by Durand-Kerner.
+   *
+   * Good enough for the degree-5 characteristic polynomials these loops
+   * produce, and it needs no matrix code. Returns complex pairs, unsorted.
+   */
+  function roots(desc) {
+    // Drop leading zeros, then work in ascending order and monic.
+    let d = desc.slice();
+    while (d.length > 1 && d[0] === 0) d.shift();
+    const n = d.length - 1;
+    if (n < 1) return [];
+    const c = d.slice().reverse().map(v => v / d[0]);   // ascending, monic in c[n]
+
+    const ev = z => {
+      let r = [0, 0];
+      for (let i = n; i >= 0; i--) r = [r[0] * z[0] - r[1] * z[1] + c[i], r[0] * z[1] + r[1] * z[0]];
+      return r;
+    };
+
+    // Spread the initial guesses around a circle scaled to the coefficients, so
+    // the iteration does not start every root on top of its neighbour.
+    let scale = 0;
+    for (let i = 0; i < n; i++) scale = Math.max(scale, Math.pow(Math.abs(c[i]), 1 / (n - i)));
+    scale = scale || 1;
+    let z = [];
+    for (let i = 0; i < n; i++) {
+      const th = 2 * Math.PI * i / n + 0.4;
+      z.push([scale * Math.cos(th), scale * Math.sin(th)]);
+    }
+
+    for (let it = 0; it < 500; it++) {
+      let moved = 0;
+      for (let i = 0; i < n; i++) {
+        let den = [1, 0];
+        for (let j = 0; j < n; j++) {
+          if (i === j) continue;
+          const dz = [z[i][0] - z[j][0], z[i][1] - z[j][1]];
+          den = [den[0] * dz[0] - den[1] * dz[1], den[0] * dz[1] + den[1] * dz[0]];
+        }
+        const dd = den[0] * den[0] + den[1] * den[1];
+        if (dd === 0) continue;
+        const num = ev(z[i]);
+        const q = [(num[0] * den[0] + num[1] * den[1]) / dd,
+                   (num[1] * den[0] - num[0] * den[1]) / dd];
+        z[i] = [z[i][0] - q[0], z[i][1] - q[1]];
+        moved = Math.max(moved, Math.hypot(q[0], q[1]));
+      }
+      if (moved < 1e-12 * scale) break;
+    }
+    return z;
+  }
+
+  /** Multiply two polynomials given in ascending powers. */
+  function polymulAsc(p, q) {
+    const r = new Array(p.length + q.length - 1).fill(0);
+    for (let i = 0; i < p.length; i++) for (let j = 0; j < q.length; j++) r[i + j] += p[i] * q[j];
+    return r;
+  }
+
   /** Roots of a quadratic a s^2 + b s + c, as complex pairs. */
   function roots2(a, b, c) {
     if (a === 0) return b === 0 ? [] : [[-c / b, 0]];
@@ -132,6 +192,62 @@ const LTI = (function () {
   // ── Time domain ─────────────────────────────────────────────────────────
 
   /**
+   * Controllable canonical realisation of num(s)/den(s), both in descending
+   * powers of s. `num` must not be longer than `den`.
+   *
+   *   x[0]' = x[1],  x[1]' = x[2], ...
+   *   x[n-1]' = -sum_j a_j x[j] + u
+   *   y       =  sum_j b[j] x[j]
+   *
+   * a_j and b[j] are the coefficients of s^j, counted from the END of the
+   * descending-power lists.
+   */
+  function realise(num, den) {
+    const order = den.length - 1;
+    const a0 = den[0];
+    const a = den.slice(1).map(v => v / a0);          // a[0] = a_{n-1} ... a[n-1] = a_0
+    const b = new Array(order).fill(0);
+    const nn = num.map(v => v / a0);
+    for (let i = 0; i < nn.length && i < order; i++) b[i] = nn[nn.length - 1 - i];
+    return { order, a, b };
+  }
+
+  /** dx/dt for a realisation driven by scalar input u. */
+  function ssDeriv(sys, x, u) {
+    const d = new Float64Array(sys.order);
+    for (let i = 0; i < sys.order - 1; i++) d[i] = x[i + 1];
+    let last = u;
+    for (let i = 0; i < sys.order; i++) last -= sys.a[sys.order - 1 - i] * x[i];
+    d[sys.order - 1] = last;
+    return d;
+  }
+
+  /** Output y = b . x. */
+  function ssOut(sys, x) {
+    let y = 0;
+    for (let i = 0; i < sys.order; i++) y += sys.b[i] * x[i];
+    return y;
+  }
+
+  /** One RK4 step of a realisation, holding u constant across the step. */
+  function ssStep(sys, x, u, dt) {
+    const addv = (p, q, k) => {
+      const o = new Float64Array(sys.order);
+      for (let i = 0; i < sys.order; i++) o[i] = p[i] + q[i] * k;
+      return o;
+    };
+    const k1 = ssDeriv(sys, x, u);
+    const k2 = ssDeriv(sys, addv(x, k1, dt / 2), u);
+    const k3 = ssDeriv(sys, addv(x, k2, dt / 2), u);
+    const k4 = ssDeriv(sys, addv(x, k3, dt), u);
+    const o = new Float64Array(sys.order);
+    for (let i = 0; i < sys.order; i++) {
+      o[i] = x[i] + dt / 6 * (k1[i] + 2 * k2[i] + 2 * k3[i] + k4[i]);
+    }
+    return o;
+  }
+
+  /**
    * Step response of num(s)/den(s) by integrating the controllable canonical
    * state space form with RK4.
    *
@@ -141,25 +257,10 @@ const LTI = (function () {
    * from the plot window.
    */
   function step(num, den, dt, n) {
-    const order = den.length - 1;
-    const a0 = den[0];
-    const a = den.slice(1).map(v => v / a0);          // s^order + a[0] s^(order-1) ...
-    // y = sum_j b[j] * x[j], where x[j] is the j'th derivative state and b[j]
-    // is therefore the coefficient of s^j — counted from the END of the
-    // descending-power list, not the start.
-    const b = new Array(order).fill(0);
-    const nn = num.map(v => v / a0);
-    for (let i = 0; i < nn.length && i < order; i++) b[i] = nn[nn.length - 1 - i];
-
-    // x' = A x + B u with A in companion form, y = b . x
-    const deriv = (x) => {
-      const d = new Float64Array(order);
-      for (let i = 0; i < order - 1; i++) d[i] = x[i + 1];
-      let last = 1;                                    // unit step input
-      for (let i = 0; i < order; i++) last -= a[order - 1 - i] * x[i];
-      d[order - 1] = last;
-      return d;
-    };
+    const sys = realise(num, den);
+    const order = sys.order;
+    const b = sys.b;
+    const deriv = (x) => ssDeriv(sys, x, 1);          // unit step input
 
     const t = new Float64Array(n), y = new Float64Array(n);
     let x = new Float64Array(order);
@@ -186,5 +287,6 @@ const LTI = (function () {
   }
 
   return { add, sub, mul, div, scale, inv, abs, arg, db, deg, jw,
+           realise, ssDeriv, ssOut, ssStep, roots, polymulAsc,
            logf, bode, unityGain, interpAt, argmax, poly, tf, roots2, step };
 })();

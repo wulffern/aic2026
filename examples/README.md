@@ -25,13 +25,14 @@ URL so the links also work from the PDF and the EPUB.
     biquad.html           jupyter/biquad.ipynb
     buck.html             jupyter/buck.ipynb
     buck-pfm.html         jupyter/buck_pfm.ipynb
+    buck-type3.html       closed loop buck.ipynb only describes
     xosc.html             jupyter/xosc.ipynb
     pll.html              sun_pll_sky130nm/jupyter/pll.ipynb
     common/aic.css        shared chrome (cicadc palette)
     common/plot.js        canvas plotting: panels, axes, log axes, legends
     common/dsp.js         FFT, Hann, quantiser, sigma-delta loop, SNR
     common/semi.js        n_i(T), I_S, depletion width, straight-line fit
-    common/lti.js         complex arithmetic, Bode, step response via RK4
+    common/lti.js         complex arithmetic, Bode, state space, polynomial roots
 
 Four notebooks deliberately have no page. `jupyter/dt.ipynb` and
 `jupyter/diode_voltage.ipynb` are the same models as `ex/dt.py` and `ex/vd.py`,
@@ -93,3 +94,4 @@ the shape of the curve. Reference values, all reproduced by the pages:
 | `jupyter/pll.ipynb` | w_pll, w_z, Q | 458 kHz, 413 kHz, 0.90 |
 | `jupyter/buck.ipynb` | V_o, efficiency (settled) | 0.999 V, 70.8 % |
 | `jupyter/buck_pfm.ipynb` | V_o, efficiency | 1.016 V, 92 % |
+| `buck-type3.html` | crossover, PM, slowest CL pole | 50.1 kHz, 60.0 deg, 3.24 kHz |

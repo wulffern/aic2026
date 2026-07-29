@@ -58,6 +58,10 @@ it came from and where it deviates from it.
 - [PFM buck](/aic2026/assets/examples/buck-pfm.html) — the same power stage with
   no clock, where the switching frequency tracks the load.
   <sub>`jupyter/buck_pfm.ipynb`</sub>
+- [Voltage mode buck](/aic2026/assets/examples/buck-type3.html) — type 3
+  compensation by the K-factor method, checked against line and load steps on
+  the real switching converter.
+  <sub>the closed loop `jupyter/buck.ipynb` describes but does not build</sub>
 
 # Diodes, references and energy sources
 

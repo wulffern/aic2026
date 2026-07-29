@@ -593,7 +593,7 @@ The $V_x$ is now negative, so the current will decrease, however, since $V_x$ is
 I've made a
 -->
 
-[Jupyter PWM BUCK model](https://github.com/wulffern/aic2026/blob/main/jupyter/buck.ipynb) - [interactive](https://wulffern.github.io/aic2026/assets/examples/buck.html)
+[Jupyter PWM BUCK model](https://github.com/wulffern/aic2026/blob/main/jupyter/buck.ipynb) - [interactive](https://wulffern.github.io/aic2026/assets/examples/buck.html) - [closed loop with type 3](https://wulffern.github.io/aic2026/assets/examples/buck-type3.html)
 
 <!--pan_doc:
 
