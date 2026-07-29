@@ -27,8 +27,13 @@ hash_short:
 #  A copy, not a symlink: pandoc.tex travels between CI jobs in the
 #  prepared-sources artifact, and upload/download-artifact does not
 #  round-trip symlinks.
-PANDOC=pandoc_$(shell pandoc --version|head -n 1|cut -d " " -f 2|cut -d "." -f "1,2").tex
+#  Exact version match when a support file exists for it; otherwise the
+#  newest one available. pandoc_3.6.tex already defines \pandocbounded and
+#  \tightlist, which is what newer pandoc output actually needs.
+PANDOC_VER=pandoc_$(shell pandoc --version|head -n 1|cut -d " " -f 2|cut -d "." -f "1,2").tex
+PANDOC=$(shell [ -f ${PANDOC_VER} ] && echo ${PANDOC_VER} || ls -1 pandoc_*.tex | sort -V | tail -n 1)
 pandoc.tex:
+	@[ -f ${PANDOC_VER} ] || echo "pandoc.tex: no ${PANDOC_VER}, falling back to ${PANDOC}"
 	cp -f ${PANDOC} pandoc.tex
 
 MAIN_AUX = aic.aux aic.blg aic.log aic.toc aic.lof aic.lot aic.out aic.mw aic.nlo aic.nls aic.ilg aic.ind aic.idx aic.fff aic.ttt aic.loi aic.lol
