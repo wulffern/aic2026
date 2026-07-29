@@ -664,6 +664,11 @@ A general bi-quadratic active-RC filter is shown below. These kind of general pu
 
 Imagine you wanted to make a filter, any filter. You'd decompose into first and second order sections, and then you'd try and match the transfer functions to the general equations. 
 
+The [interactive biquad](https://wulffern.github.io/aic2026/assets/examples/biquad.html) is worth a few minutes here: the
+low-pass, band-pass, high-pass, notch and all-pass responses all share one
+denominator, and switching between them moves the zeros while the poles stay
+exactly where they are.
+
 -->
 
 
