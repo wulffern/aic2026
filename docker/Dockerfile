@@ -5,7 +5,7 @@ FROM texlive/texlive:TL2022-historic
 # plus cairo headers so the pip packages build.
 RUN apt-get update && \
     apt-get -y install ghostscript python3-pip poppler-utils pandoc wget imagemagick python3-svglib \
-    python3-venv build-essential pkg-config libcairo2-dev python3-dev && \
+    python3-venv build-essential pkg-config libcairo2-dev python3-dev librsvg2-bin && \
     apt-get autoremove -y && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*

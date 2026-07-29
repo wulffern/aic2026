@@ -11,10 +11,20 @@ from sys import platform
 def imgConvert(ftype,fotype,path):
     fopath = "media/"+ os.path.basename(path).replace(ftype,fotype)
     if(not os.path.exists(fopath)):
-        if( platform == "darwin"):
-            os.system(f"magick -density 100 {path} {fopath}")
-        else:
-            os.system(f"convert -density 100 {path} {fopath}")
+        #- For SVG, prefer rsvg-convert: ImageMagick's own SVG parser fails
+        #  on <image> elements with embedded base64 data, which the exported
+        #  schematic screenshots use. Those figures then silently miss from
+        #  the epub, whose build needs the .png variants made here.
+        cmds = []
+        if(ftype == ".svg"):
+            fmt = fotype.strip(".")
+            cmds.append(f"rsvg-convert --format={fmt} --dpi-x=100 --dpi-y=100 -o {fopath} {path}")
+        magick = "magick" if platform == "darwin" else "convert"
+        cmds.append(f"{magick} -density 100 {path} {fopath}")
+        for cmd in cmds:
+            if(os.system(cmd) == 0 and os.path.exists(fopath)):
+                break
+            print(f"fix_svg: '{cmd}' failed for {path}")
     return fopath
 
 
