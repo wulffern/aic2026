@@ -902,7 +902,7 @@ During phase 2 we configure the circuit to leverage the OTA to do the charge tra
 
 --> 
 
-![left fit](../media/l5_scamp.svg)
+![left fit](../media/l5_scamp_tikz.pdf)
 
 
 <!--pan_doc:
@@ -948,7 +948,7 @@ accumulate the input charge every cycle.
 
 ---
 
-![left fit](../media/l5_scint.svg)
+![left fit](../media/l5_scint_tikz.pdf)
 
 <!--pan_doc:
 

@@ -475,15 +475,17 @@ come up.
    copy. The warning is the point of including it.
 
 ### Current next figure
-- `l5_scamp` and `l5_scint` — the gain stage and the integrator, both close
-  relatives of the `scintro` pair and candidates for `sc_lib`. Then
-  `l5_scfig`/`l5_scifig` (settling and staircase sketches), `l5_sw2`,
+- `l5_scfig` and `l5_scifig` — the settling and staircase output sketches,
+  which pair with `l5_scamp` and `l5_scint` respectively. Then `l5_sw2`,
   `l5_sw3`, `l5_novl`, `l5_scex`.
 
 `tikz/sc_lib.tex` holds the switched-capacitor amplifier pieces. `\scIntroFrame`
 draws everything `l5_scintro1` and `l5_scintro2` share and leaves the two
 switch positions to the caller, because those two switch states are the entire
-difference between the phases and the whole point of the pair.
+difference between the phases and the whole point of the pair. `\scAmpFrame`
+does the same for `l5_scamp` and `l5_scint`: the integrator is the gain stage
+with the C2 reset switch removed, and the lecture makes that point explicitly,
+so only `l5_scamp` draws the reset.
 
 `tikz/plane_lib.tex` holds the s-plane and z-plane pieces: the axes, the unit
 circle, and pole and zero markers. Pole positions are given in units of the
@@ -493,7 +495,7 @@ about them. Same rule as `spec_lib.tex`: a new shared include must be added to
 
 Approved and switched in `lectures/l05_sc.md`: `l05_fund1`, `l05_fund2`,
 `l05_fund3`, `l5_sh`, `l5_shaaf`, `l5_subsample`, `l5_sdomain`, `l5_zdomain`,
-`l5_zunstable`, `l5_fir`, `l5_sw1`, `l5_scintro1`, `l5_scintro2`.
+`l5_zunstable`, `l5_fir`, `l5_sw1`, `l5_scintro1`, `l5_scintro2`, `l5_scamp`, `l5_scint`.
 
 `tikz/spec_lib.tex` holds the sampling-spectrum pieces shared by `l5_sh`,
 `l5_shaaf` and `l5_subsample`: the axis with its Nyquist ticks, the wanted
