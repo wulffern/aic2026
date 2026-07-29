@@ -267,27 +267,25 @@ slides-one: slides-vendor
 print-tikz:
 	${foreach f,${TIKZ_SOURCES},echo ${f};}
 
+# Four figures at a time; each lands in its own tikz/build/<subdir>/<name>.*
+# so the workers never touch the same file. xargs exits non-zero if any
+# figure fails, so -halt-on-error still fails CI.
 tikz:
-	@set -e; \
-	for f in ${TIKZ_SOURCES}; do \
-		${MAKE} --no-print-directory tikz-one FNAME="$$f"; \
-	done
+	printf '%s\n' ${TIKZ_SOURCES} | xargs -P 4 -I{} ${MAKE} --no-print-directory tikz-one FNAME={}
 
 # Rasterise the figures left in tikz/build/ by tikz-check, so they can be
 # reviewed without a PDF viewer. CI uploads the result as an artifact.
 tikz-preview:
 	-mkdir -p preview
-	@set -e; \
-	for f in ${TIKZ_SOURCES}; do \
-		rel=$${f#tikz/}; rel=$${rel%.tex}; \
+	printf '%s\n' ${TIKZ_SOURCES} | xargs -P 4 -n 1 sh -c ' \
+		f="$$1"; rel=$${f#tikz/}; rel=$${rel%.tex}; \
 		b=$$(basename "$$rel"); \
 		pdf="tikz/build/$$rel.pdf"; \
 		if [ ! -f "$$pdf" ]; then \
-			echo "$$pdf missing — run 'make tikz-check' first"; exit 1; \
+			echo "$$pdf missing — run '\''make tikz-check'\'' first"; exit 1; \
 		fi; \
 		echo "Rendering $$rel"; \
-		pdftoppm -png -r 150 -singlefile "$$pdf" "preview/$${b}_tikz"; \
-	done
+		pdftoppm -png -r 150 -singlefile "$$pdf" "preview/$${b}_tikz"' sh
 
 # Compare one figure's original artwork against its TikZ redraw, as PNG.
 # Needs requirements-preview.txt.
@@ -299,14 +297,13 @@ preview:
 # question is whether the sources still build.
 tikz-check:
 	-mkdir -p tikz/build
-	@set -e; \
-	for f in ${TIKZ_SOURCES}; do \
-		rel=$${f#tikz/}; \
+	printf '%s\n' ${TIKZ_SOURCES} | xargs -P 4 -n 1 sh -c ' \
+		f="$$1"; rel=$${f#tikz/}; \
 		echo "Checking $${rel%.tex}"; \
-		mkdir -p "tikz/build/$$(dirname "$${rel}")"; \
+		mkdir -p "tikz/build/$$(dirname "$$rel")"; \
 		${TIKZ_REPRODUCIBLE} pdflatex -interaction=nonstopmode -halt-on-error \
-			-output-directory "tikz/build/$$(dirname "$${rel}")" "$$f"; \
-	done
+			-output-directory "tikz/build/$$(dirname "$$rel")" "$$f" >/dev/null || \
+			{ echo "FAILED $$rel — see tikz/build/$${rel%.tex}.log"; exit 1; }' sh
 
 tikz-one:
 	@test -n "${FNAME}" || (echo "Usage: make tikz-one FNAME=l3_bjtonly (also accepts l13/pdpu or tikz/l3_bjtonly.tex)"; exit 1)
