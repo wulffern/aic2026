@@ -1,0 +1,92 @@
+\input{tikz/fig_header.tex}
+
+% Current mode DAC: a mirror sets a reference current, every slice copies it
+% with a device sized 1, 2, 4 ... N, and a steering pair sends each slice's
+% current either to the amplifier's summing node or to the dummy rail. The
+% slice current never switches off, only sideways, which is what keeps the
+% mirror from being disturbed by the code.
+%
+% Only the N and the 1 slice are drawn, with the row of dots between them
+% standing for the rest, as in the original.
+%
+% One deviation: the original runs a diagonal from each steering device up to
+% its rail, and the two diagonals cross between the rails. Here the risers are
+% vertical and the b_n one crosses the dummy rail without a junction dot. Same
+% connections, and which wire lands on which rail is easier to read.
+
+\begin{circuitikz}[american, thick, transform shape, circuit ee IEC]
+
+  \input{tikz/ckt_lib.tex}
+  \input{tikz/rdac_lib.tex}
+
+  \def\ytail{0.6}       % source of the tail devices
+  \def\ypair{3.4}       % source of the steering pairs
+  \def\ydrain{5.4}      % drain of the steering pairs
+  \def\yplus{6.6}       % dummy rail, into the + input
+  \def\yminus{7.8}      % summing rail, into the - input
+  \def\xref{0}
+  \def\xa{3.6}          % the N slice
+  \def\xb{10.0}         % the 1 slice
+  \def\dw{0.85}         % half the spacing of a steering pair
+
+  % ---- Reference branch: a current source into a diode connected device ----
+  \draw (\xref,\ytail) to [Tnmos, n=M0] (\xref,{\ytail+1.6});
+  \draw (\xref,\ytail) -- ++(0,-0.3) \vground;
+  \draw (\xref,{\ytail+1.6}) to [I, invert] (\xref,{\ytail+3.4});
+  \draw (\xref,{\ytail+3.4}) \vsupply;
+  % Diode connection, brought out as the gate rail the slices share.
+  \draw (M0.gate) -| (\xref,{\ytail+1.6});
+  \fill (\xref,{\ytail+1.6}) circle (0.07);
+  \coordinate (grail) at (M0.gate);
+
+  % ---- Two slices: a tail device, then a steering pair ----
+  \foreach \x/\w/\bn in {\xa/$N$/n, \xb/$1$/0} {
+    \draw (\x,\ytail) to [Tnmos, n=MT\bn] (\x,{\ytail+1.6});
+    \draw (\x,\ytail) -- ++(0,-0.3) \vground;
+    \draw (\x,{\ytail+1.6}) -- (\x,\ypair);
+    \node[anchor=west] at ($(\x,{\ytail+2.0})+(0.25,0)$) {\w};
+    % The pair sits on the tail device's drain.
+    \draw ({\x-\dw},\ypair) -- ({\x+\dw},\ypair);
+    \draw ({\x-\dw},\ypair) to [Tnmos, n=ML\bn] ({\x-\dw},\ydrain);
+    \draw ({\x+\dw},\ypair) to [Tnmos, n=MR\bn, mirror] ({\x+\dw},\ydrain);
+    \draw (ML\bn.gate) -- ++(-0.7,0) node[anchor=east] {$b_\bn$};
+    \draw (MR\bn.gate) -- ++(0.7,0) node[anchor=west] {$\overline{b_\bn}$};
+    % b_n steers into the summing rail, b_n-bar into the dummy rail.
+    \draw ({\x-\dw},\ydrain) -- ({\x-\dw},\yminus);
+    \fill ({\x-\dw},\yminus) circle (0.07);
+    \draw ({\x+\dw},\ydrain) -- ({\x+\dw},\yplus);
+    \fill ({\x+\dw},\yplus) circle (0.07);
+  }
+
+  % The rest of the slices.
+  \foreach \k in {0,...,6} {
+    \fill ({\xa+2.4+\k*0.30},{\ytail+0.8}) circle (0.035);
+    \fill ({\xa+2.4+\k*0.30},\yplus) circle (0.035);
+    \fill ({\xa+2.4+\k*0.30},\yminus) circle (0.035);
+  }
+
+  % ---- The gate rail the tail devices share ----
+  \draw (grail) -- (MTn.gate);
+  \draw (MTn.gate) -- (MT0.gate);
+  \fill (MTn.gate) circle (0.07);
+
+  % ---- The two rails into the amplifier ----
+  \draw ({\xa-\dw},\yminus) -- (13.8,\yminus);
+  \draw ({\xa+\dw},\yplus) -- (13.8,\yplus);
+  \rdacAmp{OA}{(13.8,7.2)}
+  \draw (13.8,\yminus) -- (OAinn);
+  \draw (13.8,\yplus) -- (OAinp);
+
+  % ---- The dummy rail is held at a reference voltage ----
+  \draw (12.4,\yplus) to [V] (12.4,{\yplus-2.2});
+  \draw (12.4,{\yplus-2.2}) -- ++(0,-0.3) \vground;
+  \fill (12.4,\yplus) circle (0.07);
+
+  % ---- Feedback resistor over the top ----
+  \draw (13.0,\yminus) -- (13.0,10.4) -- ++(0.7,0) \hresistor{$R_F$} -- ++(0.7,0)
+        -- (17.2,10.4) -- (17.2,7.2) -- (OAout);
+  \fill (13.0,\yminus) circle (0.07);
+  \draw (OAout) -- ++(0.9,0);
+
+\end{circuitikz}
+\end{document}
