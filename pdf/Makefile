@@ -57,8 +57,10 @@ ebook:
 	pandoc aic_epub.latex -t native | pandoc -f native -t epub3 -o aic.epub --mathml
 #pandoc --gladtex -o aic.epub aic_epub.latex
 
+# Two passes, not three: the standalone chapters have no index or bibtex
+# run, so references settle after one draft pass (verified: pass three
+# changes nothing).
 standalone:
-	pdflatex -draftmode ${FNAME}
 	pdflatex -draftmode ${FNAME}
 	pdflatex  ${FNAME}
 	#dvipdf ${FNAME}
