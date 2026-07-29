@@ -1,0 +1,376 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Charge pump PLL loop &mdash; aic2026</title>
+<link rel="stylesheet" href="common/aic.css">
+</head>
+<body>
+
+<header>
+  <h1>PLL LOOP</h1>
+  <div class="sub">
+    <a href="index.html">&larr; all examples</a> &middot;
+    interactive version of
+    <a href="https://github.com/wulffern/sun_pll_sky130nm/blob/main/jupyter/pll.ipynb">sun_pll_sky130nm/jupyter/pll.ipynb</a> &middot;
+    phase locked loops
+  </div>
+</header>
+
+<div id="chain">
+  <div class="cb on">PFD/CP K_pd</div><span class="ca">&rarr;</span>
+  <div class="cb on">LOOP FILTER Z(s)</div><span class="ca">&rarr;</span>
+  <div class="cb on">VCO K_vco/s</div><span class="ca">&rarr;</span>
+  <div class="cb on">DIVIDE BY N</div><span class="ca">&crarr;</span>
+</div>
+
+<canvas id="c"></canvas>
+
+<div id="ctrl">
+  <div class="cg">
+    <div class="cgt">LOOP</div>
+    <div class="cr">
+      <label>I_cp</label>
+      <input type="range" data-bind="licp" id="sl-licp" min="-7" max="-3" step="0.05" value="-6">
+      <span class="v" id="v-licp"></span>
+    </div>
+    <div class="cr">
+      <label>K_vco</label>
+      <input type="range" data-bind="lkvco" id="sl-lkvco" min="7" max="10.5" step="0.002" value="9.204">
+      <span class="v" id="v-lkvco"></span>
+    </div>
+    <div class="cr">
+      <label>N</label>
+      <input type="range" data-bind="ln" id="sl-ln" min="0" max="10" step="1" value="5">
+      <span class="v" id="v-ln"></span>
+    </div>
+  </div>
+
+  <div class="cg">
+    <div class="cgt">LOOP FILTER</div>
+    <div class="cr">
+      <label>R</label>
+      <input type="range" data-bind="lr" id="sl-lr" min="3" max="6.5" step="0.002" value="4.806">
+      <span class="v" id="v-lr"></span>
+    </div>
+    <div class="cr">
+      <label>C1</label>
+      <input type="range" data-bind="lc1" id="sl-lc1" min="-13" max="-9" step="0.002" value="-11.2199">
+      <span class="v" id="v-lc1"></span>
+    </div>
+    <div class="cr">
+      <label>C2/C1</label>
+      <input type="range" data-bind="c21" id="sl-c21" min="0.005" max="0.5" step="0.005" value="0.055">
+      <span class="v" id="v-c21"></span>
+    </div>
+    <div class="note">
+      C2 suppresses the ripple the charge pump leaves on the control line. It
+      also adds a pole, and that pole is what eats your phase margin.
+    </div>
+  </div>
+
+  <div class="cg">
+    <div class="cgt">VIEW</div>
+    <div class="ckrow">
+      <input type="checkbox" data-bind="marks" id="sl-marks" checked>
+      <label for="sl-marks">Mark w_pll, w_z and the unity gain point</label>
+    </div>
+    <div class="note">
+      The notebook's own comment reads <code>#- Fix PLL / Set Q=0.1 / Choose
+      w3db=0.1wpll</code>. Its shipped values give Q &asymp; 0.9, so that TODO
+      is still open. Try to close it.
+    </div>
+  </div>
+</div>
+
+<div id="readout">
+  <div class="ro"><span class="k">UNITY GAIN</span><span class="n" id="ro-fu"></span></div>
+  <div class="ro"><span class="k">PHASE MARGIN</span><span class="n" id="ro-pm"></span></div>
+  <div class="ro"><span class="k">w_pll</span><span class="n" id="ro-wpll"></span></div>
+  <div class="ro"><span class="k">w_z</span><span class="n" id="ro-wz"></span></div>
+  <div class="ro"><span class="k">Q = w_z/w_pll</span><span class="n" id="ro-q"></span></div>
+  <div class="ro"><span class="k">PEAKING</span><span class="n" id="ro-peak"></span></div>
+</div>
+
+<div id="legend">
+  <div class="leg"><div class="lsw" style="background:var(--curve)"></div>Open loop L(s)</div>
+  <div class="leg"><div class="lsw" style="background:var(--quant)"></div>Closed loop L/(1+L)</div>
+  <div class="leg"><div class="lsw" style="background:var(--digi)"></div>VCO noise 1/(1+L)</div>
+  <div class="leg"><div class="lsw" style="background:var(--sample)"></div>Unity gain</div>
+  <div class="leg"><div class="lsw" style="background:var(--error)"></div>w_pll</div>
+</div>
+
+<div class="doc">
+  <h2>WHAT YOU ARE LOOKING AT</h2>
+  <p>
+    A charge pump PLL, linearised around lock and written as one open-loop
+    gain. The phase detector turns phase error into current, the loop filter
+    turns current into voltage, the VCO turns voltage into frequency, and
+    frequency is the integral of phase &mdash; which is where the second
+    integrator, and all the difficulty, comes from:
+  </p>
+  <p style="text-align:center">
+    <code>L(s) = K_vco &middot; K_pd &middot; Z(s) / (N &middot; s)</code>,
+    &nbsp;
+    <code>Z(s) = (1 + sRC1) / ( s(C1+C2)(1 + s&tau;_p) )</code>
+  </p>
+  <p>
+    Two poles at the origin means &minus;180&deg; of phase before anything else
+    happens, so without the zero at 1/(RC1) the loop would be exactly
+    marginally stable. The zero is not an optimisation; it is the only thing
+    holding the loop up. C2 then adds a pole that takes some of that phase back
+    &mdash; the ripple filtering is not free.
+  </p>
+  <p>
+    The bottom left panel is the pair that matters for noise. The closed loop
+    L/(1+L) is a <b>low pass</b>: reference and divider noise get through
+    inside the loop bandwidth and are filtered outside it. Its complement
+    1/(1+L) is a <b>high pass</b>: VCO noise is suppressed inside the loop
+    bandwidth and untouched outside. The two cross at the loop bandwidth, and
+    choosing that crossover is most of PLL design &mdash; you are picking which
+    noise source you would rather have.
+  </p>
+
+  <h2>THINGS WORTH TRYING</h2>
+  <ul>
+    <li>
+      The notebook ships with Q &asymp; 0.9 and a note saying it wants Q = 0.1.
+      Chase it: <b>Q = w_z/w_pll</b>, so raise R (which raises w_z) or lower
+      the current. Watch the phase margin and the closed-loop peaking as you
+      go. Peaking in the closed loop is what a spectrum analyser shows as a
+      bump either side of the carrier.
+    </li>
+    <li>
+      Push <b>C2/C1</b> up towards 0.5. The extra pole moves down towards the
+      unity gain frequency, the phase margin collapses, the step response rings
+      and eventually the loop goes unstable. The usual rule of thumb is C2
+      around a twentieth of C1, and this is why.
+    </li>
+    <li>
+      Raise <b>N</b> by powers of two. L(s) scales as 1/N, so the loop
+      bandwidth falls and everything gets slower &mdash; a high division ratio
+      is a quiet reference but a sluggish loop, and the VCO noise it no longer
+      suppresses shows up in the high-pass curve.
+    </li>
+    <li>
+      Raise <b>I_cp</b> and <b>K_vco</b> together and note they do the same
+      thing to the plot: only the product K_vco&middot;K_pd/N matters. Two
+      knobs, one degree of freedom &mdash; which is why data sheets quote the
+      product.
+    </li>
+    <li>
+      Watch the <b>step response</b> against the phase margin readout. Around
+      60&deg; you get a clean settle; below 40&deg; it rings for many cycles;
+      below zero the plot runs off the screen and the loop never locks.
+    </li>
+  </ul>
+
+  <h2>THE NOTEBOOK</h2>
+<pre><code>Kvco = 2*np.pi*1.6e9
+Kpd = 1e-6/(2*np.pi)        # current divided by 2 pi
+R = 32e3*2
+C1 = 6.024e-12
+C2 = 0.33e-12
+N = 32
+
+wpll = np.sqrt(Kpd*Klp*Kvco/N)
+wz = 1/(R*C1)
+w3db = wpll**2/wz
+Q = wz/wpll
+
+KlpHlp = 1/np.multiply((C1 + C2),s)* \
+    (1 + np.multiply(s,(R*C1)))/(1 + np.multiply(s,R*(C1*C2)/(C1 + C2)))
+
+Ls = np.divide(Kvco*Kpd*KlpHlp, N*s)
+Cs = np.divide(Ls,1 + Ls)</code></pre>
+  <p class="src">
+    Source:
+    <a href="https://github.com/wulffern/sun_pll_sky130nm/blob/main/jupyter/pll.ipynb">sun_pll_sky130nm/jupyter/pll.ipynb</a>,
+    from the SUN PLL in sky130. The sliders start on the notebook's values. The
+    step response is not in the notebook; it comes from integrating the same
+    closed-loop expression, so the ringing you see and the phase margin you
+    read are two views of one thing. The companion
+    <code>pfd.ipynb</code> is not here because it plots real SPICE output
+    rather than a model.
+  </p>
+</div>
+
+<footer>
+  TFE4188 Advanced Integrated Circuits &middot; <a href="https://wulffern.github.io/aic2026/">aic2026</a>
+</footer>
+
+<script src="common/plot.js"></script>
+<script src="common/lti.js"></script>
+<script>
+'use strict';
+
+const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+
+const S = {};
+let D = null;
+
+const fmts = {
+  licp:  v => eng(Math.pow(10, v), 'A'),
+  lkvco: v => eng(Math.pow(10, v), 'Hz/V'),
+  ln:    v => String(1 << Math.round(v)),
+  lr:    v => eng(Math.pow(10, v), 'ohm'),
+  lc1:   v => eng(Math.pow(10, v), 'F'),
+  c21:   v => v.toFixed(3),
+};
+
+function eng(v, unit, digits = 3) {
+  const p = [[1e-15, 'f'], [1e-12, 'p'], [1e-9, 'n'], [1e-6, 'u'], [1e-3, 'm'],
+             [1, ''], [1e3, 'k'], [1e6, 'M'], [1e9, 'G']];
+  for (let i = p.length - 1; i >= 0; i--) {
+    if (Math.abs(v) >= p[i][0]) return (v / p[i][0]).toPrecision(digits) + ' ' + p[i][1] + unit;
+  }
+  return v.toExponential(2) + ' ' + unit;
+}
+
+function compute() {
+  const Icp = Math.pow(10, S.licp);
+  const Kvco = 2 * Math.PI * Math.pow(10, S.lkvco);   // rad/s per V
+  const Kpd = Icp / (2 * Math.PI);                    // A per rad
+  const N = 1 << Math.round(S.ln);
+  const R = Math.pow(10, S.lr);
+  const C1 = Math.pow(10, S.lc1);
+  const C2 = S.c21 * C1;
+
+  const tz = R * C1;
+  const tp = R * C1 * C2 / (C1 + C2);
+  const A = Kvco * Kpd / (N * (C1 + C2));
+
+  // Loop filter impedance, open loop, closed loop, and the VCO noise path.
+  const Z = s => LTI.div(LTI.add([1, 0], LTI.scale(s, tz)),
+                         LTI.mul(s, LTI.scale(LTI.add([1, 0], LTI.scale(s, tp)), C1 + C2)));
+  const L = s => LTI.scale(LTI.div(LTI.mul([Kvco * Kpd, 0], Z(s)), LTI.mul([N, 0], s)), 1);
+  const Cl = s => { const l = L(s); return LTI.div(l, LTI.add([1, 0], l)); };
+  const Ev = s => { const l = L(s); return LTI.inv(LTI.add([1, 0], l)); };
+
+  const f = LTI.logf(1e2, 1e9, 900);
+  const bL = LTI.bode(f, L);
+  const bC = LTI.bode(f, Cl);
+  const bE = LTI.bode(f, Ev);
+  const magZ = new Float64Array(f.length);
+  for (let i = 0; i < f.length; i++) magZ[i] = LTI.db(Z(LTI.jw(f[i])));
+
+  const fu = LTI.unityGain(f, bL.mag);
+  const pm = fu === null ? NaN : LTI.interpAt(f, bL.ph, fu) + 180;
+
+  // The notebook's shorthand for the loop, with Klp = 1/C1.
+  const wpll = Math.sqrt(Kpd * (1 / C1) * Kvco / N);
+  const wz = 1 / tz;
+  const Q = wz / wpll;
+  const w3db = wpll * wpll / wz;
+
+  // Closed loop step response: A(1+s tz) / (tp s^3 + s^2 + A tz s + A).
+  const num = [A * tz, A];
+  const den = [tp, 1, A * tz, A];
+  const dt = tp / 20;
+  const tEnd = Math.min(60 / wpll, dt * 200000);
+  const nStep = Math.max(400, Math.min(200000, Math.round(tEnd / dt)));
+  const st = LTI.step(num, den, dt, nStep);
+
+  const kpk = LTI.argmax(bC.mag);
+  const peak = bC.mag[kpk];
+
+  D = { f, bL, bC, bE, magZ, fu, pm, wpll, wz, Q, w3db, st, kpk, peak, tz, tp, A };
+
+  UI.readout('ro-fu', fu === null ? 'never crosses' : eng(fu, 'Hz'));
+  UI.readout('ro-pm', isFinite(pm) ? pm.toFixed(1) + ' deg' + (pm < 0 ? '  UNSTABLE' : '') : '-');
+  UI.readout('ro-wpll', eng(wpll / (2 * Math.PI), 'Hz'));
+  UI.readout('ro-wz', eng(wz / (2 * Math.PI), 'Hz'));
+  UI.readout('ro-q', Q.toFixed(2));
+  UI.readout('ro-peak', peak > 0.05 ? '+' + peak.toFixed(2) + ' dB at ' + eng(D.f[kpk], 'Hz')
+                                    : 'none');
+}
+
+function render(cx, W, H, narrow) {
+  if (!D) return;
+  const g = Plot.grid(W, H, narrow ? 6 : 2, narrow ? 1 : 3, { gapY: 24, gapX: 22 });
+  const f0 = D.f[0], f1 = D.f[D.f.length - 1];
+
+  const marks = p => {
+    if (!S.marks) return;
+    if (D.fu !== null) p.vline(D.fu, css('--sample'), [3, 3]);
+    p.vline(D.wpll / (2 * Math.PI), css('--error'), [2, 4]);
+    p.vline(D.wz / (2 * Math.PI), css('--alt2'), [2, 4]);
+  };
+
+  // ── Open loop ───────────────────────────────────────────────────────────
+  const p0 = new Plot.Panel(cx, g[0], {
+    title: 'Open loop |L|', ylabel: 'Magnitude [dB]', xlabel: 'Frequency [Hz]', xlog: true,
+  });
+  p0.limits(f0, f1, -120, 140).frame();
+  marks(p0);
+  p0.hline(0, css('--muted'), [3, 3]);
+  p0.line(D.f, D.bL.mag, css('--curve'), { width: 1.5 });
+  p0.note(0.03, 0.9, '-40 dB/dec below w_z,\n-20 dB/dec above it', css('--muted'));
+
+  const p1 = new Plot.Panel(cx, g[1], {
+    title: 'Open loop phase', ylabel: 'Phase [deg]', xlabel: 'Frequency [Hz]', xlog: true,
+  });
+  p1.limits(f0, f1, -200, -80).frame();
+  marks(p1);
+  p1.hline(-180, css('--error'), [3, 3]);
+  p1.line(D.f, D.bL.ph, css('--curve'), { width: 1.5 });
+  if (isFinite(D.pm)) {
+    p1.note(0.03, 0.12, 'phase margin = ' + D.pm.toFixed(1) + ' deg',
+            D.pm < 0 ? css('--error') : css('--quant'));
+  }
+
+  // ── Loop filter ─────────────────────────────────────────────────────────
+  const p2 = new Plot.Panel(cx, g[2], {
+    title: 'Loop filter |Z|', ylabel: '|Z| [dB ohm]', xlabel: 'Frequency [Hz]', xlog: true,
+  });
+  const [zlo, zhi] = Plot.padExtent(...Plot.extent(D.magZ), 0.08);
+  p2.limits(f0, f1, zlo, zhi).frame();
+  marks(p2);
+  p2.line(D.f, D.magZ, css('--curve'), { width: 1.5 });
+  p2.note(0.03, 0.12, 'flat at R between the\nzero and the C2 pole', css('--muted'));
+
+  // ── Noise transfer ──────────────────────────────────────────────────────
+  const p3 = new Plot.Panel(cx, g[3], {
+    title: 'Where noise goes', ylabel: 'Magnitude [dB]', xlabel: 'Frequency [Hz]', xlog: true,
+  });
+  p3.limits(f0, f1, -80, 30).frame();
+  marks(p3);
+  p3.hline(0, css('--muted'), [3, 3]);
+  p3.line(D.f, D.bC.mag, css('--quant'), { width: 1.5 });
+  p3.line(D.f, D.bE.mag, css('--digi'), { width: 1.5 });
+  p3.legend([
+    { label: 'ref/div  L/(1+L)', color: css('--quant') },
+    { label: 'VCO  1/(1+L)', color: css('--digi') },
+  ], 'br');
+
+  // ── Closed loop ─────────────────────────────────────────────────────────
+  const p4 = new Plot.Panel(cx, g[4], {
+    title: 'Closed loop', ylabel: 'Magnitude [dB]', xlabel: 'Frequency [Hz]', xlog: true,
+  });
+  const [clo, chi] = Plot.padExtent(...Plot.extent(D.bC.mag), 0.08);
+  p4.limits(f0, f1, Math.max(clo, -80), Math.max(chi, 5)).frame();
+  marks(p4);
+  p4.hline(0, css('--muted'), [3, 3]);
+  p4.line(D.f, D.bC.mag, css('--quant'), { width: 1.5 });
+  if (D.peak > 0.05) p4.note(0.03, 0.9, 'peaking +' + D.peak.toFixed(2) + ' dB', css('--quant'));
+
+  // ── Step ────────────────────────────────────────────────────────────────
+  const p5 = new Plot.Panel(cx, g[5], {
+    title: 'Closed loop step', ylabel: 'phi_out / phi_in', xlabel: 'Time [s]',
+  });
+  const [slo, shi] = Plot.padExtent(...Plot.extent(D.st.y), 0.12);
+  const tEnd = D.st.t[D.st.t.length - 1];
+  p5.limits(0, tEnd, Math.min(slo, -0.2), Math.max(shi, 1.2)).frame();
+  p5.hline(1, css('--muted'), [3, 3]);
+  p5.line(D.st.t, D.st.y, css('--quant'), { width: 1.5 });
+  if (isFinite(D.pm) && D.pm < 0) p5.note(0.04, 0.9, 'unstable: never locks', css('--error'));
+}
+
+const chart = Plot.mount('c', { aspect: 0.5, aspectNarrow: 2.6, draw: render });
+UI.bind(S, fmts, () => { compute(); chart.redraw(); });
+compute();
+chart.redraw();
+</script>
+</body>
+</html>

@@ -183,7 +183,7 @@ Sesame is a Python3 package for solving the drift diffusion Poisson equations fo
 
 <sub>Semiconductor current-flow equations (diffusion and degeneracy), R.Stratton,
 IEEE Transactions on Electron Devices
-[https://ieeexplore.ieee.org/document/1477063](https://ieeexplore.ieee.org/document/1477063)</sub>
+[@stratton72]</sub>
 
 ![right fit](../media/current_flow.png)
 
@@ -212,7 +212,7 @@ IEEE Transactions on Electron Devices
 ![fit](../media/cm_gain_boost.pdf)
 
 ---
-<sub>["High speed, high gain OTA in a digital 90nm CMOS technology" Berntsen, Wulff, Ytterdal, Norchip 2005](https://ieeexplore.ieee.org/document/1597006)</sub>
+<sub>"High speed, high gain OTA in a digital 90nm CMOS technology" Berntsen, Wulff, Ytterdal, Norchip 2005 [@berntsen05a]</sub>
 
 
 ![original fit](../media/berntsen.png)
@@ -603,7 +603,7 @@ Consider other types of logic "rule breaking", so you should know why you need i
 
 ![inline 110%](../media/fig_sar_logic.pdf)
 
-<sub><sub>Dynamic logic => [A Compiled 9-bit 20-MS/s 3.5-fJ/conv.step SAR ADC in 28-nm FDSOI for Bluetooth Low Energy Receivers](https://ieeexplore.ieee.org/document/7906479)</sub></sub>
+<sub><sub>Dynamic logic => A Compiled 9-bit 20-MS/s 3.5-fJ/conv.step SAR ADC in 28-nm FDSOI for Bluetooth Low Energy Receivers [@wulff17]</sub></sub>
 
 ---
 

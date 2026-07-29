@@ -60,7 +60,7 @@ and find one of the latest papers,
 
 -->
 
-[A BJT-based CMOS Temperature Sensor with Duty-cycle-modulated Output and ±0.54 °C (3-sigma) Inaccuracy from -40 °C to 125 °C](https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=9383810).
+A BJT-based CMOS Temperature Sensor with Duty-cycle-modulated Output and ±0.54 °C (3-sigma) Inaccuracy from -40 °C to 125 °C [@huang21].
 
 <!--pan_doc:
 
@@ -594,7 +594,7 @@ A normal NMOS, however, can also trigger, and if you have not thought about limi
 consequences. Specifically, the drain and source will be shorted by likely the silicide on top of the drain, and instead of a transistor with high output 
 impedance, we'll have a drain source connection with a few kOhm output impedance.
 
-Take a look at [New Ballasting Layout Schemes to Improve ESD Robustness of I/O Buffers in Fully Silicided CMOS Process](https://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=5299049)
+Take a look at New Ballasting Layout Schemes to Improve ESD Robustness of I/O Buffers in Fully Silicided CMOS Process [@ker09]
  for the pretty pictures you'll get when the drain/source breaks.
 
 -->
@@ -605,7 +605,7 @@ Take a look at [New Ballasting Layout Schemes to Improve ESD Robustness of I/O B
 
 If you don't do the layout right
 
-[New Ballasting Layout Schemes to Improve ESD Robustness of I/O Buffers in Fully Silicided CMOS Process](https://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=5299049)
+New Ballasting Layout Schemes to Improve ESD Robustness of I/O Buffers in Fully Silicided CMOS Process [@ker09]
 
 ---
 
@@ -818,11 +818,11 @@ You must **always handle ESD** on an IC
 
 # Want to learn more?
 
-[ESD (Electrostatic Discharge) Protection Design for Nanoelectronics in CMOS Technology](https://ieeexplore.ieee.org/document/4016442)
+ESD (Electrostatic Discharge) Protection Design for Nanoelectronics in CMOS Technology [@ker06]
 
-[Overview on Latch-Up Prevention in CMOS Integrated Circuits by Circuit Solutions](https://ieeexplore.ieee.org/document/9998049)
+Overview on Latch-Up Prevention in CMOS Integrated Circuits by Circuit Solutions [@ker23]
 
-[Overview on ESD Protection Designs of Low-Parasitic Capacitance for RF ICs in CMOS Technologies](https://ieeexplore.ieee.org/document/5688227)
+Overview on ESD Protection Designs of Low-Parasitic Capacitance for RF ICs in CMOS Technologies [@ker11]
 
 -->
 

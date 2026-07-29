@@ -94,6 +94,13 @@ class Bibtex(dict):
                     item = True
                     self._parse(buffer)
                     buffer = ""
+
+                #- A comment line between entries would otherwise be swallowed
+                #  into the last field of the entry above it, because the
+                #  buffer runs from one @ to the next
+                if(re.match(r"^\s*%",line)):
+                    continue
+
                 if(item):
                     line = re.sub(r"\s+"," ",line)
                     buffer += line.strip() + " "

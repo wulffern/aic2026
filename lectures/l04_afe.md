@@ -529,7 +529,7 @@ I could not find a 22 nm FDSOI Gm-C based circuit on the initial search. If I wa
 I would probably spend a bit more time to see if any have done it, maybe expanding to other journals or conferences. 
 
 I know of [Pieter Harpe](https://scholar.google.nl/citations?user=nLhKSsMAAAAJ&hl=nl), and his work is usually superb, 
-so I would take a closer look at [A 77.3-dB SNDR 62.5-kHz Bandwidth Continuous-Time Noise-Shaping SAR ADC With Duty-Cycled Gm-C Integrator](https://ieeexplore.ieee.org/document/9989513)
+so I would take a closer look at A 77.3-dB SNDR 62.5-kHz Bandwidth Continuous-Time Noise-Shaping SAR ADC With Duty-Cycled Gm-C Integrator [@li23]
 
 And from Figure 10 a) we can see it's a similar Gm-C cell as chapter 12.5.4 in [@cjm11]. 
 
@@ -663,6 +663,11 @@ $$ = \frac{ -s \frac{C_1}{C_2} - \frac{G_1}{C_2} }{s + \frac{G_2}{C_2}}$$
 A general bi-quadratic active-RC filter is shown below. These kind of general purpose filter sections are quite useful.
 
 Imagine you wanted to make a filter, any filter. You'd decompose into first and second order sections, and then you'd try and match the transfer functions to the general equations. 
+
+The [interactive biquad](https://wulffern.github.io/aic2026/assets/examples/biquad.html) is worth a few minutes here: the
+low-pass, band-pass, high-pass, notch and all-pass responses all share one
+denominator, and switching between them moves the zeros while the poles stay
+exactly where they are.
 
 -->
 
@@ -800,13 +805,13 @@ You can find the schematic for the OTA at
 
 # Want to learn more?
 
-[A 77.3-dB SNDR 62.5-kHz Bandwidth Continuous-Time Noise-Shaping SAR ADC With Duty-Cycled Gm-C Integrator](https://ieeexplore.ieee.org/document/9989513)
+A 77.3-dB SNDR 62.5-kHz Bandwidth Continuous-Time Noise-Shaping SAR ADC With Duty-Cycled Gm-C Integrator [@li23]
 
 [Design Considerations for a Low-Power Control-Bounded A/D Converter](https://ntnuopen.ntnu.no/ntnu-xmlui/handle/11250/2824253)
 
-[A 56 mW Continuous-Time Quadrature Cascaded Sigma-Delta Modulator With 77 dB DR in a Near Zero-IF 20 MHz Band](https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=4381437)
+A 56 mW Continuous-Time Quadrature Cascaded Sigma-Delta Modulator With 77 dB DR in a Near Zero-IF 20 MHz Band [@breems07]
 
-[Complex signal processing is not - complex](https://ieeexplore.ieee.org/document/1257061)
+Complex signal processing is not - complex [@martin03]
 
 -->
 

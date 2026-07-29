@@ -496,7 +496,7 @@ electron. Injecting these elements into the silicon crystal
 lattice changes the number of free electron/holes.
 
 These days, we usually dope with [ion implantation](https://en.wikipedia.org/wiki/Ion_implantation), while in the olden days,
-most doping was done by [diffusion](https://ieeexplore.ieee.org/document/1050758). You'd paint something containing Boron on the
+most doping was done by diffusion [@masuhara76]. You'd paint something containing Boron on the
 silicon, and then heat it in a furnace to "diffuse" the Boron atoms into the
 silicon.
 
@@ -1143,7 +1143,7 @@ process temperature exceeds the antenna-collected charging current,
 the gate voltage stays clamped well below the FN threshold and the
 oxide is safe. This is what makes Figure 5 a sizing tool: at the
 coldest plasma step the leakage per $\mu m^2$ is only
-$\sim 0.5\, \mathrm{fA}$, so a small antenna ratio or a generous
+$\sim 1\, \mathrm{fA}$, so a small antenna ratio or a generous
 diode area is required to maintain $I_{leak} \gtrsim I_{ant}$.
 
 -->
@@ -1201,15 +1201,15 @@ steps such as PECVD, HDP-CVD and sputter ($\sim 200$-$400\,
 ^\circ C$, so $\sim 470$-$675\, K$, with $400\, ^\circ C$ a hard
 upper limit set by BEOL metal reliability). Across this span the
 leakage available to bleed plasma charge ranges from roughly
-$0.5\, \mathrm{fA}/\mu m^2$ at room-temperature etch to
-$\sim 1\, \mathrm{nA}/\mu m^2$ at $400\, ^\circ C$ deposition - six
-decades of variation depending only on which process step you are
-in.
+$1\, \mathrm{fA}/\mu m^2$ at room-temperature etch to
+$\sim 6\, \mathrm{nA}/\mu m^2$ at $400\, ^\circ C$ deposition - nearly
+seven decades of variation depending only on which process step you
+are in.
 
 Three things to take away from the figure:
 
 - Generation current dominates from cryogenic temperatures up to
-  roughly $640\, K$, exactly where the steeper $n_i^2$ slope of the
+  roughly $575\, K$, exactly where the steeper $n_i^2$ slope of the
   diffusion term catches up. Above that the diode is in the
   "diffusion-limited" regime. The crossover happens to fall right
   in the middle of the plasma-deposition band, so antenna diodes
@@ -1267,12 +1267,12 @@ current density, $J_{net} \approx 10\, \mu\mathrm{A/cm^2}$:
 | $1\, mm$      | $100\, \mu m^2$  | $\sim 1\, \mathrm{pA}$   |
 
 Now compare with Figure 5. At room temperature the antenna ndiode
-leaks only $\sim 0.5\, \mathrm{fA}/\mu m^2$. A $1\, \mathrm{mm}$
+leaks only $\sim 1\, \mathrm{fA}/\mu m^2$. A $1\, \mathrm{mm}$
 wire collecting $1\, \mathrm{pA}$ would therefore need a diode
-active area of $\sim 2000\, \mu m^2$ (a $45 \times 45\, \mu m$
+active area of $\sim 900\, \mu m^2$ (a $30 \times 30\, \mu m$
 device) to keep the gate clamped during cold etch, which is
 clearly impractical. The same $1\, \mathrm{mm}$ wire is comfortably
-protected by a $0.3\, \mu m^2$ diode at a $200\, ^\circ C$
+protected by a $0.15\, \mu m^2$ diode at a $200\, ^\circ C$
 deposition step ($\sim 3\, \mathrm{pA}/\mu m^2$) and by a
 sub-$0.01\, \mu m^2$ diode at $400\, ^\circ C$.
 

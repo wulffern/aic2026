@@ -25,8 +25,10 @@ Eg = 1.12 * eV
 
 
 def calc_ni(T):
-    # Intrinsic carrier concentration as a function of T [K], see ex/vd.py
-    mn = (0.98*0.19*0.19)**(1/3)*m0
+    # Intrinsic carrier concentration as a function of T [K], see ex/vd.py.
+    # The 6^(2/3) is silicon's six conduction band minima; without it m_n* is
+    # 0.33*m0 rather than 1.08*m0 and n_i comes out sqrt(6) too small.
+    mn = 6**(2/3)*(0.98*0.19*0.19)**(1/3)*m0
     mp = 0.81*m0
     Nc = 2*np.sqrt(np.power((2*pi*k*T*mn)/(h*h), 3))
     Nv = 2*np.sqrt(np.power((2*pi*k*T*mp)/(h*h), 3))

@@ -1,28 +1,3 @@
-<<<<<<< HEAD
-\documentclass[tikz,border=2pt]{standalone}
-\usepackage{tikz}
-\usepackage[european]{circuitikz}
-\usetikzlibrary{arrows.meta,positioning,calc}
-\input{tikz/ckt_lib.tex}
-\begin{document}
-\begin{tikzpicture}[>=Stealth, line width=0.9pt]
-  \draw (0,4.4) -- (7.8,4.4) node[right] {$V_{DD}$};
-  \draw (1.4,0.0) node[ground] {};
-  \draw (1.4,0.2) \vnmos{M1} \vpmos{MP1} coordinate (left_top);
-  \draw (left_top) -- (1.4,4.4);
-
-  \draw (5.4,0.0) node[ground] {};
-  \draw (5.4,0.2) \vnmos{M2} \vpmos{MP2} coordinate (right_top);
-  \draw (right_top) -- (5.4,4.4);
-
-  \draw (M1.drain) -- (M2.drain) coordinate[midway] (z_top);
-  \draw (M1.source) -- (M2.source) coordinate[midway] (z_bot);
-  \draw (z_top) to[resistor,l=$Z$] (z_bot);
-  \node[right] at (5.8,1.3) {$M_2 = 4 \times M_1$};
-  \node at (2.95,1.55) {$V_o$};
-  \draw[->] (2.95,1.35) -- (2.95,1.0);
-\end{tikzpicture}
-=======
 \input{tikz/fig_header.tex}
 
 % GM cell (beta-multiplier style bias). Three stacked mirrors:
@@ -118,5 +93,4 @@
   \node[anchor=east]  at (\xr-1.15, \ybot+0.35) {$V_{GS1}$};
 
 \end{circuitikz}
->>>>>>> 7a1064c0dd01972bf43e2231489f230bb3bf92cf
 \end{document}

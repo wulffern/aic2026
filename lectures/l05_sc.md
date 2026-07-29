@@ -310,7 +310,7 @@ An example use of an SC circuit is
 
 -->
 
-[A pipelined 5-Msample/s 9-bit analog-to-digital converter](https://ieeexplore.ieee.org/document/1052843)
+A pipelined 5-Msample/s 9-bit analog-to-digital converter [@Lewis87]
 
 <!--pan_doc:
 
@@ -595,7 +595,7 @@ no-loss condition is to sample signals with a sample rate of twice the bandwidth
 
 Nyquist-Shannon has been extended for sparse signals, compressed sensing, and non-uniform sampling to demonstrate that it's 
 sufficient for the average sample rate to be twice the bandwidth. 
-One 2009 paper [Blind Multiband Signal Reconstruction: Compressed Sensing for Analog Signal](https://ieeexplore.ieee.org/document/4749297) is 
+One 2009 paper Blind Multiband Signal Reconstruction: Compressed Sensing for Analog Signal [@mishali09] is 
 a good place to start to delve into the latest on signal reconstruction.
 
 -->
@@ -1085,7 +1085,7 @@ Switched-capacitor circuits are so common that it's good to delve a bit deeper, 
 At the heart of the SC circuit we usually find an OTA. Maybe a current mirror, folded cascode, recycling cascode, or my favorite: [a fully differential current 
 mirror OTA with cascoded, gain boosted, output stage using a parallel common mode feedback](https://github.com/wulffern/cnr_ota_sky130nm/tree/main).
 
-Not all SC circuits use OTAs, there are also [comparator based SC circuits](https://link.springer.com/article/10.1007/s10470-010-9576-3). 
+Not all SC circuits use OTAs, there are also comparator based SC circuits [@wulff10]. 
 
 
 Below is a fully-differential two-stage OTA that will work with most SC circuits. The notation "24F1F25" means "the width is 24 F" and "length is 1.25 F", where "F"
@@ -1157,7 +1157,7 @@ as shown on the right.
 
 <!--pan_doc:
 
-The switch I used in my [JSSC SAR](https://ieeexplore.ieee.org/document/7906479) is a fully differential boostrapped switch with 
+The switch I used in my JSSC SAR [@wulff17] is a fully differential boostrapped switch with 
 cross coupled dummy transistors. The JSSC SAR I've also ported to GF130NM, as shown below. The switch is at the bottom. 
 
 -->
@@ -1220,21 +1220,21 @@ $$ V_O(z) = 10 \frac{kT}{q} \ln (N)z^{-1} $$
 
 # Want to learn more?
 
-[Blind Multiband Signal Reconstruction: Compressed Sensing for Analog Signal](https://ieeexplore.ieee.org/document/4749297)
+Blind Multiband Signal Reconstruction: Compressed Sensing for Analog Signal [@mishali09]
 
-[Comparator-based switched-capacitor pipelined analog-to-digital converter with comparator preset, and comparator delay compensation](https://link.springer.com/article/10.1007/s10470-010-9576-3)
+Comparator-based switched-capacitor pipelined analog-to-digital converter with comparator preset, and comparator delay compensation [@wulff10]
 
-[A Compiled 9-bit 20-MS/s 3.5-fJ/conv.step SAR ADC in 28-nm FDSOI for Bluetooth Low Energy Receivers](https://ieeexplore.ieee.org/document/7906479)
+A Compiled 9-bit 20-MS/s 3.5-fJ/conv.step SAR ADC in 28-nm FDSOI for Bluetooth Low Energy Receivers [@wulff17]
 
-[A 10-bit 50-MS/s SAR ADC With a Monotonic Capacitor Switching Procedure](https://ieeexplore.ieee.org/document/5437496)
+A 10-bit 50-MS/s SAR ADC With a Monotonic Capacitor Switching Procedure [@liu10]
 
-[Low Voltage, Low Power, Inverter-Based Switched-Capacitor Delta-Sigma Modulator](https://ieeexplore.ieee.org/document/4768910)
+Low Voltage, Low Power, Inverter-Based Switched-Capacitor Delta-Sigma Modulator [@chae09]
 
-[Ring Amplifiers for Switched Capacitor Circuits](https://ieeexplore.ieee.org/document/6373760)
+Ring Amplifiers for Switched Capacitor Circuits [@hershberg12]
 
-[A Switched-Capacitor RF Power Amplifier](https://ieeexplore.ieee.org/document/6009207)
+A Switched-Capacitor RF Power Amplifier [@yoo11]
 
-[Design of Active N-Path Filters](https://ieeexplore.ieee.org/document/6650076)
+Design of Active N-Path Filters [@darvishi13]
 
 -->
 

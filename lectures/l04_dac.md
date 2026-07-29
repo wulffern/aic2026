@@ -328,10 +328,10 @@ $$ dt = \frac{L dI}{V} $$
 
 
 
-[A 28-nm 75-fsrms Analog Fractional-N Sampling PLL With a Highly Linear DTC Incorporating Background DTC Gain Calibration and Reference Clock Duty Cycle Correction](https://ieeexplore.ieee.org/document/8666017)
+A 28-nm 75-fsrms Analog Fractional-N Sampling PLL With a Highly Linear DTC Incorporating Background DTC Gain Calibration and Reference Clock Duty Cycle Correction [@wu19]
 
-[A 10-bit Charge-Redistribution ADC Consuming 1.9 uW at 1 MS/s](https://ieeexplore.ieee.org/document/5453302)
+A 10-bit Charge-Redistribution ADC Consuming 1.9 uW at 1 MS/s [@elzakker10]
 
-[A 6.3 uW 20 bit Incremental Zoom-ADC with 6 ppm INL and 1 uV Offset](https://ieeexplore.ieee.org/document/6587137)
+A 6.3 uW 20 bit Incremental Zoom-ADC with 6 ppm INL and 1 uV Offset [@chae13]
 
-[A 12-Bit 1.25-GS/s DAC in 90 nm CMOS With >70 dB SFDR up to 500 MHz](https://ieeexplore.ieee.org/document/6021346)
+A 12-Bit 1.25-GS/s DAC in 90 nm CMOS With >70 dB SFDR up to 500 MHz [@tseng11]

@@ -45,9 +45,15 @@
       <input type="range" data-bind="nfs" id="sl-nfs" min="1" max="16" step="1" value="4">
       <span class="v" id="v-nfs"></span>
     </div>
+    <div class="ckrow">
+      <input type="checkbox" data-bind="script" id="sl-script">
+      <label for="sl-script">Use the script's <code>adc()</code> instead</label>
+    </div>
     <div class="note">
       The filter is <code>oversample()</code>: a running sum of OSR samples,
-      i.e. a boxcar, i.e. sinc. It is the cheapest low-pass there is.
+      i.e. a boxcar, i.e. sinc. It is the cheapest low-pass there is. B bits
+      means 2<sup>B</sup> levels; the script's <code>adc()</code> counts
+      fractional bits and gives 2<sup>B+1</sup>+1, one bit more than it says.
     </div>
   </div>
 
@@ -94,6 +100,7 @@
 </div>
 
 <div id="readout">
+  <div class="ro"><span class="k">LEVELS</span><span class="n" id="ro-levels"></span></div>
   <div class="ro"><span class="k">BAND</span><span class="n" id="ro-band"></span></div>
   <div class="ro"><span class="k">IN-BAND SNR</span><span class="n" id="ro-snr"></span></div>
   <div class="ro"><span class="k">ENOB</span><span class="n" id="ro-enob"></span></div>
@@ -222,7 +229,7 @@ function compute() {
   for (let i = 0; i < N; i++) xs[i] = S.amp * Math.sin(2 * Math.PI * f1 * t[i]) + na * noise[i];
 
   const xsn = DSP.decimate(xs, nfs);
-  const ysn = DSP.quantize(xsn, bits);
+  const ysn = S.script ? DSP.quantize(xsn, bits) : DSP.quantizeBits(xsn, bits);
   const yon = DSP.oversample(ysn, OSR);
   const M = ysn.length;
 
@@ -260,6 +267,8 @@ function compute() {
   D = { N, M, OSR, bits, nfs, ysn, yon, Ysn, Yon, fM, fh, Hdb, f1,
         fs1: f1 * nfs, sigBin, curve, snrNow, snr1, maxOSR, half };
 
+  UI.readout('ro-levels', DSP.levelCount(ysn) + ' used, ' +
+    (S.script ? Math.pow(2, bits + 1) + 1 : Math.pow(2, bits)) + ' possible');
   UI.readout('ro-band',  'f_s/' + (2 * OSR) + '  (' + Math.floor(half / OSR) + ' bins)');
   UI.readout('ro-snr',   isFinite(snrNow) ? snrNow.toFixed(1) + ' dB' : 'tone out of band');
   UI.readout('ro-enob',  isFinite(snrNow) ? DSP.enob(snrNow).toFixed(2) + ' b' : '-');

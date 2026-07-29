@@ -1,0 +1,623 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Voltage mode buck with type 3 compensation &mdash; aic2026</title>
+<link rel="stylesheet" href="common/aic.css">
+</head>
+<body>
+
+<header>
+  <h1>VOLTAGE MODE BUCK</h1>
+  <div class="sub">
+    <a href="index.html">&larr; all examples</a> &middot;
+    the closed loop the
+    <a href="https://github.com/wulffern/aic2026/blob/main/jupyter/buck.ipynb">buck notebook</a>
+    stops just short of &middot; voltage regulators
+  </div>
+</header>
+
+<div id="chain">
+  <div class="cb on">V_ref</div><span class="ca">&minus;</span>
+  <div class="cb on">TYPE 3 G_c(s)</div><span class="ca">&rarr;</span>
+  <div class="cb on">PWM vs RAMP</div><span class="ca">&rarr;</span>
+  <div class="cb on">L, C, R</div><span class="ca">&rarr;</span>
+  <div class="cb on">V_o</div><span class="ca">&crarr;</span>
+</div>
+
+<canvas id="c"></canvas>
+
+<div id="ctrl">
+  <div class="cg">
+    <div class="cgt">COMPENSATOR (K-FACTOR)</div>
+    <div class="cr">
+      <label>Crossover f_c</label>
+      <input type="range" data-bind="lfc" id="sl-lfc" min="3" max="5.4" step="0.02" value="4.699">
+      <span class="v" id="v-lfc"></span>
+    </div>
+    <div class="cr">
+      <label>Phase margin</label>
+      <input type="range" data-bind="pm" id="sl-pm" min="20" max="85" step="1" value="60">
+      <span class="v" id="v-pm"></span>
+    </div>
+    <div class="cr">
+      <label>V_ref</label>
+      <input type="range" data-bind="vref" id="sl-vref" min="0.5" max="4" step="0.05" value="1.8">
+      <span class="v" id="v-vref"></span>
+    </div>
+    <div class="note">
+      The two zeros and two poles are placed by the K-factor method: everything
+      the compensator does is decided by where you want to cross over and how
+      much phase margin you want when you get there.
+    </div>
+  </div>
+
+  <div class="cg">
+    <div class="cgt">POWER STAGE</div>
+    <div class="cr">
+      <label>L</label>
+      <input type="range" data-bind="ll" id="sl-ll" min="-6.3" max="-4" step="0.05" value="-5">
+      <span class="v" id="v-ll"></span>
+    </div>
+    <div class="cr">
+      <label>C</label>
+      <input type="range" data-bind="lc" id="sl-lc" min="-6.3" max="-4" step="0.05" value="-5">
+      <span class="v" id="v-lc"></span>
+    </div>
+    <div class="cr">
+      <label>ESR</label>
+      <input type="range" data-bind="lesr" id="sl-lesr" min="-3.5" max="0" step="0.05" value="-2.3">
+      <span class="v" id="v-lesr"></span>
+    </div>
+    <div class="cr">
+      <label>R load</label>
+      <input type="range" data-bind="lr" id="sl-lr" min="0.3" max="2.5" step="0.02" value="1">
+      <span class="v" id="v-lr"></span>
+    </div>
+    <div class="cr">
+      <label>VDDH</label>
+      <input type="range" data-bind="vddh" id="sl-vddh" min="2" max="12" step="0.1" value="5">
+      <span class="v" id="v-vddh"></span>
+    </div>
+    <div class="cr">
+      <label>f_sw</label>
+      <input type="range" data-bind="lfsw" id="sl-lfsw" min="5" max="6.7" step="0.05" value="5.699">
+      <span class="v" id="v-lfsw"></span>
+    </div>
+  </div>
+
+  <div class="cg">
+    <div class="cgt">DISTURBANCE</div>
+    <div class="cr">
+      <label>Line step</label>
+      <input type="range" data-bind="dvin" id="sl-dvin" min="0" max="4" step="0.1" value="2">
+      <span class="v" id="v-dvin"></span>
+    </div>
+    <div class="cr">
+      <label>Load step &times;</label>
+      <input type="range" data-bind="dload" id="sl-dload" min="1" max="8" step="0.1" value="3">
+      <span class="v" id="v-dload"></span>
+    </div>
+    <div class="ckrow">
+      <input type="checkbox" data-bind="openloop" id="sl-openloop">
+      <label for="sl-openloop">Open loop (fixed duty)</label>
+    </div>
+    <div class="note">
+      The time domain runs the switching converter, not the averaged model. The
+      Bode plots are the prediction; the transients are the experiment.
+    </div>
+  </div>
+</div>
+
+<div id="readout">
+  <div class="ro"><span class="k">CROSSOVER</span><span class="n" id="ro-fc"></span></div>
+  <div class="ro"><span class="k">PHASE MARGIN</span><span class="n" id="ro-pm"></span></div>
+  <div class="ro"><span class="k">GAIN MARGIN</span><span class="n" id="ro-gm"></span></div>
+  <div class="ro"><span class="k">f_LC / f_ESR</span><span class="n" id="ro-flc"></span></div>
+  <div class="ro"><span class="k">ZEROS / POLES</span><span class="n" id="ro-zp"></span></div>
+  <div class="ro"><span class="k">BOOST NEEDED</span><span class="n" id="ro-boost"></span></div>
+  <div class="ro"><span class="k">SLOWEST CL POLE</span><span class="n" id="ro-dom"></span></div>
+  <div class="ro"><span class="k">LINE STEP</span><span class="n" id="ro-line"></span></div>
+  <div class="ro"><span class="k">LOAD STEP</span><span class="n" id="ro-load"></span></div>
+</div>
+
+<div id="legend">
+  <div class="leg"><div class="lsw" style="background:var(--curve)"></div>Plant / modulator</div>
+  <div class="leg"><div class="lsw" style="background:var(--quant)"></div>Compensator</div>
+  <div class="leg"><div class="lsw" style="background:var(--digi)"></div>Loop gain T</div>
+  <div class="leg"><div class="lsw" style="background:var(--sample)"></div>Crossover</div>
+  <div class="leg"><div class="lsw" style="background:var(--error)"></div>Disturbance</div>
+</div>
+
+<div class="doc">
+  <h2>WHAT YOU ARE LOOKING AT</h2>
+  <p>
+    The <a href="buck.html">PWM buck</a> runs open loop: you set a duty cycle
+    and the output lands wherever VDDH&middot;D puts it. The notebook that page
+    comes from ends by asking the obvious next question &mdash; <em>"Can I make
+    output voltage independent of input voltage? Yes. With a feedback loop."</em>
+    This page is that feedback loop.
+  </p>
+  <p>
+    Voltage mode means the only thing measured is the output voltage. The error
+    against V_ref goes through a compensator, the compensator's output is
+    compared against a sawtooth ramp, and that comparison makes the duty cycle.
+    The awkward part is the plant. A buck's control-to-output response is
+  </p>
+  <p style="text-align:center">
+    <code>G_vd(s) = VDDH &middot; Z(s) / (sL + R_s + Z(s))</code>,
+    &nbsp;
+    <code>Z(s) = R(1 + sR_cC) / (1 + sC(R + R_c))</code>
+  </p>
+  <p>
+    which has an <b>LC double pole</b>. Two poles close together means the phase
+    falls through &minus;180&deg; in barely a decade, and it does so while the
+    gain is still well above one. A single integrator on top of that is a loop
+    that oscillates.
+  </p>
+  <p>
+    A type 3 compensator answers this with two zeros and three poles, one of
+    them at the origin:
+  </p>
+  <p style="text-align:center">
+    <code>G_c(s) = A (1 + s/&omega;_z1)(1 + s/&omega;_z2) / [ s (1 + s/&omega;_p1)(1 + s/&omega;_p2) ]</code>
+  </p>
+  <p>
+    The pole at the origin gives infinite DC gain, which is what makes the
+    output independent of VDDH. The two zeros hand back up to 180&deg; of phase
+    around the crossover, which is what buys back what the LC took. The two
+    remaining poles roll the gain off again before the switching frequency, so
+    the loop does not amplify switching ripple. Here they are placed by the
+    K-factor method, so the only things you choose are the crossover frequency
+    and the phase margin.
+  </p>
+  <p>
+    The bottom row is the check. It runs the actual switching converter &mdash;
+    comparator, ramp, both switches, the compensator integrated alongside
+    &mdash; and steps first the input voltage and then the load. The averaged
+    model in the top row is a prediction about what those transients will look
+    like. Comparing the two is the entire point.
+  </p>
+
+  <h2>THINGS WORTH TRYING</h2>
+  <ul>
+    <li>
+      Tick <b>open loop</b>. The duty cycle freezes at whatever the loop had
+      settled on, and the line step walks the output straight off to
+      VDDH&middot;D &mdash; a 40&nbsp;% input change becomes a 40&nbsp;% output
+      change. Untick it and the same step barely dents the output. That is the
+      DC gain of the integrator, and it is the whole reason for the loop.
+    </li>
+    <li>
+      Pull the <b>phase margin</b> down to 30&deg;. The closed loop peaks, the
+      load step rings, and the number of cycles it rings for is exactly what
+      the peaking predicts. Take it to 80&deg; and the transient is clean but
+      slow &mdash; and the compensator now needs so much boost that its poles
+      have gone above the switching frequency, which is not something you can
+      build.
+    </li>
+    <li>
+      Compare <b>crossover</b> against <b>slowest CL pole</b>. On the defaults
+      the loop crosses over at 50&nbsp;kHz but the slowest closed-loop pole sits
+      at 3.2&nbsp;kHz, and it is that pole, not the crossover, that sets the
+      long tail on both transients. The K-factor puts its two zeros a factor
+      &radic;K below the crossover, and a closed-loop pole follows them down.
+      Crossover frequency and phase margin do not determine the transient
+      &mdash; a thing worth knowing before promising someone a settling time.
+    </li>
+    <li>
+      Push the <b>crossover</b> up and the tail does shorten, but not in
+      proportion, for the reason above. Keep going and f_c approaches f_sw/2,
+      where the design stops meaning anything: the averaged model is only valid
+      well below the switching frequency, and you can watch switching ripple
+      start to dominate the transient it is supposed to be correcting. A fifth
+      to a tenth of f_sw is the usual rule and this is where it comes from.
+    </li>
+    <li>
+      Raise the <b>ESR</b> from 5&nbsp;m&ohm; to an ohm. The ESR zero walks down
+      from megahertz into the loop, hands you phase for free, and the required
+      boost drops &mdash; watch the readout. Less boost means a smaller K, which
+      means the compensator zeros sit closer to the crossover, which pulls that
+      slow closed-loop pole up with them and shortens the tail. This is why an
+      old electrolytic output cap was easy to compensate and why swapping it for
+      a ceramic broke the loop. Type 3 exists because ceramics have no ESR zero
+      to lean on.
+    </li>
+    <li>
+      Move <b>L</b> and <b>C</b> and watch f_LC and the required boost move
+      together. The compensator is not designed against the components; it is
+      designed against where the double pole lands.
+    </li>
+  </ul>
+
+  <h2>THE MODEL</h2>
+<pre><code># Plant, averaged small signal, evaluated at s = j*2*pi*f
+Z    = R*(1 + s*Resr*C) / (1 + s*C*(R + Resr))
+G_vd = VDDH * Z / (s*L + Rs + Z)
+
+# K-factor placement for a type 3
+boost = PM - 90 - angle(G_vd(fc)/Vramp)
+K     = tan(radians(boost/4 + 45))**2
+fz1 = fz2 = fc/sqrt(K)
+fp1 = fp2 = fc*sqrt(K)
+
+# Time domain: the real switching loop, one dt at a time
+e   = Vref - vo
+vc  = compensator(e)                 # 3rd order state space, RK4
+pmos = (ramp &lt; vc)                   # ramp = (t mod T)/T
+vx   = pmos*VDDH - Rs*iL
+iL  += (vx - vo)/L * dt
+vC  += (iL - vo/R)/C * dt
+vo   = (vC + Resr*iL)/(1 + Resr/R)</code></pre>
+  <p class="src">
+    This page has no notebook behind it &mdash; it is the loop
+    <a href="https://github.com/wulffern/aic2026/blob/main/jupyter/buck.ipynb">jupyter/buck.ipynb</a>
+    describes in its closing markdown but never builds. The power stage
+    integration is the notebook's, with the capacitor ESR added because a type 3
+    compensator's whole reason for existing is what happens when there is not
+    enough of it. See the <a href="buck.html">open-loop buck</a> for the plant
+    on its own, and the <a href="buck-pfm.html">PFM buck</a> for regulating the
+    same stage with no linear loop at all.
+  </p>
+</div>
+
+<footer>
+  TFE4188 Advanced Integrated Circuits &middot; <a href="https://wulffern.github.io/aic2026/">aic2026</a>
+</footer>
+
+<script src="common/plot.js"></script>
+<script src="common/lti.js"></script>
+<script>
+'use strict';
+
+const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+
+const S = {};
+let D = null;
+
+const V_RAMP = 1;          // sawtooth amplitude, so v_c is the duty command
+const R_S = 0.05;          // switch + inductor series resistance
+
+const fmts = {
+  lfc:   v => eng(Math.pow(10, v), 'Hz'),
+  pm:    v => v + ' deg',
+  vref:  v => v.toFixed(2) + ' V',
+  ll:    v => eng(Math.pow(10, v), 'H'),
+  lc:    v => eng(Math.pow(10, v), 'F'),
+  lesr:  v => eng(Math.pow(10, v), 'ohm'),
+  lr:    v => eng(Math.pow(10, v), 'ohm'),
+  vddh:  v => v.toFixed(1) + ' V',
+  lfsw:  v => eng(Math.pow(10, v), 'Hz'),
+  dvin:  v => '+' + v.toFixed(1) + ' V',
+  dload: v => '×' + v.toFixed(1),
+};
+
+function eng(v, unit, digits = 3) {
+  const p = [[1e-6, 'u'], [1e-3, 'm'], [1, ''], [1e3, 'k'], [1e6, 'M']];
+  for (let i = p.length - 1; i >= 0; i--) {
+    if (Math.abs(v) >= p[i][0]) return (v / p[i][0]).toPrecision(digits) + ' ' + p[i][1] + unit;
+  }
+  return v.toExponential(2) + ' ' + unit;
+}
+
+/** Control-to-output of the buck, averaged small signal. */
+function plant(s, p, R) {
+  const one = [1, 0];
+  const Z = LTI.div(LTI.scale(LTI.add(one, LTI.scale(s, p.Resr * p.C)), R),
+                    LTI.add(one, LTI.scale(s, p.C * (R + p.Resr))));
+  return LTI.div(LTI.scale(Z, p.VDDH),
+                 LTI.add(LTI.add(LTI.scale(s, p.L), [R_S, 0]), Z));
+}
+
+/** Type 3 shape with unit gain constant. */
+function compShape(s, z1, z2, p1, p2) {
+  const one = [1, 0];
+  const num = LTI.mul(LTI.add(one, LTI.scale(s, 1 / z1)), LTI.add(one, LTI.scale(s, 1 / z2)));
+  const den = LTI.mul(s, LTI.mul(LTI.add(one, LTI.scale(s, 1 / p1)),
+                                 LTI.add(one, LTI.scale(s, 1 / p2))));
+  return LTI.div(num, den);
+}
+
+function compute() {
+  const p = {
+    L: Math.pow(10, S.ll),
+    C: Math.pow(10, S.lc),
+    Resr: Math.pow(10, S.lesr),
+    VDDH: S.vddh,
+    Vref: S.vref,
+  };
+  const R = Math.pow(10, S.lr);
+  const fsw = Math.pow(10, S.lfsw);
+  const fc = Math.pow(10, S.lfc);
+
+  // ── K-factor design ─────────────────────────────────────────────────────
+  const Gc_at = plant(LTI.jw(fc), p, R);
+  const phasePlant = LTI.deg(LTI.scale(Gc_at, 1 / V_RAMP));
+  let boost = S.pm - 90 - phasePlant;
+  // A type 3 can supply at most 180 degrees; past that the placement formula
+  // stops having a solution, so say so rather than producing nonsense.
+  const boostWanted = boost;
+  boost = Math.max(0.5, Math.min(179, boost));
+  const K = Math.pow(Math.tan((boost / 4 + 45) * Math.PI / 180), 2);
+  const fz = fc / Math.sqrt(K), fp = fc * Math.sqrt(K);
+  const wz1 = 2 * Math.PI * fz, wz2 = wz1;
+  const wp1 = 2 * Math.PI * fp, wp2 = wp1;
+
+  // Gain constant that puts |T| = 1 at f_c.
+  const shapeAt = compShape(LTI.jw(fc), wz1, wz2, wp1, wp2);
+  const A = 1 / (LTI.abs(shapeAt) * LTI.abs(Gc_at) / V_RAMP);
+
+  const Gc = s => LTI.scale(compShape(s, wz1, wz2, wp1, wp2), A);
+  const Gp = s => LTI.scale(plant(s, p, R), 1 / V_RAMP);
+  const T = s => LTI.mul(Gp(s), Gc(s));
+
+  const f = LTI.logf(10, Math.max(fsw * 20, 1e7), 900);
+  const bP = LTI.bode(f, Gp);
+  const bC = LTI.bode(f, Gc);
+  const bT = LTI.bode(f, T);
+  const bCL = LTI.bode(f, s => { const t = T(s); return LTI.div(t, LTI.add([1, 0], t)); });
+
+  const fcAct = LTI.unityGain(f, bT.mag);
+  const pmAct = fcAct === null ? NaN : LTI.interpAt(f, bT.ph, fcAct) + 180;
+
+  // Gain margin: how far below 0 dB the loop is where its phase hits -180.
+  let gm = NaN;
+  for (let i = 1; i < f.length; i++) {
+    if (bT.ph[i - 1] > -180 && bT.ph[i] <= -180) { gm = -bT.mag[i]; break; }
+  }
+
+  const fLC = 1 / (2 * Math.PI * Math.sqrt(p.L * p.C));
+  const fESR = 1 / (2 * Math.PI * p.Resr * p.C);
+
+  // Closed-loop poles: roots of denP*denC + numP*numC. Crossover and phase
+  // margin do not pin these down, and it is the slowest of them that decides
+  // how long a disturbance takes to fade.
+  const pa2 = p.L * p.C * (R + p.Resr);
+  const pa1 = p.L + R_S * p.C * (R + p.Resr) + R * p.Resr * p.C;
+  const pa0 = R_S + R;
+  let ch = LTI.polymulAsc([pa0, pa1, pa2], [0, 1, 1 / wp1 + 1 / wp2, 1 / (wp1 * wp2)]);
+  const chn = LTI.polymulAsc([p.VDDH * R, p.VDDH * R * p.Resr * p.C],
+                             [A, A * (1 / wz1 + 1 / wz2), A / (wz1 * wz2)]);
+  for (let i = 0; i < chn.length; i++) ch[i] += chn[i];
+  const clPoles = LTI.roots(ch.slice().reverse());
+  const unstable = clPoles.some(z => z[0] > 0);
+  let dom = null;
+  for (const z of clPoles) if (z[0] < 0 && (dom === null || z[0] > dom[0])) dom = z;
+
+  // ── Time domain: the real switching loop ────────────────────────────────
+  const num = [A / (wz1 * wz2), A * (1 / wz1 + 1 / wz2), A];
+  const den = [1 / (wp1 * wp2), 1 / wp1 + 1 / wp2, 1, 0];
+  const sys = LTI.realise(num, den);
+  const sim = simulate(p, R, fsw, sys);
+
+  D = { f, bP, bC, bT, bCL, fc, fcAct, pmAct, gm, fLC, fESR, fz, fp, boost,
+        boostWanted, sim, p, R, fsw, A, clPoles, dom, unstable };
+
+  UI.readout('ro-fc', fcAct === null ? 'never crosses' : eng(fcAct, 'Hz'));
+  UI.readout('ro-pm', isFinite(pmAct) ? pmAct.toFixed(1) + ' deg' +
+                                        (pmAct < 0 ? '  UNSTABLE' : '') : '-');
+  UI.readout('ro-gm', isFinite(gm) ? gm.toFixed(1) + ' dB' : 'phase never reaches -180');
+  UI.readout('ro-flc', eng(fLC, 'Hz') + ' / ' + eng(fESR, 'Hz'));
+  UI.readout('ro-zp', eng(fz, 'Hz') + ' / ' + eng(fp, 'Hz') +
+                      (fp > fsw / 2 ? '  (poles above f_sw/2)' : ''));
+  UI.readout('ro-boost', boostWanted.toFixed(0) + ' deg' +
+                         (boostWanted > 179 ? '  - more than a type 3 can give' : ''));
+  UI.readout('ro-dom', unstable ? 'UNSTABLE - pole in the right half plane'
+    : dom === null ? '-'
+    : (Math.hypot(dom[0], dom[1]) / (2 * Math.PI) / 1e3).toFixed(2) + ' kHz, tau ' +
+      eng(-1 / dom[0], 's'));
+  // Open loop there is nothing to recover to, so say that rather than "NaN s".
+  const excursion = (dev, rec) => (dev * 1e3).toFixed(1) + ' mV peak, ' +
+    (isFinite(rec) ? eng(rec, 's') + ' to recover' : 'never recovers');
+  UI.readout('ro-line', excursion(sim.lineDev, sim.lineRec));
+  UI.readout('ro-load', excursion(sim.loadDev, sim.loadRec));
+}
+
+/**
+ * The switching converter with the compensator in the loop, one dt at a time.
+ * Two disturbances: the input voltage steps at t_end/3, the load steps at
+ * 2*t_end/3.
+ */
+function simulate(p, R, fsw, sys) {
+  const T = 1 / fsw;
+  const ppc = 200;                                   // points per switching cycle
+  const dt = T / ppc;
+  const tEnd = Math.max(300 * T, 40 / (2 * Math.PI * Math.pow(10, S.lfc)) * 6);
+  const N = Math.min(120000, Math.round(tEnd / dt));
+  const tLine = N / 3 | 0, tLoad = (2 * N / 3) | 0;
+
+  const t = new Float64Array(N), vo = new Float64Array(N),
+        vcA = new Float64Array(N), iL = new Float64Array(N), ioA = new Float64Array(N);
+
+  // Start at the operating point so the disturbances are the only events.
+  const D0 = Math.min(0.95, p.Vref / p.VDDH);
+  let x = new Float64Array(sys.order);
+  x[0] = sys.b[0] !== 0 ? D0 / sys.b[0] : 0;
+  let vC = p.Vref, i = p.Vref / R;
+
+  for (let k = 0; k < N; k++) {
+    const tk = k * dt;
+    const vin = p.VDDH + (k >= tLine ? S.dvin : 0);
+    const Rk = k >= tLoad ? R / S.dload : R;
+
+    const v_o = (vC + p.Resr * i) / (1 + p.Resr / Rk);
+    const e = p.Vref - v_o;
+
+    // Compensator, then anti-windup by backing the integrator state off so the
+    // command sits exactly on the rail rather than running away behind it.
+    let vc;
+    if (S.openloop) {
+      vc = D0;
+    } else {
+      x = LTI.ssStep(sys, x, e, dt);
+      vc = LTI.ssOut(sys, x);
+      if (vc > 1) { x[0] -= (vc - 1) / sys.b[0]; vc = 1; }
+      if (vc < 0) { x[0] -= vc / sys.b[0]; vc = 0; }
+    }
+
+    const ramp = (tk % T) / T * V_RAMP;
+    const pmos = ramp < vc ? 1 : 0;
+    const vx = pmos * vin - R_S * i;
+
+    const io = v_o / Rk;
+    i += (vx - v_o) / p.L * dt;
+    vC += (i - io) / p.C * dt;
+
+    t[k] = tk; vo[k] = v_o; vcA[k] = vc; iL[k] = i; ioA[k] = io;
+    if (!isFinite(v_o)) break;
+  }
+
+  // Peak excursion and recovery time after each disturbance, measured against
+  // the average of the quiet stretch just before it.
+  const settle = (start, end) => {
+    let s = 0, n = 0;
+    for (let k = start; k < end; k++) { s += vo[k]; n++; }
+    return s / Math.max(n, 1);
+  };
+  const band = Math.round(20 * T / dt);
+  const measure = (idx) => {
+    const before = settle(Math.max(0, idx - band), idx);
+    let dev = 0, devIdx = idx;
+    const win = Math.min(N - idx, Math.round(0.3 * N));
+    for (let k = idx; k < idx + win; k++) {
+      const d = Math.abs(vo[k] - before);
+      if (d > dev) { dev = d; devIdx = k; }
+    }
+    // Recovered when it stays inside 10% of the peak excursion.
+    let rec = null;
+    const tol = Math.max(dev * 0.1, 1e-4);
+    for (let k = devIdx; k < idx + win; k++) {
+      if (Math.abs(vo[k] - before) < tol) {
+        let ok = true;
+        for (let m = k; m < Math.min(k + Math.round(5 * T / dt), idx + win); m++) {
+          if (Math.abs(vo[m] - before) >= tol) { ok = false; break; }
+        }
+        if (ok) { rec = (k - idx) * dt; break; }
+      }
+    }
+    return { dev, rec: rec === null ? NaN : rec };
+  };
+
+  const lm = measure(tLine), ld = measure(tLoad);
+
+  return { t, vo, vc: vcA, iL, io: ioA, dt, N, tLine, tLoad, T,
+           lineDev: lm.dev, lineRec: lm.rec, loadDev: ld.dev, loadRec: ld.rec };
+}
+
+function render(cx, W, H, narrow) {
+  if (!D) return;
+  const g = Plot.grid(W, H, narrow ? 6 : 2, narrow ? 1 : 3, { gapY: 24, gapX: 22 });
+  const f0 = D.f[0], f1 = D.f[D.f.length - 1];
+  const s = D.sim;
+  const us = 1e6;
+
+  const marks = pn => {
+    if (D.fcAct !== null) pn.vline(D.fcAct, css('--sample'), [3, 3]);
+    pn.vline(D.fLC, css('--muted'), [2, 4]);
+    if (D.fESR < f1) pn.vline(D.fESR, css('--alt2'), [2, 4]);
+  };
+
+  // ── Magnitudes ──────────────────────────────────────────────────────────
+  const p0 = new Plot.Panel(cx, g[0], {
+    title: 'Magnitude', ylabel: 'dB', xlabel: 'Frequency [Hz]', xlog: true,
+  });
+  p0.limits(f0, f1, -80, 100).frame();
+  marks(p0);
+  p0.hline(0, css('--muted'), [3, 3]);
+  p0.line(D.f, D.bP.mag, css('--curve'));
+  p0.line(D.f, D.bC.mag, css('--quant'));
+  p0.line(D.f, D.bT.mag, css('--digi'), { width: 1.8 });
+  p0.legend([
+    { label: 'plant/ramp', color: css('--curve') },
+    { label: 'compensator', color: css('--quant') },
+    { label: 'loop T', color: css('--digi'), width: 1.8 },
+  ], 'bl');
+
+  // ── Phase ───────────────────────────────────────────────────────────────
+  const p1 = new Plot.Panel(cx, g[1], {
+    title: 'Phase', ylabel: 'deg', xlabel: 'Frequency [Hz]', xlog: true,
+  });
+  p1.limits(f0, f1, -280, 60).frame();
+  marks(p1);
+  p1.hline(-180, css('--error'), [3, 3]);
+  p1.line(D.f, D.bP.ph, css('--curve'));
+  p1.line(D.f, D.bT.ph, css('--digi'), { width: 1.8 });
+  if (isFinite(D.pmAct)) {
+    p1.note(0.03, 0.1, 'PM = ' + D.pmAct.toFixed(1) + ' deg',
+            D.pmAct < 0 ? css('--error') : css('--quant'));
+  }
+
+  // ── Closed loop ─────────────────────────────────────────────────────────
+  const p2 = new Plot.Panel(cx, g[2], {
+    title: 'Closed loop V_o/V_ref', ylabel: 'dB', xlabel: 'Frequency [Hz]', xlog: true,
+  });
+  p2.limits(f0, f1, -60, 25).frame();
+  marks(p2);
+  p2.hline(0, css('--muted'), [3, 3]);
+  p2.line(D.f, D.bCL.mag, css('--digi'), { width: 1.5 });
+  const pk = LTI.argmax(D.bCL.mag);
+  if (D.bCL.mag[pk] > 0.1) {
+    p2.note(0.03, 0.9, 'peaking +' + D.bCL.mag[pk].toFixed(1) + ' dB', css('--digi'));
+  }
+
+  // ── Full run ────────────────────────────────────────────────────────────
+  const tus = Float64Array.from(s.t, v => v * us);
+  const p3 = new Plot.Panel(cx, g[3], {
+    title: 'Output voltage, both disturbances', ylabel: 'V_o [V]', xlabel: 'Time [us]',
+  });
+  const [vlo, vhi] = Plot.padExtent(...Plot.extent(s.vo), 0.12);
+  p3.limits(0, tus[s.N - 1], vlo, vhi).frame();
+  p3.hline(D.p.Vref, css('--muted'), [4, 3]);
+  p3.vline(s.tLine * s.dt * us, css('--error'), [3, 3]);
+  p3.vline(s.tLoad * s.dt * us, css('--error'), [3, 3]);
+  p3.line(tus, s.vo, css('--digi'));
+  p3.note(0.02, 0.06, 'line step        load step', css('--error'));
+
+  // ── Line step zoom ──────────────────────────────────────────────────────
+  const zoom = (panel, idx, title, extra) => {
+    const pre = Math.round(10 * s.T / s.dt);
+    const post = Math.round(Math.min(s.N - idx - 1, 120 * s.T / s.dt));
+    const a = Math.max(0, idx - pre), b = Math.min(s.N - 1, idx + post);
+    const zt = tus.subarray(a, b), zv = s.vo.subarray(a, b);
+    const [lo, hi] = Plot.padExtent(...Plot.extent(zv), 0.15);
+    panel.limits(zt[0], zt[zt.length - 1], lo, hi).frame();
+    panel.hline(D.p.Vref, css('--muted'), [4, 3]);
+    panel.vline(idx * s.dt * us, css('--error'), [3, 3]);
+    panel.line(zt, zv, css('--digi'), { width: 1.5 });
+    if (extra) extra(panel, a, b, lo, hi);
+  };
+
+  const p4 = new Plot.Panel(cx, g[4], {
+    title: 'Line step: VDDH +' + S.dvin.toFixed(1) + ' V',
+    ylabel: 'V_o [V]', xlabel: 'Time [us]',
+  });
+  zoom(p4, s.tLine, 'line', (pn, a, b, lo, hi) => {
+    // Duty command on the same panel, scaled into the top of the box.
+    const zc = s.vc.subarray(a, b);
+    const sc = new Float64Array(zc.length);
+    for (let i = 0; i < zc.length; i++) sc[i] = lo + (hi - lo) * (0.05 + 0.25 * zc[i]);
+    pn.line(tus.subarray(a, b), sc, css('--quant'));
+    pn.note(0.02, 0.2, 'duty command', css('--quant'));
+  });
+  if (isFinite(s.lineDev)) {
+    p4.note(0.02, 0.9, (s.lineDev * 1e3).toFixed(1) + ' mV peak', css('--digi'));
+  }
+
+  const p5 = new Plot.Panel(cx, g[5], {
+    title: 'Load step: ×' + S.dload.toFixed(1) + ' current',
+    ylabel: 'V_o [V]', xlabel: 'Time [us]',
+  });
+  zoom(p5, s.tLoad, 'load');
+  if (isFinite(s.loadDev)) {
+    p5.note(0.02, 0.9, (s.loadDev * 1e3).toFixed(1) + ' mV peak', css('--digi'));
+  }
+}
+
+const chart = Plot.mount('c', { aspect: 0.5, aspectNarrow: 2.6, draw: render });
+UI.bind(S, fmts, () => { compute(); chart.redraw(); });
+compute();
+chart.redraw();
+</script>
+</body>
+</html>

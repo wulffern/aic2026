@@ -142,14 +142,19 @@ const Plot = (function () {
   function fmt(v, span) {
     if (v === 0) return '0';
     const a = Math.abs(v);
-    if (a >= 1e5 || a < 1e-3) {
+    // Choose the notation from the axis SPAN, not from the individual tick, so
+    // one axis does not end up labelled "50000, 1e5".
+    const s = span === undefined ? a : span;
+    if (s >= 1e5 || s < 1e-4) {
       const e = Math.floor(Math.log10(a));
       const m = v / Math.pow(10, e);
       const ms = Math.abs(m - Math.round(m)) < 0.05 ? String(Math.round(m)) : m.toFixed(1);
       return ms + 'e' + e;
     }
-    const s = span === undefined ? a : span;
-    const dec = s >= 100 ? 0 : s >= 10 ? 1 : s >= 0.1 ? 2 : 3;
+    // Enough decimals to tell neighbouring ticks apart. Deriving this from the
+    // span alone gave "0.001" twice in a row on a 1.1e-3 wide axis.
+    const step = s / 5;
+    const dec = Math.max(0, Math.min(8, Math.ceil(-Math.log10(step / 2))));
     let out = v.toFixed(dec);
     // Only trim inside a fraction — "100" must not become "1".
     if (out.indexOf('.') >= 0) out = out.replace(/0+$/, '').replace(/\.$/, '');

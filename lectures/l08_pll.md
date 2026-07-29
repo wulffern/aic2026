@@ -584,7 +584,7 @@ $$ L(s) = \frac{ K_{osc} K_{pd} K_{lp} H_{lp}(s) }{N s} $$
 
 I've made a python model of the loop, you can find it at
 -->
-[sun\_pll\_sky130nm/jupyter/pll](https://github.com/wulffern/sun_pll_sky130nm/blob/main/jupyter/pll.ipynb)
+[sun\_pll\_sky130nm/jupyter/pll](https://github.com/wulffern/sun_pll_sky130nm/blob/main/jupyter/pll.ipynb) - [interactive](https://wulffern.github.io/aic2026/assets/examples/pll.html)
 
 <!--pan_doc:
 
@@ -646,13 +646,13 @@ Back in 2020 there was a Master student at NTNU on PLL. I would recommend lookin
 thesis to learn more, and to get inspired [Ultra Low Power Frequency Synthesizer](https://ntnuopen.ntnu.no/ntnu-xmlui/handle/11250/2778127).
 
 
-[A Low Noise Sub-Sampling PLL in Which Divider Noise is Eliminated and PD/CP Noise is Not Multiplied by N2](https://ieeexplore.ieee.org/document/5342373)
+A Low Noise Sub-Sampling PLL in Which Divider Noise is Eliminated and PD/CP Noise is Not Multiplied by N2 [@gao09]
 
 
-[All-digital PLL and transmitter for mobile phones](https://ieeexplore.ieee.org/document/1546223)
+All-digital PLL and transmitter for mobile phones [@staszewski05]
 
 
-[A 2.9–4.0-GHz Fractional-N Digital PLL With Bang-Bang Phase Detector and 560-fsrms Integrated Jitter at 4.5-mW Power](https://ieeexplore.ieee.org/document/6006551)
+A 2.9–4.0-GHz Fractional-N Digital PLL With Bang-Bang Phase Detector and 560-fsrms Integrated Jitter at 4.5-mW Power [@tasca11]
 
 -->
 

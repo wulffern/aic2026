@@ -194,12 +194,64 @@ const DSP = (function () {
 
   // ── Converters ────────────────────────────────────────────────────────────
 
-  /** The `adc()` of ex/q.py: uniform mid-tread quantiser, step 2^-bits. */
+  /**
+   * The `adc()` of ex/q.py: uniform mid-tread quantiser, step 2^-bits.
+   *
+   * Note that `bits` here counts FRACTIONAL bits, not converter resolution.
+   * The step is 2^-bits, so a signal spanning +/-1 gets 2^(bits+1) steps and
+   * 2^(bits+1)+1 distinct levels — five of them at bits = 1, which is not what
+   * "1 bit" usually means. See quantizeBits() for the conventional reading.
+   */
   function quantize(x, bits) {
     const levels = Math.pow(2, bits);
     const o = new Float64Array(x.length);
     for (let i = 0; i < x.length; i++) o[i] = Math.round(x[i] * levels) / levels;
     return o;
+  }
+
+  /**
+   * A conventional B-bit converter over a full scale of +/-fs: a mid-riser
+   * quantiser with exactly 2^B levels and step 2*fs/2^B, saturating at the
+   * end codes.
+   *
+   * Mid-riser rather than mid-tread because it is the one that gives 2^B
+   * levels exactly, and because at B = 1 it is a plain comparator — which is
+   * what a one-bit converter is supposed to be.
+   */
+  function quantizeBits(x, bits, fs = 1) {
+    const levels = Math.pow(2, bits);
+    const d = 2 * fs / levels;
+    const lo = -fs + d / 2, hi = fs - d / 2;
+    const o = new Float64Array(x.length);
+    for (let i = 0; i < x.length; i++) {
+      const q = Math.floor(x[i] / d) * d + d / 2;
+      o[i] = q < lo ? lo : q > hi ? hi : q;
+    }
+    return o;
+  }
+
+  /**
+   * The quantiser a sigma-delta loop wants: 2^B levels spread evenly from -1
+   * to +1 inclusive, step 2/(2^B - 1).
+   *
+   * The feedback DAC has to reach the full input range or the loop cannot
+   * cancel a full-scale input, so the outermost levels sit exactly at +/-1
+   * rather than half a step inside. At B = 1 this is sign(x), which is what a
+   * one-bit modulator actually is.
+   */
+  function quantizeSD(v, bits) {
+    const n = Math.pow(2, bits);
+    if (n < 2) return v >= 0 ? 1 : -1;
+    const d = 2 / (n - 1);
+    const k = Math.round((v + 1) / d);
+    return -1 + Math.max(0, Math.min(n - 1, k)) * d;
+  }
+
+  /** Number of distinct values in a vector, for reporting actual level count. */
+  function levelCount(x, tol = 1e-9) {
+    const seen = new Set();
+    for (let i = 0; i < x.length; i++) seen.add(Math.round(x[i] / tol));
+    return seen.size;
   }
 
   /** Keep every nfs'th sample: `x[0::nfs]`. */
@@ -236,12 +288,12 @@ const DSP = (function () {
    * `dither` is the amplitude of the Gaussian added at the quantiser input,
    * matching `dither*np.random.randn()/4` in the Python (dither = 0 or 1).
    *
-   * The Python does not clamp the quantiser, so its "1-bit" converter really
-   * has as many levels as the integrator state reaches. `clamp` limits the
-   * output to +/- 1 instead, which is what a real B-bit quantiser does and
-   * what makes a 1-bit loop an actual bitstream.
+   * `script` selects the Python's own quantiser: an unclamped mid-tread with
+   * step 2^-bits, which at bits = 1 emits seven levels rather than two and is
+   * therefore not the one-bit modulator it is described as. The default is
+   * quantizeSD, a proper B-bit quantiser reaching +/-1.
    */
-  function sigmaDelta1(u, bits, dither, seed = 7, clamp = false) {
+  function sigmaDelta1(u, bits, dither, seed = 7, script = false) {
     const M = u.length;
     const levels = Math.pow(2, bits);
     const g = randnFactory(rng(seed));
@@ -249,9 +301,9 @@ const DSP = (function () {
     const x = new Float64Array(M);
     for (let n = 1; n < M; n++) {
       x[n] = x[n - 1] + (u[n] - y[n - 1]);
-      let q = Math.round(x[n] * levels + dither * g() / 4) / levels;
-      if (clamp) q = Math.max(-1, Math.min(1, q));
-      y[n] = q;
+      const v = x[n] + dither * g() / 4 / levels;
+      y[n] = script ? Math.round(x[n] * levels + dither * g() / 4) / levels
+                    : quantizeSD(v, bits);
     }
     return { y, x };
   }
@@ -299,7 +351,7 @@ const DSP = (function () {
     arange, linspace, logspace, maxAbs, db20, toDb,
     rng, randnFactory, randn,
     hann, ones, fft, fftshift, magSpectrum, magOneSided, normalise,
-    quantize, decimate, oversample, sigmaDelta1, skip,
+    quantize, quantizeBits, quantizeSD, levelCount, decimate, oversample, sigmaDelta1, skip,
     snr, enob,
   };
 })();

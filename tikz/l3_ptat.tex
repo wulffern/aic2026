@@ -1,25 +1,3 @@
-<<<<<<< HEAD
-\documentclass[tikz,border=2pt]{standalone}
-\usepackage{tikz}
-\usepackage[european]{circuitikz}
-\usetikzlibrary{arrows.meta,positioning,calc}
-\input{tikz/ckt_lib.tex}
-\begin{document}
-\begin{tikzpicture}[>=Stealth, line width=0.9pt]
-  \draw (0,3.0) -- (6,3.0);
-  \draw (1.0,3.0) to[resistor,l=$R_1$] (1.0,1.0);
-  \draw (0.4,1.0) -- (1.6,1.0);
-  \draw (0.6,1.0) -- (0.6,0.2) node[ground] {};
-  \draw (1.4,1.0) -- (1.4,0.2) node[ground] {};
-  \node at (0.6,0.6) {$D_1$};
-  \node at (1.4,0.6) {$D_2=N D_1$};
-  \draw (3.0,2.2) \cicOtaSWP{$+$}{$-$}{}{};
-  \node at ($(cicOta_inp)+(1.0,-0.8)$) {OTA};
-  \draw[->] (1.6,1.0) -- (cicOta_inn);
-  \draw[->] (0.4,1.0) -- (cicOta_inp);
-  \draw[->] (cicOta_outn) -- ++(1.1,0) node[midway,above] {$I_1=\Delta V_D/R_1$};
-\end{tikzpicture}
-=======
 \input{tikz/fig_header.tex}
 
 % PTAT current source. Same circuit as l03_ptat, redrawn here for the build-up
@@ -87,5 +65,4 @@
   \draw[->] (\xr+0.9,\pdlevel-0.1) -- ++(0,-0.9);
 
 \end{circuitikz}
->>>>>>> 7a1064c0dd01972bf43e2231489f230bb3bf92cf
 \end{document}

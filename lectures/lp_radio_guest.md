@@ -444,7 +444,7 @@ One way to implement variable gain is to reconfigure the LNA. For an example, se
 
 -->
 
-[30.5 A 0.5V BLE Transceiver with a 1.9mW RX Achieving -96.4dBm Sensitivity and 4.1dB Adjacent Channel Rejection at 1MHz Offset in 22nm FDSOI](https://ieeexplore.ieee.org/document/9063021) 
+30.5 A 0.5V BLE Transceiver with a 1.9mW RX Achieving -96.4dBm Sensitivity and 4.1dB Adjacent Channel Rejection at 1MHz Offset in 22nm FDSOI [@tamura20] 
 
 
 <!--pan_doc:
@@ -471,7 +471,7 @@ just read
 
 -->
 
-[Complex signal processing is not complex](https://ieeexplore.ieee.org/document/1333231)
+Complex signal processing is not complex [@martin04]
 
 <!--pan_doc:
 
@@ -479,7 +479,7 @@ In order to reduce power, it's most common with a passive mixer as shown below. 
 
 -->
 
-[A 370uW 5.5dB-NF BLE/BT5.0/IEEE 802.15.4-Compliant Receiver with >63dB Adjacent Channel Rejection at >2 Channels Offset in 22nm FDSOI](https://ieeexplore.ieee.org/document/9062973/)
+A 370uW 5.5dB-NF BLE/BT5.0/IEEE 802.15.4-Compliant Receiver with >63dB Adjacent Channel Rejection at >2 Channels Offset in 22nm FDSOI [@thijssen20]
 
 
 
@@ -540,7 +540,7 @@ At NTNU there have been multiple students through the years that have made world
 
 These days, a good option is a SAR, or a Noise-Shaped SAR. 
 
-If I were to pick, I'd make something like [A 68 dB SNDR Compiled Noise-Shaping SAR ADC With On-Chip CDAC Calibration](https://ieeexplore.ieee.org/document/9056925) as shown in the figure below.
+If I were to pick, I'd make something like A 68 dB SNDR Compiled Noise-Shaping SAR ADC With On-Chip CDAC Calibration [@garvik19] as shown in the figure below.
 
 -->
 
@@ -612,19 +612,19 @@ Once the signal has been converted to digital, then the de-modulation, and signa
 
 -->
 
-[A 0.5V BLE Transceiver with a 1.9mW RX Achieving -96.4dBm Sensitivity and 4.1dB Adjacent Channel Rejection at 1MHz Offset in 22nm FDSOI](https://ieeexplore.ieee.org/document/9063021), M. Tamura, Sony Semiconductor Solutions, Atsugi, Japan, 30.5, ISSCC 2020
+A 0.5V BLE Transceiver with a 1.9mW RX Achieving -96.4dBm Sensitivity and 4.1dB Adjacent Channel Rejection at 1MHz Offset in 22nm FDSOI [@tamura20], M. Tamura, Sony Semiconductor Solutions, Atsugi, Japan, 30.5, ISSCC 2020
 
-[A 370uW 5.5dB-NF BLE/BT5.0/IEEE 802.15.4-Compliant Receiver with >63dB Adjacent Channel Rejection at >2 Channels Offset in 22nm FDSOI](https://ieeexplore.ieee.org/document/9062973/), B. J. Thijssen, University of Twente, Enschede, The Netherlands
+A 370uW 5.5dB-NF BLE/BT5.0/IEEE 802.15.4-Compliant Receiver with >63dB Adjacent Channel Rejection at >2 Channels Offset in 22nm FDSOI [@thijssen20], B. J. Thijssen, University of Twente, Enschede, The Netherlands
 
-[A 68 dB SNDR Compiled Noise-Shaping SAR ADC With On-Chip CDAC Calibration](https://ieeexplore.ieee.org/document/9056925), H. Garvik, C. Wulff, T. Ytterdal
+A 68 dB SNDR Compiled Noise-Shaping SAR ADC With On-Chip CDAC Calibration [@garvik19], H. Garvik, C. Wulff, T. Ytterdal
 
-[A Compiled 9-bit 20-MS/s 3.5-fJ/conv.step SAR ADC in 28-nm FDSOI for Bluetooth Low Energy Receivers](https://ieeexplore.ieee.org/document/7906479), C. Wulff, T. Ytterdal
+A Compiled 9-bit 20-MS/s 3.5-fJ/conv.step SAR ADC in 28-nm FDSOI for Bluetooth Low Energy Receivers [@wulff17], C. Wulff, T. Ytterdal
 
 Cole Nielsen, <https://github.com/nielscol/thesis_presentations>
 
 "Python Framework for Design and Simulation of Integer-N ADPLLs", Cole Nielsen, <https://github.com/nielscol/tfe4580-report/blob/master/report.pdf>
 
-[Design of CMOS Phase-Locked Loops](https://doi.org/10.1017/9781108626200), Behzad Razavi, University of California, Los Angeles
+Design of CMOS Phase-Locked Loops [@razavi20], Behzad Razavi, University of California, Los Angeles
 
 
 
