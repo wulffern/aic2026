@@ -1,0 +1,30 @@
+\input{tikz/fig_header.tex}
+
+% Switched-capacitor amplifier, phase 1. C2 is shorted so V2 = 0, and C1 is
+% not yet connected to the OTA, so the charge C1*V1 sits on C1 alone.
+%
+% Pairs with l5_scintro2, which is the same circuit with the two switches in
+% the other state. They share tikz/sc_lib.tex, because the lecture's charge
+% conservation argument works by comparing the two drawings.
+%
+% Polarity marks are the original's and they matter: + on C1's left plate,
+% which is grounded, so its right plate goes to -V1 when the switch closes in
+% phase 2, exactly as the prose says.
+
+\input{tikz/ckt_lib.tex}
+\input{tikz/sc_lib.tex}
+
+\begin{circuitikz}[american, transform shape]
+
+  \scIntroFrame
+
+  % C1 not yet connected to the OTA
+  \scSwOpen{2.8}{\scYin}
+  % C2 shorted, so V2 = 0
+  \scSwClosed{4.8}{\scYsh}
+
+  \node[polred, anchor=west] at (0.7,\scYin+1.05) {$V_{1} = \ell$};
+  \node[polred, anchor=west] at (4.1,\scYc2-1.05) {$V_{2} =$};
+
+\end{circuitikz}
+\end{document}
