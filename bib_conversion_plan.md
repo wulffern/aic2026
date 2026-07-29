@@ -101,7 +101,7 @@ that file, so the inventory cannot quietly go stale.
 
 | Input | Default | Meaning |
 |---|---|---|
-| `limit` | `0` | Stop after N papers. Use `5` for a trial run before spending 80 API calls. |
+| `limit` | `0` | Stop after N papers. Use `6` for a trial run before spending 80 API calls. Candidates that carry a DOI or a real title are tried first, so a small limit is still representative. |
 | `commit` | off | Commit `pdf/incoming.bib` to the branch. Off deliberately. |
 
 It resolves candidates against Crossref, writes `pdf/incoming.bib` and
@@ -126,10 +126,17 @@ normalisation, the scope rules, author formatting, key minting against the real
 including a test that new entries do *not* carry the `};` terminator. The scan
 tests run against the actual lectures, so they notice drift.
 
-Not covered: the two functions that open a socket. Those are exercised the
-first time `fetch` runs in Actions. Its failure path is tested, though — behind
-a blocking proxy the command degrades to an unresolved list with the reason
-recorded per link, and exits non-zero.
+Not covered: the two functions that open a socket. Those are exercised by
+running `fetch` in Actions. The failure path is covered from both ends — behind
+a blocking proxy the command degrades to an unresolved list with a reason per
+link, and the job exits non-zero only when a lookup genuinely failed, not when
+a link simply needs a human.
+
+Two things the first trial run in Actions taught, both now fixed: `--limit`
+used to slice the front of the scan list, which is lecture order, so a trial
+run tested only the prose links in the early lectures and staged nothing; and
+the command used to fail whenever it staged nothing, which made a
+correctly-behaving trial run look broken.
 
 ## Entry Shape and Keys
 
