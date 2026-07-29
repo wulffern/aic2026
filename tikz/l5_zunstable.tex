@@ -1,0 +1,31 @@
+\input{tikz/fig_header.tex}
+
+% Stability in the z-plane: inside the unit circle is stable, outside is not.
+%
+% Third of three, on the same axes as l5_sdomain and l5_zdomain via
+% tikz/plane_lib.tex. Compare with l5_sdomain: the left half plane there and
+% the inside of the circle here are the same statement.
+
+\begin{circuitikz}[american, transform shape]
+
+  \input{tikz/plane_lib.tex}
+
+  \planeAxes{$a$}{$b$}
+  \planeCircle
+
+  % Inside: stable.
+  \planePole{stablegreen}{0.45}{0.30}
+  \planePole{stablegreen}{0.45}{-0.30}
+
+  % Outside: unstable.
+  \planePole{unstablered}{1.30}{0.36}
+  \planePole{unstablered}{1.30}{-0.36}
+
+  \node[stablegreen, anchor=west] at (1.05,2.85) {stable};
+  \draw[stablegreen, thick, ->] (1.30,2.72) -- (0.98,0.95);
+
+  \node[unstablered, anchor=west] at (2.75,2.25) {unstable};
+  \draw[unstablered, thick, ->] (2.90,2.10) -- (2.50,0.92);
+
+\end{circuitikz}
+\end{document}

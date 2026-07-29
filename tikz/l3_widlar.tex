@@ -1,0 +1,74 @@
+\input{tikz/fig_header.tex}
+
+% Widlar's 1971 bandgap reference, the first one (LM113).
+%
+% Two terminal shunt reference: a bias current comes down from the supply into
+% the V_REF rail and the cell holds that rail at ~1.22 V.
+%
+% Q1 is diode connected, so its collector sits at one V_BE. Q3 holds its own
+% base -- the collector of Q2 -- at one V_BE as well. R1 and R2 therefore see
+% nearly the same voltage and the current ratio is just R2/R1. Q1 and Q2 share
+% a base and are the same size, so that current density difference appears
+% across R3, and the resulting PTAT current is scaled by R2 and stacked on the
+% V_BE of Q3.
+%
+% There is no amplifier: Q3 is the gain element that closes the loop.
+
+\begin{circuitikz}[american, thick, transform shape, circuit ee IEC]
+
+  \input{tikz/ckt_lib.tex}
+
+  \def\xbias{-\grid*1.5}   % bias current into the rail
+  \def\xone{0}             % Q1, high current density
+  \def\xtwo{\grid*2.5}     % Q2, low current density, R3 in the emitter
+  \def\xthree{\grid*5}     % Q3, gain element and output device
+  \def\yrail{6.6}          % V_REF rail
+  \def\yres{4.8}           % bottom of R1 and R2
+  \def\yrest{6.4}          % top of R1 and R2 (\yres + \grid)
+
+  % ---- Q1: diode connected, sets the base voltage of the pair ----
+  \node[npn, anchor=E] (Q1) at (\xone,0.4) {};
+  \draw (Q1.E) -- ++(0,-0.4) \vground;
+  \draw (Q1.B) -- ++(-0.6,0) |- (Q1.C);
+  \fill (Q1.C) circle (0.06);
+  \node[anchor=east] at ($(Q1.B)+(-0.7,0)$) {$Q_{1}$};
+
+  % ---- Q2: same device, tenth of the current, R3 in the emitter ----
+  \node[npn, anchor=E] (Q2) at (\xtwo,2.4) {};
+  \draw (\xtwo,0) \vground;
+  \draw (\xtwo,0) -- ++(0,0.4);
+  \draw (\xtwo,0.4) \vresistor{$R_{3}$};
+  \draw (resEnd) -- (Q2.E);
+  \node[anchor=west] at ($(Q2.C)+(0.3,-0.95)$) {$Q_{2}$};
+
+  % Shared base, taken from the collector of Q1 so the wire clears both bodies.
+  \draw (Q1.C) -- ++(0.9,0) |- (Q2.B);
+
+  % ---- R1 and R2 down from the rail ----
+  \draw (\xone,\yres) to [short, i=$I_{1}$] (Q1.C);
+  \draw (\xone,\yres) \vresistor{$R_{1}$};
+  \draw (resEnd) -- (\xone,\yrail);
+
+  \draw (\xtwo,\yres) to [short, i=$I_{2}$] (Q2.C);
+  \draw (\xtwo,\yres) \vresistor{$R_{2}$};
+  \draw (resEnd) -- (\xtwo,\yrail);
+
+  % ---- Q3: senses the collector of Q2, shunts the rail ----
+  \node[npn, anchor=E] (Q3) at (\xthree,0.4) {};
+  \draw (Q3.E) -- ++(0,-0.4) \vground;
+  \draw (Q3.C) -- (\xthree,\yrail);
+  \draw (Q2.C) -- ++(1.0,0) |- (Q3.B);
+  \fill (Q2.C) circle (0.06);
+  \node[anchor=west] at ($(Q3.C)+(0.35,-0.5)$) {$Q_{3}$};
+
+  % ---- Rail, bias current and output ----
+  \draw (\xbias,\yrail) -- (\xthree,\yrail);
+  \draw (\xbias,\yrail+\grid) to [I, l=$I_{B}$] (\xbias,\yrail);
+  \draw (\xbias,\yrail+\grid) \vsupply;
+  \draw (\xthree,\yrail) \portOut{$V_{REF}$};
+
+  % ---- The PTAT drop lives across R3 ----
+  \node[anchor=east] at (\xtwo-0.35,1.2) {$\Delta V_{BE}$};
+
+\end{circuitikz}
+\end{document}

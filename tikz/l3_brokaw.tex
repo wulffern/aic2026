@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 \documentclass[tikz,border=2pt]{standalone}
 \usepackage{tikz}
 \usepackage[european]{circuitikz}
@@ -18,4 +19,73 @@
   \draw[->] (1.2,1.6) -- (cicOta_inp);
   \draw[->] (cicOta_outn) -- ++(1.0,0) node[midway,above] {$V_{BG}$};
 \end{tikzpicture}
+=======
+\input{tikz/fig_header.tex}
+
+% Brokaw bandgap reference. Matched collector loads R3 = R4 force equal
+% currents; the OTA senses the two collectors and drives both bases, so dV_BE
+% appears across R2 and the summed emitter current flows in R1. V_BG is taken
+% at the OTA output.
+%
+% The transistors are mirrored (xscale=-1) so their bases face right, which is
+% how the original draws them and lets the common base wire run clear of both
+% bodies out to the OTA output.
+
+\begin{circuitikz}[american, thick, transform shape, circuit ee IEC]
+
+  \input{tikz/ckt_lib.tex}
+
+  \def\xl{0}
+  \def\xr{\grid*2}
+  \def\yc{3.0}       % collector level
+  \def\yload{4.4}    % bottom of R3 / R4
+  \def\ysum{-1.5}    % emitters summed here, above R1
+
+  % ---- NPN pair, bases facing right ----
+  \node[npn, anchor=C, xscale=-1] (Q1) at (\xl, \yc) {};
+  \node[npn, anchor=C, xscale=-1] (Q2) at (\xr, \yc) {};
+  % Below and to the right of each base, clear of the emitter arrow.
+  \node[anchor=north west] at ($(Q1.B)+(0.15,-0.25)$) {$Q_{1}$};
+  \node[anchor=north west] at ($(Q2.B)+(0.15,-0.25)$) {$Q_{2}$};
+
+  % ---- Matched collector loads ----
+  \draw (Q1.C) -- (\xl,\yload);
+  \draw (\xl,\yload) \vresistor{};
+  \draw (resEnd) \vsupply;
+
+  \draw (Q2.C) -- (\xr,\yload);
+  \draw (\xr,\yload) \vresistor{};
+  \draw (resEnd) \vsupply;
+
+  \node at (\grid*1.25,\yload+0.8) {$R_{3}=R_{4}$};
+
+  % ---- Emitters: R2 under Q1, both summed into R1 ----
+  \draw (Q1.E) -- (\xl,0.4);
+  \draw (\xl,-1.2) \vresistor{$R_{2}$};
+  \draw (\xl,-1.2) -- (\xl,\ysum);
+  \draw (Q2.E) -- (\xr,\ysum) -- (\xl,\ysum);
+  \fill (\xl,\ysum) circle (0.06);
+
+  \draw (\xl,-3.5) \vground;
+  \draw (\xl,-3.5) -- ++(0,0.4);
+  \draw (\xl,-3.1) \vresistor{$R_{1}$};
+  \draw (resEnd) -- (\xl,\ysum);
+
+  % ---- OTA: + from Q2's collector, - from Q1's, output to the bases ----
+  \def\xota{5.0}
+  \draw (\xota,4.0) \cicOtaSSWP{$+$}{$-$};
+
+  \draw (\xr,4.0) -- (\xota,4.0);
+  \fill (\xr,4.0) circle (0.06);
+  % Crosses the right-hand branch without connecting — no dot.
+  \draw (\xl,3.2) -- (\xota,3.2);
+  \fill (\xl,3.2) circle (0.06);
+
+  \draw (cicOtaS_out) -- ++(0.4,0) coordinate (obg);
+  \draw (obg) \portOut{$V_{BG}$};
+  \draw (obg) |- (Q2.B);
+  \draw (Q1.B) -- (Q2.B);
+
+\end{circuitikz}
+>>>>>>> 7a1064c0dd01972bf43e2231489f230bb3bf92cf
 \end{document}

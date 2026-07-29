@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 \documentclass[tikz,border=2pt]{standalone}
 \usepackage{tikz}
 \usepackage[european]{circuitikz}
@@ -14,4 +15,103 @@
   \draw[->] (3.3,2.6) -- (4.8,2.6) node[midway,above] {$V_{REF}$};
   \draw (4.8,2.6) to[resistor,l=$R_L$] (4.8,0.6) -- (4.8,-0.1) node[ground] {};
 \end{tikzpicture}
+=======
+\input{tikz/fig_header.tex}
+
+% Bandgap voltage reference: the l03_ptat loop plus a third mirrored branch
+% where R2 sits above a unit diode, so V_R2 compensates the CTAT V_D3.
+% Geometry deliberately mirrors tikz/l03_ptat.tex so the two figures read as
+% the same circuit in the lecture.
+
+\begin{circuitikz}[american, thick, transform shape, circuit ee IEC]
+
+  \input{tikz/ckt_lib.tex}
+
+  % Column x positions. Kept tight: the widest thing between two branches is a
+  % voltage label (~0.8 wide, sitting just right of its wire), and the OTA is
+  % ~1.7 wide, so 2.5 grid between the bias branches and 1.5 between branch 2
+  % and the output branch clears everything without wasting width.
+  \def\xl{0}
+  \def\xr{\grid*2.5}
+  \def\xo{\grid*4}   % output branch
+  \def\pdlevel{5}    % y-level for all PMOS drains
+
+  % ---- PNP bipolar transistors (collectors at ground) ----
+  % Q1: unit PNP, collector at ground, B=E diode-connect
+  \node[pnp, anchor=C] (Q1) at (\xl, 0) {};
+  \draw (Q1.C) -- ++(0,-0.2) \vground;
+  \draw (Q1.B) |- (Q1.C);   % emitter-collector connected (diode)
+
+  % Q2: xN PNP, collector at ground, E=C diode-connect
+  \node[pnp, anchor=C, label=right:${\times N}$] (Q2) at (\xr, 0) {};
+  \draw (Q2.C) -- ++(0,-0.2)\vground;
+  \draw (Q2.B) |- (Q2.C);   % emitter-collector connected (diode)
+
+  % Q3: unit PNP in the output branch
+  \node[pnp, anchor=C] (Q3) at (\xo, 0) {};
+  \draw (Q3.C) -- ++(0,-0.2)\vground;
+  \draw (Q3.B) |- (Q3.C);   % emitter-collector connected (diode)
+
+  % ---- R1 above Q2 emitter ----
+  \draw (Q2.E) \vresistor{$R_{1}$};   % draws upward by \grid, coordinate resEnd
+  \coordinate (r1end) at (resEnd);
+
+  % ---- R2 above Q3 emitter ----
+  \draw (Q3.E) \vresistor{$R_{2}$};
+  \coordinate (r2end) at (resEnd);
+
+  % ---- PMOS drain nodes ----
+  \coordinate (mp1drain) at (\xl, \pdlevel);
+  \coordinate (mp2drain) at (\xr, \pdlevel);
+  \coordinate (mp3drain) at (\xo, \pdlevel);
+
+  % ---- OTA centered between the two bias branches, rotated 90 degrees ----
+  \def\xota{-\grid*1.5}   % same 0.6 fraction of \xr as in l03_ptat
+  \def\yota{ 3}
+  \begin{scope}[xscale=-1]
+  \begin{scope}[rotate around={90:(\xota,\yota)}]
+    % Polarity marks are left off here and drawn below instead: the circuitikz
+    % environment sets transform shape, so a label passed to the macro is
+    % rotated with the OTA body and the minus sign comes out a vertical bar.
+    \draw (\xota, \yota) \cicOtaSSWP{}{};
+    % Input terminals, carried out of the rotated scope as plain coordinates.
+    \coordinate (otaPlus)  at ($(\xota,\yota)+(0.5,0)$);
+    \coordinate (otaMinus) at ($(\xota,\yota)+(0.5,-\grid/2)$);
+  \end{scope}
+  \end{scope}
+  \node at ($(otaPlus)+(0,0.3)$)  {$+$};
+  \node at ($(otaMinus)+(0,0.3)$) {$-$};
+  % Horizontal routing — no diagonals
+  \draw (cicOtaS_inp) -| (mp2drain);
+  \draw (cicOtaS_inn) -| (mp1drain);
+  \draw (cicOtaS_inn) -| (Q1.E);
+
+  % ---- PMOS current mirror (horizontally flipped) ----
+  \draw (mp1drain) \lvmpmos{MP1}{};
+  \draw (MP1.source) \vsupply;
+
+  \draw (mp2drain) \lvpmos{MP2}{};
+  \draw (MP2.source) \vsupply;
+
+  \draw (mp3drain) \lvpmos{MP3}{};
+  \draw (MP3.source) \vsupply;
+
+  % OTA output drives all three PMOS gates
+  \draw (cicOtaS_out) |- (MP1.gate);
+  \draw (MP1.gate) -- (MP2.gate);
+  \draw (MP2.gate) -- (MP3.gate);
+
+  % ---- Output branch: MP3 drain down to R2, with V_REF tapped off the wire ----
+  \draw (r2end) -- ++(0,0.8) coordinate (vrefnode);
+  \draw (vrefnode) -- (mp3drain);
+  \draw (vrefnode) \portOut{$V_{REF}$};
+
+  % Voltage labels. No V_R2 — the node above R2 is V_REF, which already names it.
+  \draw ($(Q1.C)+(-0.2,0.8)$) to [open, l=$V_{D1}$] ($(Q1.E)+(-0.2,0.8)$);
+  \draw ($(Q2.C)+(1.2,0.8)$)  to [open, l=$V_{D2}$] ($(Q2.E)+(1.2,0.8)$);
+  \draw ($(Q2.E)+(1.2,0.8)$)  to [open, l=$V_{R1}$] ($(r1end)+(1.2,0.8)$);
+  \draw ($(Q3.C)+(1.2,0.8)$)  to [open, l=$V_{D3}$] ($(Q3.E)+(1.2,0.8)$);
+
+\end{circuitikz}
+>>>>>>> 7a1064c0dd01972bf43e2231489f230bb3bf92cf
 \end{document}

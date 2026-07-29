@@ -107,7 +107,7 @@ Affects coolness
 | 5    | CJM 12               | Analog Front-end                                                             | M1. Specification review | x        |
 | 6    | CJM 11-14            | Switched capacitor circuits                                                  | Design                   |          |
 | 7    | JSSC, CJM 18         | State-of-the-art ADCs                                                        | Design                   | x        |
-| 8    | Slides               | Low power radio recievers                                                    | Design                   |          |
+| 8    | Slides               | Low power radio receivers                                                    | Design                   |          |
 | 9    | Slides               | Communication standards from circuit perspective                             | M2. Design review        | x        |
 | 10   | CJM 7.4, CFAS,+DC/DC | Voltage regulation                                                           | Layout                   |          |
 | 11   | CJM 19, CFAS         | Clock generation                                                             | Layout                   | x        |
@@ -173,7 +173,7 @@ Logic cells close to large NMOS pad drivers are prone to latch-up.
 
 The latch-up process can start with electrons injected into the p-type substrate.
 
-![right 200%](../media/fig_inv.pdf)
+![right 200%](../media/fig_inv_tikz.pdf)
 
 ---
 # Latch-up

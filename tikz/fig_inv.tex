@@ -1,0 +1,36 @@
+\input{tikz/fig_header.tex}
+
+% The CMOS inverter.  Used by four lectures, so it stays plain: two devices,
+% the two ports and the device names, nothing else.
+
+\begin{circuitikz}[american, thick, transform shape, circuit ee IEC]
+
+  \input{tikz/ckt_lib.tex}
+
+  \def\yout{2.55}   % the shared drain node, and the gate rail's midpoint
+
+  \draw (0,0) \vground;
+  \draw (0,0) -- (0,0.6);
+  \draw (0,0.6) \lvnmos{MN}{};
+  \draw (0,2.2) -- (0,2.9);
+  \draw (0,2.9) \lvpmos{MP}{};
+  \draw (0,4.5) \vsupply;
+
+  % gates tied, brought out on the left
+  \draw (MN.gate) -- (MP.gate);
+  \coordinate (gin) at ($(MN.gate)!0.5!(MP.gate)$);
+  \draw (gin) -- (-1.3,\yout);
+  \draw (-1.39,\yout) circle (0.09);
+  \node[anchor=east] at (-1.55,\yout) {$V_{in}$};
+
+  % drains tied, brought out on the right
+  \draw (0,\yout) -- (0.9,\yout);
+  \fill (0,\yout) circle (0.075);
+  \draw (0.99,\yout) circle (0.09);
+  \node[anchor=west] at (1.15,\yout) {$V_{out}$};
+
+  \node[anchor=west] at (0.35,3.7) {MP1};
+  \node[anchor=west] at (0.35,1.4) {MN1};
+
+\end{circuitikz}
+\end{document}

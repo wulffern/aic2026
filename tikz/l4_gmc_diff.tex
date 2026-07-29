@@ -1,0 +1,27 @@
+\input{tikz/fig_header.tex}
+
+% Differential Gm-C integrator, outputs taken straight: + out on the + rail.
+% The current G_m V_i leaves the + output and returns into the - output, so
+% sC V_o = G_m V_i and H(s) = +G_m/(sC).
+%
+% \gmcDiffFrame draws everything this shares with l4_gmc_diff1.  The output
+% terminal marks and the two arrow directions are left here, because the
+% swap between them is the entire point of the pair of slides.
+
+\begin{circuitikz}[american, thick, transform shape]
+
+  \input{tikz/gmc_lib.tex}
+
+  \gmcDiffFrame
+
+  % Outputs taken straight
+  \gmcPlus{2.35}{3.6}
+  \gmcMinus{2.35}{2.0}
+
+  \draw[->] (3.05,3.9) -- (3.8,3.9);
+  \node[anchor=south] at (3.42,4.0) {$G_{m}V_{i}$};
+  \draw[->] (3.8,1.7) -- (3.05,1.7);
+  \node[anchor=north] at (3.42,1.6) {$G_{m}V_{i}$};
+
+\end{circuitikz}
+\end{document}

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 \documentclass[tikz,border=2pt]{standalone}
 \usepackage{tikz}
 \usepackage[european]{circuitikz}
@@ -19,4 +20,72 @@
   \draw (z_top) to[capacitor] (z_bot);
   \node at ($(z_top)!0.5!(z_bot)+(-1.0,0.0)$) {$Z\approx 1/(C_{sw}f)$};
 \end{tikzpicture}
+=======
+\input{tikz/fig_header.tex}
+
+% Z realised as a switched capacitor. C1 is charged to V_o through the phi_1
+% switch and dumped to ground through phi_2, so the branch emulates a resistor
+% of 1/(f*C1). C_o holds V_o between phases. The two-phase non-overlapping
+% clock is shown at the right.
+
+\begin{circuitikz}[american, thick, transform shape, circuit ee IEC]
+
+  \input{tikz/ckt_lib.tex}
+
+  % ---- Left: the impedance being replaced ----
+  \draw (0,2.2) \vground;
+  \draw (0,2.2) -- ++(0,0.3) coordinate (zbot);
+  \draw (zbot) \vimpedance{$Z$};
+  \draw (impEnd) -- ++(0,0.3) node[anchor=south] {$V_{o}$};
+
+  \node at (1.6,3.3) {$\Longrightarrow$};
+
+  % ---- Right: the switched-capacitor equivalent ----
+  \def\xco{3.0}    % C_o column
+  \def\xa{4.6}     % phi_1 switch, node A and C1 column
+  \def\xsw{6.2}    % phi_2 switch column
+  \def\yrail{5.0}  % V_o rail
+  \def\ya{3.4}     % node A
+
+  % C_o from the rail to ground
+  \draw (\xco,3.0) \vground;
+  \draw (\xco,3.0) -- ++(0,0.4) coordinate (cobot);
+  \draw (cobot) \vcapacitor{};
+  \draw (capEnd) -- (\xco,\yrail);
+  \node[anchor=east] at (\xco-0.35,4.2) {$C_{o}$};
+
+  % V_o rail across to the phi_1 switch
+  \draw (\xco,\yrail) -- (\xa,\yrail);
+  \draw (\xa-0.8,\yrail) -- ++(0,0.45) node[anchor=south] {$V_{o}$};
+
+  % phi_1 switch: rail down to node A
+  \draw (\xa,\ya) \lvmnmos{S1}{};
+  \draw (S1.gate) -- ++(0.5,0) node[anchor=west] {$\phi_{1}$};
+
+  % C1 hangs off node A
+  \draw (\xa,1.0) \vground;
+  \draw (\xa,1.0) -- ++(0,0.4) coordinate (c1bot);
+  \draw (c1bot) \vcapacitor{$C_{1}$};
+  \draw (capEnd) -- (\xa,\ya);
+  \fill (\xa,\ya) circle (0.06);
+
+  % phi_2 switch: node A down to ground
+  \draw (\xa,\ya) -- (\xsw,\ya);
+  \draw (\xsw,1.4) \lvmnmos{S2}{};
+  \draw (S2.gate) -- ++(0.5,0) node[anchor=west] {$\phi_{2}$};
+  \draw (\xsw,3.0) -- (\xsw,\ya);
+  \draw (\xsw,1.4) -- ++(0,-0.4) \vground;
+
+  % ---- Two-phase non-overlapping clock ----
+  % Kept clear of the phi_2 gate label, which reaches to about x=7.
+  \node[anchor=east] at (8.9,4.4) {$\phi_{1}$};
+  \draw (9.1,4.4) -- (9.2,4.4) -- (9.2,5.1) -- (9.8,5.1) -- (9.8,4.4)
+     -- (10.8,4.4) -- (10.8,5.1) -- (11.4,5.1) -- (11.4,4.4) -- (12.3,4.4);
+
+  \node[anchor=east] at (8.9,2.6) {$\phi_{2}$};
+  \draw (9.1,2.6) -- (10.0,2.6) -- (10.0,3.3) -- (10.6,3.3) -- (10.6,2.6)
+     -- (11.6,2.6) -- (11.6,3.3) -- (12.2,3.3) -- (12.2,2.6) -- (12.3,2.6);
+
+\end{circuitikz}
+>>>>>>> 7a1064c0dd01972bf43e2231489f230bb3bf92cf
 \end{document}

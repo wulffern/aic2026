@@ -1,0 +1,108 @@
+\input{tikz/fig_header.tex}
+
+% The common-mode feedback amplifier.
+%
+% A PMOS pair compares V_COUT with V_CREF off a tail current source.  The
+% V_COUT branch's current runs through an NMOS mirror into a diode-connected
+% PMOS, whose gate rail drives the pull-up of both outputs.  The V_CREF
+% branch's NMOS diode drives the pull-down of both outputs directly.  So a
+% common mode above the reference turns the pull-ups off and the pull-downs
+% on, and both outputs come back down.
+%
+% Columns are laid out on \grid = 1.6 so every device spans one row.
+
+\begin{circuitikz}[american, thick, transform shape, circuit ee IEC]
+
+  \input{tikz/ckt_lib.tex}
+
+  % ---- columns ----
+  \def\xz{-5.2}    % the diode-connected PMOS and its NMOS mirror output
+  \def\xa{-3.2}    % V_COUT branch
+  \def\xt{-1.8}    % tail
+  \def\xb{-0.3}    % V_CREF branch
+  \def\xon{1.8}    % V_on output branch
+  \def\xop{3.7}    % V_op output branch
+
+  % ---- rows ----
+  \def\ynbs{0.7}   % bottom NMOS source
+  \def\ynbd{2.3}   % bottom NMOS drain
+  \def\ydc{2.8}    % where the NMOS diode connections meet the drain risers
+  \def\ypd{3.7}    % PMOS pair drain
+  \def\yps{5.3}    % PMOS pair source, and the tail rail
+  \def\ymd{6.1}    % top PMOS drain
+  \def\ygp{6.9}    % top PMOS gate rail
+  \def\yms{7.7}    % top PMOS source and supply
+
+  % ================= the diode-connected PMOS and its NMOS mirror ==========
+  \draw (\xz,\ymd) \lvmpmos{MPz}{};
+  \draw (\xz,\yms) \vsupply;
+  \draw (MPz.gate) |- (\xz,\ymd);
+  \draw (\xz,\ymd) -- (\xz,\ynbd);
+
+  \draw (\xz,\ynbs) \lvmnmos{MNz}{};
+  \draw (\xz,0) \vground;
+  \draw (\xz,0) -- (\xz,\ynbs);
+
+  % the gate rail that drives both output pull-ups
+  \draw (MPz.gate) -- ({\xop-0.4},\ygp);
+
+  % ================= the PMOS pair =================
+  \draw (\xa,\ypd) \lvpmos{MCout}{$V_{COUT}$};
+  \draw (\xb,\ypd) \lvmpmos{MCref}{$V_{CREF}$};
+  \draw (\xa,\yps) -- (\xb,\yps);
+  \fill (\xt,\yps) circle (0.075);
+
+  \draw (\xa,\ypd) -- (\xa,\ynbd);
+  \draw (\xb,\ypd) -- (\xb,\ynbd);
+
+  % tail current source, from the supply
+  \draw (\xt,\yps) -- (\xt,7.3);
+  \draw (\xt,7.7) circle (0.4);
+  \draw[->] (\xt,7.94) -- (\xt,7.4);
+  \draw (\xt,8.1) -- (\xt,8.5);
+  \draw (\xt,8.5) \vsupply;
+
+  % ================= NMOS loads =================
+  % V_COUT branch: diode, mirrored into the device under the top PMOS
+  \draw (\xa,\ynbs) \lvnmos{MNa}{};
+  \draw (\xa,0) \vground;
+  \draw (\xa,0) -- (\xa,\ynbs);
+  \draw (MNz.gate) -- (MNa.gate);
+  \coordinate (gL) at ($(MNz.gate)!0.5!(MNa.gate)$);
+  \draw (gL) |- (\xa,\ydc);
+  \fill (gL) circle (0.075);
+  \fill (\xa,\ydc) circle (0.075);
+
+  % V_CREF branch: diode, mirrored into both output pull-downs
+  \draw (\xb,\ynbs) \lvmnmos{MNb}{};
+  \draw (\xb,0) \vground;
+  \draw (\xb,0) -- (\xb,\ynbs);
+  \draw (MNb.gate) |- (\xb,\ydc);
+  \fill (\xb,\ydc) circle (0.075);
+  \draw (MNb.gate) -- ({\xop-0.4},{\ynbs+0.8});
+
+  % ================= the two outputs =================
+  \draw (\xon,\ymd) \lvpmos{MPon}{};
+  \draw (\xon,\yms) \vsupply;
+  \draw (\xon,\ynbs) \lvnmos{MNon}{};
+  \draw (\xon,0) \vground;
+  \draw (\xon,0) -- (\xon,\ynbs);
+  \draw (\xon,\ymd) -- (\xon,\ynbd);
+  \draw (\xon,4.2) -- ({\xon+0.5},4.2);
+  \fill (\xon,4.2) circle (0.075);
+  \draw ({\xon+0.59},4.2) circle (0.09);
+  \node[anchor=south] at ({\xon+0.59},4.42) {$V_{on}$};
+
+  \draw (\xop,\ymd) \lvpmos{MPop}{};
+  \draw (\xop,\yms) \vsupply;
+  \draw (\xop,\ynbs) \lvnmos{MNop}{};
+  \draw (\xop,0) \vground;
+  \draw (\xop,0) -- (\xop,\ynbs);
+  \draw (\xop,\ymd) -- (\xop,\ynbd);
+  \draw (\xop,4.2) -- ({\xop+0.5},4.2);
+  \fill (\xop,4.2) circle (0.075);
+  \draw ({\xop+0.59},4.2) circle (0.09);
+  \node[anchor=south] at ({\xop+0.59},4.42) {$V_{op}$};
+
+\end{circuitikz}
+\end{document}

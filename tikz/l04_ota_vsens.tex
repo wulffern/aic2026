@@ -1,0 +1,111 @@
+\input{tikz/fig_header.tex}
+
+% Sensing the output common mode, and making a reference to compare it with.
+%
+% Left: a resistor divider off the supply, decoupled, driving a PMOS source
+% follower -- V_CREF is VDD/2 shifted by the follower's V_GS.
+% Right: the same follower on each output, and an R and a C divider between
+% the two follower outputs.  Their midpoint is the average, V_COUT, and it
+% carries the same V_GS shift as V_CREF, so the two cancel.
+%
+% The lecture notes the followers would ideally be native devices; that is a
+% choice of device flavour, not of topology, so the drawing is unchanged.
+
+\begin{circuitikz}[american, thick, transform shape, circuit ee IEC]
+
+  \input{tikz/ckt_lib.tex}
+
+  \def\ypd{5.67}   % follower drain
+  \def\yps{7.27}   % follower source and supply
+  \def\yr{4.73}    % the resistor divider
+  \def\yc{4.06}    % the capacitor divider
+  \def\yis{2.79}   % the bias current sources
+  \def\ygnd{1.25}
+
+  % ================= the reference =================
+  \def\xdiv{1.25}
+  \def\xdec{2.25}
+  \def\xref{3.88}
+
+  \draw (\xdiv,2.4) \vground;
+  \draw (\xdiv,2.4) -- (\xdiv,3.1);
+  \draw (\xdiv,3.1) \vresistor{};
+  \draw (\xdiv,4.7) -- (\xdiv,5.1);
+  \draw (\xdiv,5.1) \vresistor{};
+  \draw (\xdiv,6.7) \vsupply;
+
+  \draw (\xdiv,4.7) -- (\xdec,4.7);
+  \fill (\xdiv,4.7) circle (0.075);
+  \draw (\xdec,2.4) \vground;
+  \draw (\xdec,2.4) -- (\xdec,2.9);
+  \draw (\xdec,2.9) \vcapacitor{};
+  \draw (capEnd) -- (\xdec,4.7);
+  \fill (\xdec,4.7) circle (0.075);
+
+  \draw (\xref,\ypd) \lvpmos{MPref}{};
+  \draw (\xref,\yps) \vsupply;
+  \draw (\xdec,4.7) -- (2.7,6.47) -- (MPref.gate);
+
+  \draw (\xref,\ypd) -- (\xref,{\yis+0.42});
+  \draw (\xref,\yis) circle (0.42);
+  \draw[->] (\xref,{\yis+0.26}) -- (\xref,{\yis-0.28});
+  \draw (\xref,{\yis-0.42}) -- (\xref,\ygnd);
+  \draw (\xref,\ygnd) \vground;
+
+  \draw (\xref,4.46) -- (4.33,4.46);
+  \fill (\xref,4.46) circle (0.075);
+  \draw (4.42,4.46) circle (0.09);
+  \node[anchor=west] at (4.57,4.46) {$V_{CREF}$};
+
+  % ================= sensing the two outputs =================
+  \def\xon{6.96}
+  \def\xmid{9.17}
+  \def\xop{11.54}
+
+  \draw (\xon,\ypd) \lvpmos{MPon}{$V_{on}$};
+  \draw (\xon,\yps) \vsupply;
+  \draw (\xop,\ypd) \lvpmos{MPop}{$V_{op}$};
+  \draw (\xop,\yps) \vsupply;
+
+  \draw (\xon,\ypd) -- (\xon,{\yis+0.42});
+  \draw (\xon,\yis) circle (0.42);
+  \draw[->] (\xon,{\yis+0.26}) -- (\xon,{\yis-0.28});
+  \draw (\xon,{\yis-0.42}) -- (\xon,\ygnd);
+  \draw (\xon,\ygnd) \vground;
+
+  \draw (\xop,\ypd) -- (\xop,{\yis+0.42});
+  \draw (\xop,\yis) circle (0.42);
+  \draw[->] (\xop,{\yis+0.26}) -- (\xop,{\yis-0.28});
+  \draw (\xop,{\yis-0.42}) -- (\xop,\ygnd);
+  \draw (\xop,\ygnd) \vground;
+
+  % R divider
+  \draw (\xon,\yr) -- (7.28,\yr);
+  \draw (7.28,\yr) \hresistor{};
+  \draw (resEnd) -- (\xmid,\yr);
+  \draw (\xmid,\yr) -- (9.58,\yr);
+  \draw (9.58,\yr) \hresistor{};
+  \draw (resEnd) -- (\xop,\yr);
+
+  % C divider
+  \draw (\xon,\yc) -- (7.31,\yc);
+  \draw (7.31,\yc) \hcapacitor{};
+  \draw (capEnd) -- (\xmid,\yc);
+  \draw (\xmid,\yc) -- (9.61,\yc);
+  \draw (9.61,\yc) \hcapacitor{};
+  \draw (capEnd) -- (\xop,\yc);
+
+  \draw (\xmid,\yr) -- (\xmid,\yc);
+  \fill (\xmid,\yr) circle (0.075);
+  \fill (\xmid,\yc) circle (0.075);
+  \fill (\xon,\yr) circle (0.075);
+  \fill (\xon,\yc) circle (0.075);
+  \fill (\xop,\yr) circle (0.075);
+  \fill (\xop,\yc) circle (0.075);
+
+  \draw (\xmid,\yc) -- (\xmid,3.54) -- (9.47,3.54);
+  \draw (9.56,3.54) circle (0.09);
+  \node[anchor=north west] at (9.5,3.42) {$V_{COUT}$};
+
+\end{circuitikz}
+\end{document}

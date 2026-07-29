@@ -1,0 +1,62 @@
+\input{tikz/fig_header.tex}
+
+% Signal flow graph of a general biquad: the first-order graph with a second
+% integrator added, so it uses the same summing node and 1/s block from
+% sfg_lib.  V_i reaches the first sum through k_0/omega_0 and the second
+% through k_1 and k_2 s; V_o is fed back through -omega_0 to the first sum
+% and through -omega_0/Q to the second, giving
+%   V_o/V_i = (k_2 s^2 + k_1 s + k_0)/(s^2 + (omega_0/Q) s + omega_0^2)
+
+\begin{circuitikz}[american, thick, transform shape]
+
+  \input{tikz/sfg_lib.tex}
+
+  \def\ym{2.7}    % the forward path
+  \def\ykone{1.45}
+  \def\yktwo{0.6}
+  \def\yq{3.7}    % the -omega_0/Q path
+  \def\yw{4.9}    % the -omega_0 path
+  \def\xin{1.3}   % where the k_1 and k_2 s paths leave the input
+  \def\xsa{3.5}   % first summing node
+  \def\xsb{7.75}  % second summing node
+  \def\xt{11.2}   % where the two feedbacks tap the output
+
+  % forward path
+  \node[anchor=east] at (0.25,\ym) {$V_{i}$};
+  \draw[->] (0.35,\ym) -- ({\xsa-\sfgR},\ym);
+  \sfgSum{\xsa}{\ym}
+  \draw[->] ({\xsa+\sfgR},\ym) -- (4.5,\ym);
+  \sfgBox{5.5}{\ym}{$\frac{1}{s}$}
+  \draw[->] (6.5,\ym) -- ({\xsb-\sfgR},\ym);
+  \sfgSum{\xsb}{\ym}
+  \draw[->] ({\xsb+\sfgR},\ym) -- (8.75,\ym);
+  \sfgBox{9.75}{\ym}{$\frac{1}{s}$}
+  \draw[->] (10.75,\ym) -- (11.6,\ym);
+  \node[anchor=west] at (11.7,\ym) {$V_{o}$};
+
+  % k_1 and k_2 s, both taken off the input and summed into the second node
+  \draw (\xin,\ym) -- (\xin,\yktwo);
+  \sfgDot{\xin}{\ym}
+  \sfgDot{\xin}{\ykone}
+  \draw (\xin,\ykone) -- (6.5,\ykone);
+  \draw[->] (6.5,\ykone) -- (7.57,2.52);
+  \draw (\xin,\yktwo) -- (\xsb,\yktwo);
+  \draw[->] (\xsb,\yktwo) -- (\xsb,{\ym-\sfgR});
+
+  % the two feedbacks, both summed from above
+  \draw (\xt,\ym) -- (\xt,\yw) -- (\xsa,\yw);
+  \draw[->] (\xsa,\yw) -- (\xsa,{\ym+\sfgR});
+  \draw (\xt,\yq) -- (\xsb,\yq);
+  \draw[->] (\xsb,\yq) -- (\xsb,{\ym+\sfgR});
+  \sfgDot{\xt}{\ym}
+  \sfgDot{\xt}{\yq}
+
+  \node[anchor=south] at (2.3,{\ym+0.1}) {$k_{0}/\omega_{0}$};
+  \node[anchor=south] at (6.95,{\ym+0.1}) {$\omega_{0}$};
+  \node[anchor=north] at (3.8,{\ykone-0.1}) {$k_{1}$};
+  \node[anchor=north] at (4.25,{\yktwo-0.1}) {$k_{2}s$};
+  \node[anchor=south] at (7.1,{\yw+0.1}) {$-\omega_{0}$};
+  \node[anchor=south] at (9.85,{\yq+0.1}) {$-\omega_{0}/Q$};
+
+\end{circuitikz}
+\end{document}

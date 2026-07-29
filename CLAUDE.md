@@ -43,6 +43,24 @@ python3 py/lecture.py latex --no-append lectures/l01_intro.md
 make jstart   # Runs Jekyll in Docker on port 3002 (http://localhost:3002)
 ```
 
+### Slide decks
+```sh
+make slides              # Render every lecture to docs/assets/html/<name>.html
+make slides-parallel     # Same, 4 workers
+make slides-one FNAME=l05_sc
+```
+The lectures in `lectures/` are Deckset source. `py/slides.py` renders the same
+files to standalone HTML decks: `pan_doc`/`pan_latex` bodies are dropped, the
+`pan_skip` title slides are kept, and the Deckset directives (`---`, `#[fit]`,
+`![left fit]`, `[.column]`, `[.background-color:]`) become CSS. Open the HTML
+in a browser and scroll, swipe, or press arrows/space/Page Down; navigation is
+native CSS scroll-snap, so it works with JavaScript off. `f` is fullscreen and
+Cmd-P prints to PDF. A lecture written as prose rather than a deck (fewer than five
+`---` breaks) is split on its headings instead, so it still presents. Maths is typeset by a vendored MathJax (`slides/vendor/`), not a
+CDN, so a deck works with no network. Needs `markdown` (in
+`requirements-ci.txt`) and `pdftocairo` from poppler to turn PDF figures into
+SVG for the browser.
+
 ### TikZ figures
 ```sh
 make tikz   # Builds tikz/*.tex files → media/*_tikz.{pdf,svg}

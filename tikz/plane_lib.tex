@@ -1,0 +1,47 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Shared pieces for the l05_sc s-plane and z-plane diagrams.
+%%
+%% l5_sdomain, l5_zdomain and l5_zunstable are the same pair of axes with
+%% different things marked on them, and the lecture walks from one to the next.
+%% Keeping the axes, the unit circle and the pole marker here means the three
+%% slides line up and a reader can see what changed.
+%%
+%% Pole and zero positions are given in units of the unit circle radius, so
+%% (0.5,0.3) means half a radius out. The macros scale by \planeR.
+%%
+%% Every name is prefixed: short generic names collide with LaTeX built-ins.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\definecolor{stablegreen}{rgb}{0.00,0.45,0.20}
+\definecolor{unstablered}{rgb}{0.90,0.20,0.10}
+
+\newcommand{\planeR}{1.8}        % unit circle radius, and the coordinate scale
+\newcommand{\planeXmax}{3.1}
+\newcommand{\planeYmax}{2.9}
+\newcommand{\planeMark}{0.17}    % half diagonal of a pole cross
+
+% The two axes. #1 labels the real axis, #2 the imaginary one.
+\newcommand{\planeAxes}[2]{%
+  \draw[thick, ->] (-\planeXmax,0) -- (\planeXmax,0);
+  \node[anchor=north] at (\planeXmax-0.25,-0.22) {#1};
+  \draw[thick, <->] (0,-\planeYmax) -- (0,\planeYmax);
+  \node[anchor=west] at (0.22,\planeYmax-0.28) {#2};
+}
+
+% The unit circle, drawn heavy because it is the thing that matters.
+\newcommand{\planeCircle}{\draw[ultra thick] (0,0) circle (\planeR);}
+
+% A pole: colour, then position in units of the radius.
+\newcommand{\planePole}[3]{%
+  \draw[#1, very thick]
+    ({#2*\planeR-\planeMark},{#3*\planeR-\planeMark}) --
+    ({#2*\planeR+\planeMark},{#3*\planeR+\planeMark});
+  \draw[#1, very thick]
+    ({#2*\planeR-\planeMark},{#3*\planeR+\planeMark}) --
+    ({#2*\planeR+\planeMark},{#3*\planeR-\planeMark});
+}
+
+% A zero, same coordinates.
+\newcommand{\planeZero}[3]{%
+  \draw[#1, very thick] ({#2*\planeR},{#3*\planeR}) circle (\planeMark);
+}

@@ -292,11 +292,12 @@ class Lecture():
 
     def _replaceCites(self):
 
+        #- Hand-written footnotes reserve their numbers, so the generated
+        #  citations start above them. A marker glued to the previous word
+        #  ("white.[^1]") has no leading space, so match on zero-or-more.
         for line in self.buffer:
-            m = re.search(r"\s+\[\^(\d+)\]",line)
-            if(m):
-                nr = m.groups()[0]
-                mr = self.bibtex.addFootNote(nr)
+            for nr in re.findall(r"\s*\[\^(\d+)\]",line):
+                self.bibtex.addFootNote(nr)
 
         #- Sort so the last footnote is correct
         self.bibtex.sort()
@@ -419,6 +420,9 @@ class Lecture():
             if("lectures" in self.filename ):
                 #slides = "[Slides](" +  self.options["jekyll"] + self.filename.replace("lectures","assets/slides").replace(".md",".pdf") +")"
                 slides = " [PDF](" +  self.options["jekyll"] + self.filename.replace("lectures","assets/").replace(".md",".pdf") +")"
+                #- The HTML deck built by py/slides.py, see `make slides`
+                slides += " [Slides](" + self.options["jekyll"] + "assets/html/" \
+                    + os.path.basename(self.filename).replace(".md",".html") + ")"
 
             ss += f"""---
 layout: post
@@ -652,7 +656,9 @@ def latex(filename,root,no_append):
         + r"\chapter{" + title + "}" + "\n"
         + r"\input{" + foname_fixed + "}" + "\n\n")
 
-    download_text = f"- [{title}](/{aic_version}/assets/{basename}.pdf)\n"
+    #- The chapter PDF and, beside it, the HTML deck built by py/slides.py
+    download_text = (f"- [{title}](/{aic_version}/assets/{basename}.pdf)"
+                     f" [[slides]](/{aic_version}/assets/html/{basename}.html)\n")
 
     with open(f"pdf/{basename}_chapter.inc","w") as fo:
         fo.write(chapter_text)

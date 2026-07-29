@@ -1,0 +1,89 @@
+\input{tikz/fig_header.tex}
+
+% The receive chain of a typical Bluetooth radio, split into the three groups
+% the lecture uses: sensor, analog front-end, converter.  The LNA feeds a
+% complex mixer pair, the two paths go through the anti-alias filters and the
+% two converters, and the LO supplies 0 and 90 degrees.
+%
+% The dotted diagonals between the mixers and the filters, and between the
+% filters and the converters, are the original's shorthand for the cross
+% coupling that makes those stages complex rather than two independent
+% paths -- a poly-phase filter and a complex ADC.
+
+\begin{circuitikz}[american, thick, transform shape]
+
+  \def\yi{3.40}   % I path
+  \def\yq{2.19}   % Q path
+
+  % ---- the three groups ----
+  \draw[dotted, rounded corners=6pt] (0.36,1.68) rectangle (1.62,4.05);
+  \draw[dotted, rounded corners=6pt] (1.71,1.65) rectangle (6.18,4.20);
+  \draw[dotted, rounded corners=6pt] (6.39,1.74) rectangle (7.80,4.23);
+  \node[anchor=south west] at (0.30,4.14) {Sensor};
+  \node[anchor=south] at (3.84,4.26) {AFE};
+  \node[anchor=south] at (7.14,4.30) {ADC};
+
+  % ---- antenna ----
+  \draw (0.78,3.69) -- (0.98,3.30) -- (1.17,3.69);
+  \draw (0.98,3.30) -- (0.98,2.61) -- (1.92,2.61);
+
+  % ---- LNA ----
+  \draw (1.92,2.07) -- (1.92,3.15) -- (2.61,2.61) -- cycle;
+  \node at (2.18,2.61) {\scriptsize LNA};
+  \draw (2.61,2.61) -- (3.09,2.61);
+
+  % ---- split into the two mixer paths ----
+  \draw (3.09,\yq) -- (3.09,\yi);
+  \fill (3.09,2.61) circle (0.06);
+  \draw (3.09,\yi) -- (3.40,\yi);
+  \draw (3.09,\yq) -- (3.40,\yq);
+
+  % ---- the two mixers ----
+  \draw (3.63,\yi) circle (0.23);
+  \draw (3.47,{\yi-0.16}) -- (3.79,{\yi+0.16});
+  \draw (3.47,{\yi+0.16}) -- (3.79,{\yi-0.16});
+  \draw (3.63,\yq) circle (0.23);
+  \draw (3.47,{\yq-0.16}) -- (3.79,{\yq+0.16});
+  \draw (3.47,{\yq+0.16}) -- (3.79,{\yq-0.16});
+
+  \draw (3.86,\yi) -- (4.83,\yi);
+  \draw (3.86,\yq) -- (4.83,\yq);
+
+  % ---- the anti-alias filters, cross coupled ----
+  \draw[dotted] (4.41,\yi) -- (4.77,\yq);
+  \draw[dotted] (4.41,\yq) -- (4.77,\yi);
+  \draw (4.83,{\yi-0.34}) rectangle (6.06,{\yi+0.34});
+  \node at (5.45,\yi) {AAF};
+  \draw (4.83,{\yq-0.34}) rectangle (6.06,{\yq+0.34});
+  \node at (5.45,\yq) {AAF};
+
+  \draw (6.06,\yi) -- (6.78,\yi);
+  \draw (6.06,\yq) -- (6.78,\yq);
+  \draw[dotted] (6.21,\yi) -- (6.63,\yq);
+  \draw[dotted] (6.21,\yq) -- (6.63,\yi);
+
+  % ---- the two converters ----
+  \draw (6.78,\yi) -- (7.02,{\yi+0.35}) -- (7.74,{\yi+0.35})
+     -- (7.74,{\yi-0.35}) -- (7.02,{\yi-0.35}) -- cycle;
+  \node at (7.38,\yi) {\scriptsize ADC};
+  \draw (6.78,\yq) -- (7.02,{\yq+0.35}) -- (7.74,{\yq+0.35})
+     -- (7.74,{\yq-0.35}) -- (7.02,{\yq-0.35}) -- cycle;
+  \node at (7.38,\yq) {\scriptsize ADC};
+
+  \draw (7.74,\yi) -- (8.13,\yi);
+  \draw (7.84,{\yi-0.12}) -- (8.00,{\yi+0.12});
+  \node[anchor=west] at (8.18,{\yi+0.06}) {$I$};
+  \draw (7.74,\yq) -- (8.13,\yq);
+  \draw (7.84,{\yq-0.12}) -- (8.00,{\yq+0.12});
+  \node[anchor=west] at (8.18,{\yq+0.06}) {$Q$};
+
+  % ---- local oscillator ----
+  \draw (3.36,0.39) rectangle (4.80,1.05);
+  \node at (4.08,0.72) {LO};
+  \draw (3.63,1.05) -- (3.63,{\yq-0.23});
+  \draw (4.20,1.05) -- (4.20,2.80) -- (3.63,2.80) -- (3.63,{\yi-0.23});
+  \node[anchor=east] at (3.56,1.48) {$90^{\circ}$};
+  \node[anchor=west] at (4.27,1.48) {$0^{\circ}$};
+
+\end{circuitikz}
+\end{document}

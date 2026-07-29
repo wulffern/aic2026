@@ -1,0 +1,43 @@
+\input{tikz/fig_header.tex}
+
+% Signal flow graph of a general first-order section.  V_i reaches the sum
+% through k_0 and through k_1 s, the integrator output is fed back through
+% -omega_0, so
+%   u = (k_0 + k_1 s) V_i - omega_0 V_o,  V_o = u/s
+%   => V_o/V_i = (k_1 s + k_0)/(s + omega_0)
+
+\begin{circuitikz}[american, thick, transform shape]
+
+  \input{tikz/sfg_lib.tex}
+
+  \def\ym{2.2}    % the forward path
+  \def\yb{0.9}    % the k_1 s path
+  \def\yt{3.3}    % the -omega_0 path
+  \def\xs{3.1}    % summing node
+  \def\xt{6.5}    % where the feedback taps the output
+
+  % forward path
+  \node[anchor=east] at (0.1,\ym) {$V_{i}$};
+  \draw[->] (0.2,\ym) -- ({\xs-\sfgR},\ym);
+  \sfgSum{\xs}{\ym}
+  \draw[->] ({\xs+\sfgR},\ym) -- (4.1,\ym);
+  \sfgBox{5.1}{\ym}{$\frac{1}{s}$}
+  \draw[->] (6.1,\ym) -- (7.0,\ym);
+  \node[anchor=west] at (7.05,\ym) {$V_{o}$};
+
+  % k_1 s, taken off the input and summed from below
+  \draw (0.4,\ym) -- (0.4,\yb) -- (\xs,\yb);
+  \draw[->] (\xs,\yb) -- (\xs,{\ym-\sfgR});
+  \sfgDot{0.4}{\ym}
+
+  % -omega_0 feedback, summed from above
+  \draw (\xt,\ym) -- (\xt,\yt) -- (\xs,\yt);
+  \draw[->] (\xs,\yt) -- (\xs,{\ym+\sfgR});
+  \sfgDot{\xt}{\ym}
+
+  \node[anchor=south] at (1.7,{\ym+0.1}) {$k_{0}$};
+  \node[anchor=north] at (1.8,{\yb-0.1}) {$k_{1}s$};
+  \node[anchor=south] at (4.8,{\yt+0.1}) {$-\omega_{0}$};
+
+\end{circuitikz}
+\end{document}

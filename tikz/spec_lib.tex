@@ -1,0 +1,63 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Shared pieces for the l05_sc sampling spectra.
+%%
+%% l5_sh, l5_shaaf and l5_subsample are the same drawing three times: no
+%% filter, an anti-alias low pass, and a bandpass around f_s. The slides make
+%% their point by looking alike, so the axis, the wanted signal and the tones
+%% all come from here and every figure inherits the same geometry.
+%%
+%% Every name is prefixed. \th is a LaTeX built-in and redefining it is a
+%% fatal error, so short generic names are not safe.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\definecolor{specgreen}{rgb}{0.00,0.45,0.20}
+\definecolor{tonered}{rgb}{0.85,0.22,0.10}
+\definecolor{tonemag}{rgb}{0.90,0.20,0.75}
+\definecolor{bandorange}{rgb}{0.95,0.62,0.10}
+\newcommand{\specHalf}{1.2}      % f_s/2
+\newcommand{\specXmax}{3.5}      % axis half length
+\newcommand{\specVh}{1.9}        % vertical axis height
+\newcommand{\specToneH}{1.05}    % tone height
+\newcommand{\specSkirt}{0.20}   % filter roll-off width
+
+% Panel baselines, so the two rows line up across all three figures.
+\newcommand{\specYtop}{3.9}
+\newcommand{\specYbot}{0}
+
+% One frequency axis with its Nyquist ticks. #1 is the baseline.
+\newcommand{\specAxis}[1]{%
+  \draw[thick, <->] (-\specXmax,#1) -- (\specXmax,#1);
+  \draw[thick, ->] (0,#1) -- (0,#1+\specVh);
+  \foreach \p/\lbl in {-2/{-f_{s}}, -1/{-f_{s}/2}, 1/{f_{s}/2}, 2/{f_{s}}} {
+    \draw[thick] (\p*\specHalf,#1+0.13) -- (\p*\specHalf,#1-0.13);
+    \node[anchor=north] at (\p*\specHalf,#1-0.22) {$\lbl$};
+  }
+}
+
+% The wanted signal, centred on DC. #1 is the baseline.
+\newcommand{\specBump}[1]{%
+  \draw[specgreen, very thick] plot[smooth, tension=0.7] coordinates
+    {(-1.05,#1) (-0.75,#1+0.80) (-0.35,#1+1.30) (0,#1+1.45)
+     (0.35,#1+1.30) (0.75,#1+0.80) (1.05,#1)};
+}
+
+% A tone: colour, position, baseline.
+\newcommand{\specTone}[3]{\draw[#1, very thick, ->] (#2,#3) -- (#2,#3+\specToneH);}
+
+% A filter response, drawn as a trapezoid: centre, half width, height,
+% baseline. Used for both the anti-alias low pass and the subsampling
+% bandpass, so the two read as the same kind of object.
+\newcommand{\specBand}[4]{%
+  \draw[bandorange, very thick, rounded corners=3pt]
+    (#1-#2-\specSkirt,#4) -- (#1-#2,#4+#3)
+    -- (#1+#2,#4+#3) -- (#1+#2+\specSkirt,#4);
+}
+
+% A block in the signal chain: left edge x, centre y, label.
+\newcommand{\specBlock}[3]{%
+  \draw[thick] (#1,#2-0.5) rectangle ++(1.5,1.0);
+  \node at (#1+0.75,#2) {#3};
+}
+
+% An arrow between chain elements: from x, to x, at y.
+\newcommand{\specWire}[3]{\draw[thick, ->] (#1,#3) -- (#2,#3);}

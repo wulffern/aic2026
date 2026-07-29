@@ -1,0 +1,27 @@
+\input{tikz/fig_header.tex}
+
+% The s-plane. The heavy bar is the imaginary axis, which is where the
+% frequency response is evaluated, and the two poles sit in the left half
+% plane where a continuous time system is stable.
+%
+% First of three plane diagrams; l5_zdomain and l5_zunstable follow. Geometry
+% comes from tikz/plane_lib.tex so the axes line up across all three.
+
+\begin{circuitikz}[american, transform shape]
+
+  \input{tikz/plane_lib.tex}
+
+  \planeAxes{$a$}{$j\omega$}
+
+  % The jw axis itself, drawn heavy: this is the line the frequency response
+  % is read along, and it is what maps to the unit circle in the z-plane.
+  \draw[line width=4pt] (0,-2.2) -- (0,2.2);
+
+  % A conjugate pole pair in the left half plane.
+  \planePole{black}{-0.55}{0.32}
+  \planePole{black}{-0.55}{-0.32}
+
+  \node[anchor=west] at (1.35,2.60) {$s = a + j\omega$};
+
+\end{circuitikz}
+\end{document}

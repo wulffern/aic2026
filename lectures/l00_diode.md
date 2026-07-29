@@ -933,6 +933,370 @@ with the small exception of the non-linear component of $V_D$.
 
 ![right fit Circuit to generate a current proportional to kT\label{fig:ptat}](../media/l3_ptat.pdf)
 
+<!--pan_doc:
+<sub>Figure 4: Circuit to generate a current proportional to kT</sub>
+-->
+
+---
+
+# Reverse leakage
+
+<!--pan_doc:
+
+So far we have only looked at the diode in forward bias, where the
+exponential term dominates and the current is set by the diffusion
+saturation $I_S$. In integrated circuits we equally often care about
+what happens when the diode is reverse biased, with $V_D < 0$. The
+exponential term is then negligible, and you might expect the current
+to be zero. It is not.
+
+What happens physically is that the reverse bias lifts the Fermi level
+on the n-side relative to the p-side. The built-in field grows, the
+depletion region widens, and any minority carrier that wanders into
+that region is immediately swept across to the other side. The
+question of "how much current" is therefore really the question of
+"how many minority carriers are produced per second, and where".
+
+In a real n+/p-substrate junction there are two places where minority
+carriers appear:
+
+1. In the *quasi-neutral* p-substrate, a short diffusion length away
+   from the junction. These thermally generated electrons diffuse to
+   the depletion edge and are then collected.
+2. *Inside* the depletion region itself, through generation at
+   Shockley-Read-Hall trap centers in the silicon bandgap.
+
+The first gives the Shockley diffusion saturation current $I_S$, the
+second gives the Sah-Noyce-Shockley generation current $I_{gen}$.
+They have different temperature dependencies, and which one dominates
+depends on temperature, doping, and how clean the silicon is.
+
+-->
+
+---
+
+## Diffusion leakage
+
+[.column]
+
+$$ I_S = q A n_i^2 \left( \frac{1}{N_A}\sqrt{\frac{D_n}{\tau_n}} + \frac{1}{N_D}\sqrt{\frac{D_p}{\tau_p}} \right) $$
+
+<!--pan_doc:
+
+This is exactly the $I_S$ from the forward-bias derivation, just
+re-interpreted. Under reverse bias the minority-carrier concentration
+at the edge of the depletion region is forced to *zero* (every carrier
+that arrives is swept across). The concentration gradient between the
+bulk equilibrium $n_p = n_i^2/N_A$ on the p-side and zero at the
+depletion edge drives a steady diffusion of electrons toward the
+junction, and similarly of holes from the n-side.
+
+The factor that matters for temperature is $n_i^2$. From Equation
+\eqref{eq:ni}, $n_i^2 \propto T^3 \exp(-E_g/kT)$. The $T^3$ comes
+from the densities of states $N_c, N_v \propto T^{3/2}$, which is a
+genuine quantum-mechanical effect: as temperature rises, more
+states become thermally accessible above $E_c$ and below $E_v$. The
+$\exp(-E_g/kT)$ dominates the slope, but the $T^3$ prefactor
+contributes a non-trivial correction that is bigger than people
+usually admit. The log-derivative of $n_i^2$ is
+
+$$ \frac{d \ln n_i^2}{dT} = \frac{E_g}{kT^2} + \frac{3}{T} $$
+
+At $T = 300\, K$ the $3/T$ term is about $7\, \%$ of the
+exponential term; at $T = 1000\, K$ it is about $25\, \%$. So the
+density-of-states prefactor visibly steepens the leakage curve at
+high temperature, and you cannot drop it if you care about anything
+beyond a back-of-envelope estimate.
+
+The diffusion current doubles roughly every $4$-$5\, K$ near room
+temperature, which is the familiar "reverse current doubles every
+10 K" rule of thumb for ideal junctions [^4].
+
+For an n+/p-well antenna diode, the $1/N_D$ term is negligible
+because $N_D \gg N_A$, and $I_S$ is set almost entirely by
+electron injection from the p-well.
+
+Both $D$ and $\tau$ depend on temperature too, and that matters once
+the sweep is several hundred kelvin wide. Phonon-limited mobility
+goes as $\mu \propto T^{-2.4}$ above $\sim 300\, K$, so via the
+Einstein relation $D = \mu k T/q \propto T^{-1.4}$. The SRH lifetime
+goes as $\tau = 1/(\sigma v_{th} N_t)$ with $v_{th} \propto
+\sqrt{T}$, so $\tau \propto T^{-1/2}$ (taking $\sigma$ and $N_t$
+constant). The combination $\sqrt{D/\tau}$ in $I_S$ therefore drifts
+as $T^{-0.45}$, so $I_S$ at $1000\, K$ is about $0.6\times$ what a
+"constant $D$, $\tau$" model would predict. That is small compared
+to the many decades of swing in $n_i^2$, but it is the dominant
+reason the diffusion curve in Figure 5 starts to flatten at the top
+end. The script `ex/antenna_diode_leakage.py` includes both
+$T$-dependencies, and the [interactive version](https://wulffern.github.io/aic2026/assets/examples/antenna-leakage.html)
+lets you switch them off to see how little difference they make next to the
+bandgap.
+
+-->
+
+---
+
+## Generation in the depletion region
+
+[.column]
+
+$$ I_{gen} = \frac{q A n_i W}{\tau_g} $$
+
+$$ W = \sqrt{\frac{2 \varepsilon_{si} (\Phi_0 + V_R)}{q} \cdot \frac{N_A + N_D}{N_A N_D}} $$
+
+<!--pan_doc:
+
+Real silicon is not a perfect crystal. Process damage, residual
+metallic impurities and dangling bonds at interfaces create trap
+levels somewhere in the bandgap. A trap near mid-gap can capture an
+electron from the valence band (creating a hole) and then emit it to
+the conduction band (creating an electron). Inside a reverse-biased
+depletion region, both carriers are immediately swept apart by the
+field, the trap empties, and the cycle repeats. The net effect is a
+steady generation of electron-hole pairs that shows up as reverse
+current.
+
+The Sah-Noyce-Shockley analysis gives the result above, where $W$ is
+the depletion width and $\tau_g$ is an effective generation lifetime
+(typically a few $\tau_n$). For a one-sided n+/p junction with
+$N_A \ll N_D$ the depletion width simplifies to
+
+$$ W \approx \sqrt{\frac{2 \varepsilon_{si} (\Phi_0 + V_R)}{q N_A}} $$
+
+which sits almost entirely on the lightly doped substrate side.
+
+The temperature scaling is now $n_i$, not $n_i^2$. The exponential
+in $n_i$ has $E_g/(2kT)$ and the density-of-states prefactor is
+$T^{3/2}$ rather than $T^3$, so the slope is roughly half that of
+$I_S$. $I_{gen}$ doubles every $8$-$10\, K$ near room temperature.
+At low and moderate temperatures, where $n_i$ is small, this
+slower-scaling term still dominates because it has the smaller
+exponent. As temperature rises and $n_i$ grows by many decades, the
+steeper $I_S \propto n_i^2$ eventually overtakes it.
+
+The $1/\tau_g$ in $I_{gen}$ also drifts with temperature: with
+$\tau \propto T^{-1/2}$ the generation term picks up an extra
+$\sqrt{T}$ factor on top of the $n_i W$ scaling, which is why at the
+top of the sweep $I_{gen}$ does not flatten out as much as one might
+expect from $n_i$ alone.
+
+The reverse bias $V_R$ enters through $W$, so $I_{gen}$ has a weak
+$\sqrt{V_R}$ dependence. Diffusion current $I_S$ is essentially
+independent of bias once the junction is reverse-biased by more than
+a few $kT/q$. This is the standard way to separate the two
+experimentally: $I_S$ saturates, $I_{gen}$ grows with $\sqrt{V_R}$.
+
+-->
+
+---
+
+## Plasma charging currents
+
+[.column]
+
+$$ J_{plasma} \sim 1\text{-}10\, \mathrm{mA/cm^2} $$
+
+$$ I_{ant} = J_{net} \cdot A_{antenna} $$
+
+<!--pan_doc:
+
+How much current does the diode actually have to sink? A reactive-ion
+plasma delivers ion and electron fluxes to the wafer surface, each
+typically in the $1$-$10\, \mathrm{mA/cm^2}$ range [@cheung01]. If
+the two fluxes were perfectly balanced everywhere, no floating
+conductor would charge up and there would be nothing to drain. They
+never are, and two mechanisms produce a net DC current that the
+antenna diode must shunt:
+
+- **Macroscopic non-uniformity.** Ion and electron fluxes vary
+  across the wafer because of source geometry, magnetic-field
+  shaping and edge effects. The local mismatch is typically a few
+  percent of $J_{plasma}$, giving a net DC charging current density
+  on the order of $10\, \mu\mathrm{A/cm^2}$ to
+  $0.1\, \mathrm{mA/cm^2}$ collected by any conductor connected to
+  that area [@cheung01].
+
+- **Electron shading.** In a high-aspect-ratio opening through
+  photoresist, vertical ions reach the bottom of the feature while
+  near-isotropic electrons are blocked by the sidewalls. The bottom
+  charges positively regardless of plasma uniformity. Hashimoto
+  identified this as the dominant damage mechanism for deep-submicron
+  processes [@hashimoto94], and it is what makes high-density-plasma
+  etch and HDP-CVD particularly aggressive.
+
+A metal trace that the routing tool calls the *antenna* collects the
+net plasma current density over its full area $A_{antenna}$ and
+funnels it onto the much smaller gate. Foundry rules cap the
+*antenna ratio* $A_{antenna}/A_{gate}$ at typically a few hundred to
+a few thousand, but even within those limits a net plasma current of
+$\sim 10\, \mu\mathrm{A/cm^2}$ over a $10^4\, \mu m^2$ antenna gives
+$\sim 1\, \mu A$ injected onto a sub-$\mu m^2$ gate. With no
+discharge path, that current would charge the gate node and force
+Fowler-Nordheim tunneling through the oxide (fields above
+$\sim 10\, \mathrm{MV/cm}$). Once tunneling starts, defects
+accumulate and the breakdown lifetime collapses [@krishnan98].
+
+The antenna diode bypasses this failure by giving the antenna a
+reverse-biased path to substrate that conducts at far lower voltage
+than the oxide. As long as the diode reverse leakage at the relevant
+process temperature exceeds the antenna-collected charging current,
+the gate voltage stays clamped well below the FN threshold and the
+oxide is safe. This is what makes Figure 5 a sizing tool: at the
+coldest plasma step the leakage per $\mu m^2$ is only
+$\sim 0.5\, \mathrm{fA}$, so a small antenna ratio or a generous
+diode area is required to maintain $I_{leak} \gtrsim I_{ant}$.
+
+-->
+
+---
+
+## Antenna ndiode, 200 K to 1000 K
+
+<!--pan_doc:
+
+A useful integrated-circuit example is the *antenna diode*. During
+plasma etch and ion-implant steps in fabrication, long metal traces
+collect charge. If the trace is connected to a transistor gate, the
+gate dielectric can break down before the chip ever sees a power
+supply. Foundry design rules specify maximum *antenna ratios* (metal
+area to gate area) per layer; if a net exceeds the ratio, the routing
+tool inserts an *antenna diode* on the net to bleed the plasma charge
+to substrate. In normal operation that diode sits reverse-biased and
+must contribute negligible static current.
+
+The diode itself is simply an n+ source/drain implant placed in the
+NMOS p-well. The relevant doping is:
+
+- p-substrate (handle wafer): $N_{sub} \approx 10^{15}\, cm^{-3}$
+- p-well (retrograde, set by short-channel control):
+  $N_A \approx 10^{17}-10^{18}\, cm^{-3}$
+- n+ source/drain: $N_D \approx 10^{20}\, cm^{-3}$
+
+It is the p-well doping that matters at the junction, because the n+
+sits inside the well, not directly on substrate. The effective $N_A$
+seen by the antenna ndiode is therefore one to two orders of
+magnitude higher than the wafer doping, which makes the depletion
+narrower and the reverse leakage *smaller* than a naive
+"n+/p-substrate" estimate would suggest.
+
+Figure 5 plots the reverse leakage of such a junction:
+$N_A = 10^{17}\, cm^{-3}$ (p-well), $N_D = 10^{20}\, cm^{-3}$
+(n+ S/D), $V_R = 1\, V$, swept from 200 K to 1000 K. The current
+is plotted as a *leakage density* in $\mathrm{A}/\mu m^2$, so
+multiplying by the actual junction area in $\mu m^2$ gives the
+absolute current - a $0.2 \times 0.2\, \mu m^2$ antenna ndiode is
+the curve times $0.04$, a $1 \times 1\, \mu m^2$ diode reads off
+directly. The script is `ex/antenna_diode_leakage.py` and reuses
+the $n_i(T)$ derivation from `ex/vd.py`. Both exist as interactive pages:
+[antenna diode leakage](https://wulffern.github.io/aic2026/assets/examples/antenna-leakage.html), where the doping, the
+reverse bias and the junction area are sliders, and
+[diode vs temperature](https://wulffern.github.io/aic2026/assets/examples/diode.html) for the $n_i(T)$ model on its own.
+
+The two shaded bands mark where plasma-induced damage actually
+happens during fabrication, which is the *only* time an antenna
+diode does any work. The cooler band is plasma etch (reactive ion
+etch, with the wafer chuck cooled to roughly $25$-$100\, ^\circ C$,
+so $\sim 300$-$375\, K$); the hotter band is plasma deposition
+steps such as PECVD, HDP-CVD and sputter ($\sim 200$-$400\,
+^\circ C$, so $\sim 470$-$675\, K$, with $400\, ^\circ C$ a hard
+upper limit set by BEOL metal reliability). Across this span the
+leakage available to bleed plasma charge ranges from roughly
+$0.5\, \mathrm{fA}/\mu m^2$ at room-temperature etch to
+$\sim 1\, \mathrm{nA}/\mu m^2$ at $400\, ^\circ C$ deposition - six
+decades of variation depending only on which process step you are
+in.
+
+Three things to take away from the figure:
+
+- Generation current dominates from cryogenic temperatures up to
+  roughly $640\, K$, exactly where the steeper $n_i^2$ slope of the
+  diffusion term catches up. Above that the diode is in the
+  "diffusion-limited" regime. The crossover happens to fall right
+  in the middle of the plasma-deposition band, so antenna diodes
+  during deposition steps see contributions from both mechanisms.
+- The leakage per $\mu m^2$ swings six decades over the wafer-fab
+  thermal range. An antenna diode that easily sinks the plasma
+  charge during a $400\, ^\circ C$ HDP-CVD step may be orders of
+  magnitude too small during a room-temperature metal etch. The
+  worst case for sizing is therefore the *coldest* plasma step.
+- The slope on a log axis is set by the $\exp(-E_g/(2kT))$ in $n_i$
+  plus the $T^{3/2}$ density-of-states prefactor. Every junction in
+  a given silicon process scales with temperature the same way;
+  only the absolute level changes with area, doping and lifetime.
+
+It is also worth noting that at the upper end of the sweep $n_i$
+approaches and eventually exceeds $N_A$. The diode then loses
+junction behaviour and the silicon behaves as an intrinsic resistor.
+This is why high-temperature electronics typically uses
+wide-bandgap materials such as silicon carbide.
+
+-->
+
+![right fit Reverse leakage of a 0.2x0.2 um$^2$ antenna ndiode\label{fig:antenna_leak}](../media/antenna_diode_leak.pdf)
+
+<!--pan_doc:
+<sub>Figure 5: Reverse leakage density (A/um$^2$) of an n+/p-well
+antenna ndiode, from 200 K to 1000 K, $V_R = 1$ V. Multiply by your
+actual diode area in um$^2$. Shaded bands are the wafer temperature
+during plasma etch (300-375 K) and plasma deposition (470-675 K),
+the steps at which plasma-induced gate damage occurs.</sub>
+-->
+
+---
+
+## Wires below 1 mm
+
+[.column]
+
+$$ I_{ant} = J_{net} \cdot W_{wire} \cdot L_{wire} $$
+
+<!--pan_doc:
+
+The antenna current scales linearly with wire length, so for wire
+lengths below $1\, \mathrm{mm}$ - which covers practically everything
+that stays inside a single block or hierarchical cell - the sizing
+problem is concrete. Take a minimum-width interconnect, $W_{wire}
+\approx 0.1\, \mu m$, and the worst-case cold-etch net plasma
+current density, $J_{net} \approx 10\, \mu\mathrm{A/cm^2}$:
+
+| $L_{wire}$    | $A_{antenna}$    | $I_{ant}$ at room-T etch |
+| -----------   | -----------      | ----------------         |
+| $1\, \mu m$   | $0.1\, \mu m^2$  | $\sim 1\, \mathrm{fA}$   |
+| $10\, \mu m$  | $1\, \mu m^2$    | $\sim 10\, \mathrm{fA}$  |
+| $100\, \mu m$ | $10\, \mu m^2$   | $\sim 100\, \mathrm{fA}$ |
+| $1\, mm$      | $100\, \mu m^2$  | $\sim 1\, \mathrm{pA}$   |
+
+Now compare with Figure 5. At room temperature the antenna ndiode
+leaks only $\sim 0.5\, \mathrm{fA}/\mu m^2$. A $1\, \mathrm{mm}$
+wire collecting $1\, \mathrm{pA}$ would therefore need a diode
+active area of $\sim 2000\, \mu m^2$ (a $45 \times 45\, \mu m$
+device) to keep the gate clamped during cold etch, which is
+clearly impractical. The same $1\, \mathrm{mm}$ wire is comfortably
+protected by a $0.3\, \mu m^2$ diode at a $200\, ^\circ C$
+deposition step ($\sim 3\, \mathrm{pA}/\mu m^2$) and by a
+sub-$0.01\, \mu m^2$ diode at $400\, ^\circ C$.
+
+Two consequences:
+
+- For wires shorter than a few $\mu m$, the collected charging
+  current is below the room-temperature diode leakage even for the
+  smallest practical antenna ndiode. No protection is needed -
+  which is why foundry antenna rules always have a length-threshold
+  exemption.
+- For long wires the cold-etch step dominates the sizing, and a
+  single big diode is rarely the right answer. The routing tool
+  instead *jumps* the long net up to a higher metal layer (patterned
+  only after the lower stack already protects the gate), or
+  distributes many small antenna ndiodes along the wire so each one
+  only has to drain its local section of the antenna current.
+
+Wider metals (upper-stack power and clock) scale antenna area
+linearly with width, so a $1\, \mu m$-wide, $1\, \mathrm{mm}$-long
+top-metal trace collects $10\, \mathrm{pA}$ rather than $1$, and the
+same conclusions apply with one decade less margin.
+
+-->
+
 ---
 
 <!--pan_skip: -->
@@ -941,13 +1305,6 @@ with the small exception of the non-linear component of $V_D$.
 
 
 ---
-
-<!--pan_doc:
-
-<sub>Figure 4: Circuit to generate a current proportional to kT</sub>
--->
-
-
 
 <!--pan_doc:
 
@@ -996,4 +1353,5 @@ But most of the time, the behavior is similar.
 <!--pan_doc:
 [^2]: Simplify as much as possible, but no more. Einstein
 [^3]: From the Einstein relation $D = \mu k T$ it does appear that the diffusion coefficient increases with temperature, however, the mobility decreases with temperature. I'm unsure of whether the mobility decreases with the same rate though.
+[^4]: This rule of thumb applies to the diffusion-dominated regime. For the generation-dominated regime, which is where most small junctions actually live at room temperature, the doubling interval is closer to 8-10 K because $I_{gen} \propto n_i$ rather than $n_i^2$.
 -->

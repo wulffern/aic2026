@@ -65,7 +65,7 @@ $$ \oint_{\partial \Sigma} \mathbf{B} \cdot d\mathbf{\ell} = \mu_0\left(
 \mathbf{E} \cdot d\mathbf{S} \right)$$
 <sub>Relates induced magnetic field to changing electric flux and to current</sub>
 
-![left fit](../media/fig_inv.pdf)
+![left fit](../media/fig_inv_tikz.pdf)
 
 [^1]: [Maxwell's equations](https://en.wikipedia.org/wiki/Maxwell%27s_equations)
 
@@ -158,7 +158,7 @@ close to zero as we need.
 
 -->
 
-![fit](../media/l4_achai.svg)
+![fit](../media/l4_achai_tikz.pdf)
 
 ---
 
@@ -233,7 +233,7 @@ Then we can compute the lifetime running an ADC based Bluetooth Radio
 
 -->
 
-$$\text{ Hours} = \frac{ 205 \text{ mAh}}{1.32\text{ W}/3.8\text{ V}} = 0.6\text{ h}$$
+$$\text{ Hours} = \frac{ 205 \text{ mAh}}{1.31\text{ W}/3.8\text{ V}} = 0.6\text{ h}$$
 
 <!--pan_doc:
 
@@ -252,7 +252,7 @@ I can't tell you how the Nordic radio works, but I can tell you how others usual
 
 ---
 
-![fit](../media/l4_radio.svg)
+![fit](../media/l4_radio_tikz.pdf)
 
 
 <!--pan_doc:
@@ -325,7 +325,7 @@ I would encourage you to try and derive from the signal flow graph the $H(s)$ an
 
 -->
 
-![left fit](../media/l4_first_order.svg)
+![left fit](../media/l4_first_order_tikz.pdf)
 
 <!--pan_doc:
 
@@ -371,7 +371,7 @@ to our wanted $H(s)$ we can proceed with the circuit implementation.
 
 -->
 
-![left fit](../media/l4_biquad.svg)
+![left fit](../media/l4_biquad_tikz.pdf)
 
 
  $$ H(s) = \frac{k_2 s^2 + k_1 s + k_0}{s^2 + \frac{\omega_0}{Q} s +
@@ -422,7 +422,7 @@ In a Gm-C filter the input and output nodes can have significant swing, and thus
 
 
 
-![left fit](../media/l4_gmc.svg)
+![left fit](../media/l4_gmc_tikz.pdf)
 
 
 $$ V_o = \frac{I_o}{s C} = \frac{\omega_{ti}}{s} V_i $$
@@ -440,7 +440,7 @@ In a real IC we would almost always use differential circuit, as shown below. Th
 
 -->
 
-![fit left ](../media/l4_gmc_diff.svg)
+![fit left ](../media/l4_gmc_diff_tikz.pdf)
 
 $$ s C V_o = G_m Vi $$
 
@@ -455,7 +455,7 @@ the qualities I like the most is that the outputs can be flipped to implement ne
 
 -->
 
-![fit left ](../media/l4_gmc_diff1.svg)
+![fit left ](../media/l4_gmc_diff1_tikz.pdf)
 
 $$ H(s) = \frac{V_o}{V_i} = -\frac{G_m}{sC}$$
 
@@ -471,7 +471,7 @@ I would encourage you to try and calculate the transfer function.
 -->
 
 
-![left fit](../media/l4_gmc1st.svg)
+![left fit](../media/l4_gmc1st_tikz.pdf)
 
 
 <!--pan_doc: 
@@ -496,14 +496,14 @@ Below is a general purpose Gm-C bi-quadratic system.
 
 -->
 
-![fit right](../media/l4_gmcbi.svg)
+![fit right](../media/l4_gmcbi_tikz.pdf)
 
 
 $$ H(s) = \frac{k_2 s^2 + k_1 s + k_0}{s^2 + \frac{\omega_0}{Q} s +
  \omega_o^2}$$
 
 $$ H(s) = \frac{ s^2\frac{C_X}{C_X + C_B} + s\frac{G_{m5}}{C_X + C_B} + \frac{G_{m2}G_{m4}}{C_A(C_X + C_B)}}
-{s^2 + s\frac{G_{m2}}{C_X + C_B} + \frac{G_{m1}G_{m2}}{C_A(C_X + C_B)} }$$
+{s^2 + s\frac{G_{m3}}{C_X + C_B} + \frac{G_{m1}G_{m2}}{C_A(C_X + C_B)} }$$
 
 
 
@@ -571,7 +571,7 @@ you're trying to come up with a clever idea, or I decide to give this exact prob
 -->
 
 
-![left fit](../media/l4_activerc_first.svg)
+![left fit](../media/l4_activerc_first_tikz.pdf)
 
 $$ H(s) = \frac{ k_1 s + k_0 }{s + w_o}$$
 
@@ -667,7 +667,7 @@ Imagine you wanted to make a filter, any filter. You'd decompose into first and 
 -->
 
 
-![left fit](../media/l4_activebiquad.svg)
+![left fit](../media/l4_activebiquad_tikz.pdf)
 
 <!--pan_doc:
 
@@ -683,7 +683,7 @@ $$H(s) = \frac{\left[ \frac{C_1}{C_B}s^2 + \frac{G_2}{C_B}s + (\frac{G_1G_3}{C_A
 
 # The OTA is not ideal
 
-![left fit](../media/l4_activerc.svg)
+![left fit](../media/l4_activerc_tikz.pdf)
  
  $$ H(s) \approx \frac{A_0}{(1 + s A_o R C)(1 + \frac{s}{w_{ta}})}$$
  
@@ -755,7 +755,7 @@ Below is the differential current mirror OTA.
 
 ---
 
-![fit](../media/l04_ota_diff.svg)
+![fit](../media/l04_ota_diff_tikz.pdf)
 
 <!--pan_doc:
 
@@ -769,7 +769,7 @@ The reference for the common mode can be from a bandgap, or in the case below, V
 
 ---
 
-![fit](../media/l04_ota_vsens.svg)
+![fit](../media/l04_ota_vsens_tikz.pdf)
 
 ---
 
@@ -781,7 +781,7 @@ The nice thing about the circuit below is that the common mode feedback loop has
 
 -->
 
-![fit](../media/l04_ota_vcmfb.svg)
+![fit](../media/l04_ota_vcmfb_tikz.pdf)
 
 ---
 

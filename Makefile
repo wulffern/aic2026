@@ -10,7 +10,7 @@ ifneq ($(wildcard /pyenv/bin/.*),)
 	PYTHON=/pyenv/bin/python3
 endif
 
-.PHONY:  slides version tikz prepare-docs standalone-one standalone-list book-pdf book-epub print-files
+.PHONY:  slides slides-one slides-parallel version tikz tikz-one tikz-check tikz-preview preview print-tikz figures prepare-docs standalone-one standalone-list book-pdf book-epub print-files examples
 
 #	lr0_logic \
 
@@ -52,7 +52,7 @@ FILES = l00_jayn \
 
 
 
-all: version posts-parallel texfiles-parallel standalone-parallel latex-nobuild book-nobuild
+all: version posts-parallel texfiles-parallel examples standalone-parallel latex-nobuild book-nobuild
 
 latex-nobuild:
 	cd pdf; make one
@@ -65,12 +65,34 @@ book-nobuild:
 version:
 	echo "aic${YEAR}" > version
 
-prepare-docs: clean-prepared version posts-parallel texfiles-parallel
+prepare-docs: clean-prepared version figures posts-parallel texfiles-parallel slides-parallel examples
 	cd pdf; [ -d kaobook ] || git clone https://github.com/fmarotta/kaobook.git
+
+# ---------------------------------------------------------------------------
+# Interactive examples
+#
+# examples/ holds one self-contained HTML page per script in ex/. docs/assets/
+# is gitignored, so examples/ is the source and gets copied in, the same way
+# media/ is the source for docs/assets/media/. Nothing is generated, so this is
+# a copy rather than a build.
+# ---------------------------------------------------------------------------
+
+EXAMPLEDIR = docs/assets/examples
+
+examples:
+	-mkdir -p ${EXAMPLEDIR}/common
+	cp -f examples/*.html ${EXAMPLEDIR}/
+	cp -f examples/common/* ${EXAMPLEDIR}/common/
+
+figures: media/antenna_diode_leak.pdf
+
+media/antenna_diode_leak.pdf: ex/antenna_diode_leakage.py
+	${PYTHON} ex/antenna_diode_leakage.py
 
 clean-prepared:
 	-rm -f docs/downloads.md images.txt *_images.inc
 	-rm -f docs/assets/*.pdf docs/assets/*.epub
+	-rm -rf docs/assets/html docs/assets/examples
 	-rm -f pdf/*.aux pdf/*.log pdf/*.pdf pdf/*.epub pdf/*.bbl pdf/*.blg pdf/*.toc pdf/*.bcf pdf/*.xml pdf/*.mw
 
 print-files:
@@ -190,28 +212,98 @@ cish:
 equations:
 	${foreach f,${FILES},cat lectures/${f}.md |perl -pe 's/\n//ig;'| perl -ne 'print "\n# ${f}\n\n";while(m/\$$\$$([^\$$]+)\$$\$$/ig){print "\n\$$\$$".$$1."\$$\$$\n"}';}
 
+# Shared TikZ preamble/library files, included by the figures rather than built.
+TIKZ_INCLUDES = fig_header.tex ckt_lib.tex spec_lib.tex plane_lib.tex sc_lib.tex boot_lib.tex gmc_lib.tex sfg_lib.tex
+
+# pdfTeX stamps /CreationDate into every PDF, so an unchanged figure would
+# still produce a different file on each run — and CI commits what it builds.
+# Pinning the epoch keeps rebuilds byte-identical, locally and in CI alike.
+TIKZ_REPRODUCIBLE = SOURCE_DATE_EPOCH=1700000000 FORCE_SOURCE_DATE=1
+
+# Every figure source under tikz/, at any depth, minus the shared includes.
+TIKZ_SOURCES = $(shell find tikz -name '*.tex' -not -path 'tikz/build/*' \
+	$(foreach i,${TIKZ_INCLUDES},-not -name '${i}') | sort)
+
+# ---------------------------------------------------------------------------
+# Slide decks
+#
+# The lectures in lectures/ are Deckset source. These targets render the same
+# files to standalone HTML decks, dropping the pan_doc prose that belongs to
+# the book and keeping the pan_skip title slides that the web build hides.
+#
+# docs/assets/ is gitignored, so slides/vendor is the source for anything the
+# decks need at runtime and gets copied in, the same way media/ is the source
+# for docs/assets/media/. The decks land in docs/assets/html/ and are published
+# with the site; prepare-docs builds them so CI picks them up.
+# ---------------------------------------------------------------------------
+
+SLIDEDIR = docs/assets/html
+
+slides-vendor:
+	-mkdir -p ${SLIDEDIR}/vendor docs/assets/media
+	cp -f slides/vendor/* ${SLIDEDIR}/vendor/
+
+# tex_intro is not in FILES, but it is a chapter and downloads.md links a deck
+# for it, so it has to be rendered too or that link is dead.
+SLIDEFILES = ${FILES} tex_intro
+
+slides: slides-vendor
+	${foreach f, ${SLIDEFILES}, ${PYTHON} py/slides.py lectures/${f}.md || exit; }
+
+slides-parallel: slides-vendor
+	printf '%s\n' ${SLIDEFILES} | xargs -P 4 -I{} ${PYTHON} py/slides.py lectures/{}.md
+
+slides-one: slides-vendor
+	@test -n "${FNAME}" || (echo "Usage: make slides-one FNAME=l05_sc"; exit 1)
+	${PYTHON} py/slides.py lectures/${FNAME}.md
+
+
+print-tikz:
+	${foreach f,${TIKZ_SOURCES},echo ${f};}
+
 tikz:
-	-mkdir -p tikz/build
-	-mkdir -p pdf/media
 	@set -e; \
-	for f in tikz/l*.tex ; do \
-		[ -f "$$f" ] || continue; \
-		b=$$(basename "$$f" .tex); \
-		[ "$$b" = "ckt_lib" ] && continue; \
-		echo "Building $$b"; \
-		pdflatex -interaction=nonstopmode -halt-on-error -output-directory tikz/build "$$f"; \
-		cp "tikz/build/$$b.pdf" "media/$${b}_tikz.pdf"; \
-		cp "tikz/build/$$b.pdf" "pdf/media/$${b}_tikz.pdf"; \
-		if command -v dvisvgm >/dev/null 2>&1; then \
-			dvisvgm --pdf "tikz/build/$$b.pdf" -n -o "media/$${b}_tikz.svg" >/dev/null 2>&1 || true; \
-			if [ -f "media/$${b}_tikz.svg" ]; then cp "media/$${b}_tikz.svg" "pdf/media/$${b}_tikz.svg"; fi; \
+	for f in ${TIKZ_SOURCES}; do \
+		${MAKE} --no-print-directory tikz-one FNAME="$$f"; \
+	done
+
+# Rasterise the figures left in tikz/build/ by tikz-check, so they can be
+# reviewed without a PDF viewer. CI uploads the result as an artifact.
+tikz-preview:
+	-mkdir -p preview
+	@set -e; \
+	for f in ${TIKZ_SOURCES}; do \
+		rel=$${f#tikz/}; rel=$${rel%.tex}; \
+		b=$$(basename "$$rel"); \
+		pdf="tikz/build/$$rel.pdf"; \
+		if [ ! -f "$$pdf" ]; then \
+			echo "$$pdf missing — run 'make tikz-check' first"; exit 1; \
 		fi; \
+		echo "Rendering $$rel"; \
+		pdftoppm -png -r 150 -singlefile "$$pdf" "preview/$${b}_tikz"; \
+	done
+
+# Compare one figure's original artwork against its TikZ redraw, as PNG.
+# Needs requirements-preview.txt.
+preview:
+	@test -n "${FNAME}" || (echo "Usage: make preview FNAME=l03_ptat"; exit 1)
+	${PYTHON} py/preview.py --compare ${FNAME} -o preview
+
+# Compile every figure without touching media/ — for CI, where the only
+# question is whether the sources still build.
+tikz-check:
+	-mkdir -p tikz/build
+	@set -e; \
+	for f in ${TIKZ_SOURCES}; do \
+		rel=$${f#tikz/}; \
+		echo "Checking $${rel%.tex}"; \
+		mkdir -p "tikz/build/$$(dirname "$${rel}")"; \
+		${TIKZ_REPRODUCIBLE} pdflatex -interaction=nonstopmode -halt-on-error \
+			-output-directory "tikz/build/$$(dirname "$${rel}")" "$$f"; \
 	done
 
 tikz-one:
-	@test -n "${FNAME}" || (echo "Usage: make tikz-one FNAME=l3_bjtonly"; exit 1)
-	-mkdir -p tikz/build
-	-mkdir -p pdf/media
+	@test -n "${FNAME}" || (echo "Usage: make tikz-one FNAME=l3_bjtonly (also accepts l13/pdpu or tikz/l3_bjtonly.tex)"; exit 1)
 	@set -e; \
 	if [ -f "${FNAME}" ]; then \
 		f="${FNAME}"; \
@@ -221,15 +313,16 @@ tikz-one:
 		echo "Could not find TikZ source for FNAME=${FNAME}"; \
 		exit 1; \
 	fi; \
-	b=$$(basename "$$f" .tex); \
-	echo "Building $$b"; \
-	pdflatex -interaction=nonstopmode -halt-on-error -output-directory tikz/build "$$f"; \
-	cp "tikz/build/$$b.pdf" "media/$${b}_tikz.pdf"; \
-	cp "tikz/build/$$b.pdf" "pdf/media/$${b}_tikz.pdf"; \
+	rel=$${f#tikz/}; rel=$${rel%.tex}; \
+	b=$$(basename "$$rel"); \
+	sub=$$(dirname "$$rel"); \
+	if [ "$$sub" = "." ]; then sub=""; else sub="/$$sub"; fi; \
+	mkdir -p "tikz/build$$sub" "media$$sub"; \
+	echo "Building $$rel"; \
+	${TIKZ_REPRODUCIBLE} pdflatex -interaction=nonstopmode -halt-on-error -output-directory "tikz/build$$sub" "$$f"; \
+	cp "tikz/build$$sub/$$b.pdf" "media$$sub/$${b}_tikz.pdf"; \
 	if command -v pdf2svg >/dev/null 2>&1; then \
-		pdf2svg "tikz/build/$$b.pdf" "media/$${b}_tikz.svg" || true; \
-		if [ -f "media/$${b}_tikz.svg" ]; then cp "media/$${b}_tikz.svg" "pdf/media/$${b}_tikz.svg"; fi; \
+		pdf2svg "tikz/build$$sub/$$b.pdf" "media$$sub/$${b}_tikz.svg" || true; \
 	elif command -v dvisvgm >/dev/null 2>&1; then \
-		dvisvgm --pdf "tikz/build/$$b.pdf" -n -o "media/$${b}_tikz.svg" >/dev/null 2>&1 || true; \
-		if [ -f "media/$${b}_tikz.svg" ]; then cp "media/$${b}_tikz.svg" "pdf/media/$${b}_tikz.svg"; fi; \
+		dvisvgm --pdf "tikz/build$$sub/$$b.pdf" -n -o "media$$sub/$${b}_tikz.svg" >/dev/null 2>&1 || true; \
 	fi

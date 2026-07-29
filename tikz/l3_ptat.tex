@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 \documentclass[tikz,border=2pt]{standalone}
 \usepackage{tikz}
 \usepackage[european]{circuitikz}
@@ -18,4 +19,73 @@
   \draw[->] (0.4,1.0) -- (cicOta_inp);
   \draw[->] (cicOta_outn) -- ++(1.1,0) node[midway,above] {$I_1=\Delta V_D/R_1$};
 \end{tikzpicture}
+=======
+\input{tikz/fig_header.tex}
+
+% PTAT current source. Same circuit as l03_ptat, redrawn here for the build-up
+% sequence that leads to the Banba reference (l3_ptat1 .. l3_ptat3).
+%
+% NOTE ON POLARITY: the source artwork marks + on the LEFT input and - on the
+% RIGHT. That is backwards. Rising current raises the right-hand node by I*R1
+% more than it raises the left, so + must be on the right for the OTA output to
+% push the PMOS gates up and pull the current back down. Drawn here with + on
+% the right, matching l03_ptat, l03_vref1 and l03_vref2. The same error is in
+% the l3_ptat1 artwork.
+
+\begin{circuitikz}[american, thick, transform shape, circuit ee IEC]
+
+  \input{tikz/ckt_lib.tex}
+
+  \def\xl{0}
+  \def\xr{\grid*2.5}
+  \def\pdlevel{5}
+
+  % ---- Diode-connected PNPs, unit on the left and xN on the right ----
+  \node[pnp, anchor=C] (Q1) at (\xl, 0) {};
+  \draw (Q1.C) -- ++(0,-0.2) \vground;
+  \draw (Q1.B) |- (Q1.C);
+
+  \node[pnp, anchor=C, label=right:${\times N}$] (Q2) at (\xr, 0) {};
+  \draw (Q2.C) -- ++(0,-0.2)\vground;
+  \draw (Q2.B) |- (Q2.C);
+
+  % ---- R1 above the xN device ----
+  \draw (Q2.E) \vresistor{$R_{1}$};
+
+  \coordinate (mp1drain) at (\xl, \pdlevel);
+  \coordinate (mp2drain) at (\xr, \pdlevel);
+
+  % ---- OTA, rotated 90 degrees so the output points up ----
+  \def\xota{-\grid*1.5}
+  \def\yota{ 3}
+  \begin{scope}[xscale=-1]
+  \begin{scope}[rotate around={90:(\xota,\yota)}]
+    % Polarity marks are drawn outside this scope — see l03_ptat for why.
+    \draw (\xota, \yota) \cicOtaSSWP{}{};
+    \coordinate (otaRight) at ($(\xota,\yota)+(0.5,0)$);
+    \coordinate (otaLeft)  at ($(\xota,\yota)+(0.5,-\grid/2)$);
+  \end{scope}
+  \end{scope}
+  % + on the right input — see the polarity note above.
+  \node at ($(otaRight)+(0,0.3)$) {$+$};
+  \node at ($(otaLeft)+(0,0.3)$)  {$-$};
+
+  \draw (cicOtaS_inp) -| (mp2drain);
+  \draw (cicOtaS_inn) -| (mp1drain);
+  \draw (cicOtaS_inn) -| (Q1.E);
+
+  % ---- PMOS mirror ----
+  \draw (mp1drain) \lvmpmos{MP1}{};
+  \draw (MP1.source) \vsupply;
+  \draw (mp2drain) \lvpmos{MP2}{};
+  \draw (MP2.source) \vsupply;
+
+  \draw (cicOtaS_out) |- (MP1.gate);
+  \draw (MP1.gate) -- (MP2.gate);
+
+  % Current direction in the xN branch, unlabelled as in the original.
+  \draw[->] (\xr+0.9,\pdlevel-0.1) -- ++(0,-0.9);
+
+\end{circuitikz}
+>>>>>>> 7a1064c0dd01972bf43e2231489f230bb3bf92cf
 \end{document}

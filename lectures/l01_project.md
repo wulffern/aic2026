@@ -234,7 +234,7 @@ I've made an example temperature sensor at [lelo\_temp\_sky130a](https://analogi
 ![inline](../media/aic2026_project_analog.svg)
 
 <!--pan_doc: 
-<sub>Figure 4: Leakage simulation </sub>
+<sub>Figure 4: Illustration of the temperature sensor </sub>
 -->
 
 
@@ -381,7 +381,7 @@ Or check my test-benches at <https://github.com/wulffern/lelo_temp_sky130a/tree/
 __Delivery__: Link to your github repository with a description of
 how the bandgap works.
 
-![right fit](../media/l03_ptat.pdf)
+![right fit](../media/l03_ptat_tikz.pdf)
 
 ---
 

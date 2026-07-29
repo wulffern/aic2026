@@ -1,0 +1,209 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Shared pieces for the l05_sc switched-capacitor amplifier figures.
+%%
+%% l5_scintro1 and l5_scintro2 are the same circuit in its two clock phases,
+%% and the lecture's whole charge-conservation argument works by comparing
+%% them. They therefore have to be drawn on identical geometry, which is what
+%% \scIntroFrame is for: it draws everything the two share and leaves the two
+%% switch positions to the caller, since those are exactly what differs.
+%%
+%% Every name is prefixed: short generic names collide with LaTeX built-ins.
+%% Names are letters only -- TeX macro names cannot contain digits, so \scXc2
+%% parses as \scXc followed by a 2 and fails at use, not at definition.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\scYgnd}{0}       % ground rail
+\newcommand{\scYin}{1.8}      % OTA inverting input, and the C1 level
+\newcommand{\scXota}{4.6}     % OTA input x
+\newcommand{\scXctwo}{4.0}      % where the C2 branch leaves the input node
+\newcommand{\scYctwo}{3.8}      % C2 level
+\newcommand{\scYsh}{4.8}      % the shorting path over C2
+\newcommand{\scXshr}{6.6}     % right leg of the shorting path
+\newcommand{\scXout}{7.6}     % C2 return leg
+
+% A switch, drawn as a hinged blade so open and closed read at a glance.
+% #1 is the left end x, #2 the y; both span 1.0.
+\newcommand{\scSwOpen}[2]{%
+  \draw[thick] (#1,#2) -- (#1+0.15,#2);
+  \fill (#1+0.15,#2) circle (0.055);
+  \draw[thick] (#1+0.15,#2) -- (#1+0.88,#2+0.48);
+  \fill (#1+0.85,#2) circle (0.055);
+  \draw[thick] (#1+0.85,#2) -- (#1+1.0,#2);
+}
+\newcommand{\scSwClosed}[2]{\draw[thick] (#1,#2) -- (#1+1.0,#2);}
+
+% Everything l5_scintro1 and l5_scintro2 have in common. The caller fills the
+% C1-to-OTA gap (2.6..3.6 at \scYin) and the short over C2 (4.8..5.8 at
+% \scYsh) with either \scSwClosed or \scSwOpen.
+\newcommand{\scIntroFrame}{%
+  % C1, plus its return along the ground rail
+  \draw[thick] (0.6,\scYin) \hcapacitor{};
+  \draw[thick] (0.6,\scYin) -- (0.0,\scYin) -- (0.0,\scYgnd) -- (3.4,\scYgnd);
+  \draw[thick] (2.2,\scYin) -- (2.6,\scYin);
+  \draw[thick] (3.6,\scYin) -- (\scXota,\scYin);
+  \node[anchor=north] at (1.4,\scYin-0.28) {$C_{1}$};
+  \node[anchor=east]    at (0.5,\scYin+0.42) {$+$};
+  \node[anchor=west]    at (2.3,\scYin+0.42) {$-$};
+
+  % OTA, inverting input on top as in the original
+  \draw (\scXota,\scYin) \cicOtaSSWP{$-$}{$+$};
+  \draw[thick] (cicOtaS_inn) -- (3.4,\scYin-0.8) -- (3.4,\scYgnd);
+  \draw[thick] (2.6,\scYgnd) \vground;
+
+  % C2 across the OTA
+  \draw[thick] (\scXctwo,\scYin) -- (\scXctwo,\scYctwo);
+  \fill (\scXctwo,\scYin) circle (0.07);
+  \draw[thick] (\scXctwo,\scYctwo) \hcapacitor{};
+  \draw[thick] (5.6,\scYctwo) -- (\scXout,\scYctwo) -- (\scXout,\scYin-0.4);
+  \draw[thick] (\scXout,\scYin-0.4) -- (cicOtaS_out);
+  \node[anchor=south] at (5.8,\scYctwo+0.15) {$C_{2}$};
+  \node[anchor=east]    at (3.9,\scYctwo-0.45) {$-$};
+  \node[anchor=west]    at (5.7,\scYctwo-0.45) {$+$};
+
+  % The path that shorts C2, minus its switch
+  \draw[thick] (\scXctwo,\scYctwo) -- (\scXctwo,\scYsh) -- (4.8,\scYsh);
+  \draw[thick] (5.8,\scYsh) -- (\scXshr,\scYsh) -- (\scXshr,\scYctwo);
+  \fill (\scXshr,\scYctwo) circle (0.07);
+}
+
+
+% ---------------------------------------------------------------------------
+% The gain stage and the integrator.
+%
+% l5_scint is l5_scamp with the C2 reset switch removed -- that one switch is
+% the entire difference between a gain of C1/C2 and an integrator, and the
+% lecture says so in as many words. So \scAmpFrame draws everything else and
+% the reset switch is left to l5_scamp.
+% ---------------------------------------------------------------------------
+
+\newcommand{\scAmpYctwo}{3.8}   % C2 level
+\newcommand{\scAmpYrst}{4.9}    % the C2 reset switch, l5_scamp only
+\newcommand{\scAmpXrl}{4.9}     % left leg of the C2 branch
+\newcommand{\scAmpXrr}{6.9}     % right leg of the reset path
+
+% A clock-phase switch, hinge first, spanning 1.0. The phase number is the
+% third argument.
+\newcommand{\scSwH}[3]{%
+  \draw[thick] (#1,#2) -- (#1+0.15,#2);
+  \fill (#1+0.15,#2) circle (0.055);
+  \draw[thick] (#1+0.15,#2) -- (#1+0.88,#2+0.48);
+  \fill (#1+0.85,#2) circle (0.055);
+  \draw[thick] (#1+0.85,#2) -- (#1+1.0,#2);
+  \node[anchor=north east] at (#1+0.55,#2-0.06) {\small #3};
+}
+% Same, running downward from (#1,#2).
+\newcommand{\scSwV}[3]{%
+  \draw[thick] (#1,#2) -- (#1,#2-0.15);
+  \fill (#1,#2-0.15) circle (0.055);
+  \draw[thick] (#1,#2-0.15) -- (#1-0.48,#2-0.88);
+  \fill (#1,#2-0.85) circle (0.055);
+  \draw[thick] (#1,#2-0.85) -- (#1,#2-1.0);
+  \node[anchor=west] at (#1+0.12,#2-0.62) {\small #3};
+}
+
+% A labelled terminal.
+\newcommand{\scPort}[3]{%
+  \draw[thick] (#1) circle (0.09);
+  \node[anchor=#2] at (#1) {#3};
+}
+
+% Everything l5_scamp and l5_scint share.
+\newcommand{\scAmpFrame}{%
+  % Input, sampled onto C1 in phase 1
+  \scPort{-0.5,\scYin}{east}{$V_{i}[n]$\;\;}
+  \draw[thick] (-0.41,\scYin) -- (0.2,\scYin);
+  \scSwH{0.2}{\scYin}{1}
+  \draw[thick] (1.2,\scYin) -- (1.6,\scYin);
+
+  % C1, with a phase 2 path to ground on its left plate
+  \draw[thick] (1.6,\scYin) \hcapacitor{};
+  \node[anchor=north] at (2.4,\scYin-0.30) {$C_{1}$};
+  \fill (1.6,\scYin) circle (0.07);
+  \draw[thick] (1.6,\scYin) -- (1.6,\scYin-0.3);
+  \scSwV{1.6}{\scYin-0.3}{2}
+  \draw[thick] (1.6,\scYin-1.3) -- (1.6,\scYgnd);
+
+  % C1 right plate: phase 1 to ground, phase 2 to the OTA
+  \fill (3.2,\scYin) circle (0.07);
+  \draw[thick] (3.2,\scYin) -- (3.2,\scYin-0.3);
+  \scSwV{3.2}{\scYin-0.3}{1}
+  \draw[thick] (3.2,\scYin-1.3) -- (3.2,\scYgnd);
+  \draw[thick] (3.2,\scYin) -- (3.6,\scYin);
+  \scSwH{3.6}{\scYin}{2}
+  \draw[thick] (4.6,\scYin) -- (5.2,\scYin);
+
+  % OTA, inverting input on top
+  \draw (5.2,\scYin) \cicOtaSSWP{$-$}{$+$};
+  \draw[thick] (cicOtaS_inn) -- (4.4,\scYin-0.8) -- (4.4,\scYgnd);
+  \draw[thick] (1.6,\scYgnd) -- (4.4,\scYgnd);
+  \draw (4.0,\scYgnd) \vground;
+
+  % C2 across the OTA, and the output
+  \draw[thick] (\scAmpXrl,\scYin) -- (\scAmpXrl,\scAmpYctwo);
+  \fill (\scAmpXrl,\scYin) circle (0.07);
+  \draw[thick] (\scAmpXrl,\scAmpYctwo) \hcapacitor{};
+  \node[anchor=south] at (6.7,\scAmpYctwo+0.15) {$C_{2}$};
+  \draw[thick] (6.5,\scAmpYctwo) -- (8.2,\scAmpYctwo) -- (8.2,\scYin-0.4);
+  \draw[thick] (cicOtaS_out) -- (8.6,\scYin-0.4);
+  \fill (8.2,\scYin-0.4) circle (0.07);
+  \scPort{8.69,\scYin-0.4}{west}{\;\;$V_{o}[n]$}
+}
+
+
+% ---------------------------------------------------------------------------
+% Output waveforms: l5_scfig for the gain stage, l5_scifig for the integrator.
+%
+% Same axes, same clock, same V_i reference; only the V_o trace differs, and
+% that difference -- reset to zero every cycle versus accumulate -- is the
+% comparison the two slides are making. So \scWaveFrame draws everything they
+% share.
+%
+% The originals sketch the settling freehand. These use a real exponential, so
+% the flat top actually is the settled value and the eye can see that the
+% output is only valid at the end of phase 2, which is what the prose says.
+%
+% V_i is dashed rather than coloured: it is a reference level, and a dash
+% separates it from the trace without reaching for a second colour.
+% ---------------------------------------------------------------------------
+
+\newcommand{\scWavT}{1.2}        % clock period
+\newcommand{\scWavVi}{0.85}      % one V_i step
+% The V_o axis height is per figure: the gain stage only ever reaches V_i,
+% and drawing it on the integrator's scale strands the trace at the bottom of
+% an empty box. The originals scale each plot to its own trace too. The time
+% axis, the V_i step and the clock stay common, which is what makes the two
+% comparable.
+\newcommand{\scWavClk}{-1.25}    % clock baseline
+\newcommand{\scWavClkH}{0.55}    % clock height
+
+% An exponential settling edge: from (#1,#2) up to #3 over a width #4.
+\newcommand{\scWaveEdge}[4]{%
+  \draw[thick] plot[domain=0:1, samples=32]
+    ({#1+#4*\x}, {#2+(#3-#2)*(1-exp(-4.5*\x))});
+}
+
+\newcommand{\scWaveFrame}[1]{%  #1 is the top of the V_o axis
+  \draw[thick,->] (-0.3,0) -- (5.8,0);
+  \node[anchor=north west] at (5.5,-0.28) {$t$};
+  \draw[thick,->] (0,-0.2) -- (0,#1);
+  \node[anchor=east] at (-0.12,{#1-0.12}) {$V_{o}$};
+
+  \foreach \k/\lbl in {0/{n=0},1/{1},2/{2},3/{3},4/{4}} {
+    \draw[thick] ({\k*\scWavT},0.13) -- ({\k*\scWavT},-0.13);
+    \node[anchor=north] at ({\k*\scWavT},-0.22) {\small $\lbl$};
+  }
+
+  \draw[thick, dashed] (-0.2,\scWavVi) -- (5.6,\scWavVi);
+  \node[anchor=east] at (-0.22,\scWavVi) {$V_{i}$};
+  \node[anchor=south] at (2.4,{#1+0.05}) {$C_{1} = C_{2}$};
+
+  \node[anchor=east] at (-0.3,{\scWavClk+\scWavClkH/2}) {$\phi_{2}$};
+  \draw[thick] (-0.2,\scWavClk)
+    \foreach \k in {0,1,2,3,4} {
+      -- ({\k*\scWavT+0.5*\scWavT},\scWavClk)
+      -- ({\k*\scWavT+0.5*\scWavT},{\scWavClk+\scWavClkH})
+      -- ({\k*\scWavT+\scWavT},{\scWavClk+\scWavClkH})
+      -- ({\k*\scWavT+\scWavT},\scWavClk)
+    }
+    -- (5.6,\scWavClk);
+}

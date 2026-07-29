@@ -1,0 +1,50 @@
+\input{tikz/fig_header.tex}
+
+% Sampling and aliasing with nothing in front of the sample and hold.
+%
+% First of three. l5_shaaf puts an anti-alias low pass ahead of it and
+% l5_subsample a bandpass around f_s. All three share tikz/spec_lib.tex, so the
+% axes, the wanted signal and the tone positions are identical and the slides
+% can be compared by eye -- which is the argument they are making.
+%
+% The redraw makes the folding arithmetically right, which the hand-drawn
+% original only suggests. A tone at 1.1 fs lands on 0.1 fs and one at 0.6 fs
+% lands on -0.4 fs, so the colours let you trace which tone went where. The
+% relative order the original shows -- magenta ending up outside red -- is
+% preserved, because that is what the arithmetic gives.
+%
+% Those two input frequencies are chosen so the aliases land far enough apart
+% to read. 1.2 fs and 0.7 fs alias to 0.2 fs and 0.3 fs, which is correct but
+% draws four arrowheads on top of each other.
+%
+% No ckt_lib here: nothing in this figure is a circuit element.
+
+\begin{circuitikz}[american, transform shape]
+
+  \input{tikz/spec_lib.tex}
+
+  % ---- Before sampling: two pairs of tones outside the Nyquist band ----
+  \specAxis{\specYtop}
+  \specBump{\specYtop}
+  \specTone{tonered}{-2.64}{\specYtop}     % -1.1 fs
+  \specTone{tonemag}{-1.44}{\specYtop}     % -0.6 fs
+  \specTone{tonemag}{1.44}{\specYtop}
+  \specTone{tonered}{2.64}{\specYtop}
+  \node[anchor=west] at (1.45,\specYtop+1.62) {Before sampling};
+
+  % ---- After sampling: nothing was filtered, so both pairs fold inside ----
+  \specAxis{\specYbot}
+  \specBump{\specYbot}
+  \specTone{tonered}{-0.24}{\specYbot}     % 1.1 fs - fs = 0.1 fs
+  \specTone{tonemag}{-0.96}{\specYbot}     % 0.6 fs - fs = -0.4 fs
+  \specTone{tonemag}{0.96}{\specYbot}
+  \specTone{tonered}{0.24}{\specYbot}
+  \node[anchor=west] at (1.45,\specYbot+1.62) {After sampling};
+
+  % ---- The sample and hold doing it ----
+  \specWire{4.9}{5.8}{2.0}
+  \specBlock{5.8}{2.0}{S/H}
+  \specWire{7.3}{8.3}{2.0}
+
+\end{circuitikz}
+\end{document}
