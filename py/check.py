@@ -52,7 +52,11 @@ def err(msg):
 
 
 def files_list():
-    out = subprocess.check_output(["make", "print-files"], text=True)
+    #- -s / --no-print-directory: when check.py itself runs under make (make
+    #  check), the sub-make otherwise prints "make[1]: Entering directory ..."
+    #  lines into the output.
+    out = subprocess.check_output(
+        ["make", "-s", "--no-print-directory", "print-files"], text=True)
     return [f for f in out.split() if f]
 
 
