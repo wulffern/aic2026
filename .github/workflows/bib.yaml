@@ -172,8 +172,12 @@ jobs:
       # Off by default. Merging into aic.bib stays a human step: a Crossref
       # match can be confidently wrong, and a bad entry is harder to notice
       # once it is in the book than while it is sitting in incoming.bib.
+      # always(): a run that failed to resolve anything still produced an
+      # unresolved list saying why, and that is exactly the run whose output
+      # you want to keep. A custom if without a status function is implicitly
+      # gated on success(), which skipped this step on precisely those runs.
       - name: Commit staged entries
-        if: inputs.commit
+        if: always() && inputs.commit
         shell: bash
         env:
           BRANCH: ${{ github.ref_name }}
