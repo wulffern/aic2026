@@ -240,13 +240,59 @@ def fields_from_work(work):
     return fields
 
 
+# Crossref titles are full of characters pdflatex refuses in a T1 document
+# ("Unicode character mu not set up for use with LaTeX"), which fails the
+# whole book build. Spell them as maths or text commands instead.
+UNICODE_TO_TEX = {
+    "−": "$-$",     # minus sign
+    "–": "--",
+    "—": "---",
+    "‘": "`", "’": "'",
+    "“": "``", "”": "''",
+    "×": "$\\times$",
+    "≈": "$\\approx$", "≤": "$\\leq$", "≥": "$\\geq$",
+    "µ": "$\\mu$",  # micro sign
+}
+GREEK_TO_TEX = {
+    "Α": "A", "Β": "B", "Γ": "$\\Gamma$", "Δ": "$\\Delta$",
+    "Ε": "E", "Ζ": "Z", "Η": "H", "Θ": "$\\Theta$",
+    "Ι": "I", "Κ": "K", "Λ": "$\\Lambda$", "Μ": "M",
+    "Ν": "N", "Ξ": "$\\Xi$", "Ο": "O", "Π": "$\\Pi$",
+    "Ρ": "P", "Σ": "$\\Sigma$", "Τ": "T", "Υ": "$\\Upsilon$",
+    "Φ": "$\\Phi$", "Χ": "X", "Ψ": "$\\Psi$", "Ω": "$\\Omega$",
+}
+GREEK_TO_TEX.update({
+    chr(c): "$\\%s$" % name for c, name in zip(
+        range(0x3b1, 0x3ca),
+        ("alpha beta gamma delta epsilon zeta eta theta iota kappa lambda mu "
+         "nu xi omicron pi rho varsigma sigma tau upsilon phi chi psi "
+         "omega").split())
+})
+GREEK_TO_TEX["ο"] = "o"  # omicron has no macro
+
+
+def latexify(value):
+    """Replace the Unicode pdflatex chokes on with equivalent TeX."""
+    out = list()
+    for ch in value:
+        out.append(UNICODE_TO_TEX.get(ch) or GREEK_TO_TEX.get(ch) or ch)
+    # 'ΔΣ' would come out as '$\Delta$$\Sigma$'; join the maths runs.
+    text = "".join(out).replace("$$", "")
+    # IEEE titles carry '{\rm fs}', and kaobook's scrbook errors out on the
+    # old font commands. \mathrm means the same thing and is allowed.
+    for old, new in (("rm", "mathrm"), ("bf", "mathbf"), ("it", "mathit"),
+                     ("sf", "mathsf"), ("tt", "mathtt")):
+        text = re.sub(r"\{\\%s\s+([^{}]*)\}" % old, r"\\%s{\1}" % new, text)
+    return text
+
+
 def to_bibtex(key, kind, fields):
     """House style: one field per line, closed with '}' and no stray semicolon."""
     lines = [f"@{kind}{{{key},"]
     ordered = [f for f in FIELD_ORDER if fields.get(f)]
     ordered += [f for f in fields if f not in FIELD_ORDER and fields.get(f)]
     for i, name in enumerate(ordered):
-        value = str(fields[name]).replace('"', "'").strip()
+        value = latexify(str(fields[name]).replace('"', "'").strip())
         comma = "," if i < len(ordered) - 1 else ""
         lines.append(f'{name}= "{value}"{comma}')
     lines.append("}")
