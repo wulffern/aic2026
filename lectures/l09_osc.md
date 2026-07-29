@@ -237,7 +237,7 @@ See [Crystal oscillator impedance](https://github.com/wulffern/aic2026/blob/main
 
 In the impedance plot below we can clearly see that there are two "resonance" points. Usually noted by series and parallel resonance. 
 
-I would encourage you to read [The Crystal Oscillator](https://ieeexplore.ieee.org/document/7954123) for more details.
+I would encourage you to read The Crystal Oscillator [@razavi17] for more details.
 
 -->
 
@@ -616,24 +616,24 @@ $$ f_o = \frac{1}{2}f =  \frac{1}{2RC}$$
 
 ## Crystal oscillators
 
-[The Crystal Oscillator - A Circuit for All Seasons](https://ieeexplore.ieee.org/document/7954123)   
+The Crystal Oscillator - A Circuit for All Seasons [@razavi17]   
 
-[High-performance crystal oscillator circuits: theory and application](https://ieeexplore.ieee.org/document/318)
+High-performance crystal oscillator circuits: theory and application [@vittoz88]
 
-[Ultra-low Power 32kHz Crystal Oscillators: Fundamentals and Design Techniques](https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=9542926)
+Ultra-low Power 32kHz Crystal Oscillators: Fundamentals and Design Techniques [@xu21]
 
-[A Sub-nW Single-Supply 32-kHz Sub-Harmonic Pulse Injection Crystal Oscillator](https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=9173539)
+A Sub-nW Single-Supply 32-kHz Sub-Harmonic Pulse Injection Crystal Oscillator [@kim21]
 
 
 ---
 
 ## CMOS oscillators
 
-[The Ring Oscillator - A Circuit for All Seasons](https://ieeexplore.ieee.org/document/8901474)
+The Ring Oscillator - A Circuit for All Seasons [@razavi19]
 
-[A Study of Phase Noise in CMOS Oscillators](https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=494195)
+A Study of Phase Noise in CMOS Oscillators [@razavi96]
 
-[An Ultra-Low-Noise Swing-Boosted Differential Relaxation Oscillator in 0.18-um CMOS](https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=9081906)
+An Ultra-Low-Noise Swing-Boosted Differential Relaxation Oscillator in 0.18-um CMOS [@lee20]
 
 [Ultra Low Power Frequency Synthesizer](https://hdl.handle.net/11250/2778127)
 

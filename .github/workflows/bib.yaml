@@ -1,0 +1,197 @@
+name: Bibliography
+
+# Two halves of bib_conversion_plan.md.
+#
+# `scan` is offline and runs on every push: it re-derives
+# pdf/link_candidates.tsv from the lectures, so adding a raw paper link shows
+# up as a diff instead of being noticed months later. It also runs the
+# linkbib unit tests.
+#
+# `fetch` needs the open network that a local container often does not have --
+# api.crossref.org and doi.org are exactly what a corporate or agent proxy
+# blocks -- which is the main reason this lives in Actions at all. It is
+# manual only: it queries an external API and produces bibliography entries
+# that a human has to read before they go anywhere near aic.bib.
+
+on:
+  push:
+    paths:
+      - 'lectures/**.md'
+      - 'py/linkbib.py'
+      - 'py/test_linkbib.py'
+      - '.github/workflows/bib.yaml'
+  pull_request:
+    paths:
+      - 'lectures/**.md'
+      - 'py/linkbib.py'
+      - 'py/test_linkbib.py'
+  workflow_dispatch:
+    inputs:
+      limit:
+        description: 'Stop after N papers (0 = all). Use a small number for a trial run.'
+        required: false
+        default: '0'
+      source:
+        description: 'Where to resolve from. Xplore is by article number, so it cannot return the wrong paper.'
+        type: choice
+        required: false
+        default: 'both'
+        options: ['both', 'ieee', 'crossref']
+      commit:
+        description: 'Commit pdf/incoming.bib to this branch. Off by default -- entries need review.'
+        type: boolean
+        required: false
+        default: false
+
+concurrency:
+  group: bib-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        shell: bash
+        run: python -m pip install click
+
+      # These cover the URL parsing, key minting and bib formatting. The two
+      # functions that open a socket are not covered; the fetch job is what
+      # exercises those.
+      - name: Test
+        shell: bash
+        run: python -m unittest discover -s py -p 'test_linkbib*.py' -v
+
+      - name: Scan lectures
+        shell: bash
+        run: |
+          git config --global --add safe.directory "$(pwd)"
+          python3 py/linkbib.py scan --tsv pdf/link_candidates.tsv
+
+      - name: Commit refreshed candidate list
+        if: github.event_name == 'push'
+        shell: bash
+        env:
+          BRANCH: ${{ github.ref_name }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add -- pdf/link_candidates.tsv
+
+          if git diff --cached --quiet; then
+            echo "Candidate list unchanged, nothing to commit."
+            exit 0
+          fi
+
+          git diff --cached --stat
+          git commit -m "Refresh bib link candidates [skip ci]"
+          # Non-force: if the branch moved while this ran, fail rather than
+          # clobber it. Re-running the workflow is the fix.
+          git push origin "HEAD:refs/heads/${BRANCH}"
+
+  fetch:
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        shell: bash
+        run: python -m pip install click
+
+      # CROSSREF_MAILTO is optional. Setting it as a repository variable puts
+      # the queries in Crossref's polite pool, which is faster and less likely
+      # to be throttled.
+      - name: Resolve candidates against Crossref
+        shell: bash
+        env:
+          CROSSREF_MAILTO: ${{ vars.CROSSREF_MAILTO }}
+        run: |
+          python3 py/linkbib.py fetch \
+            --limit "${{ inputs.limit }}" \
+            --source "${{ inputs.source }}" \
+            --out pdf/incoming.bib \
+            --unresolved pdf/link_unresolved.tsv
+
+      # Always uploaded, including on failure: a run that resolved nothing
+      # still tells you why in the unresolved list.
+      - name: Upload staged entries
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: bib-incoming
+          path: |
+            pdf/incoming.bib
+            pdf/link_unresolved.tsv
+          if-no-files-found: warn
+
+      - name: Summarise
+        if: always()
+        shell: bash
+        run: |
+          {
+            echo "## Entries whose title did not match exactly"
+            echo ""
+            echo "Crossref returns papers whose title merely *contains* the one asked"
+            echo "for. Read these before merging."
+            echo ""
+            grep '^% CHECK' pdf/incoming.bib 2>/dev/null || echo "None."
+            echo ""
+            echo "## Staged entries"
+            echo ""
+            echo "\`\`\`bibtex"
+            head -c 4000 pdf/incoming.bib 2>/dev/null || echo "(none)"
+            echo "\`\`\`"
+            echo ""
+            echo "## Needs a hand-fetch from Xplore"
+            echo ""
+            echo "| lecture | line | text | reason |"
+            echo "|---|---|---|---|"
+            tail -n +2 pdf/link_unresolved.tsv 2>/dev/null | \
+              awk -F'\t' '{printf "| %s | %s | %s | %s |\n", $1, $2, substr($3,1,60), $5}'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      # Off by default. Merging into aic.bib stays a human step: a Crossref
+      # match can be confidently wrong, and a bad entry is harder to notice
+      # once it is in the book than while it is sitting in incoming.bib.
+      # always(): a run that failed to resolve anything still produced an
+      # unresolved list saying why, and that is exactly the run whose output
+      # you want to keep. A custom if without a status function is implicitly
+      # gated on success(), which skipped this step on precisely those runs.
+      - name: Commit staged entries
+        if: always() && inputs.commit
+        shell: bash
+        env:
+          BRANCH: ${{ github.ref_name }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add -- pdf/incoming.bib pdf/link_unresolved.tsv
+
+          if git diff --cached --quiet; then
+            echo "Staged entries unchanged, nothing to commit."
+            exit 0
+          fi
+
+          git diff --cached --stat
+          git commit -m "Stage bib entries fetched from Crossref [skip ci]"
+          git push origin "HEAD:refs/heads/${BRANCH}"

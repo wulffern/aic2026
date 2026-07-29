@@ -68,7 +68,7 @@ Strict deadline, if you hand in 23 of April at 00:00:01, then it's a fail.
 
 #[fit] Project Report $$\Rightarrow$$ Paper
 
-#[fit] [A Compiled 9-bit 20-MS/s 3.5-fJ/conv.step SAR ADC in 28-nm FDSOI for Bluetooth Low Energy Receivers](https://ieeexplore.ieee.org/document/7906479)
+#[fit] A Compiled 9-bit 20-MS/s 3.5-fJ/conv.step SAR ADC in 28-nm FDSOI for Bluetooth Low Energy Receivers [@wulff17]
 
 [IEEE journal template](https://ctan.org/pkg/ieeetran?lang=en), [Example](https://github.com/wulffern/jssc2017)
 
