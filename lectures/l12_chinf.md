@@ -173,7 +173,7 @@ Logic cells close to large NMOS pad drivers are prone to latch-up.
 
 The latch-up process can start with electrons injected into the p-type substrate.
 
-![right 200%](../media/fig_inv.pdf)
+![right 200%](../media/fig_inv_tikz.pdf)
 
 ---
 # Latch-up

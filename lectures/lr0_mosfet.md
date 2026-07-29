@@ -191,7 +191,7 @@ If the input $V_{in}$ is a high voltage, then the output $V_{out}$ is a low volt
 
 -->
 
-![inline](../media/fig_inv.pdf)  
+![inline](../media/fig_inv_tikz.pdf)  
 
 ---
 

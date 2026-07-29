@@ -65,7 +65,7 @@ $$ \oint_{\partial \Sigma} \mathbf{B} \cdot d\mathbf{\ell} = \mu_0\left(
 \mathbf{E} \cdot d\mathbf{S} \right)$$
 <sub>Relates induced magnetic field to changing electric flux and to current</sub>
 
-![left fit](../media/fig_inv.pdf)
+![left fit](../media/fig_inv_tikz.pdf)
 
 [^1]: [Maxwell's equations](https://en.wikipedia.org/wiki/Maxwell%27s_equations)
 
@@ -781,7 +781,7 @@ The nice thing about the circuit below is that the common mode feedback loop has
 
 -->
 
-![fit](../media/l04_ota_vcmfb.svg)
+![fit](../media/l04_ota_vcmfb_tikz.pdf)
 
 ---
 
