@@ -19,37 +19,6 @@ I feel the lectures have gotten better. I did not take attendance in 2023, but t
 exam in 2024. I don't
 have all the dates, but an average attendance of 76 %. 
 
-|Date|Attendance|
-|:---|:---|
-|2024-02-02|19|
-|2024-02-09|17|
-|2024-02-16|16|
-|2024-03-01|14|
-|2024-03-07|14|
-|2024-03-15|12|
-|2024-03-22|13|
-|2024-04-12|16|
-|2024-04-19|10|
-
-In 2025 there were 23 students that took the exam, however, 26 different
-students showed up to the lectures (more than a few times). The average
-attendance was around 80 %. 
-
-|Wk|Attendance|
-|:--|:---|
-|2|21|
-|3|21|
-|4|23|
-|5|20|
-|6|22|
-|7|24|
-|9|20|
-|9|24|
-|11|20|
-|12|17|
-|14|16|
-|15|14|
-
 In 2024 I finally felt I achieved a balance. I spent Thursday's
 preparing for the lecture, writing these notes, making a YouTube video (so I'll
 remember next year what I wanted to talk about). I passed 1k subscribers on Youtube.
@@ -67,32 +36,40 @@ following questions:
 
 The check-in led to excellent team work for those students that showed up. 
 
-In 2025 I made a few tweaks. One change was the grading of the project, I used github actions to
+In 2025 there were 23 students that took the exam, however, 26 different
+students showed up to the lectures (more than a few times). The average
+attendance was around 80 %. 
+
+I made a few tweaks. One change was the grading of the project, I used github actions to
 do the GDS,DRC,LVS,SIM and docs. The grading did not really work that well,
 although, it was a good way to get students to get the designs correct on
 github. The first milestones with the sim and the doc did not work. The last
-milestone actions worked well. 
+milestone actions worked well.
 
-For 2026 I should do the following changes:
+For the first time, two groups reached tapeout
+<https://github.com/wulffern/jnw-tt-2025> !
 
-- [x] Add GPT as part of learning: generate verification plan, checklists etc. 
-- [x] Wait until after M0 for group selection
-- [x] Talk about layout early. Force full M0 tutorial
-- [x] Make them do TR layout early
-- [x] Re-introduce milestone 3 
-- [x] Write a detailed project description and milestone and expectation description
-- [x] Reduce time for milestone 1. Maybe make a ready schematic hierarchy to force names? ideal OTA?
-- [ ] Find a good sigma delta intro circuit
-- [ ] Add to analog systemverilog
-- [ ] Write about FFTs
+In 2026 had a record low number of students. I suspect it was because the course
+collided with a two other courses. There were 13 students that handed in the
+project. Attendance to the lectures was only 51 percent. The lectures were at
+08:15 on Friday's, so that could be a contributing factor. For project and
+lecture hours the attendance was above 65 % (forgot to register some weeks)
 
-
-For 2027
+For 2027 I should do the following changes:
 
 - [ ] People go home the Friday before easter
 - [ ] In 2026 AIC collided with antenna technique & digital communcation. Review
       timeplan next time
 - [ ] Use ISSCC template to force students to be concise in their writing.
+      Shorter is probably more difficult for AI also. 
+- [ ] Report needs to include AI declaration
+- [ ] Wait until after M0 for group selection
+- [ ] Talk about layout early. Force full M0 tutorial
+- [ ] Make them do TR layout early
+- [ ] Find a good sigma delta intro circuit
+- [ ] Write about FFTs
+- [ ] It helps if you use the right template for tinytapout (and not mirrored
+      ports as you did in 2026)
 
 
 I love programming and automation. Not much makes me more happy than using the
