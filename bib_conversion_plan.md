@@ -86,6 +86,41 @@ Each staged entry records which route produced it (`% source: ieee` or
 `% source: crossref -- <why Xplore was skipped>`), so a run tells you whether
 the article-number path is working without reading the job log.
 
+### Where the Xplore route currently stands
+
+Measured from a GitHub runner, not assumed:
+
+- A plain client gets **HTTP 418** from both Xplore endpoints — its answer to
+  anything that does not look like a browser.
+- Sending browser headers (agent, `Accept`, and a `Referer` pointing at the
+  document page) **clears the 418**. Both endpoints then respond.
+- What comes back is still not the article. The document page arrives as
+  **2055 bytes with an empty `<title>` and no metadata blob — byte-identical
+  for two different article numbers**. That is a challenge page, so the
+  blocking is by IP reputation, not by headers, and no amount of parser work
+  will fix it. The unresolved list records exactly this, which is how it was
+  diagnosed rather than guessed.
+
+So the plumbing is right and the fallback is doing its job — the 9-entry sample
+in `pdf/incoming.bib` came entirely from Crossref. Two ways to actually get the
+IEEE route working, in order of effort:
+
+1. **Run `fetch --source ieee` from your own machine**, on the NTNU network,
+   where you are a recognised Xplore user. Nothing about the command is
+   CI-specific; only the network is. This is the cheap one — the code is done,
+   and it would resolve ~80 of the 84 candidates by article number, which is the
+   only way to make the Banba/Navarro failure class impossible rather than
+   merely visible.
+2. **Use the official IEEE Xplore metadata API with a key** (free for
+   non-commercial use). `article_number=` maps straight to full metadata with
+   no bot check, which would make the article-number route work in CI too. Read
+   the key from a repository secret; the workflow already passes one
+   environment variable through for Crossref and would take a second the same
+   way.
+
+Until one of those lands, `both` is the right default: Xplore is tried, costs a
+couple of seconds per link, and Crossref catches everything it misses.
+
 > Note: a containerised environment often cannot reach `api.crossref.org` or
 > `doi.org` — an agent or corporate proxy answers 403 to CONNECT, which is
 > exactly what happened while this plan was written. That is the main reason
