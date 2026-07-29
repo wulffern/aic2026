@@ -21,18 +21,17 @@ permissions:
 jobs:
   figures:
     runs-on: ubuntu-latest
+    # The repo's own image (see docker.yaml): TeX Live 2022 with poppler etc.
+    # preinstalled, pulled from GHCR which is co-located with the runners.
     container:
-      image: texlive/texlive:TL2022-historic
+      image: ghcr.io/wulffern/aic:2026_latest
+      credentials:
+        username: ${{ github.actor }}
+        password: ${{ secrets.github_token }}
       options: --user root
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Install preview dependencies
-        shell: bash
-        run: |
-          apt-get update
-          apt-get install -y poppler-utils
+        uses: actions/checkout@v7
 
       # pdflatex runs with -halt-on-error, so a figure that stops compiling
       # fails the job here.
@@ -47,7 +46,7 @@ jobs:
         run: make tikz-preview
 
       - name: Upload figure previews
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: tikz-previews
           path: preview

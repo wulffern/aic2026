@@ -3,18 +3,26 @@ name: Docs
 on:
   push:
     branches: ["main"]
+    # Scoped to what the build actually reads: a push that only touches a
+    # planning document at the repo root should not cost a full site build.
     paths:
-      - 'lectures/**.md'
-      - 'docs/*.*'
-      - 'media/*.*'
-      - 'pdf/*.*'
+      - 'lectures/**'
+      - 'docs/**'
+      - 'media/**'
+      - 'pdf/**'
       - 'tikz/**.tex'
-      - '**.md'
-      - '**.py'
+      - 'py/**'
+      - 'ex/**'
+      - 'examples/**'
+      - 'slides/**'
+      - 'jupyter/**'
       - 'Makefile'
       - 'requirements-ci.txt'
-      - '.github/workflows/*.yml'
-      - '.github/workflows/*.yaml'
+      - 'syllabus.md'
+      - 'plan.md'
+      - 'downloads.md'
+      - 'version'
+      - '.github/workflows/matrix_build.yaml'
   workflow_dispatch:
 
 permissions:
@@ -26,36 +34,25 @@ concurrency:
   group: "pages"
   cancel-in-progress: true
 
+# All build jobs run in the repo's own image (see docker.yaml): TeX Live 2022
+# plus every apt and pip dependency preinstalled. Before this, each job
+# pulled texlive/texlive from docker.io and re-ran apt-get install, which was
+# about half the runner-minutes of a run.
+
 jobs:
   prepare:
     runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/wulffern/aic:2026_latest
+      credentials:
+        username: ${{ github.actor }}
+        password: ${{ secrets.github_token }}
+      options: --user root
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           submodules: recursive
-
-      - name: Setup Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-
-      - name: Cache pip downloads
-        uses: actions/cache@v4
-        with:
-          path: ~/.cache/pip
-          key: ${{ runner.os }}-pip-${{ hashFiles('requirements-ci.txt') }}
-          restore-keys: |
-            ${{ runner.os }}-pip-
-
-      - name: Install prepare dependencies
-        shell: bash
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y pandoc poppler-utils wget imagemagick ghostscript \
-            build-essential pkg-config libcairo2-dev python3-dev
-          python -m pip install --upgrade pip
-          python -m pip install -r requirements-ci.txt
 
       - name: Prepare shared sources
         shell: bash
@@ -64,7 +61,7 @@ jobs:
           make prepare-docs
 
       - name: Upload prepared sources
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: prepared-sources
           path: |
@@ -95,7 +92,7 @@ jobs:
       shards: ${{ steps.shards.outputs.shards }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           submodules: recursive
 
@@ -129,7 +126,10 @@ jobs:
       - plan_matrix
     runs-on: ubuntu-latest
     container:
-      image: texlive/texlive:TL2022-historic
+      image: ghcr.io/wulffern/aic:2026_latest
+      credentials:
+        username: ${{ github.actor }}
+        password: ${{ secrets.github_token }}
       options: --user root
     strategy:
       fail-fast: false
@@ -137,21 +137,15 @@ jobs:
         include: ${{ fromJSON(needs.plan_matrix.outputs.shards) }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           submodules: recursive
 
       - name: Download prepared sources
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: prepared-sources
           path: .
-
-      - name: Install TeX job dependencies
-        shell: bash
-        run: |
-          apt-get update
-          apt-get install -y ghostscript poppler-utils pandoc wget imagemagick python3-svglib python3-venv
 
       - name: Build standalone shard
         shell: bash
@@ -168,95 +162,51 @@ jobs:
           done
 
       - name: Upload standalone shard
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: standalone-${{ matrix.shard }}
           path: artifact/docs/assets
           if-no-files-found: error
 
-  book_pdf:
+  # PDF and EPUB in one job: the EPUB is 11s of pandoc, not worth its own
+  # container spin-up.
+  book:
     needs: prepare
     runs-on: ubuntu-latest
     container:
-      image: texlive/texlive:TL2022-historic
+      image: ghcr.io/wulffern/aic:2026_latest
+      credentials:
+        username: ${{ github.actor }}
+        password: ${{ secrets.github_token }}
       options: --user root
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           submodules: recursive
 
       - name: Download prepared sources
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: prepared-sources
           path: .
 
-      - name: Install TeX job dependencies
-        shell: bash
-        run: |
-          apt-get update
-          apt-get install -y ghostscript poppler-utils pandoc wget imagemagick python3-svglib python3-venv
-
-      - name: Build book PDF
+      - name: Build book PDF and EPUB
         shell: bash
         run: |
           git config --global --add safe.directory "$(pwd)"
-          make book-pdf
+          make book-pdf book-epub
 
-      - name: Package book PDF
+      - name: Package book
         shell: bash
         run: |
           mkdir -p artifact/docs/assets
-          cp docs/assets/aic.pdf artifact/docs/assets/
+          cp docs/assets/aic.pdf docs/assets/aic.epub artifact/docs/assets/
 
-      - name: Upload book PDF
-        uses: actions/upload-artifact@v4
+      - name: Upload book
+        uses: actions/upload-artifact@v7
         with:
-          name: book-pdf
-          path: artifact/docs/assets
-          if-no-files-found: error
-
-  epub:
-    needs: prepare
-    runs-on: ubuntu-latest
-    container:
-      image: texlive/texlive:TL2022-historic
-      options: --user root
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          submodules: recursive
-
-      - name: Download prepared sources
-        uses: actions/download-artifact@v4
-        with:
-          name: prepared-sources
-          path: .
-
-      - name: Install TeX job dependencies
-        shell: bash
-        run: |
-          apt-get update
-          apt-get install -y ghostscript poppler-utils pandoc wget imagemagick python3-svglib python3-venv
-
-      - name: Build EPUB
-        shell: bash
-        run: |
-          git config --global --add safe.directory "$(pwd)"
-          make book-epub
-
-      - name: Package EPUB
-        shell: bash
-        run: |
-          mkdir -p artifact/docs/assets
-          cp docs/assets/aic.epub artifact/docs/assets/
-
-      - name: Upload EPUB
-        uses: actions/upload-artifact@v4
-        with:
-          name: book-epub
+          name: book
           path: artifact/docs/assets
           if-no-files-found: error
 
@@ -264,38 +214,31 @@ jobs:
     needs:
       - prepare
       - standalone
-      - book_pdf
-      - epub
+      - book
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           submodules: recursive
 
       - name: Download prepared sources
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: prepared-sources
           path: .
 
       - name: Download standalone PDFs
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           pattern: standalone-*
           merge-multiple: true
           path: docs/assets
 
-      - name: Download book PDF
-        uses: actions/download-artifact@v4
+      - name: Download book
+        uses: actions/download-artifact@v8
         with:
-          name: book-pdf
-          path: docs/assets
-
-      - name: Download EPUB
-        uses: actions/download-artifact@v4
-        with:
-          name: book-epub
+          name: book
           path: docs/assets
 
       - name: Setup Pages
@@ -309,6 +252,7 @@ jobs:
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
+
         with:
           path: _site
 
