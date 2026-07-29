@@ -475,9 +475,18 @@ come up.
    copy. The warning is the point of including it.
 
 ### Current next figure
-- `l5_scfig` and `l5_scifig` — the settling and staircase output sketches,
-  which pair with `l5_scamp` and `l5_scint` respectively. Then `l5_sw2`,
-  `l5_sw3`, `l5_novl`, `l5_scex`.
+- `l4_activebiquad` and `l4_gmcbi`, the last two `l05_sc` figures. They are
+  shared with `l04_afe`, so when they are done the reference switch has to
+  cover **both** lectures in the same round. After that `l05_sc` is finished
+  and the queue moves to `l04_afe`.
+
+`tikz/boot_lib.tex` holds the bootstrapped switch, shared by `l5_sw2` (one of
+them) and `l5_sw3` (two). `\bootBlock` draws it above its input rail and
+`\bootBlockDn` below. `l5_sw3` needs the mirrored one: with both networks
+pointing the same way the lower one lands in the middle of the figure and the
+wires from `A_n` to the dummies have nowhere to run, which is exactly what
+makes the original crowded there. The circuit is symmetric, so mirroring costs
+nothing and buys the dummies the whole middle of the drawing.
 
 `tikz/sc_lib.tex` holds the switched-capacitor amplifier pieces. `\scIntroFrame`
 draws everything `l5_scintro1` and `l5_scintro2` share and leaves the two
@@ -493,9 +502,21 @@ circle radius, so `(0.5,0.3)` means half a radius out, which is how you think
 about them. Same rule as `spec_lib.tex`: a new shared include must be added to
 `TIKZ_INCLUDES` in the Makefile or the build tries to compile it as a figure.
 
-Approved and switched in `lectures/l05_sc.md`: `l05_fund1`, `l05_fund2`,
+Switched in `lectures/l05_sc.md`: `l05_fund1`, `l05_fund2`,
 `l05_fund3`, `l5_sh`, `l5_shaaf`, `l5_subsample`, `l5_sdomain`, `l5_zdomain`,
-`l5_zunstable`, `l5_fir`, `l5_sw1`, `l5_scintro1`, `l5_scintro2`, `l5_scamp`, `l5_scint`.
+`l5_zunstable`, `l5_fir`, `l5_sw1`, `l5_scintro1`, `l5_scintro2`, `l5_scamp`,
+`l5_scint`, `l5_scfig`, `l5_scifig`, `l5_sw2`, `l5_sw3`, `l5_novl`, `l5_scex`.
+
+The two waveform sketches scale each plot to its own trace: `\scWaveFrame`
+takes the top of the V_o axis, 1.6 for `l5_scfig` and 4.3 for `l5_scifig`.
+Drawing both on the integrator's axis strands the gain stage's trace, which
+only ever reaches V_i, in the bottom fifth of an empty box. The originals do
+scale per plot; it is not a liberty.
+
+`l5_sw2`'s two bulk networks end in bare symbols in the original. They are the
+supply rails: the n-well to V_DD and the p-substrate to ground while the switch
+is off, which is the only bias that keeps both junctions reverse biased, and
+the drawing has a ground on the lower one already.
 
 `tikz/spec_lib.tex` holds the sampling-spectrum pieces shared by `l5_sh`,
 `l5_shaaf` and `l5_subsample`: the axis with its Nyquist ticks, the wanted
