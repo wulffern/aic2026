@@ -1,14 +1,21 @@
 \input{tikz/fig_header.tex}
 
-% Current mode DAC: a mirror sets a reference current, every slice copies it
-% with a device sized 1, 2, 4 ... N, and a steering pair sends each slice's
+% Current mode DAC: a mirror sets a reference current, every cell copies it
+% with a device sized 1, 2, 4 ... N, and a steering pair sends each cell's
 % current either to the amplifier's summing node or to the dummy rail. The
-% slice current never switches off, only sideways, which is what keeps the
+% cell current never switches off, only sideways, which is what keeps the
 % mirror from being disturbed by the code.
 %
-% The cell is drawn once, boxed, and the box that follows it is the same
-% cell again: the array is N copies of one drawing, sized 1, 2, 4 ... N.
-% The original leaves this to a row of dots between two slices.
+% Drawn to the same geometry as dac_i_vbias, which is the same array with the
+% switch drive referenced to a bias rail: the two slides follow each other, so
+% only the part that changes should look different.
+%
+% The cell is drawn once, boxed, and the narrow box between the two stands for
+% the cells that are not drawn. The original leaves that to a row of dots.
+%
+% The reference device is mirrored so its gate faces the array and the diode
+% connection loops up the outside of the channel. Unmirrored, the rail to the
+% array has to run back across the device symbol.
 %
 % One deviation: the original runs a diagonal from each steering device up to
 % its rail, and the two diagonals cross between the rails. Here the risers are
@@ -21,24 +28,28 @@
   \input{tikz/rdac_lib.tex}
 
   \def\ytail{0.6}       % source of the tail devices
+  \def\ygate{1.4}       % gate rail of the tail devices
   \def\ypair{3.4}       % source of the steering pairs
-  \def\ydrain{5.4}      % drain of the steering pairs
-  \def\yplus{6.6}       % dummy rail, into the + input
-  \def\yminus{7.8}      % summing rail, into the - input
+  \def\ydrain{5.2}      % drain of the steering pairs
+  \def\ydrv{4.3}        % the gates of the steering pair
+  \def\yplus{6.1}       % dummy rail, into the + input
+  \def\yminus{6.9}      % summing rail, into the - input
   \def\xref{0}
-  \def\xa{4.8}          % the N cell
-  \def\xb{15.0}         % the 1 cell
   \def\dw{0.85}         % half the spacing of a steering pair
+  \def\cw{3.0}          % half the width of a cell
+  \def\xa{5.6}          % the N cell
+  \def\xg{9.3}          % the cells that are not drawn
+  \def\xb{13.0}         % the 1 cell
 
   % ---- Reference branch: a current source into a diode connected device ----
-  \draw (\xref,\ytail) to [Tnmos, n=M0] (\xref,{\ytail+1.6});
+  \draw (\xref,\ytail) to [Tnmos, n=M0, mirror] (\xref,{\ytail+1.6});
   \draw (\xref,\ytail) -- ++(0,-0.3) \vground;
   \draw (\xref,{\ytail+1.6}) to [I, invert] (\xref,{\ytail+3.4});
   \draw (\xref,{\ytail+3.4}) \vsupply;
-  % Diode connection, brought out as the gate rail the slices share.
-  \draw (M0.gate) -| (\xref,{\ytail+1.6});
+  % Diode connection: out of the gate, up the outside, back onto the drain.
+  \draw (M0.gate) -- (0.8,\ygate) -- (0.8,{\ytail+1.6}) -- (\xref,{\ytail+1.6});
   \fill (\xref,{\ytail+1.6}) circle (0.07);
-  \coordinate (grail) at (M0.gate);
+  \fill (0.8,\ygate) circle (0.07);
 
   % ---- One DAC cell, drawn once ----
   % #1 x origin, #2 suffix for the node names, #3 the device size label
@@ -46,57 +57,59 @@
     \draw (#1,\ytail) to [Tnmos, n=MT#2] (#1,{\ytail+1.6});
     \draw (#1,\ytail) -- ++(0,-0.3) \vground;
     \draw (#1,{\ytail+1.6}) -- (#1,\ypair);
-    \node[anchor=west] at ($(#1,{\ytail+2.1})+(0.25,0)$) {#3};
+    % The size marking sits beside its own device, clear of both rails.
+    \node[anchor=west] at ({#1+0.3},{\ytail+1.25}) {#3};
     \draw ({#1-\dw},\ypair) -- ({#1+\dw},\ypair);
     \draw ({#1-\dw},\ypair) to [Tnmos, n=ML#2] ({#1-\dw},\ydrain);
     \draw ({#1+\dw},\ypair) to [Tnmos, n=MR#2, mirror] ({#1+\dw},\ydrain);
-    % Labels sit above their stubs so they stay inside the cell boundary.
-    \draw (ML#2.gate) -- ++(-0.6,0);
-    \node[anchor=south] at ($(ML#2.gate)+(-0.3,0.08)$) {$b_{#2}$};
-    \draw (MR#2.gate) -- ++(0.6,0);
-    \node[anchor=south] at ($(MR#2.gate)+(0.3,0.08)$) {$\overline{b_{#2}}$};
+    % The bits come from outside the cell, straight onto the gates.
+    \draw (ML#2.gate) -- ({#1-\cw},\ydrv);
+    \node[anchor=south west] at ({#1-\cw+0.05},{\ydrv+0.12}) {$b_{#2}$};
+    \draw (MR#2.gate) -- ({#1+\cw},\ydrv);
+    \node[anchor=south east] at ({#1+\cw-0.05},{\ydrv+0.12}) {$\overline{b_{#2}}$};
+    %
     % b steers into the summing rail, b-bar into the dummy rail.
     \draw ({#1-\dw},\ydrain) -- ({#1-\dw},\yminus);
     \fill ({#1-\dw},\yminus) circle (0.07);
     \draw ({#1+\dw},\ydrain) -- ({#1+\dw},\yplus);
     \fill ({#1+\dw},\yplus) circle (0.07);
-    \draw[dashed, thin] ({#1-2.35},{\ytail-0.75}) rectangle ({#1+2.35},{\ydrain+0.55});
+    \draw[dashed, thin] ({#1-\cw},{\ytail-0.75}) rectangle ({#1+\cw},{\ydrain+0.55});
   }
 
-  % An empty cell boundary: the same cell again, left blank.
+  % The cells that are not drawn: the same boundary, left blank and narrow.
   \newcommand{\dacGhost}[1]{%
-    \draw[dashed, thin] ({#1-2.35},{\ytail-0.75}) rectangle ({#1+2.35},{\ydrain+0.55});
+    \draw[dashed, thin] ({#1-0.7},{\ytail-0.75}) rectangle ({#1+0.7},{\ydrain+0.55});
     \node at (#1,{0.5*(\ytail+\ydrain)}) {$\cdots$};
   }
 
   \dacCell{\xa}{n}{$N$}
-  \dacGhost{9.9}
+  \dacGhost{\xg}
   \dacCell{\xb}{0}{$1$}
 
-  \node[anchor=north, align=center] at (9.9,{\ytail-1.1})
+  \node[anchor=north, align=center] at (\xg,{\ytail-1.05})
     {$N$ copies of the same cell, sized $1, 2, 4 \ldots N$};
 
-  % ---- The gate rail the tail devices share ----
-  \draw (grail) -- (MTn.gate);
+  % ---- The gate rail every cell's tail device sits on ----
+  \draw (0.8,\ygate) -- (MTn.gate);
   \draw (MTn.gate) -- (MT0.gate);
   \fill (MTn.gate) circle (0.07);
 
   % ---- The two rails into the amplifier ----
-  \draw ({\xa-\dw},\yminus) -- (18.8,\yminus);
-  \draw ({\xa+\dw},\yplus) -- (18.8,\yplus);
-  \rdacAmp{OA}{(18.8,7.2)}
-  \draw (18.8,\yminus) -- (OAinn);
-  \draw (18.8,\yplus) -- (OAinp);
+  \draw ({\xa-\dw},\yminus) -- (17.8,\yminus);
+  \draw ({\xa+\dw},\yplus) -- (17.8,\yplus);
+  \rdacAmp{OA}{(17.8,6.5)}
+  \draw (17.8,\yminus) -- (OAinn);
+  \draw (17.8,\yplus) -- (OAinp);
 
   % ---- The dummy rail is held at a reference voltage ----
-  \draw (18.1,\yplus) to [V] (18.1,{\yplus-2.2});
-  \draw (18.1,{\yplus-2.2}) -- ++(0,-0.3) \vground;
-  \fill (18.1,\yplus) circle (0.07);
+  \draw (16.8,\yplus) to [V] (16.8,{\yplus-2.2});
+  \draw (16.8,{\yplus-2.2}) -- ++(0,-0.3) \vground;
+  \fill (16.8,\yplus) circle (0.07);
 
   % ---- Feedback resistor over the top ----
-  \draw (18.2,\yminus) -- (18.2,10.4) -- ++(0.7,0) \hresistor{$R_F$} -- ++(0.7,0)
-        -- (22.0,10.4) -- (22.0,7.2) -- (OAout);
-  \fill (18.2,\yminus) circle (0.07);
+  \draw (17.3,\yminus) -- (17.3,9.3) -- ++(0.7,0) \hresistor{$R_F$} -- ++(0.7,0)
+        -- (21.0,9.3) -- (21.0,6.5) -- (OAout);
+  \fill (17.3,\yminus) circle (0.07);
   \draw (OAout) -- ++(0.9,0);
 
 \end{circuitikz}
