@@ -22,8 +22,10 @@ RUN wget -q https://github.com/jgm/pandoc/releases/download/3.6.4/pandoc-3.6.4-1
 
 # TeX Live 2022 from the historic archive, scheme-small (pdflatex + latex
 # recommended + fonts recommended), no docs or sources.
+ARG TL_HIST=https://ftp.math.utah.edu/pub/tex/historic/systems/texlive/2022
 RUN mkdir /tmp/install-tl && cd /tmp/install-tl && \
-    wget -q https://ftp.math.utah.edu/pub/tex/historic/systems/texlive/2022/install-tl-unx.tar.gz && \
+    (curl -fSL -o install-tl-unx.tar.gz ${TL_HIST}/install-tl-unx.tar.gz || \
+     curl -fSL -o install-tl-unx.tar.gz https://ftp.tug.org/historic/systems/texlive/2022/install-tl-unx.tar.gz) && \
     tar xzf install-tl-unx.tar.gz --strip-components=1 && \
     printf '%s\n' \
       'selected_scheme scheme-small' \
@@ -32,7 +34,7 @@ RUN mkdir /tmp/install-tl && cd /tmp/install-tl && \
       'tlpdbopt_autobackup 0' \
       > texlive.profile && \
     ./install-tl --profile=texlive.profile \
-      --repository=https://ftp.math.utah.edu/pub/tex/historic/systems/texlive/2022/tlnet-final && \
+      --repository=${TL_HIST}/tlnet-final && \
     rm -rf /tmp/install-tl
 
 ENV PATH="/usr/local/texlive/2022/bin/x86_64-linux:${PATH}"
@@ -40,7 +42,7 @@ ENV PATH="/usr/local/texlive/2022/bin/x86_64-linux:${PATH}"
 # What kaobook, short_tmplt, pandoc output and the TikZ figures need beyond
 # scheme-small. Derived from \RequirePackage/\usepackage audits plus the
 # build logs; tlmgr resolves dependencies.
-RUN tlmgr --repository=https://ftp.math.utah.edu/pub/tex/historic/systems/texlive/2022/tlnet-final install \
+RUN tlmgr --repository=${TL_HIST}/tlnet-final install \
     koma-script sidenotes marginnote marginfix changepage placeins chngcntr \
     footmisc footnotebackref footnotehyper fvextra imakeidx glossaries \
     nomencl xindy makeindex etoc multirow wrapfig ccicons hyphenat needspace \
