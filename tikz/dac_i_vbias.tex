@@ -10,10 +10,12 @@
 % level disturbs the tail node — and so the settling — far less than a full
 % swing does.
 %
-% So V_bias is drawn as a rail that runs into every cell and references the
-% two drivers there, and the inset says what that means for the waveform.
-% The original leaves V_bias sitting on a gate, which reads as a device held
-% open rather than as the level a drive is built around.
+% So one side of every steering pair sits on a V_bias rail that runs the
+% length of the array, and the other side takes the bit. The inset says what
+% that means for the waveform: b has to cross V_bias in both directions for
+% the pair to tip, and it only has to move far enough either side of it to do
+% so. V_bias gates the reference leg as well, so the mirror sees the drain
+% voltage the cells work at.
 %
 % Both reference devices are mirrored so their gates face the array, and each
 % diode connection loops up the outside of its own channel.
@@ -48,10 +50,16 @@
   \draw (M0.gate) -- (0.8,\ygate) -- (0.8,{\ytail+1.6}) -- (\xref,{\ytail+1.6});
   \fill (\xref,{\ytail+1.6}) circle (0.07);
   \fill (0.8,\ygate) circle (0.07);
-  \draw (MC.gate) -- (1.5,\ybias) -- (1.5,{\ytail+3.2}) -- (\xref,{\ytail+3.2});
-  \fill (\xref,{\ytail+3.2}) circle (0.07);
+  % V_bias also gates the reference leg, so the mirror sees the drain voltage
+  % the cells' devices work at.
+  \draw (MC.gate) -- (1.5,\ybias);
   \fill (1.5,\ybias) circle (0.07);
-  \node[anchor=south] at (2.3,{\ybias+0.12}) {$V_{bias}$};
+  % Brought out between the reference branch and the array, where there is
+  % room for the label: V_bias is a constant from outside, not something the
+  % mirror makes.
+  \draw (2.15,\ybias) -- (2.15,2.15) coordinate (vbport);
+  \fill (2.15,\ybias) circle (0.07);
+  \rdacPort{(vbport)}{north}{$V_{bias}$}
 
   % ---- One DAC cell, drawn once ----
   % #1 x origin, #2 suffix for the node names, #3 the device size label
@@ -65,23 +73,13 @@
     \draw ({#1-\dw},\ypair) to [Tnmos, n=ML#2] ({#1-\dw},\ydrain);
     \draw ({#1+\dw},\ypair) to [Tnmos, n=MR#2, mirror] ({#1+\dw},\ydrain);
     %
-    % A driver on each gate, referenced to the V_bias rail: that is what makes
-    % the drive swing about V_bias rather than about ground.
-    \draw[thick] ({#1-\dw-1.7},{\ydrv+0.42}) -- ({#1-\dw-1.7},{\ydrv-0.42})
-                 -- ({#1-\dw-0.62},\ydrv) -- cycle;
-    \draw (ML#2.gate) -- ({#1-\dw-0.62},\ydrv);
-    \draw ({#1-\dw-1.7},\ydrv) -- ({#1-\cw},\ydrv);
-    \node[anchor=south west] at ({#1-\cw+0.05},{\ydrv+0.12}) {$b_{#2}$};
-    \draw ({#1-\dw-1.35},{\ydrv-0.28}) -- ({#1-\dw-1.35},\ybias);
-    \fill ({#1-\dw-1.35},\ybias) circle (0.07);
-    %
-    \draw[thick] ({#1+\dw+1.7},{\ydrv+0.42}) -- ({#1+\dw+1.7},{\ydrv-0.42})
-                 -- ({#1+\dw+0.62},\ydrv) -- cycle;
-    \draw (MR#2.gate) -- ({#1+\dw+0.62},\ydrv);
-    \draw ({#1+\dw+1.7},\ydrv) -- ({#1+\cw},\ydrv);
-    \node[anchor=south east] at ({#1+\cw-0.05},{\ydrv+0.12}) {$\overline{b_{#2}}$};
-    \draw ({#1+\dw+1.35},{\ydrv-0.28}) -- ({#1+\dw+1.35},\ybias);
-    \fill ({#1+\dw+1.35},\ybias) circle (0.07);
+    % One side of the pair sits on the constant V_bias rail, the other takes
+    % the bit. The bit swings about V_bias, so the pair tips one way or the
+    % other and hands the cell current between the two rails.
+    \draw (ML#2.gate) -- ({#1-\dw-0.55},\ydrv) -- ({#1-\dw-0.55},\ybias);
+    \fill ({#1-\dw-0.55},\ybias) circle (0.07);
+    \draw (MR#2.gate) -- ({#1+\cw},\ydrv);
+    \node[anchor=south] at ({#1+\cw-0.55},{\ydrv+0.16}) {$\overline{b_{#2}}$};
     %
     % b steers into the summing rail, b-bar into the dummy rail.
     \draw ({#1-\dw},\ydrain) -- ({#1-\dw},\yminus);
@@ -133,7 +131,7 @@
     \draw[dashed] (0,0.55) -- (4.4,0.55) node[anchor=west] {$V_{bias}$};
     \draw[thick] (0,1.15) -- (1.1,1.15) -- (1.1,-0.05) -- (2.2,-0.05)
                  -- (2.2,1.15) -- (3.3,1.15) -- (3.3,-0.05) -- (4.4,-0.05);
-    \node[anchor=east] at (-0.15,0.55) {$b_n$};
+    \node[anchor=east] at (-0.15,0.55) {$\overline{b_n}$};
     \node[anchor=north, align=center] at (2.2,-0.35)
       {the drive swings about $V_{bias}$, not rail to rail};
   \end{scope}

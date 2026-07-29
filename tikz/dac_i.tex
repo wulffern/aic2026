@@ -64,9 +64,9 @@
     \draw ({#1+\dw},\ypair) to [Tnmos, n=MR#2, mirror] ({#1+\dw},\ydrain);
     % The bits come from outside the cell, straight onto the gates.
     \draw (ML#2.gate) -- ({#1-\cw},\ydrv);
-    \node[anchor=south west] at ({#1-\cw+0.05},{\ydrv+0.12}) {$b_{#2}$};
+    \node[anchor=south] at ({#1-\cw+0.4},{\ydrv+0.16}) {$b_{#2}$};
     \draw (MR#2.gate) -- ({#1+\cw},\ydrv);
-    \node[anchor=south east] at ({#1+\cw-0.05},{\ydrv+0.12}) {$\overline{b_{#2}}$};
+    \node[anchor=south] at ({#1+\cw-0.4},{\ydrv+0.16}) {$\overline{b_{#2}}$};
     %
     % b steers into the summing rail, b-bar into the dummy rail.
     \draw ({#1-\dw},\ydrain) -- ({#1-\dw},\yminus);
