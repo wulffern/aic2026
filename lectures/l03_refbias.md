@@ -356,7 +356,7 @@ the LM113, three years before the cell on the next slide, and it is worth
 starting here. Partly for the history, and partly because it does the entire
 job with three transistors, three resistors, and no amplifier anywhere. It was
 published in
-[New developments in IC voltage regulators](https://ieeexplore.ieee.org/document/1050151).
+New developments in IC voltage regulators [@widlar71].
 
 Figure 9 is the circuit. It is a two terminal shunt reference: you feed it a
 bias current down from the supply and it holds its own terminal at $V_{REF}$,
@@ -430,7 +430,7 @@ Paul Brokaw was a pioneer within reference circuits
 ( I met him once in the restroom queue in Tropisueno behind the Marriot hotel in SF during ISSCC). 
 Below is the Brokaw reference, 
 which I think was first published in 
-[A simple three-terminal IC bandgap reference](https://ieeexplore.ieee.org/document/1050532).
+A simple three-terminal IC bandgap reference [@brokaw74].
 
 -->
 
@@ -517,7 +517,7 @@ IC, which too expensive for low-cost devices.
 The Brokaw reference, and others, have a 1.2 V output voltage, which is hard to make if your
 supply is below about 1.4 V. 
 As such, people have investigated lower voltage references. The original circuit 
-was presented by Banba [A CMOS bandgap reference circuit with sub-1-V operation](https://ieeexplore.ieee.org/document/760378)
+was presented by Banba A CMOS bandgap reference circuit with sub-1-V operation [@banba99]
 
 In real ICs though, you should ask yourself long and hard whether you 
 really need these low-voltage references. 
@@ -1090,17 +1090,17 @@ We can use other things for Z, like  a switched capacitor
 
 # Want to learn more?
 
-[New developments in IC voltage regulators](https://ieeexplore.ieee.org/document/1050151)
+New developments in IC voltage regulators [@widlar71]
 
-[A simple three-terminal IC bandgap reference](https://ieeexplore.ieee.org/document/1050532)
+A simple three-terminal IC bandgap reference [@brokaw74]
 
-[A CMOS bandgap reference circuit with sub-1-V operation](https://ieeexplore.ieee.org/document/760378)
+A CMOS bandgap reference circuit with sub-1-V operation [@banba99]
 
-[A sub-1-V 15-ppm//spl deg/C CMOS bandgap voltage reference without requiring low threshold voltage device](https://ieeexplore.ieee.org/document/991391)
+A sub-1-V 15-ppm//spl deg/C CMOS bandgap voltage reference without requiring low threshold voltage device [@leung02]
 
-[The Bandgap Reference](https://ieeexplore.ieee.org/document/7559954)
+The Bandgap Reference [@razavi16]
 
-[The Design of a Low-Voltage Bandgap Reference](https://ieeexplore.ieee.org/document/9523469)
+The Design of a Low-Voltage Bandgap Reference [@razavi21]
 
 ---
 

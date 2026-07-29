@@ -210,20 +210,31 @@ class TestTitleMatching(unittest.TestCase):
 class TestScan(unittest.TestCase):
     """The scan runs against the real lectures, so it notices drift."""
 
-    def test_finds_candidates_in_the_course(self):
+    def test_still_finds_the_links_not_yet_converted(self):
+        # This started at 123 and shrinks as lectures convert to [@key], so
+        # the useful assertion is that the scan still works, not a floor that
+        # the conversion is supposed to drive down.
         links = linkbib.scan_lectures("lectures/*.md")
-        self.assertGreater(len(links), 50)
+        self.assertGreater(len(links), 0)
+
+    def test_a_converted_lecture_has_no_candidates_left(self):
+        self.assertEqual(linkbib.scan_lectures("lectures/l07_vreg.md"), [])
 
     def test_every_candidate_is_on_a_paper_host(self):
         for link in linkbib.scan_lectures("lectures/*.md"):
             self.assertTrue(linkbib.citable(link.url), link.url)
 
     def test_repeated_papers_collapse(self):
-        papers = linkbib.group(linkbib.scan_lectures("lectures/*.md"))
-        self.assertLess(len(papers), len(linkbib.scan_lectures("lectures/*.md")))
-        # The compiled SAR ADC is linked from several lectures.
-        self.assertIn("ieee:7906479", papers)
-        self.assertGreater(len(papers["ieee:7906479"]), 1)
+        # Built from fixtures rather than the live lectures: which papers are
+        # still raw links shrinks to nothing as the conversion finishes, and a
+        # test naming one of them expires the moment that link is cited.
+        links = [linkbib.Link("l05_sc.md", 1, "s", "T", u) for u in (
+            "https://ieeexplore.ieee.org/document/7906479",
+            "https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=7906479",
+            "https://ieeexplore.ieee.org/document/90025")]
+        papers = linkbib.group(links)
+        self.assertEqual(len(papers), 2)
+        self.assertEqual(len(papers["ieee:7906479"]), 2)
 
 
 class TestTitleGuard(unittest.TestCase):
@@ -448,6 +459,50 @@ class TestDuplicateDetection(unittest.TestCase):
     def test_the_paper_is_in_the_real_bibliography_already(self):
         titles = linkbib.read_bib_titles("pdf/aic.bib")
         self.assertEqual(titles.get(linkbib.squash(self.RESOLVED)), "walden99")
+
+
+class TestApply(unittest.TestCase):
+
+    def test_title_is_kept_and_the_citation_follows(self):
+        self.assertEqual(
+            linkbib.cite_line(
+                "[Ring Amplifiers for Switched Capacitor Circuits](https://x/1)",
+                "hershberg12"),
+            "Ring Amplifiers for Switched Capacitor Circuits [@hershberg12]")
+
+    def test_surrounding_prose_survives(self):
+        self.assertEqual(
+            linkbib.cite_line("Take a look at [New Ballasting](https://x/1) first.",
+                              "ker09"),
+            "Take a look at New Ballasting [@ker09] first.")
+
+    def test_a_url_used_as_its_own_label_leaves_only_the_citation(self):
+        self.assertEqual(
+            linkbib.cite_line("[https://x/1](https://x/1)</sub>", "stratton72"),
+            "[@stratton72]</sub>")
+
+    def test_markup_around_the_link_is_untouched(self):
+        self.assertEqual(
+            linkbib.cite_line("<sub>[\"High speed OTA\" Berntsen](https://x/1)</sub>",
+                              "berntsen05a"),
+            "<sub>\"High speed OTA\" Berntsen [@berntsen05a]</sub>")
+
+    def test_a_line_with_no_link_is_returned_unchanged(self):
+        self.assertEqual(linkbib.cite_line("Just prose.", "x99"), "Just prose.")
+
+    def test_placements_come_from_the_location_comments(self):
+        import tempfile
+        staged = ('% l02_esd.md:597, l02_esd.md:608\n% source: ieee\n'
+                  '@article{ker09,\nauthor= "M.-D. Ker"\n}\n')
+        with tempfile.NamedTemporaryFile("w", suffix=".bib", delete=False) as fo:
+            fo.write(staged)
+            name = fo.name
+        try:
+            self.assertEqual(sorted(linkbib.read_placements(name)),
+                             [("l02_esd.md", 597, "ker09"),
+                              ("l02_esd.md", 608, "ker09")])
+        finally:
+            os.unlink(name)
 
 
 if __name__ == "__main__":

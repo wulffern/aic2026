@@ -10,7 +10,7 @@ date: 2026-02-06
 
 References:
 
-[A 1 TOPS/W Analog Deep Machine-Learning Engine With Floating-Gate Storage in 0.13 µm CMOS](https://ieeexplore.ieee.org/document/6919341)
+A 1 TOPS/W Analog Deep Machine-Learning Engine With Floating-Gate Storage in 0.13 µm CMOS [@lu15]
  
 
 -->
@@ -34,7 +34,7 @@ References:
 
 ---
 
-[Attention Is All You Need](https://arxiv.org/abs/1706.03762)
+Attention Is All You Need [@vaswani17]
 
 ![right fit](../media/transformer.pdf)
 
@@ -282,13 +282,13 @@ $$ \frac{\ell_2}{\ell_1} =  e^{\pm \frac{a_{vt}}{\sqrt{W L}}/n U_{T}} $$
 
 ---
 
-[An Always-On 3.8 u J/86 % CIFAR-10 Mixed-Signal Binary CNN Processor With All Memory on Chip in 28-nm CMOS](https://ieeexplore.ieee.org/document/8480105)
+An Always-On 3.8 u J/86 % CIFAR-10 Mixed-Signal Binary CNN Processor With All Memory on Chip in 28-nm CMOS [@bankman19]
 
-[CAP-RAM: A Charge-Domain In-Memory Computing 6T-SRAM for Accurate and Precision-Programmable CNN Inference](https://ieeexplore.ieee.org/document/9441013)
+CAP-RAM: A Charge-Domain In-Memory Computing 6T-SRAM for Accurate and Precision-Programmable CNN Inference [@chen21]
 
-[ARCHON: A 332.7TOPS/W 5b Variation-Tolerant Analog CNN Processor Featuring Analog Neuronal Computation Unit and Analog Memory](https://ieeexplore.ieee.org/document/9731654)
+ARCHON: A 332.7TOPS/W 5b Variation-Tolerant Analog CNN Processor Featuring Analog Neuronal Computation Unit and Analog Memory [@seo22]
 
-[IMPACT: A 1-to-4b 813-TOPS/W 22-nm FD-SOI Compute-in-Memory CNN Accelerator Featuring a 4.2-POPS/W 146-TOPS/mm2 CIM-SRAM With Multi-Bit Analog Batch-Normalization](https://ieeexplore.ieee.org/document/10129929)
+IMPACT: A 1-to-4b 813-TOPS/W 22-nm FD-SOI Compute-in-Memory CNN Accelerator Featuring a 4.2-POPS/W 146-TOPS/mm2 CIM-SRAM With Multi-Bit Analog Batch-Normalization [@kneip23]
 
 ---
 

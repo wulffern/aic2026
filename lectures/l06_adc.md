@@ -50,7 +50,7 @@ digital domain.
 Many years ago, Robert Walden did a study of ADCs, one of the plot's is shown below.
 -->
 
-[1999, R. Walden: Analog-to-digital converter survey and analysis](https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=761034)
+1999, R. Walden: Analog-to-digital converter survey and analysis [@walden99]
 
 <!--pan_doc:
 There are obvious trends, the faster an ADC is, the less precise the ADC is ( lower SNDR). There are also fundamental limits, Heisenberg tells us that a 20-bit 10 GS/s ADC is 
@@ -122,7 +122,7 @@ That's pretty much the algorithm I, and others, have followed to make state-of-t
 
 -->
 
-[1] [A Compiled 9-bit 20-MS/s 3.5-fJ/conv.step SAR ADC in 28-nm FDSOI for Bluetooth Low Energy Receivers](https://ieeexplore.ieee.org/document/7906479)
+[1] A Compiled 9-bit 20-MS/s 3.5-fJ/conv.step SAR ADC in 28-nm FDSOI for Bluetooth Low Energy Receivers [@wulff17]
 
 [2] [A 68 dB SNDR Compiled Noise-Shaping SAR ADC With On-Chip CDAC
 Calibration](https://ieeexplore.ieee.org/document/9056925)
@@ -387,7 +387,7 @@ a paper back in 1985 on quantization noise.
 
 [.column]
 
- See [The intermodulation and distortion due to quantization of sinusoids](https://ieeexplore.ieee.org/document/1164729) for details
+ See The intermodulation and distortion due to quantization of sinusoids [@blachman85a] for details
 
 
 <!--pan_doc:
@@ -1148,7 +1148,7 @@ On my Ph.D I did some work on
 
 -->
 
-[Resonators in Open-Loop Sigma-Delta Modulators](https://ieeexplore.ieee.org/document/4783042)
+Resonators in Open-Loop Sigma-Delta Modulators [@wulff09]
 
 <!--pan_doc:
 
@@ -1173,7 +1173,7 @@ One of my Ph.d students made a
 
 ---
 
-[A 68 dB SNDR Compiled Noise-Shaping SAR ADC With On-Chip CDAC Calibration](https://ieeexplore.ieee.org/document/9056925/)
+A 68 dB SNDR Compiled Noise-Shaping SAR ADC With On-Chip CDAC Calibration [@garvik19]
 
 
 <!--pan_doc:
@@ -1276,15 +1276,15 @@ For more information, ask me, or see the patent at
 
 # Want to learn more?
 
-[The design of sigma-delta modulation analog-to-digital converters](https://ieeexplore.ieee.org/document/90025)
+The design of sigma-delta modulation analog-to-digital converters [@boser88]
 
-[Delta-sigma modulation in fractional-N frequency synthesis](https://ieeexplore.ieee.org/document/229400)
+Delta-sigma modulation in fractional-N frequency synthesis [@riley93]
 
-[A CMOS Temperature Sensor With a Voltage-Calibrated Inaccuracy of ± 0.15 C (3sigma) From -55 Cto 125 C](https://ieeexplore.ieee.org/document/6323049)
+A CMOS Temperature Sensor With a Voltage-Calibrated Inaccuracy of ± 0.15 C (3sigma) From -55 Cto 125 C [@souri13]
 
-[A 20-mW 640-MHz CMOS Continuous-Time Sigma-Delta ADC With 20-MHz Signal Bandwidth, 80-dB Dynamic Range and 12-bit ENOB](https://ieeexplore.ieee.org/document/4014623)
+A 20-mW 640-MHz CMOS Continuous-Time Sigma-Delta ADC With 20-MHz Signal Bandwidth, 80-dB Dynamic Range and 12-bit ENOB [@mitteregger06a]
 
-[A Micro-Power Two-Step Incremental Analog-to-Digital Converter](https://ieeexplore.ieee.org/document/7078971)
+A Micro-Power Two-Step Incremental Analog-to-Digital Converter [@chen15]
 
 -->
 

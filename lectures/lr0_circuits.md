@@ -190,8 +190,8 @@ method that makes most sense to me, is to use the inversion-coefficient method, 
 
 --> 
 
-- [Nanoscale MOSFET Modeling: Part 1](https://ieeexplore.ieee.org/document/8016485) 
-- [Nanoscale MOSFET Modeling: Part 2](https://ieeexplore.ieee.org/document/8110872).
+- Nanoscale MOSFET Modeling: Part 1 [@enz17] 
+- Nanoscale MOSFET Modeling: Part 2 [@enz17a].
 
 <!--pan_doc: 
 
@@ -465,7 +465,7 @@ $$
 
 There are usually three amplifiers that we consider when we talk about single transistors. Common Source, Common Gate and Source Follower. 
 
-For two transistors there are a few more possibilities. I'd highly recommend [Fifty Nifty Variations of Two-Transistor Circuits: A tribute to the versatility of MOSFETs](https://ieeexplore.ieee.org/document/9523464)
+For two transistors there are a few more possibilities. I'd highly recommend Fifty Nifty Variations of Two-Transistor Circuits: A tribute to the versatility of MOSFETs [@pretl21]
 
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/jL7MVr5wY5w?si=kMQN5iOJYzmTbg3e" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
@@ -476,7 +476,7 @@ For two transistors there are a few more possibilities. I'd highly recommend [Fi
 <!--pan_skip: -->
 
 - Single transistor: Common Source, Common Gate and Source Follower.
-- Two transistors: [Fifty Nifty Variations of Two-Transistor Circuits: A tribute to the versatility of MOSFETs](https://ieeexplore.ieee.org/document/9523464)
+- Two transistors: Fifty Nifty Variations of Two-Transistor Circuits: A tribute to the versatility of MOSFETs [@pretl21]
 
 ---
 
@@ -564,7 +564,7 @@ $$ \Delta V  = Q/C  = -1.6 \times 10^{-19} \times 100 / (1\times 10^{-12}) = - 1
 
 <!--pan_doc: 
 
-Another example of a source follower can be found in [A 92.5mW 205MS/s 10b Pipeline IF ADC Implemented in 1.2V/3.3V 0.13um CMOS](https://ieeexplore.ieee.org/document/4242465)
+Another example of a source follower can be found in A 92.5mW 205MS/s 10b Pipeline IF ADC Implemented in 1.2V/3.3V 0.13um CMOS [@hernes07a]
 
 -->
 

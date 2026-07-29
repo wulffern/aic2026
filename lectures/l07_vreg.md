@@ -89,7 +89,7 @@ Turns out, transistors can die.
 Today's transistor, as shown below, are a complicated three dimensional structure. Dimensions are measured in nano-meter, which makes 
 the transistors fragile. 
 
-In [Analog Circuit Design in Nanoscale CMOS Technologies](https://ieeexplore.ieee.org/document/5247174)
+In Analog Circuit Design in Nanoscale CMOS Technologies [@lewyn09]
 Lanny explains how to design around some of the breakdown effects.
 
 -->
@@ -107,7 +107,7 @@ voltage that they can survive for a certain time. Exceed that time, or voltage, 
 
 A gate oxide will break due to Time Dependent Dielectric Breakdown (TDDB) if the voltage across the gate oxide is too large. Silicon oxide can break down at approximately 5 MV/cm. The breakdown forms a conductive channel from the gate to the channel and is permanent. After breakdown there will be a resistor of kOhms between gate and channel. 
 
-A similar breakdown phenomena is used in [Metal-Oxide RRAM](https://ieeexplore.ieee.org/document/6193402) and the [SkyWater 
+A similar breakdown phenomena is used in Metal-Oxide RRAM [@wong12] and the [SkyWater 
 ReRAM](https://sky130-fd-pr-reram.readthedocs.io/en/latest/)
 
 Below is an example of ReRAM. In the Pristine state the conductance is low, resistance is in the hundreds of mega Ohm. In a transistor we want the oxide to stay high resistive. In ReRAM, however, we apply a high voltage across the oxide, which forms a conductive channel across the oxide. Turns out, that the conductive channel can be flipped back and forth between a high resistive state, and a low resistive state to store a 1 or a 0 in a non-volatile manner. 
@@ -130,7 +130,7 @@ threshold voltage.
 
 
 Negative Bias Temperature Instability is a shift in threshold voltage due to a physical change in the oxide. 
-A strong electric field across the oxide for a long time can break co-valent, or ionic bonds, in the oxide. The bond break will change the forces (stress) in the amorphous silicon oxide which might not recover. As such, there might be more traps (states) than before. See [Simultaneous Extraction of Recoverable and Permanent Components Contributing to Bias-Temperature Instability](https://ieeexplore.ieee.org/document/4419069) for more details.
+A strong electric field across the oxide for a long time can break co-valent, or ionic bonds, in the oxide. The bond break will change the forces (stress) in the amorphous silicon oxide which might not recover. As such, there might be more traps (states) than before. See Simultaneous Extraction of Recoverable and Permanent Components Contributing to Bias-Temperature Instability [@grasser07] for more details.
 
 For a long time, I had trouble with "traps in the oxide"". I had a hard time visualizing how electrons wandered down 
 the channel and got caught in the oxide. I was trying to imagine the electric field, and that the electron needed to find 
@@ -427,7 +427,7 @@ All switched regulators are based on devices that store electric field (capacito
 
 > There is a big difference between the idea for a circuit, and the actual implementation. A real DC/DC implementation may seem overwhelming. 
 
-Just look at figure 7 in [A 10-MHz 2–800-mA 0.5–1.5-V 90% Peak Efficiency Time-Based Buck Converter With Seamless Transition Between PWM/PFM Modes](https://ieeexplore.ieee.org/document/8187654)
+Just look at figure 7 in A 10-MHz 2–800-mA 0.5–1.5-V 90% Peak Efficiency Time-Based Buck Converter With Seamless Transition Between PWM/PFM Modes [@kim18]
 
 <!--pan_doc:
 
@@ -719,31 +719,31 @@ Below you can see a period of the PFM buck. The state can be seen in the bottom 
 
 ## Linear regulators
 
-[A Scalable High-Current High-Accuracy Dual-Loop Four-Phase Switching LDO for Microprocessors](https://ieeexplore.ieee.org/document/9639005) Overview of fancy LDO schemes, digital as well as analog
+A Scalable High-Current High-Accuracy Dual-Loop Four-Phase Switching LDO for Microprocessors [@mao22] Overview of fancy LDO schemes, digital as well as analog
 
-[Development of Single-Transistor-Control LDO Based on Flipped Voltage Follower for SoC](https://ieeexplore.ieee.org/document/4436075) In capacitor less LDOs a flipped voltage follower is a common circuit, worth a read. 
+Development of Single-Transistor-Control LDO Based on Flipped Voltage Follower for SoC [@man08] In capacitor less LDOs a flipped voltage follower is a common circuit, worth a read. 
 
-[A 200-mA Digital Low Drop-Out Regulator With Coarse-Fine Dual Loop in Mobile Application Processor](https://ieeexplore.ieee.org/document/7740906) Some insights into large power systems. 
+A 200-mA Digital Low Drop-Out Regulator With Coarse-Fine Dual Loop in Mobile Application Processor [@lee17] Some insights into large power systems. 
 
 
 ## DC-DC converters
 
-[Design Techniques for Fully Integrated Switched-Capacitor DC-DC Converters](https://ieeexplore.ieee.org/document/5948387)
+Design Techniques for Fully Integrated Switched-Capacitor DC-DC Converters [@le11]
 Goes through design of SC DC-DC converters. Good place to start to learn the trade-offs, and the circuits.
 
 
-[High Frequency Buck Converter Design Using Time-Based Control Techniques](https://ieeexplore.ieee.org/document/6998097)
+High Frequency Buck Converter Design Using Time-Based Control Techniques [@kim15]
 I love papers that challenge "this is the way". Why should we design analog feedback loops for our bucks, why not design digital feedback loops?
 
 
-[Single-Inductor Multi-Output (SIMO) DC-DC Converters With High Light-Load Efficiency and Minimized Cross-Regulation for Portable Devices](https://ieeexplore.ieee.org/document/4804971)
+Single-Inductor Multi-Output (SIMO) DC-DC Converters With High Light-Load Efficiency and Minimized Cross-Regulation for Portable Devices [@huang09]
 Maybe you have many supplies you want to drive, but you don't want to have many inductors. SIMO is then an option
 
 
-[A 10-MHz 2–800-mA 0.5–1.5-V 90% Peak Efficiency Time-Based Buck Converter With Seamless Transition Between PWM/PFM Modes](https://ieeexplore.ieee.org/document/8187654)
+A 10-MHz 2–800-mA 0.5–1.5-V 90% Peak Efficiency Time-Based Buck Converter With Seamless Transition Between PWM/PFM Modes [@kim18]
 Has some lovely illustrations of PFM and PWM and the trade-offs between those two modes.
 
-[A monolithic current-mode CMOS DC-DC converter with on-chip current-sensing technique](https://ieeexplore.ieee.org/document/1261283)
+A monolithic current-mode CMOS DC-DC converter with on-chip current-sensing technique [@lee04]
 In bucks converters there are two "religious" camps. One hail to "voltage mode" control loop, another hail to "current mode" control loops. It's good to read about both and make up your own mind. 
 
 -->

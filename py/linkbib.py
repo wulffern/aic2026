@@ -707,5 +707,87 @@ def fetch(lectures, bib, out, unresolved, limit, delay, source):
         sys.exit(1)
 
 
+def read_placements(filename):
+    """Staged file -> [(lecture, line, key)], from its location comments."""
+    places = list()
+    where = list()
+    for line in open(filename):
+        m = re.match(r"^% ((?:[\w.]+\.md:\d+)(?:, [\w.]+\.md:\d+)*)\s*$", line)
+        if m:
+            where = [w.split(":") for w in m.group(1).split(", ")]
+            continue
+        m = BIB_KEY.match(line)
+        if m and where:
+            for lecture, nr in where:
+                places.append((lecture, int(nr), m.group(1)))
+            where = list()
+    return places
+
+
+def cite_line(text, key):
+    """Rewrite the markdown links on one line to 'Title [@key]'.
+
+    The title stays as prose: in a Want-to-learn-more list it is the content,
+    and a bare marker would render on the web as a column of '[^12]'.
+    """
+    def swap(m):
+        label = m.group(1).strip()
+        # A handful of links use the URL itself as the label. Keeping that
+        # would leave a bare URL sitting in front of the citation.
+        if not label or re.match(r"^https?://", label):
+            return f"[@{key}]"
+        return f"{label} [@{key}]"
+    return MD_LINK.sub(swap, text, count=1)
+
+
+@cli.command()
+@click.option("--lectures", default="lectures", help="Directory holding the lectures")
+@click.option("--bib", default="pdf/aic.bib", help="Bibliography the keys must exist in")
+@click.option("--staged", default="pdf/incoming.bib",
+              help="File whose location comments say which key goes where")
+@click.option("--dry-run", is_flag=True, default=False, help="Show, do not write")
+def apply(lectures, bib, staged, dry_run):
+    """Replace resolved links with 'Title [@key]' in the lectures."""
+
+    known, _ = read_bib_keys(bib)
+    places = read_placements(staged)
+
+    missing = sorted({k for _, _, k in places if k not in known})
+    if missing:
+        for key in missing:
+            click.echo(f"  skip  {key} is not in {bib}", err=True)
+
+    edits = dict()
+    for lecture, nr, key in places:
+        if key in known:
+            edits.setdefault(lecture, dict())[nr] = key
+
+    changed = 0
+    for lecture in sorted(edits):
+        path = os.path.join(lectures, lecture)
+        lines = open(path).read().split("\n")
+        touched = 0
+        for nr, key in sorted(edits[lecture].items()):
+            before = lines[nr - 1]
+            after = cite_line(before, key)
+            if after != before:
+                lines[nr - 1] = after
+                touched += 1
+                if dry_run:
+                    click.echo(f"  {lecture}:{nr}\n    - {before.strip()[:96]}"
+                               f"\n    + {after.strip()[:96]}")
+        if touched and not dry_run:
+            with open(path, "w") as fo:
+                fo.write("\n".join(lines))
+        changed += touched
+        click.echo(f"{lecture:24s} {touched:3d} citations")
+
+    click.echo("")
+    click.echo(f"{changed} links rewritten" + (" (dry run)" if dry_run else ""))
+    if missing:
+        click.echo(f"{len(missing)} key(s) not in {bib}, left alone: "
+                   + ", ".join(missing))
+
+
 if __name__ == "__main__":
     cli()

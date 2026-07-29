@@ -496,7 +496,7 @@ electron. Injecting these elements into the silicon crystal
 lattice changes the number of free electron/holes.
 
 These days, we usually dope with [ion implantation](https://en.wikipedia.org/wiki/Ion_implantation), while in the olden days,
-most doping was done by [diffusion](https://ieeexplore.ieee.org/document/1050758). You'd paint something containing Boron on the
+most doping was done by diffusion [@masuhara76]. You'd paint something containing Boron on the
 silicon, and then heat it in a furnace to "diffuse" the Boron atoms into the
 silicon.
 
