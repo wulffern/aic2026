@@ -161,10 +161,10 @@
       the switch resistance.
     </li>
     <li>
-      Untick <b>start from steady state</b> and set <b>t_end</b> to its minimum,
-      around 10&nbsp;&micro;s &mdash; the notebook's own configuration. The
-      efficiency readout goes <em>negative</em> and the state readout says the
-      averages are unreliable. That is not a bug: the tank Q here is around a
+      Untick <b>start from steady state</b> and set <b>t_end</b> to its
+      minimum, around 10&nbsp;&micro;s. This is what the notebook used to do,
+      and the efficiency readout goes <em>negative</em> while the state readout
+      says the averages are unreliable. That is not a bug: the tank Q here is around a
       thousand, the inductor current is still swinging when the second half of
       the run begins, and averaging over a ring is not averaging over anything.
       Wind t_end up and watch the numbers become sensible.
@@ -219,10 +219,13 @@
     vo[i] = vo[i-1] + 1/C * ((ix[i] + ix[i-1])/2 - (io[i] + io[i-1])/2)*dt</code></pre>
   <p class="src">
     Source: <a href="https://github.com/wulffern/aic2026/blob/main/jupyter/buck.ipynb">jupyter/buck.ipynb</a>.
-    The integration is the notebook's, verbatim. The default t_end here is
-    longer than the notebook's so the converter has actually settled when the
-    averages are taken; the notebook's own value is at the bottom of the
-    slider. For the same power stage under a completely different control
+    The integration is the notebook's, verbatim. Building this page turned up a
+    real problem in that notebook, since fixed: it averaged over the second half
+    of a 10&nbsp;&micro;s run while R&middot;C is 1&nbsp;ms, so the tank was
+    still ringing and it printed a <em>negative</em> efficiency. Its
+    <code>settled</code> mode now starts at the operating point and runs long
+    enough to mean something. You can still reproduce the old behaviour here by
+    unticking the warm start and shortening t_end. For the same power stage under a completely different control
     scheme, see the <a href="buck-pfm.html">PFM buck</a>.
   </p>
 </div>

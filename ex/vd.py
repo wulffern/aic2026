@@ -33,7 +33,11 @@ def calc_ni(T):
 
     #http://apachepersonal.miun.se/~gorthu/halvledare/Effective%20mass%20in%20semiconductors.htm
     # According to above, the electron mass for density of states calculation is
-    mn = (0.98*0.19*0.19)**(1/3)*m0
+    # (m_l*m_t^2)^(1/3), but silicon has SIX equivalent conduction band minima
+    # and the density of states counts all of them, so the mass carries a
+    # factor 6^(2/3). Without it m_n* comes out 0.33*m0 instead of 1.08*m0 and
+    # n_i is a factor sqrt(6) too small.
+    mn = 6**(2/3)*(0.98*0.19*0.19)**(1/3)*m0
     mp = 0.81*m0 #- Assuming a heavy hole
 
 # The intrinsic carrier concentration depends on the fermi level and the density of states, which depends
