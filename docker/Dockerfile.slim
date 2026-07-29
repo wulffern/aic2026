@@ -1,0 +1,55 @@
+# Slim CI image: TeX Live 2022 scheme-small plus exactly the packages the
+# book (kaobook), the standalone chapters and the TikZ figures load, instead
+# of the ~5 GB texlive/texlive:TL2022-historic. Built to the 2026_slim tag by
+# docker.yaml; matrix_build/tikz switch to it only after a full Docs run has
+# passed on it (see build_plan.md item B).
+
+FROM debian:bookworm-slim
+
+RUN apt-get update && \
+    apt-get -y install --no-install-recommends \
+    ghostscript python3-pip poppler-utils pandoc wget imagemagick python3-svglib \
+    python3-venv build-essential pkg-config libcairo2-dev python3-dev librsvg2-bin \
+    git ca-certificates perl curl fontconfig unzip && \
+    apt-get autoremove -y && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
+# TeX Live 2022 from the historic archive, scheme-small (pdflatex + latex
+# recommended + fonts recommended), no docs or sources.
+RUN mkdir /tmp/install-tl && cd /tmp/install-tl && \
+    wget -q https://ftp.math.utah.edu/pub/tex/historic/systems/texlive/2022/install-tl-unx.tar.gz && \
+    tar xzf install-tl-unx.tar.gz --strip-components=1 && \
+    printf '%s\n' \
+      'selected_scheme scheme-small' \
+      'tlpdbopt_install_docfiles 0' \
+      'tlpdbopt_install_srcfiles 0' \
+      'tlpdbopt_autobackup 0' \
+      > texlive.profile && \
+    ./install-tl --profile=texlive.profile \
+      --repository=https://ftp.math.utah.edu/pub/tex/historic/systems/texlive/2022/tlnet-final && \
+    rm -rf /tmp/install-tl
+
+ENV PATH="/usr/local/texlive/2022/bin/x86_64-linux:${PATH}"
+
+# What kaobook, short_tmplt, pandoc output and the TikZ figures need beyond
+# scheme-small. Derived from \RequirePackage/\usepackage audits plus the
+# build logs; tlmgr resolves dependencies.
+RUN tlmgr --repository=https://ftp.math.utah.edu/pub/tex/historic/systems/texlive/2022/tlnet-final install \
+    koma-script sidenotes marginnote marginfix changepage placeins chngcntr \
+    footmisc footnotebackref footnotehyper fvextra imakeidx glossaries \
+    nomencl xindy makeindex etoc multirow wrapfig ccicons hyphenat needspace \
+    xifthen ifmtarg xstring xpatch options newpx fontaxes xkeyval tex-gyre \
+    tex-gyre-math beramono mathalfa cleveref varioref tcolorbox environ \
+    tikzfill pdfcol listings minted upquote lineno algorithm2e ifoddpage \
+    relsize morewrites afterpage perpage snotez zref dblfloatfix floatrow \
+    fontawesome5 rotating subfiles todonotes tikzpagenodes scrhack \
+    pgf circuitikz standalone svg trimspaces transparent catchfile \
+    booktabs longtable tabularray flafter caption biblatex biber logreq \
+    unicode-math fontspec lualatex-math csquotes ragged2e enumitem \
+    setspace parskip microtype xurl bookmark && \
+    tlmgr path add
+
+# Same python environment as the full image.
+COPY requirements-ci.txt /tmp/requirements-ci.txt
+RUN  python3 -m venv /pyenv && /pyenv/bin/python3 -m pip install -r /tmp/requirements-ci.txt
