@@ -1,0 +1,124 @@
+paper	lecture	line	section	text	url	existing_key
+ieee:1050758	l00_diode.md	499	Doping	diffusion	https://ieeexplore.ieee.org/document/1050758	
+ieee:1477063	l00_need_to_know.md	186	Simulate PN Junctions	https://ieeexplore.ieee.org/document/1477063	https://ieeexplore.ieee.org/document/1477063	
+ieee:1597006	l00_need_to_know.md	215	Current Mirrors	"High speed, high gain OTA in a digital 90nm CMOS technology" Berntsen, Wulff, Ytterdal, Norchip 2005	https://ieeexplore.ieee.org/document/1597006	
+ieee:7906479	l00_need_to_know.md	606	There are other types of logic	A Compiled 9-bit 20-MS/s 3.5-fJ/conv.step SAR ADC in 28-nm FDSOI for Bluetooth Low Energy Receivers	https://ieeexplore.ieee.org/document/7906479	wulff17
+ieee:7906479	l05_sc.md	1151	Switches	JSSC SAR	https://ieeexplore.ieee.org/document/7906479	wulff17
+ieee:7906479	l05_sc.md	1218	Want to learn more?	A Compiled 9-bit 20-MS/s 3.5-fJ/conv.step SAR ADC in 28-nm FDSOI for Bluetooth Low Energy Receivers	https://ieeexplore.ieee.org/document/7906479	wulff17
+ieee:7906479	l06_adc.md	125	What makes a state-of-the-art ADC	A Compiled 9-bit 20-MS/s 3.5-fJ/conv.step SAR ADC in 28-nm FDSOI for Bluetooth Low Energy Receivers	https://ieeexplore.ieee.org/document/7906479	wulff17
+ieee:7906479	l10_lpradio.md	929	ADC	A Compiled 9-bit 20-MS/s 3.5-fJ/conv.step SAR ADC in 28-nm FDSOI for Bluetooth Low Energy Receivers	https://ieeexplore.ieee.org/document/7906479	wulff17
+ieee:7906479	l10_lpradio.md	1071	Want to learn more?	A Compiled 9-bit 20-MS/s 3.5-fJ/conv.step SAR ADC in 28-nm FDSOI for Bluetooth Low Energy Recievers	https://ieeexplore.ieee.org/document/7906479	wulff17
+ieee:7906479	l12_chinf.md	71	[A Compiled 9-bit 20-MS/s 3.5-fJ/conv.step SAR ADC in 28-nm FDSOI for Bluetooth Low Energy Receivers](https://ieeexplore.ieee.org/document/7906479)	A Compiled 9-bit 20-MS/s 3.5-fJ/conv.step SAR ADC in 28-nm FDSOI for Bluetooth Low Energy Receivers	https://ieeexplore.ieee.org/document/7906479	wulff17
+ieee:7906479	lp_radio_guest.md	621	Want to learn more?	A Compiled 9-bit 20-MS/s 3.5-fJ/conv.step SAR ADC in 28-nm FDSOI for Bluetooth Low Energy Recievers	https://ieeexplore.ieee.org/document/7906479	wulff17
+ieee:7906479	lr0_logic.md	400	There are other types of logic	A Compiled 9-bit 20-MS/s 3.5-fJ/conv.step SAR ADC in 28-nm FDSOI for Bluetooth Low Energy Receivers	https://ieeexplore.ieee.org/document/7906479	wulff17
+ieee:1083221	l00_sv.md	170	Transient analog simulation	Gear	https://ieeexplore.ieee.org/document/1083221	
+ieee:1083221	l11_aver.md	328	Transient analog simulation	Gear	https://ieeexplore.ieee.org/document/1083221	
+ieee:9383810	l02_esd.md	63	What blocks must our IC include?	A BJT-based CMOS Temperature Sensor with Duty-cycle-modulated Output and ±0.54 °C (3-sigma) Inaccuracy from -40 °C to 125 °C	https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=9383810	
+ieee:5299049	l02_esd.md	597	The grounded gate NMOS	New Ballasting Layout Schemes to Improve ESD Robustness of I/O Buffers in Fully Silicided CMOS Process	https://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=5299049	
+ieee:5299049	l02_esd.md	608	The grounded gate NMOS	New Ballasting Layout Schemes to Improve ESD Robustness of I/O Buffers in Fully Silicided CMOS Process	https://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=5299049	
+ieee:4016442	l02_esd.md	821	Want to learn more?	ESD (Electrostatic Discharge) Protection Design for Nanoelectronics in CMOS Technology	https://ieeexplore.ieee.org/document/4016442	
+ieee:9998049	l02_esd.md	823	Want to learn more?	Overview on Latch-Up Prevention in CMOS Integrated Circuits by Circuit Solutions	https://ieeexplore.ieee.org/document/9998049	
+ieee:5688227	l02_esd.md	825	Want to learn more?	Overview on ESD Protection Designs of Low-Parasitic Capacitance for RF ICs in CMOS Technologies	https://ieeexplore.ieee.org/document/5688227	
+ieee:1050151	l03_refbias.md	359	Widlar reference	New developments in IC voltage regulators	https://ieeexplore.ieee.org/document/1050151	
+ieee:1050151	l03_refbias.md	1093	Want to learn more?	New developments in IC voltage regulators	https://ieeexplore.ieee.org/document/1050151	
+ieee:1050532	l03_refbias.md	433	Brokaw reference	A simple three-terminal IC bandgap reference	https://ieeexplore.ieee.org/document/1050532	
+ieee:1050532	l03_refbias.md	1095	Want to learn more?	A simple three-terminal IC bandgap reference	https://ieeexplore.ieee.org/document/1050532	
+ieee:760378	l03_refbias.md	520	Low voltage bandgap	A CMOS bandgap reference circuit with sub-1-V operation	https://ieeexplore.ieee.org/document/760378	
+ieee:760378	l03_refbias.md	1097	Want to learn more?	A CMOS bandgap reference circuit with sub-1-V operation	https://ieeexplore.ieee.org/document/760378	
+ieee:991391	l03_refbias.md	1099	Want to learn more?	A sub-1-V 15-ppm//spl deg/C CMOS bandgap voltage reference without requiring low threshold voltage device	https://ieeexplore.ieee.org/document/991391	
+ieee:7559954	l03_refbias.md	1101	Want to learn more?	The Bandgap Reference	https://ieeexplore.ieee.org/document/7559954	
+ieee:9523469	l03_refbias.md	1103	Want to learn more?	The Design of a Low-Voltage Bandgap Reference	https://ieeexplore.ieee.org/document/9523469	
+ieee:9989513	l04_afe.md	532	Finding a transconductor	A 77.3-dB SNDR 62.5-kHz Bandwidth Continuous-Time Noise-Shaping SAR ADC With Duty-Cycled Gm-C Integrator	https://ieeexplore.ieee.org/document/9989513	
+ieee:9989513	l04_afe.md	803	Want to learn more?	A 77.3-dB SNDR 62.5-kHz Bandwidth Continuous-Time Noise-Shaping SAR ADC With Duty-Cycled Gm-C Integrator	https://ieeexplore.ieee.org/document/9989513	
+https://ntnuopen.ntnu.no/ntnu-xmlui/handle/11250/2824253	l04_afe.md	536	Finding a transconductor	Design Considerations for a Low-Power Control-Bounded A/D Converter	https://ntnuopen.ntnu.no/ntnu-xmlui/handle/11250/2824253	
+https://ntnuopen.ntnu.no/ntnu-xmlui/handle/11250/2824253	l04_afe.md	805	Want to learn more?	Design Considerations for a Low-Power Control-Bounded A/D Converter	https://ntnuopen.ntnu.no/ntnu-xmlui/handle/11250/2824253	
+https://ntnuopen.ntnu.no/ntnu-xmlui/handle/11250/2824253	l06_adc.md	1213	Control-Bounded ADCs	Design Considerations for a Low-Power Control-Bounded A/D Converter	https://ntnuopen.ntnu.no/ntnu-xmlui/handle/11250/2824253	
+ieee:4381437	l04_afe.md	807	Want to learn more?	A 56 mW Continuous-Time Quadrature Cascaded Sigma-Delta Modulator With 77 dB DR in a Near Zero-IF 20 MHz Band	https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=4381437	
+ieee:1257061	l04_afe.md	809	Want to learn more?	Complex signal processing is not - complex	https://ieeexplore.ieee.org/document/1257061	
+ieee:8666017	l04_dac.md	331	References	A 28-nm 75-fsrms Analog Fractional-N Sampling PLL With a Highly Linear DTC Incorporating Background DTC Gain Calibration and Reference Clock Duty Cycle Correction	https://ieeexplore.ieee.org/document/8666017	
+ieee:5453302	l04_dac.md	333	References	A 10-bit Charge-Redistribution ADC Consuming 1.9 uW at 1 MS/s	https://ieeexplore.ieee.org/document/5453302	
+ieee:6587137	l04_dac.md	335	References	A 6.3 uW 20 bit Incremental Zoom-ADC with 6 ppm INL and 1 uV Offset	https://ieeexplore.ieee.org/document/6587137	
+ieee:6021346	l04_dac.md	337	References	A 12-Bit 1.25-GS/s DAC in 90 nm CMOS With >70 dB SFDR up to 500 MHz	https://ieeexplore.ieee.org/document/6021346	
+ieee:6919341	l04_mac.md	13		A 1 TOPS/W Analog Deep Machine-Learning Engine With Floating-Gate Storage in 0.13 µm CMOS	https://ieeexplore.ieee.org/document/6919341	
+https://arxiv.org/abs/1706.03762	l04_mac.md	37	Analog Neural Networks	Attention Is All You Need	https://arxiv.org/abs/1706.03762	
+ieee:8480105	l04_mac.md	285	Want to learn more?	An Always-On 3.8 u J/86 % CIFAR-10 Mixed-Signal Binary CNN Processor With All Memory on Chip in 28-nm CMOS	https://ieeexplore.ieee.org/document/8480105	
+ieee:9441013	l04_mac.md	287	Want to learn more?	CAP-RAM: A Charge-Domain In-Memory Computing 6T-SRAM for Accurate and Precision-Programmable CNN Inference	https://ieeexplore.ieee.org/document/9441013	
+ieee:9731654	l04_mac.md	289	Want to learn more?	ARCHON: A 332.7TOPS/W 5b Variation-Tolerant Analog CNN Processor Featuring Analog Neuronal Computation Unit and Analog Memory	https://ieeexplore.ieee.org/document/9731654	
+ieee:10129929	l04_mac.md	291	Want to learn more?	IMPACT: A 1-to-4b 813-TOPS/W 22-nm FD-SOI Compute-in-Memory CNN Accelerator Featuring a 4.2-POPS/W 146-TOPS/mm2 CIM-SRAM With Multi-Bit Analog Batch-Normalization	https://ieeexplore.ieee.org/document/10129929	
+ieee:1052843	l05_sc.md	313	An example SC circuit	A pipelined 5-Msample/s 9-bit analog-to-digital converter	https://ieeexplore.ieee.org/document/1052843	Lewis87
+ieee:4749297	l05_sc.md	593	Aliasing, bandwidth and sample rate theory	Blind Multiband Signal Reconstruction: Compressed Sensing for Analog Signal	https://ieeexplore.ieee.org/document/4749297	
+ieee:4749297	l05_sc.md	1214	Want to learn more?	Blind Multiband Signal Reconstruction: Compressed Sensing for Analog Signal	https://ieeexplore.ieee.org/document/4749297	
+https://link.springer.com/article/10.1007/s10470-010-9576-3	l05_sc.md	1079	OTA	comparator based SC circuits	https://link.springer.com/article/10.1007/s10470-010-9576-3	
+https://link.springer.com/article/10.1007/s10470-010-9576-3	l05_sc.md	1216	Want to learn more?	Comparator-based switched-capacitor pipelined analog-to-digital converter with comparator preset, and comparator delay compensation	https://link.springer.com/article/10.1007/s10470-010-9576-3	
+ieee:5437496	l05_sc.md	1220	Want to learn more?	A 10-bit 50-MS/s SAR ADC With a Monotonic Capacitor Switching Procedure	https://ieeexplore.ieee.org/document/5437496	liu10
+ieee:4768910	l05_sc.md	1222	Want to learn more?	Low Voltage, Low Power, Inverter-Based Switched-Capacitor Delta-Sigma Modulator	https://ieeexplore.ieee.org/document/4768910	
+ieee:6373760	l05_sc.md	1224	Want to learn more?	Ring Amplifiers for Switched Capacitor Circuits	https://ieeexplore.ieee.org/document/6373760	
+ieee:6009207	l05_sc.md	1226	Want to learn more?	A Switched-Capacitor RF Power Amplifier	https://ieeexplore.ieee.org/document/6009207	
+ieee:6650076	l05_sc.md	1228	Want to learn more?	Design of Active N-Path Filters	https://ieeexplore.ieee.org/document/6650076	
+ieee:761034	l06_adc.md	53	ADC state-of-the-art	1999, R. Walden: Analog-to-digital converter survey and analysis	https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=761034	
+ieee:1164729	l06_adc.md	390	Quantization	The intermodulation and distortion due to quantization of sinusoids	https://ieeexplore.ieee.org/document/1164729	
+ieee:4783042	l06_adc.md	1151	Open-Loop Sigma-Delta	Resonators in Open-Loop Sigma-Delta Modulators	https://ieeexplore.ieee.org/document/4783042	
+ieee:9056925	l06_adc.md	1176	Noise Shaped SAR	A 68 dB SNDR Compiled Noise-Shaping SAR ADC With On-Chip CDAC Calibration	https://ieeexplore.ieee.org/document/9056925/	garvik19
+ieee:9056925	l10_lpradio.md	915	ADC	A 68 dB SNDR Compiled Noise-Shaping SAR ADC With On-Chip CDAC Calibration	https://ieeexplore.ieee.org/document/9056925	garvik19
+ieee:9056925	l10_lpradio.md	1069	Want to learn more?	A 68 dB SNDR Compiled Noise-Shaping SAR ADC With On-Chip CDAC Calibration	https://ieeexplore.ieee.org/document/9056925	garvik19
+ieee:9056925	lp_radio_guest.md	543	ADC	A 68 dB SNDR Compiled Noise-Shaping SAR ADC With On-Chip CDAC Calibration	https://ieeexplore.ieee.org/document/9056925	garvik19
+ieee:9056925	lp_radio_guest.md	619	Want to learn more?	A 68 dB SNDR Compiled Noise-Shaping SAR ADC With On-Chip CDAC Calibration	https://ieeexplore.ieee.org/document/9056925	garvik19
+ieee:90025	l06_adc.md	1279	Want to learn more?	The design of sigma-delta modulation analog-to-digital converters	https://ieeexplore.ieee.org/document/90025	
+ieee:229400	l06_adc.md	1281	Want to learn more?	Delta-sigma modulation in fractional-N frequency synthesis	https://ieeexplore.ieee.org/document/229400	
+ieee:6323049	l06_adc.md	1283	Want to learn more?	A CMOS Temperature Sensor With a Voltage-Calibrated Inaccuracy of ± 0.15 C (3sigma) From -55 Cto 125 C	https://ieeexplore.ieee.org/document/6323049	
+ieee:4014623	l06_adc.md	1285	Want to learn more?	A 20-mW 640-MHz CMOS Continuous-Time Sigma-Delta ADC With 20-MHz Signal Bandwidth, 80-dB Dynamic Range and 12-bit ENOB	https://ieeexplore.ieee.org/document/4014623	
+ieee:7078971	l06_adc.md	1287	Want to learn more?	A Micro-Power Two-Step Incremental Analog-to-Digital Converter	https://ieeexplore.ieee.org/document/7078971	
+ieee:5247174	l07_vreg.md	92	Voltage source	Analog Circuit Design in Nanoscale CMOS Technologies	https://ieeexplore.ieee.org/document/5247174	lewyn09
+ieee:6193402	l07_vreg.md	110	Why transistors die	Metal-Oxide RRAM	https://ieeexplore.ieee.org/document/6193402	
+ieee:4419069	l07_vreg.md	133	Why transistors die	Simultaneous Extraction of Recoverable and Permanent Components Contributing to Bias-Temperature Instability	https://ieeexplore.ieee.org/document/4419069	
+ieee:8187654	l07_vreg.md	430	Principles of switched regulators	A 10-MHz 2–800-mA 0.5–1.5-V 90% Peak Efficiency Time-Based Buck Converter With Seamless Transition Between PWM/PFM Modes	https://ieeexplore.ieee.org/document/8187654	
+ieee:8187654	l07_vreg.md	743	DC-DC converters	A 10-MHz 2–800-mA 0.5–1.5-V 90% Peak Efficiency Time-Based Buck Converter With Seamless Transition Between PWM/PFM Modes	https://ieeexplore.ieee.org/document/8187654	
+ieee:9639005	l07_vreg.md	722	Linear regulators	A Scalable High-Current High-Accuracy Dual-Loop Four-Phase Switching LDO for Microprocessors	https://ieeexplore.ieee.org/document/9639005	
+ieee:4436075	l07_vreg.md	724	Linear regulators	Development of Single-Transistor-Control LDO Based on Flipped Voltage Follower for SoC	https://ieeexplore.ieee.org/document/4436075	
+ieee:7740906	l07_vreg.md	726	Linear regulators	A 200-mA Digital Low Drop-Out Regulator With Coarse-Fine Dual Loop in Mobile Application Processor	https://ieeexplore.ieee.org/document/7740906	
+ieee:5948387	l07_vreg.md	731	DC-DC converters	Design Techniques for Fully Integrated Switched-Capacitor DC-DC Converters	https://ieeexplore.ieee.org/document/5948387	
+ieee:6998097	l07_vreg.md	735	DC-DC converters	High Frequency Buck Converter Design Using Time-Based Control Techniques	https://ieeexplore.ieee.org/document/6998097	
+ieee:4804971	l07_vreg.md	739	DC-DC converters	Single-Inductor Multi-Output (SIMO) DC-DC Converters With High Light-Load Efficiency and Minimized Cross-Regulation for Portable Devices	https://ieeexplore.ieee.org/document/4804971	
+ieee:1261283	l07_vreg.md	746	DC-DC converters	A monolithic current-mode CMOS DC-DC converter with on-chip current-sensing technique	https://ieeexplore.ieee.org/document/1261283	
+https://ntnuopen.ntnu.no/ntnu-xmlui/handle/11250/2778127	l08_pll.md	646	Want to learn more?	Ultra Low Power Frequency Synthesizer	https://ntnuopen.ntnu.no/ntnu-xmlui/handle/11250/2778127	
+ieee:5342373	l08_pll.md	649	Want to learn more?	A Low Noise Sub-Sampling PLL in Which Divider Noise is Eliminated and PD/CP Noise is Not Multiplied by N2	https://ieeexplore.ieee.org/document/5342373	
+ieee:1546223	l08_pll.md	652	Want to learn more?	All-digital PLL and transmitter for mobile phones	https://ieeexplore.ieee.org/document/1546223	
+ieee:6006551	l08_pll.md	655	Want to learn more?	A 2.9–4.0-GHz Fractional-N Digital PLL With Bang-Bang Phase Detector and 560-fsrms Integrated Jitter at 4.5-mW Power	https://ieeexplore.ieee.org/document/6006551	
+ieee:7954123	l09_osc.md	240	Impedance	The Crystal Oscillator	https://ieeexplore.ieee.org/document/7954123	
+ieee:7954123	l09_osc.md	619	Crystal oscillators	The Crystal Oscillator - A Circuit for All Seasons	https://ieeexplore.ieee.org/document/7954123	
+ieee:318	l09_osc.md	621	Crystal oscillators	High-performance crystal oscillator circuits: theory and application	https://ieeexplore.ieee.org/document/318	
+ieee:9542926	l09_osc.md	623	Crystal oscillators	Ultra-low Power 32kHz Crystal Oscillators: Fundamentals and Design Techniques	https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=9542926	
+ieee:9173539	l09_osc.md	625	Crystal oscillators	A Sub-nW Single-Supply 32-kHz Sub-Harmonic Pulse Injection Crystal Oscillator	https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=9173539	
+ieee:8901474	l09_osc.md	632	CMOS oscillators	The Ring Oscillator - A Circuit for All Seasons	https://ieeexplore.ieee.org/document/8901474	
+ieee:494195	l09_osc.md	634	CMOS oscillators	A Study of Phase Noise in CMOS Oscillators	https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=494195	
+ieee:9081906	l09_osc.md	636	CMOS oscillators	An Ultra-Low-Noise Swing-Boosted Differential Relaxation Oscillator in 0.18-um CMOS	https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=9081906	
+ieee:9063021	l10_lpradio.md	819	LNTA	30.5 A 0.5V BLE Transceiver with a 1.9mW RX Achieving -96.4dBm Sensitivity and 4.1dB Adjacent Channel Rejection at 1MHz Offset in 22nm FDSOI	https://ieeexplore.ieee.org/document/9063021	
+ieee:9063021	l10_lpradio.md	1065	Want to learn more?	A 0.5V BLE Transceiver with a 1.9mW RX Achieving -96.4dBm Sensitivity and 4.1dB Adjacent Channel Rejection at 1MHz Offset in 22nm FDSOI	https://ieeexplore.ieee.org/document/9063021	
+ieee:9063021	lp_radio_guest.md	447	LNTA	30.5 A 0.5V BLE Transceiver with a 1.9mW RX Achieving -96.4dBm Sensitivity and 4.1dB Adjacent Channel Rejection at 1MHz Offset in 22nm FDSOI	https://ieeexplore.ieee.org/document/9063021	
+ieee:9063021	lp_radio_guest.md	615	Want to learn more?	A 0.5V BLE Transceiver with a 1.9mW RX Achieving -96.4dBm Sensitivity and 4.1dB Adjacent Channel Rejection at 1MHz Offset in 22nm FDSOI	https://ieeexplore.ieee.org/document/9063021	
+ieee:1333231	l10_lpradio.md	846	MIXER	Complex signal processing is not complex	https://ieeexplore.ieee.org/document/1333231	
+ieee:1333231	lp_radio_guest.md	474	MIXER	Complex signal processing is not complex	https://ieeexplore.ieee.org/document/1333231	
+ieee:9062973	l10_lpradio.md	854	MIXER	A 370uW 5.5dB-NF BLE/BT5.0/IEEE 802.15.4-Compliant Receiver with >63dB Adjacent Channel Rejection at >2 Channels Offset in 22nm FDSOI	https://ieeexplore.ieee.org/document/9062973/	
+ieee:9062973	l10_lpradio.md	1067	Want to learn more?	A 370uW 5.5dB-NF BLE/BT5.0/IEEE 802.15.4-Compliant Receiver with >63dB Adjacent Channel Rejection at >2 Channels Offset in 22nm FDSOI	https://ieeexplore.ieee.org/document/9062973/	
+ieee:9062973	lp_radio_guest.md	482	MIXER	A 370uW 5.5dB-NF BLE/BT5.0/IEEE 802.15.4-Compliant Receiver with >63dB Adjacent Channel Rejection at >2 Channels Offset in 22nm FDSOI	https://ieeexplore.ieee.org/document/9062973/	
+ieee:9062973	lp_radio_guest.md	617	Want to learn more?	A 370uW 5.5dB-NF BLE/BT5.0/IEEE 802.15.4-Compliant Receiver with >63dB Adjacent Channel Rejection at >2 Channels Offset in 22nm FDSOI	https://ieeexplore.ieee.org/document/9062973/	
+https://doi.org/10.1017/9781108626200	l10_lpradio.md	1077	Want to learn more?	Design of CMOS Phase-Locked Loops	https://doi.org/10.1017/9781108626200	
+https://doi.org/10.1017/9781108626200	lp_radio_guest.md	627	Want to learn more?	Design of CMOS Phase-Locked Loops	https://doi.org/10.1017/9781108626200	
+ieee:8016485	lr0_circuits.md	193	Option 1: Full freedom	Nanoscale MOSFET Modeling: Part 1	https://ieeexplore.ieee.org/document/8016485	
+ieee:8110872	lr0_circuits.md	194	Option 1: Full freedom	Nanoscale MOSFET Modeling: Part 2	https://ieeexplore.ieee.org/document/8110872	
+ieee:9523464	lr0_circuits.md	468	Amplifiers	Fifty Nifty Variations of Two-Transistor Circuits: A tribute to the versatility of MOSFETs	https://ieeexplore.ieee.org/document/9523464	
+ieee:9523464	lr0_circuits.md	479	Amplifiers	Fifty Nifty Variations of Two-Transistor Circuits: A tribute to the versatility of MOSFETs	https://ieeexplore.ieee.org/document/9523464	
+ieee:4242465	lr0_circuits.md	567	Why use a source follower?	A 92.5mW 205MS/s 10b Pipeline IF ADC Implemented in 1.2V/3.3V 0.13um CMOS	https://ieeexplore.ieee.org/document/4242465	
+ieee:8310273	lx_energysrc.md	74	Lithium Battery	0.6 fJ/conv.step	https://ieeexplore.ieee.org/document/8310273	
+ieee:8762143	lx_energysrc.md	82	Lithium Battery	Towards a Green and Self-Powered Internet of Things Using Piezoelectric Energy Harvesting	https://ieeexplore.ieee.org/document/8762143	
+ieee:8762143	lx_energysrc.md	735	Want to learn more?	Towards a Green and Self-Powered Internet of Things Using Piezoelectric Energy Harvesting	https://ieeexplore.ieee.org/document/8762143	
+ieee:9302641	lx_energysrc.md	297	[Thermoelectric generators](https://en.wikipedia.org/wiki/Thermoelectric_generator)	A 3.5-mV Input Single-Inductor Self-Starting Boost Converter With Loss-Aware MPPT for Efficient Autonomous Body-Heat Energy Harvesting	https://ieeexplore.ieee.org/document/9302641	
+ieee:9302641	lx_energysrc.md	737	Want to learn more?	A 3.5-mV Input Single-Inductor Self-Starting Boost Converter With Loss-Aware MPPT for Efficient Autonomous Body-Heat Energy Harvesting	https://ieeexplore.ieee.org/document/9302641	
+ieee:9423810	lx_energysrc.md	430	!/usr/bin/env python3	A Reconfigurable Capacitive Power Converter With Capacitance Redistribution for Indoor Light-Powered Batteryless Internet-of-Things Devices	https://ieeexplore.ieee.org/abstract/document/9423810	
+ieee:9423810	lx_energysrc.md	739	Want to learn more?	A Reconfigurable Capacitive Power Converter With Capacitance Redistribution for Indoor Light-Powered Batteryless Internet- of-Things Devices	https://ieeexplore.ieee.org/abstract/document/9423810	
+ieee:8642406	lx_energysrc.md	483	[Piezoelectric](https://en.wikipedia.org/wiki/Piezoelectricity)	A Fully Integrated Split-Electrode SSHC Rectifier for Piezoelectric Energy Harvesting	https://ieeexplore.ieee.org/document/8642406	
+ieee:8642406	lx_energysrc.md	741	Want to learn more?	A Fully Integrated Split-Electrode SSHC Rectifier for Piezoelectric Energy Harvesting	https://ieeexplore.ieee.org/document/8642406	
+ieee:9729411	lx_energysrc.md	631	Triboelectric generator	Current progress on power management systems for triboelectric nanogenerators	https://ieeexplore.ieee.org/document/9729411	
+ieee:9729411	lx_energysrc.md	743	Want to learn more?	Current progress on power management systems for triboelectric nanogenerators	https://ieeexplore.ieee.org/document/9729411	
+ieee:9441315	lx_energysrc.md	643	Triboelectric generator	A Fully Energy-Autonomous Temperature-to-Time Converter Powered by a Triboelectric Energy Harvester for Biomedical Applications	https://ieeexplore.ieee.org/document/9441315	
+ieee:9441315	lx_energysrc.md	745	Want to learn more?	A Fully Energy-Autonomous Temperature-to-Time Converter Powered by a Triboelectric Energy Harvester for Biomedical Applications	https://ieeexplore.ieee.org/document/9441315	
