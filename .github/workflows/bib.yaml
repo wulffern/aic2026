@@ -88,7 +88,9 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-          git add -- pdf/link_candidates.tsv
+          # -f: .gitignore has a blanket 'pdf/', and git add refuses a path
+          # inside an ignored directory even when the file is tracked.
+          git add -f -- pdf/link_candidates.tsv
 
           if git diff --cached --quiet; then
             echo "Candidate list unchanged, nothing to commit."
@@ -185,7 +187,8 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-          git add -- pdf/incoming.bib pdf/link_unresolved.tsv
+          # -f, same reason as the scan job: 'pdf/' is gitignored wholesale.
+          git add -f -- pdf/incoming.bib pdf/link_unresolved.tsv
 
           if git diff --cached --quiet; then
             echo "Staged entries unchanged, nothing to commit."

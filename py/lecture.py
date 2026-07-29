@@ -170,8 +170,9 @@ class Image():
         self.isUrl = False
         self.abstmp = os.path.abspath(os.path.normpath(options["dir"] +  "/../pdf/media")) + "/"
 
-        if(not os.path.exists(self.abstmp)):
-            os.makedirs(self.abstmp)
+        # exist_ok, not a prior exists() check: posts-parallel runs four
+        # workers and they raced here, one of them dying with FileExistsError.
+        os.makedirs(self.abstmp, exist_ok=True)
 
 
         if("/ip/" in self.src and "allowIP" not in self.options):
