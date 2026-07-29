@@ -16,6 +16,13 @@
 % The z^{-1} is the point of the drawing: the output is only valid in the phase
 % after the sample.
 %
+% NOTE ON POLARITY: the source artwork marks + on the LEFT input and - on the
+% RIGHT, the same error as the l3_ptat, l3_ptat1 and l3_ptat2 artwork. It is
+% backwards. Rising current raises the right-hand node by I*R more than it
+% raises the left, so + must sit on the right branch for the amplifier to push
+% the mirror gates up and pull the current back down; with + on the left the
+% loop runs away. Drawn here with + on the right, matching l03_ptat.
+%
 % The amplifier is drawn point-up as in the original, which is why it is four
 % \draw lines rather than a circuitikz op amp: the circuitikz symbol rotates its
 % own + and - labels with it and comes out unreadable.
@@ -62,8 +69,8 @@
 
   % ---- Amplifier, point up, output into the gates ----
   \draw[thick] (1.3,3.9) -- (3.1,3.9) -- (2.2,5.5) -- cycle;
-  \node[anchor=south west] at (1.36,3.92) {$+$};
-  \node[anchor=south east] at (3.04,3.92) {$-$};
+  \node[anchor=south west] at (1.36,3.92) {$-$};
+  \node[anchor=south east] at (3.04,3.92) {$+$};
   \draw[thick] (1.6,3.9) -- (1.6,\exYp) -- (\exXl,\exYp);
   \draw[thick] (2.8,3.9) -- (2.8,\exYp) -- (\exXr,\exYp);
 

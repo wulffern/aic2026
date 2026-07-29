@@ -368,10 +368,14 @@ The queue in this document was **not exhaustive**: five schematics it never
 listed (`l3_brokaw`, `l3_ptat`, `l3_ptat1`, `l3_ptat2`, `l3_ptat3`) were found
 only by listing the lecture's figures directly.
 
-The `l3_ptat`, `l3_ptat1` and `l3_ptat2` artwork marks the OTA polarity
-backwards: + on the left input, - on the right. Rising current raises the
-right-hand node by I*R1 more than the left, so + belongs on the right for the
-loop to settle. The redraws correct this.
+The `l3_ptat`, `l3_ptat1`, `l3_ptat2` and `l5_scex` artwork marks the OTA
+polarity backwards: + on the left input, - on the right. Rising current raises
+the right-hand node by I*R1 more than the left, so + belongs on the right for
+the loop to settle. The redraws correct this. `l5_scex` first shipped with the
+artwork's polarity copied straight over, because this note was not checked
+against a figure in another lecture that happens to contain the same core.
+**Any figure containing a diode-ratio reference has this to check**, not just
+the `l03_refbias` ones.
 
 Before starting any lecture, list its figures with
 `grep -o '](\.\./media/[^)]*)' lectures/<lecture>.md` and triage them, rather
