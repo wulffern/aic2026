@@ -37,14 +37,14 @@
 \newcommand{\scSwClosed}[2]{\draw[axisblue, thick] (#1,#2) -- (#1+1.0,#2);}
 
 % Everything l5_scintro1 and l5_scintro2 have in common. The caller fills the
-% C1-to-OTA gap (2.8..3.8 at \scYin) and the short over C2 (4.8..5.8 at
+% C1-to-OTA gap (2.6..3.6 at \scYin) and the short over C2 (4.8..5.8 at
 % \scYsh) with either \scSwClosed or \scSwOpen.
 \newcommand{\scIntroFrame}{%
   % C1, plus its return along the ground rail
   \draw[axisblue, thick] (0.6,\scYin) \hcapacitor{};
   \draw[axisblue, thick] (0.6,\scYin) -- (0.0,\scYin) -- (0.0,\scYgnd) -- (3.4,\scYgnd);
-  \draw[axisblue, thick] (2.2,\scYin) -- (2.8,\scYin);
-  \draw[axisblue, thick] (3.8,\scYin) -- (\scXota,\scYin);
+  \draw[axisblue, thick] (2.2,\scYin) -- (2.6,\scYin);
+  \draw[axisblue, thick] (3.6,\scYin) -- (\scXota,\scYin);
   \node[capgreen, anchor=north] at (1.4,\scYin-0.28) {$C_{1}$};
   \node[polred, anchor=east]    at (0.5,\scYin+0.42) {$+$};
   \node[polred, anchor=west]    at (2.3,\scYin+0.42) {$-$};
