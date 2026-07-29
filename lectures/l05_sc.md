@@ -914,7 +914,7 @@ For charge to be conserved the clocks for the switch phases must never be high a
 
 -->
 
-![right fit](../media/l5_scfig.svg)
+![right fit](../media/l5_scfig_tikz.pdf)
 
 ---
 
@@ -957,7 +957,7 @@ is feedback to control the voltage swing at the output of the OTA.
 
 -->
 
-![right fit](../media/l5_scifig.svg)
+![right fit](../media/l5_scifig_tikz.pdf)
 
 ---
 

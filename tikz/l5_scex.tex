@@ -1,0 +1,146 @@
+\input{tikz/fig_header.tex}
+
+% The worked example: a PTAT voltage amplified by a switched capacitor gain
+% stage.
+%
+% Left is the same core as l3_ptat. The amplifier forces the two diode currents
+% to sit at the same node voltage, so the resistor carries
+% V_I = (kT/q) ln(N), the difference between the two junction voltages.
+%
+% Right is a fully differential gain stage. Phase 1 samples V_I onto C_1 and
+% resets C_2; phase 2 shorts the C_1 left plates together, so all of the charge
+% on C_1 is pushed into C_2 and the output is
+%
+%   V_O(z) = (C_1/C_2) (kT/q) ln(N) z^{-1} = 10 (kT/q) ln(N) z^{-1}.
+%
+% The z^{-1} is the point of the drawing: the output is only valid in the phase
+% after the sample.
+%
+% The amplifier is drawn point-up as in the original, which is why it is four
+% \draw lines rather than a circuitikz op amp: the circuitikz symbol rotates its
+% own + and - labels with it and comes out unreadable.
+%
+% The differential amplifier on the right has its + output on the row of its
+% - input, which is the usual way to draw a fully differential stage: it lets
+% each feedback capacitor run straight across without a crossing.
+
+\newcommand{\exYp}{3.6}          % the + signal rail
+\newcommand{\exYm}{2.0}          % the - signal rail
+\newcommand{\exXl}{1.0}          % left branch
+\newcommand{\exXr}{3.4}          % right branch
+
+\newcommand{\exPort}[3]{%
+  \draw[thick] (#1) circle (0.09);
+  \node[anchor=#2] at (#1) {#3};
+}
+
+\begin{circuitikz}[american, transform shape]
+
+  \input{tikz/sc_lib.tex}
+
+  % ================= PTAT core =================
+
+  % ---- Supply ----
+  \draw[thick] (0.4,7.5) -- (4.0,7.5) node[anchor=west] {$V_{DD}$};
+
+  % ---- Mirror pair, gates tied, driven by the amplifier ----
+  \draw[thick] (\exXl,5.9) to [Tpmos, n=ML, mirror] (\exXl,7.1);
+  \draw[thick] (\exXr,5.9) to [Tpmos, n=MR] (\exXr,7.1);
+  \draw[thick] (\exXl,7.1) -- (\exXl,7.5);
+  \draw[thick] (\exXr,7.1) -- (\exXr,7.5);
+  \draw[thick] (ML.gate) -- (MR.gate);
+  \fill (2.2,6.5) circle (0.07);
+  \draw[thick] (2.2,6.5) -- (2.2,5.5);
+
+  % ---- Amplifier, point up, output into the gates ----
+  \draw[thick] (1.3,3.9) -- (3.1,3.9) -- (2.2,5.5) -- cycle;
+  \node[anchor=south west] at (1.36,3.92) {$+$};
+  \node[anchor=south east] at (3.04,3.92) {$-$};
+  \draw[thick] (1.6,3.9) -- (1.6,\exYp) -- (\exXl,\exYp);
+  \draw[thick] (2.8,3.9) -- (2.8,\exYp);
+
+  % ---- Left branch: one diode ----
+  \draw[thick] (\exXl,5.9) -- (\exXl,1.7);
+  \fill (\exXl,\exYp) circle (0.07);
+  \draw[thick] (\exXl,1.7) to [D] (\exXl,0.4);
+  \draw[thick] (\exXl,0.4) node[ground] {};
+
+  % ---- Right branch: the resistor, then N diodes ----
+  \draw[thick] (\exXr,5.9) -- (\exXr,\exYp);
+  \fill (\exXr,\exYp) circle (0.07);
+  \draw[thick] (\exXr,\exYp) to [R] (\exXr,\exYm);
+  \node[anchor=east] at (\exXr-0.35,2.8) {$V_{I}$};
+  \node[anchor=east] at (\exXr-0.12,\exYp-0.28) {$+$};
+  \node[anchor=east] at (\exXr-0.12,\exYm+0.28) {$-$};
+  \fill (\exXr,\exYm) circle (0.07);
+  \draw[thick] (\exXr,\exYm) -- (\exXr,1.7);
+  \draw[thick] (\exXr,1.7) to [D] (\exXr,0.4);
+  \draw[thick] (\exXr,0.4) node[ground] {};
+  \node[anchor=south] at (2.2,0.7) {$1 : N$};
+
+  % ================= Switched capacitor gain stage =================
+
+  % ---- Sample V_I onto C_1 in phase 1 ----
+  \draw[thick] (\exXr,\exYp) -- (5.0,\exYp);
+  \scSwH{5.0}{\exYp}{1}
+  \draw[thick] (6.0,\exYp) -- (7.2,\exYp);
+  \draw[thick] (\exXr,\exYm) -- (5.0,\exYm);
+  \scSwH{5.0}{\exYm}{1}
+  \draw[thick] (6.0,\exYm) -- (7.2,\exYm);
+
+  % ---- Phase 2 shorts the two left plates, dumping the charge into C_2 ----
+  \fill (6.6,\exYp) circle (0.07);
+  \fill (6.6,\exYm) circle (0.07);
+  \draw[thick] (6.6,\exYp) -- (6.6,\exYp-0.3);
+  \scSwV{6.6}{\exYp-0.3}{2}
+  \draw[thick] (6.6,\exYp-1.3) -- (6.6,\exYm);
+
+  % ---- C_1 ----
+  \draw[thick] (7.2,\exYp) to [C] (8.4,\exYp);
+  \draw[thick] (7.2,\exYm) to [C] (8.4,\exYm);
+  \node[anchor=east] at (7.1,2.8) {$C_{1} = 1\,\mathrm{pF}$};
+
+  % ---- The differential amplifier ----
+  \draw[thick] (9.9,1.2) -- (11.3,1.2) -- (11.6,1.6) -- (11.6,4.0)
+    -- (11.3,4.4) -- (9.9,4.4) -- (9.6,4.0) -- (9.6,1.6) -- cycle;
+  \node[anchor=west] at (9.75,\exYp) {$-$};
+  \node[anchor=east] at (11.45,\exYp) {$+$};
+  \node[anchor=west] at (9.75,\exYm) {$+$};
+  \node[anchor=east] at (11.45,\exYm) {$-$};
+  \draw[thick] (8.4,\exYp) -- (9.6,\exYp);
+  \draw[thick] (8.4,\exYm) -- (9.6,\exYm);
+
+  % ---- Feedback: C_2, shorted out in phase 1 ----
+  \fill (9.0,\exYp) circle (0.07);
+  \draw[thick] (9.0,\exYp) -- (9.0,5.9);
+  \fill (9.0,5.0) circle (0.07);
+  \scSwH{9.0}{5.0}{1}
+  \draw[thick] (10.0,5.0) -- (12.4,5.0);
+  \fill (12.4,5.0) circle (0.07);
+  \draw[thick] (9.0,5.9) -- (10.2,5.9);
+  \draw[thick] (10.2,5.9) to [C] (11.4,5.9);
+  \draw[thick] (11.4,5.9) -- (12.4,5.9) -- (12.4,\exYp);
+  \node[anchor=south] at (10.8,6.05) {$C_{2} = 100\,\mathrm{fF}$};
+
+  \fill (9.0,\exYm) circle (0.07);
+  \draw[thick] (9.0,\exYm) -- (9.0,-0.3);
+  \fill (9.0,0.6) circle (0.07);
+  \scSwH{9.0}{0.6}{1}
+  \draw[thick] (10.0,0.6) -- (12.4,0.6);
+  \fill (12.4,0.6) circle (0.07);
+  \draw[thick] (9.0,-0.3) -- (10.2,-0.3);
+  \draw[thick] (10.2,-0.3) to [C] (11.4,-0.3);
+  \draw[thick] (11.4,-0.3) -- (12.4,-0.3) -- (12.4,\exYm);
+  \node[anchor=north] at (10.8,-0.45) {$C_{2} = 100\,\mathrm{fF}$};
+
+  % ---- Output ----
+  \draw[thick] (11.6,\exYp) -- (13.5,\exYp);
+  \fill (12.4,\exYp) circle (0.07);
+  \exPort{13.6,\exYp}{west}{\;$+$}
+  \draw[thick] (11.6,\exYm) -- (13.5,\exYm);
+  \fill (12.4,\exYm) circle (0.07);
+  \exPort{13.6,\exYm}{west}{\;$-$}
+  \node[anchor=west] at (14.1,2.8) {$V_{O}$};
+
+\end{circuitikz}
+\end{document}

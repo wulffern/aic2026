@@ -1,0 +1,64 @@
+\input{tikz/fig_header.tex}
+
+% The fully differential bootstrapped switch used in the JSSC SAR.
+%
+% Two of the bootstrapped switches from l5_sw2, one per side, plus a pair of
+% cross coupled dummies. The dummies are permanently off -- their gates are
+% grounded -- so they contribute nothing but capacitance. Wiring one from A_p
+% to B_n and the other from A_n to B_p makes that capacitance cancel the
+% feedthrough of the main devices in the differential signal, which is the
+% signal the converter actually uses.
+%
+% The block itself is in tikz/boot_lib.tex, shared with l5_sw2.
+%
+% The lower half is drawn below its own rail rather than above it. The original
+% points both networks upward, which leaves the lower one sitting in the middle
+% of the figure with the wires to the dummies squeezing past it. Mirroring it
+% costs nothing -- the circuit is symmetric -- and gives the dummies the whole
+% middle of the drawing.
+
+\newcommand{\swtYp}{3.0}         % the p-side rail
+\newcommand{\swtYn}{-3.0}        % the n-side rail
+\newcommand{\swtYdp}{1.0}        % the p-side dummy
+\newcommand{\swtYdn}{-1.0}       % the n-side dummy
+
+\begin{circuitikz}[american, transform shape]
+
+  \input{tikz/boot_lib.tex}
+
+  % ---- The two bootstrapped switches ----
+  \begin{scope}[shift={(0,\swtYp)}]
+    \bootBlock{MP}
+  \end{scope}
+  \begin{scope}[shift={(0,\swtYn)}]
+    \bootBlockDn{MN}
+  \end{scope}
+
+  % ---- Terminals ----
+  \bootPort{-3.3,\swtYp}{east}{$A_{p}$\;}
+  \bootPort{-3.3,\swtYn}{east}{$A_{n}$\;}
+  \bootPort{6.9,\swtYp}{west}{\;$B_{p}$}
+  \bootPort{6.9,\swtYn}{west}{\;$B_{n}$}
+
+  % ---- Each input also feeds a dummy ----
+  \fill (-2.4,\swtYp) circle (0.07);
+  \draw[thick] (-2.4,\swtYp) -- (-2.4,\swtYdp) -- (2.9,\swtYdp);
+  \fill (-2.4,\swtYn) circle (0.07);
+  \draw[thick] (-2.4,\swtYn) -- (-2.4,\swtYdn) -- (2.9,\swtYdn);
+
+  % ---- The dummies, gates grounded so they never turn on ----
+  \draw[thick] (2.9,\swtYdp) to [Tnmos, n=DP] (4.5,\swtYdp);
+  \draw[thick] (DP.gate) -- (3.7,2.0) -- (4.0,2.0);
+  \draw[thick] (4.0,2.0) node[ground, rotate=90] {};
+  \draw[thick] (2.9,\swtYdn) to [Tnmos, n=DN, mirror] (4.5,\swtYdn);
+  \draw[thick] (DN.gate) -- (3.7,-2.0) -- (4.0,-2.0);
+  \draw[thick] (4.0,-2.0) node[ground, rotate=90] {};
+
+  % ---- Cross coupled: p-side dummy to B_n, n-side dummy to B_p ----
+  \draw[thick] (4.5,\swtYdp) -- (5.1,\swtYdp) -- (5.9,\swtYdn) -- (5.9,\swtYn);
+  \fill (5.9,\swtYn) circle (0.07);
+  \draw[thick] (4.5,\swtYdn) -- (5.1,\swtYdn) -- (5.9,\swtYdp) -- (5.9,\swtYp);
+  \fill (5.9,\swtYp) circle (0.07);
+
+\end{circuitikz}
+\end{document}
