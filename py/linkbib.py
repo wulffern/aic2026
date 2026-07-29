@@ -52,7 +52,7 @@ BIB_FIELD = re.compile(r'^\s*([a-zA-Z]+)\s*=\s*"?(.*?)"?\s*,?\s*$')
 TITLE_THRESHOLD = 0.90
 
 # Order fields the way the existing entries do.
-FIELD_ORDER = ("author", "title", "journal", "booktitle", "school",
+FIELD_ORDER = ("author", "title", "journal", "booktitle", "publisher", "school",
                "volume", "number", "year", "pages", "doi", "url")
 
 CONTACT = os.environ.get("CROSSREF_MAILTO", "")
@@ -193,7 +193,12 @@ def entry_type(work):
     kind = work.get("type", "")
     if "proceedings" in kind:
         return "inproceedings"
-    if "book" in kind:
+    # Order matters: a book-chapter is a chapter, not a book.
+    if "chapter" in kind or "book-part" in kind or "book-section" in kind:
+        return "incollection"
+    # Crossref calls a whole book "monograph" as often as "book", and the
+    # 'book' test alone left Razavi's PLL book typed as an article.
+    if "book" in kind or "monograph" in kind:
         return "book"
     if "dissertation" in kind:
         return "phdthesis"
@@ -209,10 +214,17 @@ def fields_from_work(work):
     if title:
         fields["title"] = re.sub(r"\s+", " ", title[0]).strip()
 
+    kind = entry_type(work)
     container = work.get("container-title") or list()
-    if container:
-        key = "booktitle" if entry_type(work) == "inproceedings" else "journal"
-        fields[key] = container[0]
+    if container and kind != "book":
+        # A chapter's container is the book it sits in, not a journal.
+        fields["booktitle" if kind in ("inproceedings", "incollection")
+               else "journal"] = container[0]
+
+    # A book has no journal to name it, so without this it lands in aic.bib
+    # with nothing but a title and a year.
+    if kind in ("book", "incollection") and work.get("publisher"):
+        fields["publisher"] = work["publisher"]
 
     issued = work.get("issued", dict()).get("date-parts") or [[None]]
     if issued[0] and issued[0][0]:

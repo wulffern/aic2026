@@ -378,5 +378,51 @@ class TestXploreMetadata(unittest.TestCase):
         self.assertTrue(h["Referer"].endswith("/document/5437496"))
 
 
+class TestBooks(unittest.TestCase):
+    """Razavi's PLL book came back as an @article with no journal."""
+
+    MONOGRAPH = {
+        "type": "monograph",
+        "DOI": "10.1017/9781108626200",
+        "title": ["Design of CMOS Phase-Locked Loops"],
+        "publisher": "Cambridge University Press",
+        "issued": {"date-parts": [[2020]]},
+        "author": [{"given": "Behzad", "family": "Razavi"}],
+    }
+
+    CHAPTER = {
+        "type": "book-chapter",
+        "title": ["Is Attention All You Need?"],
+        "container-title": ["From Human Attention to Computational Attention"],
+        "publisher": "Springer",
+        "page": "297-314",
+        "issued": {"date-parts": [[2025]]},
+        "author": [{"given": "Patrick", "family": "Mineault"}],
+    }
+
+    def test_a_monograph_is_a_book(self):
+        self.assertEqual(linkbib.entry_type(self.MONOGRAPH), "book")
+
+    def test_a_book_names_its_publisher_and_no_journal(self):
+        f = linkbib.fields_from_work(self.MONOGRAPH)
+        self.assertEqual(f["publisher"], "Cambridge University Press")
+        self.assertNotIn("journal", f)
+        self.assertNotIn("booktitle", f)
+
+    def test_a_chapter_is_not_a_book(self):
+        self.assertEqual(linkbib.entry_type(self.CHAPTER), "incollection")
+
+    def test_a_chapter_container_is_a_booktitle_not_a_journal(self):
+        f = linkbib.fields_from_work(self.CHAPTER)
+        self.assertEqual(f["booktitle"],
+                         "From Human Attention to Computational Attention")
+        self.assertNotIn("journal", f)
+
+    def test_publisher_is_ordered_before_year(self):
+        f = linkbib.fields_from_work(self.MONOGRAPH)
+        text = linkbib.to_bibtex("razavi20", "book", f)
+        self.assertLess(text.index("publisher="), text.index("year="))
+
+
 if __name__ == "__main__":
     unittest.main()
