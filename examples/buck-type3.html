@@ -33,7 +33,9 @@
     <div class="cgt">COMPENSATOR (K-FACTOR)</div>
     <div class="cr">
       <label>Crossover f_c</label>
-      <input type="range" data-bind="lfc" id="sl-lfc" min="3" max="5.4" step="0.02" value="4.699">
+      <!-- Up to 3.2 MHz, so f_sw/10 is still reachable at the top of the
+           f_sw slider. -->
+      <input type="range" data-bind="lfc" id="sl-lfc" min="3" max="6.5" step="0.02" value="4.699">
       <span class="v" id="v-lfc"></span>
     </div>
     <div class="cr">
@@ -82,7 +84,9 @@
     </div>
     <div class="cr">
       <label>f_sw</label>
-      <input type="range" data-bind="lfsw" id="sl-lfsw" min="5" max="6.7" step="0.05" value="5.699">
+      <!-- 100 kHz to 32 MHz, 50 steps: the top end is where an integrated
+           buck with an on-chip inductor lives. -->
+      <input type="range" data-bind="lfsw" id="sl-lfsw" min="5" max="7.505" step="0.0501" value="5.699">
       <span class="v" id="v-lfsw"></span>
     </div>
   </div>
@@ -421,9 +425,12 @@ function compute() {
  */
 function simulate(p, R, fsw, sys) {
   const T = 1 / fsw;
-  const ppc = 200;                                   // points per switching cycle
-  const dt = T / ppc;
   const tEnd = Math.max(300 * T, 40 / (2 * Math.PI * Math.pow(10, S.lfc)) * 6);
+  // Points per switching cycle. 200 resolves the ripple nicely, but at 32 MHz
+  // with a slow loop that many points per cycle runs out of samples long
+  // before the transient has faded, so trade resolution for span down to 40.
+  const ppc = Math.max(40, Math.min(200, Math.floor(120000 / (tEnd * fsw))));
+  const dt = T / ppc;
   const N = Math.min(120000, Math.round(tEnd / dt));
   const tLine = N / 3 | 0, tLoad = (2 * N / 3) | 0;
 
