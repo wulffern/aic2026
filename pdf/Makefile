@@ -23,10 +23,13 @@ hash:
 hash_short:
 	echo ' ${VERSION_DATE} from ${VERSION_HASH}'  > version_short.tex
 
-#- Choose right pandoc file based on pandoc version
+#- Choose right pandoc file based on pandoc version.
+#  A copy, not a symlink: pandoc.tex travels between CI jobs in the
+#  prepared-sources artifact, and upload/download-artifact does not
+#  round-trip symlinks.
 PANDOC=pandoc_$(shell pandoc --version|head -n 1|cut -d " " -f 2|cut -d "." -f "1,2").tex
 pandoc.tex:
-	ln -s ${PANDOC} pandoc.tex
+	cp -f ${PANDOC} pandoc.tex
 
 MAIN_AUX = aic.aux aic.blg aic.log aic.toc aic.lof aic.lot aic.out aic.mw aic.nlo aic.nls aic.ilg aic.ind aic.idx aic.fff aic.ttt aic.loi aic.lol
 PDFLATEX = ulimit -n 4096; TEXINPUTS=".:kaobook:" pdflatex
