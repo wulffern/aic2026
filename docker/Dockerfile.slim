@@ -22,10 +22,13 @@ RUN wget -q https://github.com/jgm/pandoc/releases/download/3.6.4/pandoc-3.6.4-1
 
 # TeX Live 2022 from the historic archive, scheme-small (pdflatex + latex
 # recommended + fonts recommended), no docs or sources.
-ARG TL_HIST=https://ftp.math.utah.edu/pub/tex/historic/systems/texlive/2022
+# texlive.info, not ftp.math.utah.edu: Utah serves its TLS chain without
+# the intermediate ("unable to get local issuer certificate" inside the
+# build), and ftp.tug.org's certificate does not cover that hostname.
+ARG TL_HIST=https://texlive.info/historic/systems/texlive/2022
 RUN mkdir /tmp/install-tl && cd /tmp/install-tl && \
     (curl -fSL -o install-tl-unx.tar.gz ${TL_HIST}/install-tl-unx.tar.gz || \
-     curl -fSL -o install-tl-unx.tar.gz https://ftp.tug.org/historic/systems/texlive/2022/install-tl-unx.tar.gz) && \
+     curl -fSL -o install-tl-unx.tar.gz https://pi.kwarc.info/historic/systems/texlive/2022/install-tl-unx.tar.gz) && \
     tar xzf install-tl-unx.tar.gz --strip-components=1 && \
     printf '%s\n' \
       'selected_scheme scheme-small' \
