@@ -479,9 +479,57 @@ come up.
    copy. The warning is the point of including it.
 
 ### Current next figure
-- `l04_dac`, the first Phase 2 lecture. `l03_refbias`, `l05_sc` and `l04_afe`
-  are all complete. Triage `l04_dac`'s figures by listing them first; the
-  queue in this document is not exhaustive for any lecture.
+- `dac_i` and `dac_i_vbias` in `l04_dac`, the two current mode DACs. They are
+  the only schematics left in that lecture; everything else in it is done or
+  out of scope. After those, the next lecture in the Phase 2 list.
+
+### `l04_dac` is all but complete
+Fifteen figures drawn and switched: `dac_r_div`, `dac_r_div2`, `dac_r_div2b`,
+`dac_r_switches`, `dac_r_rows`, `dac_r_segmented`, `dac_2r_0`, `dac_2r_1`,
+`dac_2r_2`, `dac_2r_full`, `dac_bin_states`, `dac_bin_btran`,
+`dac_thermo_states`, `dac_thermo_tran`, `dac_r_thermo`.
+
+Still to draw: `dac_i` and `dac_i_vbias`, the differential current steering
+DAC and its cascoded variant. Both are full schematics — a mirror, a row of
+binary weighted tail devices, a steering pair per slice onto two rails, and
+an amplifier with R_F — so they are a session of their own rather than a
+tail end of this one.
+
+Out of scope in `l04_dac`, after opening each: `dac_error` and `dac_inl_dnl`
+are matplotlib plots, and `NIST.SP_.1247.png` is a bitmap.
+
+The queue in this document listed only `dac_error` and `dac_inl_dnl` for this
+lecture, and both of those are the ones that turned out to be out of scope —
+the queue was not just incomplete here, it was inverted. Triage by listing.
+
+### New shared includes from `l04_dac`
+- `tikz/rdac_lib.tex` — the pass device with its control label above the gate,
+  the terminal circle, the sideways ground the originals draw for a summing
+  node, the steering SPDT (`\rdacSpdt`, which also draws the stub up to the
+  rail so the arm meets it), and `\rdacAmp`, an amplifier drawn point-right
+  with `-` above `+`.
+- `tikz/dacsm_lib.tex` — the state bubble and the transition arrow for the
+  four coding slides.
+
+Both are in `TIKZ_INCLUDES`.
+
+**Calc parses tokens, so a macro that expands to a coordinate cannot be
+passed into another macro that uses it inside `($...$)`.** It dies as
+"Paragraph ended before \tikz@cc@parse@factor was complete", pointing at a
+blank line rather than at the call. Two fixes, both used here: capture the
+argument with `\coordinate (foo) at #2;` first and use `(foo)` after, or lay
+the geometry down as named coordinates and pass names. TikZ also wants a
+literal `(` after `at`, so `\coordinate (x) at \somemacro{1}{2};` fails even
+on its own.
+
+`\vresistor` is `\grid` = 1.6 tall, not 1.5, and the taps in the string DACs
+are spaced off that number. Reading positions back off the drawn coordinates
+rather than off the numbers in the layout is what keeps the rails square.
+
+One deliberate deviation, in `dacsm_lib`: where two states carry a transition
+each way, the arrows bend either side of the centre line instead of running
+parallel as the originals draw them. Drawn node to node an arrow is clipped
+at the circle border; a hand-offset straight one runs into the bubble.
 
 ### `l04_afe` is complete
 16 figures drawn and switched. `l4_activebiquad` and `l4_gmcbi` were the two

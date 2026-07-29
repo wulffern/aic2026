@@ -1,0 +1,39 @@
+\input{tikz/fig_header.tex}
+
+% The tree decode: every tap of the string gets its own switch, and every
+% pair of switches needs another one behind it, all the way down to a single
+% output. That doubling is the 2^(N+1) - 2 the lecture counts, drawn here for
+% a four-bit string so the growth is visible rather than asserted.
+
+\begin{tikzpicture}[thick]
+
+  \def\rr{0.16}      % switch circle radius
+  \def\dx{1.35}      % rank pitch
+  \def\dy{0.62}      % leaf pitch
+
+  % A rank of switches: #1 rank index, #2 how many, the y of switch k being
+  % the midpoint of the two it feeds from.
+  \foreach \k in {0,...,15} {
+    \draw ({0}, {\k*\dy}) circle (\rr);
+  }
+  \foreach \k in {0,...,7} {
+    \draw ({\dx}, {(2*\k+0.5)*\dy}) circle (\rr);
+    \draw ({\rr}, {2*\k*\dy})     -- ({\dx-\rr}, {(2*\k+0.5)*\dy});
+    \draw ({\rr}, {(2*\k+1)*\dy}) -- ({\dx-\rr}, {(2*\k+0.5)*\dy});
+  }
+  \foreach \k in {0,...,3} {
+    \draw ({2*\dx}, {(4*\k+1.5)*\dy}) circle (\rr);
+    \draw ({\dx+\rr}, {(4*\k+0.5)*\dy}) -- ({2*\dx-\rr}, {(4*\k+1.5)*\dy});
+    \draw ({\dx+\rr}, {(4*\k+2.5)*\dy}) -- ({2*\dx-\rr}, {(4*\k+1.5)*\dy});
+  }
+  \foreach \k in {0,1} {
+    \draw ({3*\dx}, {(8*\k+3.5)*\dy}) circle (\rr);
+    \draw ({2*\dx+\rr}, {(8*\k+1.5)*\dy}) -- ({3*\dx-\rr}, {(8*\k+3.5)*\dy});
+    \draw ({2*\dx+\rr}, {(8*\k+5.5)*\dy}) -- ({3*\dx-\rr}, {(8*\k+3.5)*\dy});
+  }
+  \draw ({4*\dx}, {7.5*\dy}) circle (\rr);
+  \draw ({3*\dx+\rr}, {3.5*\dy})  -- ({4*\dx-\rr}, {7.5*\dy});
+  \draw ({3*\dx+\rr}, {11.5*\dy}) -- ({4*\dx-\rr}, {7.5*\dy});
+
+\end{tikzpicture}
+\end{document}

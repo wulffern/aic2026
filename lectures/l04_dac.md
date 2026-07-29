@@ -158,7 +158,7 @@ $$ INL[k] = \frac{V[k] - V_{ideal}[k]}{V_{LSB}} $$
 
 ---
 
-![left fit](../media/dac_r_switches.pdf)
+![left fit](../media/dac_r_switches_tikz.pdf)
 
 As number of resistors grow, the switches grow as 
 
@@ -166,7 +166,7 @@ $$ \sum_{n=1}^{N} 2^n = 2^{N+1} - 2 $$
 
 --- 
 
-![left fit](../media/dac_r_rows.pdf)
+![left fit](../media/dac_r_rows_tikz.pdf)
 
 Use a matrix with R rows and C columns. Need R + C switches, or
 
@@ -174,7 +174,7 @@ $$ 2^{N} + 2^{N/2} $$
 
 ---
 
-![left fit](../media/dac_r_segmented.pdf)
+![left fit](../media/dac_r_segmented_tikz.pdf)
 
 Switches in a 10-bit digital to analog converter.
 

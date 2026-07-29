@@ -1,0 +1,45 @@
+\input{tikz/fig_header.tex}
+
+% Segmenting the decode: matrix blocks for the lower bits, a small tree over
+% the blocks for the upper ones. The lecture's arithmetic for ten bits is
+% 2046 switches as a pure tree, 1056 as a pure matrix and 80 this way, and
+% the drawing is what that sentence looks like: two matrices, then a tree
+% with a handful of switches in it.
+
+\begin{tikzpicture}[thick]
+
+  \def\dx{1.35}      % column pitch inside a block
+  \def\dy{1.05}      % row pitch inside a block
+  \def\rr{0.17}
+
+  % One matrix block, origin at its lower left. Same drawing as dac_r_rows:
+  % a row switch on every tap, one column switch per column, one rail out.
+  \newcommand{\matBlock}[2]{%
+    \foreach \c in {0,1,2,3} {
+      \draw ({#1+\c*\dx+0.62}, {#2+3*\dy+0.12}) -- ({#1+\c*\dx+0.62}, {#2-0.45});
+      \foreach \r in {0,1,2,3} {
+        \draw ({#1+\c*\dx}, {#2+\r*\dy}) circle (\rr);
+        \draw ({#1+\c*\dx+\rr}, {#2+\r*\dy-\rr}) -- ++(0.45,-0.37);
+      }
+      \draw ({#1+\c*\dx+0.34}, {#2-0.75}) circle (\rr);
+      \draw ({#1+\c*\dx+0.34+\rr}, {#2-0.75-\rr}) -- ++(0.45,-0.37);
+    }
+    \draw ({#1-0.3}, {#2-1.35}) -- ({#1+3*\dx+1.15}, {#2-1.35});
+  }
+
+  \matBlock{0}{0}
+  \matBlock{0}{-6.0}
+
+  % ---- The tree over the two blocks ----
+  % Each block's rail ends in a switch, and those two meet in one more.
+  \draw ({3*\dx+1.6}, -1.35) circle (\rr);
+  \draw ({3*\dx+1.15}, -1.35) -- ({3*\dx+1.6-\rr}, -1.35);
+  \draw ({3*\dx+1.6}, -7.35) circle (\rr);
+  \draw ({3*\dx+1.15}, -7.35) -- ({3*\dx+1.6-\rr}, -7.35);
+
+  \draw ({3*\dx+3.6}, -4.35) circle (\rr);
+  \draw ({3*\dx+1.6+\rr}, -1.35) -- ({3*\dx+3.6-\rr}, -4.35);
+  \draw ({3*\dx+1.6+\rr}, -7.35) -- ({3*\dx+3.6-\rr}, -4.35);
+
+\end{tikzpicture}
+\end{document}
