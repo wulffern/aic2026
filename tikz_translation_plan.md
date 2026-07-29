@@ -479,10 +479,79 @@ come up.
    copy. The warning is the point of including it.
 
 ### Current next figure
-- `l4_activebiquad` and `l4_gmcbi`, the last two `l05_sc` figures. They are
-  shared with `l04_afe`, so when they are done the reference switch has to
-  cover **both** lectures in the same round. After that `l05_sc` is finished
-  and the queue moves to `l04_afe`.
+- `l04_dac`, the first Phase 2 lecture. `l03_refbias`, `l05_sc` and `l04_afe`
+  are all complete. Triage `l04_dac`'s figures by listing them first; the
+  queue in this document is not exhaustive for any lecture.
+
+### `l04_afe` is complete
+16 figures drawn and switched. `l4_activebiquad` and `l4_gmcbi` were the two
+shared with `l05_sc`, and switching them finished that lecture too;
+`l4_activebiquad` is also referenced as a **PDF** by `l10_lpradio` and
+`lp_radio_guest`, and those switched in the same round. `fig_inv` is used by
+four lectures (`l04_afe`, `l02_esd`, `l12_chinf`, `lr0_mosfet`) and all four
+switched together.
+
+`grep -o '](\.\./media/[^)]*)'` is not enough on its own: it finds `.pdf`
+references as well as `.svg` ones, and a figure can be referenced both ways in
+different lectures. Grep for the bare basename, not for `<basename>.svg`.
+
+Out of scope in `l04_afe`, after opening each one:
+- bitmaps: `503px-Silicon-unit-cell-3D-balls.png`, `inv_stick.png`,
+  `digital_shoulder.png`, `analog_designer.png`, `qt_sd.png`
+- `l04_ota_sch` — a four-panel schematic-capture screenshot of the design
+  database, instance names and all. Redrawing it would be a trace of a tool
+  window, not a redraw of a circuit.
+- `l04_ff_gm` — **undecided, needs the user.** It is a clean CMOS
+  transconductor schematic and would redraw easily, but it is a figure lifted
+  from a cited master's thesis, caption ("Figure 5.16: Transconductor
+  schematic") and all. Redrawing it turns "here is their figure" into "here is
+  my drawing of their circuit". That is the author's call, not a match
+  question, so it is left on the original.
+
+### New shared includes from this lecture
+- `tikz/gmc_lib.tex` — the trapezoid transconductor symbol (tall input edge,
+  short output edge) shared by `l4_gmc`, `l4_gmc_diff`, `l4_gmc_diff1` and
+  `l4_gmc1st`, plus `\gmcDiffFrame` for the `l4_gmc_diff`/`l4_gmc_diff1` pair,
+  which differ only in the output terminal marks and the arrow directions.
+  `\gmcBodyL` is the mirrored body, used for `l4_gmc1st`'s second cell.
+- `tikz/sfg_lib.tex` — the summing node and the `1/s` block shared by
+  `l4_first_order` and `l4_biquad`, which are the same size in the original
+  artwork too.
+
+Both were added to `TIKZ_INCLUDES` in the Makefile, without which the build
+tries to compile them as figures.
+
+`l4_gmcbi` uses a different transconductor symbol — the chamfered box with
+`+ +` and `- -` on two rails — because the original does. Do not unify it with
+`gmc_lib`'s trapezoid.
+
+### The l4_gmcbi damping term
+`l4_gmcbi`'s circuit puts `G_m3` across node B with its output crossed, which
+is a resistor of `1/G_m3` damping that node. Working the KCL through gives
+
+    v_out/v_in = [s^2 C_X/(C_X+C_B) + s Gm5/(C_X+C_B) + Gm2 Gm4/(C_A(C_X+C_B))]
+               / [s^2 + s Gm3/(C_X+C_B) + Gm1 Gm2/(C_A(C_X+C_B))]
+
+Every term matches the H(s) printed in `l04_afe.md` and `l05_sc.md` except the
+damping one, where both lectures write `G_{m2}`. It cannot be `G_m2`: that
+transconductor is already the one from node A to node B, and it appears in
+both the omega_0^2 term and the numerator. The redraw follows the circuit.
+**The lecture equations were left alone** — fixing prose is outside the figure
+migration, and the user should decide.
+
+### More LaTeX rules earned this round
+- **Brace every computed coordinate.** TikZ scans a coordinate for its closing
+  parenthesis, so `(#1+0.94,#2+(#4))` ends at the `)` after `#4` and the node
+  loses its label text: "A node must have a (possibly empty) label text".
+  Write `({#1+0.94},{#2+(#4)})`. Cost a CI round trip.
+- **`\def` stores text, so negate at the call site, not in the macro.**
+  `\def\xa{-4.8}` makes `-\xa` expand to `--4.8`. Store column offsets as
+  positive numbers and write `(-\xa,...)` for the left half of a symmetric
+  figure.
+- A wire that stops at a riser is not a wire that reaches the device.
+  `l4_activebiquad` first shipped with `G_1` ending at node X's riser instead
+  of continuing to the OTA input, which left the inverting input floating.
+  A green build says nothing about this; the render does.
 
 `tikz/boot_lib.tex` holds the bootstrapped switch, shared by `l5_sw2` (one of
 them) and `l5_sw3` (two). `\bootBlock` draws it above its input rail and
@@ -505,6 +574,9 @@ circle, and pole and zero markers. Pole positions are given in units of the
 circle radius, so `(0.5,0.3)` means half a radius out, which is how you think
 about them. Same rule as `spec_lib.tex`: a new shared include must be added to
 `TIKZ_INCLUDES` in the Makefile or the build tries to compile it as a figure.
+
+`l05_sc` is complete: the last two figures, `l4_activebiquad` and `l4_gmcbi`,
+were drawn with `l04_afe` and switched in both lectures in the same round.
 
 Switched in `lectures/l05_sc.md`: `l05_fund1`, `l05_fund2`,
 `l05_fund3`, `l5_sh`, `l5_shaaf`, `l5_subsample`, `l5_sdomain`, `l5_zdomain`,
