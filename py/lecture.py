@@ -16,6 +16,13 @@ with open("version") as fi:
 
 year = aic_version.replace("aic","")
 
+#- Any Deckset slide directive: [.column], [.table: margin(8)],
+#  [.table-separator: #000000, stroke-width(1)], [.background-color: ...],
+#  [.text: ...]. The old filters listed these one by one and the table ones
+#  required two trailing spaces before ], so [.table: margin(8)] was published
+#  verbatim on the site and in the book.
+DECKSET_DIRECTIVE = r"\[\.[a-zA-Z-]+[^\]]*\]"
+
 class Bibtex(dict):
 
     def __init__(self,filename):
@@ -274,13 +281,9 @@ class Lecture():
 
         self.filters = {
             r"^\s*---\s*$" : "",
-            r"\[.column\]" : "",
-            r"\[\.background.*\]" : "",
-            r"\[\.text.*\]" : "",
-            r"\[\.table  *\]" : "",
+            DECKSET_DIRECTIVE : "",
             r"\#\s*\[\s*fit\s*\]" : "# ",
             r"\*\*Q:\*\*" : "",
-            r"^[.table.*]$": "",
             r"#(.*) Thanks!" : ""
         }
 
@@ -467,14 +470,10 @@ class Presentation(Lecture):
         self.images = list()
 
         self.filters = {
-            r"\[\.background.*\]" : "",
-            r"\[\.text.*\]" : "",
-            r"\[\.table  *\]" : "",
+            DECKSET_DIRECTIVE : "",
             r"\#\s*\[\s*fit\s*\]" : "## ",
-            r"^[.table.*]$": "",
             r"\!\[[^\]]+\]" : "![]",
             r"^# ":"## ",
-            r"\[.column\]" : "",
             #"^---":"#",
 
         }
@@ -552,10 +551,7 @@ class Latex(Lecture):
 
         self.filters = {
              r"^\s*---\s*$" : "",
-            r"\[.column\]" : "",
-            r"\[\.background.*\]" : "",
-            r"\[\.text.*\]" : "",
-            r"\[\.table  *\]" : "",
+            DECKSET_DIRECTIVE : "",
             r"\#\s*\[\s*fit\s*\]" : "# ",
             r"\#\#\s*\[\s*fit\s*\]" : "## ",
             #"^## \*\*Q:\*\*.*$" : "",

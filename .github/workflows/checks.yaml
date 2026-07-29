@@ -1,0 +1,47 @@
+name: Checks
+
+# Fast mechanical checks (py/check.py): broken image references, citations
+# missing from aic.bib, unbalanced $$, lectures outside the build, and
+# leftover Deckset directives / footnote problems in the generated posts.
+# Runs in well under a minute with no TeX, so a bad reference fails the push
+# instead of shipping to the site and being noticed months later.
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: checks-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Setup Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        shell: bash
+        run: python -m pip install click
+
+      # Generate the posts first so check.py can inspect the published
+      # output, not just the sources.
+      - name: Generate posts
+        shell: bash
+        run: |
+          git config --global --add safe.directory "$(pwd)"
+          make version posts-parallel
+
+      - name: Check
+        shell: bash
+        run: make check

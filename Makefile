@@ -10,7 +10,7 @@ ifneq ($(wildcard /pyenv/bin/.*),)
 	PYTHON=/pyenv/bin/python3
 endif
 
-.PHONY:  slides slides-one slides-parallel version tikz tikz-one tikz-check tikz-preview preview print-tikz figures prepare-docs standalone-one standalone-list book-pdf book-epub print-files examples
+.PHONY:  slides slides-one slides-parallel version tikz tikz-one tikz-check tikz-preview preview print-tikz figures prepare-docs standalone-one standalone-list book-pdf book-epub print-files examples check
 
 #	lr0_logic \
 
@@ -97,6 +97,12 @@ clean-prepared:
 
 print-files:
 	@printf '%s\n' ${FILES}
+
+# Mechanical correctness checks (see py/check.py): image refs, citations,
+# $$ balance, FILES coverage, and — when docs/_posts exists — leftover
+# Deckset directives and footnote sanity in the generated posts.
+check:
+	${PYTHON} py/check.py
 
 
 posts:
