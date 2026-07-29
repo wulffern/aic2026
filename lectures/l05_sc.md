@@ -817,7 +817,7 @@ Think of the two phases as two different configurations of a circuit, each with 
 
 --->
 
-![left fit](../media/l5_scintro1.svg)
+![left fit](../media/l5_scintro1_tikz.pdf)
 
 <!--pan_doc:
 
@@ -846,7 +846,7 @@ Imagine we (very carefully) open the circuit around $C_2$ and close the circuit 
 -->
 ---
 
-![left fit](../media/l5_scintro2.svg)
+![left fit](../media/l5_scintro2_tikz.pdf)
 
 <!--pan_doc:
 
