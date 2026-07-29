@@ -1,0 +1,31 @@
+% The bubble-and-arrow language the four l04_dac coding slides share:
+% dac_bin_states, dac_bin_btran, dac_thermo_states and dac_thermo_tran.
+%
+% The originals draw plain circles with the code inside and straight arrows
+% between them, with the two directions of a pair drawn side by side rather
+% than as one double-headed arrow. \dacEdge offsets each arrow off the centre
+% line so a pair reads as two arrows.
+
+% #1 node name, #2 centre, #3 label. \dacStateWide takes a stacked label.
+\newcommand{\dacState}[3]{%
+  \node[draw, thick, circle, minimum size=1.5cm, inner sep=1pt] (#1) at #2 {#3};
+}
+
+\newcommand{\dacStateWide}[3]{%
+  \node[draw, thick, circle, minimum size=1.9cm, inner sep=1pt,
+        align=center] (#1) at #2 {#3};
+}
+
+% An arrow from one state to another. The two directions of a pair get their
+% own lane by bending either side of the centre line — the originals draw
+% them as parallel straight arrows, but drawn node to node the arrow is
+% clipped at the circle border, which a hand-offset straight line is not.
+\newcommand{\dacEdge}[2]{%
+  \draw[thick, -{Latex[length=3mm]}] (#1) to[bend left=11] (#2);
+}
+
+% A single arrow between two states, on the centre line: used where the
+% figure shows one transition rather than a pair.
+\newcommand{\dacArrow}[2]{%
+  \draw[thick, -{Latex[length=3mm]}] (#1) -- (#2);
+}

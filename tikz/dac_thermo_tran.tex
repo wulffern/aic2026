@@ -1,0 +1,22 @@
+\input{tikz/fig_header.tex}
+
+% Thermometer coding walks the states in order: 000, then any one-hot code,
+% then any two-hot one, then 111. Which bit moves first does not matter,
+% which is why the middle two bubbles carry all three codes at that level,
+% and no route ever passes a value outside the two it moves between.
+
+\begin{tikzpicture}[thick]
+
+  \input{tikz/dacsm_lib.tex}
+
+  \dacState{t0}{(0,3)}{000}
+  \dacStateWide{t1}{(4.2,3)}{001\\010\\100}
+  \dacStateWide{t2}{(4.2,0)}{011\\101\\110}
+  \dacState{t3}{(0,0)}{111}
+
+  \dacArrow{t0}{t1}
+  \dacArrow{t1}{t2}
+  \dacArrow{t2}{t3}
+
+\end{tikzpicture}
+\end{document}

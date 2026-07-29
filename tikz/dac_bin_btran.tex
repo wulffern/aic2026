@@ -1,0 +1,33 @@
+\input{tikz/fig_header.tex}
+
+% What a binary code actually does on the way from 1 to 2, drawn twice.
+%
+% Left, MSB first: 01 -> 11 -> 10, so the output goes 1, 3, 2 and overshoots.
+% Right, LSB first: 01 -> 00 -> 10, so it goes 1, 0, 2 and undershoots.
+% Either way the code passes through a value that is not between the two it
+% is moving between, which is the glitch the lecture is after. The four
+% states are drawn in both panels, unvisited ones included, so the two
+% routes can be read against the full state space of dac_bin_states.
+
+\begin{tikzpicture}[thick]
+
+  \input{tikz/dacsm_lib.tex}
+
+  % ---- MSB first ----
+  \dacState{a00}{(0,3)}{00}
+  \dacState{a01}{(3.6,3)}{01}
+  \dacState{a11}{(0,0)}{11}
+  \dacState{a10}{(3.6,0)}{10}
+  \dacArrow{a01}{a11}
+  \dacArrow{a11}{a10}
+
+  % ---- LSB first ----
+  \dacState{b00}{(7.6,3)}{00}
+  \dacState{b01}{(11.2,3)}{01}
+  \dacState{b11}{(7.6,0)}{11}
+  \dacState{b10}{(11.2,0)}{10}
+  \dacArrow{b01}{b00}
+  \dacArrow{b00}{b10}
+
+\end{tikzpicture}
+\end{document}

@@ -230,7 +230,7 @@ $$ V_{O} = \left(\frac{V_{REF}}{2R}b_1 + \frac{V_{REF}}{4R}b_0\right)R_{F0}$$
 
 For 4 states (2-bit) there are 12 possible transitions
 
-![left fit](../media/dac_bin_states.pdf)
+![left fit](../media/dac_bin_states_tikz.pdf)
 
 ---
 
@@ -244,14 +244,14 @@ $$ 1 \rightarrow 0 \rightarrow 2 $$
 
 Both cause a non-monotonic glitch during transition. 
 
-![left fit](../media/dac_bin_btran.pdf)
+![left fit](../media/dac_bin_btran_tikz.pdf)
 
 --- 
 
 ## Thermometer encoding 
 
 
-![left fit](../media/dac_thermo_states.pdf)
+![left fit](../media/dac_thermo_states_tikz.pdf)
 
 --- 
 
@@ -261,16 +261,16 @@ $$ 0 \rightarrow 1 \rightarrow 2  \rightarrow 3$$
 
 
 
-![left fit](../media/dac_thermo_tran.pdf)
+![left fit](../media/dac_thermo_tran_tikz.pdf)
 
 --- 
 
 
-![right fit](../media/dac_r_thermo.pdf)
+![right fit](../media/dac_r_thermo_tikz.pdf)
 
 <!--pan_skip: -->
 
-![left fit](../media/dac_thermo_tran.pdf)
+![left fit](../media/dac_thermo_tran_tikz.pdf)
 
 --- 
 

@@ -1,0 +1,24 @@
+\input{tikz/fig_header.tex}
+
+% The same twelve transitions as dac_bin_states, but between thermometer
+% codes. The slide pairs with dac_thermo_tran: the state space is no smaller,
+% it is the routes through it that are shorter.
+
+\begin{tikzpicture}[thick]
+
+  \input{tikz/dacsm_lib.tex}
+
+  \dacState{s0}{(0,3)}{000}
+  \dacState{s1}{(3.8,3)}{001}
+  \dacState{s3}{(0,0)}{111}
+  \dacState{s2}{(3.8,0)}{011}
+
+  \dacEdge{s0}{s1}   \dacEdge{s1}{s0}
+  \dacEdge{s3}{s2}   \dacEdge{s2}{s3}
+  \dacEdge{s0}{s3}   \dacEdge{s3}{s0}
+  \dacEdge{s1}{s2}   \dacEdge{s2}{s1}
+  \dacEdge{s0}{s2}   \dacEdge{s2}{s0}
+  \dacEdge{s1}{s3}   \dacEdge{s3}{s1}
+
+\end{tikzpicture}
+\end{document}

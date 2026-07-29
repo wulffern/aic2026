@@ -1,0 +1,48 @@
+\input{tikz/fig_header.tex}
+
+% Thermometer coded resistor DAC: every element is the same R out of -V_REF,
+% and each one is either steered into the summing node or into ground. Three
+% equal elements rather than a binary weighted set is the whole point — the
+% code from dac_thermo_states can only ever add or remove one of them, so
+% there is no transition where one element leaves as another arrives.
+
+\begin{circuitikz}[american, thick, transform shape, circuit ee IEC]
+
+  \input{tikz/ckt_lib.tex}
+  \input{tikz/rdac_lib.tex}
+
+  \def\ybot{0.4}
+  \def\ytop{4.8}
+
+  % ---- Three equal elements on the -V_REF rail ----
+  \foreach \x in {0, 2.2, 4.4} {
+    \draw (\x,\ybot) \vresistor{$R$} -- ++(0,0.7);
+  }
+  \draw (0,\ybot) -- (4.4,\ybot);
+  \draw (0,\ybot) -- ++(-1.2,0) coordinate (vrefport);
+  \rdacPort{(vrefport)}{north}{$-V_{REF}$}
+
+  % ---- Each element steers into the summing rail or into ground ----
+  \foreach \x in {0, 2.2, 4.4} {
+    \rdacSpdt{(\x,{\ybot+2.3})}{\ytop}{}{}
+  }
+
+  % ---- The rail runs into the amplifier ----
+  \draw (0.55,\ytop) -- (8.8,\ytop);
+  \fill (2.75,\ytop) circle (0.07);
+  \fill (4.95,\ytop) circle (0.07);
+  \rdacAmp{OA}{(8.8,4.2)}
+  \draw (8.8,\ytop) -- (OAinn);
+
+  % ---- Feedback resistor over the top ----
+  \draw (8.0,\ytop) -- (8.0,7.0) -- ++(0.7,0) \hresistor{$R_F$} -- ++(0.7,0)
+        -- (12.0,7.0) -- (12.0,4.2) -- (OAout);
+  \fill (8.0,\ytop) circle (0.07);
+  \draw (OAout) -- ++(0.9,0);
+
+  % ---- The + input sits on ground ----
+  \draw (OAinp) -- ++(-1.2,0) coordinate (og);
+  \draw (og) -- ++(0,-0.3) \vground;
+
+\end{circuitikz}
+\end{document}

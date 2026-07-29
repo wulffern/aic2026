@@ -1,0 +1,27 @@
+\input{tikz/fig_header.tex}
+
+% Every transition a two-bit binary code can make: four states, and all
+% twelve ordered pairs between them. The point of the slide is the count —
+% twelve ways to get it wrong — so every arrow is drawn, including both
+% directions of each pair.
+
+\begin{tikzpicture}[thick]
+
+  \input{tikz/dacsm_lib.tex}
+
+  \dacState{s00}{(0,3)}{00}
+  \dacState{s01}{(3.6,3)}{01}
+  \dacState{s11}{(0,0)}{11}
+  \dacState{s10}{(3.6,0)}{10}
+
+  % The two directions of a pair are drawn as separate arrows, offset either
+  % side of the line between the states, as the original does.
+  \dacEdge{s00}{s01}   \dacEdge{s01}{s00}
+  \dacEdge{s11}{s10}   \dacEdge{s10}{s11}
+  \dacEdge{s00}{s11}   \dacEdge{s11}{s00}
+  \dacEdge{s01}{s10}   \dacEdge{s10}{s01}
+  \dacEdge{s00}{s10}   \dacEdge{s10}{s00}
+  \dacEdge{s01}{s11}   \dacEdge{s11}{s01}
+
+\end{tikzpicture}
+\end{document}
