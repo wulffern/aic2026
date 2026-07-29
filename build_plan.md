@@ -67,11 +67,19 @@ from `aic.bib`, 0 unbalanced `$$`, 0 duplicate/undefined footnotes.
   literal text on the site and in the book (`pdf/cmos_logic.latex:97`). Fix
   with a line-anchored directive filter; dedupe the thrice-copied filter dict
   while there.
-- **O. Five verified TikZ redraws not yet referenced:** `l00_diode.md:888`
-  (`vd.pdf`), `l00_diode.md:934` (`l3_ptat.pdf`), `l03_refbias.md:258`
-  (`vd.svg`), `l03_refbias.md:481` (`l3_bgsim.pdf`), `l03_refbias.md:502`
-  (`l3_bgsimtfs.pdf`). Switch only after the point-by-point verification in
-  `tikz_translation_plan.md`.
+- **O. TikZ reference switches — resolved 2026-07-30.** Of the five figures
+  with an unswitched `_tikz` twin, only `l00_diode.md` `l3_ptat` was
+  switched: the redraw matches the hand sketch point by point and its
+  swapped opamp polarity (− on the single-diode branch) is a deliberate
+  correction — the original's `+` there makes the loop positive feedback.
+  The same redraw was already live in `l03_refbias`. The other four stay on
+  the original artwork **on purpose**: `vd` (both lectures), `l3_bgsim` and
+  `l3_bgsimtfs` are quantitative simulation plots whose captions and prose
+  read the numbers ("only a few mV", "Simulation of a Brokaw reference in
+  GF 130 nm", corner spread), and the `_tikz` twins are qualitative
+  sketches that would contradict them. They fall outside the
+  `tikz_translation_plan.md` inclusion rules (not schematic-like) and
+  should not be switched.
 - **P. The three source/figure disagreements in
   `interactive_examples_plan.md` §1** (e.g. `ex/iir.py` pole at z=1 vs the
   z=0.25 the prose discusses) are real technical errors in figures the text

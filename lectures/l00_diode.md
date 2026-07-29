@@ -931,7 +931,7 @@ with the small exception of the non-linear component of $V_D$.
 
 -->
 
-![right fit Circuit to generate a current proportional to kT\label{fig:ptat}](../media/l3_ptat.pdf)
+![right fit Circuit to generate a current proportional to kT\label{fig:ptat}](../media/l3_ptat_tikz.pdf)
 
 <!--pan_doc:
 <sub>Figure 4: Circuit to generate a current proportional to kT</sub>
