@@ -1142,7 +1142,7 @@ as shown on the right.
 
 -->
 
-![original fit](../media/l5_sw2.svg)
+![original fit](../media/l5_sw2_tikz.pdf)
 
 ---
 
@@ -1165,7 +1165,7 @@ looks like the one below.
 
 -->
 
-![original fit](../media/l5_sw3.svg)
+![original fit](../media/l5_sw3_tikz.pdf)
 
 ---
 
@@ -1184,7 +1184,7 @@ The non-overlap generator is standard. Use the one shown below. Make sure you si
 
 -->
 
-![original fit](../media/l5_novl.svg)
+![original fit](../media/l5_novl_tikz.pdf)
 
 ---
 
@@ -1202,7 +1202,7 @@ $$ V_O(z) = 10 \frac{kT}{q} \ln (N)z^{-1} $$
 
 -->
 
-![fit](../media/l5_scex.svg)
+![fit](../media/l5_scex_tikz.pdf)
 
 
 <!--pan_doc:
