@@ -1028,7 +1028,9 @@ as $T^{-0.45}$, so $I_S$ at $1000\, K$ is about $0.6\times$ what a
 to the many decades of swing in $n_i^2$, but it is the dominant
 reason the diffusion curve in Figure 5 starts to flatten at the top
 end. The script `ex/antenna_diode_leakage.py` includes both
-$T$-dependencies.
+$T$-dependencies, and the [interactive version](https://wulffern.github.io/aic2026/assets/examples/antenna-leakage.html)
+lets you switch them off to see how little difference they make next to the
+bandgap.
 
 -->
 
@@ -1185,7 +1187,10 @@ multiplying by the actual junction area in $\mu m^2$ gives the
 absolute current - a $0.2 \times 0.2\, \mu m^2$ antenna ndiode is
 the curve times $0.04$, a $1 \times 1\, \mu m^2$ diode reads off
 directly. The script is `ex/antenna_diode_leakage.py` and reuses
-the $n_i(T)$ derivation from `ex/vd.py`.
+the $n_i(T)$ derivation from `ex/vd.py`. Both exist as interactive pages:
+[antenna diode leakage](https://wulffern.github.io/aic2026/assets/examples/antenna-leakage.html), where the doping, the
+reverse bias and the junction area are sliders, and
+[diode vs temperature](https://wulffern.github.io/aic2026/assets/examples/diode.html) for the $n_i(T)$ model on its own.
 
 The two shaded bands mark where plasma-induced damage actually
 happens during fabrication, which is the *only* time an antenna

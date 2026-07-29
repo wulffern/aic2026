@@ -1,0 +1,360 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>First order IIR filter &mdash; aic2026</title>
+<link rel="stylesheet" href="common/aic.css">
+</head>
+<body>
+
+<header>
+  <h1>FIRST ORDER IIR</h1>
+  <div class="sub">
+    <a href="index.html">&larr; all examples</a> &middot;
+    interactive version of <a href="https://github.com/wulffern/aic2026/blob/main/ex/iir.py">ex/iir.py</a> &middot;
+    switched capacitor circuits
+  </div>
+</header>
+
+<div id="chain">
+  <div class="cb on">SIGNAL</div><span class="ca">&times;</span>
+  <div class="cb on">PULSE TRAIN</div><span class="ca">&rarr;</span>
+  <div class="cb on" id="cb-iir">y[n] = b&middot;x[n-1] + a&middot;y[n-1]</div><span class="ca">&rarr;</span>
+  <div class="cb on">FFT</div>
+</div>
+
+<canvas id="c"></canvas>
+
+<div id="ctrl">
+  <div class="cg">
+    <div class="cgt">FILTER</div>
+    <div class="cr">
+      <label>b (feed-in)</label>
+      <input type="range" data-bind="b" id="sl-b" min="0.01" max="1" step="0.01" value="0.3">
+      <span class="v" id="v-b"></span>
+    </div>
+    <div class="cr">
+      <label>a (feedback)</label>
+      <input type="range" data-bind="a" id="sl-a" min="0" max="1" step="0.001" value="1">
+      <span class="v" id="v-a"></span>
+    </div>
+    <div class="note">
+      <code>ex/iir.py</code> has no coefficient on <code>y[i-1]</code>, i.e.
+      a = 1: the pole sits exactly on the unit circle and the filter is a plain
+      accumulator. Pull a below 1 to move it inside.
+    </div>
+  </div>
+
+  <div class="cg">
+    <div class="cgt">SIGNAL</div>
+    <div class="cr">
+      <label>f_1 bin</label>
+      <input type="range" data-bind="f1" id="sl-f1" min="1" max="4000" step="1" value="3023">
+      <span class="v" id="v-f1"></span>
+    </div>
+    <div class="cr">
+      <label>Noise</label>
+      <input type="range" data-bind="noisebits" id="sl-noisebits" min="0" max="16" step="1" value="10">
+      <span class="v" id="v-noisebits"></span>
+    </div>
+    <div class="cr">
+      <label>Period P</label>
+      <input type="range" data-bind="period" id="sl-period" min="1" max="32" step="1" value="8">
+      <span class="v" id="v-period"></span>
+    </div>
+    <div class="cr">
+      <label>On phases</label>
+      <input type="range" data-bind="on" id="sl-on" min="1" max="16" step="1" value="2">
+      <span class="v" id="v-on"></span>
+    </div>
+  </div>
+
+  <div class="cg">
+    <div class="cgt">ANALYSIS</div>
+    <div class="cr">
+      <label>Record N = 2^</label>
+      <input type="range" data-bind="nbits" id="sl-nbits" min="10" max="14" step="1" value="13">
+      <span class="v" id="v-nbits"></span>
+    </div>
+    <div class="cr">
+      <label>Time window</label>
+      <input type="range" data-bind="win" id="sl-win" min="32" max="1024" step="16" value="400">
+      <span class="v" id="v-win"></span>
+    </div>
+    <div class="ckrow">
+      <input type="checkbox" data-bind="hann" id="sl-hann" checked>
+      <label for="sl-hann">Hann window before the FFT</label>
+    </div>
+    <div class="ckrow">
+      <input type="checkbox" data-bind="overlay" id="sl-overlay" checked>
+      <label for="sl-overlay">Overlay |H(f)| on the output</label>
+    </div>
+  </div>
+</div>
+
+<div id="readout">
+  <div class="ro"><span class="k">|z|</span><span class="n" id="ro-z"></span></div>
+  <div class="ro"><span class="k">DC GAIN</span><span class="n" id="ro-dc"></span></div>
+  <div class="ro"><span class="k">-3 dB</span><span class="n" id="ro-f3"></span></div>
+  <div class="ro"><span class="k">GAIN AT f_1</span><span class="n" id="ro-gf1"></span></div>
+</div>
+
+<div id="legend">
+  <div class="leg"><div class="lsw" style="background:var(--quant)"></div>Sampled input</div>
+  <div class="leg"><div class="lsw" style="background:var(--curve)"></div>Filter output</div>
+  <div class="leg"><div class="lsw" style="background:var(--sample)"></div>|H(f)| from the coefficients</div>
+  <div class="leg"><div class="ldot" style="background:var(--error)"></div>Pole</div>
+  <div class="leg"><div class="ldot" style="background:var(--digi)"></div>Zero</div>
+</div>
+
+<div class="doc">
+  <h2>WHAT YOU ARE LOOKING AT</h2>
+  <p>
+    A first order infinite impulse response filter is one line of code:
+    <code>y[n] = b*x[n-1] + a*y[n-1]</code>. Each output is a scaled copy of the
+    previous input plus a scaled copy of the previous output, and it is that
+    second term &mdash; the feedback &mdash; that makes the impulse response
+    infinite and puts a pole in the transfer function
+  </p>
+  <p style="text-align:center">
+    <code>H(z) = b&middot;z<sup>-1</sup> / (1 &minus; a&middot;z<sup>-1</sup>)</code>
+  </p>
+  <p>
+    with a zero at the origin and a pole at z = a. On the z-plane panel the
+    circle is |z| = 1; the filter is stable as long as the pole stays inside it.
+    The bottom middle panel is the measured output spectrum, and the yellow
+    trace is <code>|H(f)|</code> evaluated straight from b and a &mdash; they
+    should lie on top of each other, which is a good way to convince yourself
+    that the loop and the algebra agree.
+  </p>
+
+  <h2>THINGS WORTH TRYING</h2>
+  <ul>
+    <li>
+      Leave <b>a = 1</b>, which is what the script does. The pole is exactly on
+      the unit circle, the DC gain is infinite, and the output wanders: this is
+      an accumulator, not a filter that settles. It still attenuates high
+      frequencies at 20 dB/decade, which is what the plot in the lecture shows.
+    </li>
+    <li>
+      Pull <b>a</b> down to 0.99, 0.9, 0.5. The pole moves in, the DC gain
+      becomes finite at b/(1&minus;a), and the corner frequency
+      &asymp; (1&minus;a)/2&pi; moves up. At a = 0 there is no feedback left
+      and you have a one-sample delay with gain b.
+    </li>
+    <li>
+      Set <b>f_1</b> low, around bin 100. The tone now sits in the passband
+      and comes through with the DC gain instead of being attenuated. Compare
+      the input and output spectra: the noise above the corner has dropped,
+      the tone has not.
+    </li>
+    <li>
+      Set the sampling <b>period P</b> to 1 to remove the pulse train. The
+      images vanish and you see the filter on its own, which makes the 20
+      dB/decade roll-off easy to read off the right-hand panel.
+    </li>
+  </ul>
+
+  <h2>THE PYTHON</h2>
+<pre><code>#- IIR filter
+b = 0.3
+a = 0.25
+z = a + 1j*b
+z_abs = np.abs(z)
+y = np.zeros(N)
+y[0] = a
+for i in range(1,N):
+    y[i] = b*x_sn[i-1] + y[i-1]</code></pre>
+  <p class="src">
+    Source: <a href="https://github.com/wulffern/aic2026/blob/main/ex/iir.py">ex/iir.py</a>.
+    Note that <code>a</code> is computed but never multiplied into
+    <code>y[i-1]</code>, so the script really runs with a = 1. This page makes
+    that coefficient a slider so you can see what it was meant to do.
+    There are faster ways to do this in Python; see
+    <a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.iirfilter.html">scipy.signal.iirfilter</a>.
+  </p>
+</div>
+
+<footer>
+  TFE4188 Advanced Integrated Circuits &middot; <a href="https://wulffern.github.io/aic2026/">aic2026</a>
+</footer>
+
+<script src="common/plot.js"></script>
+<script src="common/dsp.js"></script>
+<script>
+'use strict';
+
+const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+
+const S = {};
+let D = null;
+
+const fmts = {
+  b:         v => v.toFixed(2),
+  a:         v => v.toFixed(3),
+  f1:        v => v + ' bin',
+  noisebits: v => (v === 0 ? 'off' : '1/2^' + v),
+  period:    v => (v === 1 ? 'none' : v + ' smp'),
+  on:        v => v + ' smp',
+  nbits:     v => '2^' + v,
+  win:       v => v + ' smp',
+};
+
+function compute() {
+  const N = 1 << S.nbits;
+  const t = DSP.linspace(0, N, N);
+  const f1 = S.f1 / N;
+  const na = S.noisebits === 0 ? 0 : Math.pow(2, -S.noisebits);
+  const noise = DSP.randn(N, 20260517);
+
+  const P = Math.round(S.period);
+  const ON = Math.min(Math.round(S.on), P);
+
+  const xsn = new Float64Array(N);
+  for (let i = 0; i < N; i++) {
+    const x = Math.sin(2 * Math.PI * f1 * t[i]) + na * noise[i];
+    xsn[i] = ((i % P) < ON ? 1 : 0) * x;
+  }
+
+  // The recursion, exactly as in the Python but with the feedback coefficient
+  // written out rather than left at an implicit 1.
+  const y = new Float64Array(N);
+  for (let i = 1; i < N; i++) y[i] = S.b * xsn[i - 1] + S.a * y[i - 1];
+
+  const Xm = DSP.magSpectrum(xsn, S.hann);
+  const Ym = DSP.magSpectrum(y, S.hann);
+  // Both spectra share the input's scale factor, so the filter's gain is
+  // readable off the plots rather than normalised away.
+  const scale = DSP.maxAbs(Xm) || 1;
+  const X = new Float64Array(N), Y = new Float64Array(N);
+  for (let i = 0; i < N; i++) { X[i] = DSP.db20(Xm[i] / scale); Y[i] = DSP.db20(Ym[i] / scale); }
+
+  const f = new Float64Array(N);
+  for (let i = 0; i < N; i++) f[i] = (i - N / 2) / N;
+
+  // |H(f)| straight from the coefficients, on the same axis.
+  const Hdb = new Float64Array(N);
+  for (let i = 0; i < N; i++) Hdb[i] = DSP.db20(Hmag(f[i]));
+
+  // And on a log axis for the roll-off panel.
+  const fl = DSP.logspace(1 / N, 0.5, 400);
+  const Hl = new Float64Array(fl.length);
+  for (let i = 0; i < fl.length; i++) Hl[i] = DSP.db20(Hmag(fl[i]));
+
+  D = { N, P, ON, xsn, y, X, Y, f, Hdb, fl, Hl, f1 };
+
+  const dc = S.a >= 1 ? Infinity : S.b / (1 - S.a);
+  UI.readout('ro-z',  S.a.toFixed(3) + (S.a >= 1 ? '  (on the circle)' : ''));
+  UI.readout('ro-dc', isFinite(dc) ? DSP.db20(dc).toFixed(1) + ' dB' : 'infinite');
+  // -3 dB relative to DC. For a on the unit circle there is no finite DC gain
+  // to be 3 dB below, so quote the exact bilinear result only when a < 1.
+  UI.readout('ro-f3', S.a >= 1 ? 'n/a' : (f3db(dc) * 1).toExponential(2) + ' f_c');
+  UI.readout('ro-gf1', DSP.db20(Hmag(f1)).toFixed(1) + ' dB');
+}
+
+/** |H(e^{j2 pi f})| for H(z) = b z^-1 / (1 - a z^-1). */
+function Hmag(f) {
+  const w = 2 * Math.PI * f;
+  const dr = 1 - S.a * Math.cos(w), di = S.a * Math.sin(w);
+  return S.b / Math.max(Math.hypot(dr, di), 1e-12);
+}
+
+/** Frequency, in units of f_c, where |H| has fallen 3 dB below its DC value. */
+function f3db(dc) {
+  const target = dc / Math.SQRT2;
+  let lo = 1e-9, hi = 0.5;
+  for (let i = 0; i < 60; i++) {
+    const mid = Math.sqrt(lo * hi);
+    if (Hmag(mid) > target) lo = mid; else hi = mid;
+  }
+  return Math.sqrt(lo * hi);
+}
+
+function render(cx, W, H, narrow) {
+  if (!D) return;
+  const g = Plot.grid(W, H, narrow ? 6 : 2, narrow ? 1 : 3, { gapY: 22, gapX: 16 });
+  const win = Math.min(D.N, Math.round(S.win));
+
+  // ── Time domain ──────────────────────────────────────────────────────────
+  const [xlo, xhi] = Plot.padExtent(...Plot.extent(D.xsn.subarray(0, win)), 0.15);
+  const p0 = new Plot.Panel(cx, g[0], {
+    title: 'Sampled input x_sn', ylabel: 'Time domain', xlabel: 'sample n',
+  });
+  p0.limits(0, win, xlo, xhi).frame();
+  p0.stem(null, D.xsn.subarray(0, win), css('--quant'));
+
+  const [ylo, yhi] = Plot.padExtent(...Plot.extent(D.y.subarray(0, win)), 0.15);
+  const p1 = new Plot.Panel(cx, g[1], { title: 'Filter output y', xlabel: 'sample n' });
+  p1.limits(0, win, ylo, yhi).frame();
+  p1.line(null, D.y.subarray(0, win), css('--curve'));
+
+  // ── z-plane ──────────────────────────────────────────────────────────────
+  const p2 = new Plot.Panel(cx, g[2], { title: 'z-plane', xlabel: 'Re{z}', ylabel: 'Im{z}' });
+  // Stretch the x limits by the panel's pixel aspect so |z| = 1 draws as a
+  // circle rather than an ellipse.
+  const ar = (p2.right - p2.left) / (p2.bottom - p2.top);
+  p2.limits(-1.35 * ar, 1.35 * ar, -1.35, 1.35).frame();
+  zplane(p2);
+
+  // ── Frequency domain ─────────────────────────────────────────────────────
+  const p3 = new Plot.Panel(cx, g[3], { ylabel: 'Frequency domain [dB]', xlabel: 'f / f_c' });
+  p3.limits(-0.5, 0.5, -140, 60).frame();
+  p3.line(D.f, D.X, css('--quant'));
+  p3.note(0.02, 0.93, 'input', css('--quant'));
+
+  const p4 = new Plot.Panel(cx, g[4], { xlabel: 'f / f_c' });
+  p4.limits(-0.5, 0.5, -140, 60).frame();
+  p4.line(D.f, D.Y, css('--curve'));
+  if (S.overlay) p4.line(D.f, D.Hdb, css('--sample'), { dash: [4, 3] });
+  p4.note(0.02, 0.93, 'output', css('--curve'));
+
+  const p5 = new Plot.Panel(cx, g[5], { xlabel: 'f / f_c', xlog: true, ylabel: '|H| [dB]' });
+  p5.limits(1 / D.N, 0.5, -80, 40).frame();
+  p5.line(D.fl, D.Hl, css('--sample'), { width: 1.5 });
+  p5.vline(D.f1, css('--digi'), [3, 3]);
+  p5.note(0.04, 0.2, '|H(f)| from b, a\n20 dB/decade above\nthe pole', css('--muted'));
+}
+
+/** Unit circle, pole at z = a, zero at the origin. */
+function zplane(p) {
+  const cx = p.cx;
+  p.clip(() => {
+    cx.strokeStyle = css('--edge');
+    cx.lineWidth = 1;
+    cx.beginPath();
+    for (let i = 0; i <= 180; i++) {
+      const th = 2 * Math.PI * i / 180;
+      const x = p.px(Math.cos(th)), y = p.py(Math.sin(th));
+      if (i === 0) cx.moveTo(x, y); else cx.lineTo(x, y);
+    }
+    cx.stroke();
+
+    // Zero at the origin.
+    cx.strokeStyle = css('--digi');
+    cx.lineWidth = 1.5;
+    cx.beginPath();
+    cx.arc(p.px(0), p.py(0), 5, 0, 2 * Math.PI);
+    cx.stroke();
+
+    // Pole at z = a.
+    const px = p.px(S.a), py = p.py(0);
+    cx.strokeStyle = css('--error');
+    cx.lineWidth = 2;
+    cx.beginPath();
+    cx.moveTo(px - 5, py - 5); cx.lineTo(px + 5, py + 5);
+    cx.moveTo(px + 5, py - 5); cx.lineTo(px - 5, py + 5);
+    cx.stroke();
+  });
+  p.note(0.03, 0.94, 'pole at z = ' + S.a.toFixed(3), css('--error'));
+  p.note(0.03, 0.86, 'zero at z = 0', css('--digi'));
+  if (S.a >= 1) p.note(0.03, 0.06, 'pole on |z| = 1: pure accumulator', css('--error'));
+}
+
+const chart = Plot.mount('c', { aspect: 0.5, aspectNarrow: 2.6, draw: render });
+UI.bind(S, fmts, () => { compute(); chart.redraw(); });
+compute();
+chart.redraw();
+</script>
+</body>
+</html>

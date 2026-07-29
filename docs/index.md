@@ -16,6 +16,9 @@ For some of the lectures, I'll upload an video to youtube
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/videoseries?si=CPDHxHH3P4E7u1EL&amp;list=PLybHXZ9FyEhYuu3SJjXBncbR3BEImeZ0H" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
+The Python examples from the lectures also run in the browser, with the
+constants turned into sliders. See [examples](/aic2026/examples/).
+
 IPs, like digital cells for analog design, transistors, and a 9-bit ADC can be found at [https://wulffern.github.io/aicex/](https://wulffern.github.io/aicex/)
 
 I've compiled all the lectures notes into a [book](https://analogicus.com/aic2026/assets/aic.pdf)

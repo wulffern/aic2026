@@ -1,0 +1,194 @@
+/* Shared chrome for the interactive examples in examples/.
+ *
+ * The palette is the one from wulffern/cicadc, so a student who has seen the
+ * ADC visualiser recognises these pages as the same family. Every page is a
+ * header, a canvas, a control panel, a legend and a bit of prose; the only
+ * thing that differs between them is what the canvas draws.
+ */
+
+:root {
+  --bg:     #0b0f1a;
+  --edge:   #2b3a63;
+  --grid:   #1d2742;
+  --curve:  #3361e6;
+  --quant:  #b6e3b6;
+  --digi:   #cdd6e6;
+  --error:  #ff4444;
+  --sample: #ffd400;
+  --text:   #e6f0ff;
+  --accent: #39ff14;
+  --alt:    #e63333;
+  --alt2:   #9b6ec8;
+  --muted:  #6080a0;
+  --ctrl:   #0f1526;
+  --wide:   1200px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--bg); color: var(--text);
+  font-family: 'Courier New', monospace; font-size: 12px;
+  display: flex; flex-direction: column; align-items: center;
+  padding: 10px 10px 40px; gap: 8px;
+}
+
+a { color: var(--curve); }
+a:hover { color: var(--text); }
+
+/* ── Header ────────────────────────────────────────────────────────────── */
+
+header { width: 100%; max-width: var(--wide); padding: 4px 0; }
+header h1 { color: var(--curve); font-size: 16px; letter-spacing: 4px; }
+header .sub { color: var(--muted); font-size: 11px; padding-top: 3px; }
+header .sub a { text-decoration: none; }
+
+/* ── Signal chain strip ────────────────────────────────────────────────── */
+
+#chain { display: flex; align-items: center; gap: 4px; width: 100%; max-width: var(--wide); }
+.cb {
+  flex: 1; text-align: center; padding: 3px 0; font-size: 10px; letter-spacing: 1px;
+  background: var(--grid); border: 1px solid var(--edge); color: var(--muted);
+  transition: all 0.2s;
+}
+.cb.on { border-color: var(--curve); color: var(--curve); background: #0d1830; }
+.ca { color: var(--edge); font-size: 10px; }
+
+/* ── Canvas ────────────────────────────────────────────────────────────── */
+
+canvas {
+  display: block;
+  background: var(--bg); border: 1px solid var(--edge);
+  max-width: 100%;   /* fallback before the resize handler runs */
+}
+
+/* ── Controls ──────────────────────────────────────────────────────────── */
+
+#ctrl {
+  width: 100%; max-width: var(--wide);
+  background: var(--ctrl); border: 1px solid var(--edge);
+  padding: 10px 14px;
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 8px 24px;
+}
+.cg { display: flex; flex-direction: column; gap: 6px; }
+.cgt {
+  color: var(--curve); font-size: 9px; letter-spacing: 2px;
+  border-bottom: 1px solid var(--grid); padding-bottom: 3px; margin-bottom: 1px;
+}
+.cr { display: flex; align-items: center; gap: 6px; }
+.cr label { color: var(--muted); min-width: 92px; flex-shrink: 0; font-size: 11px; }
+.cr input[type=range] { flex: 1; min-width: 40px; accent-color: var(--curve); cursor: pointer; }
+.cr .v { color: var(--text); min-width: 62px; text-align: right; font-size: 11px; }
+
+.modebtn {
+  background: var(--grid); border: 1px solid var(--edge); color: var(--text);
+  padding: 3px 6px; cursor: pointer; font-family: inherit; font-size: 11px;
+  text-align: center;
+}
+.modebtn.on { background: var(--curve); color: #fff; border-color: var(--curve); }
+.modebtn:hover { border-color: var(--curve); }
+/* Flex items refuse to shrink below their label width, so mode buttons are a
+   grid: they wrap instead of overflowing the control cell. */
+.moderow { display: grid; grid-template-columns: repeat(3, 1fr); gap: 5px; }
+.moderow.two  { grid-template-columns: repeat(2, 1fr); }
+.moderow.four { grid-template-columns: repeat(4, 1fr); }
+
+.ckrow { display: flex; align-items: center; gap: 6px; color: var(--muted); font-size: 11px; }
+.ckrow input { accent-color: var(--curve); cursor: pointer; }
+.note { color: var(--muted); font-size: 10px; line-height: 1.7; }
+
+button.act {
+  width: 100%; padding: 5px; cursor: pointer; font-family: inherit; font-size: 12px;
+  background: var(--grid); border: 1px solid var(--edge); color: var(--text);
+}
+button.act:hover { border-color: var(--curve); }
+
+/* ── Readouts ──────────────────────────────────────────────────────────── */
+
+#readout {
+  width: 100%; max-width: var(--wide);
+  display: flex; flex-wrap: wrap; gap: 4px 28px;
+  border: 1px solid var(--edge); background: var(--ctrl); padding: 7px 14px;
+}
+#readout .ro { display: flex; gap: 7px; align-items: baseline; }
+#readout .ro .k { color: var(--muted); font-size: 10px; letter-spacing: 1px; }
+#readout .ro .n { color: var(--accent); font-size: 13px; }
+
+/* ── Legend ────────────────────────────────────────────────────────────── */
+
+#legend {
+  width: 100%; max-width: var(--wide);
+  display: flex; gap: 16px; flex-wrap: wrap;
+  color: var(--muted); font-size: 10px; padding: 4px 2px;
+}
+.leg { display: flex; align-items: center; gap: 5px; }
+.lsw { width: 20px; height: 3px; border-radius: 2px; }
+.ldot { width: 8px; height: 8px; border-radius: 50%; }
+
+/* ── Prose ─────────────────────────────────────────────────────────────── */
+
+.doc {
+  width: 100%; max-width: var(--wide);
+  border-top: 1px solid var(--grid); margin-top: 10px; padding-top: 12px;
+  font-family: Helvetica, Arial, sans-serif; font-size: 14px; line-height: 1.6;
+}
+.doc h2 {
+  color: var(--curve); font-family: 'Courier New', monospace;
+  font-size: 12px; letter-spacing: 2px; margin: 16px 0 6px;
+}
+.doc h2:first-child { margin-top: 0; }
+.doc p, .doc li { color: #b9c8e0; margin: 7px 0; }
+.doc ul, .doc ol { padding-left: 22px; }
+.doc code, .doc pre { font-family: 'Courier New', monospace; font-size: 12px; color: var(--quant); }
+.doc pre {
+  background: var(--ctrl); border: 1px solid var(--edge);
+  padding: 10px 12px; overflow-x: auto; margin: 10px 0; line-height: 1.45;
+}
+.doc pre code { color: var(--digi); }
+.doc .src { color: var(--muted); font-size: 12px; }
+
+/* MathJax SVG has an intrinsic width, so a long formula would otherwise run
+   off the side of the page rather than scale down with it. */
+mjx-container { max-width: 100%; }
+mjx-container svg { max-width: 100%; height: auto; }
+
+/* ── Example index ─────────────────────────────────────────────────────── */
+
+#cards {
+  width: 100%; max-width: var(--wide);
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px;
+}
+.card {
+  background: var(--ctrl); border: 1px solid var(--edge); padding: 12px 14px;
+  display: flex; flex-direction: column; gap: 6px; text-decoration: none;
+}
+.card:hover { border-color: var(--curve); }
+.card .t { color: var(--curve); font-size: 12px; letter-spacing: 2px; }
+.card .d { color: #b9c8e0; font-family: Helvetica, Arial, sans-serif; font-size: 13px; line-height: 1.5; }
+.card .m { color: var(--muted); font-size: 10px; }
+
+/* ── Footer ────────────────────────────────────────────────────────────── */
+
+footer {
+  width: 100%; max-width: var(--wide);
+  border-top: 1px solid var(--grid); margin-top: 12px; padding-top: 10px;
+  color: var(--muted); font-size: 10px; line-height: 1.8;
+}
+
+/* ── Narrow screens ────────────────────────────────────────────────────── */
+
+@media (max-width: 700px) {
+  body  { padding: 4px 4px 30px; gap: 4px; }
+  #ctrl { grid-template-columns: repeat(2, 1fr); }
+  .cb   { font-size: 8px; padding: 2px 1px; letter-spacing: 0; }
+  .ca   { font-size: 8px; }
+  .cr label { min-width: 74px; }
+  .modebtn { font-size: 10px; padding: 3px 2px; }
+}
+
+/* Two control columns leave a portrait phone's sliders ~25 px of track once
+   the labels and readouts have taken their width, so stack the groups. */
+@media (max-width: 480px) {
+  #ctrl { grid-template-columns: 1fr; gap: 10px; }
+}

@@ -498,11 +498,16 @@ multiple signals and samplerates I did not bother to figure out whether it was p
 The alternative to coherent sampling is to apply a window function before the FFT, that's the reason for the 
 Hanning window below.
 
+There is an [interactive version of this example](https://wulffern.github.io/aic2026/assets/examples/sampling.html) where
+the tone frequency, the sampling pattern and the window are sliders. Turning the
+Hanning window off, and then turning coherent sampling on, is worth thirty
+seconds of your time.
+
 -->
 
 ---
 
-[dt.py](https://github.com/wulffern/aic2024/blob/main/ex/dt.py)
+[dt.py](https://github.com/wulffern/aic2026/blob/main/ex/dt.py) - [interactive](https://wulffern.github.io/aic2026/assets/examples/sampling.html)
 
 ```python 
 #- Create a time vector
@@ -752,9 +757,13 @@ There are smarter, and faster ways to do IIR filters (and FIR) in python, see [s
 
 From the plot below we can see the sampled time domain and spectra on the left, and the filtered time domain and spectra on the right.
 
+The [interactive version of this example](https://wulffern.github.io/aic2026/assets/examples/iir.html) adds the pole
+position as a slider, and draws the z-plane next to the spectrum, so you can
+watch the pole move inside the unit circle and the corner frequency follow it.
+
 -->
 
-[iir.py](https://github.com/wulffern/aic2024/blob/main/ex/iir.py)
+[iir.py](https://github.com/wulffern/aic2026/blob/main/ex/iir.py) - [interactive](https://wulffern.github.io/aic2026/assets/examples/iir.html)
 
 ---
 

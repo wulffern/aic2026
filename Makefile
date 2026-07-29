@@ -10,7 +10,7 @@ ifneq ($(wildcard /pyenv/bin/.*),)
 	PYTHON=/pyenv/bin/python3
 endif
 
-.PHONY:  slides slides-one slides-parallel version tikz tikz-one tikz-check tikz-preview preview print-tikz figures prepare-docs standalone-one standalone-list book-pdf book-epub print-files
+.PHONY:  slides slides-one slides-parallel version tikz tikz-one tikz-check tikz-preview preview print-tikz figures prepare-docs standalone-one standalone-list book-pdf book-epub print-files examples
 
 #	lr0_logic \
 
@@ -52,7 +52,7 @@ FILES = l00_jayn \
 
 
 
-all: version posts-parallel texfiles-parallel standalone-parallel latex-nobuild book-nobuild
+all: version posts-parallel texfiles-parallel examples standalone-parallel latex-nobuild book-nobuild
 
 latex-nobuild:
 	cd pdf; make one
@@ -65,8 +65,24 @@ book-nobuild:
 version:
 	echo "aic${YEAR}" > version
 
-prepare-docs: clean-prepared version figures posts-parallel texfiles-parallel slides-parallel
+prepare-docs: clean-prepared version figures posts-parallel texfiles-parallel slides-parallel examples
 	cd pdf; [ -d kaobook ] || git clone https://github.com/fmarotta/kaobook.git
+
+# ---------------------------------------------------------------------------
+# Interactive examples
+#
+# examples/ holds one self-contained HTML page per script in ex/. docs/assets/
+# is gitignored, so examples/ is the source and gets copied in, the same way
+# media/ is the source for docs/assets/media/. Nothing is generated, so this is
+# a copy rather than a build.
+# ---------------------------------------------------------------------------
+
+EXAMPLEDIR = docs/assets/examples
+
+examples:
+	-mkdir -p ${EXAMPLEDIR}/common
+	cp -f examples/*.html ${EXAMPLEDIR}/
+	cp -f examples/common/* ${EXAMPLEDIR}/common/
 
 figures: media/antenna_diode_leak.pdf
 
@@ -76,7 +92,7 @@ media/antenna_diode_leak.pdf: ex/antenna_diode_leakage.py
 clean-prepared:
 	-rm -f docs/downloads.md images.txt *_images.inc
 	-rm -f docs/assets/*.pdf docs/assets/*.epub
-	-rm -rf docs/assets/html
+	-rm -rf docs/assets/html docs/assets/examples
 	-rm -f pdf/*.aux pdf/*.log pdf/*.pdf pdf/*.epub pdf/*.bbl pdf/*.blg pdf/*.toc pdf/*.bcf pdf/*.xml pdf/*.mw
 
 print-files:
