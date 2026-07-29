@@ -479,7 +479,41 @@ come up.
    copy. The warning is the point of including it.
 
 ### Current next figure
-- The next lecture in the Phase 2 list. `l04_dac` is complete.
+`l04_dac` is complete, so the queue moves on. In order, and each one triaged
+by listing its figures first rather than trusting the queue below:
+
+1. **`l01_intro`** and **`l11_aver`** — they share `dig_des` and `dig_des_lr`,
+   so whichever is drawn first finishes both, and the reference switch has to
+   cover both lectures in the same round.
+2. **`lr0_circuits`** — the queue lists only `LELOTEMP_OTA_OP`, but the
+   lecture also carries 19 figures in `media/l8/`, `l9/` and `l10/`, and the
+   `l8/fig_cm*.pdf` current mirrors and cascodes are exactly the kind of
+   schematic this workflow is for. Triage those before deciding the size of
+   the job; the `jnw_*` files are gm/ID plots and out of scope.
+3. **`lr0_tut1`** — `LELO_EX`, a single figure. The rest is screenshots.
+4. **`l01_project`** — `TB_LEAK` and `aic2026_project_analog`. Expect some of
+   this lecture's artwork to be system/overview drawings that belong in
+   Phase 3 rather than here. `l03_ptat` is already switched here.
+5. **`lr0_logic`** — **27** distinct figures under `media/l13/`, not the 13 the
+   queue lists, plus `mealy_machine`/`moore_machine` at the top level and
+   whole further sets under `l14/`, `l16/` and `l19/` that the queue never
+   mentions. This is the biggest job left in Phase 2 by some way. It is also
+   the first batch to use the subdirectory convention
+   (`tikz/l13/<name>.tex` → `media/l13/<name>_tikz.pdf`). Gate-level drawings,
+   so `circuits.logic.US` rather than `circuitikz` devices, and worth a shared
+   include for the pull-up/pull-down pair the first several figures repeat.
+
+Phase 1 is finished apart from the lectures never started: `l06_adc`,
+`l07_vreg`, `l08_pll` and `l09_osc` are still untouched and are much bigger
+than anything in Phase 2. If the goal is the book looking consistent rather
+than the queue being drained in order, those four are where the remaining
+volume is — worth deciding before starting Phase 2.
+
+Two open questions from earlier rounds are still unanswered and cost nothing
+to settle when the relevant lecture next comes up: `l04_ff_gm` in `l04_afe`
+(redrawing a figure lifted from a cited thesis — the author's call, not a
+match question), and the `G_m2`/`G_m3` damping term in `l04_afe.md` and
+`l05_sc.md`, where the printed equation disagrees with the circuit.
 
 ### `l04_dac` is complete
 Seventeen figures drawn and switched: `dac_r_div`, `dac_r_div2`, `dac_r_div2b`,
@@ -488,22 +522,47 @@ Seventeen figures drawn and switched: `dac_r_div`, `dac_r_div2`, `dac_r_div2b`,
 `dac_thermo_states`, `dac_thermo_tran`, `dac_r_thermo`, `dac_i`,
 `dac_i_vbias`.
 
-On the two current mode DACs. The artwork for `dac_i_vbias` could not be
-read off the page: each steering pair's left gate ends in a circle labelled
-V_bias with a diagonal running to it, which is either a port on a wire or a
-switch arm tying the gate to V_bias, and the two readings are different
-circuits. The user settled it: **V_bias is a constant, and the bit and its
-complement swing about it** rather than rail to rail. So both gates carry
-b and b-bar, as in `dac_i`, and V_bias is drawn as the cascode gate of the
-reference branch brought out as a port, with an inset waveform saying what
-the level is for. Ask rather than guess — the plan says so, and the two
-readings here would have taught opposite things.
+On the two current mode DACs. `dac_i_vbias` took four passes and every
+correction came from the user, not from the build. What it is, settled:
 
-Both figures now draw the slice **once**, inside a dashed cell boundary,
-followed by an empty boundary of the same size and a caption reading "N
-copies of the same cell, sized 1, 2, 4 ... N", at the user's request: the
-originals leave the repetition to a row of dots between two slices, and
-that does not say that the array is one cell copied.
+- **V_bias is a constant that comes from outside.** It gates the cascode in
+  the reference branch and runs the length of the array as a rail. The
+  reference branch does not make it.
+- **One side of each steering pair sits directly on that rail; the other side
+  takes the bit.** The bit swings about V_bias, so it has to cross the level
+  in both directions to tip the pair, and only has to move far enough either
+  side of it to do so. An inset waveform says that. A first attempt put
+  drivers on both gates instead, which drew a different circuit.
+- **The diode connection is taken from the top of the stack, above the
+  cascode**, so the mirror's gate carries the whole stack's voltage rather
+  than its own drain's, and that node is the gate rail the cells' tail
+  devices share.
+
+What this round cost, and the lesson: the slanted bias stub, the labels
+struck through by their own wires, the gate rail left dangling at an old x
+after the riser moved, the header describing a superseded circuit, and the
+V_bias wire laid across the steering device — every one was visible in a
+render and none was caught by a green build. **Render it, put it beside the
+original, and read both ends of every wire before showing it.** The compare
+mode exists for exactly this: `make preview FNAME=<name>`.
+
+Two habits that came out of it and are worth keeping:
+- Take a wire's endpoint off the device's own anchor rather than off
+  computed numbers when it has to clear the symbol: `\draw let \p1 =
+  (M.gate) in (M.gate) -- (\x1-0.35,\y1) -- (\x1-0.35,\ybias);`. No later
+  coordinate edit can put it back on top of the device.
+- When an edit moves a coordinate, check **both** ends of every path that
+  used it. A one-ended replace is what produced the slanted stub and the
+  dangling rail.
+
+Both figures now draw the cell **once**, inside a dashed boundary, with a
+narrow blank boundary after it standing for the cells that are not drawn and
+a caption reading "N copies of the same cell, sized 1, 2, 4 ... N", at the
+user's request: the originals leave the repetition to a row of dots between
+two slices, and that does not say that the array is one cell copied. The
+boxes butt up against each other so the row reads as an array. Both figures
+are built on one geometry, so between the two slides only the part that
+changes looks different — keep them in step if either is re-laid-out.
 
 Out of scope in `l04_dac`, after opening each: `dac_error` and `dac_inl_dnl`
 are matplotlib plots, and `NIST.SP_.1247.png` is a bitmap.
@@ -540,6 +599,26 @@ One deliberate deviation, in `dacsm_lib`: where two states carry a transition
 each way, the arrows bend either side of the centre line instead of running
 parallel as the originals draw them. Drawn node to node an arrow is clipped
 at the circle border; a hand-offset straight one runs into the bubble.
+
+A device drawn on an upward path has its gate on the left, and `mirror` puts
+it on the right — which is what a reference device facing its array wants, so
+the diode connection can loop up the outside of the channel instead of the
+gate rail running back across the symbol. Drawing the path *downward* also
+moves the gate, but it swaps drain and source: the source then lands on the
+current source rather than on ground. Mirror, do not reverse.
+
+### Working with the CI figure rebuild
+The `TikZ figures` workflow rebuilds and commits `media/*_tikz.pdf` on every
+push, and its TeX Live (TL2022-historic) does not produce the same bytes as a
+local TL2024. So editing a figure, pushing, and pulling gives a **conflict on
+the figure's PDF** nearly every time — six of them in this round. The fix is
+always the same and is not a merge: rebuild from source and stage that.
+
+    make tikz-one FNAME=<name>
+    git add media/<name>_tikz.pdf media/<name>_tikz.svg
+
+Never resolve one of these by taking either side of the merge: the committed
+PDF has to be the one the current source produces.
 
 ### `l04_afe` is complete
 16 figures drawn and switched. `l4_activebiquad` and `l4_gmcbi` were the two
