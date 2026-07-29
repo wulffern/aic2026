@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Interactive examples &mdash; aic2026</title>
+<link rel="stylesheet" href="common/aic.css">
+</head>
+<body>
+
+<header>
+  <h1>INTERACTIVE EXAMPLES</h1>
+  <div class="sub">
+    TFE4188 Advanced Integrated Circuits &middot;
+    <a href="https://wulffern.github.io/aic2026/">back to the course</a>
+  </div>
+</header>
+
+<div id="cards">
+
+  <a class="card" href="sampling.html">
+    <div class="t">SAMPLING</div>
+    <div class="d">
+      A pulse train multiplies a signal in time and copies its spectrum to every
+      multiple of f<sub>s</sub>. Move the tone past Nyquist and watch it alias;
+      turn the window off and watch the floor swallow the sidebands.
+    </div>
+    <div class="m">ex/dt.py, ex/sub.py &middot; switched capacitor circuits</div>
+  </a>
+
+  <a class="card" href="iir.html">
+    <div class="t">FIRST ORDER IIR</div>
+    <div class="d">
+      One line of feedback, one pole. Drag the pole from the unit circle inwards
+      and watch the corner frequency, the DC gain and the measured spectrum move
+      together with the algebra.
+    </div>
+    <div class="m">ex/iir.py &middot; switched capacitor circuits</div>
+  </a>
+
+  <a class="card" href="quantization.html">
+    <div class="t">QUANTIZATION</div>
+    <div class="d">
+      Where SQNR = 6.02B + 1.76 dB comes from, and where it stops being true.
+      One bit gives harmonics, four bits gives noise, ten bits gives whatever
+      was already on the input.
+    </div>
+    <div class="m">ex/q.py, ex/quantization.py &middot; data converters</div>
+  </a>
+
+  <a class="card" href="oversampling.html">
+    <div class="t">OVERSAMPLING</div>
+    <div class="d">
+      Quantization noise power is fixed; spread it wider and keep less of it.
+      Three dB per octave, measured, against the ideal line.
+    </div>
+    <div class="m">ex/osr.py &middot; data converters</div>
+  </a>
+
+  <a class="card" href="sigma-delta.html">
+    <div class="t">NOISE SHAPING</div>
+    <div class="d">
+      A first-order sigma-delta loop in six lines, with the integrator state,
+      the bitstream, the decoded output and nine dB per octave all on one
+      screen.
+    </div>
+    <div class="m">ex/sd_1st.py &middot; data converters</div>
+  </a>
+
+  <a class="card" href="diode.html">
+    <div class="t">DIODE VS TEMPERATURE</div>
+    <div class="d">
+      n<sub>i</sub>(T) to I<sub>S</sub>(T) to V<sub>D</sub>(T), and the couple of
+      millivolts of curvature that a first-order bandgap reference cannot
+      correct.
+    </div>
+    <div class="m">ex/vd.py &middot; diodes, references and bias</div>
+  </a>
+
+  <a class="card" href="antenna-leakage.html">
+    <div class="t">ANTENNA DIODE LEAKAGE</div>
+    <div class="d">
+      Diffusion and generation leakage from 200 K to 1000 K, with the plasma
+      etch and deposition steps shaded &mdash; the temperatures where an antenna
+      diode has to do its job.
+    </div>
+    <div class="m">ex/antenna_diode_leakage.py &middot; diodes and ESD</div>
+  </a>
+
+  <a class="card" href="pv.html">
+    <div class="t">PV CELL</div>
+    <div class="d">
+      A diode with a current source across it. I-V and P-V curves, the maximum
+      power point, and why harvesting in a dim room is a current problem rather
+      than a voltage one.
+    </div>
+    <div class="m">ex/pv.py, ex/pv_v.py &middot; energy sources</div>
+  </a>
+
+</div>
+
+<div class="doc">
+  <h2>ABOUT THESE PAGES</h2>
+  <p>
+    Each page is an interactive version of one of the Python scripts in
+    <a href="https://github.com/wulffern/aic2026/tree/main/ex">ex/</a>. The
+    plots are the same plots; the difference is that the constants at the top
+    of the script are sliders, so you can find out what happens when you change
+    them without waiting for matplotlib.
+  </p>
+  <p>
+    They are plain HTML, CSS and JavaScript with no dependencies and no network
+    access, so they work offline, on a phone, and from a local copy of the
+    repository. If a page disagrees with the script it is a bug; the source for
+    both is in the repo, and the reasoning is in the notes below each set of
+    plots.
+  </p>
+  <p>
+    For the full ADC story with second-order and leapfrog loops, a real
+    decimator and a car driving along the waveform, see
+    <a href="https://wulffern.github.io/cicadc/">cicadc</a>.
+  </p>
+</div>
+
+<footer>
+  TFE4188 Advanced Integrated Circuits &middot;
+  <a href="https://github.com/wulffern/aic2026">source</a> &middot;
+  <a href="https://wulffern.github.io/aic2026/">lectures</a>
+</footer>
+
+</body>
+</html>

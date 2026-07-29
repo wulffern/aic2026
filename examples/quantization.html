@@ -1,0 +1,386 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Quantization &mdash; aic2026</title>
+<link rel="stylesheet" href="common/aic.css">
+</head>
+<body>
+
+<header>
+  <h1>QUANTIZATION</h1>
+  <div class="sub">
+    <a href="index.html">&larr; all examples</a> &middot;
+    interactive version of <a href="https://github.com/wulffern/aic2026/blob/main/ex/q.py">ex/q.py</a>
+    and <a href="https://github.com/wulffern/aic2026/blob/main/ex/quantization.py">ex/quantization.py</a> &middot;
+    data converters
+  </div>
+</header>
+
+<div id="chain">
+  <div class="cb on">CONTINUOUS t, CONTINUOUS v</div><span class="ca">&rarr;</span>
+  <div class="cb on" id="cb-smp">SAMPLE &divide;<span id="cb-nfs">4</span></div><span class="ca">&rarr;</span>
+  <div class="cb on" id="cb-adc">QUANTISE <span id="cb-bits">1</span>b</div><span class="ca">&rarr;</span>
+  <div class="cb on">DISCRETE t, DISCRETE v</div>
+</div>
+
+<canvas id="c"></canvas>
+
+<div id="ctrl">
+  <div class="cg">
+    <div class="cgt">QUANTISER</div>
+    <div class="cr">
+      <label>Bits</label>
+      <input type="range" data-bind="bits" id="sl-bits" min="1" max="12" step="1" value="1">
+      <span class="v" id="v-bits"></span>
+    </div>
+    <div class="cr">
+      <label>Sample &divide;</label>
+      <input type="range" data-bind="nfs" id="sl-nfs" min="1" max="16" step="1" value="4">
+      <span class="v" id="v-nfs"></span>
+    </div>
+    <div class="note">
+      <code>adc()</code> rounds to a step of 2<sup>-bits</sup>, so a full-scale
+      &plusmn;1 sine sees 2<sup>bits+1</sup> steps &mdash; one bit more than the
+      slider says.
+    </div>
+  </div>
+
+  <div class="cg">
+    <div class="cgt">SIGNAL</div>
+    <div class="cr">
+      <label>f_1 = f_c/2^</label>
+      <input type="range" data-bind="fdiv" id="sl-fdiv" min="3" max="11" step="1" value="6">
+      <span class="v" id="v-fdiv"></span>
+    </div>
+    <div class="cr">
+      <label>Amplitude</label>
+      <input type="range" data-bind="amp" id="sl-amp" min="0.02" max="1.2" step="0.01" value="1">
+      <span class="v" id="v-amp"></span>
+    </div>
+    <div class="cr">
+      <label>Noise</label>
+      <input type="range" data-bind="noisebits" id="sl-noisebits" min="0" max="20" step="1" value="15">
+      <span class="v" id="v-noisebits"></span>
+    </div>
+    <div class="cr">
+      <label>Record N = 2^</label>
+      <input type="range" data-bind="nbits" id="sl-nbits" min="11" max="14" step="1" value="13">
+      <span class="v" id="v-nbits"></span>
+    </div>
+  </div>
+
+  <div class="cg">
+    <div class="cgt">VIEW</div>
+    <div class="cr">
+      <label>Time window</label>
+      <input type="range" data-bind="win" id="sl-win" min="16" max="512" step="8" value="80">
+      <span class="v" id="v-win"></span>
+    </div>
+    <div class="ckrow">
+      <input type="checkbox" data-bind="hann" id="sl-hann" checked>
+      <label for="sl-hann">Hann window before the FFT</label>
+    </div>
+    <div class="ckrow">
+      <input type="checkbox" data-bind="coh" id="sl-coh" checked>
+      <label for="sl-coh">Coherent sampling (integer t)</label>
+    </div>
+    <div class="ckrow">
+      <input type="checkbox" data-bind="harm" id="sl-harm" checked>
+      <label for="sl-harm">Mark 3f_1, 5f_1, 7f_1</label>
+    </div>
+  </div>
+</div>
+
+<div id="readout">
+  <div class="ro"><span class="k">LSB</span><span class="n" id="ro-lsb"></span></div>
+  <div class="ro"><span class="k">SQNR</span><span class="n" id="ro-sqnr"></span></div>
+  <div class="ro"><span class="k">6.02B+1.76</span><span class="n" id="ro-ideal"></span></div>
+  <div class="ro"><span class="k">ENOB</span><span class="n" id="ro-enob"></span></div>
+  <div class="ro"><span class="k">f_1 BIN</span><span class="n" id="ro-f1"></span></div>
+</div>
+
+<div id="legend">
+  <div class="leg"><div class="lsw" style="background:var(--curve)"></div>Continuous</div>
+  <div class="leg"><div class="ldot" style="background:var(--sample)"></div>Samples</div>
+  <div class="leg"><div class="lsw" style="background:var(--quant)"></div>Quantiser output</div>
+  <div class="leg"><div class="lsw" style="background:var(--error)"></div>Quantization error</div>
+  <div class="leg"><div class="lsw" style="background:var(--alt2)"></div>Odd harmonics</div>
+</div>
+
+<div class="doc">
+  <h2>WHAT YOU ARE LOOKING AT</h2>
+  <p>
+    An analog-to-digital converter does two separate things, and it is worth
+    keeping them apart in your head. It makes time discrete (sampling) and it
+    makes value discrete (quantization). The three spectra along the bottom are
+    the same signal after each step: continuous time and continuous value,
+    then discrete time and continuous value, then discrete time and discrete
+    value.
+  </p>
+  <p>
+    These are complex FFTs, so they show both negative and positive
+    frequencies, which is why one sine gives two spikes &mdash;
+    sin(x) = (e<sup>ix</sup> &minus; e<sup>-ix</sup>)/2i, and both exponentials
+    are there. Everything is normalised to its own peak, so 0 dB is the tone.
+  </p>
+  <p>
+    Quantization replaces the signal with the nearest multiple of one LSB. The
+    difference is the error in the top middle panel, bounded by
+    &plusmn;&frac12; LSB by construction. If that error looks like noise,
+    treating it as noise gives the familiar SQNR &asymp; 6.02&middot;B + 1.76
+    dB. If it does not &mdash; at one bit it very much does not &mdash; the
+    error is a deterministic function of the signal and lands in harmonics
+    instead of spreading out, and the formula stops describing anything.
+  </p>
+
+  <h2>THINGS WORTH TRYING</h2>
+  <ul>
+    <li>
+      Start at <b>1 bit</b>, the default. Note that <code>adc()</code> rounds
+      rather than takes a sign, so a &plusmn;1 sine still gets five levels.
+      The error is a triangle locked to the signal, and the output spectrum has
+      clear spikes at 3f_1, 5f_1 and 7f_1 instead of a floor.
+      The measured SQNR is about 15 dB &mdash; slightly <em>above</em> the 13.8
+      dB the formula predicts, because a coarse quantizer's error is not
+      uniformly distributed. Neither number means much when the error is this
+      correlated with the signal.
+    </li>
+    <li>
+      Walk the <b>bits</b> up. Every extra bit buys about 6 dB, the harmonics
+      sink into the floor, and by 4 bits the measured SQNR is within a few
+      tenths of a dB of the formula. That convergence is the whole
+      justification for the &ldquo;quantization noise is white&rdquo;
+      assumption.
+    </li>
+    <li>
+      Keep going past <b>10 bits</b> with the noise at 1/2<sup>15</sup>. The
+      measured SQNR stops following the formula: the quantizer is now quieter
+      than the noise that was already on the signal, and adding bits to a
+      converter whose input is noisy buys nothing.
+    </li>
+    <li>
+      Turn the <b>noise</b> up to 1/2<sup>8</sup> at 3 or 4 bits. The added
+      noise dithers the quantizer: the harmonics break up into a noise floor.
+      The total noise power goes up, but it is now noise rather than
+      distortion, which is often the better trade. This is dither, and it is
+      why converters deliberately add some.
+    </li>
+    <li>
+      Increase <b>Sample &divide;</b>. Fewer points go into the second and third
+      FFT, so the same noise power lands in fewer bins and the floor rises. That
+      is the noise folding and reduced FFT length the lecture notes mention.
+    </li>
+    <li>
+      Drop the <b>amplitude</b> to 0.1. The quantizer step has not changed, so
+      the error has not changed, but the signal has: SQNR falls by 20 dB per
+      decade of amplitude. A converter is only at its data-sheet SNR near full
+      scale.
+    </li>
+    <li>
+      Untick <b>coherent sampling</b> to get the script's
+      <code>np.linspace(0,N,N)</code> time vector back. Its step is N/(N&minus;1)
+      rather than 1, so the tone sits a fraction of a bin off, leaks through the
+      window sidelobes, and pins the measured SQNR at around 69 dB however many
+      bits you ask for. Getting the time vector right matters as much as getting
+      the converter right.
+    </li>
+  </ul>
+
+  <h2>THE PYTHON</h2>
+<pre><code>def adc(x,bits):
+    levels = 2**bits
+    y = np.round(x*levels)/levels
+    return y
+
+#- Sampling frequency is 1/nfs of the time vector
+x_sn = x_s[0::nfs]
+y_sn = adc(x_sn,bits)
+
+def freqDomain(x,hann=True):
+    N = len(x)
+    w = np.hanning(N+1) if hann else np.ones(N+1)
+    X = np.fft.fftshift(np.fft.fft(np.multiply(w[0:N],x)))
+    return X/np.max(np.abs(X))   # normalise to max output power</code></pre>
+  <p class="src">
+    Source: <a href="https://github.com/wulffern/aic2026/blob/main/ex/q.py">ex/q.py</a>,
+    <a href="https://github.com/wulffern/aic2026/blob/main/ex/quantization.py">ex/quantization.py</a>
+    (the same thing with <code>np.sign()</code>, i.e. the one-bit case).
+  </p>
+</div>
+
+<footer>
+  TFE4188 Advanced Integrated Circuits &middot; <a href="https://wulffern.github.io/aic2026/">aic2026</a>
+</footer>
+
+<script src="common/plot.js"></script>
+<script src="common/dsp.js"></script>
+<script>
+'use strict';
+
+const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+
+const S = {};
+let D = null;
+
+const fmts = {
+  bits:      v => v + ' b',
+  nfs:       v => (v === 1 ? 'none' : '1/' + v),
+  fdiv:      v => 'f_c/2^' + v,
+  amp:       v => v.toFixed(2) + ' FS',
+  noisebits: v => (v === 0 ? 'off' : '1/2^' + v),
+  nbits:     v => '2^' + v,
+  win:       v => v + ' smp',
+};
+
+function compute() {
+  const N = 1 << S.nbits;
+  const nfs = Math.round(S.nfs);
+  const bits = Math.round(S.bits);
+  // ex/q.py uses np.linspace(0,N,N), whose step is N/(N-1) rather than 1, so
+  // the record holds a fraction of a period too many and the tone lands a
+  // hundredth of a bin off. That leaks enough through the Hann sidelobes to
+  // cap the measured SQNR at about 69 dB no matter how many bits you ask for.
+  // Integer sample indices make the record coherent, so the readout keeps
+  // tracking 6.02B + 1.76 all the way up.
+  const t = S.coh ? DSP.arange(N) : DSP.linspace(0, N, N);
+
+  // f1 = 1/fdivide - 1/N, as in ex/q.py: one bin short of an exact power of
+  // two, so the tone does not land on a bin the sampler also lands on.
+  const f1 = 1 / Math.pow(2, S.fdiv) - 1 / N;
+  const na = S.noisebits === 0 ? 0 : Math.pow(2, -S.noisebits);
+  const noise = DSP.randn(N, 20260517);
+
+  const xs = new Float64Array(N);
+  for (let i = 0; i < N; i++) xs[i] = S.amp * Math.sin(2 * Math.PI * f1 * t[i]) + na * noise[i];
+
+  const xsn = DSP.decimate(xs, nfs);
+  const ysn = DSP.quantize(xsn, bits);
+  const M = xsn.length;
+
+  const err = new Float64Array(M);
+  for (let i = 0; i < M; i++) err[i] = xsn[i] - ysn[i];
+
+  const Xs  = DSP.toDb(DSP.normalise(DSP.magSpectrum(xs,  S.hann)));
+  const Xsn = DSP.toDb(DSP.normalise(DSP.magSpectrum(xsn, S.hann)));
+  const Ysn = DSP.toDb(DSP.normalise(DSP.magSpectrum(ysn, S.hann)));
+
+  const fN = new Float64Array(N), fM = new Float64Array(M);
+  for (let i = 0; i < N; i++) fN[i] = (i - N / 2) / N;
+  for (let i = 0; i < M; i++) fM[i] = (i - M / 2) / M;
+
+  // The transfer curve of the quantizer itself.
+  const tx = DSP.linspace(-1.3, 1.3, 1200);
+  const ty = DSP.quantize(tx, bits);
+
+  // Measured SQNR from the one-sided spectrum of the quantizer output.
+  const one = DSP.magOneSided(ysn, S.hann);
+  const fs1 = f1 * nfs;                       // signal frequency, relative to f_s
+  const sigBin = Math.round(fs1 * M);
+  const sqnr = DSP.snr(one, sigBin, M >> 1, 3);
+
+  const lsb = Math.pow(2, -bits);
+  // adc() has a step of 2^-bits, so a +/-1 full scale is 2^(bits+1) steps.
+  const ideal = 6.02 * (bits + 1) + 1.76 + 20 * Math.log10(Math.min(S.amp, 1));
+
+  D = { N, M, nfs, bits, xs, xsn, ysn, err, Xs, Xsn, Ysn, fN, fM,
+        tx, ty, f1, fs1, lsb, sigBin };
+
+  UI.readout('ro-lsb',   lsb.toExponential(2) + '  (2^-' + bits + ')');
+  UI.readout('ro-sqnr',  isFinite(sqnr) ? sqnr.toFixed(1) + ' dB' : '-');
+  UI.readout('ro-ideal', ideal.toFixed(1) + ' dB');
+  UI.readout('ro-enob',  isFinite(sqnr) ? DSP.enob(sqnr).toFixed(2) + ' b' : '-');
+  UI.readout('ro-f1',    sigBin + ' of ' + (M >> 1));
+  document.getElementById('cb-nfs').textContent = nfs;
+  document.getElementById('cb-bits').textContent = bits;
+}
+
+/** Fold k*f1 back into [0, 0.5] the way the sampler does. */
+function alias(fn) {
+  let r = fn % 1;
+  if (r > 0.5) r = 1 - r;
+  return r;
+}
+
+function render(cx, W, H, narrow) {
+  if (!D) return;
+  const g = Plot.grid(W, H, narrow ? 6 : 2, narrow ? 1 : 3, { gapY: 22, gapX: 16 });
+  const win = Math.min(D.M, Math.round(S.win));
+  const span = Math.max(1.35, S.amp * 1.25);
+
+  // ── Time domain ──────────────────────────────────────────────────────────
+  const p0 = new Plot.Panel(cx, g[0], {
+    title: 'Sample and quantise', ylabel: 'Amplitude [FS]', xlabel: 'sample n',
+  });
+  p0.limits(0, win, -span, span).frame();
+  // The quantiser's decision levels, so the staircase has something to sit on.
+  if (D.lsb * (p0.bottom - p0.top) / (2 * span) > 3) {
+    for (let k = -Math.ceil(span / D.lsb); k <= Math.ceil(span / D.lsb); k++) {
+      p0.hline(k * D.lsb, css('--grid'));
+    }
+  }
+  p0.stairs(null, D.ysn.subarray(0, win), css('--quant'), { width: 1.5 });
+  p0.dots(null, D.xsn.subarray(0, win), css('--sample'), 2);
+  p0.legend([
+    { label: 'x_sn', color: css('--sample') },
+    { label: 'y_sn', color: css('--quant') },
+  ]);
+
+  const p1 = new Plot.Panel(cx, g[1], {
+    title: 'Quantization error x_sn - y_sn', xlabel: 'sample n',
+  });
+  p1.limits(0, win, -D.lsb, D.lsb).frame();
+  p1.hline(D.lsb / 2, css('--muted'), [3, 3]);
+  p1.hline(-D.lsb / 2, css('--muted'), [3, 3]);
+  p1.stairs(null, D.err.subarray(0, win), css('--error'), { width: 1.5 });
+  p1.note(0.02, 0.9, '+/- LSB/2', css('--muted'));
+
+  const p2 = new Plot.Panel(cx, g[2], {
+    title: 'Quantiser transfer curve', xlabel: 'in [FS]', ylabel: 'out [FS]',
+  });
+  p2.limits(-1.3, 1.3, -1.3, 1.3).frame();
+  p2.line(D.tx, D.tx, css('--muted'), { dash: [3, 3] });
+  p2.line(D.tx, D.ty, css('--quant'), { width: 1.5 });
+
+  // ── Frequency domain ─────────────────────────────────────────────────────
+  const p3 = new Plot.Panel(cx, g[3], {
+    title: 'Continuous t, continuous v',
+    ylabel: 'Frequency domain [dB]', xlabel: 'f / f_c',
+  });
+  p3.limits(-0.5, 0.5, -160, 5).frame();
+  p3.line(D.fN, D.Xs, css('--curve'));
+
+  const p4 = new Plot.Panel(cx, g[4], {
+    title: 'Discrete t, continuous v', xlabel: 'f / f_s',
+  });
+  p4.limits(-0.5, 0.5, -160, 5).frame();
+  p4.line(D.fM, D.Xsn, css('--curve'));
+
+  const p5 = new Plot.Panel(cx, g[5], {
+    title: 'Discrete t, discrete v', xlabel: 'f / f_s',
+  });
+  p5.limits(-0.5, 0.5, -160, 5).frame();
+  // The odd harmonics get marked but the tone does not: a dashed line through
+  // a one-pixel spike hides the very thing it is pointing at.
+  if (S.harm) {
+    for (const k of [3, 5, 7]) {
+      const a = alias(k * D.fs1);
+      p5.vline(a, css('--alt2'), [2, 4]);
+      p5.vline(-a, css('--alt2'), [2, 4]);
+    }
+  }
+  p5.line(D.fM, D.Ysn, css('--quant'));
+  p5.note(0.02, 0.9, D.bits + '-bit\nf1 = ' + D.sigBin +
+                     '\nf3 = ' + Math.round(alias(3 * D.fs1) * D.M) +
+                     '\nf5 = ' + Math.round(alias(5 * D.fs1) * D.M) +
+                     '\nf7 = ' + Math.round(alias(7 * D.fs1) * D.M), css('--text'));
+}
+
+const chart = Plot.mount('c', { aspect: 0.5, aspectNarrow: 2.6, draw: render });
+UI.bind(S, fmts, () => { compute(); chart.redraw(); });
+compute();
+chart.redraw();
+</script>
+</body>
+</html>

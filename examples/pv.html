@@ -1,0 +1,322 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Photovoltaic cell &mdash; aic2026</title>
+<link rel="stylesheet" href="common/aic.css">
+</head>
+<body>
+
+<header>
+  <h1>PV CELL</h1>
+  <div class="sub">
+    <a href="index.html">&larr; all examples</a> &middot;
+    interactive version of <a href="https://github.com/wulffern/aic2026/blob/main/ex/pv.py">ex/pv.py</a>
+    and <a href="https://github.com/wulffern/aic2026/blob/main/ex/pv_v.py">ex/pv_v.py</a> &middot;
+    energy sources
+  </div>
+</header>
+
+<div id="chain">
+  <div class="cb on">LIGHT &rarr; I_ph</div><span class="ca">&minus;</span>
+  <div class="cb on">DIODE I_S(e^(V/nV_T)&minus;1)</div><span class="ca">=</span>
+  <div class="cb on">I_load</div><span class="ca">&rarr;</span>
+  <div class="cb on">P = V&middot;I</div>
+</div>
+
+<canvas id="c"></canvas>
+
+<div id="ctrl">
+  <div class="cg">
+    <div class="cgt">CELL</div>
+    <div class="cr">
+      <label>I_ph = 10^</label>
+      <input type="range" data-bind="iph" id="sl-iph" min="-7" max="-1" step="0.1" value="-3">
+      <span class="v" id="v-iph"></span>
+    </div>
+    <div class="cr">
+      <label>I_S = 10^</label>
+      <input type="range" data-bind="is" id="sl-is" min="-16" max="-8" step="0.1" value="-12">
+      <span class="v" id="v-is"></span>
+    </div>
+    <div class="cr">
+      <label>Ideality n</label>
+      <input type="range" data-bind="n" id="sl-n" min="1" max="2" step="0.05" value="1">
+      <span class="v" id="v-n"></span>
+    </div>
+    <div class="cr">
+      <label>Temperature</label>
+      <input type="range" data-bind="tc" id="sl-tc" min="-20" max="100" step="1" value="27">
+      <span class="v" id="v-tc"></span>
+    </div>
+  </div>
+
+  <div class="cg">
+    <div class="cgt">LOAD</div>
+    <div class="cr">
+      <label>Operating point</label>
+      <input type="range" data-bind="op" id="sl-op" min="0" max="0.999" step="0.001" value="0.8">
+      <span class="v" id="v-op"></span>
+    </div>
+    <div class="ckrow">
+      <input type="checkbox" data-bind="mpp" id="sl-mpp" checked>
+      <label for="sl-mpp">Mark the maximum power point</label>
+    </div>
+    <div class="note">
+      The operating point is the fraction of the photocurrent the load draws.
+      Drag it to the knee and watch the power panels.
+    </div>
+  </div>
+
+  <div class="cg">
+    <div class="cgt">VIEW</div>
+    <div class="ckrow">
+      <input type="checkbox" data-bind="cells" id="sl-cells">
+      <label for="sl-cells">Stack 4 cells in series</label>
+    </div>
+    <div class="note">
+      One silicon cell gives about half a volt however big it is, which is why
+      a panel is a series string. Stacking multiplies the voltage, not the
+      current.
+    </div>
+  </div>
+</div>
+
+<div id="readout">
+  <div class="ro"><span class="k">V_OC</span><span class="n" id="ro-voc"></span></div>
+  <div class="ro"><span class="k">I_SC</span><span class="n" id="ro-isc"></span></div>
+  <div class="ro"><span class="k">MPP</span><span class="n" id="ro-mpp"></span></div>
+  <div class="ro"><span class="k">FILL FACTOR</span><span class="n" id="ro-ff"></span></div>
+  <div class="ro"><span class="k">AT OPERATING PT</span><span class="n" id="ro-op"></span></div>
+</div>
+
+<div id="legend">
+  <div class="leg"><div class="lsw" style="background:var(--curve)"></div>Voltage</div>
+  <div class="leg"><div class="lsw" style="background:var(--quant)"></div>Power</div>
+  <div class="leg"><div class="ldot" style="background:var(--sample)"></div>Maximum power point</div>
+  <div class="leg"><div class="ldot" style="background:var(--error)"></div>Operating point</div>
+</div>
+
+<div class="doc">
+  <h2>WHAT YOU ARE LOOKING AT</h2>
+  <p>
+    A solar cell is a diode with a current source across it. Light generates
+    I<sub>ph</sub>; whatever the load does not take flows through the diode and
+    sets the voltage. Rearranging the diode equation for that leftover current
+    gives the one line the script is built on:
+  </p>
+  <p style="text-align:center">
+    <code>V<sub>D</sub> = n&middot;V<sub>T</sub>&middot;ln((I<sub>ph</sub> &minus; I<sub>load</sub>)/I<sub>S</sub> + 1)</code>
+  </p>
+  <p>
+    Two limits fall straight out. Draw no current and all of I<sub>ph</sub> goes
+    through the diode, giving the open-circuit voltage &mdash; a logarithm, so
+    it barely moves with light level. Draw all of it and the diode gets nothing,
+    the voltage collapses to zero, and the short-circuit current is
+    I<sub>ph</sub> &mdash; linear in light level. Neither limit delivers any
+    power; the useful point is the knee between them.
+  </p>
+  <p>
+    The left panels are the script's view, against load current: voltage, then
+    power. The right panels are the same data plotted the way a solar
+    data sheet does it, against voltage. The fill factor is the area of the
+    maximum-power rectangle divided by V<sub>OC</sub>&middot;I<sub>SC</sub>
+    &mdash; how close the cell gets to the rectangle it would fill if it were
+    an ideal source.
+  </p>
+
+  <h2>THINGS WORTH TRYING</h2>
+  <ul>
+    <li>
+      Move <b>I<sub>ph</sub></b> over six decades &mdash; bright sun down to
+      indoor light. I<sub>SC</sub> follows it exactly, decade for decade.
+      V<sub>OC</sub> falls by only about 60 mV per decade, because it is a
+      logarithm. A cell in a dim room still makes most of its voltage; what it
+      loses is current. This is why energy harvesting is a current problem, not
+      a voltage problem.
+    </li>
+    <li>
+      Drag the <b>operating point</b> across the knee. Slightly the wrong side
+      of it and you lose a lot of power for very little voltage &mdash; which is
+      the entire reason a harvester carries a maximum-power-point tracker
+      instead of a fixed load.
+    </li>
+    <li>
+      Raise the <b>temperature</b>. V<sub>OC</sub> drops a couple of millivolts
+      per degree, exactly as in the <a href="diode.html">diode example</a>,
+      because it is the same junction. A hot panel makes less power, and in this
+      model I<sub>S</sub> is held fixed so you are seeing only the kT/q part of
+      that &mdash; a real cell is worse, because I<sub>S</sub> climbs too.
+    </li>
+    <li>
+      Tick <b>4 cells in series</b>. The voltage axis scales by four, the
+      current does not, and the fill factor is unchanged. That is why panels
+      are strings and why one shaded cell ruins the string.
+    </li>
+  </ul>
+
+  <h2>THE PYTHON</h2>
+<pre><code>i_load = np.linspace(1e-5,1e-3,200)
+i_s  = 1e-12
+i_ph = 1e-3
+V_T = 1.38e-23*300/1.6e-19
+
+V_D = V_T*np.log((i_ph - i_load)/(i_s) + 1)
+P_load = V_D*i_load</code></pre>
+  <p class="src">
+    Source: <a href="https://github.com/wulffern/aic2026/blob/main/ex/pv.py">ex/pv.py</a>
+    (against current) and
+    <a href="https://github.com/wulffern/aic2026/blob/main/ex/pv_v.py">ex/pv_v.py</a>
+    (against voltage) &mdash; the same equation, plotted two ways. Neither
+    models series or shunt resistance, so the knee here is sharper than a real
+    cell's.
+  </p>
+</div>
+
+<footer>
+  TFE4188 Advanced Integrated Circuits &middot; <a href="https://wulffern.github.io/aic2026/">aic2026</a>
+</footer>
+
+<script src="common/plot.js"></script>
+<script src="common/semi.js"></script>
+<script>
+'use strict';
+
+const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+
+const S = {};
+let D = null;
+
+const fmts = {
+  iph: v => eng(Math.pow(10, v), 'A'),
+  is:  v => eng(Math.pow(10, v), 'A'),
+  n:   v => v.toFixed(2),
+  tc:  v => v + ' C',
+  op:  v => (v * 100).toFixed(1) + '% of I_ph',
+};
+
+function eng(v, unit) {
+  const p = [[1e-15, 'f'], [1e-12, 'p'], [1e-9, 'n'], [1e-6, 'u'], [1e-3, 'm'], [1, '']];
+  for (let i = p.length - 1; i >= 0; i--) {
+    if (Math.abs(v) >= p[i][0]) return (v / p[i][0]).toPrecision(3) + ' ' + p[i][1] + unit;
+  }
+  return v.toExponential(2) + ' ' + unit;
+}
+
+function compute() {
+  const Iph = Math.pow(10, S.iph);
+  const Is = Math.pow(10, S.is);
+  const VT = S.n * SEMI.VT(S.tc + 273.15);
+  const stack = S.cells ? 4 : 1;
+
+  // Sweep the load from zero up to the photocurrent. The last point is left
+  // just short of I_ph: at exactly I_ph the diode current is zero and the log
+  // sends the voltage to -infinity.
+  const n = 600;
+  const I = new Float64Array(n), V = new Float64Array(n), P = new Float64Array(n);
+  for (let i = 0; i < n; i++) {
+    I[i] = Iph * i / n;
+    V[i] = stack * VT * Math.log((Iph - I[i]) / Is + 1);
+    P[i] = V[i] * I[i];
+  }
+
+  const Voc = stack * VT * Math.log(Iph / Is + 1);
+  const Isc = Iph;
+
+  let k = 0;
+  for (let i = 1; i < n; i++) if (P[i] > P[k]) k = i;
+  const Pmp = P[k], Vmp = V[k], Imp = I[k];
+  const ff = Pmp / (Voc * Isc);
+
+  const j = Math.min(n - 1, Math.round(S.op * n));
+
+  D = { I, V, P, Voc, Isc, Vmp, Imp, Pmp, ff, k, j, stack, Iph };
+
+  UI.readout('ro-voc', eng(Voc, 'V'));
+  UI.readout('ro-isc', eng(Isc, 'A'));
+  UI.readout('ro-mpp', eng(Vmp, 'V') + ' × ' + eng(Imp, 'A') + ' = ' + eng(Pmp, 'W'));
+  UI.readout('ro-ff',  (ff * 100).toFixed(1) + ' %');
+  UI.readout('ro-op',  eng(V[j], 'V') + ', ' + eng(P[j], 'W') +
+                       '  (' + (100 * P[j] / Pmp).toFixed(1) + '% of MPP)');
+}
+
+function render(cx, W, H, narrow) {
+  if (!D) return;
+  const g = Plot.grid(W, H, narrow ? 4 : 2, narrow ? 1 : 2, { gapY: 24, gapX: 22 });
+  const mA = 1e3, mW = 1e3;
+  const Ima = Float64Array.from(D.I, v => v * mA);
+  const Pmw = Float64Array.from(D.P, v => v * mW);
+  const ihi = D.Isc * mA * 1.02;
+  const vhi = D.Voc * 1.05;
+  const phi = D.Pmp * mW * 1.15;
+
+  // ── The script's view: against load current ──────────────────────────────
+  const p0 = new Plot.Panel(cx, g[0], {
+    title: 'Voltage against load current',
+    ylabel: 'Diode voltage [V]', xlabel: 'Current load [mA]', margin: { l: 62 },
+  });
+  p0.limits(0, ihi, 0, vhi).frame();
+  p0.line(Ima, D.V, css('--curve'), { width: 1.5 });
+  mark(p0, Ima, D.V);
+
+  const p1 = new Plot.Panel(cx, g[1], {
+    title: 'Power against load current',
+    ylabel: 'Power [mW]', xlabel: 'Current load [mA]', margin: { l: 62 },
+  });
+  p1.limits(0, ihi, 0, phi).frame();
+  p1.line(Ima, Pmw, css('--quant'), { width: 1.5 });
+  mark(p1, Ima, Pmw);
+
+  // ── The data-sheet view: against voltage ─────────────────────────────────
+  const p2 = new Plot.Panel(cx, g[2], {
+    title: 'I-V curve', ylabel: 'Current load [mA]', xlabel: 'Cell voltage [V]',
+    margin: { l: 62 },
+  });
+  p2.limits(0, vhi, 0, ihi).frame();
+  if (S.mpp) {
+    // The maximum-power rectangle, against the V_OC * I_SC box it sits in.
+    const cxx = p2.cx;
+    p2.clip(() => {
+      cxx.strokeStyle = css('--muted');
+      cxx.setLineDash([3, 3]);
+      cxx.strokeRect(p2.px(0), p2.py(D.Isc * mA),
+                     p2.px(D.Voc) - p2.px(0), p2.py(0) - p2.py(D.Isc * mA));
+      cxx.setLineDash([]);
+      cxx.fillStyle = css('--sample');
+      cxx.globalAlpha = 0.12;
+      cxx.fillRect(p2.px(0), p2.py(D.Imp * mA),
+                   p2.px(D.Vmp) - p2.px(0), p2.py(0) - p2.py(D.Imp * mA));
+      cxx.globalAlpha = 1;
+    });
+  }
+  p2.line(D.V, Ima, css('--curve'), { width: 1.5 });
+  mark(p2, D.V, Ima);
+  p2.note(0.04, 0.12, 'fill factor = shaded / dashed\n= ' + (D.ff * 100).toFixed(1) + ' %',
+          css('--muted'));
+
+  const p3 = new Plot.Panel(cx, g[3], {
+    title: 'Power against voltage', ylabel: 'Power [mW]', xlabel: 'Cell voltage [V]',
+    margin: { l: 62 },
+  });
+  p3.limits(0, vhi, 0, phi).frame();
+  p3.line(D.V, Pmw, css('--quant'), { width: 1.5 });
+  mark(p3, D.V, Pmw);
+}
+
+/** Maximum power point and the current operating point, on any pair of axes. */
+function mark(p, xs, ys) {
+  if (S.mpp) {
+    p.vline(xs[D.k], css('--sample'), [3, 3]);
+    p.dots([xs[D.k]], [ys[D.k]], css('--sample'), 3.5);
+  }
+  p.dots([xs[D.j]], [ys[D.j]], css('--error'), 3.5);
+}
+
+const chart = Plot.mount('c', { aspect: 0.52, aspectNarrow: 1.9, draw: render });
+UI.bind(S, fmts, () => { compute(); chart.redraw(); });
+compute();
+chart.redraw();
+</script>
+</body>
+</html>
