@@ -71,7 +71,7 @@ A continuous effort from engineers like me have reduced the power consumption of
 order of magnitudes since the invention of the transistor 75 years ago. 
 
 One of the first commercial ADCs, the [DATRAC](https://www.analog.com/media/en/training-seminars/design-handbooks/Data-Conversion-Handbook/Chapter1.pdf) on page 24, was a 11-bit 50 kSps that consumed 500 W. That's Walden figure of merit of 
-4 $\mu$J/conv.step. Today's state-of-the-art ADCs in the same sampling range have a Walden figure of merit of [0.6 fJ/conv.step](https://ieeexplore.ieee.org/document/8310273).
+4 $\mu$J/conv.step. Today's state-of-the-art ADCs in the same sampling range have a Walden figure of merit of 0.6 fJ/conv.step [@hsieh18].
 
 4 $\mu$ / 0.6 f = 8.1e9, a difference in power consumption of almost 10 billion times !!!
 
@@ -79,7 +79,7 @@ Improvements to power consumption have become harder and harder, but I believe t
 cannot reduce power consumption any more. 
 
 
-[Towards a Green and Self-Powered Internet of Things Using Piezoelectric Energy Harvesting](https://ieeexplore.ieee.org/document/8762143) [1]
+Towards a Green and Self-Powered Internet of Things Using Piezoelectric Energy Harvesting [@shirvanimoghaddam19] [1]
 has a nice overview of power consumption of technologies, seen in the next figures below.
 
 In the context of energy harvesting, there is energy in electromagnetic fields, temperature, and mechanical stress, and there are ways to translate between them the energy forms.
@@ -294,7 +294,7 @@ The key enabler for an efficient, low temperature differential, energy harvester
 
 -->
 
-In [A 3.5-mV Input Single-Inductor Self-Starting Boost Converter With Loss-Aware MPPT for Efficient Autonomous Body-Heat Energy Harvesting](https://ieeexplore.ieee.org/document/9302641) they use a combination of both switched capacitor and switched inductor boost. 
+In A 3.5-mV Input Single-Inductor Self-Starting Boost Converter With Loss-Aware MPPT for Efficient Autonomous Body-Heat Energy Harvesting [@bose21] they use a combination of both switched capacitor and switched inductor boost. 
 
 
 
@@ -432,7 +432,7 @@ as the optimum changes with light conditions.
 
 ---
 
-In [A Reconfigurable Capacitive Power Converter With Capacitance Redistribution for Indoor Light-Powered Batteryless Internet-of-Things Devices](https://ieeexplore.ieee.org/abstract/document/9423810) they include a maximum power point tracker and a reconfigurable charge pump to optimize efficiency.
+In A Reconfigurable Capacitive Power Converter With Capacitance Redistribution for Indoor Light-Powered Batteryless Internet-of-Things Devices [@cheng21] they include a maximum power point tracker and a reconfigurable charge pump to optimize efficiency.
 
 
 ---
@@ -485,7 +485,7 @@ It is common to use tricks to reduce the energy waste due to the rectifier.
 
 -->
 
-An example of piezoelectric energy harvester can be found in [A Fully Integrated Split-Electrode SSHC Rectifier for Piezoelectric Energy Harvesting](https://ieeexplore.ieee.org/document/8642406)
+An example of piezoelectric energy harvester can be found in A Fully Integrated Split-Electrode SSHC Rectifier for Piezoelectric Energy Harvesting [@du19]
 
 
 ![left fit](../media/lx_piezo_mdl.pdf)
@@ -633,7 +633,7 @@ Although static electricity is an old phenomenon,
 it is only recently that triboelectric nanogenerators have been used to
 harvest energy.
 
-An overview can be seen in [Current progress on power management systems for triboelectric nanogenerators](https://ieeexplore.ieee.org/document/9729411).
+An overview can be seen in Current progress on power management systems for triboelectric nanogenerators [@hu22].
 
 A model of a triboelectric generator can be seen in below.
 Although the current is  low (nA) the voltage can be high, 
@@ -645,7 +645,7 @@ The key circuit challenge is the rectifier, and the high voltage output of the t
 
 ---
 
-Take a look in [A Fully Energy-Autonomous Temperature-to-Time Converter Powered by a Triboelectric Energy Harvester for Biomedical Applications](https://ieeexplore.ieee.org/document/9441315)
+Take a look in A Fully Energy-Autonomous Temperature-to-Time Converter Powered by a Triboelectric Energy Harvester for Biomedical Applications [@tan21]
 for more details.
 
 
@@ -737,17 +737,17 @@ a charge storage device, either a battery, or a capacitor.
 
 # Want to learn more?
 
-[1] [Towards a Green and Self-Powered Internet of Things Using Piezoelectric Energy Harvesting](https://ieeexplore.ieee.org/document/8762143)
+[1] Towards a Green and Self-Powered Internet of Things Using Piezoelectric Energy Harvesting [@shirvanimoghaddam19]
 
-[A 3.5-mV Input Single-Inductor Self-Starting Boost Converter With Loss-Aware MPPT for Efficient Autonomous Body-Heat Energy Harvesting](https://ieeexplore.ieee.org/document/9302641)
+A 3.5-mV Input Single-Inductor Self-Starting Boost Converter With Loss-Aware MPPT for Efficient Autonomous Body-Heat Energy Harvesting [@bose21]
 
-[A Reconfigurable Capacitive Power Converter With Capacitance Redistribution for Indoor Light-Powered Batteryless Internet- of-Things Devices](https://ieeexplore.ieee.org/abstract/document/9423810)
+A Reconfigurable Capacitive Power Converter With Capacitance Redistribution for Indoor Light-Powered Batteryless Internet- of-Things Devices [@cheng21]
 
-[A Fully Integrated Split-Electrode SSHC Rectifier for Piezoelectric Energy Harvesting](https://ieeexplore.ieee.org/document/8642406)
+A Fully Integrated Split-Electrode SSHC Rectifier for Piezoelectric Energy Harvesting [@du19]
 
-[Current progress on power management systems for triboelectric nanogenerators](https://ieeexplore.ieee.org/document/9729411)
+Current progress on power management systems for triboelectric nanogenerators [@hu22]
 
-[A Fully Energy-Autonomous Temperature-to-Time Converter Powered by a Triboelectric Energy Harvester for Biomedical Applications](https://ieeexplore.ieee.org/document/9441315)
+A Fully Energy-Autonomous Temperature-to-Time Converter Powered by a Triboelectric Energy Harvester for Biomedical Applications [@tan21]
 
 
 

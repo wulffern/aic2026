@@ -167,7 +167,7 @@ The numerical methods can be forward/backward Euler, or the others listed below.
 - [Euler](https://aquaulb.github.io/book_solving_pde_mooc/solving_pde_mooc/notebooks/02_TimeIntegration/02_01_EulerMethod.html)
 - [Runge-Kutta](https://aquaulb.github.io/book_solving_pde_mooc/solving_pde_mooc/notebooks/02_TimeIntegration/02_02_RungeKutta.html)
 - [Crank-Nicolson](https://en.wikipedia.org/wiki/Crank%E2%80%93Nicolson_method)
-- [Gear](https://ieeexplore.ieee.org/document/1083221)
+- Gear [@gear71]
 
 
 <!--pan_doc:

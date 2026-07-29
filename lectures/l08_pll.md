@@ -646,13 +646,13 @@ Back in 2020 there was a Master student at NTNU on PLL. I would recommend lookin
 thesis to learn more, and to get inspired [Ultra Low Power Frequency Synthesizer](https://ntnuopen.ntnu.no/ntnu-xmlui/handle/11250/2778127).
 
 
-[A Low Noise Sub-Sampling PLL in Which Divider Noise is Eliminated and PD/CP Noise is Not Multiplied by N2](https://ieeexplore.ieee.org/document/5342373)
+A Low Noise Sub-Sampling PLL in Which Divider Noise is Eliminated and PD/CP Noise is Not Multiplied by N2 [@gao09]
 
 
-[All-digital PLL and transmitter for mobile phones](https://ieeexplore.ieee.org/document/1546223)
+All-digital PLL and transmitter for mobile phones [@staszewski05]
 
 
-[A 2.9–4.0-GHz Fractional-N Digital PLL With Bang-Bang Phase Detector and 560-fsrms Integrated Jitter at 4.5-mW Power](https://ieeexplore.ieee.org/document/6006551)
+A 2.9–4.0-GHz Fractional-N Digital PLL With Bang-Bang Phase Detector and 560-fsrms Integrated Jitter at 4.5-mW Power [@tasca11]
 
 -->
 

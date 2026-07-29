@@ -397,7 +397,7 @@ Consider other types of logic "rule breaking", so you should know why you need i
 
 ![inline 110%](../media/l13/fig_sar_logic.pdf)
 
-<sub><sub>Dynamic logic => [A Compiled 9-bit 20-MS/s 3.5-fJ/conv.step SAR ADC in 28-nm FDSOI for Bluetooth Low Energy Receivers](https://ieeexplore.ieee.org/document/7906479)</sub></sub>
+<sub><sub>Dynamic logic => A Compiled 9-bit 20-MS/s 3.5-fJ/conv.step SAR ADC in 28-nm FDSOI for Bluetooth Low Energy Receivers [@wulff17]</sub></sub>
 
 ---
 
