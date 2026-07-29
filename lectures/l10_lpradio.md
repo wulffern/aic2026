@@ -79,7 +79,7 @@ A mouse must be low-power. As such, the radio cannot be on all the time. The rad
 
 We don't know how far 
 away from the PC the mice might be, as such, we don't know the dB loss in the communication channel. As a result, the radio needs to have a high dynamic range, from weak signals
-to strong signals. In order for the radio to adjust the gain of the reciever we should include a pre-amble, a known sequence, for example 01010101, such that the radio can 
+to strong signals. In order for the radio to adjust the gain of the receiver we should include a pre-amble, a known sequence, for example 01010101, such that the radio can 
 adjust the gain, and also, recover the symbol timing. 
 
 All in all, the packets we send from the mouse may need to have the following bits.
@@ -232,7 +232,7 @@ Assume no antenna gain, power density p at distance D is
 
 $$ p = \frac{P_{TX}}{4 \pi D^2}$$
 
-Assume reciever antenna has no gain, then the effective aperture is
+Assume receiver antenna has no gain, then the effective aperture is
 
 $$ A_e = \frac{\lambda^2}{4 \pi}$$
 
@@ -486,10 +486,10 @@ point was at $1 + 0j$, we would not know what it was.
 If we encoded the symbols as a change in phase instead (differential), then it would not matter if the 
 constellation rotated slowly. A change from $1+j$ to $1-j$ would still be 90 degrees. 
 
-Why would the constellation rotate you ask? Imagine the transmitter transmits at 2 400 000 000 Hz. How does our reciever generate the same frequency? We need a reference
+Why would the constellation rotate you ask? Imagine the transmitter transmits at 2 400 000 000 Hz. How does our receiver generate the same frequency? We need a reference
 and a PLL. The crystal-oscillator reference has a variation of +-50 ppm, so $2.4e9 \times 50/1e6 = 120$ kHz.
 
-Assume our receiver local oscillator was at 2 400 120 000 Hz. The transmitter sends 2 400 000 000 Hz + modulation. At the reciever we multiply with our local oscillator, 
+Assume our receiver local oscillator was at 2 400 120 000 Hz. The transmitter sends 2 400 000 000 Hz + modulation. At the receiver we multiply with our local oscillator, 
 and if you remember your math, multiplication of two sine creates a sum and a difference between the two frequencies. As such, the low frequency part 
 (the difference between the frequencies) would be 120 kHz + modulation. As a result, our constellation would rotate 120 000 times per second. Assuming a symbol rate 
 of 1MS/s our constellation would rotate roughly 1/10 of the way each symbol. 
@@ -548,7 +548,7 @@ For a 1 GHz bandwidth at 2.4 GHz carrier we'd have problems with the phase. At 1
 
 Back in 1966 [Orthogonal frequency division multiplexing](https://en.wikipedia.org/wiki/Orthogonal_frequency-division_multiplexing#:~:text=OFDM%20is%20a%20frequency%2Ddivision,is%20divided%20into%20multiple%20streams.)
 was introduced to deal with the communication channel. In OFDM we modulate a number of sub-carriers in the frequency space with our wanted modulation scheme (BPSK, PSK, QAM), then do an inverse fourier transform to 
-get the time domain signal, mix on to the carrier, and transmit. At the reciever we take an FFT and do demodulation in the frequency space. See example in figure below.
+get the time domain signal, mix on to the carrier, and transmit. At the receiver we take an FFT and do demodulation in the frequency space. See example in figure below.
 
 The name "multiple carriers" is a bit misleading. Although there are multiple carriers on the left and right side of the figure, there is normally still just one carrier in the TX/RX. 
 
@@ -568,7 +568,7 @@ then we could measure the phase and amplitude change due to the physical communi
 
 
 It's possible to do the same with single carrier modulation also. Imagine we made a 128-QAM modulation on a single carrier. As long as we constructed the time domain signal
-correctly (cyclic prefix to make the FFT work nicely, some preamble to measure the communication channel, then we could take an FFT at the reciever, correct 
+correctly (cyclic prefix to make the FFT work nicely, some preamble to measure the communication channel, then we could take an FFT at the receiver, correct 
 the phase and amplitude, do an IFFT and demodulate the time-domain signal as normal. 
 
 
@@ -594,7 +594,7 @@ In radio design there are so many choices it's easy to get lost.
 For our mouse, what radio scheme should we choose? One common instances of "how to make a choice" in industry is "Delay the choice as long as possible so
 your sure the choice is right". 
 
-Maybe the best would be to use a software defined radio reciever? Something like the picture below, an antenna, low noise amplifier, and a 
+Maybe the best would be to use a software defined radio receiver? Something like the picture below, an antenna, low noise amplifier, and a 
 analog-to-digital converter. That way we could support any transmitter. Fantastic idea, right?
 
 -->
@@ -615,9 +615,9 @@ State of the art FOM $$\approx 5 \text{ fJ/step}$$
  
  $$ BW = 2.5\text{ GHz}$$
  
- $$ DR = 100\text{ dB} = (96-1.76)/6.02 \approx 16\text{ bit} $$ 
+ $$ DR = 100\text{ dB} \Rightarrow \text{Bits} = (100-1.76)/6.02 \approx 16\text{ bit} $$ 
  
- $$ P = 5\text{ fF} \times 5 \text{ GHz} \times 2^{16} = 1.6\text{ W}$$
+ $$ P = 5\text{ fJ/step} \times 5 \text{ GHz} \times 2^{16} = 1.6\text{ W}$$
 
 <!--pan_doc:
 
@@ -753,7 +753,7 @@ further information [Building a Bluetooth application on nRF Connect SDK](https:
 
 <!--pan_skip: -->
 
-#[fit] Low Power Recievers
+#[fit] Low Power Receivers
 
 ---
 
@@ -891,7 +891,7 @@ The anti alias filter rejects frequencies that can fold into the band of interes
 filters is often good enough. 
 
 We often need gain in the AAF, as the LNA does not have sufficient gain for the weakest signals. -100 dBm in 50 ohm is 6.2 nV RMS, while input 
-range of an ADC may be 1 V. Assume we place the lowest input signal at 0.1 V, so we need a voltage gain of $20\log(0.1/6.2e-9) = 76$dB in the reciever.
+range of an ADC may be 1 V. Assume we place the lowest input signal at 0.1 V, so we need a voltage gain of $20\log(0.1/6.2e-9) = 76$dB in the receiver.
 
 -->
 
@@ -1015,7 +1015,7 @@ Once the signal has been converted to digital, then the de-modulation, and signa
 
 <!--pan_doc:
 
-The reciever part can be summed up in one equation for the sensitivity. The noise in a certain bandwidth. The Noise Figure of the analog reciever. The Energy per bit over Noise
+The receiver part can be summed up in one equation for the sensitivity. The noise in a certain bandwidth. The Noise Figure of the analog receiver. The Energy per bit over Noise
 of the de-modulator. 
 
 -->
@@ -1068,7 +1068,7 @@ I hope you understand now that it's actually complicated.
 
 [A 68 dB SNDR Compiled Noise-Shaping SAR ADC With On-Chip CDAC Calibration](https://ieeexplore.ieee.org/document/9056925), H. Garvik, C. Wulff, T. Ytterdal
 
-[A Compiled 9-bit 20-MS/s 3.5-fJ/conv.step SAR ADC in 28-nm FDSOI for Bluetooth Low Energy Recievers](https://ieeexplore.ieee.org/document/7906479), C. Wulff, T. Ytterdal
+[A Compiled 9-bit 20-MS/s 3.5-fJ/conv.step SAR ADC in 28-nm FDSOI for Bluetooth Low Energy Receivers](https://ieeexplore.ieee.org/document/7906479), C. Wulff, T. Ytterdal
 
 Cole Nielsen, <https://github.com/nielscol/thesis_presentations>
 
