@@ -1,0 +1,75 @@
+\input{tikz/fig_header.tex}
+
+% Two ways to wire a two-bit resistor-string DAC, side by side. Both have
+% four resistors; they differ only in which four nodes the first rank of
+% switches taps.
+%
+% Left  — the top tap is V_REF itself, so the output runs 1/4 .. 4/4 V_REF.
+% Right — the top tap is one resistor down and the bottom tap is ground, so
+%         the output runs 0/4 .. 3/4 V_REF.
+%
+% That is the question the lecture asks under the figure, so the two halves
+% are drawn by one macro and differ only in the index of the topmost tap.
+
+\begin{circuitikz}[american, thick, transform shape, circuit ee IEC]
+
+  \input{tikz/ckt_lib.tex}
+  \input{tikz/rdac_lib.tex}
+
+  % #1 x origin, #2 index of the topmost tap used, #3 node name prefix.
+  % The taps are laid down as named coordinates first: TikZ wants a literal
+  % (...) after `at`, so a macro that expands to a coordinate cannot be
+  % passed through another macro.
+  \newcommand{\rdacHalf}[3]{%
+    % Pitch 2.1: a \vresistor is \grid = 1.6 tall, and the extra half unit
+    % leaves room for a switch and its control label between two taps.
+    \foreach \i in {0,...,4} {
+      \coordinate (#3t\i) at ({#1}, {0.5 + 2.1*\i});
+    }
+    \pgfmathtruncatemacro{\tapA}{#2}
+    \pgfmathtruncatemacro{\tapB}{#2-1}
+    \pgfmathtruncatemacro{\tapC}{#2-2}
+    \pgfmathtruncatemacro{\tapD}{#2-3}
+    %
+    % ---- The string ----
+    \draw (#3t0) \vresistor{$R$} -- ++(0,0.5)
+                 \vresistor{$R$} -- ++(0,0.5)
+                 \vresistor{$R$} -- ++(0,0.5)
+                 \vresistor{$R$} -- ++(0,0.5);
+    \draw (#3t0) -- ++(0,-0.3) \vground;
+    \draw (#3t4) -- ++(-1.0,0) coordinate (#3vref);
+    \rdacPort{(#3vref)}{south}{$V_{REF}$}
+    %
+    % ---- First rank: b_0 and its complement, twice ----
+    \rdacSw{#3MA}{(#3t\tapA)}{2.0}{$b_0$}
+    \rdacSw{#3MB}{(#3t\tapB)}{2.0}{$\overline{b_0}$}
+    \rdacSw{#3MC}{(#3t\tapC)}{2.0}{$b_0$}
+    \rdacSw{#3MD}{(#3t\tapD)}{2.0}{$\overline{b_0}$}
+    %
+    % Each pair shares an output, halfway between its two taps.
+    \coordinate (#3pa) at ($(#3t\tapA)!0.5!(#3t\tapB)+(2.0,0)$);
+    \coordinate (#3pb) at ($(#3t\tapC)!0.5!(#3t\tapD)+(2.0,0)$);
+    \draw ($(#3t\tapA)+(2.0,0)$) -- ($(#3t\tapB)+(2.0,0)$);
+    \draw ($(#3t\tapC)+(2.0,0)$) -- ($(#3t\tapD)+(2.0,0)$);
+    \fill (#3pa) circle (0.07);
+    \fill (#3pb) circle (0.07);
+    %
+    % ---- Second rank: b_1 picks which pair reaches the output ----
+    \draw (#3pa) -- ++(0.8,0);
+    \draw (#3pb) -- ++(0.8,0);
+    \coordinate (#3qa) at ($(#3pa)+(0.8,0)$);
+    \coordinate (#3qb) at ($(#3pb)+(0.8,0)$);
+    \rdacSw{#3ME}{(#3qa)}{2.0}{$b_1$}
+    \rdacSw{#3MF}{(#3qb)}{2.0}{$\overline{b_1}$}
+    \draw ($(#3qa)+(2.0,0)$) -- ($(#3qb)+(2.0,0)$);
+    \coordinate (#3vo) at ($($(#3qa)!0.5!(#3qb)$)+(2.0,0)$);
+    \fill (#3vo) circle (0.07);
+    \draw (#3vo) -- ++(0.8,0) coordinate (#3voport);
+    \rdacPort{(#3voport)}{south west}{$V_{OUT}$}
+  }
+
+  \rdacHalf{0}{4}{L}
+  \rdacHalf{10.5}{3}{R}
+
+\end{circuitikz}
+\end{document}

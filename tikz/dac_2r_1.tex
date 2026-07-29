@@ -1,0 +1,33 @@
+\input{tikz/fig_header.tex}
+
+% Second step of the R-2R build-up: one series R in front of the section
+% dac_2r_0 reduced to R, so looking in from V_1 the ladder is R + R = 2R.
+% The current into the summing node is set by the tap voltage, I_0 = V_0/2R,
+% and V_0 is half of V_1 because the R and the R it drives are equal.
+
+\begin{circuitikz}[american, thick, transform shape, circuit ee IEC]
+
+  \input{tikz/ckt_lib.tex}
+  \input{tikz/rdac_lib.tex}
+
+  \def\yr{3.0}
+
+  \coordinate (v1) at (0,\yr);
+  \draw (v1) \hresistor{$R$} coordinate (v0);
+  \node[anchor=south east] at ($(v1)+(-0.1,0.1)$) {$V_1$};
+  \node[anchor=south] at ($(v0)+(0,0.15)$) {$V_0$};
+
+  % ---- 2R across to the summing node ----
+  \draw (v0) \hresistor{$2R$} -- ++(0.7,0) coordinate (vg);
+  \rdacVgnd{(vg)}
+
+  % ---- 2R from the tap down to ground ----
+  \draw ($(v0)+(0,-1.6)$) \vresistor{$2R$};
+  \draw ($(v0)+(0,-1.6)$) -- ++(0,-0.3) \vground;
+
+  % ---- The current that leaves the tap, as the original marks it ----
+  \draw[-{Latex[length=3mm]}] ($(v0)+(1.3,-0.6)$) -- ++(0,-1.0)
+    node[anchor=west, midway, xshift=2mm] {$I_0$};
+
+\end{circuitikz}
+\end{document}

@@ -1,0 +1,66 @@
+% Shared pieces for the resistor-string DAC figures in l04_dac:
+% dac_r_div, dac_r_div2 and dac_r_div2b are the same drawing with one, two
+% and four resistors, so the switch and the terminal live here and the
+% figures only place them.
+%
+% The originals draw the switches as bare NMOS symbols with the control on
+% the gate stub above, so that is what \rdacSw draws: a device on a
+% left-to-right path, which puts the gate on top.
+
+% The summing node the R-2R ladder feeds: a ground symbol lying on its side,
+% as the originals draw it. It is drawn by hand rather than as a rotated
+% circuitikz `ground` node because the node keeps its bars horizontal.
+\newcommand{\rdacVgnd}[1]{%
+  \draw[thick] ($#1+(0,0.28)$) -- ($#1+(0,-0.28)$);
+  \draw[thick] ($#1+(0.14,0.17)$) -- ($#1+(0.14,-0.17)$);
+  \draw[thick] ($#1+(0.28,0.08)$) -- ($#1+(0.28,-0.08)$);
+}
+
+% The single-pole double-throw the ladder figures steer their legs with: the
+% pole sits on top of a 2R leg, one contact goes up to the summing rail and
+% the other sideways to ground.
+% The arm rests on the up contact, so every leg is drawn steering to the
+% rail; the rail stub comes down to meet the arm where it ends.
+%   #1 pole coordinate, #2 rail y, #3 label on the up contact,
+%   #4 label on the side one
+\newcommand{\rdacSpdt}[4]{%
+  \coordinate (spdtpole) at #1;
+  \fill[black] (spdtpole) circle (0.07);
+  \coordinate (spdttip) at ($(spdtpole)+(0.55,0.95)$);
+  \draw[thick] (spdtpole) -- (spdttip);
+  \draw[thick] let \p1 = (spdttip) in (spdttip) -- (\x1,#2);
+  \draw[thick] ($(spdtpole)+(1.1,0.35)$) -- ($(spdtpole)+(1.5,0.35)$);
+  \rdacVgnd{($(spdtpole)+(1.5,0.35)$)}
+  \node[anchor=east] at ($(spdtpole)+(-0.1,0.55)$) {#3};
+  \node[anchor=north west] at ($(spdtpole)+(0.5,0.35)$) {#4};
+}
+
+% An amplifier drawn point-right, - on top and + below, as the originals draw
+% it. Names the three terminals #1inn, #1inp and #1out.
+%   #1 name prefix, #2 mid-left coordinate
+\newcommand{\rdacAmp}[2]{%
+  \draw[thick] ($#2+(0,1.2)$) -- ($#2+(0,-1.2)$) -- ($#2+(2.4,0)$) -- cycle;
+  \coordinate (#1inn) at ($#2+(0,0.6)$);
+  \coordinate (#1inp) at ($#2+(0,-0.6)$);
+  \coordinate (#1out) at ($#2+(2.4,0)$);
+  \node[anchor=west] at ($(#1inn)+(0.12,0)$) {$-$};
+  \node[anchor=west] at ($(#1inp)+(0.12,0)$) {$+$};
+}
+
+% A terminal circle with a label: coordinate, anchor, text.
+\newcommand{\rdacPort}[3]{%
+  \draw[thick] #1 circle (0.09);
+  \node[anchor=#2] at #1 {#3};
+}
+
+% A pass device with its control label above the gate.
+%   #1 node name, #2 left coordinate, #3 length, #4 control label
+% The left terminal is captured as a coordinate first: calc parses tokens, so
+% a #2 that is itself a macro dies inside ($...$) with "Paragraph ended
+% before \tikz@cc@parse@factor was complete".
+\newcommand{\rdacSw}[4]{%
+  \coordinate (#1start) at #2;
+  \draw[thick] (#1start) to [Tnmos, n=#1] ($(#1start)+(#3,0)$);
+  \draw[thick] (#1.gate) -- ++(0,0.5);
+  \node[anchor=south] at ($(#1.gate)+(0,0.5)$) {#4};
+}

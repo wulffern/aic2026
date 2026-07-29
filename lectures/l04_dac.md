@@ -82,7 +82,7 @@ $$ dt = \frac{L dI}{V} $$
 
 ---
 
-![left fit](../media/dac_r_div.pdf)
+![left fit](../media/dac_r_div_tikz.pdf)
 
 
 $$ I_{ref} = \frac{V_{ref}}{3 R}$$
@@ -101,7 +101,7 @@ $$
 
 --- 
 
-![left fit](../media/dac_r_div2.pdf)
+![left fit](../media/dac_r_div2_tikz.pdf)
 
 $$ I_{ref} = \frac{V_{ref}}{2 R}$$
 
@@ -115,7 +115,7 @@ $$
 
 ---
 
-![left fit](../media/dac_r_div2b.pdf)
+![left fit](../media/dac_r_div2b_tikz.pdf)
 
 <!--pan_skip: -->
 
@@ -196,7 +196,7 @@ Large number of bits, will be large number of resistors and switches.
 
 $$ R_{in} = 2R || 2R = R $$
 
-![left fit](../media/dac_2r_0.pdf)
+![left fit](../media/dac_2r_0_tikz.pdf)
 
 ---
 
@@ -204,7 +204,7 @@ $$ R_{in} = R + R = 2R $$
 
 $$ I_{0} = \frac{V_0}{2R} = \frac{V_1}{4R} $$
 
-![left fit](../media/dac_2r_1.pdf)
+![left fit](../media/dac_2r_1_tikz.pdf)
 
 ---
 
@@ -214,7 +214,7 @@ $$ I_{0} = \frac{V_0}{2R} = \frac{V_1}{4R} $$
 
 $$ I_{1} = \frac{V_1}{2R}$$
 
-![left fit](../media/dac_2r_2.pdf)
+![left fit](../media/dac_2r_2_tikz.pdf)
 
 ---
 
@@ -222,7 +222,7 @@ $$ I_{RF} = I_1b_1 + I_0b_0 = \frac{V_{REF}}{2R}b_1 + \frac{V_{REF}}{4R}b_0 $$
 
 $$ V_{O} = \left(\frac{V_{REF}}{2R}b_1 + \frac{V_{REF}}{4R}b_0\right)R_{F0}$$
 
-![left fit](../media/dac_2r_full.pdf)
+![left fit](../media/dac_2r_full_tikz.pdf)
 
 ---
 

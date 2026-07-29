@@ -1,0 +1,27 @@
+\input{tikz/fig_header.tex}
+
+% First step of the R-2R build-up: the far end of the ladder, where a 2R leg
+% to ground sits in parallel with the 2R that reaches the summing node, so
+% R_in = 2R || 2R = R. That result is what makes the next step work.
+%
+% The right-hand terminal is the summing node of the output amplifier, drawn
+% as a ground on its side the way the original does — it is a virtual ground,
+% not the same node as the real ground the leg returns to.
+
+\begin{circuitikz}[american, thick, transform shape, circuit ee IEC]
+
+  \input{tikz/ckt_lib.tex}
+  \input{tikz/rdac_lib.tex}
+
+  \coordinate (v0) at (0,3.0);
+
+  % ---- 2R across to the summing node ----
+  \draw (v0) \hresistor{$2R$} -- ++(0.7,0) coordinate (vg);
+  \rdacVgnd{(vg)}
+
+  % ---- 2R down to ground ----
+  \draw (0,1.4) \vresistor{$2R$};
+  \draw (0,1.4) -- ++(0,-0.3) \vground;
+
+\end{circuitikz}
+\end{document}

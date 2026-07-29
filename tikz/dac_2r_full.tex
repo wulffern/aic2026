@@ -1,0 +1,62 @@
+\input{tikz/fig_header.tex}
+
+% The two-bit R-2R ladder in full: every leg carries a binary weighted
+% current out of -V_REF, and each bit steers its leg either into the
+% amplifier's summing node or into ground. The leg current is the same
+% either way, which is the whole point of steering rather than switching the
+% leg off: the ladder always sees the same resistance.
+%
+% The rightmost 2R is the termination dac_2r_0 starts from and has no switch;
+% it is what makes the ladder repeat.
+
+\begin{circuitikz}[american, thick, transform shape, circuit ee IEC]
+
+  \input{tikz/ckt_lib.tex}
+  \input{tikz/rdac_lib.tex}
+
+  \def\ybot{0.4}          % the -V_REF rail
+  \def\ytop{5.4}          % the summing rail into the amplifier
+  \def\xa{0}              % b_1 leg
+  \def\xb{3.2}            % b_0 leg
+  \def\xc{5.4}            % termination
+
+  % ---- The bottom rail: -V_REF, then R between the two switched legs ----
+  \draw (\xa,\ybot) -- ++(0.8,0) \hresistor{$R$} -- ++(0.8,0);
+  \draw (\xb,\ybot) -- (\xc,\ybot);
+  \draw (\xa,\ybot) -- ++(-1.2,0) coordinate (vrefport);
+  \rdacPort{(vrefport)}{north}{$-V_{REF}$}
+
+  % ---- Three 2R legs ----
+  \foreach \x in {\xa,\xb,\xc} {
+    \draw (\x,\ybot) \vresistor{$2R$} -- ++(0,0.7);
+  }
+
+  % ---- The two switched legs steer into the summing rail or into ground ----
+  \rdacSpdt{(\xa,{\ybot+2.3})}{\ytop}{$b_1$}{$\overline{b_1}$}
+  \rdacSpdt{(\xb,{\ybot+2.3})}{\ytop}{$b_0$}{$\overline{b_0}$}
+  \node[anchor=west] at (\xa+1.1,{\ybot+0.8}) {$I_1$};
+  \node[anchor=west] at (\xb+1.1,{\ybot+0.8}) {$I_0$};
+
+  % The termination has no switch: it sits on ground for good.
+  \draw (\xc,{\ybot+2.3}) -- ++(0,0.65) -- ++(0.9,0) coordinate (tg);
+  \rdacVgnd{(tg)}
+
+  \rdacAmp{OA}{(8.2,4.8)}
+
+  % ---- Summing rail into the amplifier ----
+  % The rail runs from the b_1 contact across the b_0 one to the - input.
+  \draw (\xa+0.55,\ytop) -- (OAinn);
+  \fill (\xb+0.55,\ytop) circle (0.07);
+
+  % ---- Feedback resistor over the top ----
+  \draw (7.0,\ytop) -- (7.0,7.6) -- ++(0.9,0) \hresistor{$R_F$} -- ++(0.9,0)
+        -- (11.6,7.6) -- (11.6,4.8) -- (OAout);
+  \fill (7.0,\ytop) circle (0.07);
+  \draw (OAout) -- ++(0.9,0);
+
+  % ---- The + input sits on ground ----
+  \draw (OAinp) -- ++(-1.2,0) coordinate (og);
+  \draw (og) -- ++(0,-0.3) \vground;
+
+\end{circuitikz}
+\end{document}

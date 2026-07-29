@@ -1,0 +1,37 @@
+\input{tikz/fig_header.tex}
+
+% The same one-bit string DAC as dac_r_div, but with two resistors instead
+% of three, so the taps are V_REF itself and V_REF/2 rather than 2/3 and 1/3.
+% The pair is the whole point of the slide: which of the two is the right
+% way to build a DAC is the question the lecture asks next.
+
+\begin{circuitikz}[american, thick, transform shape, circuit ee IEC]
+
+  \input{tikz/ckt_lib.tex}
+  \input{tikz/rdac_lib.tex}
+
+  \def\xs{0}
+  \def\xo{3.2}
+
+  % ---- Two resistors: the top tap is V_REF, the lower one is V_REF/2 ----
+  \draw (\xs,0.5) \vresistor{$R$} -- ++(0,0.5) coordinate (tb)
+                  \vresistor{$R$} -- ++(0,0.5) coordinate (ta);
+  \draw (\xs,0.5) -- (\xs,0.2) \vground;
+
+  \draw (ta) -- ++(-1.0,0) coordinate (vrefport);
+  \rdacPort{(vrefport)}{south}{$V_{REF}$}
+
+  % ---- b_0 passes V_REF, b_0-bar the midpoint ----
+  \rdacSw{MA}{(ta)}{2.0}{$b_0$}
+  \rdacSw{MB}{(tb)}{2.0}{$\overline{b_0}$}
+
+  \coordinate (ra) at ($(ta)+(2.0,0)$);
+  \coordinate (rb) at ($(tb)+(2.0,0)$);
+  \draw (ra) -- (\xo,0 |- ra) -- (\xo,0 |- rb) -- (rb);
+  \coordinate (vo) at ($(\xo,0 |- ra)!0.5!(\xo,0 |- rb)$);
+  \fill (vo) circle (0.07);
+  \draw (vo) -- ++(0.8,0) coordinate (voutport);
+  \rdacPort{(voutport)}{south west}{$V_{OUT}$}
+
+\end{circuitikz}
+\end{document}
