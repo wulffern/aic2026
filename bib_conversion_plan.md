@@ -258,29 +258,63 @@ tab with `limit: 5` first to see the entry quality, then with `limit: 0` for the
 rest. Download the `bib-incoming` artifact, or re-run with `commit: true` to get
 the files onto the branch. Nothing touches `aic.bib` yet.
 
-**Phase 3 — Merge.** Review `pdf/incoming.bib`, dedupe against `aic.bib` by DOI
-and title, then append. Verify the book still builds — `make latex-nobuild` — with
-the entries present but not yet cited. This is the checkpoint: the bibliography
-is correct before any lecture depends on it.
+**Phase 3 — Merge.** Done. 77 entries staged, reviewed and appended to
+`aic.bib`, which now holds 645. `walden99a` turned out to duplicate the
+`walden99` entry the file had held for years and was folded into it, keeping the
+old key and taking the new DOI.
 
-**Phase 4 — Rewrite, one lecture at a time.** For each lecture, apply pattern A
-or B per link, then build both outputs and read them:
+**Phase 4 — Rewrite.** Done. 119 links across 19 lectures now read as the title
+in prose followed by `[@key]`, via `py/linkbib.py apply` rather than hand edits,
+so it can be re-run. Both outputs verified: the website footnote list, and a
+compiled `l07_vreg.pdf` where the title reads `... for Microprocessors [5]` with
+the reference resolving in the IEEE-style list.
+
+**Phase 5 — Consistency sweep.** Down to 4 occurrences of 2 papers, both listed
+under Still Open below. The `scan` job keeps `pdf/link_candidates.tsv` current.
+
+## Still Open
+
+Two items, neither blocking. Both were left deliberately.
+
+### The two NTNU Open theses
+
+Four links, two papers, and the only candidates the conversion did not reach:
+
+| Lecture | Paper |
+|---|---|
+| `l04_afe` (×2), `l06_adc` | Design Considerations for a Low-Power Control-Bounded A/D Converter |
+| `l08_pll` | Ultra Low Power Frequency Synthesizer |
+
+Neither is in Xplore or Crossref — no article number, and the best Crossref
+title match scored 0.55 and 0.84. They need entries written by hand from the
+NTNU Open record; guessing the authors would be worse than leaving the links.
+Once the two `@phdthesis` (or `@mastersthesis`) entries are in `aic.bib`:
 
 ```sh
-python3 py/lecture.py post  lectures/<name>.md    # check the footnote list
-python3 py/lecture.py latex lectures/<name>.md    # check the reference list
+python3 py/linkbib.py apply     # picks them up from the location comments
+python3 py/linkbib.py scan      # should report zero candidates
 ```
 
-Order: start with `l04_dac` (4 links, already has a `# References` heading and an
-existing `[@cjm11]` citation — smallest useful proof) then `l02_esd` (6, textbook
-`pan_doc` case), then work up through the larger lectures. Handle the three
-slide-visible sections only after that decision is made.
+### Citations that land on slides
 
-**Phase 5 — Consistency sweep.** The `scan` job does this continuously:
-`pdf/link_candidates.tsv` shrinks as lectures convert, and whatever remains is
-either deliberately out of scope or missed. Confirm the 24 multi-lecture papers
-all resolved to one key each, and that `pdf/aic.pdf` and the site both render
-the new references.
+`py/slides.py` has no citation handling, so `[@razavi17]` renders as that
+literal string on any slide where it is not inside a `<!--pan_doc: -->` block.
+The course had 2 such citations before this work (`l00_diode:155`,
+`lr0_noise:319`); it now has 58, so what was a curiosity is worth a decision.
+
+Three ways out, cheapest last:
+
+1. **Teach `slides.py` to render citations.** It already reads `pdf/aic.bib`
+   indirectly through nothing at all today, but `linkbib.read_bib_keys` and the
+   `Bibtex` class in `lecture.py` both parse it. Rendering `[@key]` as a small
+   author-year mark fixes all 58 at once and improves the two that predate this
+   work. This is the one to do.
+2. **Wrap the affected sections in `pan_doc`.** Correct for the *Want to learn
+   more?* lists in `l03_refbias`, `l04_mac` and `lx_energysrc`, which are already
+   web-and-book content rather than slide content. Does nothing for the inline
+   prose citations.
+3. **Leave it.** The string is ugly on a slide but not wrong, and the decks are
+   presented by someone who knows what it means.
 
 ## Risks
 
@@ -307,3 +341,26 @@ the new references.
   find-and-replace would not.
 - **Churn across 21 lectures.** Per-lecture commits keep it reviewable and let
   the work stop cleanly at any point.
+
+## What Actually Bit
+
+For the record, since none of these were the risk anyone would have guessed:
+
+- **Crossref returning a different paper whose title contains the one asked
+  for**, twice. Banba 1999 came back as Navarro 2011; "Attention Is All You
+  Need" came back as a 2025 book chapter called "Is Attention All You Need?".
+  Resolving by IEEE article number removed the whole class for the 74 entries
+  that had one. The `% CHECK` mark caught the arXiv one, which had no number.
+- **Staging comments merged into `aic.bib`.** `Bibtex._read` in `lecture.py`
+  accumulates from one `@` to the next, so each `% lecture:line` comment ended
+  up inside the DOI of the entry above it, and the website rendered
+  `<https://doi.org/10.1109/JSSC.2003.820870   % l08_pll.md:649 % source: ieee>`.
+  Fixed at both ends: comments stripped from the bibliography, and the parser
+  now skips comment lines.
+- **Unicode and `{\rm ...}` in imported titles** broke four standalone PDFs and
+  the book, since Crossref and Xplore both hand back µ, σ and old font commands.
+  `latexify()` rewrites them on import.
+- **A duplicate that no dedupe check could see.** `walden99a` matched neither by
+  DOI (the old entry had none) nor by link text ("1999, R. Walden: Analog-to-
+  digital converter survey and analysis" against "Analog to Digital Converter
+  Survey and Analysis"). Only comparing the *resolved* title caught it.
