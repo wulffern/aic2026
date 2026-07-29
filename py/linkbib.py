@@ -490,6 +490,7 @@ def fetch(lectures, bib, out, unresolved, limit, delay, source):
         kind = None
         fields = dict()
         origin = ""
+        ieee_note = ""
 
         # IEEE first when the link names an article number. That lookup is by
         # identity rather than by title, so it cannot come back with a
@@ -501,9 +502,11 @@ def fetch(lectures, bib, out, unresolved, limit, delay, source):
                 origin = "ieee"
                 if not fields:
                     reason = f"Xplore returned nothing for {ar}"
+                    ieee_note = reason
             except (urllib.error.URLError, TimeoutError,
                     json.JSONDecodeError, UnicodeDecodeError) as e:
                 reason = f"Xplore lookup failed: {e}"
+                ieee_note = reason
                 # Xplore is behind bot protection and is allowed to fail when
                 # Crossref can still pick it up. With --source ieee there is
                 # no fallback, so the run really did fail.
@@ -547,7 +550,8 @@ def fetch(lectures, bib, out, unresolved, limit, delay, source):
             # not need the title to match. A title search does.
             exact = (origin == "ieee"
                      or squash(fields.get("title", "")) == squash(title))
-            staged.append((key, kind or "article", fields, hits, exact, title))
+            staged.append((key, kind or "article", fields, hits, exact, title,
+                           origin, ieee_note))
             mark = "ok   " if exact else "check"
             click.echo(f"  {mark} {key:14s} [{origin}] {fields.get('title','')[:52]}")
 
@@ -561,9 +565,10 @@ def fetch(lectures, bib, out, unresolved, limit, delay, source):
         fo.write("% merely contains the one you asked for, and no similarity threshold\n")
         fo.write("% separates those from a genuine punctuation difference. Read both\n")
         fo.write("% titles before merging a CHECK entry.\n\n")
-        for key, kind, fields, hits, exact, asked in staged:
+        for key, kind, fields, hits, exact, asked, origin, note in staged:
             where = ", ".join(sorted({f"{h.lecture}:{h.line}" for h in hits}))
             fo.write(f"% {where}\n")
+            fo.write(f"% source: {origin}" + (f" -- {note}\n" if note else "\n"))
             if not exact:
                 fo.write(f"% CHECK  lecture says: {asked}\n")
                 fo.write(f"% CHECK  Crossref says: {fields.get('title', '')}\n")
