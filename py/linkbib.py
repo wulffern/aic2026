@@ -369,8 +369,19 @@ def fetch(lectures, bib, out, unresolved, limit, delay):
     staged = list()
     missed = list()
     skipped = 0
+    errors = 0
 
-    todo = list(papers.items())
+    # Candidates whose link text is a real title first. Scan order is lecture
+    # order, and the early lectures are exactly the ones that link from prose
+    # ("[diffusion](...)"), so a --limit run down the raw list tests only the
+    # candidates that cannot resolve and tells you nothing.
+    def resolvable_first(item):
+        hits = item[1]
+        best = max(hits, key=lambda h: len(h.text))
+        return (0 if doi_from_url(best.url) or looks_like_a_title(best.text)
+                else 1, best.lecture, best.line)
+
+    todo = sorted(papers.items(), key=resolvable_first)
     if limit:
         todo = todo[:limit]
 
@@ -402,6 +413,7 @@ def fetch(lectures, bib, out, unresolved, limit, delay):
                     reason = f"best Crossref match scored {score:.2f}"
         except (urllib.error.URLError, TimeoutError, json.JSONDecodeError) as e:
             reason = f"lookup failed: {e}"
+            errors += 1
 
         if work is None:
             missed.append((hit, reason))
@@ -437,7 +449,11 @@ def fetch(lectures, bib, out, unresolved, limit, delay):
     click.echo(f"unresolved : {len(missed)} -> {unresolved}")
     click.echo(f"already in {bib}: {skipped}")
 
-    if not staged and missed:
+    # A link whose text is not a title, or a Crossref hit that scored too low,
+    # is an expected outcome that needs a human -- not a broken run. Only a
+    # lookup that actually failed means the job could not do its job.
+    if errors:
+        click.echo(f"lookups failed  : {errors}", err=True)
         sys.exit(1)
 
 
