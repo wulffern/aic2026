@@ -8,6 +8,8 @@
 %% switch positions to the caller, since those are exactly what differs.
 %%
 %% Every name is prefixed: short generic names collide with LaTeX built-ins.
+%% Names are letters only -- TeX macro names cannot contain digits, so \scXc2
+%% parses as \scXc followed by a 2 and fails at use, not at definition.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \definecolor{axisblue}{rgb}{0.16,0.16,0.55}
@@ -17,8 +19,8 @@
 \newcommand{\scYgnd}{0}       % ground rail
 \newcommand{\scYin}{1.8}      % OTA inverting input, and the C1 level
 \newcommand{\scXota}{4.6}     % OTA input x
-\newcommand{\scXc2}{4.0}      % where the C2 branch leaves the input node
-\newcommand{\scYc2}{3.8}      % C2 level
+\newcommand{\scXctwo}{4.0}      % where the C2 branch leaves the input node
+\newcommand{\scYctwo}{3.8}      % C2 level
 \newcommand{\scYsh}{4.8}      % the shorting path over C2
 \newcommand{\scXshr}{6.6}     % right leg of the shorting path
 \newcommand{\scXout}{7.6}     % C2 return leg
@@ -53,17 +55,17 @@
   \draw[axisblue, thick] (2.6,\scYgnd) \vground;
 
   % C2 across the OTA
-  \draw[axisblue, thick] (\scXc2,\scYin) -- (\scXc2,\scYc2);
-  \fill[axisblue] (\scXc2,\scYin) circle (0.07);
-  \draw[axisblue, thick] (\scXc2,\scYc2) \hcapacitor{};
-  \draw[axisblue, thick] (5.6,\scYc2) -- (\scXout,\scYc2) -- (\scXout,\scYin-0.4);
+  \draw[axisblue, thick] (\scXctwo,\scYin) -- (\scXctwo,\scYctwo);
+  \fill[axisblue] (\scXctwo,\scYin) circle (0.07);
+  \draw[axisblue, thick] (\scXctwo,\scYctwo) \hcapacitor{};
+  \draw[axisblue, thick] (5.6,\scYctwo) -- (\scXout,\scYctwo) -- (\scXout,\scYin-0.4);
   \draw[axisblue, thick] (\scXout,\scYin-0.4) -- (cicOtaS_out);
-  \node[capgreen, anchor=south] at (5.8,\scYc2+0.15) {$C_{2}$};
-  \node[polred, anchor=east]    at (3.9,\scYc2-0.45) {$-$};
-  \node[polred, anchor=west]    at (5.7,\scYc2-0.45) {$+$};
+  \node[capgreen, anchor=south] at (5.8,\scYctwo+0.15) {$C_{2}$};
+  \node[polred, anchor=east]    at (3.9,\scYctwo-0.45) {$-$};
+  \node[polred, anchor=west]    at (5.7,\scYctwo-0.45) {$+$};
 
   % The path that shorts C2, minus its switch
-  \draw[axisblue, thick] (\scXc2,\scYc2) -- (\scXc2,\scYsh) -- (4.8,\scYsh);
-  \draw[axisblue, thick] (5.8,\scYsh) -- (\scXshr,\scYsh) -- (\scXshr,\scYc2);
-  \fill[axisblue] (\scXshr,\scYc2) circle (0.07);
+  \draw[axisblue, thick] (\scXctwo,\scYctwo) -- (\scXctwo,\scYsh) -- (4.8,\scYsh);
+  \draw[axisblue, thick] (5.8,\scYsh) -- (\scXshr,\scYsh) -- (\scXshr,\scYctwo);
+  \fill[axisblue] (\scXshr,\scYctwo) circle (0.07);
 }

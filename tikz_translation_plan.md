@@ -544,6 +544,10 @@ so the period, pulse width and height are single `\def`s at the top of the
 block.
 
 ### Notes
+- A TeX macro name is **letters only**. `\newcommand{\scXc2}{...}` does not
+  fail where it is defined; it fails later as "Undefined control sequence
+  `\scXc`", because TeX read the name as `\scXc` and left the `2` behind.
+  Spell the digit out: `\scXctwo`.
 - Prefix every `\newcommand` in a figure. `l5_sh` first used `\th` for a tone
   height, which is a LaTeX built-in (thorn), and the redefinition is a *fatal*
   error, not a warning — it cost a CI round trip. `\shHalf`, `\shTone` and so
