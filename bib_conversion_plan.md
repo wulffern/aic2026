@@ -63,23 +63,28 @@ Links whose host publishes citable literature: `ieeexplore.ieee.org`,
 
 ## Where the Metadata Comes From
 
-IEEE Xplore offers a per-article citation download, but it is behind session
-state and a bot check, so it cannot be scripted directly. Three ways to get
-metadata, in the order to try them:
+Three ways to get metadata, tried in this order:
 
-1. **Crossref by title, then BibTeX by DOI.** No API key. The link text in the
-   lectures is already the exact paper title, which makes this reliable:
-   `https://api.crossref.org/works?query.bibliographic=<title>&rows=3`, then
-   `curl -LH "Accept: application/x-bibtex" https://doi.org/<doi>`. Verify the
-   returned title against the link text and reject anything below a similarity
-   threshold — a wrong-but-plausible entry is worse than a missing one.
-2. **IEEE Xplore metadata API**, if a key is available. `article_number=` maps an
-   Xplore document ID straight to a DOI and full metadata, no title guessing.
-   Better for the handful of items Crossref cannot match.
-3. **Manual drop folder.** Download the `.bib` from Xplore by hand into
-   `pdf/incoming/`, and let the merge step re-key and fold it into `aic.bib`.
-   This is the fallback for the NTNU Open theses and anything else the first two
-   miss, and it is the path the course owner already knows.
+1. **Xplore's "Cite This", by article number.** The button posts to
+   `/rest/search/citation/format?recordIds=<arnumber>&download-format=download-bibtex`,
+   which returns IEEE's own BibTeX. This is the *preferred* route and not merely
+   because the metadata is authoritative: it looks the paper up by the number
+   already sitting in the lecture's URL, so unlike a title search it structurally
+   cannot come back with a different paper. Around 80 of the 84 candidates carry
+   such a number. Xplore does sit behind bot protection, so this is allowed to
+   fail per-link and fall through to Crossref.
+2. **Crossref by title, then BibTeX by DOI.** No API key, and the link text in
+   the lectures is usually the exact paper title:
+   `https://api.crossref.org/works?query.bibliographic=<title>&rows=3`. This is
+   the route that can pick the wrong paper — see Risks — so entries it produces
+   are marked `% CHECK` unless the title matches character for character.
+3. **Manual drop folder.** Download the `.bib` from Xplore by hand and let the
+   merge step re-key it. The fallback for the NTNU Open theses and anything the
+   first two miss, and the path the course owner already knows.
+
+Each staged entry records which route produced it (`% source: ieee` or
+`% source: crossref -- <why Xplore was skipped>`), so a run tells you whether
+the article-number path is working without reading the job log.
 
 > Note: a containerised environment often cannot reach `api.crossref.org` or
 > `doi.org` — an agent or corporate proxy answers 403 to CONNECT, which is

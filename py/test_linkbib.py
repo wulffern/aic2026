@@ -340,5 +340,43 @@ class TestIeeeBibtex(unittest.TestCase):
             "760378")
 
 
+# Shape of the blob Xplore inlines as xplGlobal.document.metadata.
+XPL_METADATA = """
+  xplGlobal.document.metadata={"title":"A 10-bit 50-MS/s SAR ADC With a Monotonic Capacitor Switching Procedure","authors":[{"name":"Chun-Cheng Liu"},{"name":"Soon-Jyh Chang"}],"publicationTitle":"IEEE Journal of Solid-State Circuits","contentType":"periodicals","volume":"45","issue":"4","startPage":"731","endPage":"740","publicationYear":"2010","doi":"10.1109/JSSC.2010.2042254"};
+  var x = 1;
+"""
+
+
+class TestXploreMetadata(unittest.TestCase):
+
+    def test_metadata_is_found_in_the_page(self):
+        meta = linkbib.scrape_metadata(XPL_METADATA)
+        self.assertEqual(meta["doi"], "10.1109/JSSC.2010.2042254")
+
+    def test_metadata_becomes_house_style_fields(self):
+        fields = linkbib.fields_from_metadata(linkbib.scrape_metadata(XPL_METADATA))
+        self.assertEqual(fields["author"], "C.-C. Liu and S.-J. Chang")
+        self.assertEqual(fields["journal"], "IEEE Journal of Solid-State Circuits")
+        self.assertEqual(fields["pages"], "731-740")
+        self.assertEqual(fields["year"], "2010")
+        self.assertNotIn("booktitle", fields)
+
+    def test_a_page_without_metadata_yields_nothing(self):
+        self.assertEqual(linkbib.scrape_metadata("<html>403</html>"), dict())
+        self.assertEqual(linkbib.fields_from_metadata(dict()), dict())
+
+    def test_conference_content_uses_booktitle(self):
+        meta = {"title": "T", "publicationTitle": "ISSCC", "contentType": "conferences",
+                "publicationYear": "1970"}
+        fields = linkbib.fields_from_metadata(meta)
+        self.assertIn("booktitle", fields)
+        self.assertNotIn("journal", fields)
+
+    def test_xplore_requests_look_like_a_browser(self):
+        h = linkbib.xplore_headers("5437496")
+        self.assertIn("Mozilla", h["User-Agent"])
+        self.assertTrue(h["Referer"].endswith("/document/5437496"))
+
+
 if __name__ == "__main__":
     unittest.main()

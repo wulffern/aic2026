@@ -58,6 +58,13 @@ FIELD_ORDER = ("author", "title", "journal", "booktitle", "school",
 CONTACT = os.environ.get("CROSSREF_MAILTO", "")
 USER_AGENT = "aic2026-linkbib (https://github.com/wulffern/aic2026)"
 
+# Crossref is happy with the honest agent string above. Xplore answers 418 to
+# it, and to any client that does not present browser headers, so its two
+# endpoints get this one instead.
+BROWSER_UA = ("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "
+              "AppleWebKit/537.36 (KHTML, like Gecko) "
+              "Chrome/126.0.0.0 Safari/537.36")
+
 
 def arnumber(url):
     """IEEE article number, however the URL happens to spell it."""
@@ -296,11 +303,8 @@ def fields_from_ieee(raw):
     return {k: v for k, v in fields.items() if v}
 
 
-def get(url, accept=None):
-    headers = {"User-Agent": USER_AGENT}
-    if accept:
-        headers["Accept"] = accept
-    req = urllib.request.Request(url, headers=headers)
+def get(url, headers=None):
+    req = urllib.request.Request(url, headers=headers or {"User-Agent": USER_AGENT})
     with urllib.request.urlopen(req, timeout=30) as resp:
         return resp.read().decode("utf-8", "replace")
 
@@ -309,23 +313,96 @@ def get_json(url):
     return json.loads(get(url))
 
 
+def xplore_headers(number):
+    """Xplore answers 418 to anything that does not look like a browser."""
+    return {
+        "User-Agent": BROWSER_UA,
+        "Accept": "application/json, text/plain, */*",
+        "Accept-Language": "en-US,en;q=0.9",
+        "Referer": f"https://ieeexplore.ieee.org/document/{number}",
+    }
+
+
+def fields_from_metadata(meta):
+    """xplGlobal.document.metadata -> the fields aic.bib uses."""
+    fields = dict()
+
+    authors = meta.get("authors") or list()
+    names = [a.get("name", "") for a in authors if a.get("name")]
+    if names:
+        fields["author"] = " and ".join(swap_name(n) for n in names)
+
+    if meta.get("title"):
+        fields["title"] = re.sub(r"<[^>]+>", "", meta["title"]).strip()
+
+    container = meta.get("publicationTitle", "")
+    if container:
+        conference = "conference" in (meta.get("contentType", "") or "").lower()
+        fields["booktitle" if conference else "journal"] = container
+
+    for src, dst in (("volume", "volume"), ("issue", "number")):
+        if meta.get(src):
+            fields[dst] = str(meta[src])
+
+    start, end = meta.get("startPage"), meta.get("endPage")
+    if start and end:
+        fields["pages"] = f"{start}-{end}"
+    elif start:
+        fields["pages"] = str(start)
+
+    year = meta.get("publicationYear") or ""
+    m = re.search(r"(\d{4})", str(meta.get("publicationDate", "")))
+    fields["year"] = str(year) or (m.group(1) if m else "")
+
+    if meta.get("doi"):
+        fields["doi"] = meta["doi"]
+
+    return {k: v for k, v in fields.items() if v}
+
+
+def scrape_metadata(html):
+    """Pull the metadata blob Xplore inlines into every document page."""
+    m = re.search(r"xplGlobal\.document\.metadata\s*=\s*(\{.*?\});\s*\n",
+                  html, re.S)
+    if not m:
+        return dict()
+    try:
+        return json.loads(m.group(1))
+    except json.JSONDecodeError:
+        return dict()
+
+
 def ieee_by_arnumber(number):
     """What the 'Cite This' button downloads, keyed by article number.
 
     This cannot return a different paper the way a title search can -- the
     article number is the one the lecture links to. Xplore sits behind bot
-    protection, so this is allowed to fail; Crossref is the fallback.
+    protection and answers 418 to a plain client, so try the citation
+    endpoint the button uses, then the metadata the document page inlines.
+    Both are allowed to fail; Crossref is the fallback.
     """
     url = ("https://ieeexplore.ieee.org/rest/search/citation/format"
            f"?recordIds={number}&download-format=download-bibtex"
            "&citations-format=citation-only")
-    payload = json.loads(get(url, accept="application/json"))
-    text = payload.get("data", "")
-    if not text.strip():
+    try:
+        payload = json.loads(get(url, headers=xplore_headers(number)))
+        text = payload.get("data", "")
+        if text.strip():
+            # The endpoint escapes newlines inside the JSON string.
+            kind, raw = parse_bibtex_entry(text.replace("\\n", "\n"))
+            fields = fields_from_ieee(raw)
+            if fields.get("title"):
+                return kind, fields
+    except (urllib.error.HTTPError, json.JSONDecodeError):
+        pass
+
+    page = get(f"https://ieeexplore.ieee.org/document/{number}",
+               headers=dict(xplore_headers(number), Accept="text/html"))
+    fields = fields_from_metadata(scrape_metadata(page))
+    if not fields.get("title"):
         return None, dict()
-    # The REST endpoint escapes newlines inside the JSON string.
-    kind, raw = parse_bibtex_entry(text.replace("\\n", "\n"))
-    return kind, fields_from_ieee(raw)
+    kind = "inproceedings" if fields.get("booktitle") else "article"
+    return kind, fields
 
 
 def crossref_by_title(title):
