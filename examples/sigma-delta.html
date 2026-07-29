@@ -61,7 +61,7 @@
     </div>
     <div class="cr">
       <label>Amplitude</label>
-      <input type="range" data-bind="amp" id="sl-amp" min="0.05" max="1" step="0.01" value="1">
+      <input type="range" data-bind="amp" id="sl-amp" min="0.05" max="1" step="0.01" value="0.7">
       <span class="v" id="v-amp"></span>
     </div>
     <div class="cr">
@@ -92,8 +92,8 @@
       <label for="sl-ntf">Overlay |1 &minus; z<sup>-1</sup>|</label>
     </div>
     <div class="ckrow">
-      <input type="checkbox" data-bind="clamp" id="sl-clamp">
-      <label for="sl-clamp">Clamp the quantiser to &plusmn;1 FS</label>
+      <input type="checkbox" data-bind="script" id="sl-script">
+      <label for="sl-script">Use the script's quantiser instead</label>
     </div>
   </div>
 </div>
@@ -141,35 +141,48 @@
     of oversampling.
   </p>
   <p>
-    One caveat about the word &ldquo;one-bit&rdquo;. The Python does not clamp
-    its quantizer, so when the integrator state runs past full scale the
-    rounding produces levels outside &plusmn;1 and the output is not really a
-    bitstream &mdash; the <b>output</b> readout counts how many distinct levels
-    came out. Tick <b>clamp</b> to limit it to &plusmn;1 FS, which is what a real
-    comparator does.
+    One caveat about the word &ldquo;one-bit&rdquo;. The Python's quantizer is
+    <code>np.round(x*2**bits)/2**bits</code>, unclamped, so at bits = 1 it emits
+    seven levels rather than two and its output is not a bitstream at all. This
+    page defaults to a proper B-bit quantizer whose 2<sup>B</sup> levels reach
+    &plusmn;1 &mdash; at B = 1 that is <code>sign(x)</code>, a genuine
+    comparator. The <b>output</b> readout counts the levels that actually came
+    out, and ticking <b>use the script's quantiser</b> shows you the difference.
   </p>
 
   <h2>THINGS WORTH TRYING</h2>
   <ul>
     <li>
       Compare the two <b>SNR readouts</b>. At OSR 16 the noise-shaped output
-      beats the plain one-bit quantizer by tens of dB, from exactly the same
-      one-bit converter. All that changed is where the error was put.
+      beats the plain one-bit quantizer by around 20 dB, from exactly the same
+      two-level converter. All that changed is where the error was put.
+    </li>
+    <li>
+      Push the <b>amplitude</b> to 1.0 and sweep the OSR again. The neat 9
+      dB/octave falls apart &mdash; 7, then 4, then 13. A one-bit first-order
+      loop cannot take a full-scale input: with only two levels to work with,
+      the integrator state runs away between corrections and the modulator
+      overloads. Real one-bit designs back off several dB from full scale, which
+      is why this page starts at 0.7. Watch <b>|x| max</b> as you go.
     </li>
     <li>
       Sweep <b>OSR</b> and watch the two curves in the SNR panel. Theory says
       3 dB per octave for a plain quantizer and 9 dB per octave for a
       first-order modulator, because the shaped noise is not flat and the band
       you throw away is where all of it went. The shaped curve does track 9
-      dB/octave. The plain curve does not manage its 3 &mdash; a one-bit
-      quantizer's error is harmonics, not white noise, and moving the band edge
-      past a harmonic gains you nothing.
+      dB/octave. The plain curve does something stranger: almost nothing for
+      the first few octaves, then a sudden jump of nearly 30 dB. Its error is
+      harmonics, not white noise, so narrowing the band buys you nothing at all
+      until the edge finally passes the third harmonic, at which point that
+      harmonic leaves the band and the number leaps. Averaging arguments assume
+      noise; this is what happens when the error is not.
     </li>
     <li>
-      Tick <b>clamp</b>. The output becomes a genuine two-level bitstream, the
-      integrator has to work harder, and the SNR drops a little. Everything
-      after the modulator is unchanged: the same sinc<sup>2</sup> average still
-      reconstructs the sine from nothing but ones and zeros.
+      Tick <b>use the script's quantiser</b>. The output readout jumps from two
+      levels to seven, the SNR moves, and what you are modulating is no longer a
+      one-bit converter. Everything after the modulator is unchanged: the same
+      sinc<sup>2</sup> average reconstructs the sine either way, which is a
+      decent hint at how forgiving the decimator is.
     </li>
     <li>
       Take <b>dither</b> to 0. Look at the low-frequency end of the log-frequency
@@ -249,8 +262,9 @@ function compute() {
 
   const u = DSP.decimate(xs, nfs);
   const M = u.length;
-  const ysn = DSP.quantize(u, bits);             // plain quantiser, for reference
-  const sd = DSP.sigmaDelta1(u, bits, S.dither, 424242, S.clamp);
+  // Plain quantiser at the same resolution, for reference.
+  const ysn = S.script ? DSP.quantize(u, bits) : DSP.quantizeBits(u, bits);
+  const sd = DSP.sigmaDelta1(u, bits, S.dither, 424242, S.script);
   const ysd = sd.y;
 
   const Ysn = DSP.toDb(DSP.normalise(DSP.magSpectrum(ysn, S.hann)));
@@ -306,8 +320,11 @@ function compute() {
     ntf[i] = floorDb + DSP.db20(2 * Math.sin(Math.PI * fpos[i]));
   }
 
+  // From index 2, as the Python's `y_sd = y_sd[2:]` does: the loop starts at
+  // n = 1 so y[0] is still the zero it was initialised to, and counting it
+  // would report a level the quantiser never actually produces.
   const levels = new Set();
-  for (let i = 0; i < M; i++) levels.add(ysd[i].toFixed(6));
+  for (let i = 2; i < M; i++) levels.add(ysd[i].toFixed(6));
 
   D = { N, M, OSR, bits, u, ysn, ysd, x: sd.x, dec, Ysn, Ysd, fM, fpos, sdPos, snPos,
         ntf, cP, cS, sigBin, maxOSR, half, f1, fs1: f1 * nfs, snrS, snrP };

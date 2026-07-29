@@ -68,6 +68,13 @@ few deviations, all deliberate and all noted on the page itself:
   state runs past full scale.
 * Noise is seeded (`DSP.randn(n, seed)`) rather than reseeded per call, so the
   floor stays put while a slider moves.
+* A "Bits" slider means B bits = 2^B levels, on every page. The scripts' `adc()`
+  counts *fractional* bits — its step is 2^-bits, so a signal spanning +/-1 gets
+  2^(bits+1)+1 levels, five of them at "1 bit", and beats 6.02B + 1.76 by a whole
+  bit. `quantization.html`, `oversampling.html` and `sigma-delta.html` therefore
+  default to `DSP.quantizeBits` (mid-riser, 2^B levels, saturating) or
+  `DSP.quantizeSD` (2^B levels reaching +/-1, so B=1 is sign()), each with the
+  script's version one checkbox away.
 * `biquad.html` and `xosc.html` do by hand the algebra their notebooks hand to
   sympy, because a CAS is far too big to ship to a browser. The biquad result
   was checked against the notebook's three flow-graph equations at 200 random
@@ -89,7 +96,9 @@ the shape of the curve. Reference values, all reproduced by the pages:
 
 | source | quantity | value |
 |---|---|---|
-| `ex/q.py` | SQNR at 1 bit | 15.1 dB |
+| `ex/q.py` (script adc(), 1 bit) | SQNR | 15.1 dB |
+| `quantization.html` (B-bit, B=4..12) | SQNR vs 6.02B+1.76 | within 0.5 dB |
+| `sigma-delta.html` (1 bit, amp 0.7) | shaped SNR per octave | ~9 dB |
 | `ex/vd.py` | n_i(300 K), dV_D/dT, 0 K intercept | 9.01e9 /cm3, -0.954 mV/K, 1.200 V |
 | `jupyter/xosc.ipynb` | f_p at C_P = 5 pF | 10.070874 MHz |
 | `jupyter/pll.ipynb` | w_pll, w_z, Q | 458 kHz, 413 kHz, 0.90 |

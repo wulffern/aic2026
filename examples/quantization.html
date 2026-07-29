@@ -40,10 +40,15 @@
       <input type="range" data-bind="nfs" id="sl-nfs" min="1" max="16" step="1" value="4">
       <span class="v" id="v-nfs"></span>
     </div>
+    <div class="ckrow">
+      <input type="checkbox" data-bind="script" id="sl-script">
+      <label for="sl-script">Use the script's <code>adc()</code> instead</label>
+    </div>
     <div class="note">
-      <code>adc()</code> rounds to a step of 2<sup>-bits</sup>, so a full-scale
-      &plusmn;1 sine sees 2<sup>bits+1</sup> steps &mdash; one bit more than the
-      slider says.
+      B bits means 2<sup>B</sup> levels. The script's <code>adc()</code> counts
+      <em>fractional</em> bits instead &mdash; its step is 2<sup>-bits</sup>, so
+      &ldquo;1 bit&rdquo; gives five levels over &plusmn;1 and the SQNR beats
+      6.02B + 1.76 by a whole bit. Tick the box to see it.
     </div>
   </div>
 
@@ -94,6 +99,7 @@
 </div>
 
 <div id="readout">
+  <div class="ro"><span class="k">LEVELS</span><span class="n" id="ro-levels"></span></div>
   <div class="ro"><span class="k">LSB</span><span class="n" id="ro-lsb"></span></div>
   <div class="ro"><span class="k">SQNR</span><span class="n" id="ro-sqnr"></span></div>
   <div class="ro"><span class="k">6.02B+1.76</span><span class="n" id="ro-ideal"></span></div>
@@ -126,9 +132,10 @@
     are there. Everything is normalised to its own peak, so 0 dB is the tone.
   </p>
   <p>
-    Quantization replaces the signal with the nearest multiple of one LSB. The
-    difference is the error in the top middle panel, bounded by
-    &plusmn;&frac12; LSB by construction. If that error looks like noise,
+    Quantization replaces the signal with the nearest of 2<sup>B</sup> levels
+    spread over the full scale, so one LSB is 2/2<sup>B</sup> for a
+    &plusmn;1 input. The difference is the error in the top middle panel,
+    bounded by &plusmn;&frac12; LSB by construction. If that error looks like noise,
     treating it as noise gives the familiar SQNR &asymp; 6.02&middot;B + 1.76
     dB. If it does not &mdash; at one bit it very much does not &mdash; the
     error is a deterministic function of the signal and lands in harmonics
@@ -138,14 +145,13 @@
   <h2>THINGS WORTH TRYING</h2>
   <ul>
     <li>
-      Start at <b>1 bit</b>, the default. Note that <code>adc()</code> rounds
-      rather than takes a sign, so a &plusmn;1 sine still gets five levels.
-      The error is a triangle locked to the signal, and the output spectrum has
-      clear spikes at 3f_1, 5f_1 and 7f_1 instead of a floor.
-      The measured SQNR is about 15 dB &mdash; slightly <em>above</em> the 13.8
-      dB the formula predicts, because a coarse quantizer's error is not
-      uniformly distributed. Neither number means much when the error is this
-      correlated with the signal.
+      Start at <b>1 bit</b>, the default: two levels, one comparator, and the
+      output is a square wave. The error is a triangle locked to the signal, and
+      the spectrum has clear spikes at 3f_1, 5f_1 and 7f_1 rather than a floor.
+      Measured SQNR is about 6 dB against the formula's 7.8. Do not read
+      anything into the gap &mdash; at one bit the error is not noise, it is a
+      deterministic function of the input, and 6.02B + 1.76 is derived by
+      assuming the opposite.
     </li>
     <li>
       Walk the <b>bits</b> up. Every extra bit buys about 6 dB, the harmonics
@@ -155,10 +161,23 @@
       assumption.
     </li>
     <li>
-      Keep going past <b>10 bits</b> with the noise at 1/2<sup>15</sup>. The
-      measured SQNR stops following the formula: the quantizer is now quieter
-      than the noise that was already on the signal, and adding bits to a
-      converter whose input is noisy buys nothing.
+      Set the input <b>noise</b> to 1/2<sup>10</sup> and then walk the bits up
+      past 9. The measured SQNR peels away from the formula and flattens out
+      around 58 dB: the quantizer is now quieter than the noise already on the
+      signal, so more bits buy nothing. At the default 1/2<sup>15</sup> that
+      never happens within the slider's range, and the measurement tracks
+      6.02B + 1.76 all the way to 12 bits.
+    </li>
+    <li>
+      Tick <b>use the script's adc()</b>. The level count jumps from
+      2<sup>B</sup> to 2<sup>B+1</sup>+1 &mdash; five levels at &ldquo;1
+      bit&rdquo; &mdash; and the SQNR gains a whole bit, because
+      <code>adc()</code> takes B to mean bits <em>after the binary point</em>
+      rather than converter resolution. Its step is 2<sup>-B</sup>, so a signal
+      spanning &plusmn;1 gets 2<sup>B+1</sup> steps. The ideal readout says
+      which B it is really behaving as. Nothing is wrong with the script &mdash;
+      it is just answering a different question from the one the slider label
+      asks.
     </li>
     <li>
       Turn the <b>noise</b> up to 1/2<sup>8</sup> at 3 or 4 bits. The added
@@ -206,7 +225,11 @@ def freqDomain(x,hann=True):
   <p class="src">
     Source: <a href="https://github.com/wulffern/aic2026/blob/main/ex/q.py">ex/q.py</a>,
     <a href="https://github.com/wulffern/aic2026/blob/main/ex/quantization.py">ex/quantization.py</a>
-    (the same thing with <code>np.sign()</code>, i.e. the one-bit case).
+    (the same thing with <code>np.sign()</code>, i.e. a real one-bit case).
+    This page defaults to a conventional B-bit converter &mdash; 2<sup>B</sup>
+    levels, step 2/2<sup>B</sup>, mid-riser, saturating at the end codes &mdash;
+    so that the slider, the level count and 6.02B + 1.76 all agree with each
+    other. The script's <code>adc()</code> is one tick box away.
   </p>
 </div>
 
@@ -256,7 +279,9 @@ function compute() {
   for (let i = 0; i < N; i++) xs[i] = S.amp * Math.sin(2 * Math.PI * f1 * t[i]) + na * noise[i];
 
   const xsn = DSP.decimate(xs, nfs);
-  const ysn = DSP.quantize(xsn, bits);
+  // Default is a conventional B-bit converter: 2^B levels, step 2/2^B, which
+  // is what the slider label and 6.02B + 1.76 both assume.
+  const ysn = S.script ? DSP.quantize(xsn, bits) : DSP.quantizeBits(xsn, bits);
   const M = xsn.length;
 
   const err = new Float64Array(M);
@@ -272,7 +297,7 @@ function compute() {
 
   // The transfer curve of the quantizer itself.
   const tx = DSP.linspace(-1.3, 1.3, 1200);
-  const ty = DSP.quantize(tx, bits);
+  const ty = S.script ? DSP.quantize(tx, bits) : DSP.quantizeBits(tx, bits);
 
   // Measured SQNR from the one-sided spectrum of the quantizer output.
   const one = DSP.magOneSided(ysn, S.hann);
@@ -280,16 +305,23 @@ function compute() {
   const sigBin = Math.round(fs1 * M);
   const sqnr = DSP.snr(one, sigBin, M >> 1, 3);
 
-  const lsb = Math.pow(2, -bits);
-  // adc() has a step of 2^-bits, so a +/-1 full scale is 2^(bits+1) steps.
-  const ideal = 6.02 * (bits + 1) + 1.76 + 20 * Math.log10(Math.min(S.amp, 1));
+  // The script's adc() steps by 2^-bits, so a +/-1 full scale spans
+  // 2^(bits+1) steps and behaves like a converter with one more bit.
+  const lsb = S.script ? Math.pow(2, -bits) : 2 / Math.pow(2, bits);
+  const effBits = S.script ? bits + 1 : bits;
+  const ideal = 6.02 * effBits + 1.76 + 20 * Math.log10(Math.min(S.amp, 1));
+  const nLevels = DSP.levelCount(ysn);
 
   D = { N, M, nfs, bits, xs, xsn, ysn, err, Xs, Xsn, Ysn, fN, fM,
-        tx, ty, f1, fs1, lsb, sigBin };
+        tx, ty, f1, fs1, lsb, sigBin, nLevels, effBits };
 
-  UI.readout('ro-lsb',   lsb.toExponential(2) + '  (2^-' + bits + ')');
+  UI.readout('ro-levels', nLevels + ' used, ' +
+    (S.script ? Math.pow(2, bits + 1) + 1 + ' possible' : Math.pow(2, bits) + ' possible'));
+  UI.readout('ro-lsb',   lsb.toExponential(2) +
+    (S.script ? '  (2^-' + bits + ')' : '  (2/2^' + bits + ')'));
   UI.readout('ro-sqnr',  isFinite(sqnr) ? sqnr.toFixed(1) + ' dB' : '-');
-  UI.readout('ro-ideal', ideal.toFixed(1) + ' dB');
+  UI.readout('ro-ideal', ideal.toFixed(1) + ' dB' +
+    (S.script ? '  (B = ' + effBits + ', not ' + bits + ')' : ''));
   UI.readout('ro-enob',  isFinite(sqnr) ? DSP.enob(sqnr).toFixed(2) + ' b' : '-');
   UI.readout('ro-f1',    sigBin + ' of ' + (M >> 1));
   document.getElementById('cb-nfs').textContent = nfs;
@@ -371,7 +403,7 @@ function render(cx, W, H, narrow) {
     }
   }
   p5.line(D.fM, D.Ysn, css('--quant'));
-  p5.note(0.02, 0.9, D.bits + '-bit\nf1 = ' + D.sigBin +
+  p5.note(0.02, 0.9, D.nLevels + ' levels\nf1 = ' + D.sigBin +
                      '\nf3 = ' + Math.round(alias(3 * D.fs1) * D.M) +
                      '\nf5 = ' + Math.round(alias(5 * D.fs1) * D.M) +
                      '\nf7 = ' + Math.round(alias(7 * D.fs1) * D.M), css('--text'));
