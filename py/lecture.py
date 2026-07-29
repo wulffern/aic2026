@@ -350,7 +350,11 @@ class Lecture():
 
                 line = self._readPan(line)
 
-                if(line):
+                #- Only convert images on lines that will be output:
+                #  _convertImage downloads URL images (downloadImage), and a
+                #  pan_skip'd slide otherwise triggers wget for content that
+                #  never appears (e.g. a bare youtu.be link).
+                if(line and self.output):
                     line = self._filterLine(line)
                     line = self._convertImage(line)
 
