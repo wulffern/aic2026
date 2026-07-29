@@ -1,0 +1,116 @@
+\input{tikz/fig_header.tex}
+
+% General-purpose active-RC biquad, two inverting integrator stages.
+%
+% Topology, checked against the transfer function the lecture states:
+%   G1 : V_i   -> X   (OTA1 virtual ground)
+%   C_A: X     -> V_1 (OTA1 feedback)
+%   G4 : V_o   -> X   (the outer loop, top rail)
+%   C_1: V_i   -> Y   (OTA2 virtual ground)
+%   G2 : V_i   -> Y
+%   G3 : V_1   -> Y
+%   G5 : Y     -> V_o (OTA2 feedback)
+%   C_B: Y     -> V_o
+% KCL at X and Y gives
+%   V_o/V_i = -[s^2 C_1/C_B + s G2/C_B - G1 G3/(C_A C_B)]
+%              / [s^2 + s G5/C_B - G3 G4/(C_A C_B)],
+% which is the lecture's H(s) once G3 carries the minus sign the original
+% artwork writes on it. That is why the resistor is labelled -G_3.
+%
+% The V_i rail has to cross the G4 return on its way to C_1 and G2; the
+% original crosses in the same place but lets the V_i branch *end* on the
+% crossing line, which reads as a junction it is not. Here both lines run
+% through the crossing and neither terminates there.
+
+\begin{circuitikz}[american, thick, transform shape]
+
+  \input{tikz/ckt_lib.tex}
+
+  % ---- rows ----
+  \def\yv{1.8}    % OTA1 output, V_1, G_3, OTA2 input
+  \def\ya{2.2}    % V_i port, G_1, node X, OTA1 inverting input
+  \def\ycb{3.3}   % G_2 and C_B
+  \def\yca{3.9}   % C_A
+  \def\yin{4.7}   % V_i rail: C_1 and G_5
+  \def\yg{5.8}    % G_4 rail
+
+  % ---- columns ----
+  \def\xvi{0.0}   % V_i port
+  \def\xr{1.0}    % V_i riser
+  \def\xx{3.0}    % node X
+  \def\xone{7.4}  % V_1
+  \def\xtap{9.4}  % tap on the G_3 wire that carries node Y over OTA2
+  \def\xy{11.0}   % node Y column
+  \def\xo{13.6}   % V_o rail
+
+  % ---- input port and G_1 into the first virtual ground ----
+  \draw (\xvi,\ya) circle (0.09);
+  \node[anchor=east] at (\xvi-0.2,\ya) {$V_{i}$};
+  \draw (\xvi+0.09,\ya) -- (1.2,\ya);
+  \draw (1.2,\ya) \hresistor{$G_{1}$};
+  \draw (resEnd) -- (\xx,\ya);
+
+  % ---- V_i rail up to C_1 and G_2 ----
+  \draw (\xr,\ya) -- (\xr,\yin) -- (\xtap,\yin);
+  \fill (\xr,\ya) circle (0.07);
+
+  % ---- first OTA, inverting input on top ----
+  \draw (3.8,\ya) \cicOtaSSWP{$-$}{$+$};
+  \draw (cicOtaS_inn) -- (2.4,\ya-0.8) -- (2.4,\ya-1.3);
+  \draw (2.4,\ya-1.3) \vground;
+
+  % ---- C_A around the first OTA ----
+  \draw (\xx,\ya) -- (\xx,\yg);
+  \fill (\xx,\yca) circle (0.07);
+  \draw (\xx,\yca) -- ++(0.4,0) \hcapacitor{$C_{A}$};
+  \draw (capEnd) -- (\xone,\yca) -- (\xone,\yv);
+  \fill (\xone,\yv) circle (0.07);
+
+  % ---- V_1 through G_3 into the second virtual ground ----
+  \draw (cicOtaS_out) -- (7.6,\yv);
+  \draw (7.6,\yv) \hresistor{$-G_{3}$};
+  \draw (resEnd) -- (10.0,\yv);
+
+  % ---- second OTA ----
+  \draw (10.0,\yv) \cicOtaSSWP{$-$}{$+$};
+  \draw (cicOtaS_inn) -- (8.6,\yv-0.8) -- (8.6,\yv-1.3);
+  \draw (8.6,\yv-1.3) \vground;
+
+  % Node Y carried up over the amplifier to the C_1/G_2 and G_5/C_B rows
+  \draw (\xtap,\yv) -- (\xtap,2.6) -- (\xy,2.6) -- (\xy,\yin);
+  \fill (\xtap,\yv) circle (0.07);
+
+  % ---- C_1 and G_2 from V_i to node Y ----
+  \draw (\xtap,\yin) \hcapacitor{$C_{1}$};
+  \fill (\xtap,\yin) circle (0.07);
+  \draw (\xtap,\yin) -- (\xtap,\ycb);
+  \draw (\xtap,\ycb) \hresistor{$G_{2}$};
+  \fill (\xy,\ycb) circle (0.07);
+  \fill (\xy,\yin) circle (0.07);
+
+  % ---- G_5 and C_B around the second OTA ----
+  \draw (\xy,\yin) -- (11.5,\yin);
+  \draw (11.5,\yin) \hresistor{$G_{5}$};
+  \draw (resEnd) -- (\xo,\yin);
+  \draw (\xy,\ycb) -- (11.5,\ycb);
+  \draw (11.5,\ycb) \hcapacitor{$C_{B}$};
+  \draw (capEnd) -- (\xo,\ycb);
+  \fill (\xo,\yin) circle (0.07);
+  \fill (\xo,\ycb) circle (0.07);
+
+  % ---- G_4, the outer loop from V_o back to node X ----
+  \draw (\xx,\yg) -- (6.0,\yg);
+  \draw (6.0,\yg) \hresistor{$G_{4}$};
+  \draw (resEnd) -- (\xo,\yg) -- (\xo,\yv-0.4);
+
+  % ---- output ----
+  \draw (cicOtaS_out) -- (13.9,\yv-0.4);
+  \fill (\xo,\yv-0.4) circle (0.07);
+  \draw (13.99,\yv-0.4) circle (0.09);
+  \node[anchor=west] at (14.16,\yv-0.4) {$V_{o}$};
+
+  % ---- node names ----
+  \node[anchor=north] at (\xone,\yv-0.12) {$V_{1}$};
+
+\end{circuitikz}
+\end{document}
