@@ -548,6 +548,15 @@ block.
   fail where it is defined; it fails later as "Undefined control sequence
   `\scXc`", because TeX read the name as `\scXc` and left the `2` behind.
   Spell the digit out: `\scXctwo`.
+- **`\input` a shared library *inside* `\begin{circuitikz}`, never above it.**
+  Every pre-existing figure does this with `ckt_lib.tex` and it is not a style
+  preference: a definitions file inputted into the document body of a
+  `standalone` document contributes an empty paragraph, and `crop` then sizes
+  the page around it. The figure still compiles and still looks right — it just
+  carries a wide blank margin. `l5_scintro1` wasted 45 % of its width that way,
+  and the spectrum and plane figures 13–16 % each, before this was spotted.
+  Worth checking: measure the ink bounding box of the rendered PNG against the
+  image size and expect a couple of per cent of margin, not fifteen.
 - Prefix every `\newcommand` in a figure. `l5_sh` first used `\th` for a tone
   height, which is a LaTeX built-in (thorn), and the redefinition is a *fatal*
   error, not a warning — it cost a CI round trip. `\shHalf`, `\shTone` and so
