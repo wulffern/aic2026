@@ -59,7 +59,8 @@
   % ---- The symbol that stands for all of that ----
   % Inversion lives on the bubble, not on the label, as in the original.
   \def\xd{9.0}
-  \def\yd{-3.6}
+  % Clear of the transmission gate's lower control port above it.
+  \def\yd{-5.0}
   \draw[axisblue, thick] (\xd,\yd+0.75) -- (\xd,\yd-0.75) -- (\xd+1.05,\yd) -- cycle;
   \draw[axisblue, thick] (\xd+2.1,\yd+0.75) -- (\xd+2.1,\yd-0.75) -- (\xd+1.05,\yd) -- cycle;
   \draw[axisblue, thick] (\xd-0.6,\yd) -- (\xd,\yd);
