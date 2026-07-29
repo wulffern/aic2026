@@ -339,7 +339,8 @@ In `lectures/l03_refbias.md`:
 That is 10 figures, in three lectures.
 
 ### Pending approval
-- none
+- `l5_sdomain`, `l5_zdomain` and `l5_zunstable` — sources and PDFs committed,
+  `lectures/l05_sc.md` still points at their SVGs.
 
 Also converted and switched: `l3_ptat`, `l3_ptat1`, `l3_ptat2` — 13 figures total.
 
@@ -462,8 +463,13 @@ come up.
    copy. The warning is the point of including it.
 
 ### Current next figure
-- `l5_sdomain`, `l5_zdomain` and `l5_zunstable` — the s-plane and z-plane
-  diagrams, another set that should share geometry.
+- `l5_fir`, then `l5_scintro1` onward. `l5_iir` between them is out of scope.
+
+`tikz/plane_lib.tex` holds the s-plane and z-plane pieces: the axes, the unit
+circle, and pole and zero markers. Pole positions are given in units of the
+circle radius, so `(0.5,0.3)` means half a radius out, which is how you think
+about them. Same rule as `spec_lib.tex`: a new shared include must be added to
+`TIKZ_INCLUDES` in the Makefile or the build tries to compile it as a figure.
 
 Approved and switched in `lectures/l05_sc.md`: `l05_fund1`, `l05_fund2`,
 `l05_fund3`, `l5_sh`, `l5_shaaf`, `l5_subsample`.
