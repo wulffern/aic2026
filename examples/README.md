@@ -75,9 +75,10 @@ few deviations, all deliberate and all noted on the page itself:
   and f_p rather than `np.argmax` over a sampled curve.
 * `buck.html` defaults to starting at the steady-state operating point. R*C and
   the switching period are four decades apart, so a cold start cannot be run to
-  settling and resolved at the same time without a very long simulation. The
-  notebook's cold start is a checkbox away, and with it the efficiency readout
-  goes negative exactly as the notebook's does.
+  settling and resolved at the same time without a very long simulation. This
+  page is what turned up the bug in `jupyter/buck.ipynb`, since fixed, where the
+  same averaging over an unsettled run printed a negative efficiency; unticking
+  the warm start reproduces it.
 
 ## Checking a page against its script
 
@@ -89,9 +90,9 @@ the shape of the curve. Reference values, all reproduced by the pages:
 | source | quantity | value |
 |---|---|---|
 | `ex/q.py` | SQNR at 1 bit | 15.1 dB |
-| `ex/vd.py` | dV_D/dT, 0 K intercept | -0.799 mV/K, 1.200 V |
+| `ex/vd.py` | n_i(300 K), dV_D/dT, 0 K intercept | 9.01e9 /cm3, -0.954 mV/K, 1.200 V |
 | `jupyter/xosc.ipynb` | f_p at C_P = 5 pF | 10.070874 MHz |
 | `jupyter/pll.ipynb` | w_pll, w_z, Q | 458 kHz, 413 kHz, 0.90 |
-| `jupyter/buck.ipynb` | V_o, efficiency (settled) | 0.999 V, 70.8 % |
+| `jupyter/buck.ipynb` | V_o, efficiency (settled mode) | 0.9989 V, 67.5 % |
 | `jupyter/buck_pfm.ipynb` | V_o, efficiency | 1.016 V, 92 % |
 | `buck-type3.html` | crossover, PM, slowest CL pole | 50.1 kHz, 60.0 deg, 3.24 kHz |

@@ -133,8 +133,8 @@
     The familiar &minus;2 mV/K belongs to a diode sitting near 0.7 V. With the
     script's numbers &mdash; 1 &micro;m<sup>2</sup> of junction and
     10<sup>19</sup> doping on both sides &mdash; I<sub>S</sub> comes out
-    extremely small, V<sub>D</sub> lands near 0.96 V, and the slope is only
-    &minus;0.8 mV/K. The last readout evaluates that formula so you can watch
+    extremely small, V<sub>D</sub> lands near 0.91 V, and the slope is only
+    &minus;0.95 mV/K. The last readout evaluates that formula so you can watch
     it track the fitted slope as you move the bias. And notice where the fitted
     line extrapolates to at 0 K: about E<sub>g</sub>/q + 3kT/q, which is where
     a bandgap reference gets both its name and its output voltage.
@@ -146,13 +146,22 @@
       Compare the three <b>n<sub>i</sub> models</b>. The rule of thumb
       &mdash; doubles every 11 K &mdash; is a straight line on a log axis by
       construction; the density-of-states calculation is not, because of the
-      T<sup>3/2</sup> prefactor. They also disagree on the absolute value: the
-      script's &ldquo;advanced&rdquo; model gives 3.7&times;10<sup>9</sup>
-      cm<sup>-3</sup> at 27&nbsp;&deg;C, where the accepted figure for silicon
-      is around 10<sup>10</sup>, because the effective masses it uses are the
-      low-temperature ones. Being a factor of three out on n<sub>i</sub> is a
-      factor of nine on I<sub>S</sub> and about 57 mV on V<sub>D</sub>. Worth
-      knowing before you trust any of them to three digits.
+      T<sup>3/2</sup> prefactor. All three now agree to within about 30&nbsp;%
+      at room temperature, and the density-of-states one gives
+      9.0&times;10<sup>9</sup> cm<sup>-3</sup> at 27&nbsp;&deg;C against a
+      measured 9.65&times;10<sup>9</sup>.
+    </li>
+    <li>
+      That agreement is recent. Until this was written the script's
+      calculation returned 3.6&times;10<sup>9</sup>, a factor of &radic;6 low,
+      because it used (m<sub>l</sub>m<sub>t</sub><sup>2</sup>)<sup>1/3</sup>
+      for the electron density-of-states mass and left out the 6<sup>2/3</sup>
+      that accounts for silicon's <b>six equivalent conduction band minima</b>.
+      The density of states counts every valley. That one missing factor put
+      m<sub>n</sub><sup>*</sup> at 0.33&nbsp;m<sub>0</sub> instead of
+      1.08&nbsp;m<sub>0</sub>, which is a factor of six on I<sub>S</sub> and
+      about 46&nbsp;mV on V<sub>D</sub>. A good reminder that a model agreeing
+      with itself is not the same as a model agreeing with silicon.
     </li>
     <li>
       Move <b>I<sub>C</sub></b> over its whole range. V<sub>D</sub> moves by

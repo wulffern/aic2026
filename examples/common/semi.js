@@ -36,7 +36,11 @@ const SEMI = (function () {
    * a heavy hole.
    */
   function ni(T, Eg = EG_SI) {
-    const mn = Math.pow(0.98 * 0.19 * 0.19, 1 / 3) * m0;
+    // (m_l*m_t^2)^(1/3) times 6^(2/3): silicon has six equivalent conduction
+    // band minima and the density of states counts all of them. Without the
+    // degeneracy factor m_n* is 0.33*m0 rather than 1.08*m0 and n_i comes out
+    // a factor sqrt(6) low.
+    const mn = Math.pow(6, 2 / 3) * Math.pow(0.98 * 0.19 * 0.19, 1 / 3) * m0;
     const mp = 0.81 * m0;
     const Nc = 2 * Math.sqrt(Math.pow((2 * pi * k * T * mn) / (h * h), 3));
     const Nv = 2 * Math.sqrt(Math.pow((2 * pi * k * T * mp) / (h * h), 3));
