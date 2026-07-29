@@ -1,0 +1,125 @@
+\input{tikz/fig_header.tex}
+
+% The differential current-mirror OTA.
+%
+% Each half: the input device's drain sits on a diode-connected PMOS, which
+% mirrors twice -- once into the outer PMOS that pulls up that half's own
+% output, and once into an inner PMOS whose drain crosses to the *other*
+% half's NMOS diode.  That NMOS mirror pulls down the other half's output.
+% So V_on carries I(M_in) - I(M_ip) and V_op the negative of it, which is why
+% the two inner drains cross in the middle of the drawing.
+%
+% Layout is symmetric about x = 0, so the columns are given as positive
+% numbers and negated where the left half needs them: \def stores the text,
+% and -\xa on a macro that already holds a minus sign would come out as
+% "--4.8".  \grid is 1.6 and every row is one device tall, so the \lv*mos
+% macros line up on it.
+
+\begin{circuitikz}[american, thick, transform shape, circuit ee IEC]
+
+  \input{tikz/ckt_lib.tex}
+
+  % ---- column offsets from the axis ----
+  \def\xa{4.8}     % output rail: outer PMOS and outer NMOS
+  \def\xb{2.9}     % PMOS diode and the input device
+  \def\xd{2.0}     % NMOS diode
+  \def\xc{1.3}     % the PMOS whose drain crosses over
+
+  % ---- rows ----
+  \def\ynbs{0.7}   % bottom NMOS source
+  \def\ynbd{2.3}   % bottom NMOS drain
+  \def\ycr{2.9}    % where a crossing wire meets the NMOS diode
+  \def\yts{3.3}    % tail rail, and the input pair source
+  \def\ycp{4.5}    % where a crossing wire leaves the inner PMOS drain
+  \def\yid{4.9}    % input pair drain
+  \def\ygt{5.5}    % PMOS gate rail
+  \def\ypd{6.1}    % PMOS drain
+  \def\yps{7.7}    % PMOS source and supply
+
+  % ================= left half =================
+  \draw (-\xa,\ypd) \lvmpmos{MPa}{};
+  \draw (-\xa,\yps) \vsupply;
+  \draw (-\xb,\ypd) \lvpmos{MPb}{};
+  \draw (-\xb,\yps) \vsupply;
+  \draw (-\xc,\ypd) \lvpmos{MPc}{};
+  \draw (-\xc,\yps) \vsupply;
+
+  % the diode connection, and the gate shared by all three
+  \draw (MPa.gate) -- (MPb.gate);
+  \draw (MPb.gate) |- (-\xb,\ygt);
+  \draw (-\xb,\ygt) -| (MPc.gate);
+  \draw (-\xb,\ypd) -- (-\xb,\yid);
+  \fill (-\xb,\ygt) circle (0.075);
+
+  % input device
+  \draw (-\xb,\yts) \lvnmos{MNa}{$V_{in}$};
+  \draw (-\xb,\yts) -- (0,\yts);
+
+  % output rail
+  \draw (-\xa,\ypd) -- (-\xa,\ynbd);
+  \draw (-\xa,4.2) -- (-5.2,4.2);
+  \draw (-5.29,4.2) circle (0.09);
+  \node[anchor=east] at (-5.44,4.2) {$V_{on}$};
+
+  % bottom mirror: diode on the inner device, output on the outer one
+  \draw (-\xa,\ynbs) \lvmnmos{MNb}{};
+  \draw (-\xa,0) \vground;
+  \draw (-\xa,0) -- (-\xa,\ynbs);
+  \draw (-\xd,\ynbs) \lvnmos{MNc}{};
+  \draw (-\xd,0) \vground;
+  \draw (-\xd,0) -- (-\xd,\ynbs);
+  \draw (MNb.gate) -- (MNc.gate);
+  \coordinate (gNa) at ($(MNb.gate)!0.5!(MNc.gate)$);
+  \draw (gNa) |- (-\xd,\ynbd);
+  \fill (gNa) circle (0.075);
+  \draw (-\xd,\ynbd) -- (-\xd,\ycr);
+
+  % ================= right half =================
+  \draw (\xa,\ypd) \lvpmos{MPap}{};
+  \draw (\xa,\yps) \vsupply;
+  \draw (\xb,\ypd) \lvmpmos{MPbp}{};
+  \draw (\xb,\yps) \vsupply;
+  \draw (\xc,\ypd) \lvmpmos{MPcp}{};
+  \draw (\xc,\yps) \vsupply;
+
+  \draw (MPap.gate) -- (MPbp.gate);
+  \draw (MPbp.gate) |- (\xb,\ygt);
+  \draw (\xb,\ygt) -| (MPcp.gate);
+  \draw (\xb,\ypd) -- (\xb,\yid);
+  \fill (\xb,\ygt) circle (0.075);
+
+  \draw (\xb,\yts) \lvmnmos{MNap}{$V_{ip}$};
+  \draw (\xb,\yts) -- (0,\yts);
+
+  \draw (\xa,\ypd) -- (\xa,\ynbd);
+  \draw (\xa,4.2) -- (5.2,4.2);
+  \draw (5.29,4.2) circle (0.09);
+  \node[anchor=west] at (5.44,4.2) {$V_{op}$};
+
+  \draw (\xa,\ynbs) \lvnmos{MNbp}{};
+  \draw (\xa,0) \vground;
+  \draw (\xa,0) -- (\xa,\ynbs);
+  \draw (\xd,\ynbs) \lvmnmos{MNcp}{};
+  \draw (\xd,0) \vground;
+  \draw (\xd,0) -- (\xd,\ynbs);
+  \draw (MNbp.gate) -- (MNcp.gate);
+  \coordinate (gNb) at ($(MNbp.gate)!0.5!(MNcp.gate)$);
+  \draw (gNb) |- (\xd,\ynbd);
+  \fill (gNb) circle (0.075);
+  \draw (\xd,\ynbd) -- (\xd,\ycr);
+
+  % ================= the cross =================
+  % each inner PMOS drain feeds the other half's NMOS diode
+  \draw (-\xc,\ypd) -- (-\xc,\ycp) -- (\xd,\ycr);
+  \draw (\xc,\ypd) -- (\xc,\ycp) -- (-\xd,\ycr);
+
+  % ================= tail =================
+  \draw (0,\yts) -- (0,2.05);
+  \draw (0,1.7) circle (0.35);
+  \draw[->] (0,1.95) -- (0,1.45);
+  \draw (0,1.35) -- (0,0);
+  \draw (0,0) \vground;
+  \fill (0,\yts) circle (0.075);
+
+\end{circuitikz}
+\end{document}
