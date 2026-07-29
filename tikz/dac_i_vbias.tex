@@ -70,8 +70,12 @@
     % One side of the pair sits on the constant V_bias rail, the other takes
     % the bit. The bit swings about V_bias, so the pair tips one way or the
     % other and hands the cell current between the two rails.
-    \draw (ML#2.gate) -- ({#1-\dw-0.55},\ydrv) -- ({#1-\dw-0.55},\ybias);
-    \fill ({#1-\dw-0.55},\ybias) circle (0.07);
+    % The drop to the rail is taken from beyond the end of the gate lead, off
+    % the node's own anchor, so it cannot be laid across the device symbol.
+    \draw let \p1 = (ML#2.gate) in
+      (ML#2.gate) -- (\x1-0.35,\y1) -- (\x1-0.35,\ybias);
+    \path let \p1 = (ML#2.gate) in (\x1-0.35,\ybias) coordinate (mlv#2);
+    \fill (mlv#2) circle (0.07);
     \draw (MR#2.gate) -- ({#1+\cw},\ydrv);
     \node[anchor=south] at ({#1+\cw-0.55},{\ydrv+0.16}) {$\overline{b_{#2}}$};
     %
