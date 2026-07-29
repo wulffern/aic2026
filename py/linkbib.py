@@ -360,6 +360,16 @@ def fields_from_metadata(meta):
     return {k: v for k, v in fields.items() if v}
 
 
+def describe_page(html):
+    """One line saying what Xplore actually served, for the unresolved list."""
+    title = re.search(r"<title[^>]*>(.*?)</title>", html, re.S | re.I)
+    return (f"page was {len(html)} bytes"
+            f", title {title.group(1).strip()[:60]!r}" if title
+            else f"page was {len(html)} bytes, no <title>") + (
+        ", has metadata blob" if "xplGlobal.document.metadata" in html
+        else ", no metadata blob")
+
+
 def scrape_metadata(html):
     """Pull the metadata blob Xplore inlines into every document page."""
     m = re.search(r"xplGlobal\.document\.metadata\s*=\s*(\{.*?\});\s*\n",
@@ -400,7 +410,9 @@ def ieee_by_arnumber(number):
                headers=dict(xplore_headers(number), Accept="text/html"))
     fields = fields_from_metadata(scrape_metadata(page))
     if not fields.get("title"):
-        return None, dict()
+        # Distinguish "Xplore served an interstitial" from "the page was fine
+        # and the parse missed", which need completely different fixes.
+        raise LookupError(describe_page(page))
     kind = "inproceedings" if fields.get("booktitle") else "article"
     return kind, fields
 
@@ -580,7 +592,7 @@ def fetch(lectures, bib, out, unresolved, limit, delay, source):
                 if not fields:
                     reason = f"Xplore returned nothing for {ar}"
                     ieee_note = reason
-            except (urllib.error.URLError, TimeoutError,
+            except (urllib.error.URLError, TimeoutError, LookupError,
                     json.JSONDecodeError, UnicodeDecodeError) as e:
                 reason = f"Xplore lookup failed: {e}"
                 ieee_note = reason
