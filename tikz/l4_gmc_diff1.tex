@@ -1,0 +1,24 @@
+\input{tikz/fig_header.tex}
+
+% The same differential Gm-C integrator as l4_gmc_diff with its outputs
+% flipped: - out on the + rail.  Both currents reverse, so H(s) = -G_m/(sC).
+% Flipping two wires is the whole cost of a sign change in a differential
+% circuit, which is what the slide is for.
+
+\begin{circuitikz}[american, thick, transform shape]
+
+  \input{tikz/gmc_lib.tex}
+
+  \gmcDiffFrame
+
+  % Outputs flipped
+  \gmcMinus{2.35}{3.6}
+  \gmcPlus{2.35}{2.0}
+
+  \draw[->] (3.8,3.9) -- (3.05,3.9);
+  \node[anchor=south] at (3.42,4.0) {$G_{m}V_{i}$};
+  \draw[->] (3.05,1.7) -- (3.8,1.7);
+  \node[anchor=north] at (3.42,1.6) {$G_{m}V_{i}$};
+
+\end{circuitikz}
+\end{document}

@@ -1,0 +1,64 @@
+\input{tikz/fig_header.tex}
+
+% General-purpose first-order Active-RC section.  G_1 in parallel with C_1
+% from V_in to the virtual ground, G_2 in parallel with C_2 in feedback:
+%   H(s) = -(G_1 + s C_1)/(G_2 + s C_2)
+% The lecture works this out with conductances rather than resistances, so
+% the resistors are labelled G.
+
+\begin{circuitikz}[american, thick, transform shape]
+
+  \input{tikz/ckt_lib.tex}
+
+  \def\yg{1.75}   % the G branch, and the inverting input
+  \def\yc{3.3}    % the C branch
+  \def\ytwo{4.3}  % G_2, above C_2
+  \def\xx{3.1}    % virtual ground column
+
+  % input port, splitting into the G_1 and C_1 branches
+  \draw (0.25,2.5) circle (0.09);
+  \node[anchor=east] at (0.05,2.5) {$V_{in}$};
+  \draw (0.34,2.5) -- (0.85,2.5);
+  \draw (0.85,\yg) -- (0.85,\yc);
+
+  \draw (1.1,\yg) \hresistor{};
+  \node[anchor=north] at (1.9,{\yg-0.28}) {$G_{1}$};
+  \draw (0.85,\yg) -- (1.1,\yg);
+  \draw (resEnd) -- (3.5,\yg);
+
+  \draw (1.3,\yc) \hcapacitor{};
+  \node[anchor=north] at (2.1,{\yc-0.28}) {$C_{1}$};
+  \draw (0.85,\yc) -- (1.3,\yc);
+  \draw (capEnd) -- (\xx,\yc);
+
+  % the virtual ground ties the two branches together
+  \draw (\xx,\yg) -- (\xx,\yc);
+  \fill (\xx,\yg) circle (0.07);
+  \fill (\xx,\yc) circle (0.07);
+
+  % OTA, inverting input on top
+  \draw (3.5,\yg) \cicOtaSSWP{$-$}{$+$};
+  \draw (cicOtaS_inn) -- (2.7,{\yg-0.8}) -- (2.7,0.5);
+  \draw (2.7,0.5) \vground;
+
+  % C_2 in feedback, with G_2 in parallel above it
+  \draw (\xx,\yc) -- (4.1,\yc);
+  \draw (4.1,\yc) \hcapacitor{};
+  \node[anchor=north] at (4.9,{\yc-0.28}) {$C_{2}$};
+  \draw (capEnd) -- (6.5,\yc);
+
+  \draw (3.45,\yc) -- (3.45,\ytwo) -- (3.9,\ytwo);
+  \draw (3.9,\ytwo) \hresistor{$G_{2}$};
+  \draw (resEnd) -- (5.9,\ytwo) -- (5.9,\yc);
+  \fill (3.45,\yc) circle (0.07);
+  \fill (5.9,\yc) circle (0.07);
+
+  % output
+  \draw (cicOtaS_out) -- (6.75,{\yg-0.4});
+  \draw (6.5,{\yg-0.4}) -- (6.5,\yc);
+  \fill (6.5,{\yg-0.4}) circle (0.07);
+  \draw (6.84,{\yg-0.4}) circle (0.09);
+  \node[anchor=west] at (7.0,{\yg-0.4}) {$V_{out}$};
+
+\end{circuitikz}
+\end{document}

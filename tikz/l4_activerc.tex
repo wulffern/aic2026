@@ -1,0 +1,38 @@
+\input{tikz/fig_header.tex}
+
+% The Active-RC integrator the lecture uses to talk about what a real OTA
+% does to it: R from V_I to the virtual ground, C in feedback, + grounded.
+% R and C carry no labels in the original -- the slide is about A_0 and
+% omega_ta, not about component values.
+
+\begin{circuitikz}[american, thick, transform shape]
+
+  \input{tikz/ckt_lib.tex}
+
+  \def\yin{1.8}   % inverting input, and the R branch
+  \def\yfb{3.2}   % the feedback capacitor
+
+  % R from the input to the virtual ground
+  \node[anchor=east] at (0.3,\yin) {$V_{I}$};
+  \draw (0.4,\yin) -- (1.0,\yin);
+  \draw (1.0,\yin) \hresistor{};
+  \draw (resEnd) -- (3.2,\yin);
+
+  % OTA, inverting input on top
+  \draw (3.2,\yin) \cicOtaSSWP{$-$}{$+$};
+  \draw (cicOtaS_inn) -- (2.35,{\yin-0.8}) -- (2.35,0.6);
+  \draw (2.35,0.6) \vground;
+
+  % C in feedback
+  \draw (2.9,\yin) -- (2.9,\yfb);
+  \fill (2.9,\yin) circle (0.07);
+  \draw (2.9,\yfb) -- ++(0.85,0) \hcapacitor{};
+  \draw (capEnd) -- (6.2,\yfb) -- (6.2,{\yin-0.4});
+
+  % output
+  \draw (cicOtaS_out) -- (6.9,{\yin-0.4});
+  \fill (6.2,{\yin-0.4}) circle (0.07);
+  \node[anchor=west] at (6.95,{\yin-0.4}) {$V_{O}$};
+
+\end{circuitikz}
+\end{document}

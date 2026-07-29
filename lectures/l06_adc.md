@@ -1241,14 +1241,14 @@ a third order NTF with a zero at zero frequency and a complex conjugate pole at 
 ### Complex Sigma-Delta
 
 There are cool sigma-delta modulators with crazy configurations 
-and that may look like an exercise in "Let's make something complex", however, most of them have a reasonable application. One example is the one below for radio recievers 
+and that may look like an exercise in "Let's make something complex", however, most of them have a reasonable application. One example is the one below for radio receivers 
 -->
 
 [A 56 mW Continuous-Time Quadrature Cascaded Sigma-Delta Modulator With 77 dB DR in a Near Zero-IF
 20 MHz Band](https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=4381437)
 
 
-![inline](../media/qt_sd.png)![inline](../media/qt_sd_response.png)
+![inline](../media/qt_sd.png)
 
 ---
 

@@ -234,7 +234,7 @@ I've made an example temperature sensor at [lelo\_temp\_sky130a](https://analogi
 ![inline](../media/aic2026_project_analog.svg)
 
 <!--pan_doc: 
-<sub>Figure 4: Leakage simulation </sub>
+<sub>Figure 4: Illustration of the temperature sensor </sub>
 -->
 
 

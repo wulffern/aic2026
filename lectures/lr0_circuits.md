@@ -238,7 +238,7 @@ I would encourage you to only use transistors from that library in your design. 
 The reason is usually that the transistors are not operating in the correct region. So either the $V_{GS}$ is causing problems
 or the $V_{DS}$ is not high enough. 
 
-In Figure 8 we can seee how the $V_{GS}$ of transistors change with corner. It's usually highest for slow-slow and low temperature, and the lowest for 
+In Figure 8 we can see how the $V_{GS}$ of transistors change with corner. It's usually highest for slow-slow and low temperature, and the lowest for 
 fast-fast and high temperature. But event that statement is obviously not always correct. For a gm/Id of 6 we can see that it's the low temperature that has the lowest $V_{GS}$.
 
 If we observe the equation for the current in strong inversion 
@@ -246,7 +246,7 @@ If we observe the equation for the current in strong inversion
 $$ I_D = \frac{1}{2} \mu_n C_{ox} \frac{W}{L}\left( V_{GS} - V_{TH}\right)^2$$
 
 we can see that the current decreses if the $V_{TH}$ increases, and we can see that current increases if the mobility ($\mu_n$) increases. The threshold voltage increases
-at low temperature. The mobilty increases at low temperature. At a gm/Id of a bit more than 8 we can see that from Figure 8 the two effects cancel each other. While for lower gm/Id 
+at low temperature. The mobility increases at low temperature. At a gm/Id of a bit more than 8 we can see that from Figure 8 the two effects cancel each other. While for lower gm/Id 
 the mobility becomes dominant, and lowers the $V_{GS}$.
 
 
@@ -288,7 +288,7 @@ voltages and currents are. In Figure 10 we can see an example from [TB\_JNW\_TEM
 ![fit](../media/LELOTEMP_OTA_OP.svg)
 
 <!--pan_doc: 
-<sub>Figure 10: Example of operating point annotation 
+<sub>Figure 10: Example of operating point annotation </sub>
 -->
 
 ---
@@ -339,7 +339,7 @@ The output resistance of a normal current mirror is simply the $r_{ds}$ of the o
 ![right 200%](../media/l8/fig_cm.pdf)
 
 <!--pan_doc: 
-<sub>Figure 11: Normal current mirror
+<sub>Figure 12: Normal current mirror </sub>
 -->
 
 
@@ -355,7 +355,7 @@ cannot give us a sufficient independence of the drain/source voltage.
 When we use more advanced current mirrors, it's almost always to increase the output resistance, and make the current mirror more like a 
 current source. 
 
-In Figure 12 we can see a current mirror with resistors on source. 
+In Figure 13 we can see a current mirror with resistors on source. 
 
 -->
 
@@ -363,14 +363,14 @@ In Figure 12 we can see a current mirror with resistors on source.
 
 
 <!--pan_doc: 
-<sub>Figure 12: Source degenerated current mirror </sub>
+<sub>Figure 13: Source degenerated current mirror </sub>
 -->
 
 ---
 
 <!--pan_doc:
 
-Observe the small signal model in Figure 13. If we now apply a test current $i_x$ we can compute 
+Observe the small signal model in Figure 14. If we now apply a test current $i_x$ we can compute 
 what the output resistance is ($r_{out} = v_{x}/i_x$) 
 
 -->
@@ -378,7 +378,7 @@ what the output resistance is ($r_{out} = v_{x}/i_x$)
 ![right fit](../media/l8/cm_sdeg.pdf)
 
 <!--pan_doc: 
-<sub>Figure 13: Source degenerated current mirror small signal model </sub>
+<sub>Figure 14: Source degenerated current mirror small signal model </sub>
 -->
 
 $$v_{gs} = -v_{s}$$, $$v_{s} = i_x R_s$$, $$r_{out} = \frac{v_x}{i_x}$$
@@ -413,7 +413,7 @@ not really change, and the current in $M_2$ stays the same.
 ![right fit](../media/l8/fig_cmCascode.pdf)
 
 <!--pan_doc: 
-<sub>Figure 14: Cascoded current mirror
+<sub>Figure 15: Cascoded current mirror </sub>
 -->
 
 From source degeneration (ignoring bulk effect)
@@ -453,7 +453,7 @@ $$
 ![right fit](../media/l8/cm_gain_boost.pdf)
 
 <!--pan_doc: 
-<sub>Figure 15: Active cascode current mirror </sub>
+<sub>Figure 16: Active cascode current mirror </sub>
 -->
 
 ---
@@ -484,7 +484,7 @@ For two transistors there are a few more possibilities. I'd highly recommend [Fi
 
 <!--pan_doc: 
 
-The source follower can be seen in Figure 16. The input signal is at the gate, and the output at the source.  The properties of the source follower are 
+The source follower can be seen in Figure 17. The input signal is at the gate, and the output at the source.  The properties of the source follower are 
 
 -->
 
@@ -497,7 +497,7 @@ Output resistance $$r_{out}$$
 ![left fit](../media/l9/sf_ls.png)
 
 <!--pan_doc: 
-<sub>Figure 16: Source follower </sub>
+<sub>Figure 17: Source follower </sub>
 -->
 
 
@@ -509,7 +509,7 @@ Output resistance $$r_{out}$$
 ![right fit](../media/l9/sf_ss.png)
 
 <!--pan_doc: 
-<sub>Figure 17: Source follower small signal model</sub>
+<sub>Figure 18: Source follower small signal model</sub>
 -->
 
 
