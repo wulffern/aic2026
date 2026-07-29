@@ -234,10 +234,98 @@ def to_bibtex(key, kind, fields):
     return "\n".join(lines) + "\n"
 
 
-def get_json(url):
-    req = urllib.request.Request(url, headers={"User-Agent": USER_AGENT})
+def swap_name(name):
+    """'Ker, Ming-Dou' -> 'M.-D. Ker'. IEEE writes family-first."""
+    if "," in name:
+        family, given = name.split(",", 1)
+        return f"{initials(given.strip())} {family.strip()}".strip()
+    parts = name.split()
+    if len(parts) < 2:
+        return name.strip()
+    return f"{initials(' '.join(parts[:-1]))} {parts[-1]}"
+
+
+def parse_bibtex_entry(text):
+    """One BibTeX entry -> (kind, fields). Handles IEEE's brace style."""
+    m = re.search(r"@(\w+)\s*{\s*([^,]+),", text)
+    if not m:
+        return None, dict()
+    kind = m.group(1).lower()
+
+    fields = dict()
+    body = text[m.end():]
+    for fm in re.finditer(r"(\w+)\s*=\s*", body):
+        rest = body[fm.end():].lstrip()
+        if not rest or rest[0] not in "{\"":
+            continue
+        close = "}" if rest[0] == "{" else "\""
+        depth = 0
+        value = list()
+        for c in rest:
+            if c == "{":
+                depth += 1
+                if depth == 1:
+                    continue
+            elif c == "}":
+                depth -= 1
+                if depth == 0:
+                    break
+            elif c == "\"" and close == "\"":
+                if value:
+                    break
+                continue
+            value.append(c)
+        fields[fm.group(1).lower()] = re.sub(r"\s+", " ", "".join(value)).strip()
+    return kind, fields
+
+
+def fields_from_ieee(raw):
+    """IEEE's own BibTeX -> the fields and author style aic.bib uses."""
+    fields = dict()
+
+    if raw.get("author"):
+        fields["author"] = " and ".join(
+            swap_name(a) for a in re.split(r"\s+and\s+", raw["author"]))
+
+    for name in ("title", "journal", "booktitle", "volume", "number",
+                 "year", "pages", "doi"):
+        if raw.get(name):
+            fields[name] = raw[name]
+
+    # IEEE emits empty volume/number on conference papers.
+    return {k: v for k, v in fields.items() if v}
+
+
+def get(url, accept=None):
+    headers = {"User-Agent": USER_AGENT}
+    if accept:
+        headers["Accept"] = accept
+    req = urllib.request.Request(url, headers=headers)
     with urllib.request.urlopen(req, timeout=30) as resp:
-        return json.loads(resp.read().decode("utf-8"))
+        return resp.read().decode("utf-8", "replace")
+
+
+def get_json(url):
+    return json.loads(get(url))
+
+
+def ieee_by_arnumber(number):
+    """What the 'Cite This' button downloads, keyed by article number.
+
+    This cannot return a different paper the way a title search can -- the
+    article number is the one the lecture links to. Xplore sits behind bot
+    protection, so this is allowed to fail; Crossref is the fallback.
+    """
+    url = ("https://ieeexplore.ieee.org/rest/search/citation/format"
+           f"?recordIds={number}&download-format=download-bibtex"
+           "&citations-format=citation-only")
+    payload = json.loads(get(url, accept="application/json"))
+    text = payload.get("data", "")
+    if not text.strip():
+        return None, dict()
+    # The REST endpoint escapes newlines inside the JSON string.
+    kind, raw = parse_bibtex_entry(text.replace("\\n", "\n"))
+    return kind, fields_from_ieee(raw)
 
 
 def crossref_by_title(title):
@@ -359,7 +447,10 @@ def scan(lectures, bib, tsv):
               help="Candidates needing a hand-fetch from Xplore")
 @click.option("--limit", default=0, help="Stop after N papers (0 = all)")
 @click.option("--delay", default=1.0, help="Seconds between API calls")
-def fetch(lectures, bib, out, unresolved, limit, delay):
+@click.option("--source", default="both",
+              type=click.Choice(["both", "ieee", "crossref"]),
+              help="Where to resolve from. 'both' tries Xplore first.")
+def fetch(lectures, bib, out, unresolved, limit, delay, source):
     """Resolve candidate links to bib entries. Needs network."""
 
     papers = group(scan_lectures(lectures))
@@ -396,39 +487,69 @@ def fetch(lectures, bib, out, unresolved, limit, delay):
             continue
 
         reason = ""
-        work = None
-        try:
-            doi = doi_from_url(hit.url)
-            if doi:
-                work = crossref_by_doi(doi)
-                if work is None:
-                    reason = f"DOI {doi} unknown to Crossref"
-            elif not looks_like_a_title(title):
-                # Prose links like "[diffusion](...)", and the handful whose
-                # text is just the URL again, carry nothing to match on.
-                reason = "link text is not a title"
-            else:
-                work, score = crossref_by_title(title)
-                if work is None:
-                    reason = f"best Crossref match scored {score:.2f}"
-        except (urllib.error.URLError, TimeoutError, json.JSONDecodeError) as e:
-            reason = f"lookup failed: {e}"
-            errors += 1
+        kind = None
+        fields = dict()
+        origin = ""
 
-        if work is None:
+        # IEEE first when the link names an article number. That lookup is by
+        # identity rather than by title, so it cannot come back with a
+        # different paper -- which is the one failure mode a title search has.
+        ar = arnumber(hit.url)
+        if ar and source in ("ieee", "both"):
+            try:
+                kind, fields = ieee_by_arnumber(ar)
+                origin = "ieee"
+                if not fields:
+                    reason = f"Xplore returned nothing for {ar}"
+            except (urllib.error.URLError, TimeoutError,
+                    json.JSONDecodeError, UnicodeDecodeError) as e:
+                reason = f"Xplore lookup failed: {e}"
+                # Xplore is behind bot protection and is allowed to fail when
+                # Crossref can still pick it up. With --source ieee there is
+                # no fallback, so the run really did fail.
+                if source == "ieee":
+                    errors += 1
+
+        if not fields and source in ("crossref", "both"):
+            try:
+                doi = doi_from_url(hit.url)
+                if doi:
+                    work = crossref_by_doi(doi)
+                    reason = "" if work else f"DOI {doi} unknown to Crossref"
+                elif not looks_like_a_title(title):
+                    # Prose links like "[diffusion](...)", and the handful
+                    # whose text is just the URL, carry nothing to match on.
+                    work, reason = None, "link text is not a title"
+                else:
+                    work, score = crossref_by_title(title)
+                    if work is None:
+                        reason = f"best Crossref match scored {score:.2f}"
+                if work is not None:
+                    kind, fields = entry_type(work), fields_from_work(work)
+                    origin = "crossref"
+                    reason = ""
+            except (urllib.error.URLError, TimeoutError,
+                    json.JSONDecodeError) as e:
+                reason = f"lookup failed: {e}"
+                errors += 1
+
+        if not fields:
             missed.append((hit, reason))
             click.echo(f"  miss  {hit.lecture:22s} {reason}", err=True)
-        elif (work.get("DOI") or "").lower() in known_dois:
+        elif fields.get("doi", "").lower() in known_dois:
             skipped += 1
         else:
-            fields = fields_from_work(work)
             key = make_key(fields.get("author", ""), fields.get("year", ""), taken)
             taken.add(key)
-            known_dois.add((work.get("DOI") or "").lower())
-            exact = squash(fields.get("title", "")) == squash(title)
-            staged.append((key, entry_type(work), fields, hits, exact, title))
+            if fields.get("doi"):
+                known_dois.add(fields["doi"].lower())
+            # A lookup by article number is trusted on identity, so it does
+            # not need the title to match. A title search does.
+            exact = (origin == "ieee"
+                     or squash(fields.get("title", "")) == squash(title))
+            staged.append((key, kind or "article", fields, hits, exact, title))
             mark = "ok   " if exact else "check"
-            click.echo(f"  {mark} {key:14s} {fields.get('title','')[:60]}")
+            click.echo(f"  {mark} {key:14s} [{origin}] {fields.get('title','')[:52]}")
 
         time.sleep(delay)
 

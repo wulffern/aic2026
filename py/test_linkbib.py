@@ -264,5 +264,81 @@ class TestNearMissTitles(unittest.TestCase):
                          linkbib.squash("A sub 1 V 15 ppm/C CMOS bandgap"))
 
 
+# What the "Cite This" dialog downloads, verbatim in shape: family-name-first
+# authors, brace-delimited values, empty volume/number on a conference paper.
+IEEE_JOURNAL = """@ARTICLE{5437496,
+  author={Liu, Chun-Cheng and Chang, Soon-Jyh and Huang, Guan-Ying and Lin, Ying-Zu},
+  journal={IEEE Journal of Solid-State Circuits},
+  title={A 10-bit 50-MS/s SAR ADC With a Monotonic Capacitor Switching Procedure},
+  year={2010},
+  volume={45},
+  number={4},
+  pages={731-740},
+  keywords={Analog-digital conversion;Switches},
+  doi={10.1109/JSSC.2010.2042254},
+  ISSN={0018-9200}}"""
+
+IEEE_CONFERENCE = """@INPROCEEDINGS{1154790,
+  author={Widlar, R.},
+  booktitle={1970 IEEE International Solid-State Circuits Conference},
+  title={New developments in IC voltage regulators},
+  year={1970},
+  volume={},
+  number={},
+  pages={158-159},
+  doi={10.1109/ISSCC.1970.1154790}}"""
+
+
+class TestIeeeBibtex(unittest.TestCase):
+
+    def test_kind_and_fields_of_a_journal_entry(self):
+        kind, raw = linkbib.parse_bibtex_entry(IEEE_JOURNAL)
+        self.assertEqual(kind, "article")
+        self.assertEqual(raw["journal"], "IEEE Journal of Solid-State Circuits")
+        self.assertEqual(raw["pages"], "731-740")
+        self.assertEqual(raw["doi"], "10.1109/JSSC.2010.2042254")
+
+    def test_authors_are_rewritten_to_house_style(self):
+        _, raw = linkbib.parse_bibtex_entry(IEEE_JOURNAL)
+        fields = linkbib.fields_from_ieee(raw)
+        self.assertEqual(fields["author"],
+                         "C.-C. Liu and S.-J. Chang and G.-Y. Huang and Y.-Z. Lin")
+
+    def test_keywords_and_issn_are_dropped(self):
+        _, raw = linkbib.parse_bibtex_entry(IEEE_JOURNAL)
+        fields = linkbib.fields_from_ieee(raw)
+        self.assertNotIn("keywords", fields)
+        self.assertNotIn("issn", fields)
+
+    def test_empty_conference_volume_is_dropped(self):
+        kind, raw = linkbib.parse_bibtex_entry(IEEE_CONFERENCE)
+        fields = linkbib.fields_from_ieee(raw)
+        self.assertEqual(kind, "inproceedings")
+        self.assertNotIn("volume", fields)
+        self.assertNotIn("number", fields)
+        self.assertEqual(fields["booktitle"],
+                         "1970 IEEE International Solid-State Circuits Conference")
+
+    def test_an_ieee_entry_survives_the_round_trip(self):
+        kind, raw = linkbib.parse_bibtex_entry(IEEE_JOURNAL)
+        fields = linkbib.fields_from_ieee(raw)
+        key = linkbib.make_key(fields["author"], fields["year"], set())
+        text = linkbib.to_bibtex(key, kind, fields)
+        self.assertEqual(key, "liu10")
+        self.assertNotIn("};", text)
+        self.assertIn('journal= "IEEE Journal of Solid-State Circuits"', text)
+
+    def test_swap_name_handles_both_orders(self):
+        self.assertEqual(linkbib.swap_name("Ker, Ming-Dou"), "M.-D. Ker")
+        self.assertEqual(linkbib.swap_name("Chun-Cheng Liu"), "C.-C. Liu")
+
+    def test_matching_by_article_number_is_immune_to_the_banba_trap(self):
+        # The lecture links document/760378. Resolving by that number cannot
+        # return Navarro 2011, whatever the titles look like.
+        self.assertEqual(
+            linkbib.arnumber("https://ieeexplore.ieee.org/document/760378"),
+            "760378")
+
+
 if __name__ == "__main__":
     unittest.main()

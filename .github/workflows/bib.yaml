@@ -31,6 +31,12 @@ on:
         description: 'Stop after N papers (0 = all). Use a small number for a trial run.'
         required: false
         default: '0'
+      source:
+        description: 'Where to resolve from. Xplore is by article number, so it cannot return the wrong paper.'
+        type: choice
+        required: false
+        default: 'both'
+        options: ['both', 'ieee', 'crossref']
       commit:
         description: 'Commit pdf/incoming.bib to this branch. Off by default -- entries need review.'
         type: boolean
@@ -121,6 +127,7 @@ jobs:
         run: |
           python3 py/linkbib.py fetch \
             --limit "${{ inputs.limit }}" \
+            --source "${{ inputs.source }}" \
             --out pdf/incoming.bib \
             --unresolved pdf/link_unresolved.tsv
 
