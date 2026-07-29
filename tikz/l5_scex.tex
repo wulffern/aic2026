@@ -85,8 +85,11 @@
   \fill (\exXr,\exYp) circle (0.07);
   \draw[thick] (\exXr,\exYp) to [R] (\exXr,\exYm);
   \node[anchor=east] at (\exXr-0.35,2.8) {$V_{I}$};
-  \node[anchor=east] at (\exXr-0.12,\exYp-0.28) {$+$};
-  \node[anchor=east] at (\exXr-0.12,\exYm+0.28) {$-$};
+  % On the right of the resistor, not the left: on the left the + lands directly
+  % under the amplifier's + and the two read as one mark, which is the last
+  % thing this figure should be ambiguous about.
+  \node[anchor=west] at (\exXr+0.12,\exYp-0.30) {$+$};
+  \node[anchor=west] at (\exXr+0.12,\exYm+0.30) {$-$};
   \fill (\exXr,\exYm) circle (0.07);
   \draw[thick] (\exXr,\exYm) -- (\exXr,1.7);
   \draw[thick] (\exXr,1.7) to [D] (\exXr,0.4);
