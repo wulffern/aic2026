@@ -1,0 +1,16 @@
+\input{tikz/fig_header.tex}
+
+% Switched-capacitor integrator: the l5_scamp gain stage with the C2 reset
+% switch taken out, so the charge from every cycle accumulates on C2 instead
+% of being thrown away. Same geometry via \scAmpFrame, so the two slides can
+% be compared and the missing switch is the visible difference.
+
+\begin{circuitikz}[american, transform shape]
+
+  \input{tikz/ckt_lib.tex}
+  \input{tikz/sc_lib.tex}
+
+  \scAmpFrame
+
+\end{circuitikz}
+\end{document}
