@@ -50,7 +50,7 @@ A general purpose Active-RC bi-quadratic (two-quadratic equations) filter is sho
 
 -->
 
-![left fit](../media/l4_activebiquad.svg)
+![left fit](../media/l4_activebiquad_tikz.pdf)
 
 <!--pan_doc:
 
@@ -129,7 +129,7 @@ Active-RC filters are great for linearity, but if we need accurate time constant
 # Gm-C
 
 
-![fit right](../media/l4_gmcbi.svg)
+![fit right](../media/l4_gmcbi_tikz.pdf)
 
 $$ H(s) = \frac{\left[ s^2\frac{C_X}{C_X + C_B} + s\frac{G_{m5}}{C_X + C_B} + \frac{G_{m2}G_{m4}}{C_A(C_X + C_B)}\right]}
 {\left[s^2 + s\frac{G_{m2}}{C_X + C_B} + \frac{G_{m1}G_{m2}}{C_A(C_X + C_B)} \right]}$$

@@ -525,7 +525,7 @@ range of an ADC may be 1 V. Assume we place the lowest input signal at 0.1 V, so
 
 ---
 
-![inline fit](../media/l4_activebiquad.pdf)
+![inline fit](../media/l4_activebiquad_tikz.pdf)
 
 
 ---
