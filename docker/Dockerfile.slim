@@ -8,12 +8,17 @@ FROM debian:bookworm-slim
 
 RUN apt-get update && \
     apt-get -y install --no-install-recommends \
-    ghostscript python3-pip poppler-utils pandoc wget imagemagick python3-svglib \
+    ghostscript python3-pip poppler-utils wget imagemagick python3-svglib \
     python3-venv build-essential pkg-config libcairo2-dev python3-dev librsvg2-bin \
     git ca-certificates perl curl fontconfig unzip && \
     apt-get autoremove -y && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
+
+# Pinned pandoc, same version and reason as the full image (see Dockerfile).
+RUN wget -q https://github.com/jgm/pandoc/releases/download/3.6.4/pandoc-3.6.4-1-amd64.deb -O /tmp/pandoc.deb && \
+    dpkg -i /tmp/pandoc.deb && rm /tmp/pandoc.deb && \
+    pandoc --version | head -n 1
 
 # TeX Live 2022 from the historic archive, scheme-small (pdflatex + latex
 # recommended + fonts recommended), no docs or sources.
