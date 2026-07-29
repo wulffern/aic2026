@@ -81,10 +81,55 @@ metadata, in the order to try them:
    This is the fallback for the NTNU Open theses and anything else the first two
    miss, and it is the path the course owner already knows.
 
-> Note: the containerised Claude Code environment cannot reach `api.crossref.org`,
-> `doi.org`, or `ieeexplore.ieee.org` — the agent proxy answers 403 to CONNECT.
-> The fetch step must run on a machine with open outbound access. The scan,
-> merge, and rewrite steps all work offline.
+> Note: a containerised environment often cannot reach `api.crossref.org` or
+> `doi.org` — an agent or corporate proxy answers 403 to CONNECT, which is
+> exactly what happened while this plan was written. That is the main reason
+> the fetch step runs in GitHub Actions, where the network is open. Scan,
+> merge, and rewrite all work offline.
+
+## The GitHub Action
+
+`.github/workflows/bib.yaml` has the two halves.
+
+**`scan`** runs on every push touching `lectures/`, `py/linkbib.py`, or the
+workflow. It runs the unit tests, re-derives `pdf/link_candidates.tsv`, and
+commits it if it changed — the same commit-generated-output idiom as
+`tikz.yaml`. Adding a raw paper link to a lecture then shows up as a diff on
+that file, so the inventory cannot quietly go stale.
+
+**`fetch`** is `workflow_dispatch` only, with two inputs:
+
+| Input | Default | Meaning |
+|---|---|---|
+| `limit` | `0` | Stop after N papers. Use `5` for a trial run before spending 80 API calls. |
+| `commit` | off | Commit `pdf/incoming.bib` to the branch. Off deliberately. |
+
+It resolves candidates against Crossref, writes `pdf/incoming.bib` and
+`pdf/link_unresolved.tsv`, uploads both as artifacts, and prints the staged
+BibTeX plus an unresolved table to the run summary. Artifacts upload even when
+the job fails, because a run that resolved nothing still explains itself in the
+unresolved list.
+
+`commit` is off by default on purpose: a Crossref title match can be
+confidently wrong, and a bad entry is far harder to spot once it is in the book
+than while it is sitting in `incoming.bib`. Nothing in the workflow ever writes
+to `pdf/aic.bib` or to a lecture.
+
+Set a `CROSSREF_MAILTO` repository variable to put the queries in Crossref's
+polite pool — optional, but faster and less likely to be throttled.
+
+### What is tested, and what is not
+
+`py/test_linkbib.py` (30 tests, stdlib `unittest`, no new dependency) covers URL
+normalisation, the scope rules, author formatting, key minting against the real
+`aic.bib`, Crossref-record parsing from a fixture, and the emitted BibTeX —
+including a test that new entries do *not* carry the `};` terminator. The scan
+tests run against the actual lectures, so they notice drift.
+
+Not covered: the two functions that open a socket. Those are exercised the
+first time `fetch` runs in Actions. Its failure path is tested, though — behind
+a blocking proxy the command degrades to an unresolved list with the reason
+recorded per link, and exits non-zero.
 
 ## Entry Shape and Keys
 
@@ -159,13 +204,12 @@ the link conversion makes both harder to review.
 ## Phases
 
 **Phase 1 — Inventory.** Done. `py/linkbib.py scan` produces the candidate list
-and the numbers above. Re-run it any time to see what is left.
+and the numbers above, and the `scan` job keeps it current.
 
-**Phase 2 — Fetch and stage.** `py/linkbib.py fetch` on a networked machine:
-resolve each candidate to a DOI, pull BibTeX, verify the title matches the link
-text, generate a key, and write the result to `pdf/incoming.bib` plus a
-`pdf/link_unresolved.tsv` for whatever needs hand-fetching from Xplore. Nothing
-touches `aic.bib` yet.
+**Phase 2 — Fetch and stage.** Done, as the `fetch` job. Run it from the Actions
+tab with `limit: 5` first to see the entry quality, then with `limit: 0` for the
+rest. Download the `bib-incoming` artifact, or re-run with `commit: true` to get
+the files onto the branch. Nothing touches `aic.bib` yet.
 
 **Phase 3 — Merge.** Review `pdf/incoming.bib`, dedupe against `aic.bib` by DOI
 and title, then append. Verify the book still builds — `make latex-nobuild` — with
@@ -185,10 +229,11 @@ existing `[@cjm11]` citation — smallest useful proof) then `l02_esd` (6, textb
 `pan_doc` case), then work up through the larger lectures. Handle the three
 slide-visible sections only after that decision is made.
 
-**Phase 5 — Consistency sweep.** Re-run the scan; whatever remains is either
-deliberately out of scope or missed. Confirm the 24 multi-lecture papers all
-resolved to one key each, and that `pdf/aic.pdf` and the site both render the new
-references.
+**Phase 5 — Consistency sweep.** The `scan` job does this continuously:
+`pdf/link_candidates.tsv` shrinks as lectures convert, and whatever remains is
+either deliberately out of scope or missed. Confirm the 24 multi-lecture papers
+all resolved to one key each, and that `pdf/aic.pdf` and the site both render
+the new references.
 
 ## Risks
 

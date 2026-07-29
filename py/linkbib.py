@@ -1,18 +1,28 @@
 #!/usr/bin/env python3
-"""Inventory the paper links in lectures/ that are candidates for aic.bib.
+"""Turn the paper links in lectures/ into pdf/aic.bib entries.
 
-Phase 1 of the link-to-bibliography conversion (see bib_conversion_plan.md).
-This command only reads; it never edits a lecture.
+See bib_conversion_plan.md. Neither command edits a lecture.
 
     python3 py/linkbib.py scan                  # summary to stdout
     python3 py/linkbib.py scan --tsv out.tsv    # one row per occurrence
+    python3 py/linkbib.py fetch --out pdf/incoming.bib
+
+`fetch` resolves each candidate to a DOI through Crossref, pulls the BibTeX
+from doi.org, and writes entries in the house style for review. It needs
+outbound network; `scan` does not.
 """
 
 import re
 import os
+import sys
 import glob
+import json
+import time
+import difflib
+import urllib.error
+import urllib.request
 import click
-from urllib.parse import urlparse, parse_qs
+from urllib.parse import urlparse, parse_qs, urlencode
 
 # Hosts that publish citable literature. Everything else (wikipedia, github,
 # youtube, vendor pages, patents, datasheets) stays a plain link.
@@ -35,6 +45,18 @@ ASSETS = (".jpg", ".jpeg", ".png", ".gif", ".svg", ".pdf")
 MD_LINK = re.compile(r"\[([^\]\[]*)\]\((https?://[^)\s]+)\)")
 BIB_KEY = re.compile(r"^\s*@[a-zA-Z]+\s*{\s*([^,\s]+)\s*,")
 BIB_FIELD = re.compile(r'^\s*([a-zA-Z]+)\s*=\s*"?(.*?)"?\s*,?\s*$')
+
+# A Crossref hit below this title similarity is not trusted. A wrong but
+# plausible entry is worse than a missing one, so those go to the unresolved
+# list for hand-fetching from Xplore instead.
+TITLE_THRESHOLD = 0.90
+
+# Order fields the way the existing entries do.
+FIELD_ORDER = ("author", "title", "journal", "booktitle", "school",
+               "volume", "number", "year", "pages", "doi", "url")
+
+CONTACT = os.environ.get("CROSSREF_MAILTO", "")
+USER_AGENT = "aic2026-linkbib (https://github.com/wulffern/aic2026)"
 
 
 def arnumber(url):
@@ -89,6 +111,160 @@ def read_bib_titles(filename):
 
 def squash(s):
     return re.sub(r"[^a-z0-9]", "", s.lower())
+
+
+def read_bib_keys(filename):
+    """Existing keys and DOIs, so fetch never mints a duplicate."""
+    keys = set()
+    dois = set()
+    with open(filename) as fi:
+        for line in fi:
+            m = BIB_KEY.match(line)
+            if m:
+                keys.add(m.group(1))
+                continue
+            m = BIB_FIELD.match(line)
+            if m and m.group(1).lower() == "doi":
+                dois.add(m.group(2).strip().lower())
+    return keys, dois
+
+
+def doi_from_url(url):
+    """A DOI the URL states outright, without asking anyone."""
+    m = re.search(r"(10\.\d{4,9}/[^\s?#]+)", url)
+    if m:
+        return m.group(1).rstrip(".").rstrip("/")
+    return None
+
+
+def looks_like_a_title(text):
+    """Enough of a title to search Crossref with, rather than guess from."""
+    if re.match(r"^\s*https?://", text):
+        return False
+    return len(squash(text)) >= 20
+
+
+def similarity(a, b):
+    return difflib.SequenceMatcher(None, squash(a), squash(b)).ratio()
+
+
+def initials(given):
+    """'Chun-Cheng' -> 'C.-C.', matching how aic.bib writes authors."""
+    parts = [p for p in re.split(r"[\s-]+", given.strip()) if p]
+    joiner = "-" if "-" in given else " "
+    return joiner.join(p[0].upper() + "." for p in parts)
+
+
+def format_author(authors):
+    """Crossref author records -> 'C.-C. Liu and S.-J. Chang'."""
+    out = list()
+    for a in authors:
+        family = a.get("family", "").strip()
+        given = a.get("given", "").strip()
+        if not family:
+            if a.get("name"):
+                out.append(a["name"].strip())
+            continue
+        out.append(f"{initials(given)} {family}".strip())
+    return " and ".join(out)
+
+
+def make_key(author, year, taken):
+    """<firstauthorlastname><yy>, suffixed a/b/... on collision."""
+    first = author.split(" and ")[0] if author else "anon"
+    last = re.sub(r"[^A-Za-z]", "", first.split()[-1] if first.split() else "anon")
+    stem = (last.lower() or "anon") + str(year)[-2:]
+    if stem not in taken:
+        return stem
+    for suffix in "abcdefghijklmnopqrstuvwxyz":
+        if stem + suffix not in taken:
+            return stem + suffix
+    raise RuntimeError(f"cannot find a free key for {stem}")
+
+
+def entry_type(work):
+    kind = work.get("type", "")
+    if "proceedings" in kind:
+        return "inproceedings"
+    if "book" in kind:
+        return "book"
+    if "dissertation" in kind:
+        return "phdthesis"
+    return "article"
+
+
+def fields_from_work(work):
+    """Crossref work JSON -> the bib fields aic.bib uses."""
+    fields = dict()
+    fields["author"] = format_author(work.get("author", list()))
+
+    title = work.get("title") or list()
+    if title:
+        fields["title"] = re.sub(r"\s+", " ", title[0]).strip()
+
+    container = work.get("container-title") or list()
+    if container:
+        key = "booktitle" if entry_type(work) == "inproceedings" else "journal"
+        fields[key] = container[0]
+
+    issued = work.get("issued", dict()).get("date-parts") or [[None]]
+    if issued[0] and issued[0][0]:
+        fields["year"] = str(issued[0][0])
+
+    for src, dst in (("volume", "volume"), ("issue", "number"), ("page", "pages")):
+        if work.get(src):
+            fields[dst] = str(work[src])
+
+    if work.get("DOI"):
+        fields["doi"] = work["DOI"]
+
+    return fields
+
+
+def to_bibtex(key, kind, fields):
+    """House style: one field per line, closed with '}' and no stray semicolon."""
+    lines = [f"@{kind}{{{key},"]
+    ordered = [f for f in FIELD_ORDER if fields.get(f)]
+    ordered += [f for f in fields if f not in FIELD_ORDER and fields.get(f)]
+    for i, name in enumerate(ordered):
+        value = str(fields[name]).replace('"', "'").strip()
+        comma = "," if i < len(ordered) - 1 else ""
+        lines.append(f'{name}= "{value}"{comma}')
+    lines.append("}")
+    return "\n".join(lines) + "\n"
+
+
+def get_json(url):
+    req = urllib.request.Request(url, headers={"User-Agent": USER_AGENT})
+    with urllib.request.urlopen(req, timeout=30) as resp:
+        return json.loads(resp.read().decode("utf-8"))
+
+
+def crossref_by_title(title):
+    """Best Crossref match for a title, or None if nothing is close enough."""
+    query = {"query.bibliographic": title, "rows": "3"}
+    if CONTACT:
+        query["mailto"] = CONTACT
+    data = get_json("https://api.crossref.org/works?" + urlencode(query))
+
+    best = None
+    best_score = 0.0
+    for item in data.get("message", dict()).get("items", list()):
+        candidate = (item.get("title") or [""])[0]
+        score = similarity(title, candidate)
+        if score > best_score:
+            best, best_score = item, score
+    if best is not None and best_score >= TITLE_THRESHOLD:
+        return best, best_score
+    return None, best_score
+
+
+def crossref_by_doi(doi):
+    if CONTACT:
+        url = f"https://api.crossref.org/works/{doi}?" + urlencode({"mailto": CONTACT})
+    else:
+        url = f"https://api.crossref.org/works/{doi}"
+    return get_json(url).get("message")
 
 
 class Link:
@@ -173,6 +349,96 @@ def scan(lectures, bib, tsv):
                                         hit.section, hit.text, hit.url,
                                         matched.get(ident, "")]) + "\n")
         print(f"\nwrote {tsv}")
+
+
+@cli.command()
+@click.option("--lectures", default="lectures/*.md", help="Glob of lectures to scan")
+@click.option("--bib", default="pdf/aic.bib", help="Bibliography to dedupe against")
+@click.option("--out", default="pdf/incoming.bib", help="Staged entries go here")
+@click.option("--unresolved", default="pdf/link_unresolved.tsv",
+              help="Candidates needing a hand-fetch from Xplore")
+@click.option("--limit", default=0, help="Stop after N papers (0 = all)")
+@click.option("--delay", default=1.0, help="Seconds between API calls")
+def fetch(lectures, bib, out, unresolved, limit, delay):
+    """Resolve candidate links to bib entries. Needs network."""
+
+    papers = group(scan_lectures(lectures))
+    known_titles = read_bib_titles(bib)
+    taken, known_dois = read_bib_keys(bib)
+
+    staged = list()
+    missed = list()
+    skipped = 0
+
+    todo = list(papers.items())
+    if limit:
+        todo = todo[:limit]
+
+    for ident, hits in todo:
+        # The best link text is the longest: some occurrences are a bare URL
+        # or a single word of prose, others are the full paper title.
+        hit = max(hits, key=lambda h: len(h.text))
+        title = hit.text.strip()
+
+        if squash(title) in known_titles:
+            skipped += 1
+            continue
+
+        reason = ""
+        work = None
+        try:
+            doi = doi_from_url(hit.url)
+            if doi:
+                work = crossref_by_doi(doi)
+                if work is None:
+                    reason = f"DOI {doi} unknown to Crossref"
+            elif not looks_like_a_title(title):
+                # Prose links like "[diffusion](...)", and the handful whose
+                # text is just the URL again, carry nothing to match on.
+                reason = "link text is not a title"
+            else:
+                work, score = crossref_by_title(title)
+                if work is None:
+                    reason = f"best Crossref match scored {score:.2f}"
+        except (urllib.error.URLError, TimeoutError, json.JSONDecodeError) as e:
+            reason = f"lookup failed: {e}"
+
+        if work is None:
+            missed.append((hit, reason))
+            click.echo(f"  miss  {hit.lecture:22s} {reason}", err=True)
+        elif (work.get("DOI") or "").lower() in known_dois:
+            skipped += 1
+        else:
+            fields = fields_from_work(work)
+            key = make_key(fields.get("author", ""), fields.get("year", ""), taken)
+            taken.add(key)
+            known_dois.add((work.get("DOI") or "").lower())
+            staged.append((key, entry_type(work), fields, hits))
+            click.echo(f"  ok    {key:14s} {fields.get('title','')[:60]}")
+
+        time.sleep(delay)
+
+    with open(out, "w") as fo:
+        fo.write("% Staged by py/linkbib.py fetch -- review before merging into aic.bib.\n")
+        fo.write("% The comment above each entry lists the lectures that link to it.\n\n")
+        for key, kind, fields, hits in staged:
+            where = ", ".join(sorted({f"{h.lecture}:{h.line}" for h in hits}))
+            fo.write(f"% {where}\n")
+            fo.write(to_bibtex(key, kind, fields))
+            fo.write("\n")
+
+    with open(unresolved, "w") as fo:
+        fo.write("lecture\tline\ttext\turl\treason\n")
+        for hit, reason in missed:
+            fo.write(f"{hit.lecture}\t{hit.line}\t{hit.text}\t{hit.url}\t{reason}\n")
+
+    click.echo("")
+    click.echo(f"staged     : {len(staged)} -> {out}")
+    click.echo(f"unresolved : {len(missed)} -> {unresolved}")
+    click.echo(f"already in {bib}: {skipped}")
+
+    if not staged and missed:
+        sys.exit(1)
 
 
 if __name__ == "__main__":
