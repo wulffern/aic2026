@@ -672,7 +672,7 @@ Growing without bounds is the same as "being unstable".
 
 -->
 
-![left fit](../media/l5_sdomain.svg)
+![left fit](../media/l5_sdomain_tikz.pdf)
 
 ---
 ##[fit] Z-domain
@@ -695,7 +695,7 @@ $$ s = \frac{z -1}{z + 1}$$
 <sub>Warning: First-order approximation [https://en.wikipedia.org/wiki/Bilinear_transform](https://en.wikipedia.org/wiki/Bilinear_transform)</sub>
 
 
-![left fit](../media/l5_zdomain.svg)
+![left fit](../media/l5_zdomain_tikz.pdf)
 
 ---
 ## First order filter 
@@ -739,7 +739,7 @@ the filter should be stable.
 
 -->
 
-![left fit](../media/l5_zunstable.svg)
+![left fit](../media/l5_zunstable_tikz.pdf)
 
 
 <!--pan_doc:

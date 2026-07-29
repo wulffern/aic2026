@@ -3,11 +3,24 @@
 ## Summary
 Translate lecture figures from SVG/PDF artwork to maintainable hand-authored TikZ/CircuitikZ across the full course, but only for figures that are schematic-like and benefit from redraw.
 
-The process is strictly sequential and review-gated:
-1. Propose one figure.
-2. Open the original source and the proposed TikZ PDF.
-3. Wait for approval or comments.
-4. Only after approval, proceed to the next figure.
+**Approval authority changed.** The user delegated the per-figure decision:
+switch a reference in as soon as you have verified the redraw is a faithful
+match, and only stop to ask when you are genuinely unsure. That removes the
+human gate, so the verification step is now the only thing standing between a
+bad redraw and the live lecture. Do it properly:
+
+1. Open the original artwork and read what it actually says.
+2. Draw, build, and **render the result and look at it** — a green build says
+   nothing about whether the drawing is right.
+3. Check the redraw against the original point by point: topology, every label,
+   polarity and direction, and anything the surrounding lecture prose depends
+   on.
+4. Match verified → switch the reference and say what you checked.
+   Genuinely unsure, or the redraw deviates on purpose in a way that changes
+   the teaching → leave it pending and ask.
+
+A deliberate correction of an error in the original is still fine, and still
+has to be called out explicitly rather than slipped in.
 
 Already-established outputs remain the model:
 - `l3_sources_tikz`
@@ -25,7 +38,8 @@ Exclude by default:
 - figures where TikZ would become a path trace rather than a clean redraw
 
 Replacement policy:
-- Do not update lecture references until that specific figure is approved.
+- Update a lecture reference once the redraw is verified against the original,
+  per the authority note above.
 - Drawing, compiling, and committing `tikz/<basename>.tex` plus `media/<basename>_tikz.pdf` does **not** require approval — those artifacts are inert until a lecture points at them. Only the lecture reference switch is gated.
 - After approval, switch that figure's references to `../media/<basename>_tikz.pdf`.
 - A figure used by more than one lecture is approved once, then switched in **every** lecture that references it in the same round. Check with `grep -rn '<basename>\.pdf' lectures/` before switching so no stale reference is left behind.
@@ -49,12 +63,11 @@ For every figure in the queue:
    - proposed TikZ PDF
 6. Report the proposal briefly and stop.
 
-Approval gate:
-- `approve`: switch the lecture reference(s) per the replacement policy, move the figure to Approved in Saved Progress, then continue
-- `comment`: revise the same figure, recompile, reopen both files, and wait again
-- a figure that is drawn but not yet reviewed sits in Pending Approval; its lecture references stay on the original artwork until you say otherwise
-
-Never switch a lecture reference without an explicit approval for that figure.
+Outcome of the verification in step 6:
+- verified match: switch the lecture reference(s) per the replacement policy,
+  record it in Saved Progress, continue
+- unsure: leave it in Pending Approval, its references on the original
+  artwork, and ask
 
 ## Figure Queue by Lecture
 Process lectures in this order unless reprioritized later.
@@ -339,8 +352,7 @@ In `lectures/l03_refbias.md`:
 That is 10 figures, in three lectures.
 
 ### Pending approval
-- `l5_sdomain`, `l5_zdomain` and `l5_zunstable` — sources and PDFs committed,
-  `lectures/l05_sc.md` still points at their SVGs.
+- none
 
 Also converted and switched: `l3_ptat`, `l3_ptat1`, `l3_ptat2` — 13 figures total.
 
@@ -472,7 +484,8 @@ about them. Same rule as `spec_lib.tex`: a new shared include must be added to
 `TIKZ_INCLUDES` in the Makefile or the build tries to compile it as a figure.
 
 Approved and switched in `lectures/l05_sc.md`: `l05_fund1`, `l05_fund2`,
-`l05_fund3`, `l5_sh`, `l5_shaaf`, `l5_subsample`.
+`l05_fund3`, `l5_sh`, `l5_shaaf`, `l5_subsample`, `l5_sdomain`, `l5_zdomain`,
+`l5_zunstable`.
 
 `tikz/spec_lib.tex` holds the sampling-spectrum pieces shared by `l5_sh`,
 `l5_shaaf` and `l5_subsample`: the axis with its Nyquist ticks, the wanted
