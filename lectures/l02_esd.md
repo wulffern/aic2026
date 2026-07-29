@@ -128,7 +128,7 @@ I would claim that any System-On-Chip will always need these blocks!
 I want you to pause, take a look at the 
 -->
 
-[course plan](https://wulffern.github.io/aic2025/plan/)
+[course plan](https://analogicus.com/aic2026/plan/)
 
 <!--pan_doc:
 and now you might understand why I've selected the topics.

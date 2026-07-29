@@ -292,11 +292,12 @@ class Lecture():
 
     def _replaceCites(self):
 
+        #- Hand-written footnotes reserve their numbers, so the generated
+        #  citations start above them. A marker glued to the previous word
+        #  ("white.[^1]") has no leading space, so match on zero-or-more.
         for line in self.buffer:
-            m = re.search(r"\s+\[\^(\d+)\]",line)
-            if(m):
-                nr = m.groups()[0]
-                mr = self.bibtex.addFootNote(nr)
+            for nr in re.findall(r"\s*\[\^(\d+)\]",line):
+                self.bibtex.addFootNote(nr)
 
         #- Sort so the last footnote is correct
         self.bibtex.sort()

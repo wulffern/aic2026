@@ -1111,12 +1111,12 @@ $$P_{tot} = \alpha C V_{DD}^2 f$$
 
 ---
 
-## Stop clock [^1]
+## Stop clock [^3]
 
 ![inline fit ](../media/l16/stop_clock.pdf) 
 
 
-[^1]: Often called *clock gating*
+[^3]: Often called *clock gating*
 
 ---
 
@@ -1129,11 +1129,11 @@ $$P_{tot} = \alpha C V_{DD}^2 f$$
 ![inline fit ](../media/l16/reduce_freq.pdf) 
 
 ---
-## Turn off power supply [^2]
+## Turn off power supply [^4]
 
 ![inline fit ](../media/l16/powergate.pdf) 
 
-[^2]: Often called power gating
+[^4]: Often called power gating
 
 ---
 

@@ -502,7 +502,7 @@ Hanning window below.
 
 ---
 
-[dt.py](https://github.com/wulffern/aic2024/blob/main/ex/dt.py)
+[dt.py](https://github.com/wulffern/aic2026/blob/main/ex/dt.py)
 
 ```python 
 #- Create a time vector
@@ -754,7 +754,7 @@ From the plot below we can see the sampled time domain and spectra on the left, 
 
 -->
 
-[iir.py](https://github.com/wulffern/aic2024/blob/main/ex/iir.py)
+[iir.py](https://github.com/wulffern/aic2026/blob/main/ex/iir.py)
 
 ---
 

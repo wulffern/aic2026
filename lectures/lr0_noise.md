@@ -18,8 +18,8 @@ compact disc (SACD) players with 24bit converters, 24 bits is around
 $2^{24} = 16.78$ Million different levels. If 5V is the maximum voltage,
 the minimum would have to be $\frac{5V}{2^{24}} \approx 298nV$. That
 level is roughly equivalent to the noise in a 50 Ohm resistor with a
-bandwith of 96kHz. There exist an equation that relates number of bits
-to signal to noise ratio `\cite{johns}`{=latex}, the equation specifies
+bandwidth of 96kHz. There exist an equation that relates number of bits
+to signal to noise ratio [@johns], the equation specifies
 that $SNR = 6.02*Bits +
 1.76 = 146.24dB$. As of 12.2005 the best digital to analog converter
 (DAC) that Analog Devices (a very big semiconductor company) has is a
@@ -133,7 +133,7 @@ $\sqrt{S_x(f)}$ and has unit $\frac{V}{\sqrt{Hz}}$ for voltage and
 $\frac{I}{\sqrt{Hz}}$ for current.
 
 The power spectral density is defined as two times the Fourier transform
-of the auto-correlation function `\cite{ziel}`{=latex}
+of the auto-correlation function [@ziel]
 
 $$\label{eq:psd}
 S_x(f) = 2\int_{-\infty}^{\infty}{R_x(\tau)e^{-j2\pi f \tau}d\tau}$$
@@ -341,18 +341,18 @@ is important to amplify the noise as early as possible!
 
 Warning: This is not an introduction to spectral density. If the subject
 is completely unfamiliar I’d advise reading another source. For example
-chapter 4 in `\cite{johns}`{=latex} or chapter 7 in
-`\cite{razavi}`{=latex}.
+chapter 4 in [@johns] or chapter 7 in
+[@razavi].
 
 ## Definition of Spectral Density
 
 There are two different definitions of spectral density used in the
 literature. They differ by a factor of two. The one used in signal
-processing books, like `\cite{gray.r.m}`{=latex}, is
+processing books, like [@gray.r.m], is
 
 $$\label{eq:psd1}
 S_{x1}(f) = \int_{-\infty}^{\infty}{R_{x1}(\tau)e^{-j\omega\tau}d\tau}$$
-And the one often used in books about noise, like `\cite{ziel}`{=latex},
+And the one often used in books about noise, like [@ziel],
 is
 
 $$\label{eq:psd2}
@@ -376,15 +376,15 @@ data-reference="eq:rxequal">[eq:rxequal]</a>) is true.
 ## Sources of Confusion
 
 The problem with spectral density arises when reading literature from
-different communities, for example `\cite{gray.r.m}`{=latex} and
-`\cite{ziel}`{=latex} where $S_x(f)$ is used for both $S_{x1}(f)$ and
+different communities, for example [@gray.r.m] and
+[@ziel] where $S_x(f)$ is used for both $S_{x1}(f)$ and
 $S_{x2}(f)$. When I started investigating spectral densities this lead
 me to believe that different sources defined the same measure “spectral
 density” in two different ways. The more sources I investigated the more
 unsure I was about which of the two definitions that was correct. After
 months of searching (not actively, but sporadicly) I eventually found
 the original source of the definition of spectral density
-`\cite{einstein14}`{=latex}. Having the original source helped, but I
+[@einstein14]. Having the original source helped, but I
 still don’t know when the original definition split into
 (<a href="#eq:psd1" data-reference-type="ref"
 data-reference="eq:psd1">[eq:psd1]</a>) and
@@ -483,7 +483,7 @@ data-reference="eq:psd2">[eq:psd2]</a>).[^2]
 
 ## Einstein: The source
 
-In his 1914 paper `\cite{einstein14}`{=latex} Albert Einstein described,
+In his 1914 paper [@einstein14] Albert Einstein described,
 supposedly for the first time, the auto-correlation function and what we
 have come to know as the spectral density. He defined the
 auto-correlation function as

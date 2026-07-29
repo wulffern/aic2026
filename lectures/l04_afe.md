@@ -233,7 +233,7 @@ Then we can compute the lifetime running an ADC based Bluetooth Radio
 
 -->
 
-$$\text{ Hours} = \frac{ 205 \text{ mAh}}{1.32\text{ W}/3.8\text{ V}} = 0.6\text{ h}$$
+$$\text{ Hours} = \frac{ 205 \text{ mAh}}{1.31\text{ W}/3.8\text{ V}} = 0.6\text{ h}$$
 
 <!--pan_doc:
 

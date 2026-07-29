@@ -254,12 +254,12 @@ Someday, I may write all the details, if I ever understand it all. For now, I ho
 
 In the books we learn the equations for weak inversion
 
-$$ I_D \propto (e^{(V_{gs}-V_{th})/U_T}-1)$$
+$$ I_D \propto (e^{(V_{gs}-V_{tn})/V_T}-1)$$
 
 <!--pan_doc:
 
 , where $I_D$ is the drain current, $V_{gs}$ is the gate source voltage,
-$V_{th}$ is the threshold voltage and $U_T = kT/q$, where $k$ is Boltzmann's
+$V_{tn}$ is the threshold voltage and $V_T = kT/q$, where $k$ is Boltzmann's
 constant, $T$ is the temperature in Kelvin and $q$ is the unit charge
 
 
@@ -294,7 +294,7 @@ Once we have that electron gas, or inversion layer, we have a connection between
 
 -->
 
-$$ I_D = \frac{1}{2} \mu_n C_{ox}\frac{W}{L}(V_{gs}-V_{th})^2 $$
+$$ I_D = \frac{1}{2} \mu_n C_{ox}\frac{W}{L}(V_{gs}-V_{tn})^2 $$
 
 <!--pan_doc:
 
@@ -409,7 +409,7 @@ The drain current, which is mostly a diffusion current, is given by
 
 ---
 
-$$ I_{D} = I_{D0} \frac{W}{L} e^{q(V_{GS} - V_{TH})/ n kT} $$
+$$ I_{D} = I_{D0} \frac{W}{L} e^{q(V_{GS} - V_{tn})/ n kT} $$
 
 where
 
@@ -419,7 +419,7 @@ $$ I_{D0} = (n - 1) \mu_n C_{ox} \left(\frac{kT}{q}\right)^2 $$
 
 <!--pan_doc: 
 
-This is not exactly the same as the diode equation, but we can see that it looks similar. Most of the quantum mechanics is baked into the $V_{TH}$
+This is not exactly the same as the diode equation, but we can see that it looks similar. Most of the quantum mechanics is baked into the $V_{tn}$
 
 The transconductance ($dI_D/dV_{GS}$) in weak inversion is then 
 
@@ -492,7 +492,7 @@ As you continue to increase the gate-source voltage there is a limit to how much
 
 <!--pan_doc: 
 
-<sub>Figure 13: Band diagram with high gate-source voltage applied  </sub>
+<sub>Figure 15: Band diagram with high gate-source voltage applied  </sub>
 
 -->
 
@@ -510,7 +510,7 @@ $$ i\hbar\frac{d}{dt}\Psi(r,t) = \widehat{H} \Psi(r,t) $$
 
 The Hamiltonian ($H$) is an "energy matrix" operator and may contain terms both for the momentum and Columb force (electric field) experienced by the system.
 
-But what does the Schrodinger equation tell us? Well, the equation above does not tell me much, it can't be "solved", or rather, it does not have a single solution. It's more a framework for how the wave function, and the Hamiltonian, describes the quantum states of a system, and the probability ampltiudes of transition between states. 
+But what does the Schrodinger equation tell us? Well, the equation above does not tell me much, it can't be "solved", or rather, it does not have a single solution. It's more a framework for how the wave function, and the Hamiltonian, describes the quantum states of a system, and the probability amplitudes of transition between states. 
 
 The Schrodinger equation describes the time evolution of the bound electrons shared between the Silicon atoms, and the fact that applying a electric field to silicon can free co-valent bonds. 
 

@@ -15,7 +15,7 @@ date: 2026-03-20
 
 <!--
 
-Lecture Notes: https://analogicus.com/aic2024/2024/03/14/Lecture-9-Oscillators.html
+Lecture Notes: https://analogicus.com/aic2026/oscillators
 
 00:00 Introduction
 01:28 Cesium clocks
@@ -229,7 +229,7 @@ Since the 1/(sCp) does not change much at resonance, then
 
 $$ Z_{in} \approx \frac{L C_F s^2 + 1}{L C_F C_p s^2 + C_F + C_P}$$
 
-See [Crystal oscillator impedance](https://github.com/wulffern/aic2023/blob/main/jupyter/xosc.ipynb) for a detailed explanation.
+See [Crystal oscillator impedance](https://github.com/wulffern/aic2026/blob/main/jupyter/xosc.ipynb) for a detailed explanation.
 
 ---
 
@@ -466,7 +466,7 @@ this "injection locking", and it's common to do in ultra high frequency oscillat
 to the injected frequency. Assume that the injected frequency changes, for example frequency shift keying (two frequencies that mean 1 or 0), as in Bluetooth Low Energy.
 The PLL will vary the $V_{control}$ of the PLL to match the frequency change of the injected signal, as such, the $V_{control}$ is now the demodulated frequency change. 
 
-Still today, there are radio recievers that use a PLLs to directly demodulate the incoming frequency shift keyed modulated carrier. 
+Still today, there are radio receivers that use a PLLs to directly demodulate the incoming frequency shift keyed modulated carrier. 
 
 
 -->
@@ -549,7 +549,7 @@ we add noise to our modulation signal, which is bad.
 Most ring oscillators are too high noise for radio's, we must use a inductor and capacitor to create the resonator. 
 
 Inductors are huge components on a IC. Take a look at the nRF51822 below, the two round inductors are easily identifiable. Actually, based on the die image we can
-guess that there are two oscillators in the nRF51822. Maybe it's a [multiple conversion superheterodyne reciever](https://en.wikipedia.org/wiki/Superheterodyne_receiver#Multiple_conversion)
+guess that there are two oscillators in the nRF51822. Maybe it's a [multiple conversion superheterodyne receiver](https://en.wikipedia.org/wiki/Superheterodyne_receiver#Multiple_conversion)
 
 
 -->
