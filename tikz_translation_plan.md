@@ -479,21 +479,31 @@ come up.
    copy. The warning is the point of including it.
 
 ### Current next figure
-- `dac_i` and `dac_i_vbias` in `l04_dac`, the two current mode DACs. They are
-  the only schematics left in that lecture; everything else in it is done or
-  out of scope. After those, the next lecture in the Phase 2 list.
+- The next lecture in the Phase 2 list. `l04_dac` is complete.
 
-### `l04_dac` is all but complete
-Fifteen figures drawn and switched: `dac_r_div`, `dac_r_div2`, `dac_r_div2b`,
+### `l04_dac` is complete
+Seventeen figures drawn and switched: `dac_r_div`, `dac_r_div2`, `dac_r_div2b`,
 `dac_r_switches`, `dac_r_rows`, `dac_r_segmented`, `dac_2r_0`, `dac_2r_1`,
 `dac_2r_2`, `dac_2r_full`, `dac_bin_states`, `dac_bin_btran`,
-`dac_thermo_states`, `dac_thermo_tran`, `dac_r_thermo`.
+`dac_thermo_states`, `dac_thermo_tran`, `dac_r_thermo`, `dac_i`,
+`dac_i_vbias`.
 
-Still to draw: `dac_i` and `dac_i_vbias`, the differential current steering
-DAC and its cascoded variant. Both are full schematics — a mirror, a row of
-binary weighted tail devices, a steering pair per slice onto two rails, and
-an amplifier with R_F — so they are a session of their own rather than a
-tail end of this one.
+On the two current mode DACs. The artwork for `dac_i_vbias` could not be
+read off the page: each steering pair's left gate ends in a circle labelled
+V_bias with a diagonal running to it, which is either a port on a wire or a
+switch arm tying the gate to V_bias, and the two readings are different
+circuits. The user settled it: **V_bias is a constant, and the bit and its
+complement swing about it** rather than rail to rail. So both gates carry
+b and b-bar, as in `dac_i`, and V_bias is drawn as the cascode gate of the
+reference branch brought out as a port, with an inset waveform saying what
+the level is for. Ask rather than guess — the plan says so, and the two
+readings here would have taught opposite things.
+
+Both figures now draw the slice **once**, inside a dashed cell boundary,
+followed by an empty boundary of the same size and a caption reading "N
+copies of the same cell, sized 1, 2, 4 ... N", at the user's request: the
+originals leave the repetition to a row of dots between two slices, and
+that does not say that the array is one cell copied.
 
 Out of scope in `l04_dac`, after opening each: `dac_error` and `dac_inl_dnl`
 are matplotlib plots, and `NIST.SP_.1247.png` is a bitmap.

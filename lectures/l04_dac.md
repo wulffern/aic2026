@@ -283,7 +283,7 @@ $$ 0 \rightarrow 1 \rightarrow 2  \rightarrow 3$$
 
 --- 
 
-![fit](../media/dac_i_vbias.pdf)
+![fit](../media/dac_i_vbias_tikz.pdf)
 
 ---
 
