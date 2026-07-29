@@ -801,7 +801,7 @@ Our abilities to use computers for design has improved a bit the last three deca
 
 $$ H(z) = \frac{1}{3}\sum_{i=0}^2 z^{-1}$$
 
-![left fit](../media/l5_fir.svg)
+![left fit](../media/l5_fir_tikz.pdf)
 
 ---
 
@@ -1115,7 +1115,7 @@ but usually we don't have enough headroom to use a single NMOS or PMOS. We may n
 
 -->
 
-![original fit](../media/l5_sw1.svg)
+![original fit](../media/l5_sw1_tikz.pdf)
 
 ---
 

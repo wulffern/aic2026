@@ -16,7 +16,8 @@
   \def\rsum{0.32}
 
   % ---- Signal path: two delays in series, centred on the wire ----
-  \draw[axisblue, thick] (-2.0,\ysig) -- (0.0,\ysig);
+  \draw[axisblue, thick] (-2.0,\ysig) -- (-0.5,\ysig);
+  \draw[axisblue, thick, ->] (-0.5,\ysig) -- (0.0,\ysig);
   \node[axisblue, anchor=east] at (-2.1,\ysig) {$x[n]$};
 
   \draw[axisblue, thick] (0.0,\ysig-0.5) rectangle ++(1.5,1.0);
