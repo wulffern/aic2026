@@ -11,16 +11,17 @@
   \input{tikz/ckt_lib.tex}
   \input{tikz/sc_lib.tex}
 
-  \scWaveFrame
+  \scWaveFrame{4.3}
 
-  % One V_i step per cycle, each settling exponentially, none of it thrown away
-  \draw[thick] (0,0) -- (0.48,0);
+  % One V_i step per cycle, each settling exponentially during phase 2 as the
+  % clock below shows, and none of it thrown away
+  \draw[thick] (0,0) -- ({0.5*\scWavT},0);
   \foreach \k in {0,1,2,3} {
-    \scWaveEdge{\k*\scWavT+0.48}{\k*\scWavVi}{(\k+1)*\scWavVi}{0.36}
-    \draw[thick] ({\k*\scWavT+0.84},{(\k+1)*\scWavVi})
-              -- ({\k*\scWavT+\scWavT+0.48},{(\k+1)*\scWavVi});
+    \scWaveEdge{\k*\scWavT+0.5*\scWavT}{\k*\scWavVi}{(\k+1)*\scWavVi}{0.36}
+    \draw[thick] ({\k*\scWavT+0.5*\scWavT+0.36},{(\k+1)*\scWavVi})
+              -- ({\k*\scWavT+\scWavT+0.5*\scWavT},{(\k+1)*\scWavVi});
   }
-  \draw[thick] ({4*\scWavT+0.48},{4*\scWavVi}) -- (5.6,{4*\scWavVi});
+  \draw[thick] ({4*\scWavT+0.5*\scWavT},{4*\scWavVi}) -- (5.6,{4*\scWavVi});
 
 \end{circuitikz}
 \end{document}

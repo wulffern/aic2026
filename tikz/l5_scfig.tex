@@ -11,7 +11,8 @@
   \input{tikz/ckt_lib.tex}
   \input{tikz/sc_lib.tex}
 
-  \scWaveFrame
+  % The trace never exceeds V_i, so the axis stops just above it.
+  \scWaveFrame{1.6}
 
   % Reset to zero through phase 1, settle to V_i through phase 2, drop at the
   % period boundary. Only the end of phase 2 is a valid output.
