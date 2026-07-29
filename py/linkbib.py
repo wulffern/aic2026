@@ -642,9 +642,19 @@ def fetch(lectures, bib, out, unresolved, limit, delay, source):
             click.echo(f"  miss  {hit.lecture:22s} {reason}", err=True)
         elif fields.get("doi", "").lower() in known_dois:
             skipped += 1
+        elif squash(fields.get("title", "")) in known_titles:
+            # The pre-fetch check compares the *link text*, which is often
+            # dressed up -- "1999, R. Walden: Analog-to-digital converter
+            # survey and analysis" against a bib title of "Analog to Digital
+            # Converter Survey and Analysis". Only the resolved title catches
+            # that, and an old entry with no DOI has nothing else to match on.
+            skipped += 1
+            click.echo(f"  dupe  {hit.lecture:22s} already in {bib} as "
+                       f"{known_titles[squash(fields['title'])]}")
         else:
             key = make_key(fields.get("author", ""), fields.get("year", ""), taken)
             taken.add(key)
+            known_titles[squash(fields.get("title", ""))] = key
             if fields.get("doi"):
                 known_dois.add(fields["doi"].lower())
             # A lookup by article number is trusted on identity, so it does

@@ -424,5 +424,31 @@ class TestBooks(unittest.TestCase):
         self.assertLess(text.index("publisher="), text.index("year="))
 
 
+class TestDuplicateDetection(unittest.TestCase):
+    """walden99a was staged for a paper aic.bib already had as walden99.
+
+    The pre-fetch check compares the link text, which read "1999, R. Walden:
+    Analog-to-digital converter survey and analysis" against a stored title of
+    "Analog to Digital Converter Survey and Analysis". The old entry carries no
+    DOI, so only the resolved title can catch it.
+    """
+
+    LINK_TEXT = "1999, R. Walden: Analog-to-digital converter survey and analysis"
+    STORED = "Analog to Digital Converter Survey and Analysis"
+    RESOLVED = "Analog-to-digital converter survey and analysis"
+
+    def test_link_text_does_not_match_the_stored_title(self):
+        self.assertNotEqual(linkbib.squash(self.LINK_TEXT),
+                            linkbib.squash(self.STORED))
+
+    def test_resolved_title_does_match_it(self):
+        self.assertEqual(linkbib.squash(self.RESOLVED),
+                         linkbib.squash(self.STORED))
+
+    def test_the_paper_is_in_the_real_bibliography_already(self):
+        titles = linkbib.read_bib_titles("pdf/aic.bib")
+        self.assertEqual(titles.get(linkbib.squash(self.RESOLVED)), "walden99")
+
+
 if __name__ == "__main__":
     unittest.main()
