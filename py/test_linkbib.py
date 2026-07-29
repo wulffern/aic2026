@@ -240,5 +240,29 @@ class TestTitleGuard(unittest.TestCase):
             "https://ieeexplore.ieee.org/document/1477063"))
 
 
+class TestNearMissTitles(unittest.TestCase):
+    """The failure that matters: a different paper whose title contains ours.
+
+    l03_refbias links "A CMOS bandgap reference circuit with sub-1-V
+    operation" (Banba, JSSC 1999). Crossref returns Navarro's ISCAS 2011
+    "A simple CMOS bandgap reference circuit with sub-1-V operation".
+    """
+
+    BANBA = "A CMOS bandgap reference circuit with sub-1-V operation"
+    NAVARRO = "A simple CMOS bandgap reference circuit with sub-1-V operation"
+
+    def test_the_threshold_cannot_separate_them(self):
+        # Documents why an exact-match flag is needed rather than a higher bar.
+        self.assertGreater(linkbib.similarity(self.BANBA, self.NAVARRO),
+                           linkbib.TITLE_THRESHOLD)
+
+    def test_but_they_are_not_an_exact_match(self):
+        self.assertNotEqual(linkbib.squash(self.BANBA), linkbib.squash(self.NAVARRO))
+
+    def test_punctuation_drift_still_counts_as_exact(self):
+        self.assertEqual(linkbib.squash("A sub-1-V 15-ppm/°C CMOS bandgap"),
+                         linkbib.squash("A sub 1 V 15 ppm/C CMOS bandgap"))
+
+
 if __name__ == "__main__":
     unittest.main()

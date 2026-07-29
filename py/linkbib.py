@@ -425,17 +425,27 @@ def fetch(lectures, bib, out, unresolved, limit, delay):
             key = make_key(fields.get("author", ""), fields.get("year", ""), taken)
             taken.add(key)
             known_dois.add((work.get("DOI") or "").lower())
-            staged.append((key, entry_type(work), fields, hits))
-            click.echo(f"  ok    {key:14s} {fields.get('title','')[:60]}")
+            exact = squash(fields.get("title", "")) == squash(title)
+            staged.append((key, entry_type(work), fields, hits, exact, title))
+            mark = "ok   " if exact else "check"
+            click.echo(f"  {mark} {key:14s} {fields.get('title','')[:60]}")
 
         time.sleep(delay)
 
     with open(out, "w") as fo:
         fo.write("% Staged by py/linkbib.py fetch -- review before merging into aic.bib.\n")
-        fo.write("% The comment above each entry lists the lectures that link to it.\n\n")
-        for key, kind, fields, hits in staged:
+        fo.write("% The comment above each entry lists the lectures that link to it.\n")
+        fo.write("% CHECK marks an entry whose Crossref title is not identical to the\n")
+        fo.write("% link text. Crossref will happily return a different paper whose title\n")
+        fo.write("% merely contains the one you asked for, and no similarity threshold\n")
+        fo.write("% separates those from a genuine punctuation difference. Read both\n")
+        fo.write("% titles before merging a CHECK entry.\n\n")
+        for key, kind, fields, hits, exact, asked in staged:
             where = ", ".join(sorted({f"{h.lecture}:{h.line}" for h in hits}))
             fo.write(f"% {where}\n")
+            if not exact:
+                fo.write(f"% CHECK  lecture says: {asked}\n")
+                fo.write(f"% CHECK  Crossref says: {fields.get('title', '')}\n")
             fo.write(to_bibtex(key, kind, fields))
             fo.write("\n")
 
@@ -444,8 +454,11 @@ def fetch(lectures, bib, out, unresolved, limit, delay):
         for hit, reason in missed:
             fo.write(f"{hit.lecture}\t{hit.line}\t{hit.text}\t{hit.url}\t{reason}\n")
 
+    tocheck = len([s for s in staged if not s[4]])
+
     click.echo("")
     click.echo(f"staged     : {len(staged)} -> {out}")
+    click.echo(f"  of those, needing a title check: {tocheck}")
     click.echo(f"unresolved : {len(missed)} -> {unresolved}")
     click.echo(f"already in {bib}: {skipped}")
 

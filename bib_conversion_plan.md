@@ -244,9 +244,20 @@ the new references.
 
 ## Risks
 
-- **Wrong paper matched by title.** The main correctness risk. Mitigated by
-  verifying the fetched title against the link text and routing anything
-  ambiguous to manual review rather than guessing.
+- **Wrong paper matched by title.** The main correctness risk, and it is not
+  hypothetical — the first staging run hit it. `l03_refbias` links *"A CMOS
+  bandgap reference circuit with sub-1-V operation"* (Banba, JSSC 1999,
+  `document/760378`). Crossref returned Navarro's ISCAS 2011 *"A **simple** CMOS
+  bandgap reference circuit with sub-1-V operation"* — a different paper whose
+  title contains the one asked for. The two score ~0.96 against each other, so
+  **no similarity threshold separates them**; raising the bar would only start
+  rejecting correct matches with punctuation drift.
+
+  The mitigation is therefore not a better threshold but visibility: an entry
+  whose Crossref title is not character-for-character the link text is marked
+  `% CHECK` in `incoming.bib`, with both titles printed above it, and listed
+  first in the run summary. Those get read before merging. This is the concrete
+  reason `commit` defaults to off.
 - **Footnote numbering on the web.** `Lecture._replaceCites` numbers citations
   continuing from the existing `[^n]` footnotes in a lecture. Lectures that mix
   hand-written footnotes with citations — `l00_diode` has `[^1]` through `[^4]` —

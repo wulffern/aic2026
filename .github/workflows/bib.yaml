@@ -141,6 +141,13 @@ jobs:
         shell: bash
         run: |
           {
+            echo "## Entries whose title did not match exactly"
+            echo ""
+            echo "Crossref returns papers whose title merely *contains* the one asked"
+            echo "for. Read these before merging."
+            echo ""
+            grep '^% CHECK' pdf/incoming.bib 2>/dev/null || echo "None."
+            echo ""
             echo "## Staged entries"
             echo ""
             echo "\`\`\`bibtex"
