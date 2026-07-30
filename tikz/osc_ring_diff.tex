@@ -1,0 +1,44 @@
+\input{tikz/fig_header.tex}
+
+% Differential ring oscillator: two differential delay stages in a loop.
+% The inversion around the loop is a wire swap between the first and the
+% second stage, and a third stage buffers the output.
+
+\begin{tikzpicture}[thick]
+
+  \def\yt{1.7}  % top (positive) wire
+  \def\yb{0.5}  % bottom (negative) wire
+
+  % one differential stage: #1 = x of the left edge
+  \newcommand{\diffStage}[1]{%
+    \draw (#1,-0.1) rectangle ({#1+1.4},2.3);
+    \node at ({#1+0.3},1.95) {$+$};
+    \node at ({#1+1.1},1.95) {$+$};
+    \node at ({#1+0.3},0.25) {$-$};
+    \node at ({#1+1.1},0.25) {$-$};
+  }
+
+  \diffStage{0}
+  \diffStage{3.4}
+  \diffStage{6.4}
+
+  % stage 1 to stage 2: swapped wires, the -1 in the loop
+  \draw (1.4,\yt) -- (1.7,\yt) -- (3.1,\yb) -- (3.4,\yb);
+  \draw (1.4,\yb) -- (1.7,\yb) -- (3.1,\yt) -- (3.4,\yt);
+
+  % stage 2 to the output buffer, straight through
+  \draw (4.8,\yt) -- (6.4,\yt);
+  \draw (4.8,\yb) -- (6.4,\yb);
+
+  % feedback from stage 2 back to stage 1
+  \fill (5.6,\yt) circle (0.07);
+  \fill (5.6,\yb) circle (0.07);
+  \draw (5.6,\yt) -- (5.6,2.9) -- (-0.8,2.9) -- (-0.8,\yt) -- (0,\yt);
+  \draw (5.6,\yb) -- (5.6,-0.7) -- (-0.8,-0.7) -- (-0.8,\yb) -- (0,\yb);
+
+  % buffered output
+  \draw (7.8,\yt) -- ++(0.7,0);
+  \draw (7.8,\yb) -- ++(0.7,0);
+
+\end{tikzpicture}
+\end{document}

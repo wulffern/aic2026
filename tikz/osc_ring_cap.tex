@@ -1,0 +1,30 @@
+\input{tikz/fig_header.tex}
+
+% Digital frequency control of a ring oscillator stage: binary weighted
+% capacitors C, 2C, 4C switched onto the inverter output by the digital
+% control word D0, D1, D2.
+
+\begin{circuitikz}[american, thick, transform shape, circuit ee IEC]
+
+  \input{tikz/ckt_lib.tex}
+
+  % the inverter (one stage of the ring)
+  \node[not port] (g1) at (-0.8,0) {};
+  \draw (g1.in) -- ++(-0.7,0);
+  \draw (g1.north) -- ++(0,0.9);
+  \draw (g1.out) -- (6.2,0);
+
+  % switched binary weighted capacitors
+  \draw (1.2,-3.2) \vground \vcapacitor{$C$};
+  \draw (1.2,-1.6) \lvnmos{M0}{$D_0$};
+  \draw (1.2,0) to [short,-*] ++(0,0);
+
+  \draw (3.7,-3.2) \vground \vcapacitor{$2C$};
+  \draw (3.7,-1.6) \lvnmos{M1}{$D_1$};
+  \draw (3.7,0) to [short,-*] ++(0,0);
+
+  \draw (6.2,-3.2) \vground \vcapacitor{$4C$};
+  \draw (6.2,-1.6) \lvnmos{M2}{$D_2$};
+
+\end{circuitikz}
+\end{document}

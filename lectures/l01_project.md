@@ -410,7 +410,7 @@ oscillation frequency is independent (to first order) from the VDD.
 
 -->
 
-![right fit](../media/rcosc.pdf)
+![right fit](../media/rcosc_tikz.pdf)
 
 __Delivery__ Link to your github repository with description on
 how your oscillator works. There should be proof on how it works.

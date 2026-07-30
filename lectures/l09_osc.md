@@ -210,7 +210,7 @@ Our job is to make a circuit that we can connect to the two pins and provide the
 
 -->
 
-![left fit](../media/xosc_model.pdf)
+![left fit](../media/xosc_model_tikz.pdf)
 
 Assuming zero series resistance
 
@@ -256,7 +256,7 @@ The XC1 and XC2 will oscillate in opposite directions. As XC1 increases, XC2 wil
 
 -->
 
-![right fit](../media/xosc_pierce.pdf)
+![right fit](../media/xosc_pierce_tikz.pdf)
 
 
 <!--pan_doc: 
@@ -367,7 +367,7 @@ $$ R \approx \frac{1}{gm} \approx \frac{1}{\mu_n C_{ox} \frac{W}{L} (VDD - V_{th
 
 $$ C \approx \frac{2}{3} C_{ox} W L$$
 
-![left fit](../media/osc_ring.pdf)
+![left fit](../media/osc_ring_tikz.pdf)
 
 ---
 
@@ -432,7 +432,7 @@ the power consumption.
 
 -->
 
-![left fit](../media/osc_ring_c.pdf)
+![left fit](../media/osc_ring_c_tikz.pdf)
 
 ---
 ## Realistic 
@@ -469,7 +469,7 @@ Still today, there are radio receivers that use a PLLs to directly demodulate th
 
 -->
 
-![left](../media/osc_ring_adv.svg)
+![left](../media/osc_ring_adv_tikz.pdf)
 
 
 <!--pan_doc:
@@ -513,7 +513,7 @@ the frequency can go up. We could measure the free-running frequency in producti
 
 -->
 
-![left](../media/osc_ring_cap.svg)
+![left](../media/osc_ring_cap_tikz.pdf)
 
 ---
 
@@ -532,7 +532,7 @@ the current slightly, but that depends on the tail current source.
 Another cool thing about differential circuits is that it's easy to multiply by -1, just flip the wires, as a result, I can use a 2 stage ring differential ring oscillator.
 -->
 
-![left](../media/osc_ring_diff.svg)
+![left](../media/osc_ring_diff_tikz.pdf)
 
 ---
 
@@ -568,7 +568,7 @@ The NMOS at the bottom provide the "negative transconductance" to compensate for
 -->
 
 
-![left](../media/lcosc.pdf)
+![left](../media/lcosc_tikz.pdf)
 
 
 $$ f \propto \frac{1}{\sqrt{LC}}$$
@@ -587,11 +587,11 @@ A last common oscillator is the relaxation oscillator, or "RC" oscillator. By no
 ---
 
 <!--pan_skip: -->
-![inline](../media/rcosc.pdf)
+![inline](../media/rcosc_tikz.pdf)
 
 ---
 
-![left fit](../media/rcosc.pdf)
+![left fit](../media/rcosc_tikz.pdf)
 
 $$ V_1 = I R $$
 

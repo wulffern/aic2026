@@ -1,0 +1,39 @@
+\input{tikz/fig_header.tex}
+
+% Electrical model of a quartz crystal: the motional (series) branch
+% R_s + sL + 1/sC_F in parallel with the package capacitance C_p, seen
+% from the impedance Z_in.
+
+\begin{circuitikz}[american, thick, transform shape, circuit ee IEC]
+
+  \input{tikz/ckt_lib.tex}
+
+  \def\xs{0}    % series (motional) branch
+  \def\xp{2.4}  % parallel capacitance
+  \def\xo{3.8}  % port
+  \def\yt{0}    % top rail
+  \def\yb{-5.4} % bottom rail
+
+  % series branch: Rs, L, CF
+  \draw (\xs,\yt) to [R, l=$R_s$] (\xs,-1.8)
+                  to [L, l=$L$]   (\xs,-3.6)
+                  to [C, l=$C_F$] (\xs,\yb);
+
+  % parallel capacitance
+  \draw (\xp,\yt) to [C, l=$C_p$] (\xp,\yb);
+
+  % rails and port
+  \draw (\xs,\yt) to [short,-*] (\xp,\yt) to [short,-o] (\xo,\yt);
+  \draw (\xs,\yb) to [short,-*] (\xp,\yb) to [short,-o] (\xo,\yb);
+  \draw (\xo,\yb) ++(0.3,0) \vground;
+  \draw (\xo,\yb) -- ++(0.3,0);
+
+  % Zin annotation
+  \draw[latex-] (\xo+0.25,\yt) ++(0.25,0) -- ++(0.8,0)
+    node [anchor=west] {$Z_{in}$};
+
+  % series branch impedance
+  \node[anchor=south] at (\xs,\yt+0.25) {$R_s + sL + \frac{1}{sC_F}$};
+
+\end{circuitikz}
+\end{document}

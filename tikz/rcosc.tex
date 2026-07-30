@@ -1,0 +1,84 @@
+\input{tikz/fig_header.tex}
+
+% Relaxation (RC) oscillator: a mirror forces I into a resistor to make
+% the reference V1 = R*I, and into a capacitor so V2 ramps. When V2
+% crosses V1 the comparator fires, a delayed pulse resets the capacitor
+% through the NMOS switch, and the flip flop divides the pulse train by
+% two to a square wave output f_o. Wires that cross without a dot are
+% not connected.
+
+\begin{circuitikz}[american, thick, transform shape, circuit ee IEC]
+
+  \input{tikz/ckt_lib.tex}
+
+  \def\ydr{3.6}  % drains of the mirror row
+  \def\ygr{3.1}  % mirror gate rail
+  \def\yva{2.6}  % the V1 wire
+  \def\yvb{1.8}  % the V2 wire
+
+  % ---- PMOS mirror: reference and two outputs ----
+  \draw (0,\ydr) to [Tpmos, n=M1, mirror] (0,5.2);
+  \draw (0,5.2) \vsupply;
+  \draw (2.2,\ydr) to [Tpmos, n=M2] (2.2,5.2);
+  \draw (2.2,5.2) \vsupply;
+  \draw (4.4,\ydr) to [Tpmos, n=M3] (4.4,5.2);
+  \draw (4.4,5.2) \vsupply;
+
+  \draw (M1.G) -- ++(0.2,0) coordinate (s1) -- (s1 |- 0,\ygr) coordinate (gr1);
+  \draw (M2.G) -- ++(-0.2,0) coordinate (s2) -- (s2 |- 0,\ygr) coordinate (gr2);
+  \draw (M3.G) -- ++(-0.2,0) coordinate (s3) -- (s3 |- 0,\ygr) coordinate (gr3);
+  \draw (0,\ygr) -- (gr3);
+  \fill (0,\ygr) circle (0.07);
+  \fill (gr1) circle (0.07);
+  \fill (gr2) circle (0.07);
+
+  \draw (0,\ydr) -- (0,2.8) to [I, l=$I$] (0,1.0) -- (0,0.7) \vground;
+
+  % ---- V1 = R*I ----
+  \draw (2.2,\ydr) -- (2.2,\yva);
+  \fill (2.2,\yva) circle (0.07);
+  \draw (2.2,\yva) to [R, l=$R$] (2.2,0.4) -- (2.2,0.1) \vground;
+  \node[anchor=south] at (3.1,2.65) {$V_1$};
+
+  % ---- V2 ramps on C ----
+  \draw (4.4,\ydr) -- (4.4,\yvb);
+  \fill (4.4,\yvb) circle (0.07);
+  \draw (4.4,\yvb) to [C, l=$C$] (4.4,0.0) -- (4.4,-0.3) \vground;
+  \node[anchor=south east] at (4.35,1.9) {$V_2$};
+
+  % reset switch
+  \draw (5.4,0.2) to [Tnmos, n=MSW, mirror] (5.4,\yvb);
+  \draw (5.4,0.2) -- ++(0,-0.3) \vground;
+  \fill (5.4,\yvb) circle (0.07);
+
+  % ---- comparator ----
+  \draw (2.2,\yva) -- (6.4,\yva);
+  \draw (4.4,\yvb) -- (6.4,\yvb);
+  \draw (6.4,\yva) \cicOtaSSWP{$-$}{$+$};
+  \draw (cicOtaS_out) -- (10.6,2.2);
+  \fill (9.9,2.2) circle (0.07);
+
+  % ---- delayed reset pulse back to the switch ----
+  \node[buffer port, rotate=180] (b1) at (8.7,1.0) {};
+  \node[buffer port, rotate=180] (b2) at (6.9,1.0) {};
+  \draw (9.9,2.2) -- (9.9,1.0) -- (b1.in);
+  \draw (b1.out) -- (b2.in);
+  \draw (b2.out) -- (MSW.G);
+
+  % ---- divide by two flip flop ----
+  \draw (10.6,1.4) rectangle (12.6,4.0);
+  \node[anchor=west] at (10.7,3.5) {D};
+  \node[anchor=east] at (12.5,3.5) {Q};
+  \node[anchor=east] at (12.5,1.9) {$\overline{\mbox{Q}}$};
+  \draw (10.6,2.05) -- (10.9,2.2) -- (10.6,2.35);
+
+  % Qbar back to D
+  \draw (12.6,1.9) -- (13.3,1.9) -- (13.3,4.6) -- (10.0,4.6)
+        -- (10.0,3.5) -- (10.6,3.5);
+
+  % output
+  \draw (12.6,3.5) to [short,-o] (13.9,3.5);
+  \node[anchor=west] at (13.95,3.5) {$f_o$};
+
+\end{circuitikz}
+\end{document}

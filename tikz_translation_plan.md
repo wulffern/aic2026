@@ -580,6 +580,30 @@ Triaged out: `fig_sar_logic` (paper-quality vector), `l14/cpumax`
 `chipwisperer` (tool screenshots). With that, lr0_logic's hand-drawn
 schematics are DONE; media/l19 is not referenced by any lecture.
 
+### Phase 1 finished (2026-07-30, autonomous batch)
+
+The four untouched lectures are done, each triaged and drawn by a
+subagent and reviewed here against renders of the originals before the
+reference switch:
+- `l06_adc`: 6 drawn (quantization sum, ct/cten staircases with a
+  computed e[n] panel, sdloop with algebra, sd loop with ADC/DAC
+  pentagons, sample-domain SFG); survey plots and published figures
+  skipped.
+- `l07_vreg`: 10 drawn (power tree, PMOS/NMOS LDOs with verified
+  feedback polarity, three pass-fet schemes, inductive buck/boost with
+  checked diode polarity, SC buck/boost reconfigurations, buck with
+  waveforms, hysteretic FSM switcher); datasheet figures, sim plots and
+  screenshots skipped.
+- `l08_pll`: 9 drawn (clock tree, clock gating, voltage/frequency
+  loops, div-M, fractional-N, one/two-point modulation, s-domain phase
+  model); references switched in l08_pll, l10_lpradio,
+  s_need_to_know, s_chinf, lp_radio_guest.
+- `l09_osc`: 9 drawn (crystal model, Pierce, ring + starved + cap-DAC
+  + differential rings, LC with cross-coupled pair and varactors,
+  relaxation osc with divider); photos and sim plots skipped.
+
+Phase 2 leftovers and Phase 3 (system drawings) are what remain.
+
 ### Current next figure
 `l04_dac` is complete, so the queue moves on. In order, and each one triaged
 by listing its figures first rather than trusting the queue below:

@@ -1,0 +1,56 @@
+\input{tikz/fig_header.tex}
+
+% Pierce crystal oscillator: an inverting transconductance (-gm) with a
+% feedback resistor R1, a series resistor R2 on the output, the crystal
+% between the two pins, and a load capacitor on each side. The dotted
+% line is the chip boundary: the inverter, R1 and R2 are on the IC, the
+% crystal and the load capacitors are on the PCB.
+
+\begin{circuitikz}[american, thick, transform shape, circuit ee IEC]
+
+  \input{tikz/ckt_lib.tex}
+
+  \def\xl{0}     % left (input) node
+  \def\xr{4.4}   % right (output) node
+  \def\yinv{2.9} % inverter row
+  \def\yr{4.6}   % feedback resistor row
+  \def\yx{0}     % crystal row
+  \def\yc{-1.0}  % top of load capacitors
+
+  % inverting transconductance
+  \node[not port] (inv) at ({\xl/2+\xr/2},\yinv) {};
+  \draw (\xl,\yinv) -- (inv.in);
+  \draw (inv.out) -- (\xr,\yinv);
+  \node[anchor=north] at ({\xl/2+\xr/2},\yinv-0.65) {$-g_m$};
+
+  % feedback resistor
+  \draw (\xl,\yr) to [R, l=$R_1$] (\xr,\yr);
+  \draw (\xl,\yr) -- (\xl,\yx);
+  \fill (\xl,\yinv) circle (0.075);
+
+  % series resistor on the output
+  \draw (\xr,\yr) -- (\xr,\yinv);
+  \fill (\xr,\yinv) circle (0.075);
+  \draw (\xr,\yinv) to [R, l=$R_2$] (\xr,1.2) -- (\xr,\yx);
+
+  % crystal
+  \draw (\xl,\yx) -- (1.5,\yx)
+        (1.5,\yx-0.35) -- (1.5,\yx+0.35)
+        (1.75,\yx-0.5) rectangle (2.65,\yx+0.5)
+        (2.9,\yx-0.35) -- (2.9,\yx+0.35)
+        (2.9,\yx) -- (\xr,\yx);
+
+  % load capacitors
+  \draw (\xl,\yx) to [short,*-] (\xl,\yc);
+  \draw (\xl,-2.6) \vground \vcapacitor{};
+  \draw (\xr,\yx) to [short,*-] (\xr,\yc);
+  \draw (\xr,-2.6) \vground \vcapacitor{};
+
+  % chip boundary
+  \draw[densely dotted] (-1.2,1.5) .. controls (1.2,1.5) and (2.2,0.7)
+    .. (5.9,0.7);
+  \node[anchor=south west] at (5.3,0.8) {IC};
+  \node[anchor=north west] at (5.3,0.6) {PCB};
+
+\end{circuitikz}
+\end{document}
