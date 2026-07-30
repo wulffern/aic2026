@@ -346,7 +346,7 @@ analog-to-digital converter. That way we could support any transmitter. Fantasti
 
 -->
 
-![left fit](../media/lg_lna_adc.pdf)
+![left fit](../media/lg_lna_adc_tikz.pdf)
 
 <!--pan_doc:
 
@@ -405,7 +405,7 @@ in the receive chain.
 ---
 
 
-![inline fit](../media/l10_lprxarch.pdf)
+![inline fit](../media/l10_lprxarch_tikz.pdf)
 
 ---
 
@@ -456,7 +456,7 @@ In a LNA the input impedance must be matched to what is required by the antenna/
 
 -->
 
-![left fit](../media/l10_lna.pdf)
+![left fit](../media/l10_lna_tikz.pdf)
 
 ---
 
@@ -483,7 +483,7 @@ A 370uW 5.5dB-NF BLE/BT5.0/IEEE 802.15.4-Compliant Receiver with >63dB Adjacent 
 
 
 
-![left fit](../media/l10_mix.pdf)
+![left fit](../media/l10_mix_tikz.pdf)
 
 
 ---

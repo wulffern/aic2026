@@ -422,7 +422,7 @@ that change both phase and amplitude.
 
 -->
 
-![right fit](../media/l7_bpsk_circuit.pdf)
+![right fit](../media/l7_bpsk_circuit_tikz.pdf)
 
 <!--pan_doc:
 <sub>Figure 4: BPSK transmitter: a local oscillator drives a pseudo-differential common source pair, and the $b_0$ switches swap the output phase 180 degrees into the antenna balun</sub>
@@ -649,7 +649,7 @@ analog-to-digital converter. That way we could support any transmitter. Fantasti
 
 -->
 
-![left fit](../media/lg_lna_adc.pdf)
+![left fit](../media/lg_lna_adc_tikz.pdf)
 
 <!--pan_doc:
 <sub>Figure 14: Software defined radio receiver: antenna, low noise amplifier and analog-to-digital converter, nothing else</sub>
@@ -843,7 +843,7 @@ be either polar or Cartesian.
 
 -->
 
-![inline fit](../media/l10_lprxarch.pdf)
+![inline fit](../media/l10_lprxarch_tikz.pdf)
 
 <!--pan_doc:
 <sub>Figure 18: Typical Bluetooth radio: antenna and match, LNA, mixer, I and Q anti-alias filters and ADCs, an all-digital PLL, and the transmit path</sub>
@@ -898,7 +898,7 @@ In a LNA the input impedance must be matched to what is required by the antenna/
 
 -->
 
-![left fit](../media/l10_lna.pdf)
+![left fit](../media/l10_lna_tikz.pdf)
 
 <!--pan_doc:
 <sub>Figure 19: Low noise transconductance amplifier: complementary common source PMOS and NMOS, AC coupled from the antenna match and biased through resistors by $V_{gp}$ and $V_{gn}$</sub>
@@ -929,7 +929,7 @@ A 370uW 5.5dB-NF BLE/BT5.0/IEEE 802.15.4-Compliant Receiver with >63dB Adjacent 
 
 
 
-![left fit](../media/l10_mix.pdf)
+![left fit](../media/l10_mix_tikz.pdf)
 
 <!--pan_doc:
 <sub>Figure 20: Passive complex mixer: four MOS switches driven by 25% duty-cycle clocks $I_1$, $I_2$, $Q_1$ and $Q_2$ split the LNA current into the I and Q outputs</sub>

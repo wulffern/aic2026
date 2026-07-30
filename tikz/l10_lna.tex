@@ -1,0 +1,52 @@
+\input{tikz/fig_header.tex}
+
+% The low power LNA: a complementary common source stage.  The antenna
+% comes in through two AC coupling capacitors, the gates are biased
+% through resistors from V_gp and V_gn, and the drains drive the mixer.
+
+\begin{circuitikz}[american, thick, transform shape, circuit ee IEC]
+
+  \input{tikz/ckt_lib.tex}
+
+  \def\yout{2.9}
+  \def\ygp{4.6}
+  \def\ygn{1.2}
+
+  % the two devices
+  \draw (4,0) \vground;
+  \draw (4,0) -- (4,0.4);
+  \draw (4,0.4) \lvnmos{MN}{};
+  \draw (4,2.0) -- (4,3.8);
+  \draw (4,3.8) \lvpmos{MP}{};
+  \draw (4,5.4) \vsupply;
+
+  % the input, split to the two coupling capacitors
+  \draw (0.45,\yout) -- (1.2,\yout);
+  \draw (0.36,\yout) circle (0.09);
+  \node[anchor=east] at (0.2,\yout) {Antenna};
+  \node[anchor=east] at (0.2,\yout-0.45) {/Match};
+  \draw (1.2,\ygn) -- (1.2,\ygp);
+
+  \draw (1.4,\ygp) \hcapacitor{};
+  \draw (2.9,\ygp) -- (3.5,\ygp);
+  \draw (1.4,\ygn) \hcapacitor{};
+  \draw (2.9,\ygn) -- (3.5,\ygn);
+  \draw (1.2,\ygp) -- (1.4,\ygp);
+  \draw (1.2,\ygn) -- (1.4,\ygn);
+
+  % the gate bias resistors
+  \draw (2.9,3.3) to [R] (3.5,\ygp);
+  \draw (2.8,3.3) circle (0.09);
+  \node[anchor=east] at (2.65,3.3) {$V_{gp}$};
+  \draw (2.9,2.5) to [R] (3.5,\ygn);
+  \draw (2.8,2.5) circle (0.09);
+  \node[anchor=east] at (2.65,2.5) {$V_{gn}$};
+
+  % the output to the mixer
+  \draw (4,\yout) -- (5.0,\yout);
+  \fill (4,\yout) circle (0.075);
+  \draw (5.09,\yout) circle (0.09);
+  \node[anchor=west] at (5.25,\yout) {Mixer};
+
+\end{circuitikz}
+\end{document}

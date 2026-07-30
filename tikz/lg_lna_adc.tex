@@ -1,0 +1,23 @@
+\input{tikz/fig_header.tex}
+
+% The simplest possible receiver: an antenna, an LNA and an ADC.
+
+\begin{circuitikz}[american, thick, transform shape, circuit ee IEC]
+
+  \input{tikz/ckt_lib.tex}
+
+  % the antenna, and the feed down to the LNA input
+  \draw (0,1.6) -- (0,0) -- (1.2,0);
+  \draw (-0.45,2.25) -- (0,1.6) -- (0.45,2.25);
+
+  % the LNA
+  \draw (1.2,-0.75) -- (1.2,0.75) -- (2.7,0) -- cycle;
+  \node[anchor=center] at (1.72,0) {LNA};
+
+  % the ADC
+  \draw (2.7,0) -- (3.9,0);
+  \draw (3.9,0) -- (4.45,0.9) -- (5.75,0.9) -- (5.75,-0.9) -- (4.45,-0.9) -- cycle;
+  \node[anchor=center] at (5.0,0) {ADC};
+
+\end{circuitikz}
+\end{document}

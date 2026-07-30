@@ -1,0 +1,72 @@
+\input{tikz/fig_header.tex}
+
+% The passive mixer: four NMOS switches on the LNA output node, driven by
+% the four phase non-overlapping clock.  Each gate is AC coupled to the
+% clock and biased through a resistor from V_n.
+
+\begin{circuitikz}[american, thick, transform shape, circuit ee IEC]
+
+  \input{tikz/ckt_lib.tex}
+
+  % one switch: #1 is the y of the switch, #2 the clock name
+  \newcommand{\mixsw}[3]{%
+    \node[nmos, rotate=-90] (#3) at (0.85,#1) {};
+    \draw (#3.S) -- (0,#1);
+    \draw (#3.D) -- (2.3,#1);
+    \draw (2.42,#1) circle (0.12);
+    % the AC coupling capacitor up to the clock port
+    \draw (#3.G) -- (0.85,{#1+0.75});
+    \draw (0.55,{#1+0.75}) -- (1.15,{#1+0.75});
+    \draw (0.55,{#1+0.95}) -- (1.15,{#1+0.95});
+    \draw (0.85,{#1+0.95}) -- (0.85,{#1+1.6});
+    \draw (0.85,{#1+1.72}) circle (0.12);
+    \node[anchor=south] at (0.85,{#1+1.92}) {#2};
+    % the bias resistor from V_n
+    \draw (0.85,{#1+0.85}) to [R] (2.0,{#1+1.45});
+    \draw (2.11,{#1+1.51}) circle (0.12);
+    \node[anchor=south west] at (2.1,{#1+1.6}) {$V_n$};
+    \fill (0.85,{#1+0.85}) circle (0.075);
+  }
+
+  \def\yIone{6.9}
+  \def\yItwo{4.6}
+  \def\yQone{2.3}
+  \def\yQtwo{0.0}
+
+  \mixsw{\yIone}{$I_1$}{swione}
+  \mixsw{\yItwo}{$I_2$}{switwo}
+  \mixsw{\yQone}{$Q_1$}{swqone}
+  \mixsw{\yQtwo}{$Q_2$}{swqtwo}
+
+  % the common node, driven by the LNA
+  \draw (0,\yQtwo) -- (0,\yIone);
+  \draw (0,3.45) -- (-1.3,3.45);
+  \draw (-1.42,3.45) circle (0.12);
+  \node[anchor=east] at (-1.6,3.85) {LNA};
+  \node[anchor=east] at (-1.6,3.3) {Antenna};
+  \node[anchor=east] at (-1.6,2.85) {Match};
+  \fill (0,3.45) circle (0.075);
+
+  % the I and Q pairs
+  \node[anchor=west] at (2.9,5.75) {\Large $I$};
+  \node[anchor=west] at (2.9,1.15) {\Large $Q$};
+
+  % the four phase non overlapping clock
+  \def\wx{-6.2}      % the time axis origin
+  \def\wy{5.0}       % the baseline of the lowest trace
+  \draw (\wx,\wy) -- (\wx,{\wy+3.3});
+  \draw[-latex] (\wx,\wy) -- ({\wx+3.9},\wy);
+
+  % trace #1: baseline y, pulse from x0 to x0+0.8
+  \newcommand{\clktrace}[3]{%
+    \draw (\wx,#1) -- ({\wx+#2},#1) -- ({\wx+#2},{#1+0.5})
+      -- ({\wx+#2+0.8},{#1+0.5}) -- ({\wx+#2+0.8},#1) -- ({\wx+3.4},#1);
+    \node[anchor=east] at ({\wx-0.15},{#1+0.25}) {#3};
+  }
+  \clktrace{7.7}{0.2}{$I_1$}
+  \clktrace{6.8}{1.0}{$Q_1$}
+  \clktrace{5.9}{1.8}{$I_2$}
+  \clktrace{5.0}{2.6}{$Q_2$}
+
+\end{circuitikz}
+\end{document}
