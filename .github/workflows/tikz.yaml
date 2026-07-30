@@ -24,7 +24,7 @@ jobs:
     # The repo's own image (see docker.yaml): TeX Live 2022 with poppler etc.
     # preinstalled, pulled from GHCR which is co-located with the runners.
     container:
-      image: ghcr.io/wulffern/aic:2026_latest
+      image: ghcr.io/wulffern/aic:2026_slim
       credentials:
         username: ${{ github.actor }}
         password: ${{ secrets.github_token }}

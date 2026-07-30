@@ -23,10 +23,15 @@ The dominant CI cost is not the build — it is pulling
   docker.io) via a workflow triggered on changes to `docker/Dockerfile` /
   `requirements-ci.txt`, and set it as `container:` in `matrix_build.yaml` and
   `tikz.yaml`. Deletes all seven apt steps.
-- **B. Slim the TeX base** (later). The 78s init is full TeX Live (~5.6 GB).
-  A `scheme-medium` image plus the explicit package list kaobook and the
-  chapters need should pull in ~15–20s. Needs a one-time package audit; do
-  after A is stable.
+- **B. Slim the TeX base — done 2026-07-30.** `docker/Dockerfile.slim`:
+  debian bookworm + TeX Live 2022 `scheme-small` (from texlive.info
+  historic) + the audited package list + pinned pandoc 3.6.4. Proven by
+  `.github/workflows/docker-slim.yaml`, which runs prepare, a standalone
+  chapter, the 550-page book, the epub and a TikZ figure inside it.
+  Container init: **26s vs 78s** with the full image. Production
+  workflows now run `ghcr.io/wulffern/aic:2026_slim`; `2026_latest`
+  (full image, `docker/Dockerfile`) remains as the fallback — switching
+  the four `container:` blocks back is the whole rollback.
 - **C. Merge `epub` into `book_pdf`.** The epub job pays ~100s overhead for
   11s of work.
 - **D. Parallelize `make tikz` / `tikz-check` / `tikz-preview`** — serial
@@ -47,14 +52,14 @@ The dominant CI cost is not the build — it is pulling
   templates, once G exists. A typical push rebuilds 1 of 30 chapters.
 - **I. Fewer pdflatex passes.** `standalone` always runs 3; `latexmk`
   converges in 1–2 for index-free chapters.
-- **J. Cache the `Bibtex` parse** — 612 entries re-parsed per `Lecture`
-  object, 60× per full build.
+- **J. ~~Cache the `Bibtex` parse~~ — dropped.** Measured at 54 ms per
+  process, and each lecture converts in its own process; pandoc dominates.
 - **K. Trim the `prepared-sources` artifact** — `pdf/media` ships to six
   downloaders; only the TeX jobs need it.
-- **L. Sweep unreferenced media** — 442 of 807 files in `media/` (152 MB) are
-  referenced by no lecture; `.git` is 199 MB. One cleanup commit cuts
-  checkout cost everywhere. (Check for references from docs/, examples/,
-  jupyter/ before deleting.)
+- **L. ~~Sweep unreferenced media~~ — mostly a non-item.** Searching the
+  whole repo (not just lectures) only 19 files / 2.4 MB are unreferenced;
+  the earlier 442 count was lectures-only and the rest are used by docs
+  pages, examples, and as `_tikz` twins. Not worth a sweep.
 
 ## 3. Lecture note correctness
 
