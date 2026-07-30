@@ -69,6 +69,106 @@ def fold_toc(body):
     return re.sub(r"\*\s*TOC\s*\n\{:toc\s*\}", JTD_TOC, body)
 
 
+def nav_title(heading):
+    """A sidebar-safe title from a markdown heading: no math, no markup."""
+    t = heading.strip()
+    t = re.sub(r"\$\$?([^$]*)\$\$?", r"\1", t)     # drop math markers
+    t = re.sub(r"\\[a-zA-Z]+", "", t)              # latex commands
+    t = t.replace("{", "").replace("}", "").replace("_", "")
+    t = re.sub(r"\s+", " ", t).strip()
+    return t or heading.strip()
+
+
+def split_sections(body):
+    """Split a chapter body on its top level '# ' headings.
+
+    Returns (preamble, [(heading, section_body), ...]). Fenced code blocks
+    are respected so a '# comment' inside code does not split anything.
+    """
+    lines = body.split("\n")
+    sections = []
+    current = []
+    heading = None
+    preamble = []
+    in_code = False
+    for line in lines:
+        if line.lstrip().startswith("```"):
+            in_code = not in_code
+        if not in_code and re.match(r"# [^#]", line):
+            if heading is None:
+                preamble = current
+            else:
+                sections.append((heading, current))
+            heading = line[2:].strip()
+            current = []
+        else:
+            current.append(line)
+    if heading is None:
+        preamble = current
+    else:
+        sections.append((heading, current))
+    return "\n".join(preamble), [(h, "\n".join(c)) for h, c in sections]
+
+
+def footnote_defs(body):
+    """The kramdown footnote definitions of a chapter, one block."""
+    return re.findall(r"^\[\^[^\]]+\]:.*(?:\n(?!\[\^|\n).*)*", body, re.M)
+
+
+def write_chapter(n, lid, title, permalink, body):
+    """One chapter as a parent page with its main headers as children.
+
+    The sidebar gets the theme's expander arrow on the chapter, opening
+    to the top level sections. Content under a first heading that just
+    repeats the chapter title stays on the parent page.
+    """
+    preamble, sections = split_sections(body)
+    if sections and nav_title(sections[0][0]).lower() == title.lower():
+        preamble += "\n" + sections[0][1]
+        sections = sections[1:]
+
+    # a chapter without real sections stays a single page
+    if len(sections) < 2:
+        write_page(os.path.join(CHAPTERS, f"{n:02d}_{lid}.md"),
+                   title, n + 10, permalink, body)
+        return 1
+
+    defs = footnote_defs(body)
+
+    front = "\n".join([
+        "---", "layout: default", f"title: {title}",
+        f"nav_order: {n + 10}", f"permalink: {permalink}",
+        "has_children: true", "has_toc: false", "---", "",
+    ])
+    with open(os.path.join(CHAPTERS, f"{n:02d}_{lid}.md"), "w") as fo:
+        fo.write(front + fold_toc(preamble))
+
+    seen = {}
+    for i, (heading, sbody) in enumerate(sections, start=1):
+        stitle = nav_title(heading)
+        if stitle.lower() in seen or stitle.lower() == title.lower():
+            seen[stitle.lower()] = seen.get(stitle.lower(), 1) + 1
+            stitle = f"{stitle} ({seen[stitle.lower()]})"
+        else:
+            seen[stitle.lower()] = 1
+        slug = re.sub(r"[^a-z0-9]+", "-", stitle.lower()).strip("-")
+        # keep the original heading in the page, and re-attach the
+        # chapter's footnote definitions where they are referenced
+        text = f"# {heading}\n{sbody}"
+        if defs and re.search(r"\[\^[^\]]+\](?!:)", sbody):
+            for d in defs:
+                if d not in sbody:
+                    text += "\n\n" + d
+        front = "\n".join([
+            "---", "layout: default", f"title: {stitle}",
+            f"parent: {title}", f"nav_order: {i}",
+            f"permalink: {permalink}/{slug}/", "---", "",
+        ])
+        with open(os.path.join(CHAPTERS, f"{n:02d}_{lid}_{i:02d}.md"), "w") as fo:
+            fo.write(front + fold_toc(text))
+    return 1 + len(sections)
+
+
 def write_page(path, title, nav_order, permalink, body):
     front = "\n".join(
         [
@@ -139,17 +239,15 @@ def main():
         print("extra posts appended: " + " ".join(extras))
     order += extras
 
+    npages = 0
     for n, lid in enumerate(order, start=1):
         text = posts[lid]
         head, body = front_matter(text)
         title = re.search(r"title:\s*(.*)", head).group(1).strip()
         permalink = re.search(r"permalink:\s*(.*)", head).group(1).strip()
         # chapters sort after the top level pages in the sidebar
-        write_page(
-            os.path.join(CHAPTERS, f"{n:02d}_{lid}.md"),
-            title, n + 10, permalink, body,
-        )
-    print(f"wrote {len(order)} chapters to docs-book/chapters/")
+        npages += write_chapter(n, lid, title, permalink, body)
+    print(f"wrote {len(order)} chapters ({npages} pages) to docs-book/chapters/")
 
     make_slides_page(order, posts)
 
