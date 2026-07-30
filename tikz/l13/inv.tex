@@ -1,0 +1,29 @@
+\input{tikz/fig_header.tex}
+
+% CMOS inverter, transistor level: PMOS pull-up, NMOS pull-down, gates
+% tied to the input, drains tied to the output.
+
+\begin{circuitikz}[american, thick, transform shape, circuit ee IEC]
+
+  \input{tikz/ckt_lib.tex}
+
+  \draw (0,0) \vground;
+  \draw (0,0) \lvnmos{MN}{};
+  \draw (0,\grid) \lvpmos{MP}{};
+  \draw (0,{2*\grid}) \vsupply;
+
+  % common gate wire with the input port
+  \coordinate (gn) at (MN.G);
+  \coordinate (gp) at (MP.G);
+  \draw (gn) -- ++(-0.4,0) coordinate (gna);
+  \draw (gp) -- ++(-0.4,0) coordinate (gpa);
+  \draw (gna) -- (gpa);
+  \coordinate (gin) at (-1.15,\grid);
+  \fill (gin) circle (0.075);
+  \draw (gin) to [short,-o] ++(-0.7,0) node[anchor=east] {A};
+
+  % output
+  \draw (0,\grid) \portOut{Y};
+
+\end{circuitikz}
+\end{document}

@@ -553,6 +553,22 @@ come up.
   red/blue path colors, pill terminals) and switched in BOTH
   `l01_intro` and `l11_aver`. Topology checked edge for edge.
 
+### lr0_logic batch 1 done (2026-07-30)
+
+First eleven figures switched, using the `tikz/l13/<name>.tex` ->
+`media/l13/<name>_tikz.pdf` subdirectory convention: `inv`, `nand_tr`,
+`nor_tr`, `pu_pmos`, `pd_nmos` (transistor level, house Tnmos/Tpmos
+macros), `pull` and `pdpu` (block diagram and logic-value table),
+`nand`, `nor`, `and`, `or` (circuitikz logic ports; and/or show the
+NAND+INV / NOR+INV decomposition with the red arrow). The
+`$$\Rightarrow$$` mnemonic fragments in the doc output became plain
+`=>`. Still hand drawn in this lecture: `rules.pdf` (the YES/NO smiley
+sketch - kept on purpose, it has charm; author's call), the plots
+(`transistor_log/lin`), tool screenshots, and batch 2: `binary`,
+`mux`, `latch`, `dlatch`, `d_ff`, `digital_ff_comb`, `inv_tg`,
+`an2oi`, `ivtrix`, `fig_sar_logic`, `mealy/moore_machine`, plus the
+`l14/`, `l16/`, `l19/` sets.
+
 ### Current next figure
 `l04_dac` is complete, so the queue moves on. In order, and each one triaged
 by listing its figures first rather than trusting the queue below:

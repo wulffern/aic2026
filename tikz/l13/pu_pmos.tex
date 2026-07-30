@@ -1,0 +1,30 @@
+\input{tikz/fig_header.tex}
+
+% Pull-up networks: PMOS in series and PMOS in parallel, from the supply
+% down to the output. The truth tables live in the slide beside this.
+
+\begin{circuitikz}[american, thick, transform shape, circuit ee IEC]
+
+  \input{tikz/ckt_lib.tex}
+
+  % ---- series ----
+  \draw (0,{2*\grid}) \vsupply;
+  \draw (0,\grid) \lvpmos{MSA}{A};
+  \draw (0,0) \lvpmos{MSB}{B};
+  \draw (0,0) \portOut{Y};
+  \node[anchor=north, color=black!60] at (0.5,-0.6) {series};
+
+  % ---- parallel ----
+  \def\xa{5.2}
+  \def\xb{7.4}
+  \draw (\xa,{\grid+0.8}) \vsupply;
+  \draw (\xb,{\grid+0.8}) \vsupply;
+  \draw (\xa,0.8) \lvpmos{MPA}{A};
+  \draw (\xb,0.8) \lvpmos{MPB}{B};
+  \draw (\xa,0.8) -- (\xb,0.8);
+  \fill (\xa,0.8) circle (0.075);
+  \draw (\xb,0.8) \portOut{Y};
+  \node[anchor=north, color=black!60] at ({(\xa+\xb)/2},0.2) {parallel};
+
+\end{circuitikz}
+\end{document}

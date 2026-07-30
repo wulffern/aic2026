@@ -1,0 +1,30 @@
+\input{tikz/fig_header.tex}
+
+% Every static CMOS gate is a pull-up PMOS network and a pull-down NMOS
+% network fighting over one output node.
+
+\begin{tikzpicture}[thick,
+  blk/.style={draw=mOne, rectangle, align=center, minimum width=2.6cm,
+              minimum height=1.4cm}]
+
+  \node[blk] (pu) at (0,1.6)  {Pullup\\PMOS};
+  \node[blk] (pd) at (0,-1.6) {Pull-down\\NMOS};
+
+  % input bus feeding both networks
+  \coordinate (in) at (-3.2,0);
+  \draw (in) -- (-2.2,0);
+  \draw (-2.2,0) |- (pu.west);
+  \draw (-2.2,0) |- (pd.west);
+  \fill (-2.2,0) circle (0.06);
+  \node[anchor=east] at (-3.4,0) {Input};
+  \draw ({-2.9},{-0.25}) -- ({-2.6},{0.25});
+
+  % common output node
+  \draw (pu.south) -- (pd.north);
+  \coordinate (out) at (0,0);
+  \fill (out) circle (0.06);
+  \draw (out) -- (2.6,0);
+  \node[anchor=west] at (2.8,0) {Output};
+
+\end{tikzpicture}
+\end{document}

@@ -1,0 +1,13 @@
+\input{tikz/fig_header.tex}
+
+% In inverting CMOS logic an AND is really a NAND followed by an
+% inverter.
+
+\begin{circuitikz}[thick]
+  \node[and port] (g1) at (0,0) {};
+  \draw[red, very thick, -latex] (2.2,0) -- (3.6,0);
+  \node[nand port] (g2) at (5.6,0) {};
+  \node[not port] (g3) at (7.8,0) {};
+  \draw (g2.out) -- (g3.in);
+\end{circuitikz}
+\end{document}

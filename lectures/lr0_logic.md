@@ -66,7 +66,7 @@ PMOS source is connected to high potential
 
 $$ V_{GS} < V_{TH}$$ when $$V_G = 0$$
 
-![right fit](../media/l13/nand_tr.png)
+![right fit](../media/l13/nand_tr_tikz.pdf)
 
 ---
 
@@ -97,11 +97,11 @@ $$ V_{GS} < V_{TH}$$ when $$V_G = 0$$
 | 0 | 1 | 
 
 
-![right fit](../media/l13/inv.png)
+![right fit](../media/l13/inv_tikz.pdf)
 
 ---
 
-![inline fit](../media/l13/pdpu.pdf)
+![inline fit](../media/l13/pdpu_tikz.pdf)
 
 <sub>PD = Pull-down PU = Pull-up</sub>
 
@@ -109,7 +109,7 @@ $$ V_{GS} < V_{TH}$$ when $$V_G = 0$$
 logic => [0,1,Z,X];
 ```
 
-![right fit](../media/l13/pull.png)
+![right fit](../media/l13/pull_tikz.pdf)
 
 ---
 [.table-separator: #000000, stroke-width(1)] 
@@ -135,7 +135,7 @@ logic => [0,1,Z,X];
 | 1 | 0 | 1 |
 | 1 | 1 | Z |
 
-![right fit](../media/l13/pu_pmos.pdf)
+![right fit](../media/l13/pu_pmos_tikz.pdf)
 
 ---
 [.table-separator: #000000, stroke-width(1)] 
@@ -159,21 +159,21 @@ logic => [0,1,Z,X];
 | 1 | 0 | 0 |
 | 1 | 1 | 0 |
 
-![right fit](../media/l13/pd_nmos.pdf)
+![right fit](../media/l13/pd_nmos_tikz.pdf)
 
 ---
 
 ## Rules for inverting logic
 
 **Pull-up**
-OR $$\Rightarrow$$ PMOS in series $$\Rightarrow$$ POS 
-AND $$\Rightarrow$$ PMOS in paralell $$\Rightarrow$$ PAP
+OR => PMOS in series => POS 
+AND => PMOS in paralell => PAP
 
 **Pull-down**
-OR $$\Rightarrow$$ NMOS in paralell $$\Rightarrow$$ NOP 
-AND $$\Rightarrow$$ NMOS in series $$\Rightarrow$$ NAS 
+OR => NMOS in paralell => NOP 
+AND => NMOS in series => NAS 
 
-![right fit](../media/l13/pull.png)
+![right fit](../media/l13/pull_tikz.pdf)
 
 ---
 
@@ -184,11 +184,11 @@ AND $$\Rightarrow$$ NMOS in series $$\Rightarrow$$ NAS
 $$ \text{Y} = \overline{\text{AB}} = \text{NOT ( A AND B)}$$
 
  **AND**
- PU $$\Rightarrow$$ PMOS in paralell
- PD  $$\Rightarrow$$ NMOS in series
+ PU => PMOS in paralell
+ PD  => NMOS in series
 
 
-![right fit ](../media/l13/nand_tr.png)
+![right fit ](../media/l13/nand_tr_tikz.pdf)
 
 
 
@@ -201,11 +201,11 @@ $$ \text{Y} = \overline{\text{AB}} = \text{NOT ( A AND B)}$$
 
 ---
 
-![left 100% ](../media/l13/nand.png)
+![left 100% ](../media/l13/nand_tikz.pdf)
 
 <!--pan_skip: -->
 
-![right fit ](../media/l13/nand_tr.png)
+![right fit ](../media/l13/nand_tr_tikz.pdf)
 
 ---
 [.table-separator: #000000, stroke-width(1)] 
@@ -215,11 +215,11 @@ $$ \text{Y} = \overline{\text{AB}} = \text{NOT ( A AND B)}$$
 $$ \text{Y} = \overline{\text{A + B}} = \text{NOT ( A OR B)}$$  
 
 **OR**
-PU $$\Rightarrow$$ PMOS in series
-PD  $$\Rightarrow$$ NMOS in paralell
+PU => PMOS in series
+PD  => NMOS in paralell
 
 
-![right fit ](../media/l13/nor_tr.png)
+![right fit ](../media/l13/nor_tr_tikz.pdf)
 
 | A | B | <sub>NOT(A OR B)</sub> |
 |:---|:---|:---|
@@ -231,17 +231,17 @@ PD  $$\Rightarrow$$ NMOS in paralell
 
 ---
 
-![left fit ](../media/l13/nor.png)
+![left fit ](../media/l13/nor_tikz.pdf)
 
 <!--pan_skip: -->
 
-![right fit ](../media/l13/nor_tr.png)
+![right fit ](../media/l13/nor_tr_tikz.pdf)
 
 ---
 
 <!--pan_skip: -->
 
-![50%](../media/l13/inv.png)  ![inline](../media/l13/nor_tr.png) ![inline](../media/l13/nand_tr.png)
+![50%](../media/l13/inv_tikz.pdf)  ![inline](../media/l13/nor_tr_tikz.pdf) ![inline](../media/l13/nand_tr_tikz.pdf)
 
 ---
 
@@ -310,7 +310,7 @@ What about $$\text{Y} = \text{AB}$$ and $$\text{Y} = \text{A} + \text{B}$$?
 
 **Y** = **A** AND **B** = NOT( NOT( **A** AND **B** ) )
 
-![inline](../media/l13/and.png)
+![inline](../media/l13/and_tikz.pdf)
 
 [.column]
 
@@ -318,7 +318,7 @@ $$\text{Y} = \text{A+B} = \overline{\overline{\text{A+B}}}$$
 
 **Y** = **A** OR **B** = NOT( NOT( **A** OR **B** ) )
 
-![inline](../media/l13/or.png)
+![inline](../media/l13/or_tikz.pdf)
 
 
 ---
@@ -478,10 +478,10 @@ Analyze arrival times of all nodes in a combinatorial circuit
 
  $$ slack_i = required_i - arrival_j$$
 
-Positive slack (over PVT[^1]) $$\Rightarrow$$ Timing is OK
-Negative slack (over PVT[^1]) $$\Rightarrow$$ Timing is not OK
+Positive slack (over PVT[^1]) => Timing is OK
+Negative slack (over PVT[^1]) => Timing is not OK
 
-[^1]: PVT $$\Rightarrow$$ Process, Voltage, Temperature
+[^1]: PVT => Process, Voltage, Temperature
 
 ---
 
@@ -1191,9 +1191,9 @@ Often 5 - 10 layers of metal
 
 #[fit] Metal routing rules on IC
 
-Odd numbers metals $$\Rightarrow$$ Horizontal routing (as far as possible)
+Odd numbers metals => Horizontal routing (as far as possible)
 
-Even numbers metals $$\Rightarrow$$ Vertical routing (as far as possible)
+Even numbers metals => Vertical routing (as far as possible)
 
 ---
 # Modeling Interconnect

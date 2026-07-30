@@ -1,0 +1,30 @@
+\input{tikz/fig_header.tex}
+
+% NAND, transistor level: PMOS in parallel pull up (AND in the pull-up
+% rulebook), NMOS in series pull down.
+
+\begin{circuitikz}[american, thick, transform shape, circuit ee IEC]
+
+  \input{tikz/ckt_lib.tex}
+
+  \def\xl{0}
+  \def\xr{2.2}
+
+  % series NMOS stack
+  \draw (\xl,0) \vground;
+  \draw (\xl,0) \lvnmos{MNB}{B};
+  \draw (\xl,\grid) \lvnmos{MNA}{A};
+
+  % parallel PMOS pair
+  \draw (\xl,{2*\grid}) \lvpmos{MPA}{A};
+  \draw (\xl,{3*\grid}) \vsupply;
+  \draw (\xr,{2*\grid}) \lvpmos{MPB}{B};
+  \draw (\xr,{3*\grid}) \vsupply;
+
+  % output rail joins both PMOS drains and the NMOS stack
+  \draw (\xl,{2*\grid}) -- (\xr,{2*\grid});
+  \fill (\xl,{2*\grid}) circle (0.075);
+  \draw (\xr,{2*\grid}) \portOut{Y};
+
+\end{circuitikz}
+\end{document}
