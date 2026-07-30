@@ -1,0 +1,21 @@
+\input{tikz/fig_header.tex}
+
+% Depletion: the holes are pushed away from the surface, leaving only
+% fixed acceptor ions underneath the gate.
+
+\begin{tikzpicture}[scale=0.85]
+  \input{tikz/mos_lib.tex}
+  \bulkframe
+  \sideholes
+  
+eckrow{-1.5}{0.3}
+  
+eckrow{-1.95}{0.0}
+  
+eckrow{-2.4}{0.15}
+  \bulkterminalgnd{1.6}{$V_S = 0$}{-1}
+  \bulkterminalgnd{8.4}{$V_D = 0$}{1}
+  \node[echarge, anchor=south] at (5.0,1.35) {$V_{GS} \sim\, ?$};
+  \draw[thick] (5.0,1.15) -- (5.0,1.35);
+\end{tikzpicture}
+\end{document}

@@ -120,7 +120,7 @@ Imagine that your eyes could see the free electrons as a blue fluorescent color.
 
 -->
 
-![inline](../media/mosfet_off.pdf)
+![inline](../media/mosfet_off_tikz.pdf)
 
 ---
 
@@ -131,7 +131,7 @@ As you increase the gate voltage, the color underneath the gate would change. Fi
 
 -->
 
-![inline](../media/mosfet_subthreshold.pdf)
+![inline](../media/mosfet_subthreshold_tikz.pdf)
 
 ---
 
@@ -145,7 +145,7 @@ As you continue to increase the gate voltage the blue color would become a littl
 
 -->
 
-![inline](../media/mosfet_strong_inversion.pdf)
+![inline](../media/mosfet_strong_inversion_tikz.pdf)
 
 ---
 
@@ -168,7 +168,7 @@ in the sheet.
 
 -->
 
-![inline](../media/mosfet_strong_inversion_and_saturation.pdf)
+![inline](../media/mosfet_strong_inversion_and_saturation_tikz.pdf)
 
 ---
 
@@ -719,7 +719,7 @@ $$
 
 ---
 
-![inline 130%](../media/accumulated.pdf)
+![inline 130%](../media/accumulated_tikz.pdf)
 
 <!--pan_doc:
 <sub>Figure 18: Accumulation, $V_{GS} < 0$</sub>
@@ -733,7 +733,7 @@ underneath the gate.
 ---
 
 
-![inline 130%](../media/depleted.pdf)
+![inline 130%](../media/depleted_tikz.pdf)
 
 <!--pan_doc:
 <sub>Figure 19: Depletion</sub>
@@ -745,7 +745,7 @@ negatively charged acceptor ions remain.
 
 ---
 
-![inline 130%](../media/weakinv.pdf)
+![inline 130%](../media/weakinv_tikz.pdf)
 
 <!--pan_doc:
 <sub>Figure 20: Weak inversion</sub>
@@ -807,7 +807,7 @@ $$
 
 ---
 
-![inline 130%](../media/vds_l_veff.pdf)
+![inline 130%](../media/vds_l_veff_tikz.pdf)
 
 <!--pan_doc:
 <sub>Figure 22: Triode, $V_{DS} \ll V_{eff}$</sub>
@@ -817,7 +817,7 @@ The inversion layer reaches all the way from source to drain, and the transistor
 
 ---
 
-![inline 130%](../media/vds_veff.pdf)
+![inline 130%](../media/vds_veff_tikz.pdf)
 
 <!--pan_doc:
 <sub>Figure 23: Pinch-off, $V_{DS} = V_{eff}$</sub>
@@ -827,7 +827,7 @@ The local gate-to-channel voltage at the drain end is down to $V_{tn}$, so the i
 
 ---
 
-![inline 130%](../media/vds_h_veff.pdf)
+![inline 130%](../media/vds_h_veff_tikz.pdf)
 
 <!--pan_doc:
 <sub>Figure 24: Saturation, $V_{DS} > V_{eff}$</sub>
@@ -1035,7 +1035,7 @@ If $$ V_{eff} < 0 $$ diffusion currents dominate.
 
  $$ g_m = \frac{I_D}{nV_T} $$
 
-![right fit](../media/weakinv.pdf)
+![right fit](../media/weakinv_tikz.pdf)
 
 ---
 

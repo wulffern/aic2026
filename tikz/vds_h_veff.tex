@@ -1,0 +1,30 @@
+\input{tikz/fig_header.tex}
+
+% Saturation: V_DS > V_eff. The channel pinches off before the drain;
+% the green annotations mark the pinch-off point, where the channel
+% voltage equals V_DS-sat, and the region that drops the excess drain
+% voltage.
+
+\definecolor{annot}{RGB}{20,150,60}
+
+\begin{tikzpicture}[scale=0.85]
+  \input{tikz/mos_lib.tex}
+  \bulkframe
+  \sideholes
+  \neckrow{-2.4}{0.15}
+  % depletion edge, deepest at the drain
+  \draw[thick] (2.9,-1.15) .. controls (4.4,-1.7) and (6.2,-2.2) .. (7.1,-1.6);
+  % gate charge
+  \foreach \x in {3.1,3.75,...,7.0}{ \hplus{\x}{0.7} }
+  \bulkterminalgnd{1.6}{$V_S = 0$}{-1}
+  \draw[thick] (8.4,0) -- (8.4,0.55);
+  \node[echarge, anchor=south] at (8.4,0.6) {$V_{DS} > V_{eff}$};
+  \node[echarge, anchor=south] at (5.0,1.35) {$V_{GS} > V_{tn}$};
+  \draw[thick] (5.0,1.15) -- (5.0,1.35);
+  % pinch-off point and the region dropping V_DS - V_DS-sat
+  \node[annot, anchor=north west] at (6.2,-4.0) {$V_{Ch} = V_{DS\text{-}sat}$};
+  \draw[annot, thick, -latex] (7.2,-3.95) .. controls (7.6,-2.4) .. (6.4,-0.35);
+  \node[annot, anchor=south west] at (6.6,2.05) {$V_{DS} - V_{DS\text{-}sat}$};
+  \draw[annot, thick, -latex] (7.4,2.0) .. controls (7.0,1.2) .. (6.75,0.35);
+\end{tikzpicture}
+\end{document}

@@ -356,6 +356,21 @@ That is 10 figures, in three lectures.
 ### Pending approval
 - none
 
+### lr0_mosfet batch 2 (core) — switched 2026-07-30
+The two cross-section families, drawn from the shared `tikz/mos_lib.tex`:
+`mosfet_off`, `mosfet_subthreshold`, `mosfet_strong_inversion`,
+`mosfet_strong_inversion_and_saturation` (glowing-blue field-effect intro),
+and `accumulated`, `depleted`, `weakinv`, `vds_l_veff`, `vds_veff`,
+`vds_h_veff` (red/blue carrier cartoons). Checked against the originals:
+the carrier colour language, the hole-population progression
+(accumulation at the surface → depletion gap → gate charge), the
+depletion edge deepening towards the drain across the V_DS sequence, the
+verbatim "$V_{GS} \sim\, ?$" label on depleted, and the green pinch-off
+annotations on vds_h_veff. Still open: the one-off cross-sections
+(drain_close, caps, gateleakage, hci, chisel, wpe, stress) and the band
+diagrams (batch 3). `lectures/mosfet_backup` is untracked scratch and was
+left pointing at the originals.
+
 ### lr0_mosfet batch 1 — switched 2026-07-30
 `large_signal`, `small_signal`, `small_signal_w_gs`, `hfmodel`, `miller`
 redrawn in circuitikz and switched in `lectures/lr0_mosfet.md` after

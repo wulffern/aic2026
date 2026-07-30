@@ -238,7 +238,7 @@ equations:
 	${foreach f,${FILES},cat lectures/${f}.md |perl -pe 's/\n//ig;'| perl -ne 'print "\n# ${f}\n\n";while(m/\$$\$$([^\$$]+)\$$\$$/ig){print "\n\$$\$$".$$1."\$$\$$\n"}';}
 
 # Shared TikZ preamble/library files, included by the figures rather than built.
-TIKZ_INCLUDES = fig_header.tex ckt_lib.tex spec_lib.tex plane_lib.tex sc_lib.tex boot_lib.tex gmc_lib.tex sfg_lib.tex rdac_lib.tex dacsm_lib.tex
+TIKZ_INCLUDES = fig_header.tex ckt_lib.tex mos_lib.tex spec_lib.tex plane_lib.tex sc_lib.tex boot_lib.tex gmc_lib.tex sfg_lib.tex rdac_lib.tex dacsm_lib.tex
 
 # pdfTeX stamps /CreationDate into every PDF, so an unchanged figure would
 # still produce a different file on each run — and CI commits what it builds.

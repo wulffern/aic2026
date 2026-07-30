@@ -1,0 +1,21 @@
+\input{tikz/fig_header.tex}
+
+% Pinch-off: V_DS = V_eff. The depletion edge is clearly deeper at the
+% drain, where the local gate-to-channel voltage is down to V_tn.
+
+\begin{tikzpicture}[scale=0.85]
+  \input{tikz/mos_lib.tex}
+  \bulkframe
+  \sideholes
+  \neckrow{-2.4}{0.15}
+  % depletion edge, much deeper towards the drain
+  \draw[thick] (2.9,-1.15) .. controls (4.4,-1.7) and (6.2,-2.1) .. (7.1,-1.5);
+  % gate charge
+  \foreach \x in {3.1,3.75,...,7.0}{ \hplus{\x}{0.7} }
+  \bulkterminalgnd{1.6}{$V_S = 0$}{-1}
+  \draw[thick] (8.4,0) -- (8.4,0.55);
+  \node[echarge, anchor=south] at (8.4,0.6) {$V_{DS} = V_{eff}$};
+  \node[echarge, anchor=south] at (5.0,1.35) {$V_{GS} > V_{tn}$};
+  \draw[thick] (5.0,1.15) -- (5.0,1.35);
+\end{tikzpicture}
+\end{document}

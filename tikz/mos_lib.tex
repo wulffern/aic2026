@@ -1,0 +1,105 @@
+% Shared pieces for the lr0_mosfet cross-section cartoons.
+%
+% Two families use this file:
+%  - the field-effect intro (mosfet_off/subthreshold/strong_inversion...):
+%    white background, glowing blue n+ blocks, gate box, S/G/D terminals
+%  - the carrier cartoons (accumulated/depleted/weakinv/vds_*): gray
+%    substrate, n+ boxes with blue minus signs, red plus signs in the
+%    p- bulk, teal oxide strip under the gate
+%
+% The colour language follows the original hand drawings: free electrons
+% are blue, holes are red, the lecture prose ("imagine the free electrons
+% as a blue fluorescent color") depends on it.
+
+\definecolor{echarge}{RGB}{30,60,220}   % electron blue
+\definecolor{hcharge}{RGB}{220,30,30}   % hole red
+\definecolor{oxteal}{RGB}{60,140,160}   % oxide/channel strip
+
+% ------------------------------------------------------------------
+% Family 1: field-effect intro frame.
+% Geometry: n+ blocks [0,2.9] and [5.9,8.8] x [-1.5,0], gate [2.6,6.2].
+% ------------------------------------------------------------------
+\newcommand{\fetblock}[2]{% x0 x1: glowing blue block below the surface
+  \fill[echarge!30, rounded corners=8pt] (#1-0.12,-1.62) rectangle (#2+0.12,0.10);
+  \fill[echarge, rounded corners=6pt] (#1,-1.5) rectangle (#2,0);
+}
+
+\newcommand{\fetterminal}[3]{% x y label: stem with a small open circle
+  \draw[thick] (#1,#2) -- (#1,#2+0.35);
+  \draw[thick] (#1,#2+0.44) circle (0.09);
+  \node[anchor=south] at (#1,#2+0.62) {#3};
+}
+
+\newcommand{\fetframe}{%
+  \fetblock{0}{2.9}
+  \fetblock{5.9}{8.8}
+  % gate: rounded box sitting just above the surface
+  \draw[line width=1.6pt, rounded corners=10pt] (2.6,0.12) rectangle (6.2,1.05);
+  \node[anchor=center] at (4.4,0.58) {GATE};
+  \fetterminal{1.3}{0}{S}
+  \fetterminal{4.4}{1.05}{G}
+  \fetterminal{7.4}{0}{D}
+}
+
+% ------------------------------------------------------------------
+% Family 2: carrier cartoon frame.
+% Surface at y=0. Substrate down to y=-3.6, x in [-0.4,10.4].
+% n+ boxes [0.3,2.9] and [7.1,9.7] x [-1.15,0]. Gate [3.0,7.0].
+% ------------------------------------------------------------------
+\newcommand{\eminus}[2]{\node[echarge, anchor=center, scale=0.7] at (#1,#2) {$\boldsymbol{-}$};}
+\newcommand{\hplus}[2]{\node[hcharge, anchor=center, scale=0.8] at (#1,#2) {$\boldsymbol{+}$};}
+
+% rows of minus signs filling an n+ box
+\newcommand{\efill}[2]{% x0 x1
+  \foreach \y in {-0.25,-0.55,-0.85}{
+    \foreach \x in {0.15,0.55,...,2.4}{
+      \eminus{#1+\x}{\y}
+    }
+  }
+}
+
+\newcommand{\bulkframe}{%
+  % substrate outline
+  \draw[line width=2.2pt, gray!60, rounded corners=4pt]
+    (-0.4,0) -- (10.4,0) -- (10.4,-3.6) -- (-0.4,-3.6) -- cycle;
+  % n+ wells
+  \draw[line width=1.4pt, rounded corners=3pt] (0.3,0) -- (0.3,-1.15) -- (2.9,-1.15) -- (2.9,0);
+  \draw[line width=1.4pt, rounded corners=3pt] (7.1,0) -- (7.1,-1.15) -- (9.7,-1.15) -- (9.7,0);
+  \efill{0.3}{2.9}
+  \efill{7.1}{9.7}
+  \node[anchor=south west, scale=0.8] at (0.32,-1.12) {$n+$};
+  \node[anchor=south east, scale=0.8] at (9.68,-1.12) {$n+$};
+  % deep bulk holes
+  \foreach \y/\xoff in {-3.3/0.0, -2.85/0.25}{
+    \foreach \x in {0.1,0.7,...,10.2}{
+      \hplus{\x+\xoff}{\y}
+    }
+  }
+  \node[hcharge!70!black, anchor=center] at (5.0,-3.95) {$p-$};
+  % oxide strip and gate box
+  \fill[oxteal!80] (3.0,0.02) rectangle (7.0,0.24);
+  \draw[line width=1.6pt, rounded corners=6pt] (2.75,0.26) rectangle (7.25,1.15);
+}
+
+% one row of holes between the wells
+\newcommand{\neckrow}[2]{% y xoff
+  \foreach \x in {3.2,3.8,...,6.9}{
+    \hplus{\x+#2}{#1}
+  }
+}
+
+% holes to the sides underneath the wells
+\newcommand{\sideholes}{%
+  \foreach \y/\xoff in {-1.6/0.1, -2.15/0.35}{
+    \foreach \x in {-0.1,0.5,...,2.6}{ \hplus{\x+\xoff}{\y} }
+    \foreach \x in {7.3,7.9,...,10.1}{ \hplus{\x+\xoff}{\y} }
+  }
+}
+
+% terminals with ground symbols, and the p- label
+\newcommand{\bulkterminalgnd}[3]{% x label side(-1 left / 1 right)
+  \draw[thick] (#1,0) -- (#1,0.5) -- ({#1+#3*0.7},0.5);
+  \draw[thick] ({#1+#3*0.7},0.35) -- ({#1+#3*0.7},0.65);
+  \draw[thick] ({#1+#3*0.85},0.42) -- ({#1+#3*0.85},0.58);
+  \node[echarge, anchor=south] at (#1,0.65) {#2};
+}

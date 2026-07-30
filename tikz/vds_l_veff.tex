@@ -1,0 +1,22 @@
+\input{tikz/fig_header.tex}
+
+% Triode: V_GS well above threshold, small positive V_DS. The depletion
+% edge dips slightly deeper on the drain side.
+
+\begin{tikzpicture}[scale=0.85]
+  \input{tikz/mos_lib.tex}
+  \bulkframe
+  \sideholes
+  \neckrow{-1.95}{0.0}
+  \neckrow{-2.4}{0.15}
+  % depletion edge, slightly deeper towards the drain
+  \draw[thick] (2.9,-1.15) .. controls (4.2,-1.55) and (5.8,-1.75) .. (7.1,-1.3);
+  % gate charge
+  \foreach \x in {3.1,3.75,...,7.0}{ \hplus{\x}{0.7} }
+  \bulkterminalgnd{1.6}{$V_S = 0$}{-1}
+  \draw[thick] (8.4,0) -- (8.4,0.55);
+  \node[echarge, anchor=south] at (8.4,0.6) {$V_{DS} > 0$};
+  \node[echarge, anchor=south] at (5.0,1.35) {$V_{GS} \gg 0$};
+  \draw[thick] (5.0,1.15) -- (5.0,1.35);
+\end{tikzpicture}
+\end{document}
