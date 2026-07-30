@@ -170,7 +170,6 @@ preview/
 docs-book/chapters/
 docs-book/assets/
 docs-book/_site/
-docs-book/Gemfile.lock
 docs-book/.jekyll-cache/
 docs-book/vendor/
 docs-book/.bundle/

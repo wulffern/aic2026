@@ -34,6 +34,12 @@ concurrency:
   group: "pages"
   cancel-in-progress: true
 
+env:
+  # Which site to publish: 'book' is the just-the-docs site assembled
+  # from docs-book/ by py/mkbooksite.py; 'legacy' is the old minima site
+  # in docs/. Flip this one line to roll back.
+  SITE_FLAVOR: book
+
 # All build jobs run in the repo's own image (see docker.yaml): TeX Live 2022
 # plus every apt and pip dependency preinstalled. Before this, each job
 # pulled texlive/texlive from docker.io and re-ran apt-get install, which was
@@ -262,7 +268,29 @@ jobs:
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
-      - name: Build with Jekyll
+      # ---- book site (just-the-docs), theme pinned by Gemfile.lock ----
+      - name: Generate book site sources
+        if: env.SITE_FLAVOR == 'book'
+        run: python3 py/mkbooksite.py
+
+      - name: Setup Ruby
+        if: env.SITE_FLAVOR == 'book'
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.3'
+          bundler-cache: true
+          working-directory: docs-book
+
+      - name: Build with Jekyll (book)
+        if: env.SITE_FLAVOR == 'book'
+        working-directory: docs-book
+        env:
+          JEKYLL_ENV: production
+        run: bundle exec jekyll build -d ../_site
+
+      # ---- legacy site (minima in docs/), kept for easy rollback ----
+      - name: Build with Jekyll (legacy)
+        if: env.SITE_FLAVOR == 'legacy'
         uses: actions/jekyll-build-pages@v1
         with:
           source: ./docs/
