@@ -777,7 +777,7 @@ watch the pole move inside the unit circle and the corner frequency follow it.
 ```python
 #- IIR filter
 b = 0.3
-a = 0.25
+a = 0.75
 z = a + 1j*b
 z_abs = np.abs(z)
 print("|z| = " + str(z_abs))

@@ -19,7 +19,7 @@ x_sn = x_s*t_s
 
 #- IIR filter
 b = 0.3
-a = 0.25
+a = 0.75
 z = a + 1j*b
 z_abs = np.abs(z)
 print("|z| = " + str(z_abs))

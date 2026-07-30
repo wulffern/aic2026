@@ -36,11 +36,11 @@
     </div>
     <div class="cr">
       <label>a (feedback)</label>
-      <input type="range" data-bind="a" id="sl-a" min="0" max="1" step="0.001" value="0.25">
+      <input type="range" data-bind="a" id="sl-a" min="0" max="1" step="0.001" value="0.75">
       <span class="v" id="v-a"></span>
     </div>
     <div class="note">
-      <code>ex/iir.py</code> uses a = 0.25. Push a to 1 and the pole sits
+      <code>ex/iir.py</code> uses a = 0.75: the corner lands below the spectral copies, so the filter visibly rejects them. Push a to 1 and the pole sits
       exactly on the unit circle: the filter degenerates into a plain
       accumulator with infinite DC gain.
     </div>
@@ -137,7 +137,7 @@
       filter that settles.
     </li>
     <li>
-      Walk <b>a</b> through 0.99, 0.9, 0.5, 0.25. The pole moves in, the DC
+      Walk <b>a</b> through 0.99, 0.9, 0.75, 0.5. The pole moves in, the DC
       gain becomes finite at b/(1&minus;a), and the corner frequency
       &asymp; (1&minus;a)/2&pi; moves up. At a = 0 there is no feedback left
       and you have a one-sample delay with gain b.
@@ -158,7 +158,7 @@
   <h2>THE PYTHON</h2>
 <pre><code>#- IIR filter
 b = 0.3
-a = 0.25
+a = 0.75
 z = a + 1j*b
 z_abs = np.abs(z)
 y = np.zeros(N)
