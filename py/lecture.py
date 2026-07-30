@@ -446,8 +446,6 @@ math: true
 permalink: {self.title.strip().lower().replace(" ","_")}
 ---
 
-> If you find an error in what I've made, then [fork](https://docs.github.com/en/get-started/quickstart/fork-a-repo), fix [{self.filename}]({furl}), [commit](https://git-scm.com/docs/git-commit), [push](https://git-scm.com/docs/git-push) and [create a pull request](https://docs.github.com/en/desktop/contributing-and-collaborating-using-github-desktop/working-with-your-remote-repository-on-github-or-github-enterprise/creating-an-issue-or-pull-request). That way, we use the global brain power most efficiently, and avoid multiple humans spending time on discovering the same error.
-
 {slides}
 
 
