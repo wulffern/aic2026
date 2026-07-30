@@ -230,6 +230,10 @@ Remember to save the schematic
 
 ![](../media/LELO_EX.svg)
 
+<!--pan_doc:
+<sub>Figure 1: Finished LELO_EX schematic in Xschem - three NMOS current mirror devices between the IBPS_5U, IBNS_20U and VSS ports</sub>
+-->
+
 ### Netlist schematic
 
 Check that the netlist looks OK
@@ -594,6 +598,10 @@ Place all transistors on top of each other as shown below in the picture.
 
 ![](../media/LELO_EX_place.png)
 
+<!--pan_doc:
+<sub>Figure 2: Magic with the transistor instances stacked on top of each other, shown as boxes on the left and with layers drawn on the right</sub>
+-->
+
 ### Place devices
 
 You will find that one of the more time consuming things with analog layout is to
@@ -641,6 +649,10 @@ change layer down
 
 ![](../media/ground.png)
 
+<!--pan_doc:
+<sub>Figure 3: The source terminals of all transistors connected down to the ground rail, DRC clean</sub>
+-->
+
 ### Route Gates
 
 Press "space" to enter wire mode. Left click on the top gate to start a wire, and right click to end the wire.
@@ -652,6 +664,10 @@ a box that matches the locali. Connect the drain to the gate in locali.
 
 
 ![](../media/gates.png)
+
+<!--pan_doc:
+<sub>Figure 4: The gates routed together, with the gate to drain connection of M1 made in locali</sub>
+-->
 
 ### Drain of M2
 
@@ -665,6 +681,10 @@ etc. For locali it's usually all over the place.
 
 
 ![](../media/drains.png)
+
+<!--pan_doc:
+<sub>Figure 5: The drain connections routed with the wire tool, using vias to change metal layer</sub>
+-->
 
 ### Add labels
 
@@ -691,6 +711,10 @@ Remember to save the layout first.
 If you've routed correctly, then the LVS should be correct. 
 
 ![](../media/layout.png)
+
+<!--pan_doc:
+<sub>Figure 6: The completed LELO_EX layout with labelled ports, ready for the LVS check against the schematic</sub>
+-->
 
 
 ---

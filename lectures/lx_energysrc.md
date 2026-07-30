@@ -93,6 +93,10 @@ In the context of energy harvesting, there is energy in electromagnetic fields, 
 <!--[fit](https://ieeexplore.ieee.org/mediastore_new/IEEE/content/media/6287639/8600701/8762143/shirv5-2928523-large.gif)-->
 ![fit](../media/shirv5-2928523-large.gif)
 
+<!--pan_doc:
+<sub>Figure 1: The couplings between the electrical, mechanical and thermal energy domains, including the piezoelectric, pyroelectric and thermoelectric effects</sub>
+-->
+
 ---
 
 <!--pan_doc:
@@ -105,6 +109,10 @@ As devices approach average power consumption of $\mu W$ it becomes possible to 
 
 <!--[fit](https://ieeexplore.ieee.org/mediastore_new/IEEE/content/media/6287639/8600701/8762143/shirv6-2928523-large.gif)-->
 ![fit](../media/shirv6-2928523-large.gif)
+
+<!--pan_doc:
+<sub>Figure 2: Battery run-time and power consumption of devices from a 32 kHz quartz oscillator to a laptop, plotted against the energy available from mechanical, thermal and radiant sources in uW/cm2</sub>
+-->
 
 ---
 
@@ -121,6 +129,10 @@ Technologies like Bluetooth LE, however, can approach < 10 $\mu$W for some appli
 
 <!--[inline fit](https://ieeexplore.ieee.org/mediastore_new/IEEE/content/media/6287639/8600701/8762143/shirv11-2928523-large.gif)-->
 ![inline fit](../media/shirv11-2928523-large.gif)
+
+<!--pan_doc:
+<sub>Figure 3: Power versus coverage for wireless standards, showing that NFC, RFID, Z-Wave and Zigbee can be battery-less while WiFi, Bluetooth and the cellular standards need a battery</sub>
+-->
 
 
 <!--pan_doc:
@@ -187,10 +199,15 @@ Imagine we have Iron and copper wires, as shown below, and we heat one end. In t
 
 <!--![fit](https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Thermoelectric_effect.svg/2560px-Thermoelectric_effect.svg.png)-->
 ![fit](../media/Thermoelectric_effect.png)
+
 <!--pan_doc:
 
 The voltage difference at the hot and cold end
 is described by the 
+-->
+
+<!--pan_doc:
+<sub>Figure 4: The thermoelectric effect - iron and copper wires joined at a heated end drive a current through a meter connected at the cold end</sub>
 -->
 
 ---
@@ -213,10 +230,18 @@ valence band.
 
 ![inline fit](../media/Absolute_Seebeck_coefficients_of_various_metals_up_to_high_temperatures.svg)
 
+<!--pan_doc:
+<sub>Figure 5: Absolute Seebeck coefficient versus temperature for a range of metals, spanning roughly +20 uV/K for tungsten to -60 uV/K for palladium</sub>
+-->
+
 
 <!--![right fit](https://upload.wikimedia.org/wikipedia/commons/thumb/b/b7/Mott_Seebeck_silicon.svg/440px-Mott_Seebeck_silicon.svg.png)-->
 
 ![right fit](../media/Mott_Seebeck_silicon.png)
+
+<!--pan_doc:
+<sub>Figure 6: Seebeck coefficient and conductivity of silicon as a function of Fermi level, with the sign flipping between the valence and conduction band edges</sub>
+-->
 
 ---
 
@@ -238,6 +263,10 @@ Assume we have a temperature difference of 50 degrees, then maybe we could get a
 ![fit](../media/Thermoelectric_Generator_Diagram.png)
 
 <!--pan_doc:
+<sub>Figure 7: Thermoelectric generator, where n-type and p-type legs between a heat source and a cool side drive a current through the load resistor</sub>
+-->
+
+<!--pan_doc:
 
 The process can be run in reverse. In the picture below we force a current through the material, 
 we heat one end, and cool the other. Maybe you've heard of [Peltier elements](https://en.wikipedia.org/wiki/Thermoelectric_cooling).
@@ -248,6 +277,10 @@ we heat one end, and cool the other. Maybe you've heard of [Peltier elements](ht
 
 <!--![fit](https://upload.wikimedia.org/wikipedia/commons/thumb/3/3b/Thermoelectric_Cooler_Diagram.svg/440px-Thermoelectric_Cooler_Diagram.svg.png)-->
 ![fit](../media/Thermoelectric_Cooler_Diagram.png)
+
+<!--pan_doc:
+<sub>Figure 8: The same structure run in reverse as a Peltier cooler, where a forced current cools the top surface and dissipates heat at the bottom</sub>
+-->
 
 
 ---
@@ -275,6 +308,10 @@ underneath Voyager in the picture below. The radioisotopes provide the heat, spa
 
 <!--![left fit](https://upload.wikimedia.org/wikipedia/commons/thumb/6/60/Voyager_spacecraft_model.png/1280px-Voyager_spacecraft_model.png)-->
 ![left fit](../media/1280px-Voyager_spacecraft_model.png)
+
+<!--pan_doc:
+<sub>Figure 9: The Voyager spacecraft, whose radioisotope thermoelectric generator is the finned cylinder below the dish</sub>
+-->
 
 ---
 
@@ -304,6 +341,10 @@ In A 3.5-mV Input Single-Inductor Self-Starting Boost Converter With Loss-Aware 
 
 ![left fit](../media/l11_teg_mdl.pdf)
 
+<!--pan_doc:
+<sub>Figure 10: Model of a thermoelectric generator - a 1 to 50 mV/K source in series with a source resistance below 10 ohm - together with the self-starting boost converter architecture from Bose et al.</sub>
+-->
+
 ---
 
 #[fit] [Photovoltaic](https://en.wikipedia.org/wiki/Photovoltaic_effect)
@@ -332,6 +373,10 @@ On the N-side the same minority carrier effect would further increase the voltag
 
 ![fit](../media/l11_pv_pn.pdf)
 
+<!--pan_doc:
+<sub>Figure 11: Photon absorption in a PN junction, where electron/hole pairs generated in the depletion region (1), the P region (2) and the N region (3) all increase the diode voltage VD</sub>
+-->
+
 ---
 
 <!--pan_doc:
@@ -343,6 +388,10 @@ single photodiode is used. It is possible to stack photodiodes to get a higher o
 -->
 
 ![left fit](../media/l11_pv_mdl.pdf)
+
+<!--pan_doc:
+<sub>Figure 12: Circuit model of a photodiode - a photo current source in parallel with a diode, delivering a load current IL</sub>
+-->
 
 <!--pan_doc:
 
@@ -414,6 +463,10 @@ dim room is a current problem rather than a voltage one.
 -->
 
 ![right fit](../media/pv.pdf)
+
+<!--pan_doc:
+<sub>Figure 13: Diode voltage and delivered power versus load current for the photodiode model, with the maximum power point near 0.9 mA</sub>
+-->
 
 <!--pan_doc:
 
@@ -494,6 +547,10 @@ An example of piezoelectric energy harvester can be found in A Fully Integrated 
 
 ![left fit](../media/lx_piezo_mdl.pdf)
 
+<!--pan_doc:
+<sub>Figure 14: Model of a piezoelectric transducer - an AC current source in parallel with the transducer capacitance</sub>
+-->
+
 ---
 
 
@@ -507,6 +564,10 @@ Near Field Communication (NFC) operates at close physical distances
 
 <!--![left fit](https://upload.wikimedia.org/wikipedia/commons/thumb/5/5d/FarNearFields-USP-4998112-1.svg/618px-FarNearFields-USP-4998112-1.svg.png)-->
 ![left fit](../media/FarNearFields-USP-4998112-1.png)
+
+<!--pan_doc:
+<sub>Figure 15: The reactive near field, radiative (Fresnel) near field and far field regions around an antenna</sub>
+-->
 
 Reactive near field or inductive near field
 
@@ -655,6 +716,10 @@ for more details.
 
 ![right](../media/lx_trib_mdl.pdf)
 
+<!--pan_doc:
+<sub>Figure 16: Model of a triboelectric generator - an AC source in series with the transducer capacitance</sub>
+-->
+
 ---
 
 <!--pan_doc: 
@@ -665,6 +730,10 @@ Below is a custom triboelectric material that converts friction into a sparse el
 
 <!--[fit](https://ieeexplore.ieee.org/mediastore_new/IEEE/content/media/4/9546917/9441315/yoo6ab-3080383-large.gif)-->
 ![fit](../media/yoo6ab-3080383-large.gif)
+
+<!--pan_doc:
+<sub>Figure 17: A 1 cm by 1 cm triboelectric nanogenerator built from conductive Ni and Ni-PFA layers, with its electrical model of a current source, a capacitance and a shunt resistance</sub>
+-->
 
 ---
 
@@ -678,6 +747,10 @@ Once the voltage is high enough, then a temperature sensor is started.
 <!--[fit](https://ieeexplore.ieee.org/mediastore_new/IEEE/content/media/4/9546917/9441315/yoo1ab-3080383-large.gif)-->
 
 ![fit](../media/yoo1ab-3080383-large.gif)
+
+<!--pan_doc:
+<sub>Figure 18: A battery powered temperature SoC compared with the proposed triboelectric temperature-to-time converter harvesting from sub-1 Hz human motion</sub>
+-->
 
 ---
 
@@ -702,7 +775,15 @@ It's academia's job to prove that something could be possible. It's industry's j
 
 ![inline fit](../media/yoo2-3080383-large.gif)
 
+<!--pan_doc:
+<sub>Figure 19: Block diagram of the energy autonomous temperature-to-time converter, with the DLS-FBR rectifier, the nW static power PMU and the one-shot PTAT bandgap converter</sub>
+-->
+
 ![inline fit](../media/yoo3-3080383-large.gif)
+
+<!--pan_doc:
+<sub>Figure 20: Operation over time, where the low leakage DLS-FBR reaches the 600 mV threshold that a conventional rectifier never does, and the converter emits a temperature dependent pulse</sub>
+-->
 
 
 ---
@@ -735,6 +816,10 @@ a charge storage device, either a battery, or a capacitor.
 
 <!--[fit](https://ieeexplore.ieee.org/mediastore_new/IEEE/content/media/4/9546917/9441315/yoo4-3080383-large.gif)-->
 ![fit](../media/yoo4-3080383-large.gif)
+
+<!--pan_doc:
+<sub>Figure 21: Comparison of power density, frequency and characteristics for solar, RF, thermal, piezoelectric and triboelectric energy sources</sub>
+-->
 
 
 ---

@@ -43,6 +43,10 @@ Published in 1973 by Nagel and Pederson
 
 ![right fit](../media/nagel.png)
 
+<!--pan_doc:
+<sub>Figure 1: Title page of Nagel and Pederson's 1973 SPICE paper from the 16th Midwest Symposium on Circuit Theory</sub>
+-->
+
 
 
 
@@ -125,6 +129,10 @@ The expensive tools have built graphical user interface around the SPICE simulat
 
 I'm a fan of launching multiple simulations from the command line. I don't like GUI's. As such, I wrote [cicsim](https://github.com/wulffern/cicsim/tree/main), and that's what I use in the video and demo.
 
+-->
+
+<!--pan_doc:
+<sub>Figure 2: Cadence Virtuoso ADE Assembler, showing the corner definitions on the left and a pass/fail table of simulated specifications on the right</sub>
 -->
 
 ---
@@ -213,6 +221,10 @@ BSIM (Berkeley Short-channel IGFET Model)
 ---
 
 ![left 200%](../media/fig_transistor.pdf)
+
+<!--pan_doc:
+<sub>Figure 3: Circuit symbol for an NMOS transistor with its gate, drain and source terminals</sub>
+-->
 
 284 parameters in [BSIM 4.5](http://www-device.eecs.berkeley.edu/~bsim/Files/BSIM4/BSIM480/BSIM480_Manual.pdf)
 
@@ -312,6 +324,10 @@ $$ I_{D} = \frac{1}{2} \mu_n C_{ox} \frac{W}{L} V_{eff}^2$$, $$V_{eff} \propto \
 **Operating region for a diode connected transistor only depends on the current**
 
 ![right fit](../media/trop.png)
+
+<!--pan_doc:
+<sub>Figure 4: Diode connected NMOS biased by a current source, where the current alone sets the operating region</sub>
+-->
 
 ---
 

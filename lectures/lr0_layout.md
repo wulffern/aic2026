@@ -70,10 +70,18 @@ cicpy sch2mag JNW_GR05_SKY130A OTA_Manuel
 
 ![](../media/layout_ota_m1.png)
 
+<!--pan_doc:
+<sub>Figure 1: Initial cicpy sch2mag placement of OTA_Manuel in Magic - all transistors in one row, 19 DRC errors</sub>
+-->
+
 The layout engine has no idea what components belong together, for example, the
 current mirror below should have been place together 
 
 ![](../media/sch_ota_m1.png)
+
+<!--pan_doc:
+<sub>Figure 2: Xschem schematic of the OTA bias circuitry, where the current mirror pair xa07/xa20 should have been placed together</sub>
+-->
 
 We can instruct the layout engine by adding a "group" name to the instance name.
 The instance name always starts with `x<something><number>` where the something
@@ -91,6 +99,10 @@ As such, if I rename my instances, as shown below,
 
 ![](../media/sch_ota_m2.png)
 
+<!--pan_doc:
+<sub>Figure 3: The same OTA schematic after renaming instances with group prefixes (xa, xb, xd, xf, xg) to guide the placer</sub>
+-->
+
 Then the layout becomes a bit better 
 
 ```bash 
@@ -105,7 +117,15 @@ The X and Y space is for the distance between groups. The unit is "Ångstrøm", 
 
 ![](../media/layout_ota_m2.png)
 
+<!--pan_doc:
+<sub>Figure 4: Placement after grouping, shown as instance boxes: devices of the same group stack vertically, and --gbreak 3 starts a new row</sub>
+-->
+
 ![](../media/layout_ota_m3.png)
+
+<!--pan_doc:
+<sub>Figure 5: The same grouped placement with all layers drawn, DRC clean</sub>
+-->
 
 
 

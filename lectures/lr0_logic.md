@@ -25,15 +25,31 @@ date: 2025-01-08
 <sub><sub>[dicex/lectures/l13/mos.py]()
 
 ![right original fit](../media/l13/transistor_log.png)
+
+<!--pan_doc:
+<sub>Figure 1: NMOS drain current on a log10 scale as a surface over gate-source and drain-source voltage, for W = 0.4u and L = 0.15u</sub>
+-->
 ![left original fit](../media/l13/transistor_lin.png)
+
+<!--pan_doc:
+<sub>Figure 2: The same NMOS drain current on a linear scale in mA over gate-source and drain-source voltage</sub>
+-->
 
 ---
 
 ![original fit](../media/l13/analog.png)
 
+<!--pan_doc:
+<sub>Figure 3: The analog view of the NMOS: current equations for the linear and saturation regions across weak, moderate and strong inversion and mobility degradation</sub>
+-->
+
 ---
 
 ![original fit](../media/l13/digital.png)
+
+<!--pan_doc:
+<sub>Figure 4: The digital view of the same plane, where weak inversion is treated as OFF and strong inversion as ON, and everything else is ignored</sub>
+-->
 
 ---
 
@@ -68,10 +84,18 @@ $$ V_{GS} < V_{TH}$$ when $$V_G = 0$$
 
 ![right fit](../media/l13/nand_tr_tikz.pdf)
 
+<!--pan_doc:
+<sub>Figure 5: Transistor schematic of a two input NAND, with PMOS A and B in parallel to the supply and NMOS A and B in series to ground</sub>
+-->
+
 ---
 
 
 ![original fit](../media/l13/rules.pdf)
+
+<!--pan_doc:
+<sub>Figure 6: Two ways to wire a NOR - the accepted one with PMOS pulling up and NMOS pulling down, and the rejected one with the device types swapped so the sources sit at the wrong rail</sub>
+-->
 
 
 ---
@@ -86,6 +110,10 @@ $$ V_{GS} < V_{TH}$$ when $$V_G = 0$$
 
 ![original fit](../media/l13/binary_tikz.pdf)
 
+<!--pan_doc:
+<sub>Figure 7: Truth tables for NAND, NOR, AND and OR with inverted inputs, illustrating the two De Morgan identities</sub>
+-->
+
 ---
 
 ## CMOS static logic is inverting
@@ -99,9 +127,17 @@ $$ V_{GS} < V_{TH}$$ when $$V_G = 0$$
 
 ![right fit](../media/l13/inv_tikz.pdf)
 
+<!--pan_doc:
+<sub>Figure 8: Transistor schematic of the CMOS inverter, one PMOS to the supply and one NMOS to ground sharing gate A and output Y</sub>
+-->
+
 ---
 
 ![inline fit](../media/l13/pdpu_tikz.pdf)
+
+<!--pan_doc:
+<sub>Figure 9: Output state as a function of the pull-up and pull-down networks - Z when both are off, 1 or 0 when one conducts, and X when both conduct</sub>
+-->
 
 <sub>PD = Pull-down PU = Pull-up</sub>
 
@@ -110,6 +146,10 @@ logic => [0,1,Z,X];
 ```
 
 ![right fit](../media/l13/pull_tikz.pdf)
+
+<!--pan_doc:
+<sub>Figure 10: Block view of a static CMOS gate, where the inputs drive a PMOS pull-up network and an NMOS pull-down network that share the output node</sub>
+-->
 
 ---
 [.table-separator: #000000, stroke-width(1)] 
@@ -137,6 +177,10 @@ logic => [0,1,Z,X];
 
 ![right fit](../media/l13/pu_pmos_tikz.pdf)
 
+<!--pan_doc:
+<sub>Figure 11: PMOS pull-up networks - two devices in series conduct only when both A and B are 0, two in parallel conduct unless both are 1</sub>
+-->
+
 ---
 [.table-separator: #000000, stroke-width(1)] 
 [.table: margin(8)]
@@ -161,6 +205,10 @@ logic => [0,1,Z,X];
 
 ![right fit](../media/l13/pd_nmos_tikz.pdf)
 
+<!--pan_doc:
+<sub>Figure 12: NMOS pull-down networks - two devices in series conduct only when both A and B are 1, two in parallel conduct when either is 1</sub>
+-->
+
 ---
 
 ## Rules for inverting logic
@@ -174,6 +222,10 @@ OR => NMOS in paralell => NOP
 AND => NMOS in series => NAS 
 
 ![right fit](../media/l13/pull_tikz.pdf)
+
+<!--pan_doc:
+<sub>Figure 13: The same pull-up and pull-down blocks, read through the rules that OR maps to PMOS in series and NMOS in parallel, AND to PMOS in parallel and NMOS in series</sub>
+-->
 
 ---
 
@@ -190,6 +242,10 @@ $$ \text{Y} = \overline{\text{AB}} = \text{NOT ( A AND B)}$$
 
 ![right fit ](../media/l13/nand_tr_tikz.pdf)
 
+<!--pan_doc:
+<sub>Figure 14: NAND built from the AND rule, with PMOS A and B in parallel for the pull-up and NMOS A and B in series for the pull-down</sub>
+-->
+
 
 
 | A | B | <sub>NOT(A AND B)</sub> |
@@ -202,6 +258,10 @@ $$ \text{Y} = \overline{\text{AB}} = \text{NOT ( A AND B)}$$
 ---
 
 ![left 100% ](../media/l13/nand_tikz.pdf)
+
+<!--pan_doc:
+<sub>Figure 15: Schematic symbol for the two input NAND gate</sub>
+-->
 
 <!--pan_skip: -->
 
@@ -221,6 +281,10 @@ PD  => NMOS in paralell
 
 ![right fit ](../media/l13/nor_tr_tikz.pdf)
 
+<!--pan_doc:
+<sub>Figure 16: NOR built from the OR rule, with PMOS A and B in series for the pull-up and NMOS A and B in parallel for the pull-down</sub>
+-->
+
 | A | B | <sub>NOT(A OR B)</sub> |
 |:---|:---|:---|
 | 0 | 0 | 1 |
@@ -232,6 +296,10 @@ PD  => NMOS in paralell
 ---
 
 ![left fit ](../media/l13/nor_tikz.pdf)
+
+<!--pan_doc:
+<sub>Figure 17: Schematic symbol for the two input NOR gate</sub>
+-->
 
 <!--pan_skip: -->
 
@@ -262,6 +330,10 @@ $$\overline{A+B}  = \overline{A} \cdot \overline{B}$$
 \overline{Q} = \overline{S} + \overline{Q} $$
 
 ![right 200% ](../media/l13/sr.pdf)
+
+<!--pan_doc:
+<sub>Figure 18: SR-latch truth table and symbol, and the cross-coupled NAND implementation</sub>
+-->
 
 ---
 
@@ -294,6 +366,10 @@ $$\overline{Q} =\overline{S} + \overline{Q}$$
 
 ![right 200% ](../media/l13/dlatch_tikz.pdf)
 
+<!--pan_doc:
+<sub>Figure 19: Gate level D latch built from NAND gates, with the cross-coupled NAND SR latch and its truth table above and the full latch driven by clock C below</sub>
+-->
+
 
 ---
 
@@ -312,6 +388,10 @@ What about $$\text{Y} = \text{AB}$$ and $$\text{Y} = \text{A} + \text{B}$$?
 
 ![inline](../media/l13/and_tikz.pdf)
 
+<!--pan_doc:
+<sub>Figure 20: An AND gate built as a NAND followed by an inverter</sub>
+-->
+
 [.column]
 
 $$\text{Y} = \text{A+B} = \overline{\overline{\text{A+B}}}$$
@@ -319,6 +399,10 @@ $$\text{Y} = \text{A+B} = \overline{\overline{\text{A+B}}}$$
 **Y** = **A** OR **B** = NOT( NOT( **A** OR **B** ) )
 
 ![inline](../media/l13/or_tikz.pdf)
+
+<!--pan_doc:
+<sub>Figure 21: An OR gate built as a NOR followed by an inverter</sub>
+-->
 
 
 ---
@@ -331,11 +415,19 @@ $$\text{Y} = \text{A+B} = \overline{\overline{\text{A+B}}}$$
  
 ![right fit](../media/l13/an2oi_tikz.pdf)
 
+<!--pan_doc:
+<sub>Figure 22: AOI22 gate at transistor level, with the series-parallel pull-up network above the output and the pull-down network below</sub>
+-->
+
 
 ---
 
 
 ![original fit](../media/l13/inv_tg_tikz.pdf)
+
+<!--pan_doc:
+<sub>Figure 23: An inverter followed by a transmission gate is equivalent to a tristate inverter, redrawn as a single stack of four series transistors</sub>
+-->
 
 ---
 [.table-separator: #000000, stroke-width(1)] 
@@ -351,6 +443,10 @@ $$\text{Y} = \text{A+B} = \overline{\overline{\text{A+B}}}$$
 | 1 | 1 | 0 |
 
 ![right fit](../media/l13/ivtrix_tikz.pdf)
+
+<!--pan_doc:
+<sub>Figure 24: Tristate inverter - symbol and the four transistor stack where input A drives the outer devices and the enable E and its complement drive the inner devices</sub>
+-->
 
 ---
 
@@ -368,19 +464,35 @@ $$\text{Y} = \text{A+B} = \overline{\overline{\text{A+B}}}$$
 
 ![right fit](../media/l13/mux_tikz.pdf)
 
+<!--pan_doc:
+<sub>Figure 25: Two input multiplexer built from two tristate inverters, with select S and its complement steering either P0 or P1 to output Y</sub>
+-->
+
 ---
 D-Latch (12 transistors)
 
 ![original fit](../media/l13/latch_tikz.pdf)
+
+<!--pan_doc:
+<sub>Figure 26: Twelve transistor D latch - input inverter, clocked transmission gate and a feedback inverter pair holding the state, shown as symbol, gate level and transistor level</sub>
+-->
 
 ---
 D-Flip Flop (< 26 transistors)
 
 ![original fit](../media/l13/d_ff_tikz.pdf)
 
+<!--pan_doc:
+<sub>Figure 27: D flip-flop drawn as two D latches in series clocked on opposite phases of C</sub>
+-->
+
 ---
 
 ![original fit](../media/l13/digital_ff_comb_tikz.pdf)
+
+<!--pan_doc:
+<sub>Figure 28: Synchronous digital design, with clocked flip-flop banks at the input and output and a cloud of combinational logic between them</sub>
+-->
 
 ---
 
@@ -401,6 +513,10 @@ Consider other types of logic "rule breaking", so you should know why you need i
 
 ![inline 110%](../media/l13/fig_sar_logic.pdf)
 
+<!--pan_doc:
+<sub>Figure 29: Dynamic logic in a 9-bit SAR ADC - the binary weighted capacitor array with per-bit logic slices above, and the transistor level dynamic cells below</sub>
+-->
+
 <sub><sub>Dynamic logic => A Compiled 9-bit 20-MS/s 3.5-fJ/conv.step SAR ADC in 28-nm FDSOI for Bluetooth Low Energy Receivers [@wulff17]</sub></sub>
 
 ---
@@ -416,10 +532,18 @@ Consider other types of logic "rule breaking", so you should know why you need i
 
 ![original fit](../media/l14/cpumax.pdf)
 
+<!--pan_doc:
+<sub>Figure 30: Maximum microprocessor clock frequency in GHz plotted against year from 1971 to 2018, on a logarithmic axis</sub>
+-->
+
 ---
 
 
 ![original fit](../media/l13/digital_ff_comb_tikz.pdf)
+
+<!--pan_doc:
+<sub>Figure 31: The same flip-flop and combinational logic structure, whose maximum clock rate is set by the delay through the logic between two flip-flops</sub>
+-->
 
 ---
 
@@ -427,6 +551,10 @@ Consider other types of logic "rule breaking", so you should know why you need i
 
 [.column]
 ![inline fit](../media/l13/d_ff_tikz.pdf)
+
+<!--pan_doc:
+<sub>Figure 32: D flip-flop as two cascaded latches, alongside the SPICE subcircuit of the DFRNQNX1 standard cell that implements it</sub>
+-->
 
 [.column]
 
@@ -452,10 +580,18 @@ Setup time: How long before clk does the data need to change
 
 ![inline fit](../media/l14/dff_setup_8.pdf)![inline fit](../media/l14/dff_setup_10.pdf)
 
+<!--pan_doc:
+<sub>Figure 33: Simulated d, ck, q and qn of the D flip-flop when the data changes too close to the clock edge, so q is not captured until the second clock edge</sub>
+-->
+
 ---
 Hold time: How long after clk can the data change
 
 ![inline fit](../media/l14/dff_hold_-40.pdf)![inline fit](../media/l14/dff_hold_-30.pdf)
+
+<!--pan_doc:
+<sub>Figure 34: The same signals when the data is held long enough after the clock edge, so q follows d on both edges</sub>
+-->
 
 ---
 
@@ -487,6 +623,10 @@ Negative slack (over PVT[^1]) => Timing is not OK
 
 ![inline](../media/l14/timing_tikz.pdf)
 
+<!--pan_doc:
+<sub>Figure 35: Arrival time propagation through a small combinational circuit, where each gate adds its delay to the largest arrival time at its inputs to give 130 at the output</sub>
+-->
+
 ---
 
 # Timing analysis tools 
@@ -507,10 +647,18 @@ Negative slack (over PVT[^1]) => Timing is not OK
 
 <!--![inline](https://www.synopsys.com/content/dam/synopsys/solutions/design/timing-paths-diagram.jpg.imgw.850.x.jpg)![inline](https://www.synopsys.com/content/dam/synopsys/solutions/design/multiple-paths-through-combined-logic.jpg.imgw.850.x.jpg)-->
 ![inline](../media/timing-paths-diagram.jpg)
+
+<!--pan_doc:
+<sub>Figure 36: Timing paths through a circuit, each running from a launch point through combinational logic to a capture point, with a table of the four startpoint and endpoint combinations</sub>
+-->
 ---
 
 <!--![inline](https://www.synopsys.com/content/dam/synopsys/solutions/design/paths-timing-analysis.jpg.imgw.850.x.jpg)![inline](https://www.synopsys.com/content/dam/synopsys/solutions/design/setup-hold-checks.jpg.imgw.850.x.jpg)-->
 ![inline](../media/paths-timing-analysis.jpg)
+
+<!--pan_doc:
+<sub>Figure 37: The path types considered in timing analysis - data path, clock path, asynchronous reset path and clock-gating path</sub>
+-->
 ---
 
 
@@ -744,6 +892,10 @@ Real delay $$\Rightarrow d = 5\frac{2}{3} \times 3 \text{ ps} = 17 \text{ ps}$$
 
 ![inline](../media/l14/fig_logeffort.pdf)
 
+<!--pan_doc:
+<sub>Figure 38: Logical effort summary table giving the stage and path expressions for number of stages, logical effort, electrical effort, branching effort, effort, effort delay, parasitic delay and total delay</sub>
+-->
+
 ---
 [.background-color: #000000]
 [.text: #FFFFFF]
@@ -762,12 +914,20 @@ Real delay $$\Rightarrow d = 5\frac{2}{3} \times 3 \text{ ps} = 17 \text{ ps}$$
 
 ![left fit](../media/l14/path_tikz.pdf)
 
+<!--pan_doc:
+<sub>Figure 39: Two ways to drive a load of 64 - a single inverter, and a chain of three inverters sized 1, 4 and 16, with the path effort delay worked out for each</sub>
+-->
+
 ---
 
 [.column]
 
 
 ![inline](../media/l14/fig_logeffort.pdf)
+
+<!--pan_doc:
+<sub>Figure 40: The logical effort table used to evaluate the two candidate paths, giving H equal to 64, G equal to 1, B equal to 1 and path effort F equal to 64</sub>
+-->
 
 [.column]
 
@@ -807,9 +967,17 @@ For close to optimal delay, use $$f = 4$$ <sub><sub>(Used to be $$f=e$$)</sub></
 ---
 ![original fit](../media/l14/rosc_vdd.pdf)
 
+<!--pan_doc:
+<sub>Figure 41: Ring oscillator frequency in MHz and power in uW versus supply voltage, with the derivatives of frequency with respect to supply and of power with respect to frequency below</sub>
+-->
+
 ---
 
 ![original fit](../media/l14/rosc_temp.pdf)
+
+<!--pan_doc:
+<sub>Figure 42: Ring oscillator frequency falling from 2.1 GHz to 0.85 GHz as temperature rises from minus 40 to 150 degrees Celsius, with the derivative of frequency with respect to temperature below</sub>
+-->
 
 ---
 
@@ -844,9 +1012,17 @@ endmodule // counter
 
 ![right fit](../media/l14/counter_gtkw.png)
 
+<!--pan_doc:
+<sub>Figure 43: GTKWave view of the 8-bit counter testbench, where the count bus ramps over 2.6 us while clk toggles and reset stays low</sub>
+-->
+
 ---
 
 ![original fit](../media/l14/counter_gf130n.png)
+
+<!--pan_doc:
+<sub>Figure 44: The same 8-bit counter synthesized to the SUN TR GF130N standard cell library, with eight D flip-flops on the right and the increment logic to the left</sub>
+-->
 
 ---
 
@@ -917,6 +1093,10 @@ V15 count_2 34 DC 0
 
 ![right fit](../media/l14/counter_ref_do.pdf)
 
+<!--pan_doc:
+<sub>Figure 45: ngspice transient of the reference counter output dor, counting linearly from 0 to 255 over 128 ns</sub>
+-->
+
 ---
 
 dicex/sim/verilog/counter\_sv/counter\_attack\_tb.cir
@@ -927,18 +1107,34 @@ VDDA AVDD_ATTACK 0 dc 0.5 pulse(1.5 0.6 tcd trf trf tapw taper)
 
 ![inline 80%](../media/l14/counter_ref_wave.pdf)
 
+<!--pan_doc:
+<sub>Figure 46: ngspice transient of the attacked supply, pulsed between 1.5 V and 0.6 V, together with the least significant counter bit</sub>
+-->
+
 
 ![right fit](../media/l14/counter_ref_dor.pdf)
+
+<!--pan_doc:
+<sub>Figure 47: The attacked counter output do in red against the reference output dor in blue, showing the counts lost each time the supply is glitched</sub>
+-->
 
 ---
 
 ![original fit](../media/l14/chipwisperer.png)
+
+<!--pan_doc:
+<sub>Figure 48: The ChipWhisperer web page, an open source platform for side channel power analysis and fault injection attacks on embedded systems</sub>
+-->
 
 ---
 
 #[fit] Pick two
 
 ![right fit](../media/l16/optimization_tikz.pdf)
+
+<!--pan_doc:
+<sub>Figure 49: The design trade-off triangle between power, speed and area or cost</sub>
+-->
 
 ---
 
@@ -1048,12 +1244,24 @@ Clocks $$\alpha = 1$$
 
 ![left fit](../media/tex/tb_sw_prob.pdf)
 
+<!--pan_doc:
+<sub>Figure 50: Probability that the output of an AND2, OR2, NAND2, NOR2 or XOR2 gate is 1, expressed in the input probabilities PA and PB</sub>
+-->
+
 ---
 
 [.column]
 ![inline 150%](../media/tex/tb_sw_prob.pdf)
 
+<!--pan_doc:
+<sub>Figure 51: The gate output probability table applied to the network below, where each NAND2 output has probability 3 over 4 of being 1</sub>
+-->
+
 ![inline 150%](../media/l16/prob_tikz.pdf)
+
+<!--pan_doc:
+<sub>Figure 52: Two NAND2 gates driving a NOR2 gate, giving output probability PY of 1 over 16 and activity factor 15 over 256 when all inputs have probability one half</sub>
+-->
 
 
 [.column]
@@ -1075,7 +1283,15 @@ Clocks $$\alpha = 1$$
 
 ![inline 150%](../media/tex/tb_sw_prob.pdf)
 
+<!--pan_doc:
+<sub>Figure 53: The same gate output probability table, used here alongside the De Morgan simplification of the network</sub>
+-->
+
 ![inline 150%](../media/l16/prob_tikz.pdf)
+
+<!--pan_doc:
+<sub>Figure 54: The same NAND-NAND-NOR network, where De Morgan reduces the function to ABCD so that PY is the product of the four input probabilities, 1 over 16</sub>
+-->
 
 [.column]
 
@@ -1113,11 +1329,19 @@ $$P_{tot} = \alpha C V_{DD}^2 f$$
 
 ![right fit](../media/l13/digital_ff_comb_tikz.pdf)
 
+<!--pan_doc:
+<sub>Figure 55: Synchronous logic drawn as banks of D flip-flops separated by a combinational cloud, the switching activity that costs the dynamic power</sub>
+-->
+
 ---
 
 ## Stop clock [^3]
 
 ![inline fit ](../media/l16/stop_clock_tikz.pdf) 
+
+<!--pan_doc:
+<sub>Figure 56: Clock gating, where enable logic feeds a latch and an AND gate so that the output clock only toggles the flip-flops and combinational cloud when the block is enabled</sub>
+-->
 
 
 [^3]: Often called *clock gating*
@@ -1128,14 +1352,26 @@ $$P_{tot} = \alpha C V_{DD}^2 f$$
 
 ![inline fit ](../media/l16/logic.pdf)  ![inline fit ](../media/l16/stop_activity.pdf) 
 
+<!--pan_doc:
+<sub>Figure 57: A clock gated logic block, with the gating cell above the flip-flops and the combinational cloud</sub>
+-->
+
 ---
 ## Reduce frequency
 ![inline fit ](../media/l16/reduce_freq.pdf) 
+
+<!--pan_doc:
+<sub>Figure 58: Reducing clock frequency by clocking the big combinational cloud with ClkB and the small cloud with the faster ClkA</sub>
+-->
 
 ---
 ## Turn off power supply [^4]
 
 ![inline fit ](../media/l16/powergate.pdf) 
+
+<!--pan_doc:
+<sub>Figure 59: Power gating with PWRUP header switches above the gated logic block and AND gates holding the outputs</sub>
+-->
 
 [^4]: Often called power gating
 
@@ -1144,6 +1380,10 @@ $$P_{tot} = \alpha C V_{DD}^2 f$$
 ### Reduce power supply 
 
 ![inline fit ](../media/l16/reduce_vdd.pdf) 
+
+<!--pan_doc:
+<sub>Figure 60: Two supply domains, fast logic on VDDH and slow logic on VDDL, joined by a cross-coupled level shifter</sub>
+-->
 
 ---
 ### Energy-Delay Product
@@ -1182,6 +1422,10 @@ Often 5 - 10 layers of metal
 
 <!--![right fit ](https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhicsE_FrEV9hyy3wtzIhV-sw-tyzHzCWnmzcTxQRNxIKG1DHggITsJyhU-06EmzWTQGnMStpR26YtA649XHxyh7EtqzbY1payEhG342Cc9jZtepb3B8dIUPb6NKs3kLKWRsQEJeuiRtue7QrlIz8xvr2mbRFcO7ROAlK1XGTwrLkVTi_kjsApyH1_q/s856/Skywater%20Blog%202.png)-->
 ![right fit](../media/skymetal.png)
+
+<!--pan_doc:
+<sub>Figure 61: Cross section of the Skywater metal stack, five copper layers M1 to M5 below two aluminium layers M6 and M7</sub>
+-->
 
 <!-- Figure from lect14-wires Integrated Circuit Design slide set -->
 
@@ -1258,6 +1502,10 @@ and high temperature (125 C)
 
 ![right fit](../media/l16/metals.png)
 
+<!--pan_doc:
+<sub>Figure 62: Bulk resistivity in micro-ohm cm for silver, copper, gold, aluminium, tungsten and titanium</sub>
+-->
+
 <!-- Figure from lect14-wires Integrated Circuit Design slide set -->
 
 ---
@@ -1286,6 +1534,10 @@ An FSM where outputs depend on current state and inputs
 
 ![right fit](../media/mealy_machine_tikz.pdf)
 
+<!--pan_doc:
+<sub>Figure 63: Mealy machine, where the input drives both the next-state logic and the output combinational block, so the output depends on input and current state</sub>
+-->
+
 
 ---
 # Moore machine
@@ -1294,6 +1546,10 @@ An FSM where outputs depend on current state and inputs
 An FSM where outputs depend on current state
 
 ![right fit](../media/moore_machine_tikz.pdf)
+
+<!--pan_doc:
+<sub>Figure 64: Moore machine, where the output combinational block is driven only by the state register</sub>
+-->
 
 ---
 # Mealy versus Moore
@@ -1341,6 +1597,10 @@ endmodule // counter
 
 ![inline](../media/charge_graph.png)
 
+<!--pan_doc:
+<sub>Figure 65: Li-Ion charging profile, charge current and battery voltage against time through trickle charge, fast charge, constant voltage charge and charging complete</sub>
+-->
+
 ---
 
 ##  Li-Ion batteries 
@@ -1355,6 +1615,10 @@ Most Li-Ion need to be charged to a termination voltage of 4.2 V
 
 
 ![right](../media/l19/18650.jpeg)
+
+<!--pan_doc:
+<sub>Figure 66: A Biltema ICR18650 rechargeable Li-ion cell rated 2950 mAh at 3.7 V</sub>
+-->
 
 **Too high termination voltage, or too high charging current can cause growth of lithium dendrites, that short + and -. Will end in flames. Always check manufacturer datasheet for charging curves and voltages**
 
@@ -1372,6 +1636,10 @@ If charging complete, and voltage has dropped ($$V_{RECHARGE}$$), then start aga
 
 ![right 60%](../media/charge_graph.png)
 
+<!--pan_doc:
+<sub>Figure 67: The charging profile marked with the thresholds the charger senses - the trickle to fast voltage, the termination voltage VTERM and the termination current ITERM</sub>
+-->
+
 ---
 
 ## Battery charger - States
@@ -1387,9 +1655,17 @@ Charging complete
 
 ![right 60%](../media/charge_graph.png)
 
+<!--pan_doc:
+<sub>Figure 68: The charging profile divided into the four charger states - trickle charge at 0.1 C, fast charge at 1 C, constant voltage and charging complete</sub>
+-->
+
 ---
 
 ![inline](../media/l19/bcharger.pdf)
+
+<!--pan_doc:
+<sub>Figure 69: Battery charger state machine, cycling trickle charge, fast charge, constant voltage and complete on the vtrkl, vterm, iterm and vrchrg flags</sub>
+-->
 
 ---
 ### One way to draw FSMs - Graphviz
@@ -1426,6 +1702,10 @@ digraph finite_state_machine {
 [.column]
 
 ![inline fit ](../media/l19/bcharger.pdf)
+
+<!--pan_doc:
+<sub>Figure 70: The battery charger state diagram beside the SystemVerilog case statement that implements the next-state logic</sub>
+-->
 
 ```verilog
 module bcharger( output logic trkl,
@@ -1543,6 +1823,10 @@ clean
 ---
 
 ![original fit](../media/l19/bcharger_synth.pdf)
+
+<!--pan_doc:
+<sub>Figure 71: Gate level netlist of the battery charger after yosys synthesis to the SUN TR GF130N cell library, with six flip-flops and the next-state logic between them</sub>
+-->
 
 ---
 

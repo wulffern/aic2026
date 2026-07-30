@@ -389,6 +389,10 @@ how the bandgap works.
 
 ![right fit](../media/l03_ptat_tikz.pdf)
 
+<!--pan_doc:
+<sub>Figure 6: PTAT current generator, where an op amp forces equal voltages across the two bipolar branches so that $\Delta V_{BE}$ over $R_1$ sets $I_{PTAT}$</sub>
+-->
+
 ---
 
 ## Milestone 2: The oscillator
@@ -411,6 +415,10 @@ oscillation frequency is independent (to first order) from the VDD.
 -->
 
 ![right fit](../media/rcosc_tikz.pdf)
+
+<!--pan_doc:
+<sub>Figure 7: Relaxation oscillator, where a current charges capacitor $C$ until the comparator trips against the reference voltage $V_1$ across $R$, and the flip-flop resets the capacitor</sub>
+-->
 
 __Delivery__ Link to your github repository with description on
 how your oscillator works. There should be proof on how it works.
@@ -439,6 +447,10 @@ temperature.
 
 ![right fit](https://raw.githubusercontent.com/wulffern/LELO_TEMP_SKY130A/refs/heads/main/sim/tb_lelo_temp/tempFsm.svg)
 
+<!--pan_doc:
+<sub>Figure 8: State machine that measures the oscillator frequency, cycling IDLE, PWRUP (count oscillator pulses), PWRDWN and CAPTURE (store counter value)</sub>
+-->
+
 __Delivery__: Link to your github repository where you describe
 how you measure the frequency of the oscillator.
 
@@ -464,6 +476,10 @@ on github.
 -->
 
 ![right fit](../media/l00_layout.pdf)
+
+<!--pan_doc:
+<sub>Figure 9: Physical layout of a circuit in the Magic layout editor, with the DRC error count shown as zero in the toolbar</sub>
+-->
 
 __Delivery__: Link to your github repository with passing GDS,
 DRC, LVS actions. 

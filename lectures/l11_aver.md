@@ -87,6 +87,8 @@ in an digital simulator.
 
 ![](../media/dig_des_tikz.pdf)
 
+<sub>Figure 1: Mixed signal design flow, where the analog design is captured both as a schematic for ngspice and as a SystemVerilog model for the digital simulation</sub>
+
 -->
 
 <!--pan_skip: -->
@@ -121,6 +123,10 @@ and can handle complex systems.
 
 ![left fit](../media/eventqueue.png)
 
+<!--pan_doc:
+<sub>Figure 2: Flow chart of a digital simulator - advance to the next time step, execute the events scheduled there, and repeat until the queue is empty</sub>
+-->
+
 
 <!--pan_doc:
 
@@ -134,6 +140,10 @@ In SystemDotNet I implemented the event queue as a hash table, so it ran a bit f
 ---
 
 ![left fit](../media/systemdotnet.png)
+
+<!--pan_doc:
+<sub>Figure 3: Event queue implemented as a hash table in SystemDotNet, where events at 10, 20, 21 and 30 ns are looked up by time step before being run</sub>
+-->
 
 ### Digital Simulators
 
@@ -244,6 +254,10 @@ are more events.
 
 
 ![](../media/sv_counter.png)
+
+<!--pan_doc:
+<sub>Figure 4: Gate level netlist of the counter after synthesis, with clk and reset driving eight D flip-flops and the adder logic</sub>
+-->
 
 
 ---
@@ -403,6 +417,10 @@ But if we can't run mixed simulation, how do we verify analog with digital?
 
 ![fit](../media/mixed_simulator.pdf)
 
+<!--pan_doc:
+<sub>Figure 5: Mixed signal simulator, where a digital and an analog simulator exchange values through DAC and ADC connect modules under a shared event and timestep control</sub>
+-->
+
 ---
 
 
@@ -418,11 +436,19 @@ But if we can't run mixed simulation, how do we verify analog with digital?
 
 ![](../media/tt_um_TT06_SAR_wulffern.svg)
 
+<!--pan_doc:
+<sub>Figure 6: Top level schematic of the TinyTapeout tt_um_TT06_SAR_wulffern 8-bit SAR ADC, with the SAR core, the output capture block and the power decoupling</sub>
+-->
+
 ---
 
 
 
 ![left fit](../media/tt06_sar_anawave.png)
+
+<!--pan_doc:
+<sub>Figure 7: ngspice transient waveforms of the SAR, showing the sampled analog input, the clock and uio_out[0], and the sarp/sarn comparator inputs settling through the bit cycling</sub>
+-->
 
 ## SAR operation
 
@@ -616,7 +642,15 @@ rund:
 ---
 
 ![left fit](../media/tt06_sar_anawave2.png)
+
+<!--pan_doc:
+<sub>Figure 8: ngspice transient of the SAR at layout corner, with the ramping analog input, the digital output code, the clock and the uio_out[0] done pulses</sub>
+-->
 ![right fit](../media/tt06_sar_digwave.png)
+
+<!--pan_doc:
+<sub>Figure 9: The same behaviour in gtkwave from the SystemVerilog real-number model, where uo_out[7:0] steps as ua_0 ramps</sub>
+-->
 
 ---
 
