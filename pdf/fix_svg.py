@@ -85,6 +85,12 @@ with open(fname) as fi:
                 #    line = ""
 
 
+                #- Index every section-level heading with a plain-text
+                #  title, so the book's index points at real pages.
+                hm = re.match(r"\\(chapter|section|subsection)\{([^{}\\$]+)\}", line)
+                if hm:
+                    line = line.rstrip("\n") + "\\index{" + hm.group(2).strip() + "}\n"
+
                 #- Pandoc sometimes uses includesvg instead of includegraphics
                 line = line.replace("includesvg","includegraphics")
                 if(re.search(r"includegraphics(\[[^\]]+\])?{",line)):

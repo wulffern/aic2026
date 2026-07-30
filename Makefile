@@ -160,6 +160,8 @@ texfiles-parallel:
 	cat pdf/tex_intro_chapter.inc > pdf/chapters.tex
 	${foreach f, ${FILES}, cat pdf/${f}_chapter.inc >> pdf/chapters.tex;}
 	${foreach f, ${FILES}, cat pdf/${f}_download.inc >> docs/downloads.md;}
+	${PYTHON} py/mkrefs.py
+	cat pdf/references_chapter.inc >> pdf/chapters.tex
 	cd pdf; make fix hash pandoc.tex
 
 images:

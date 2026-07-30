@@ -44,6 +44,7 @@ one: kaobook clean-main-aux
 	${PDFLATEX} -draftmode aic
 	#TEXINPUTS=".:kaobook:" makeindex aic.nlo
 	${PDFLATEX} -draftmode aic
+	-makeindex -q aic.idx
 	${PDFLATEX} aic
 	# Recompress: /ebook downsamples the embedded rasters to 150 dpi,
 	# which takes the book from ~50 MB to ~17 MB with no visible change

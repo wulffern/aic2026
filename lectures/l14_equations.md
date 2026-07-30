@@ -27,6 +27,10 @@ those live in the lectures — just the results, as a reference.
 
 # Fundamental physics
 
+**The QED Lagrangian — everything in electronics follows from this**
+
+$$ \mathcal{L} = \bar{\psi}[i \hbar c \gamma^\mu\partial_\mu - mc^2]\psi - q[\bar{\psi} \gamma^\mu \psi] A_\mu - \frac{1}{16 \pi}F_{\mu\nu}F^{\mu\nu} $$
+
 **Schrödinger equation**
 
 $$ i\hbar \frac{d}{dt} \psi(r,t) = \widehat{H} \psi(r,t) $$

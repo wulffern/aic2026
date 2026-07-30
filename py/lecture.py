@@ -659,9 +659,22 @@ def latex(filename,root,no_append):
     title = p.title.strip()
     title = re.sub(r"Lecture\s+[\d|X]*\s+-\s+","",title)
 
+    #- The lecture's keywords become index entries anchored at the
+    #  chapter start, alongside the per-section entries fix_svg.py adds.
+    with open(filename) as fi:
+        kwm = re.search(r"\*\*Keywords:\*\*\s*(.+)", fi.read())
+    kw_index = ""
+    if kwm:
+        for kw in kwm.group(1).split(","):
+            kw = kw.strip()
+            if kw and not re.search(r"[{}\\$]", kw):
+                for c in "_&%#":
+                    kw = kw.replace(c, "\\" + c)
+                kw_index += r"\index{" + kw + "}"
+
     chapter_text = (r"\setchapterstyle{kao}" + "\n"
         + r"\setchapterpreamble[u]{\margintoc}" + "\n"
-        + r"\chapter{" + title + "}" + "\n"
+        + r"\chapter{" + title + "}" + kw_index + "\n"
         + r"\input{" + foname_fixed + "}" + "\n\n")
 
     #- The chapter PDF and, beside it, the HTML deck built by py/slides.py
