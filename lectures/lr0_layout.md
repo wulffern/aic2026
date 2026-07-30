@@ -8,7 +8,11 @@ date: 2025-03-20
 
 <!--pan_title: Layout Generation-->
 
-**Status:** 0.5
+<!--pan_doc:
+
+**Keywords:** Layout Generation, CICPY, Placement, Routing, Automation
+
+-->
 
 # Layout
 

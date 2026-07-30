@@ -15,13 +15,17 @@ date: 2024-10-25
 
 <!--pan_doc: 
 
-**Status:** 1.0
-
 <iframe width="560" height="315" src="https://www.youtube.com/embed/F1-piS8uL1w?si=wnFQ83kHPuYBtYS2&amp;start=3200" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 -->
 
 <!--pan_title: Diodes -->
+
+<!--pan_doc:
+
+**Keywords:** Silicon, Intrinsic Carriers, Density of States, Fermi-Dirac, Doping, PN Junction, Built-in Voltage, Diode Equation, Temperature, Leakage
+
+-->
 
 # Why
 

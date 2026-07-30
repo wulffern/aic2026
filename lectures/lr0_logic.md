@@ -10,7 +10,11 @@ date: 2025-01-08
 
 <!--pan_title: CMOS Logic -->
 
-**Status:** 0.3
+<!--pan_doc:
+
+**Keywords:** CMOS Logic, Inverter, NAND, Static Logic, SR-Latch, D-Latch, Flip-Flop, Tristate, AOI
+
+-->
 
 
 #[fit] Analog transistor to digital transistor

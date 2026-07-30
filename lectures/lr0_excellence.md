@@ -2,6 +2,12 @@ date: 2025-12-30
 
 <!--pan_title: How to Achieve Excellence -->
 
+<!--pan_doc:
+
+**Keywords:** Value, Root Cause, Focus, Standards, Ownership, Honesty
+
+-->
+
 
 Excellence is not a mystery. It is the cumulative result of focusing on what matters, eliminating what does not, and refusing to lie to ourselves. Most organizations fail not because the problems are hard, but because they tolerate confusion, waste, and wishful thinking.
 

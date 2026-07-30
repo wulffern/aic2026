@@ -11,6 +11,12 @@ date: 2026-04-17
 
 <!--pan_title: Analog SystemVerilog -->
 
+<!--pan_doc:
+
+**Keywords:** Mixed Signal, SystemVerilog, Real Number Modeling, Icarus, ngspice, SAR, TinyTapeout
+
+-->
+
 ---
 
 <!--pan_skip: -->
@@ -35,8 +41,6 @@ Introduction to Analog SystemVerilog
 ---
 
 <!--pan_doc: 
-
-**Status:** 0.3
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/56oK9FAE858" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 

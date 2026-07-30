@@ -10,6 +10,12 @@ date: 2026-01-15
 
 <!--pan_title: Circuits -->
 
+<!--pan_doc:
+
+**Keywords:** Sizing, Bias Point, gm/ID, Current Mirrors, Cascode, CS, CD, CG, Differential Pair, OTA
+
+-->
+
 
 # Circuits
 

@@ -11,6 +11,12 @@ date: 2026-04-10
 
 <!--pan_title: Energy Sources -->
 
+<!--pan_doc:
+
+**Keywords:** Lithium Battery, Thermoelectric, Photovoltaic, Piezoelectric, Electromagnetic, Triboelectric, RF Harvesting
+
+-->
+
 ---
 
 <!--pan_skip: -->
@@ -56,8 +62,6 @@ Energy density $$ \Rightarrow [250,693]\text{ }mWh/cm^3 $$
 ---
 
 <!--pan_doc:
-
-**Status:** 0.3
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/Tb2CFHLmkzw?si=4f29EI_Hwj3My9fn" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 

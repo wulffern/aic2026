@@ -8,7 +8,11 @@ date: 2025-10-26
 
 <!--pan_title: Sky130nm tutorial-->
 
-**Status:** 0.5
+<!--pan_doc:
+
+**Keywords:** IP, xschem, ngspice, Corners, Layout, DRC, LVS, LPE, Documentation
+
+-->
 
 Before you start the tutorial you need to have the tools installed. 
 

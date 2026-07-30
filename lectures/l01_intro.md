@@ -9,6 +9,12 @@ date: 2026-01-09
 
 <!--pan_title: Introduction -->
 
+<!--pan_doc:
+
+**Keywords:** Course Goals, Roles, Skills, Zen of IC Design, Design Process, Tapeout
+
+-->
+
 <!--pan_skip: -->
 ## TFE4188 - Advanced Integrated Circuits  
 
@@ -36,8 +42,6 @@ date: 2026-01-09
 -->
 
 <!--pan_doc:
-
-**Status:** 1.0
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/CekM_kFgMas?si=vb5L-XivOrUgLw0A" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 

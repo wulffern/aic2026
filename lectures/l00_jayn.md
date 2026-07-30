@@ -2,6 +2,12 @@ date: 2025-07-16
 
 <!--pan_title: The Story of Jayn-->
 
+<!--pan_doc:
+
+**Keywords:** Electron, Big Bang, Fusion, Supernova, Silicon, Sand, Wafer, IC
+
+-->
+
 I want to tell you a story about Jayn. Jayn is an electron. Just one among
 countless others. There's nothing particularly special about Jayn, but Jayn plays
 an important role in our story.

@@ -4,7 +4,11 @@ date: 2026-01-10
 
 <!--pan_title: How to write a project report-->
 
-**Status:** 0.8
+<!--pan_doc:
+
+**Keywords:** Writing, Paragraphs, Transitions, Structure, Introduction, Theory, Implementation, Results
+
+-->
 
 # Why
 > Them who has a Why? in life can tolerate almost any How?

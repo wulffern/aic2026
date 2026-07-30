@@ -10,9 +10,13 @@ date: 2024-09-11
 
 <!--pan_title: SPICE  -->
 
-<!--pan_doc: 
+<!--pan_doc:
 
-**Status:** 0.3
+**Keywords:** SPICE, Sources, Passives, Transistor Models, BSIM, Foundries, Unit Transistors, gm/ID
+
+-->
+
+<!--pan_doc: 
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/z9go-m0hnIg?si=YI3uCt9mp4Ei65Xo" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 

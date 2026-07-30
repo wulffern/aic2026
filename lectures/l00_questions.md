@@ -8,6 +8,12 @@ date: 2026-01-23
 
 <!--pan_title: FAQ -->
 
+<!--pan_doc:
+
+**Keywords:** FAQ, Git, Tools, Setup
+
+-->
+
 # Frequently asked questions
 
 ---

@@ -9,6 +9,12 @@ date: 2026-05-06
 
 <!--pan_title: Thoughts and Advice -->
 
+<!--pan_doc:
+
+**Keywords:** Advice, Skills, Zen of IC Design, Design Process, Career
+
+-->
+
 
 
 # Advice

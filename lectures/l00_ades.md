@@ -15,11 +15,15 @@ date: 2026-01-03
 
 <!--pan_doc: 
 
-**Status:** 0.5
-
 -->
 
 <!--pan_title: Analog Design -->
+
+<!--pan_doc:
+
+**Keywords:** Checklist, Specification, Design, Tapeout, Schematic Rules, Layout Rules
+
+-->
 
 # Checklist
 

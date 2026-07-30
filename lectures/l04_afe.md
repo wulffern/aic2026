@@ -134,8 +134,6 @@ All digital processing can be made with the NOT(A AND B) function!
 
 **Keywords:** H(s), BiQuad, Gm-C, Active-RC, OTA
 
-**Status:** 0.5
-
 <iframe width="560" height="315" src="https://www.youtube.com/embed/hLqhCmKismc?si=d6e-4ePUVaknmAQz" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
 

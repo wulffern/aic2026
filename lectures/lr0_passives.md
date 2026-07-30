@@ -14,8 +14,12 @@ date: 2025-01-08
 
 <!--pan_title: Integrated Passives -->
 
+<!--pan_doc:
 
-**Status:** 0.3
+**Keywords:** Resistors, Polysilicon, Diffusion, Capacitors, MOM, MOS Cap, Varactors, Inductors
+
+-->
+
 
 # Metal in ICs is not wire in schematic
 

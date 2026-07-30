@@ -13,13 +13,17 @@ date: 2025-01-01
 
 <!--pan_title: MOSFETs -->
 
+<!--pan_doc:
+
+**Keywords:** Field Effect, Weak Inversion, Strong Inversion, Threshold, gm, gds, Intrinsic Gain, Capacitances, Miller, gm/ID, Velocity Saturation, DIBL, WPE, HCI, Variability, Pelgrom, Noise
+
+-->
+
 ---
 
 
 
 <!--pan_doc: 
-
-**Status:** 0.4
 
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/IrnHm3dRKD0?si=4Xm203ALvQkHCIDN" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>

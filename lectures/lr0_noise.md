@@ -8,7 +8,11 @@ date: 2025-02-06
 
 <!--pan_title: Noise-->
 
-**Status:** 0.5
+<!--pan_doc:
+
+**Keywords:** Statistics, Average Power, PSD, White Noise, Thermal Noise, SNR, Noise Figure, Friis
+
+-->
 
 # Noise
 

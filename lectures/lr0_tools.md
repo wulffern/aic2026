@@ -8,7 +8,11 @@ date: 2025-10-25
 
 <!--pan_title: The Tools -->
 
-**Status:** 1.0
+<!--pan_doc:
+
+**Keywords:** WSL, Git, AICEX, ngspice, xschem, Magic, cicconf, cicsim, cicpy
+
+-->
 
 # Tools
 

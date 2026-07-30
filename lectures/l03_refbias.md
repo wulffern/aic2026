@@ -32,8 +32,6 @@ Introduction to **circuit architectures**
 
 **Keywords:** VREF, IREF, VD, BGAP, LVBGAP, VI, GMCELL
 
-**Status:** 1.0
-
 <iframe width="560" height="315" src="https://www.youtube.com/embed/3Z4YXoVmxx8?si=9JI3Cw1d8Fdip_7t" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 In our SPICE testbenches, and trial schematics, it's common to include voltage sources and current sources,

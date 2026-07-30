@@ -45,7 +45,8 @@ FILES = l00_jayn \
 	l00_sv \
 	l00_ades \
 	lr0_logic \
-	l00_questions
+	l00_questions \
+	l14_equations
 	#s_mac\
 
 

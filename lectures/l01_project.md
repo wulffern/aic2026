@@ -70,6 +70,12 @@ Below is the layout of group 6 <https://analogicus.github.io/jnw_gr06_sky130a/> 
 
 <!--pan_title: The Project -->
 
+<!--pan_doc:
+
+**Keywords:** Temperature Sensor, Leakage, Regulator, Specification, FOM, Milestones, Tapeout
+
+-->
+
 <!--pan_doc: 
 
 The project will walk you through the full analog/digital design process. From specification all the way to a finished layout, and a potential tapeout. 

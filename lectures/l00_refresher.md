@@ -15,11 +15,15 @@ date: 2024-10-25
 <!--pan_doc:
 <iframe width="560" height="315" src="https://www.youtube.com/embed/F1-piS8uL1w?si=wnFQ83kHPuYBtYS2" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
-**Status:** 0.8
-
 -->
 
 <!--pan_title: A Refresher-->
+
+<!--pan_doc:
+
+**Keywords:** SI Units, Silicon, Band Structure, Fermi Level, Metals, Insulators, Semiconductors, Band Diagrams, Fields
+
+-->
 
 # There are standard units of measurement
 

@@ -13,8 +13,6 @@ date: 2026-01-23
 **Keywords:** TempSense, Node Voltage, Ground, VDD, Clocks, Digital, Bias, RESET (POR), Package, Why ESD, 
 CDM (Gauss, INV), HBM (01,10,02,20,12,21**), GGNMOS, Latch-up
 
-**Status:** 1.0
-
 <iframe width="560" height="315" src="https://www.youtube.com/embed/6bqHO1iIJw0?si=8BkCgBFiA-bL5S7_" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
 Video is from 2024, so the plan might not be exactly the same. In addition, we're not using Caravel for the tapeout, but rather TinyTapeout.
