@@ -180,7 +180,7 @@ standalone-one:
 	f="$${f%.tex}"; \
 	echo "Building $$f"; \
 	cd pdf && $(MAKE) standalone FNAME="$$f.tex"; \
-	cp "pdf/$$f.pdf" "docs/assets/"
+	cp "$$f.pdf" "../docs/assets/"
 
 # Like standalone-list, but chapters whose content hash matches a cached PDF
 # are copied instead of rebuilt. The version stamp is excluded from the hash

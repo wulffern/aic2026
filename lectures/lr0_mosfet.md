@@ -19,12 +19,12 @@ date: 2025-01-01
 
 <!--pan_doc: 
 
-**Status:** 0.3
+**Status:** 0.4
 
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/IrnHm3dRKD0?si=4Xm203ALvQkHCIDN" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
-I'm stunned if you've never heared the word "transistor". I think most people have heard the word. What I find funny is that almost nobody understand in full detail how transistors work.
+I'm stunned if you've never heard the word "transistor". I think most people have heard the word. What I find funny is that almost nobody understands in full detail how transistors work.
 
 Through my 30 year venture into the world of electronics I've met  "analog designers", or people 
 that should understand exactly how transistors work. I used to hire analog designers, and I've interviewed hundred plus "analog designers" 
@@ -113,7 +113,7 @@ Assume that the gate is 0 V.
 In the  source and drain parts of the transistor there is an abundance of **free** electrons that can move around, exactly like in a metal conductor, however, underneath the gate there are almost 
 no **free** electrons. 
 
-There are electrons underneath the gate though, trillions upon trillions of electrons, but they are stuck in co-valent bonds
+There are electrons underneath the gate though, trillions upon trillions of electrons, but they are stuck in covalent bonds
 between the Silicon atoms, and around the nucleus of the Silicon atoms. These electrons are what we call bound electrons, they cannot move, or more precisely, they cannot contribute to current (because they do move, all the time, but mostly around the atoms). 
 
 Imagine that your eyes could see the free electrons as a blue fluorescent color. What you would see is a bright blue drain, and bright blue source, but no color underneath the gate.
@@ -139,7 +139,7 @@ As you increase the gate voltage, the color underneath the gate would change. Fi
 <sub>Figure 4: MOSFET in subthreshold </sub>
 
 At a certain voltage, suddenly, there would be a thin blue sheet underneath the gate. You'd have to
-zoom in to see it, in reality it's a ultra thin, 2 dimensional electron sheet.
+zoom in to see it, in reality it's an ultra-thin, 2 dimensional electron sheet.
 
 As you continue to increase the gate voltage the blue color would become a little brighter, but not much.
 
@@ -254,12 +254,13 @@ Someday, I may write all the details, if I ever understand it all. For now, I ho
 
 In the books we learn the equations for weak inversion
 
-$$ I_D \propto (e^{(V_{gs}-V_{tn})/V_T}-1)$$
+$$ I_D \propto e^{(V_{gs}-V_{tn})/nV_T}$$
 
 <!--pan_doc:
 
 , where $I_D$ is the drain current, $V_{gs}$ is the gate source voltage,
-$V_{tn}$ is the threshold voltage and $V_T = kT/q$, where $k$ is Boltzmann's
+$V_{tn}$ is the threshold voltage, $n$ is the slope factor (more on that
+later) and $V_T = kT/q$, where $k$ is Boltzmann's
 constant, $T$ is the temperature in Kelvin and $q$ is the unit charge
 
 
@@ -276,7 +277,7 @@ Maybe the equation looks complicated, but it's really "Multiply the available en
 
 Changing the voltage changes the number of free electrons, simply because we bring the conduction band closer to the Fermi level. 
 
-The Fermi level is just something we invented, and just means "If there was an quantum state at the Fermi level Energy, then it would have a 50 % probability of being occupied by a electron".
+The Fermi level is just something we invented, and just means "If there was an quantum state at the Fermi level Energy, then it would have a 50 % probability of being occupied by an electron".
 
 In the equation above, moving the conduction band edge is equivalent to reducing the $E_C$. As such, more of the Fermi-Dirac distribution has available energy states $N(E)$, and the density of electrons $n$ in conduction band becomes higher.
 
@@ -308,11 +309,11 @@ The year after we teach the current equations for MOSFETs, and the books don't h
 
 I think, quite often, we just end up with confused students. And I don't think it's necessary to end up with confused students. Maybe sometimes we end up with confused students because the Professors can't necessarily remember where the equations come from either, nor how electrons and holes really behave.
 
-It's not necessary for an analog design student to remember how to compute the density of available energy states from Schrodinger and the wave function. If we wanted to use the relativistc version of Schrodinger (which includes magnetic fields, and if you did not know, magnetic fields is just a relativistic effect of the electric field) and the wave function to compute how an Silicon atom actually behaves, I don't think we can. As far as I've been able to figure out, it's not possible to have a closed form solution (symbolic), nor is it possible with supercomputers to do a numeric time-evolution of the states in a single Silicon atom with all the inter-particle interactions, space, momentum, spins, electric fields and magnetic fields. 
+It's not necessary for an analog design student to remember how to compute the density of available energy states from Schrodinger and the wave function. If we wanted to use the relativistic version of Schrodinger (which includes magnetic fields, and if you did not know, magnetic fields are just a relativistic effect of the electric field) and the wave function to compute how an Silicon atom actually behaves, I don't think we can. As far as I've been able to figure out, it's not possible to have a closed form solution (symbolic), nor is it possible with supercomputers to do a numeric time-evolution of the states in a single Silicon atom with all the inter-particle interactions, space, momentum, spins, electric fields and magnetic fields. 
 
 But we can make sure we connect the links from Schrodinger to the MOSFET equations, the short version of that was above, but the following sections tries to explain with words how the transistor actually works. 
 
-I'm not going to give all the equations and all the maths. For that, there are excelent books and resources. I would recommend [Mark Lundstrom](https://www.youtube.com/watch?v=5eG6CvcEHJ8&list=PLtkeUZItwHK6F4a4OpCOaKXKmYBKGWcHi) for the best in detail description of MOSFETs. 
+I'm not going to give all the equations and all the maths. For that, there are excellent books and resources. I would recommend [Mark Lundstrom](https://www.youtube.com/watch?v=5eG6CvcEHJ8&list=PLtkeUZItwHK6F4a4OpCOaKXKmYBKGWcHi) for the best in detail description of MOSFETs. 
 
 -->
 
@@ -351,7 +352,7 @@ we have doped with acceptors, and have an abundance of holes.
 
 Let's consider electron current for now, and only look at the conduction band. 
 
-An electron in the source would see a energy barrier of $\phi_B$, and most electrons would be turned
+An electron in the source would see an energy barrier of $\phi_B$, and most electrons would be turned
 around at the barrier. Some, however, do have the energy to traverse the barrier and flow through the bulk. 
 Not all of them would reach the bulk, due to recombination, but let's assume the bulk is short, and all electrons
 injected into the bulk show up at the drain. 
@@ -369,7 +370,7 @@ happen in reverse, from drain to source.
 <!--pan_doc:
 <sub>Figure 11: MOSFET subthreshold , $V_{DS} = 0$</sub>
 
-There would also be hole currents flowing between source/bulk/drain and visa versa
+There would also be hole currents flowing between source/bulk/drain and vice versa
 
 Assume source and drain are at the same potential, then the sum of all currents (1,2,3,4) for both electrons
 and holes in Figure 11 must equal zero.
@@ -480,7 +481,7 @@ The bending of the valence band will decrease the hole concentration close to th
 
 The valence band bending will also reduce the barrier height in Figure 12, which increases the number of carriers that can be injected at source/bulk interface, so the subthreshold current will start to increase.
 
-At some point, the band bending of the conduction band will become so large that the electron concentration underneath the gate will increase signficantly. The gate-source voltage where the electron concentration equals the bulk hole concentration far away from the silicon surface is called the "threshold voltage". 
+At some point, the band bending of the conduction band will become so large that the electron concentration underneath the gate will increase significantly. The gate-source voltage where the electron concentration equals the bulk hole concentration far away from the silicon surface is called the "threshold voltage". 
 
 As you continue to increase the gate-source voltage there is a limit to how much the electron concentration increases. When the band bending of the conduction band passes the Fermi level, then over 50 percent of the available states in the conduction band are filled with electrons. 
 
@@ -504,15 +505,15 @@ As you continue to increase the gate-source voltage there is a limit to how much
 
 The conditions to be in strong inversion is that the gate/source voltage is above some magic values (threshold voltage), and then some. 
 
-The quantum state of the electron is fully determined by it's spin, momentum and position in space. How those parameters evolve with time is determined by the Schrodinger equation. In the general form
+The quantum state of the electron is fully determined by its spin, momentum and position in space. How those parameters evolve with time is determined by the Schrodinger equation. In the general form
 
 $$ i\hbar\frac{d}{dt}\Psi(r,t) = \widehat{H} \Psi(r,t) $$
 
-The Hamiltonian ($H$) is an "energy matrix" operator and may contain terms both for the momentum and Columb force (electric field) experienced by the system.
+The Hamiltonian ($H$) is an "energy matrix" operator and may contain terms both for the momentum and Coulomb force (electric field) experienced by the system.
 
 But what does the Schrodinger equation tell us? Well, the equation above does not tell me much, it can't be "solved", or rather, it does not have a single solution. It's more a framework for how the wave function, and the Hamiltonian, describes the quantum states of a system, and the probability amplitudes of transition between states. 
 
-The Schrodinger equation describes the time evolution of the bound electrons shared between the Silicon atoms, and the fact that applying a electric field to silicon can free co-valent bonds. 
+The Schrodinger equation describes the time evolution of the bound electrons shared between the Silicon atoms, and the fact that applying an electric field to silicon can free electrons from covalent bonds. 
 
 As the gate-source voltage increases the wave function that fits in the Schrodinger equation predicts that the free electrons will form a 2d sheet underneath the gate. The thickness of the sheet is only a few nano meters.
 
@@ -801,7 +802,7 @@ Define $$ \ell = \mu_n C_{ox} \frac{W}{L} $$ and $$ V_{eff} = V_{GS} - V_{tn} $$
 
 Define $$ \ell = \mu_n C_{ox} \frac{W}{L} $$ and $$ V_{eff} = V_{GS} - V_{tn} $$ 
 
- $$ I_D = \frac{1}{2} \ell V_{eff}^2[1 + \lambda V_{DS} - \lambda V_{eff})] $$ 
+ $$ I_D = \frac{1}{2} \ell V_{eff}^2\left[1 + \lambda (V_{DS} - V_{eff})\right] $$ 
 
  $$\frac{1}{r_{ds}} = g_{ds} = \frac{ \partial I_D}{\partial V_{DS} }  = \lambda \frac{1}{2} \ell V_{eff}^2$$
  
@@ -877,7 +878,7 @@ $$\Phi_0 = V_T ln\left(\frac{N_A N_D}{n_i^2}\right)$$
 
 $$ C_{db} = A_d C_{jd} $$
 
-$$ C_{js} = \frac{C_{j0}}{\sqrt{1 + \frac{V_{DB}}{\Phi_0}}} $$
+$$ C_{jd} = \frac{C_{j0}}{\sqrt{1 + \frac{V_{DB}}{\Phi_0}}} $$
 
 ---
 
@@ -887,9 +888,9 @@ $$ C_{js} = \frac{C_{j0}}{\sqrt{1 + \frac{V_{DB}}{\Phi_0}}} $$
 
 If $$ Y(s) = 1/sC $$ then 
  $$Y_1(s) = 1/sC_{in} $$ and $$Y_2(s) = 1/sC_{out}$$ where
- $$ C_{in} = (1 + A) C $$, $$ C_{out} = (1 + \frac{1}{2})C $$
+ $$ C_{in} = (1 + A) C $$, $$ C_{out} = (1 + \frac{1}{A})C $$
  
- $$ C_{1} = C_{gd} g_{m} r_{ds} $$
+ $$ C_{in} \approx C_{gd}\, g_{m} r_{ds} $$
 
 **$$C_{gd}$$ can appear to be 10 to 100 times larger!**
 
@@ -908,7 +909,7 @@ If $$ Y(s) = 1/sC $$ then
 
 If $$ V_{eff} < 0 $$ diffusion currents dominate.
 
- $$ I_{D} = I_{D0} \frac{W}{L} e^{V_eff / n V_T} $$, where
+ $$ I_{D} = I_{D0} \frac{W}{L} e^{V_{eff} / n V_T} $$, where
  
  $$ V_T = kT/q $$, $$n = (C_{ox} + C_{j0})/C_{ox}$$
  
@@ -1025,11 +1026,15 @@ In intrinsic silicon:
 
 [.column]
 
- $$ v_{n\_max} \approx 2.3 \times 10^5 [m/s] $$
- $$ v_{p\_max} \approx 1.6 \times 10^5 [m/s] $$
+Saturation velocity (same as the electron speed limit above):
+
+ $$ v_{n\_sat} \approx 1.0 \times 10^5 [m/s] $$
+ $$ v_{p\_sat} \approx 0.8 \times 10^5 [m/s] $$
+
+<sub>Don't confuse it with the thermal velocity $\approx 2.3 \times 10^5$ m/s</sub>
 
 
- **Doping ($$N_A \text{or} N_D$$) reduces $$\mu $$** 
+ **Doping ($$N_A \text{ or } N_D$$) reduces $$\mu$$** 
 
 ---
 
@@ -1219,7 +1224,7 @@ Use calibration: measure error, tune circuit to fix error
 
 For every single chip, measure voltage across known resistor $$R_1$$ and tune $$R_{var}$$ such that we get $$I_1 = 1 \mu A$$
 
-Be careful with multimeters, they have finite input resistance (approximately 1 M$$\Omega$$)
+Be careful with multimeters, they have finite input resistance (typically 10 M$$\Omega$$)
 
 <!--pan_skip: -->
 
@@ -1233,7 +1238,7 @@ Mobility decreases with temperature
 
 Threshold voltage decreases with temperature.
 
-$$ I_D = \frac{1}{2}\mu_n C_{ox} (V_{GS} - V_{tn})^2$$
+$$ I_D = \frac{1}{2}\mu_n C_{ox} \frac{W}{L} (V_{GS} - V_{tn})^2$$
 
 High $$I_D = $$ fast digital circuits
 
@@ -1286,7 +1291,7 @@ If you need stability over temperature, use 7.3.2 and 7.3.4 in CJM (SUN\_BIAS\_G
  
  $$ I_D = \frac{1}{2} \ell (V_{GS} - V_{tp})^2$$
  
- Due to doping , length, width, $$C_{ox}$$, $$V_{tp}$$, ... random varation
+ Due to doping , length, width, $$C_{ox}$$, $$V_{tp}$$, ... random variation
  
  $$\ell_1 \ne \ell_2$$
  
@@ -1313,7 +1318,7 @@ Assume closely spaced devices ($$ D \approx 0$$) $$ \Rightarrow \sigma^2 (\Delta
 
 ## Transistors with same $$V_{GS}$$[^2]
 
-$$\frac{\sigma_{I_D}^2}{I_D^2} = \frac{1}{WL}\left[\left(\frac{gm}{I_D}\right)^2 \sigma_{vt}^2 + \frac{\sigma_{\ell}^2}{\ell}\right] $$
+$$\frac{\sigma_{I_D}^2}{I_D^2} = \frac{1}{WL}\left[\left(\frac{gm}{I_D}\right)^2 \sigma_{vt}^2 + \frac{\sigma_{\ell}^2}{\ell^2}\right] $$
 
 Valid in  weak, moderate and strong inversion
 
@@ -1323,7 +1328,7 @@ Valid in  weak, moderate and strong inversion
 ---
 
 
-$$\frac{\sigma_{I_D}^2}{I_D^2} = \frac{1}{WL}\left[\left(\frac{gm}{I_D}\right)^2 \sigma_{vt}^2 + \frac{\sigma_{\ell}^2}{\ell}\right] $$
+$$\frac{\sigma_{I_D}^2}{I_D^2} = \frac{1}{WL}\left[\left(\frac{gm}{I_D}\right)^2 \sigma_{vt}^2 + \frac{\sigma_{\ell}^2}{\ell^2}\right] $$
 $$\frac{\sigma_{I_D}}{I_D} \propto \frac{1}{\sqrt{WL}}$$
 
 Assume $$\frac{\sigma_{I_D}}{I_D} = 10\%$$, We want $$5\%$$, how much do we need to change WL?
@@ -1344,9 +1349,9 @@ $$1 \%$$ would require **100** times the area
 
 ## What else can we do?
 
-$$\frac{\sigma_{I_D}^2}{I_D^2} = \frac{1}{WL}\left[\left(\frac{gm}{I_D}\right)^2 \sigma_{vt}^2 + \frac{\sigma_{\ell}^2}{\ell}\right] $$
+$$\frac{\sigma_{I_D}^2}{I_D^2} = \frac{1}{WL}\left[\left(\frac{gm}{I_D}\right)^2 \sigma_{vt}^2 + \frac{\sigma_{\ell}^2}{\ell^2}\right] $$
 
-Strong inversion $$\Rightarrow \frac{gm}{I_D} = \frac{1}{2 V_{eff}} = low$$
+Strong inversion $$\Rightarrow \frac{gm}{I_D} = \frac{2}{V_{eff}} = low$$
 
 Weak inversion $$\Rightarrow \frac{gm}{I_D} = \frac{q}{n k T} \approx 25$$
 
@@ -1358,15 +1363,15 @@ Weak inversion $$\Rightarrow \frac{gm}{I_D} = \frac{q}{n k T} \approx 25$$
 
 ---
 
-$$\frac{\sigma_{I_D}^2}{I_D^2} = \frac{1}{WL}\left[\left(\frac{gm}{I_D}\right)^2 \sigma_{vt}^2 + \frac{\sigma_{\ell}^2}{\ell}\right] $$
+$$\frac{\sigma_{I_D}^2}{I_D^2} = \frac{1}{WL}\left[\left(\frac{gm}{I_D}\right)^2 \sigma_{vt}^2 + \frac{\sigma_{\ell}^2}{\ell^2}\right] $$
 
-$$\sigma_{I_D}^2 = \frac{1}{WL}\left[gm^2 \sigma_{vt}^2 + I_D^2\frac{\sigma_{\ell}^2}{\ell}\right] $$
+$$\sigma_{I_D}^2 = \frac{1}{WL}\left[gm^2 \sigma_{vt}^2 + I_D^2\frac{\sigma_{\ell}^2}{\ell^2}\right] $$
 
 Offset voltage for a differential pair
 
 $$ i_o = i_{o+} - i_{o-} =  g_m v_i = g_m (v_{i+} - v_{i-})$$
 
-$$ \sigma_{v_i}^2 = \frac{\sigma_{I_D}^2}{gm^2} = \frac{1}{WL}\left[\sigma_{vt}^2 + \frac{I_D^2}{gm^2}\frac{\sigma_{\ell}^2}{\ell}\right]  $$
+$$ \sigma_{v_i}^2 = \frac{\sigma_{I_D}^2}{gm^2} = \frac{1}{WL}\left[\sigma_{vt}^2 + \frac{I_D^2}{gm^2}\frac{\sigma_{\ell}^2}{\ell^2}\right]  $$
 
 High $$\frac{gm}{I_D}$$ is better (best in weak inversion)
 
@@ -1383,7 +1388,7 @@ $$ PSD_{TH}(f) = \text{Constant}$$
 
 **Popcorn noise**
 Carriers get "stuck" in oxide traps (dangling bonds) for a while. Can cause a short-lived (seconds to minutes) shift in threshold voltage
-$$ PSD_{GR}(f) \propto \text{Lorentzian shape} \approx \frac{A}{1 + \frac{f^2}{f_0}}$$
+$$ PSD_{GR}(f) \propto \text{Lorentzian shape} \approx \frac{A}{1 + \left(\frac{f}{f_0}\right)^2}$$
 
 **Flicker noise**
 Assume there are many sources of popcorn noise at different energy levels and time constants, then the sum of the spectral densities approaches flicker noise.
