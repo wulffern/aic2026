@@ -1,0 +1,42 @@
+\input{tikz/fig_header.tex}
+
+% A metal wire is a three dimensional resistor: nanometers wide, less
+% than a micrometer tall, and as long as the router made it.
+
+\begin{tikzpicture}[thick]
+
+  \def\dx{1.1}    % oblique depth x
+  \def\dy{0.55}   % oblique depth y
+  \def\len{7.0}   % length
+  \def\bh{1.6}    % height
+
+  % front face
+  \fill[mOne!60] (0,0) rectangle (\len,\bh);
+  \draw (0,0) rectangle (\len,\bh);
+
+  % top face
+  \fill[mOne!40] (0,\bh) -- (\dx,{\bh+\dy}) -- ({\len+\dx},{\bh+\dy})
+    -- (\len,\bh) -- cycle;
+  \draw (0,\bh) -- (\dx,{\bh+\dy}) -- ({\len+\dx},{\bh+\dy}) -- (\len,\bh);
+
+  % side face
+  \fill[mOne!75] (\len,0) -- ({\len+\dx},\dy) -- ({\len+\dx},{\bh+\dy})
+    -- (\len,\bh) -- cycle;
+  \draw (\len,0) -- ({\len+\dx},\dy) -- ({\len+\dx},{\bh+\dy}) -- (\len,\bh);
+
+  % hidden edges
+  \draw[densely dotted, black!50] (0,0) -- (\dx,\dy) -- ({\len+\dx},\dy);
+  \draw[densely dotted, black!50] (\dx,\dy) -- (\dx,{\bh+\dy});
+
+  % dimensions
+  \draw[blue, thick, latex-latex] (-0.25,-0.15) -- ({\dx-0.25},{\dy-0.15});
+  \node[blue, anchor=east] at (-0.15,0.35) {$W > 20$ nm};
+
+  \draw[blue, thick, latex-latex] (0.1,{\bh+\dy+0.35}) -- ({\len+0.1},{\bh+\dy+0.35});
+  \node[blue, anchor=south] at ({\len/2},{\bh+\dy+0.45}) {$L = ?$};
+
+  \draw[blue, thick, latex-latex] ({\len+\dx+0.35},\dy) -- ({\len+\dx+0.35},{\bh+\dy});
+  \node[blue, anchor=west] at ({\len+\dx+0.5},{\bh/2+\dy}) {$H < 1 \mu$m};
+
+\end{tikzpicture}
+\end{document}

@@ -1,0 +1,55 @@
+\input{tikz/fig_header.tex}
+
+% Polysilicon serpentine resistor in layout colors: poly strips joined
+% end to end by metal straps with contacts, and a dummy poly strip at
+% the top and bottom so every active strip sees the same neighborhood.
+
+\begin{tikzpicture}[thick]
+
+  \def\sw{6.0}   % strip length
+  \def\sh{0.5}   % strip height
+  \def\sp{1.2}   % strip pitch
+
+  % dummy strips top and bottom
+  \fill[poly] (0,{5*\sp}) rectangle (\sw,{5*\sp+\sh});
+  \fill[poly] (0,{-\sp}) rectangle (\sw,{-\sp+\sh});
+
+  % four active strips
+  \foreach \i in {0,1,2,3} {
+    \fill[poly] (0,{\i*\sp}) rectangle (\sw,{\i*\sp+\sh});
+  }
+
+  % serpentine metal straps: right side joins strips 0-1 and 2-3,
+  % left side joins strips 1-2
+  \fill[mOne, rounded corners=2pt]
+    ({\sw-0.15},-0.05) rectangle ({\sw+0.5},{\sp+\sh+0.05});
+  \fill[mOne, rounded corners=2pt]
+    ({\sw-0.15},{2*\sp-0.05}) rectangle ({\sw+0.5},{3*\sp+\sh+0.05});
+  \fill[mOne, rounded corners=2pt]
+    (-0.5,{\sp-0.05}) rectangle (0.15,{2*\sp+\sh+0.05});
+
+  % terminals on the outer strips
+  \fill[mOne, rounded corners=2pt] (-1.6,-0.05) rectangle (0.15,\sh+0.05);
+  \fill[mOne, rounded corners=2pt] (-1.6,{3*\sp-0.05}) rectangle (0.15,{3*\sp+\sh+0.05});
+
+  % contacts wherever metal lands on poly
+  \newcommand{\contact}[2]{
+    \fill[cut] ({#1-0.09},{#2-0.09}) rectangle ({#1+0.09},{#2+0.09});
+  }
+  \foreach \y in {0,\sp,2*\sp,3*\sp} {
+    \contact{\sw+0.05}{\y+0.16}
+    \contact{\sw+0.05}{\y+0.34}
+  }
+  \contact{-0.05}{\sp+0.16} \contact{-0.05}{\sp+0.34}
+  \contact{-0.05}{2*\sp+0.16} \contact{-0.05}{2*\sp+0.34}
+  \contact{-0.05}{0.16} \contact{-0.05}{0.34}
+  \contact{-0.05}{3*\sp+0.16} \contact{-0.05}{3*\sp+0.34}
+
+  % labels
+  \node[anchor=east] at (-1.7,0.25) {B};
+  \node[anchor=east] at (-1.7,{3*\sp+0.25}) {A};
+  \node[anchor=west, scale=0.8, color=black!60] at (6.3,{5*\sp+0.25}) {dummy};
+  \node[anchor=west, scale=0.8, color=black!60] at (6.3,{-\sp+0.25}) {dummy};
+
+\end{tikzpicture}
+\end{document}

@@ -136,7 +136,7 @@ Often with two flavors, with, and without silicide
 
 Silicide reduces resistance of polysilicon
 
-![right](../media/l6/poly.pdf)
+![right](../media/pas_poly_tikz.pdf)
 
 <!--pan_doc:
 <sub>Figure 1: Polysilicon resistor</sub>
@@ -183,7 +183,7 @@ resistor is unavailable, not because you want to.
 -->
 
 
-![right fit](../media/l6/ndiff.pdf)
+![right fit](../media/pas_ndiff_tikz.pdf)
 
 <!--pan_doc:
 <sub>Figure 2: Diffusion resistor</sub>
@@ -218,7 +218,7 @@ of ground bounce.
 -->
 
 
-![right fit](../media/l6/metal.pdf)
+![right fit](../media/pas_metal_tikz.pdf)
 
 <!--pan_doc:
 <sub>Figure 3: Metal resistor</sub>
@@ -301,10 +301,10 @@ linearity - and a poor filter capacitor.
 
 -->
 
-![right fit](../media/inversion.pdf)
+![right fit](../media/mosfet_strong_inversion_tikz.pdf)
 
 <!--pan_doc:
-<sub>Figure 5: MOS capacitance versus gate voltage</sub>
+<sub>Figure 5: A MOS capacitor is a MOSFET in strong inversion</sub>
 -->
 
 ---
@@ -393,7 +393,7 @@ A varactor is a "variable capacitor", usually it's a device that varies the capa
 -->
 
 
-![inline fit](../media/l6/pn.pdf)
+![inline fit](../media/pas_pn_tikz.pdf)
 
 <!--pan_doc:
 <sub>Figure 6: A reverse biased pn junction as a varactor</sub>
@@ -491,7 +491,7 @@ of the equation.
 
 Resistors and Capacitors can be matched extremely well
 
-![right fit ](../media/l6/pres_good.pdf)
+![right fit ](../media/pas_pres_tikz.pdf)
 
 <!--pan_doc:
 <sub>Figure 8: Ratios of matched devices hold to a tenth of a percent</sub>
@@ -500,44 +500,6 @@ Resistors and Capacitors can be matched extremely well
 
 ---
 
-<!--
-
-[.column]
-
-![inline 50% ](../media/l6/pres_bad.pdf)
-
- $$ i_3 = 0  = i_1 - i_2$$ 
- $$ 0 = \frac{V_i - V_o}{R} - \frac{V_o}{1/sC} $$  
- $$ 0 = V_i - V_o - V_o s R C $$ 
- $$ V_o (1 + sRC) = V_i $$ 
- 
-[.column]
- 
- $$ \frac{V_o}{V_i} = \frac{1}{1 + sRC} $$
-
- 
- Assume standard deviation ($$\sigma$$)[^1] of
- 
- $$ \sigma_R = 20$$%, $$ \sigma_C = 20$$%   
- 
- $$ \sigma_{RC} = \sqrt{0.2^2 + 0.2^2} = 28$$%
- 
-
-[^1]: If you don't remember how standard deviation works, read [Introduction to mathematics of noise sources](http://www.wulff.no/publications/noise.pdf)
-
----
-
-# Diodes
-
-Many, many ways
-
-Reverse bias diodes to ground are useful for signals with long routing to transistor gate. Protects gate from breakdown during chemical mechanical polish.
-
-![right fit](../media/l6/diodes.pdf)
-
----
-
--->
 
 
 

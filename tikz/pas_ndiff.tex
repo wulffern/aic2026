@@ -1,0 +1,33 @@
+\input{tikz/fig_header.tex}
+
+% Diffusion resistor in cross section: a doped strip in the substrate
+% of the opposite type, contacted at both ends, with the resistance
+% living distributed in the strip.
+
+\begin{tikzpicture}[thick]
+
+  % substrate
+  \draw[fill=black!4] (0,0) rectangle (8.6,2.6);
+  \node[anchor=south west, color=black!60] at (0.15,0.1) {(p$|$n)-type substrate};
+
+  % the doped strip
+  \fill[active] (1.0,1.9) rectangle (7.6,2.6);
+  \draw (1.0,1.9) rectangle (7.6,2.6);
+  \node[anchor=center, color=black!60] at (4.3,1.65) {(n$|$p)-type};
+
+  % distributed resistance inside the strip
+  \draw[densely dotted, black!60]
+    (1.6,2.25) -- (2.0,2.25) -- (2.2,2.45) -- (2.6,2.05) -- (3.0,2.45)
+    -- (3.4,2.05) -- (3.8,2.45) -- (4.2,2.05) -- (4.6,2.45) -- (5.0,2.05)
+    -- (5.4,2.45) -- (5.8,2.05) -- (6.2,2.45) -- (6.5,2.25) -- (7.0,2.25);
+
+  % contacts and metal
+  \fill[cut] (1.2,2.6) rectangle (1.55,2.95);
+  \fill[cut] (7.05,2.6) rectangle (7.4,2.95);
+  \fill[mOne, rounded corners=1.5pt] (0.2,2.95) rectangle (2.5,3.4);
+  \fill[mOne, rounded corners=1.5pt] (6.1,2.95) rectangle (8.4,3.4);
+  \node[anchor=south] at (1.35,3.45) {A};
+  \node[anchor=south] at (7.25,3.45) {B};
+
+\end{tikzpicture}
+\end{document}

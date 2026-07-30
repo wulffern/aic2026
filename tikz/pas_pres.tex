@@ -1,0 +1,33 @@
+\input{tikz/fig_header.tex}
+
+% Ratios beat absolute values: a resistor divider and a capacitor pair
+% both hold their ratio to a tenth of a percent, even when every device
+% is off by ten percent.
+
+\begin{circuitikz}[american, thick, transform shape, circuit ee IEC]
+
+  \input{tikz/ckt_lib.tex}
+
+  % ---- resistor divider ----
+  \draw (-1.0,4.4) node[anchor=east] {$v_i$} to [short,o-] (0,4.4);
+  \draw (0,4.4) to [R, l=$R$] (0,2.6);
+  \draw (0,2.6) to [R, l=$R$] (0,0.8);
+  \draw (0,0.8) \vground;
+  \draw (0,2.6) to [short,*-o] (1.0,2.6);
+  \node[anchor=west, color=blue] at (1.3,2.6)
+    {$v_o = \frac{v_i}{2} \pm 0.1\%$};
+
+  % ---- capacitor ratio ----
+  \draw (0.0,-0.9) node[anchor=east] {$v_1$} to [short,o-] (0.6,-0.9);
+  \draw (0.6,-0.9) to [C, l_=$C$] (0.6,-2.5);
+  \draw (0.6,-2.5) \vground;
+  \draw (3.0,-0.9) node[anchor=east] {$v_2$} to [short,o-] (3.6,-0.9);
+  \draw (3.6,-0.9) to [C, l_=$C$] (3.6,-2.5);
+  \draw (3.6,-2.5) \vground;
+
+  \node[anchor=west, color=blue] at (4.6,-1.0) {$Q_1 = C v_1, \quad Q_2 = C v_2$};
+  \node[anchor=west, color=blue] at (4.6,-2.0)
+    {$\frac{Q_1}{Q_2} = \frac{v_1}{v_2} \pm 0.1\%$};
+
+\end{circuitikz}
+\end{document}
