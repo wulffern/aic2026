@@ -1,5 +1,28 @@
 # Build & Workflow Plan
 
+## Outcome (2026-07-30, run 30502668348)
+
+Everything below except the author-gated content items (P, Q, S) is done.
+
+| | before | after |
+|---|---|---|
+| Docs workflow wall time | 6m50s | **~4m00s** (prepare 1m08, book 1m41, shards ≤1m01, preview 51s, deploy 13s) |
+| Docs runner-minutes | ~22 | **~8** |
+| TikZ workflow | 2m46s | **~1m10s** (init 24s, 76 figures in 30s) |
+| container init per TeX job | 78s + 22s apt | **~25s**, no apt |
+| local one-lecture rebuild | full reconvert (~43s cold) | **~2s** |
+| local `make tikz` | ~62s serial | **~17s** |
+
+Plus two shipped-output defects fixed on the way: Deckset `[.table…]`
+directives printed verbatim on the site and in the book, and every SVG
+figure with an embedded screenshot was silently missing from `aic.epub`.
+
+Rollback for the image switch: point the four `container:` blocks in
+`matrix_build.yaml`/`tikz.yaml` back at `ghcr.io/wulffern/aic:2026_latest`
+(the full image, still built from `docker/Dockerfile`).
+
+---
+
 Measured baseline (run 30484788053, 2026-07-29):
 
 | | |
