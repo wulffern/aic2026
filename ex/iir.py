@@ -17,16 +17,16 @@ t_s_unit = [1,1,0,0,0,0,0,0]
 t_s = np.tile(t_s_unit,int(N/len(t_s_unit)))
 x_sn = x_s*t_s
 
-#- IIR filter
-b = 0.3
-a = 0.75
+#- Second-order IIR filter with a complex conjugate pole pair at
+#- z = a +/- jb. Stable as long as |a + jb| < 1.
+b = 0.25
+a = 0.85
 z = a + 1j*b
 z_abs = np.abs(z)
 print("|z| = " + str(z_abs))
 y = np.zeros(N)
-y[0] = a
-for i in range(1,N):
-    y[i] = b*x_sn[i-1] + a*y[i-1]
+for i in range(2,N):
+    y[i] = b*x_sn[i-1] + 2*a*y[i-1] - (a*a + b*b)*y[i-2]
 
 
 #- Convert to frequency domain with a hanning window to avoid FFT bin
@@ -57,14 +57,17 @@ plt.plot(y,color="black",linewidth=0.7)
 plt.grid(True)
 plt.axis([1000,1400,-1,1])
 plt.xlabel("IIR Filter")
+#- Same y-axis on both spectra, so the attenuation can be read directly
 plt.subplot(2,2,3)
 plt.plot(f,20*np.log10(np.abs(X_sn)),color="black",linewidth=0.7)
 plt.grid(True)
+plt.ylim(-60,60)
 plt.xlabel("f / fs")
 plt.ylabel("Frequency Domain [dB20]")
 plt.subplot(2,2,4)
 plt.plot(f,20*np.log10(np.abs(Y)),color="black",linewidth=0.7)
 plt.grid(True)
+plt.ylim(-60,60)
 plt.xlabel("f / fs")
 
 fig = plt.gcf()

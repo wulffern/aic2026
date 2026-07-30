@@ -36,18 +36,15 @@ Priority order: derivation-heavy lectures first.
 
 Found in passing during the 2026-07-30 build/figure work; not yet resolved.
 
-1. **`l05_sc` IIR stability claim.** The text says "if $a > 1$, then the
-   filter is unstable. Same if $b > 1$. As long as $|a + jb| < 1$ the
-   filter should be stable." For $H(z) = b/(z-a)$ the pole is at $z = a$
-   and stability depends **only** on $|a| < 1$; $b$ is a gain and
-   $z = a + jb$ is not the pole location. The `z = a + 1j*b` line in
-   `ex/iir.py` (quoted in the lecture) encodes the same confusion.
-   Substantive: needs the author's intended framing.
-2. **`l05_sc` impulse response cases.** $h[n]$ is given as $k$ for $n<1$
-   and $a^{n-1}b + a^n k$ for $n \ge 1$ — the $k$ terms look like they
-   come from a non-zero initial state ($y[0]=a$ in the script?) but $k$
-   is never defined in the text. Check against AIC 13.x (the text already
-   notes "Fig 13.12 in AIC is wrong").
+1. **`l05_sc` IIR stability claim — resolved 2026-07-30.** The first-order
+   section now states $|a| < 1$ (with $b$ a pure gain), and per the
+   author's direction the python example became a **second-order** filter
+   with poles at $z = a \pm jb$ — where "stable as long as $|a+jb| < 1$"
+   is exactly true and ties back to the z-plane discussion. New "Second
+   order filter" section, regenerated `l5_iir` figure (shared y-axis on
+   the two spectra), `ex/iir.py` and `examples/iir.html` updated to match.
+2. **`l05_sc` impulse response cases — resolved 2026-07-30.** $k$ is now
+   defined in the prose as the initial state $y[0]$.
 3. **`l06_adc` sampling noise-floor remark.** "The increase in the noise
    level should be due to noise folding, and reduced number of points in
    the FFT, but I have not confirmed (maybe you could confirm?)" — the

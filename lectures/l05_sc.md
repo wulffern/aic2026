@@ -742,23 +742,57 @@ $$ h[n] = \begin{cases} k & \text{if } n < 1 \\ a^{n-1}b + a^n k & \text{if } n 
 
 <!--pan_doc:
 
-From the impulse response it can be seen that if $a > 1$, then the filter is unstable. Same if $b > 1$. As long as $|a + jb| < 1$
-the filter should be stable.
+Here $k$ is the initial state $y[0]$. From the impulse response it can be seen
+that if $|a| \geq 1$ the response never dies out and the filter is unstable —
+the pole of $H(z) = b/(z-a)$ sits at $z = a$, and $b$ only scales the output.
 
 -->
 
 ![left fit](../media/l5_zunstable_tikz.pdf)
 
+---
+## Second order filter
 
 <!--pan_doc:
 
-The first order filter can be implemented in python, and it's really not hard. See below. The $x_sn$ vector is from the previous
+A single real pole can only do so much. If we feed back two delayed outputs
+
+-->
+
+$$ y[n] = b x[n-1] + 2a\, y[n-1] - (a^2 + b^2)\, y[n-2] $$
+
+$$ H(z) = \frac{b z}{z^2 - 2a z + (a^2+b^2)} $$
+
+<!--pan_doc:
+
+then the denominator factors as $(z - z_p)(z - z_p^*)$ with a complex
+conjugate pole pair at
+
+-->
+
+$$ z_p = a + jb $$
+
+<!--pan_doc:
+
+which is exactly the complex frequency from the Z-domain plot earlier. As
+long as $|a + jb| < 1$ the poles are inside the unit circle and the filter is
+stable. Complex poles also mean the magnitude response peaks near the pole
+angle — the filter resonates.
+
+-->
+
+<!--pan_doc:
+
+The second order filter can be implemented in python, and it's really not hard. See below. The $x_sn$ vector is from the previous
 python example. 
 
 There are smarter, and faster ways to do IIR filters (and FIR) in python, see [scipy.signal.iirfilter](https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.iirfilter.html)
 
 
 From the plot below we can see the sampled time domain and spectra on the left, and the filtered time domain and spectra on the right.
+The two spectra share the same y-axis, so the attenuation can be read directly. The poles sit at $0.85 \pm j0.25$
+($|z| = 0.89$, pole angle $\approx 0.046\,f_s$): the image near the pole angle is picked out and even amplified a little by the
+resonance, while the spectral copies further out drop with 40 dB/decade.
 
 The [interactive version of this example](https://wulffern.github.io/aic2026/assets/examples/iir.html) adds the pole
 position as a slider, and draws the z-plane next to the spectrum, so you can
@@ -775,21 +809,21 @@ watch the pole move inside the unit circle and the corner frequency follow it.
 <!--pan_doc:
 
 ```python
-#- IIR filter
-b = 0.3
-a = 0.75
+#- Second-order IIR filter with a complex conjugate
+#- pole pair at z = a +/- jb. Stable if |a + jb| < 1.
+b = 0.25
+a = 0.85
 z = a + 1j*b
 z_abs = np.abs(z)
 print("|z| = " + str(z_abs))
 y = np.zeros(N)
-y[0] = a
-for i in range(1,N):
-    y[i] = b*x_sn[i-1] + a*y[i-1]
+for i in range(2,N):
+    y[i] = b*x_sn[i-1] + 2*a*y[i-1] - (a*a + b*b)*y[i-2]
 ```
 
 
 
-The IIR filter we implemented above is a low-pass filter, and the filter partially rejects the copied spectra, as expected. 
+The IIR filter we implemented above is a resonant low-pass filter: it picks out the image near its pole angle and rejects the copied spectra further out, as expected. 
 
 -->
 

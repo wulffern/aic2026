@@ -20,7 +20,7 @@
 <div id="chain">
   <div class="cb on">SIGNAL</div><span class="ca">&times;</span>
   <div class="cb on">PULSE TRAIN</div><span class="ca">&rarr;</span>
-  <div class="cb on" id="cb-iir">y[n] = b&middot;x[n-1] + a&middot;y[n-1]</div><span class="ca">&rarr;</span>
+  <div class="cb on" id="cb-iir">y[n] = b&middot;x[n-1] + 2a&middot;y[n-1] &minus; (a&sup2;+b&sup2;)&middot;y[n-2]</div><span class="ca">&rarr;</span>
   <div class="cb on">FFT</div>
 </div>
 
@@ -30,19 +30,20 @@
   <div class="cg">
     <div class="cgt">FILTER</div>
     <div class="cr">
-      <label>b (feed-in)</label>
-      <input type="range" data-bind="b" id="sl-b" min="0.01" max="1" step="0.01" value="0.3">
+      <label>b (feed-in, Im{z})</label>
+      <input type="range" data-bind="b" id="sl-b" min="0.01" max="1" step="0.01" value="0.25">
       <span class="v" id="v-b"></span>
     </div>
     <div class="cr">
-      <label>a (feedback)</label>
-      <input type="range" data-bind="a" id="sl-a" min="0" max="1" step="0.001" value="0.75">
+      <label>a (Re{z})</label>
+      <input type="range" data-bind="a" id="sl-a" min="0" max="1" step="0.001" value="0.85">
       <span class="v" id="v-a"></span>
     </div>
     <div class="note">
-      <code>ex/iir.py</code> uses a = 0.75: the corner lands below the spectral copies, so the filter visibly rejects them. Push a to 1 and the pole sits
-      exactly on the unit circle: the filter degenerates into a plain
-      accumulator with infinite DC gain.
+      <code>ex/iir.py</code> uses a = 0.85, b = 0.25: |z| = 0.89, so the
+      poles sit just inside the unit circle and the resonance picks out the
+      low-frequency image while the copies further out fall at 40
+      dB/decade. Push |a + jb| past 1 and the filter is unstable.
     </div>
   </div>
 
@@ -96,7 +97,7 @@
 <div id="readout">
   <div class="ro"><span class="k">|z|</span><span class="n" id="ro-z"></span></div>
   <div class="ro"><span class="k">DC GAIN</span><span class="n" id="ro-dc"></span></div>
-  <div class="ro"><span class="k">-3 dB</span><span class="n" id="ro-f3"></span></div>
+  <div class="ro"><span class="k">PEAK f</span><span class="n" id="ro-f3"></span></div>
   <div class="ro"><span class="k">GAIN AT f_1</span><span class="n" id="ro-gf1"></span></div>
 </div>
 
@@ -111,18 +112,20 @@
 <div class="doc">
   <h2>WHAT YOU ARE LOOKING AT</h2>
   <p>
-    A first order infinite impulse response filter is one line of code:
-    <code>y[n] = b*x[n-1] + a*y[n-1]</code>. Each output is a scaled copy of the
-    previous input plus a scaled copy of the previous output, and it is that
-    second term &mdash; the feedback &mdash; that makes the impulse response
-    infinite and puts a pole in the transfer function
+    A second order infinite impulse response filter is one line of code:
+    <code>y[n] = b*x[n-1] + 2a*y[n-1] - (a&sup2;+b&sup2;)*y[n-2]</code>. Each
+    output feeds back the two previous outputs, and it is that feedback that
+    makes the impulse response infinite and puts a complex conjugate pole
+    pair in the transfer function
   </p>
   <p style="text-align:center">
-    <code>H(z) = b&middot;z<sup>-1</sup> / (1 &minus; a&middot;z<sup>-1</sup>)</code>
+    <code>H(z) = b&middot;z / (z&sup2; &minus; 2a&middot;z + a&sup2;+b&sup2;)</code>
   </p>
   <p>
-    with a zero at the origin and a pole at z = a. On the z-plane panel the
-    circle is |z| = 1; the filter is stable as long as the pole stays inside it.
+    with a zero at the origin and poles at z = a &plusmn; jb &mdash; the same
+    complex frequency the lecture's z-plane discussion uses. On the z-plane
+    panel the circle is |z| = 1; the filter is stable as long as
+    |a + jb| &lt; 1.
     The bottom middle panel is the measured output spectrum, and the yellow
     trace is <code>|H(f)|</code> evaluated straight from b and a &mdash; they
     should lie on top of each other, which is a good way to convince yourself
@@ -132,15 +135,15 @@
   <h2>THINGS WORTH TRYING</h2>
   <ul>
     <li>
-      Push <b>a</b> up to 1. The pole lands exactly on the unit circle, the DC
-      gain is infinite, and the output wanders: that is an accumulator, not a
-      filter that settles.
+      Push <b>a</b> or <b>b</b> until |a + jb| reaches 1. The poles land on
+      the unit circle and the filter turns into an oscillator at the pole
+      angle; past it the output grows without bounds. Watch the |z| readout.
     </li>
     <li>
-      Walk <b>a</b> through 0.99, 0.9, 0.75, 0.5. The pole moves in, the DC
-      gain becomes finite at b/(1&minus;a), and the corner frequency
-      &asymp; (1&minus;a)/2&pi; moves up. At a = 0 there is no feedback left
-      and you have a one-sample delay with gain b.
+      Hold |z| roughly constant while trading <b>a</b> against <b>b</b>. The
+      pole angle &mdash; and with it the resonant peak &mdash; sweeps across
+      the band while the decay rate stays put. At b = 0 the poles collapse
+      onto the real axis and the resonance disappears.
     </li>
     <li>
       Set <b>f_1</b> low, around bin 100. The tone now sits in the passband
@@ -150,21 +153,20 @@
     </li>
     <li>
       Set the sampling <b>period P</b> to 1 to remove the pulse train. The
-      images vanish and you see the filter on its own, which makes the 20
+      images vanish and you see the filter on its own, which makes the 40
       dB/decade roll-off easy to read off the right-hand panel.
     </li>
   </ul>
 
   <h2>THE PYTHON</h2>
-<pre><code>#- IIR filter
-b = 0.3
-a = 0.75
+<pre><code>#- Second-order IIR filter, poles at z = a +/- jb
+b = 0.25
+a = 0.85
 z = a + 1j*b
 z_abs = np.abs(z)
 y = np.zeros(N)
-y[0] = a
-for i in range(1,N):
-    y[i] = b*x_sn[i-1] + a*y[i-1]</code></pre>
+for i in range(2,N):
+    y[i] = b*x_sn[i-1] + 2*a*y[i-1] - (a*a + b*b)*y[i-2]</code></pre>
   <p class="src">
     Source: <a href="https://github.com/wulffern/aic2026/blob/main/ex/iir.py">ex/iir.py</a>.
     This page makes the <code>a</code> coefficient a slider so you can watch
@@ -215,10 +217,11 @@ function compute() {
     xsn[i] = ((i % P) < ON ? 1 : 0) * x;
   }
 
-  // The recursion, exactly as in the Python but with the feedback coefficient
-  // written out rather than left at an implicit 1.
+  // The recursion, exactly as in the Python: complex conjugate pole pair
+  // at z = a +/- jb.
+  const r2 = S.a * S.a + S.b * S.b;
   const y = new Float64Array(N);
-  for (let i = 1; i < N; i++) y[i] = S.b * xsn[i - 1] + S.a * y[i - 1];
+  for (let i = 2; i < N; i++) y[i] = S.b * xsn[i - 1] + 2 * S.a * y[i - 1] - r2 * y[i - 2];
 
   const Xm = DSP.magSpectrum(xsn, S.hann);
   const Ym = DSP.magSpectrum(y, S.hann);
@@ -242,31 +245,22 @@ function compute() {
 
   D = { N, P, ON, xsn, y, X, Y, f, Hdb, fl, Hl, f1 };
 
-  const dc = S.a >= 1 ? Infinity : S.b / (1 - S.a);
-  UI.readout('ro-z',  S.a.toFixed(3) + (S.a >= 1 ? '  (on the circle)' : ''));
+  const r = Math.hypot(S.a, S.b);
+  const dc = r >= 1 ? Infinity : S.b / ((1 - S.a) * (1 - S.a) + S.b * S.b);
+  UI.readout('ro-z',  r.toFixed(3) + (r >= 1 ? '  (outside!)' : ''));
   UI.readout('ro-dc', isFinite(dc) ? DSP.db20(dc).toFixed(1) + ' dB' : 'infinite');
-  // -3 dB relative to DC. For a on the unit circle there is no finite DC gain
-  // to be 3 dB below, so quote the exact bilinear result only when a < 1.
-  UI.readout('ro-f3', S.a >= 1 ? 'n/a' : (f3db(dc) * 1).toExponential(2) + ' f_c');
+  // The magnitude peaks near the pole angle.
+  UI.readout('ro-f3', (Math.atan2(S.b, S.a) / (2 * Math.PI)).toExponential(2) + ' f_c');
   UI.readout('ro-gf1', DSP.db20(Hmag(f1)).toFixed(1) + ' dB');
 }
 
-/** |H(e^{j2 pi f})| for H(z) = b z^-1 / (1 - a z^-1). */
+/** |H(e^{j2 pi f})| for H(z) = b z / (z^2 - 2a z + a^2 + b^2). */
 function Hmag(f) {
   const w = 2 * Math.PI * f;
-  const dr = 1 - S.a * Math.cos(w), di = S.a * Math.sin(w);
-  return S.b / Math.max(Math.hypot(dr, di), 1e-12);
-}
-
-/** Frequency, in units of f_c, where |H| has fallen 3 dB below its DC value. */
-function f3db(dc) {
-  const target = dc / Math.SQRT2;
-  let lo = 1e-9, hi = 0.5;
-  for (let i = 0; i < 60; i++) {
-    const mid = Math.sqrt(lo * hi);
-    if (Hmag(mid) > target) lo = mid; else hi = mid;
-  }
-  return Math.sqrt(lo * hi);
+  const er = Math.cos(w), ei = Math.sin(w);
+  const d1 = Math.hypot(er - S.a, ei - S.b);
+  const d2 = Math.hypot(er - S.a, ei + S.b);
+  return S.b / Math.max(d1 * d2, 1e-12);
 }
 
 function render(cx, W, H, narrow) {
@@ -311,10 +305,10 @@ function render(cx, W, H, narrow) {
   p5.limits(1 / D.N, 0.5, -80, 40).frame();
   p5.line(D.fl, D.Hl, css('--sample'), { width: 1.5 });
   p5.vline(D.f1, css('--digi'), [3, 3]);
-  p5.note(0.04, 0.2, '|H(f)| from b, a\n20 dB/decade above\nthe pole', css('--muted'));
+  p5.note(0.04, 0.2, '|H(f)| from b, a\n40 dB/decade above\nthe poles', css('--muted'));
 }
 
-/** Unit circle, pole at z = a, zero at the origin. */
+/** Unit circle, pole pair at z = a +/- jb, zero at the origin. */
 function zplane(p) {
   const cx = p.cx;
   p.clip(() => {
@@ -335,18 +329,20 @@ function zplane(p) {
     cx.arc(p.px(0), p.py(0), 5, 0, 2 * Math.PI);
     cx.stroke();
 
-    // Pole at z = a.
-    const px = p.px(S.a), py = p.py(0);
+    // Pole pair at z = a +/- jb.
     cx.strokeStyle = css('--error');
     cx.lineWidth = 2;
-    cx.beginPath();
-    cx.moveTo(px - 5, py - 5); cx.lineTo(px + 5, py + 5);
-    cx.moveTo(px + 5, py - 5); cx.lineTo(px - 5, py + 5);
-    cx.stroke();
+    for (const s of [1, -1]) {
+      const px = p.px(S.a), py = p.py(s * S.b);
+      cx.beginPath();
+      cx.moveTo(px - 5, py - 5); cx.lineTo(px + 5, py + 5);
+      cx.moveTo(px + 5, py - 5); cx.lineTo(px - 5, py + 5);
+      cx.stroke();
+    }
   });
-  p.note(0.03, 0.94, 'pole at z = ' + S.a.toFixed(3), css('--error'));
+  p.note(0.03, 0.94, 'poles at ' + S.a.toFixed(2) + ' \u00b1 j' + S.b.toFixed(2), css('--error'));
   p.note(0.03, 0.86, 'zero at z = 0', css('--digi'));
-  if (S.a >= 1) p.note(0.03, 0.06, 'pole on |z| = 1: pure accumulator', css('--error'));
+  if (Math.hypot(S.a, S.b) >= 1) p.note(0.03, 0.06, 'poles outside |z| = 1: unstable', css('--error'));
 }
 
 const chart = Plot.mount('c', { aspect: 0.5, aspectNarrow: 2.6, draw: render });
