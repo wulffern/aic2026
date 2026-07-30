@@ -200,6 +200,10 @@ Since we can see a large inductor, we can also make the assumption that the IC c
 
 -->
 
+<!--pan_doc:
+<sub>Figure 1: nRF5 development kit PCB with (1) 32 MHz crystal, (2) 32 KiHz crystal, (3) PCB antenna, and (4) DC/DC inductor</sub>
+-->
+
 ---
 
 <!--pan_doc: 
@@ -217,6 +221,10 @@ PLLs take a reference input, and can generate a higher frequency, (or indeed low
 -->
 
 ![fit](../media/l10_clockic_tikz.pdf)
+
+<!--pan_doc:
+<sub>Figure 2: Guess at the clock system inside the SoC: crystal oscillators (XO) for 32 MHz and 32768 Hz, a PLL for the radio local oscillator, an RC oscillator, and the MCU clock</sub>
+-->
 
 ---
 
@@ -246,6 +254,10 @@ For an analog designer the constraints from digital will tell us what's the maxi
 
 ![fit](../media/logic_tikz.pdf)
 
+<!--pan_doc:
+<sub>Figure 3: Synchronous logic: flip-flops capture the data on the clock edge, with combinatorial logic (blue cloud) between register stages</sub>
+-->
+
 ---
 
 #[fit] PLL
@@ -260,6 +272,10 @@ as we make $H(s)$ infinite we can force the output to be an exact copy of the in
 ---
 
 ![fit](../media/l10_fb_tikz.pdf)
+
+<!--pan_doc:
+<sub>Figure 4: Feedback loop where an infinite gain H(s) forces the output to be an exact copy of the input</sub>
+-->
 
 ---
 
@@ -281,6 +297,10 @@ If we design the $H(s)$ correctly, then we have $f_o = N \times f_{in}$
 
 ![fit](../media/l10_freq_fb_tikz.pdf)
 
+<!--pan_doc:
+<sub>Figure 5: Integer PLL: the oscillator output is divided by N and compared to the reference, giving an output frequency N times the reference</sub>
+-->
+
 ---
 
 <!--pan_doc: 
@@ -289,6 +309,10 @@ Sometimes you want a finer frequency resolution, in that case you'd add a divide
 -->
 
 ![fit](../media/l08_pll_m_tikz.pdf)
+
+<!--pan_doc:
+<sub>Figure 6: Integer PLL with an additional divide-by-M on the reference for finer frequency resolution</sub>
+-->
 
 ---
 
@@ -303,6 +327,10 @@ We can also use a fractional divider, where we swap between two, or more, intege
 -->
 
 ![fit](../media/l08_pll_sd_tikz.pdf)
+
+<!--pan_doc:
+<sub>Figure 7: Fractional PLL where a sigma-delta modulator switches the feedback divider between integer values</sub>
+-->
 
 ---
 
@@ -331,6 +359,10 @@ One option is shown below. We could modulate our frequency reference directly. T
 
 ![fit](../media/l08_pll_mod_tikz.pdf)
 
+<!--pan_doc:
+<sub>Figure 8: Modulating the PLL by adding the modulation signal directly to the frequency reference</sub>
+-->
+
 
 ---
 
@@ -341,6 +373,10 @@ Most modern radios, however, will have a two-point modulation. The modulation si
 -->
 
 ![fit](../media/l08_pll_2mod_tikz.pdf)
+
+<!--pan_doc:
+<sub>Figure 9: Two-point modulation: the modulation is applied to the oscillator and the opposite signal to the sigma-delta feedback divider, so the loop does not see it</sub>
+-->
 
 
 ---
@@ -361,6 +397,10 @@ A PLL can consist of a oscillator (SUN\_PLL\_ROSC) that generates our output fre
 -->
 
 ![fit](../media/l08_sun_pll.pdf)
+
+<!--pan_doc:
+<sub>Figure 10: Top-level schematic of the SUN\_PLL example with phase-frequency detector, charge-pump, loop filter, buffer, ring oscillator, and divide-by-32 feedback divider</sub>
+-->
 
 ---
 
@@ -406,6 +446,10 @@ The $K_{osc}/s$ is our oscillator transfer function. And the $1/N$ is our feedba
 
 
 ![left fit](../media/l10_pll_sm_tikz.pdf)
+
+<!--pan_doc:
+<sub>Figure 11: Linear phase-domain model of the PLL with phase-detector gain, loop filter, oscillator integrator and 1/N feedback divider</sub>
+-->
 
 ## Loop gain
 
@@ -456,6 +500,10 @@ $$K_{osc} = 2 \pi\frac{ df}{dV_{cntl}}$$
 
 ![right fit](../media/SUN_PLL_ROSC.pdf)
 
+<!--pan_doc:
+<sub>Figure 12: SUN\_PLL top-level schematic; the ring oscillator SUN\_PLL\_ROSC is controlled through its supply VDD\_ROSC</sub>
+-->
+
 ---
 
 
@@ -498,6 +546,10 @@ Below I've made a plot of the oscillation frequency over corners.
 
 ![right fit](../media/SUN_PLL_ROSC_KVCO.pdf)
 
+<!--pan_doc:
+<sub>Figure 13: Simulated ring-oscillator frequency versus control voltage VDD\_ROSC across process corners</sub>
+-->
+
 ---
 
 ## Phase detector and charge pump
@@ -515,6 +567,10 @@ $$ K_{pd} = \frac{I_{cp}}{2 \pi} $$
 
 
 ![right fit](../media/SUN_PLL_CP.pdf)
+
+<!--pan_doc:
+<sub>Figure 14: SUN\_PLL top-level schematic; the phase-frequency detector SUN\_PLL\_PFD and charge-pump SUN\_PLL\_CP compare the reference and feedback clocks</sub>
+-->
 
 ---
 
@@ -542,6 +598,10 @@ sR\frac{C_1C_2}{C_1 + C_2}}$$
 
 ![right fit](../media/SUN_PLL_LP.pdf)
 
+<!--pan_doc:
+<sub>Figure 15: SUN\_PLL top-level schematic; the loop filter SUN\_PLL\_LPF is followed by the unity-gain buffer SUN\_PLL\_BUF that drives the oscillator supply</sub>
+-->
+
 ---
 
 ## Divider 
@@ -557,6 +617,10 @@ $$ K_{div} = \frac{1}{N}$$
 
 
 ![right fit](../media/SUN_PLL_DIV.pdf)
+
+<!--pan_doc:
+<sub>Figure 16: SUN\_PLL top-level schematic; the feedback divider SUN\_PLL\_DIVN divides the output clock by 32</sub>
+-->
 
 
 ---
@@ -607,6 +671,10 @@ The closed loop transfer function $\phi_{div}/\phi_{in}$ shows us that the divid
 
 ![fit](../media/pll.pdf)
 
+<!--pan_doc:
+<sub>Figure 17: Magnitude and phase of the loop gain and the closed-loop transfer function from input phase to divider phase, with a phase margin of 55 degrees</sub>
+-->
+
 ---
 
 <!--pan_doc:
@@ -628,11 +696,24 @@ Below are a couple layout images of the finished PLL
 
 -->
 
+<!--pan_doc:
+<sub>Figure 18: Simulated PLL output frequency versus time from power-up; the average frequency (orange) settles to 256 MHz</sub>
+-->
+
 ---
 
 
 ![left fit](../media/sun_pll_layout0.png)
+
+<!--pan_doc:
+<sub>Figure 19: Floorplan of the SUN\_PLL layout; the loop filter capacitor SUN\_PLL\_LPF dominates the area above the PLL blocks</sub>
+-->
+
 ![right fit](../media/sun_pll_layout1.png)
+
+<!--pan_doc:
+<sub>Figure 20: Finished SUN\_PLL layout showing the loop filter capacitor array and the PLL blocks along the bottom</sub>
+-->
 
 
 

@@ -69,6 +69,10 @@ Some common voltage sources are listed below.
 
 -->
 
+<!--pan_doc:
+<sub>Figure 1: Linden's Handbook of Batteries, a reference work on battery chemistries and their voltages</sub>
+-->
+
 |  |Chemistry|  Voltage [V] |
 |----|:----|----:|
 | Primary Cell| LiFeS2 , Zn/Alk/MnO2 , LiMnO2  | 0.8 - 3.6 |
@@ -110,6 +114,10 @@ ReRAM](https://sky130-fd-pr-reram.readthedocs.io/en/latest/)
 
 Below is an example of ReRAM. In the Pristine state the conductance is low, resistance is in the hundreds of mega Ohm. In a transistor we want the oxide to stay high resistive. In ReRAM, however, we apply a high voltage across the oxide, which forms a conductive channel across the oxide. Turns out, that the conductive channel can be flipped back and forth between a high resistive state, and a low resistive state to store a 1 or a 0 in a non-volatile manner. 
 
+-->
+
+<!--pan_doc:
+<sub>Figure 2: Cross section of a nanoscale NMOS transistor showing stress components, electric fields, and oxide trap densities</sub>
 -->
 
 ---
@@ -155,6 +163,10 @@ In quantum mechanics the time evolution, and the complex probability amplitude o
 Unfortunately, for any real scenario, like the gate oxide of a transistor, using Schrodinger to compute exactly what will happen is beyond the capability of the 
 largest supercomputers. 
 
+-->
+
+<!--pan_doc:
+<sub>Figure 3: ReRAM conductance distributions in the pristine, formed (LRS), and reset (HRS) states</sub>
 -->
 
 ---
@@ -212,6 +224,10 @@ but the architecture of the analog design would be either a linear regulator, or
 
 ![original fit](../media/l9_sarc_tikz.pdf)
 
+<!--pan_doc:
+<sub>Figure 4: Example supply planning from VBUS and VBAT down to IO and core voltage, with a regulator between each domain</sub>
+-->
+
 ---
 
 <!--pan_doc:
@@ -244,6 +260,10 @@ regulators there are on an IC. The picture below is from nRF5340 (page 23)
 -->
 
 ![original fit](../media/l9_nrf53.pdf)
+
+<!--pan_doc:
+<sub>Figure 5: Regulators in the nRF5340, from the product specification</sub>
+-->
 
 ---
 
@@ -282,6 +302,10 @@ Key parameters of regulators are
 
 -->
 
+<!--pan_doc:
+<sub>Figure 6: Linear regulator with a PMOS pass-fet controlled by an OTA feedback loop</sub>
+-->
+
 ---
 
 
@@ -318,6 +342,10 @@ Another interesting phenomena with NMOS pass-fet is that the PSRR is usually bet
 -->
 
 ![right fit](../media/l9_ldo_nmos_tikz.pdf)
+
+<!--pan_doc:
+<sub>Figure 7: Linear regulator with an NMOS pass-fet controlled by an OTA feedback loop</sub>
+-->
 
 ---
 
@@ -384,9 +412,18 @@ We can control the Vgs, or we can switch the number of instances, or we can turn
 we choose will depend on the application. 
 
 -->
+
+<!--pan_doc:
+<sub>Figure 8: Simulated pass-fet current (log scale) versus gate-source voltage for the LDO testbench</sub>
+-->
+
 ---
 
 ![fit](../media/l6_ldo_types_tikz.pdf)
+
+<!--pan_doc:
+<sub>Figure 9: Pass-fet control options: analog Vgs modulation, digital control of parallel instances, and duty-cycle control</sub>
+-->
 
 
 
@@ -464,6 +501,10 @@ If we have a control loop on the output voltage, then we can get an output volta
 
 ![inline fit](../media/l7_ind_buck_tikz.pdf)
 
+<!--pan_doc:
+<sub>Figure 10: Principle of an inductive buck DC/DC converter: a switch, freewheeling diode, inductor and load capacitor</sub>
+-->
+
 ---
 
 ### Capacitive BUCK DC/DC 
@@ -486,6 +527,10 @@ Often we have to insert an LDO after a capacitive buck to make the output voltag
 
 ![inline fit](../media/l7_cap_buck_tikz.pdf)
 
+<!--pan_doc:
+<sub>Figure 11: Principle of a capacitive buck: two capacitors charged in series are reconfigured in parallel to halve the voltage</sub>
+-->
+
 
 ---
 
@@ -503,6 +548,10 @@ In a similar manner to the Buck, the output voltage will be impacted by how long
 
 ![inline fit](../media/l7_ind_boost_tikz.pdf)
 
+<!--pan_doc:
+<sub>Figure 12: Principle of an inductive boost DC/DC converter: the inductor current is pushed through the diode to an output above Vin</sub>
+-->
+
 ---
 
 ### Capacitive BOOST DC/DC
@@ -518,6 +567,10 @@ The configuration below is quite often called a "Charge pump", and can be config
 
 
 ![inline fit](../media/l7_cap_boost_tikz.pdf)
+
+<!--pan_doc:
+<sub>Figure 13: Principle of a capacitive boost (charge pump): two capacitors charged in parallel are stacked in series to double the voltage</sub>
+-->
 
 ---
 
@@ -546,6 +599,10 @@ Most DC/DCs are feedback systems, so the control will be adjusted to force the o
 To see what happens I find the best path to understanding is to look at the integral equations. 
 
 The current in the inductor is given by
+-->
+
+<!--pan_doc:
+<sub>Figure 14: Inductive switch-mode buck converter with control block, and waveforms of the inductor voltage Vx and current Ix</sub>
 -->
 
 
@@ -605,6 +662,10 @@ In the figure below we can see how the current during A increases fast, while du
 
 ![right fit](../media/l07_buck_pwm_fig_start.pdf)
 
+<!--pan_doc:
+<sub>Figure 15: Start-up of the PWM buck model: the inductor current Ix increases fast during A=1, while the output voltage vo grows like a second order function</sub>
+-->
+
 ---
 
 <!--pan_doc:
@@ -632,6 +693,10 @@ If the DC/DC was 100% efficient, then the current from the 4 V input supply woul
 
 -->
 
+<!--pan_doc:
+<sub>Figure 16: PWM buck model over a longer time: inductor and load currents (top), output voltage settling towards steady state (middle), and switch control A (bottom)</sub>
+-->
+
 ---
 
 ![fit](../media/l07_buck_pwm_fig_settled.pdf)
@@ -649,9 +714,17 @@ We can see 3 inductor/capacitor pairs. One for the "VDDH", and two for "DECRF" a
 
 -->
 
+<!--pan_doc:
+<sub>Figure 17: PWM buck model in steady state: sawtooth inductor current ripple around the load current, and a settled output voltage near 1 V</sub>
+-->
+
 ---
 
 ![original fit](../media/l9_sw_nRF53.png)
+
+<!--pan_doc:
+<sub>Figure 18: nRF5340 application schematic with three inductor/capacitor pairs, revealing three internal DC/DC converters</sub>
+-->
 
 ---
 
@@ -669,6 +742,10 @@ In pulsed-frequency mode we switch the NMOS and PMOS when it's needed. If there 
 -->
 
 ![left fit](../media/l9_sw_arch_tikz.pdf)
+
+<!--pan_doc:
+<sub>Figure 19: PFM buck architecture with an FSM driving the switches, a zero-cross comparator, and an output voltage comparator</sub>
+-->
 
 ---
 
@@ -691,6 +768,10 @@ When $vz=1$ happens in the state diagram, or the zero cross comparator triggers,
 
 ![fit](../media/l9_sw_state.pdf)
 
+<!--pan_doc:
+<sub>Figure 20: Finite state machine for PFM control with IDLE, UP, and DWN states</sub>
+-->
+
 ---
 
 <!--pan_doc:
@@ -706,6 +787,10 @@ Below you can see a period of the PFM buck. The state can be seen in the bottom 
 [Jupyter PFM BUCK model](https://github.com/wulffern/aic2026/blob/main/jupyter/buck_pfm.ipynb) - [interactive](https://wulffern.github.io/aic2026/assets/examples/buck-pfm.html)
 
 ![right fit](../media/l07_buck_pfm_fig_save.pdf)
+
+<!--pan_doc:
+<sub>Figure 21: One period of the PFM buck model: inductor and load currents (top), output voltage (middle), and FSM state (bottom)</sub>
+-->
 
 ---
 

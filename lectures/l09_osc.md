@@ -289,7 +289,7 @@ The XC1 and XC2 will oscillate in opposite directions. As XC1 increases, XC2 wil
 ![right fit](../media/xosc_pierce_tikz.pdf)
 
 <!--pan_doc:
-<sub>Figure 8: Pierce oscillator, an inverter with bias resistor $R_1$ on the IC driving the crystal and load capacitors on the PCB</sub>
+<sub>Figure 8: Pierce oscillator, a $-g_m$ amplifier with bias resistor $R_1$ and series $R_2$ on the IC, driving the crystal and load capacitors on the PCB</sub>
 -->
 
 
