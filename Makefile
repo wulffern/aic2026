@@ -286,7 +286,7 @@ slides-vendor:
 # for it, so it has to be rendered too or that link is dead.
 # s_* are standalone decks: not in the lecture series or the book, but used
 # as slides, so they render too (linked from the Downloads page).
-STANDALONE_DECKS = s_chinf s_exam s_mac s_maxwell s_need_to_know s_project_scratch s_tut2
+STANDALONE_DECKS = s_chinf s_exam s_mac s_maxwell s_need_to_know s_project_scratch s_teach s_tut2
 SLIDEFILES = ${FILES} tex_intro ${STANDALONE_DECKS}
 
 slides: slides-vendor

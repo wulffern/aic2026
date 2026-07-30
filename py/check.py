@@ -39,6 +39,7 @@ EXCLUDED = {
     "s_maxwell",
     "s_need_to_know",
     "s_project_scratch",
+    "s_teach",
     "s_tut2",
     "tex_intro",        # book front matter, built via texfiles, not FILES
 }
