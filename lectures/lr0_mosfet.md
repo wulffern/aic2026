@@ -340,7 +340,7 @@ we have doped with acceptors, and have an abundance of holes.
 
 -->
 
-![fit inline](../media/mos_np.pdf)
+![fit inline](../media/mos_np_tikz.pdf)
 
 <!--pan_doc:
 <sub>Figure 10: Charge carrier density in a MOSFET</sub>
@@ -363,7 +363,7 @@ happen in reverse, from drain to source.
 -->
 
 
-![fit inline](../media/mos_bands.pdf)
+![fit inline](../media/mos_bands_tikz.pdf)
 
 ---
 
@@ -386,7 +386,7 @@ Now the sum of all currents would not equal zero, as the 1 and 3 currents are la
 As such, there would be a net flow of electron current from source to drain.  
 -->
 
-![fit inline](../media/mos_bands_drainv.pdf)
+![fit inline](../media/mos_bands_drainv_tikz.pdf)
 
 <!--pan_doc:
 <sub>Figure 12: MOSFET subthreshold, $V_{S} = 0\text{ V}, V_D > 0\text{ V}$ </sub>
@@ -458,7 +458,7 @@ The gate is metallic, so it does not have a bandgap, and we assume that the Ferm
 
 ---
 
-![fit inline](../media/mos_gbands.pdf)
+![fit inline](../media/mos_gbands_tikz.pdf)
 
 ---
 
@@ -469,7 +469,7 @@ Assume we increase the gate-source voltage. In a band diagram that corresponds t
 
 -->
 
-![fit inline](../media/mos_gbands_bend.pdf)
+![fit inline](../media/mos_gbands_bend_tikz.pdf)
 
 ---
 <!--pan_doc:
@@ -487,7 +487,7 @@ As you continue to increase the gate-source voltage there is a limit to how much
 
 -->
 
-![fit inline](../media/mos_gbands_muchbend.pdf)
+![fit inline](../media/mos_gbands_muchbend_tikz.pdf)
 
 ---
 
@@ -1211,7 +1211,7 @@ The annotations - stress components, fields, trap densities and proximity effect
 
 ---
 
-![original fit](../media/dibl.pdf)
+![original fit](../media/dibl_tikz.pdf)
 
 <!--pan_doc:
 <sub>Figure 35: Drain induced barrier lowering</sub>

@@ -356,6 +356,20 @@ That is 10 figures, in three lectures.
 ### Pending approval
 - none
 
+### lr0_mosfet — COMPLETE 2026-07-30
+All three batches drawn and switched (31 `_tikz` references in the
+lecture). Batch 3 closed it out: `mos_np`, `mos_bands`,
+`mos_bands_drainv`, the `mos_gbands` flat/bend/muchbend sequence and
+`dibl`. Notable discovery: the original `mos_np`/`mos_bands`/
+`mos_bands_drainv` PDFs (and two of the gbands set) were one shared
+drawing distinguished only by CropBox — the redraw gives each figure its
+own source. Still referencing originals on purpose: the simulation plots
+(`vgate`, `vdrain`, `vgaini`, `gmid`, `l5_velocity`), the paper scan
+(`aicdn*`), `3dcross` (3D render), `Red_and_blue_pill.jpg`,
+`Popcorn_noise_graph.png`, `nand_tr.png` (queue with the lr0_logic
+gate-level batch), and `fig_nmospmos`/`fig_diff`/`fig_l8_*` which are
+already clean vector schematics.
+
 ### lr0_mosfet batch 2 (core) — switched 2026-07-30
 The two cross-section families, drawn from the shared `tikz/mos_lib.tex`:
 `mosfet_off`, `mosfet_subthreshold`, `mosfet_strong_inversion`,

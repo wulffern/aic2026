@@ -1,0 +1,49 @@
+\input{tikz/fig_header.tex}
+
+% Conduction band along the MOSFET at V_DS = 0: the bulk under the gate
+% is an energy barrier phi_B, and the four injection currents at the two
+% junctions sum to zero.
+
+\definecolor{regg}{RGB}{20,140,60}
+\definecolor{lblred}{RGB}{225,60,45}
+\definecolor{eblue}{RGB}{40,40,180}
+
+\begin{tikzpicture}[scale=0.85]
+
+  \draw[densely dotted, thick, blue!60] (3.3,0.8) -- (3.3,3.3);
+  \draw[densely dotted, thick, blue!60] (6.7,0.8) -- (6.7,3.3);
+
+  % conduction band
+  \draw[black, thick]
+    (0,1.2) -- (2.6,1.2) .. controls (3.3,1.2) and (3.3,2.65) .. (4.0,2.65)
+    -- (6.0,2.65) .. controls (6.7,2.65) and (6.7,1.2) .. (7.4,1.2) -- (10,1.2);
+
+  % barrier height
+  \draw[eblue, thick, latex-latex] (2.85,1.25) -- (3.15,2.6);
+  \node[eblue, anchor=east, scale=0.9] at (3.35,2.25) {$\phi_B$};
+
+  % region labels
+  \node[lblred, anchor=south, scale=1.1] at (1.5,3.4) {Source};
+  \node[lblred, anchor=south, scale=1.1] at (5.0,3.4) {Gate};
+  \node[lblred, anchor=south, scale=1.1] at (8.5,3.4) {Drain};
+  \node[regg, anchor=center, scale=1.0] at (1.5,0.5) {$n$};
+  \node[regg, anchor=center, scale=1.0] at (5.0,0.5) {$p$};
+  \node[regg, anchor=center, scale=1.0] at (8.5,0.5) {$n$};
+
+  % the four injection currents
+  \node[regg, anchor=center, scale=0.85, circle, draw=regg, inner sep=1.5pt] at (2.6,-0.25) {1};
+  \draw[eblue, thick, -latex] (2.95,-0.25) -- (3.45,-0.25);
+  \node[eblue, anchor=west, scale=0.9] at (3.5,-0.25) {$e^-$};
+  \node[eblue, anchor=east, scale=0.9] at (2.35,-0.85) {$e^-$};
+  \draw[eblue, thick, -latex] (3.3,-0.85) -- (2.5,-0.85);
+  \node[regg, anchor=center, scale=0.85, circle, draw=regg, inner sep=1.5pt] at (3.65,-0.85) {2};
+
+  \node[regg, anchor=center, scale=0.85, circle, draw=regg, inner sep=1.5pt] at (6.4,-0.25) {3};
+  \draw[eblue, thick, -latex] (6.75,-0.25) -- (7.25,-0.25);
+  \node[eblue, anchor=west, scale=0.9] at (7.3,-0.25) {$e^-$};
+  \node[eblue, anchor=east, scale=0.9] at (6.15,-0.85) {$e^-$};
+  \draw[eblue, thick, -latex] (7.1,-0.85) -- (6.3,-0.85);
+  \node[regg, anchor=center, scale=0.85, circle, draw=regg, inner sep=1.5pt] at (7.45,-0.85) {4};
+
+\end{tikzpicture}
+\end{document}
