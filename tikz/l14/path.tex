@@ -1,0 +1,55 @@
+\input{tikz/fig_header.tex}
+
+% Logical effort example: one inverter driving a 64x load, versus a
+% three stage chain (1, 4, 16) driving the same load.
+
+\begin{circuitikz}[thick]
+
+  \input{tikz/ckt_lib.tex}
+
+  % single inverter driving the 64x load
+  \node[not port] (a1) at (1.2,0) {};
+  \node[scale=0.8] at ([xshift=-3pt]a1.center) {1};
+  \draw (0.2,0) to[short,o-] (a1.in);
+  \draw (a1.out) -- (6.0,0);
+  \draw (6.0,0) to[C] (6.0,-1.3);
+  \draw (6.0,-1.3) \vground;
+  \node[armygreen, anchor=west] at (6.4,-0.65) {64};
+
+  % three stage chain driving the same load
+  \node[not port] (b1) at (1.2,-3.2) {};
+  \node[scale=0.8] at ([xshift=-3pt]b1.center) {1};
+  \node[not port] (b2) at (3.0,-3.2) {};
+  \node[scale=0.8] at ([xshift=-3pt]b2.center) {4};
+  \node[not port] (b3) at (4.8,-3.2) {};
+  \node[scale=0.8] at ([xshift=-3pt]b3.center) {16};
+  \draw (0.2,-3.2) to[short,o-] (b1.in);
+  \draw (b1.out) -- (b2.in);
+  \draw (b2.out) -- (b3.in);
+  \draw (b3.out) -- (6.0,-3.2);
+  \draw (6.0,-3.2) to[C] (6.0,-4.5);
+  \draw (6.0,-4.5) \vground;
+  \node[armygreen, anchor=west] at (6.4,-3.85) {64};
+
+  % the worked numbers
+  \node[anchor=west] at (0.6,-5.6)
+    {$H = \dfrac{C_{out}}{C_{in}} = 64$};
+  \node[anchor=west] at (0.6,-6.7)
+    {$G = \prod (g_i) = \prod (1) = 1$};
+  \node[anchor=west] at (0.6,-7.6)
+    {$B = 1$};
+  \node[anchor=west] at (0.6,-8.5)
+    {$F = GBH = 64$};
+  \node[anchor=west] at (0.4,-9.6)
+    {Path effort delay};
+  \node[anchor=west] at (0.6,-10.6)
+    {$D_F = \sum f_i$};
+  \node[anchor=west] at (0.4,-11.7)
+    {a) \quad $f = 64$ \qquad $D = 64 + 1$};
+  \node[anchor=west] at (0.4,-12.8)
+    {b) \quad $D_F = 4 + 4 + 4 = 12$};
+  \node[anchor=west] at (1.35,-13.7)
+    {$P = 1 + 1 + 1 = 3$};
+
+\end{circuitikz}
+\end{document}

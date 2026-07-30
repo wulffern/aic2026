@@ -1,0 +1,15 @@
+\input{tikz/fig_header.tex}
+
+% Digital design optimization triangle: power, speed and area (cost)
+% pull in different directions.
+
+\begin{tikzpicture}[thick]
+
+  \draw[red] (0,0) -- (5.2,0) -- (2.6,2.6) -- cycle;
+
+  \node[blue, font=\bfseries, anchor=south] at (2.6,2.75) {Power};
+  \node[blue, font=\bfseries, anchor=north east] at (0.4,-0.25) {Speed};
+  \node[blue, font=\bfseries, anchor=north west] at (4.4,-0.25) {Area (cost)};
+
+\end{tikzpicture}
+\end{document}

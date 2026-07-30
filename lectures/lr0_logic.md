@@ -485,7 +485,7 @@ Negative slack (over PVT[^1]) => Timing is not OK
 
 ---
 
-![inline](../media/l14/timing.pdf)
+![inline](../media/l14/timing_tikz.pdf)
 
 ---
 
@@ -760,7 +760,7 @@ Real delay $$\Rightarrow d = 5\frac{2}{3} \times 3 \text{ ps} = 17 \text{ ps}$$
 
 #[fit] Which has shortest delay?
 
-![left fit](../media/l14/path.pdf)
+![left fit](../media/l14/path_tikz.pdf)
 
 ---
 
@@ -938,7 +938,7 @@ VDDA AVDD_ATTACK 0 dc 0.5 pulse(1.5 0.6 tcd trf trf tapw taper)
 
 #[fit] Pick two
 
-![right fit](../media/l16/optimization.pdf)
+![right fit](../media/l16/optimization_tikz.pdf)
 
 ---
 
@@ -1053,7 +1053,7 @@ Clocks $$\alpha = 1$$
 [.column]
 ![inline 150%](../media/tex/tb_sw_prob.pdf)
 
-![inline 150%](../media/l16/prob.pdf)
+![inline 150%](../media/l16/prob_tikz.pdf)
 
 
 [.column]
@@ -1075,7 +1075,7 @@ Clocks $$\alpha = 1$$
 
 ![inline 150%](../media/tex/tb_sw_prob.pdf)
 
-![inline 150%](../media/l16/prob.pdf)
+![inline 150%](../media/l16/prob_tikz.pdf)
 
 [.column]
 
@@ -1117,7 +1117,7 @@ $$P_{tot} = \alpha C V_{DD}^2 f$$
 
 ## Stop clock [^3]
 
-![inline fit ](../media/l16/stop_clock.pdf) 
+![inline fit ](../media/l16/stop_clock_tikz.pdf) 
 
 
 [^3]: Often called *clock gating*
@@ -1284,7 +1284,7 @@ Dense wires has about $$0.2 \text{ fF/}\mu\text{m}$$
 
 An FSM where outputs depend on current state and inputs
 
-![right fit](../media/mealy_machine.pdf)
+![right fit](../media/mealy_machine_tikz.pdf)
 
 
 ---
@@ -1293,7 +1293,7 @@ An FSM where outputs depend on current state and inputs
 
 An FSM where outputs depend on current state
 
-![right fit](../media/moore_machine.pdf)
+![right fit](../media/moore_machine_tikz.pdf)
 
 ---
 # Mealy versus Moore

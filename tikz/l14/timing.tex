@@ -1,0 +1,55 @@
+\input{tikz/fig_header.tex}
+
+% Critical path example: arrival times (blue) propagate through gate
+% delays (red), the slowest input sets the output arrival time.
+
+\begin{circuitikz}[thick]
+
+  % first NAND
+  \node[nand port] (g1) at (2.4,0) {};
+  \node[red, scale=0.8] at ([xshift=-0.55cm]g1.center) {30};
+  \draw (g1.in 1) -- ++(-0.7,0) node[blue, anchor=east] {$a_0{=}20$};
+  \draw (g1.in 2) -- ++(-0.7,0) node[blue, anchor=east] {$a_1{=}30$};
+
+  % inverter
+  \node[not port] (g2) at (5.4,0) {};
+  \node[red, scale=0.8] at ([xshift=-3pt]g2.center) {20};
+  \draw (g1.out) -- (g2.in);
+  \node[blue, anchor=south, scale=0.8] at (4.15,0.1) {$a_5{=}60$};
+
+  % final NAND
+  \node[nand port] (g3) at (9.0,-0.28) {};
+  \node[red, scale=0.8] at ([xshift=-0.55cm]g3.center) {30};
+  \draw (g2.out) -- (g3.in 1);
+  \node[blue, anchor=south, scale=0.8] at (7.3,0.1) {$a_6{=}80$};
+  \draw (g3.out) -- ++(0.6,0);
+  \node[blue, anchor=south west] at (10.0,-0.1) {$a_q{=}130$};
+
+  % second row: inverter into NOR-style gate
+  \node[not port] (g4) at (2.4,-2.0) {};
+  \node[red, scale=0.8] at ([xshift=-3pt]g4.center) {20};
+  \draw (g4.in) -- ++(-0.7,0) node[blue, anchor=east] {$a_2{=}40$};
+  \node[nor port] (g5) at (5.4,-2.28) {};
+  \node[red, scale=0.8] at ([xshift=-0.55cm]g5.center) {40};
+  \draw (g4.out) -- (g5.in 1);
+  \node[blue, anchor=south, scale=0.8] at (3.95,-1.9) {$a_7{=}60$};
+  \draw (g5.in 2) -- ++(-0.5,0) -- ++(0,-0.5) -- ++(-2.9,0)
+    node[blue, anchor=east] {$a_4{=}20$};
+  \draw (g5.out) -- ++(0.5,0) -- (g3.in 2);
+  \node[blue, anchor=south, scale=0.8] at (7.1,-2.25) {$a_8{=}100$};
+
+  % notes
+  \draw (0,-4.1) -- (10.6,-4.1);
+  \node[anchor=west] at (0,-4.8)
+    {Most paths will be fast enough};
+  \node[anchor=west] at (0,-5.7)
+    {There will be some ``critical paths'' that};
+  \node[anchor=west] at (0,-6.3)
+    {must be analyzed, and maybe fixed};
+  \draw (0,-7.0) -- (10.6,-7.0);
+  \node[anchor=west] at (0,-7.7) {Fix timing at:};
+  \node[anchor=west] at (0.5,-8.4) {Architecture};
+  \node[anchor=west] at (0.5,-9.0) {micro arch};
+
+\end{circuitikz}
+\end{document}
