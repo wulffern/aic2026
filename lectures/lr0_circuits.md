@@ -490,7 +490,7 @@ For two transistors there are a few more possibilities. I'd highly recommend Fif
 
 <!--pan_doc: 
 
-The source follower can be seen in Figure 17. The input signal is at the gate, and the output at the source.  The properties of the source follower are 
+The source follower can be seen in Figure 17. The input signal is at the gate, and the output at the source. The transistor and its bias current source form a level shifter: the output follows the input, one $V_{GS}$ lower. The properties we care about are
 
 -->
 
@@ -500,7 +500,7 @@ Gain $$ A = \frac{v_o}{v_i}$$
 
 Output resistance $$r_{out}$$
 
-![left fit](../media/l9/sf_ls.png)
+![left fit](../media/amp_sf_tikz.pdf)
 
 <!--pan_doc: 
 <sub>Figure 17: Source follower </sub>
@@ -511,8 +511,20 @@ Output resistance $$r_{out}$$
 
 ### Small signal gain 
 
+<!--pan_doc: 
 
-![right fit](../media/l9/sf_ss.png)
+To find the gain, replace the transistor with its small signal model, as
+shown in Figure 18. The drain is at the supply, and the supply does not
+move for small signals, so the drain rail is at AC ground. The source rail
+is the output. Between the two hang the transconductance, the bulk
+transconductance, and $r_{ds}$.
+
+Sum the currents into the output node, and set the output current to zero
+- nothing is loading us:
+
+-->
+
+![right fit](../media/amp_sf_ss_tikz.pdf)
 
 <!--pan_doc: 
 <sub>Figure 18: Source follower small signal model</sub>
@@ -529,10 +541,25 @@ $$ A = \frac{v_o}{v_i} = \frac{g_m}{g_m + g_{ds} + g_s} $$
 
 **Gain is less than 1**
 
+<!--pan_doc:
+
+The transconductance appears both on top and in the bottom of the
+fraction, so the gain approaches, but never reaches, one. The bulk
+transconductance $g_s$ is the main thief: with bulk tied to ground the
+gain of an NMOS follower is typically 0.8 to 0.9.
+
+-->
 
 ---
 
 ## Output resistance 
+
+<!--pan_doc:
+
+The same equation gives the output resistance. Zero the input, push a
+current into the output, and see what voltage builds up:
+
+-->
 
 $$ i_o = v_o (g_{ds} + g_{s}) - g_{m} v_i + v_o g_m $$
 
@@ -545,11 +572,32 @@ $$ r_{out} = \frac{v_o}{i_o} = \frac{1}{g_m + g_{ds} + g_{s}} $$
 
 $$ r_{out} \approx \frac{1}{g_m}$$
 
-![right fit](../media/l9/sf_ss.png)
+<!--pan_doc:
+
+A $1/g_m$ output resistance is the point of the whole circuit: it is the
+cheapest low impedance money can buy in CMOS. Whatever fragile,
+high impedance node you have, a follower turns it into a node that can
+drive real capacitance.
+
+-->
+
+![right fit](../media/amp_sf_ss_tikz.pdf)
 
 ---
 
 ## Why use a source follower?
+
+<!--pan_doc:
+
+A concrete example makes the point. In an image sensor pixel a photodiode
+collects charge on a tiny sense node - say 1 fF. Assume the light gives us
+100 electrons.
+
+In Figure 19 the sense node drives the gate of a source follower. The gate
+draws no charge, so all 100 electrons stay on the 1 fF, and the signal is
+a healthy 16 mV, which the follower copies onto the 1 pF bus below.
+
+-->
 
 Assume 100 electrons
 
@@ -558,17 +606,27 @@ Assume 100 electrons
 
 $$ \Delta V  = Q/C  = -1.6 \times 10^{-19} \times 100 / (1\times 10^{-15}) = - 16\text{ mV} $$ 
 
-![inline fit](../media/l9/why_sf.png)
+![inline fit](../media/amp_why_sf_tikz.pdf)
+
+<!--pan_doc: 
+<sub>Figure 19: Sense node buffered by a source follower</sub>
+-->
 
 [.column]
 
 $$ \Delta V  = Q/C  = -1.6 \times 10^{-19} \times 100 / (1\times 10^{-12}) = - 16\text{ uV} $$ 
 
 
-![inline fit](../media/l9/why_sf_not.png)
-
+![inline fit](../media/amp_why_sf_not_tikz.pdf)
 
 <!--pan_doc: 
+<sub>Figure 20: The same sense node connected straight to the bus</sub>
+
+In Figure 20 the follower is gone and the sense node must charge the 1 pF
+bus directly. The same 100 electrons now land on a thousand times the
+capacitance, and the signal shrinks to 16 uV - buried in the noise. The
+follower does not amplify anything, and still it makes the difference
+between a signal and no signal.
 
 Another example of a source follower can be found in A 92.5mW 205MS/s 10b Pipeline IF ADC Implemented in 1.2V/3.3V 0.13um CMOS [@hernes07a]
 
@@ -578,12 +636,39 @@ Another example of a source follower can be found in A 92.5mW 205MS/s 10b Pipeli
 
 #[fit] Common gate
 
-![left fit](../media/l9/cg_ls_rin.png)
+<!--pan_doc:
 
+In the common gate stage, Figure 21, the roles rotate: the gate is held at
+a bias voltage, the signal goes in at the source, and the output is taken
+at the drain. Nothing amplifies the voltage between input and gate except
+the transistor's own $V_{GS}$ - the input current simply reappears at the
+drain. That makes the common gate a current buffer: a low resistance
+input, a high resistance output, and a current gain of one.
+
+-->
+
+![left fit](../media/amp_cg_tikz.pdf)
+
+<!--pan_doc: 
+<sub>Figure 21: Common gate stage</sub>
+-->
 
 ---
 
-![right fit](../media/l9/cg_ss_rin.png)
+<!--pan_doc:
+
+Start with the input resistance, using the small signal model in Figure
+22. The gate is grounded, so wiggling the source by $v_x$ makes
+$v_{gs} = -v_x$: the transconductance pulls current out of the test
+source, and the input looks like a resistance of roughly $1/g_m$.
+
+-->
+
+![right fit](../media/amp_cg_ss_rin_tikz.pdf)
+
+<!--pan_doc: 
+<sub>Figure 22: Common gate input resistance</sub>
+-->
 
 ### Input resistance
 
@@ -595,19 +680,50 @@ However, we've ignored load resistance.
 
 $$ r_{in}  \approx \frac{1}{g_m}\left(1 + \frac{R_L}{r_{ds}}\right) $$
 
+<!--pan_doc:
+
+The last line is worth a pause: the friendly $1/g_m$ input resistance
+only holds if the drain sees a low load resistance. Load the drain with a
+current source, and the input resistance grows by the ratio $R_L/r_{ds}$
+- the cascode chapter of every textbook in one line.
+
+-->
+
 <!--pan_skip: -->
 
-![right fit](../media/l9/cg_ss_rin.png)
+![right fit](../media/amp_cg_ss_rin_tikz.pdf)
 
 ---
 
 ### Output resistance
 
-![fit inline](../media/l9/cg_ss_rout.png)
+<!--pan_doc:
+
+For the output resistance, ground the source: then $v_{gs} = 0$, the
+transconductance is dead, and the test source at the drain sees only
+$r_{ds}$, as drawn in Figure 23.
+
+-->
+
+![fit inline](../media/amp_cg_ss_rout_tikz.pdf)
+
+<!--pan_doc: 
+<sub>Figure 23: Common gate output resistance</sub>
+
+$$ r_{out} = r_{ds} $$
+-->
 
 ---
 
 ### Small signal gain
+
+<!--pan_doc:
+
+For the voltage gain, drive the source and leave the drain open, Figure
+24. The same $g_m$ that made the input resistance low now pushes its
+current into $r_{ds}$:
+
+-->
 
 $$ i_{o} = - g_m v_{i} + \frac{v_{o} - v_{i}}{r_{ds}} $$
 
@@ -620,10 +736,23 @@ $$ v_{i} (1 + g_m r_{ds}) = v_{o} $$
 $$ \frac{v_o}{v_i} = 1 + g_m r_{ds} $$
 
 
-![right fit](../media/l9/cg_ss_a.png)
+![right fit](../media/amp_cg_ss_a_tikz.pdf)
+
+<!--pan_doc: 
+<sub>Figure 24: Common gate small signal gain</sub>
+
+The gain is the intrinsic gain plus one, and it is not inverting: the
+common gate has the same gain magnitude as the common source, it just
+refuses to flip the sign.
+-->
 
 ---
 
+<!--pan_doc:
+
+The full expression, with nothing ignored, is uglier:
+
+-->
 
 We've ignored bulk effect ($$g_s$$), source resistance ($$R_S$$) and load resistance ($$R_L$$)
 
@@ -634,27 +763,54 @@ If $$R_L >> r_{ds} $$, $$R_S  = 0$$ and $$g_s = 0$$
 
 $$ A = \frac{(g_{m} + g_{ds})r_{ds}}{1} = 1+ g_m r_{ds} $$ 
 
+<!--pan_doc:
+
+Check the simplification against the special case above, and note what
+the full expression adds: the source resistance $R_S$ divides the gain
+down, and the bulk transconductance helps for once - in a common gate the
+bulk effect adds to $g_m$ instead of stealing from it.
+
+-->
 
 <!--pan_skip: -->
 
-![right fit](../media/l9/cg_ss_a.png)
+![right fit](../media/amp_cg_ss_a_tikz.pdf)
 
 ---
 
 #[fit] Common source
 
+<!--pan_doc:
+
+The common source stage, Figure 25, is the amplifier: input at the gate,
+source grounded, output at the drain. It is also a circuit we have already
+met - the output half of every current mirror is a common source
+transistor - so the input and output resistances come for free:
+
+-->
 
 $$r_{in} \approx \infty$$
 
 $$r_{out}  = r_{ds}$$, it's same circuit as the output of a current mirror
 
 
-![left fit](../media/l9/cs_ls_a.png)
+![left fit](../media/amp_cs_tikz.pdf)
+
+<!--pan_doc: 
+<sub>Figure 25: Common source stage</sub>
+-->
 
 ---
 
 
 ### Small signal gain
+
+<!--pan_doc:
+
+The small signal model, Figure 26, has only two elements, and the sum of
+their currents at the output node gives the gain in three lines:
+
+-->
 
 $$ i_{o} = g_m v_i + \frac{v_o}{r_{ds}} $$
 
@@ -665,7 +821,15 @@ $$ -g_m v_i = \frac{v_o}{r_{ds}} $$
 $$ \frac{v_o}{v_i} = - g_m r_{ds}$$
 
 
-![right fit](../media/l9/cs_ss_a.png)
+![right fit](../media/amp_cs_ss_tikz.pdf)
+
+<!--pan_doc: 
+<sub>Figure 26: Common source small signal model</sub>
+
+The gain is minus the intrinsic gain of the transistor - the most gain a
+single device can give, which is why the common source is the default
+gain stage in every amplifier.
+-->
 
 ---
 
@@ -673,13 +837,39 @@ $$ \frac{v_o}{v_i} = - g_m r_{ds}$$
 
 ## Why common source?
 
+The signal from an antenna is microvolts, Figure 27. Before anything can
+demodulate, filter or digitize it, it must be made bigger - and the only
+thing that makes voltages bigger is gain. The matching network hands the
+microvolt signal through an AC coupling capacitor to the gate, a high
+value resistor from a current mirror sets the bias point without loading
+the signal, and the common source transistor multiplies the voltage by
+$-g_m R$. First gain, then everything else.
+
 -->
 
-![fit](../media/l9/why_cs.png)
+![fit](../media/amp_why_cs_tikz.pdf)
+
+<!--pan_doc: 
+<sub>Figure 27: A low noise amplifier is a common source stage</sub>
+-->
 
 ---
 
 # Differential pair
+
+<!--pan_doc:
+
+Single-ended amplifiers share a weakness: they cannot tell the signal
+from the ground bounce. The differential pair, Figure 28, fixes that by
+amplifying only the *difference* between two inputs. Two matched
+transistors share one tail current: with equal inputs the current splits
+evenly and nothing happens at the outputs. Apply a difference, and
+current steers from one branch to the other - the tail current is a
+see-saw, and the differential input tilts it.
+
+Per side, the numbers are the common source numbers:
+
+-->
 
 Input resistance $$r_{in} \approx \infty$$
 
@@ -689,13 +879,26 @@ Output resistance $$ r_{out} = r_{ds}$$
 
 Best analyzed with T model of transistor (see CJM page 31)
 
-![left fit](../media/l9/df_ls_a.png)
+![left fit](../media/amp_diff_tikz.pdf)
+
+<!--pan_doc: 
+<sub>Figure 28: Differential pair</sub>
+-->
 
 ---
 
 ## Diff pairs are cool
 
-![left fit](../media/l9/df_ls_a.png)
+<!--pan_doc:
+
+Two properties make the pair the default input of every OTA. First,
+whatever is common to both inputs - supply bounce, substrate noise, bias
+drift - is rejected, because it does not tilt the see-saw. Second, sign
+is free:
+
+-->
+
+![left fit](../media/amp_diff_tikz.pdf)
 
  Can choose between 
 
@@ -709,11 +912,33 @@ Best analyzed with T model of transistor (see CJM page 31)
 
 ---
 
-![fit](../media/l10/diff.png)
+## Summary
 
----
+<!--pan_doc:
 
-#[fit] Thanks!
+The single transistor gives us three views of the same device:
+
+-->
+
+| Stage | $$r_{in}$$ | $$r_{out}$$ | Gain |
+| :--: | :--: | :--: | :--: |
+| Common source | $$\infty$$ | $$r_{ds}$$ | $$-g_m r_{ds}$$ |
+| Common gate | $$1/g_m$$ | $$r_{ds}$$ | $$1 + g_m r_{ds}$$ |
+| Source follower | $$\infty$$ | $$1/g_m$$ | $$\approx 1$$ |
+
+<!--pan_doc:
+
+Common source when you need gain, common gate when you need to move a
+current without disturbing it, source follower when you need to drive
+something. Current mirrors bias them all, and the differential pair wraps
+two common source stages around one tail current so only the difference
+matters.
+
+Put a differential pair on top of a current mirror and you have built the
+five transistor OTA - which is where the [OTA chapter](https://analogicus.com/aic2026/otas)
+picks up.
+
+-->
 
 ---
 

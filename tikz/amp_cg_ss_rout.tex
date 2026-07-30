@@ -1,0 +1,45 @@
+\input{tikz/fig_header.tex}
+
+% Common gate output resistance. Gate and source are grounded, so
+% v_gs = 0 and the transconductance is dead: the test source at the drain
+% only sees r_ds.
+
+\begin{circuitikz}[american, thick, transform shape, circuit ee IEC]
+
+  \input{tikz/ckt_lib.tex}
+
+  \def\ytop{2.6}
+  \def\xgm{4.2}
+  \def\xrds{6.0}
+  \def\xterm{7.2}
+
+  % grounded gate marker with v_gs annotation
+  \draw (1.1,{\ytop+0.9}) \vground;
+  \draw (1.1,{\ytop+0.9}) -- (1.4,{\ytop+0.9}) -- (1.4,{\ytop+0.09});
+  \draw (1.4,\ytop) circle (0.09);
+  \node[anchor=east] at (1.2,\ytop) {G};
+  \node[anchor=north] at (1.4,{\ytop-0.25}) {$+$};
+  \node[anchor=west, color=blue] at (1.0,1.3) {$v_{gs}=0$};
+  \node[anchor=south] at (1.4,0.25) {$-$};
+
+  % elements between drain rail (test node, top) and source rail (ground)
+  \draw (\xgm,\ytop) to [cI, l_=$g_m v_{gs}$] (\xgm,0);
+  \draw (\xrds,\ytop) to [R, l_=$r_{ds}$] (\xrds,0);
+
+  % drain rail with the test source
+  \draw (\xgm,\ytop) -- (\xterm,\ytop);
+  \fill (\xrds,\ytop) circle (0.075);
+  \node[anchor=south] at (\xgm,{\ytop+0.1}) {D};
+  \draw (\xterm,\ytop) to [short, -o, i_=$i_x$] ({\xterm+1.0},\ytop);
+  \draw ({\xterm+1.09},\ytop) -- ({\xterm+1.6},\ytop);
+  \draw ({\xterm+1.6},\ytop) to [V, l_=$v_x$] ({\xterm+1.6},{\ytop-1.6});
+  \draw ({\xterm+1.6},{\ytop-1.6}) \vground;
+
+  % source rail at ground
+  \draw (\xgm,0) -- (\xterm,0);
+  \fill (\xrds,0) circle (0.075);
+  \node[anchor=north] at (\xgm,-0.1) {S};
+  \draw (\xterm,0) \vground;
+
+\end{circuitikz}
+\end{document}

@@ -1,0 +1,51 @@
+\input{tikz/fig_header.tex}
+
+% Why a common source stage exists: the microvolt signal from an antenna
+% must be amplified before anything else can touch it. AC coupled into a
+% common source stage biased through a high resistance from a current
+% mirror.
+
+\begin{circuitikz}[american, thick, transform shape, circuit ee IEC]
+
+  \input{tikz/ckt_lib.tex}
+
+  \def\ygate{3.0}   % gate rail
+
+  % antenna
+  \draw (0,{\ygate+1.0}) -- (0,\ygate+1.7);
+  \draw (-0.45,{\ygate+2.35}) -- (0,\ygate+1.7) -- (0.45,{\ygate+2.35});
+
+  % matching network
+  \draw (-0.8,{\ygate+0.2}) rectangle (0.8,{\ygate+1.0});
+  \node at (0,{\ygate+0.6}) {Match};
+
+  % AC coupling into the gate
+  \draw (0.8,{\ygate+0.6}) -- (1.4,{\ygate+0.6});
+  \draw (1.4,{\ygate+0.6}) to [C] (2.6,{\ygate+0.6});
+  \draw (2.6,{\ygate+0.6}) -- (3.4,{\ygate+0.6}) -- (3.4,\ygate);
+  \node[anchor=south, color=blue] at (2.0,{\ygate+0.9}) {$v_{gs}\sim 1 \mu V$};
+
+  % common source stage with resistor load
+  \draw (3.4,\ygate) node[nmos, anchor=G] (M1) {};
+  \draw (M1.S) -- ++(0,-0.3) \vground;
+  \draw (M1.D) -- ++(0,0.3) coordinate (dnode);
+  \draw (dnode) \vresistor{};
+  \draw (resEnd) \vsupply;
+  \draw (dnode) to [short,*-o] ++(1.2,0) node[anchor=west] {$v_{out}$};
+
+  % bias: high resistance down to a diode connected mirror
+  \fill (3.4,\ygate) circle (0.075);
+  \draw (3.4,\ygate) -- (3.4,{\ygate-0.4});
+  \draw (3.4,{\ygate-2.0}) \vresistor{};
+  \node[anchor=east, color=blue] at (3.05,{\ygate-1.2}) {$R$ high};
+  \draw (3.4,{\ygate-2.0}) -- (1.8,{\ygate-2.0});
+  \draw (1.8,{\ygate-2.0}) node[nmos, anchor=D] (MB) {};
+  \draw (MB.G) -- ++(-0.4,0) coordinate (gtap) -- (gtap |- MB.D) -- (1.8,{\ygate-2.0});
+  \fill (1.8,{\ygate-2.0}) circle (0.075);
+  \draw (MB.S) -- ++(0,-0.3) \vground;
+  \draw (1.8,{\ygate-2.0}) -- (0.6,{\ygate-2.0});
+  \draw (0.6,{\ygate-0.4}) to [I, l_=$I_B$] (0.6,{\ygate-2.0});
+  \draw (0.6,{\ygate-0.4}) \vsupply;
+
+\end{circuitikz}
+\end{document}

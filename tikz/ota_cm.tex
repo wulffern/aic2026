@@ -1,0 +1,83 @@
+\input{tikz/fig_header.tex}
+
+% Current mirror OTA: input pair with diode connected loads, and the
+% currents mirrored 1:K out to the single ended output branch.
+
+\begin{circuitikz}[american, thick, transform shape, circuit ee IEC]
+
+  \input{tikz/ckt_lib.tex}
+
+  \def\xa{-2.6}     % left output branch column
+  \def\xl{0}
+  \def\xr{3.2}
+  \def\xm{1.6}
+  \def\xb{5.8}      % right output branch column
+  \def\ysrc{2.2}
+  \def\ydr{3.8}
+  \def\ytop{5.4}
+
+  % tail transistor
+  \draw (\xm,0) \vground;
+  \draw (\xm,0) \lvnmos{M9}{$V_{B}$};
+  \draw (\xl,\ysrc) -- (\xl,1.9) -- (\xr,1.9) -- (\xr,\ysrc);
+  \draw (\xm,\grid) -- (\xm,1.9);
+  \fill (\xm,1.9) circle (0.075);
+
+  % input pair
+  \draw (\xl,\ysrc) \lvnmos{M1}{$v_p$};
+  \draw (\xr,\ysrc) \lvmnmos{M2}{$v_n$};
+
+  % diode connected PMOS loads
+  \draw (\xl,\ydr) \lvpmos{M3}{};
+  \draw (\xr,\ydr) \lvmpmos{M4}{};
+  \draw (\xl,\ytop) \vsupply;
+  \draw (\xr,\ytop) \vsupply;
+
+  % M3 diode connection and mirror out to M5 (left branch)
+  \draw (\xa,\ydr) \lvpmos{M5}{};
+  \draw (\xa,\ytop) \vsupply;
+  \coordinate (g3) at (M3.G);
+  \coordinate (g5) at (M5.G);
+  \draw (g5) -- (g3);
+  \fill (g3) circle (0.075);
+  \draw (g3) |- (\xl,\ydr);
+  \fill (\xl,\ydr) circle (0.075);
+  \node[anchor=south, scale=0.8] at (-1.3,4.75) {$K:1$};
+
+  % M4 diode connection and mirror out to M6 (right branch)
+  \draw (\xb,\ydr) \lvmpmos{M6}{};
+  \draw (\xb,\ytop) \vsupply;
+  \coordinate (g4) at (M4.G);
+  \coordinate (g6) at (M6.G);
+  \draw (g4) -- (g6);
+  \fill (g4) circle (0.075);
+  \draw (g4) |- (\xr,\ydr);
+  \fill (\xr,\ydr) circle (0.075);
+  \node[anchor=south, scale=0.8] at (4.5,4.75) {$1:K$};
+
+  % left branch: diode connected NMOS M7 mirrored to M8 (right branch)
+  \draw (\xa,0) \vground;
+  \draw (\xa,0) \lvnmos{M7}{};
+  \draw (\xa,\grid) -- (\xa,\ydr);
+  \draw (\xb,0) \vground;
+  \draw (\xb,0) \lvmnmos{M8}{};
+  \draw (\xb,\grid) -- (\xb,\ydr);
+  \coordinate (g7) at (M7.G);
+  \coordinate (g8) at (M8.G);
+  % diode connection of M7
+  \coordinate (d7) at (\xa,1.9);
+  \fill (d7) circle (0.075);
+  \draw (g7) |- (d7);
+  % mirror gate wire routed underneath the ground row
+  \draw (g7) -- ++(-0.35,0) coordinate (g7a);
+  \draw (g7a) -- (g7a |- 0,-0.7) coordinate (g7b);
+  \draw (g8) -- ++(0.35,0) coordinate (g8a);
+  \draw (g8a) -- (g8a |- 0,-0.7) coordinate (g8b);
+  \draw (g7b) -- (g8b);
+
+  % output
+  \draw (\xb,\ydr) \portOut{$v_o$};
+  \fill (\xb,\ydr) circle (0.075);
+
+\end{circuitikz}
+\end{document}

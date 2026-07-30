@@ -1,0 +1,23 @@
+\input{tikz/fig_header.tex}
+
+% Common source, large signal: input at the gate, source grounded, output
+% at the drain with a current source load. The workhorse gain stage.
+
+\begin{circuitikz}[american, thick, transform shape, circuit ee IEC]
+
+  \input{tikz/ckt_lib.tex}
+
+  % transistor, source at ground
+  \draw (0,0) \vground;
+  \draw (0,0) \lvnmos{M1}{$v_i$};
+
+  % current source load from the supply to the drain
+  \draw (0,\grid) coordinate (dnode);
+  \draw (0,{2*\grid}) to [I, l=$I_{B}$] (dnode);
+  \draw (0,{2*\grid}) \vsupply;
+
+  % output at the drain
+  \draw (dnode) \portOut{$v_o$};
+
+\end{circuitikz}
+\end{document}

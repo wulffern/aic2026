@@ -846,6 +846,14 @@ the drain instead.
 
 ## Drain source voltage
 
+<!--pan_doc:
+
+The table shows the bias: gate fixed a little above threshold, drain swept
+from 0 V to 1.8 V. Watch the current in Figure 21 as the drain rises - the
+curve has two personalities, and the boundary between them is $V_{eff}$.
+
+-->
+
 | Param          | Voltage [V] |
 |:--------------:|:-----------:|
 | V<sub>GS</sub> | 0.5         |
@@ -869,7 +877,15 @@ channel length modulation (and DIBL) remains.
 ---
 
 ## Strong inversion
- 
+
+<!--pan_doc:
+
+The measured curve is captured by one equation with three cases, split on
+how $V_{DS}$ compares to $V_{eff}$. Read each case together with Figures
+22 to 24, which show what the inversion layer is doing in that region.
+
+-->
+
 $$
 I_{DS} = \mu_n C_{ox} \frac{W}{L} 
 \begin{cases}
@@ -935,6 +951,17 @@ modulation.
 ##[fit] Low frequency model
 
 ---
+
+<!--pan_doc:
+
+The curves so far are large signal: the actual currents and voltages. An
+amplifier works on small wiggles around a bias point, and for those we
+linearize. Two derivatives are all we keep at low frequency: how much
+drain current a gate wiggle gives, $g_m$, and how much the drain voltage
+steals back, $g_{ds}$. Figure 26 is those two derivatives drawn as a
+circuit.
+
+-->
 
 $$ g_{m} = \frac{\partial I_{DS}}{\partial V_{GS}} $$
 
@@ -1050,6 +1077,35 @@ effective voltage.
 <sub>Figure 28: Small signal model with the bulk transconductance</sub>
 
 The bulk is a back-gate: if source and bulk move relative to each other, the threshold voltage - and hence the current - changes, which the $g_s v_{sb}$ source models.
+-->
+
+---
+
+## Body effect
+
+<!--pan_doc:
+
+How strongly the back-gate acts has a name: the body effect coefficient
+$\gamma$, and it comes straight from the capacitive divider between the
+gate oxide and the depletion region under the channel.
+
+-->
+
+ $$ V_{tn} = V_{t0} + \gamma\left(\sqrt{2\phi_F + V_{SB}} - \sqrt{2\phi_F}\right) $$
+
+ $$ \gamma = \frac{\sqrt{2 q N_A \epsilon_{si}}}{C_{ox}} $$
+
+ $$ g_{s} = \frac{\partial I_{DS}}{\partial V_{SB}} \approx (n - 1) g_m \approx 0.2 g_m $$
+
+<!--pan_doc:
+
+Reverse bias the source-bulk junction and the depletion region under the
+channel widens. The extra depletion charge must be imaged on the gate, so
+the threshold voltage rises - that is the square root above. The small
+signal version is the $g_s$ source in Figure 28, roughly a fifth of
+$g_m$. It is a parasitic in a source follower, and a free extra input if
+you drive the bulk on purpose - a trick the OTA chapter returns to.
+
 -->
 
 ---
@@ -1192,6 +1248,35 @@ $C_{out} = (1+1/A)C$. With $C = C_{gd}$ and $A = g_m r_{ds}$, the gate is
 loaded by $C_{gd}$ multiplied by the stage gain - 10 to 100 times the
 overlap capacitance you read from the layout. This is why the input pole of
 a high-gain stage is so often set by its smallest capacitor.
+-->
+
+---
+
+## Transit frequency
+
+<!--pan_doc:
+
+The high frequency model rolls up into a single speed metric: the
+frequency where the current gain of the transistor falls to one. Drive
+the gate with a current and ask when the gate capacitance eats all of it:
+
+-->
+
+ $$ f_T = \frac{g_m}{2 \pi (C_{gs} + C_{gd})} $$
+
+In strong inversion, with $$ C_{gs} \approx \frac{2}{3} W L C_{ox} $$:
+
+ $$ f_T \approx \frac{3 \mu_n V_{eff}}{4 \pi L^2} \propto \frac{V_{eff}}{L^2} $$
+
+<!--pan_doc:
+
+$f_T$ is why we scale: halve the length and the transistor is four times
+faster, until velocity saturation takes one of the two factors back. In a
+nanoscale process $f_T$ reaches hundreds of gigahertz - but look at the
+trade: the $V_{eff}$ that buys speed is the same $V_{eff}$ that sells
+intrinsic gain in Figure 27. Fast and high gain is not on the menu, at
+least not in one transistor.
+
 -->
 
 ---
@@ -1363,6 +1448,14 @@ transistor violates.
  
 ## Mobility Degradation
 
+<!--pan_doc:
+
+The square law assumes the mobility is a constant. It is not - two
+mechanisms drag it down as the gate drive grows, and the model needs a
+correction factor.
+
+-->
+
 Multiple effects degrade mobility
 
 - Velocity saturation
@@ -1400,6 +1493,13 @@ nothing.
 ##[fit] What about holes (PMOS)
 
 ---
+
+<!--pan_doc:
+
+Everything so far used the NMOS. The PMOS is the same device upside down:
+the carriers are holes, and holes are slower.
+
+-->
 
 [.column]
 
@@ -1518,6 +1618,14 @@ During the well implant, ions scatter off the edge of the photoresist and land i
 
 ---
 
+<!--pan_doc:
+
+Silicon is piezoresistive: squeeze it and the mobility changes. The table
+summarizes which direction of squeeze helps which device, and Figure 37
+defines the three directions.
+
+-->
+
 | Stress | PMOS | NMOS |
 | :--: | :--: | :---:|
 | Stretch Fz | Good | Good |
@@ -1627,6 +1735,13 @@ The rest of this section asks a deceptively simple question about this circuit: 
 
 ## Voltage variation
 
+<!--pan_doc:
+
+Start with the most obvious dependency: the supply sits in the loop that
+sets the reference current.
+
+-->
+
  $$I_1 = \frac{V_{DD} - V_{GS1}}{R}$$
 
 
@@ -1652,6 +1767,14 @@ equation in the first place.
 
 
 ## Systematic variations
+
+<!--pan_doc:
+
+Next come the errors we design in ourselves: any asymmetry between the two
+transistors turns into a current error. The list below is long, and every
+line on it is avoidable.
+
+-->
 
 If $$ V_{DS1} \ne V_{DS2} \rightarrow I_1 \ne I_2 $$
 
@@ -1689,6 +1812,14 @@ removes them. They cost area and care, not luck.
 
 ## Process variations
 
+<!--pan_doc:
+
+Even a perfectly symmetric layout cannot save the absolute value of the
+current, because the process constants themselves move from lot to lot.
+Write out the current and look at what is inside it:
+
+-->
+
 Assume strong inversion and active **$$ V_{eff} = \sqrt{\frac{2}{\mu_p C_{ox} \frac{W}{L}} I_1} $$**, $$V_{GS} = V_{eff} + V_{tp}$$
 
  $$ I_1 = \frac{V_{DD} - V_{GS}}{R} =  \frac{V_{DD} - \sqrt{\frac{2}{\mu_p C_{ox} \frac{W}{L}} I_1}  - V_{tp}}{R} $$ 
@@ -1714,6 +1845,13 @@ neighbors apart.
 ---
 
 ## Process corners
+
+<!--pan_doc:
+
+How do we simulate die-to-die movement? The foundry compresses it into
+corner models.
+
+-->
 
 Common to use 5 corners, or [Monte-Carlo](https://en.wikipedia.org/wiki/Monte_Carlo_method) process simulation
 
@@ -1745,6 +1883,13 @@ Msf and Mfs are exactly the corners that kill ratioed and skewed circuits.
 
 ## Fix process variation
 
+<!--pan_doc:
+
+Process variation cannot be prevented, but it can be measured and
+corrected. Figure 42 shows the standard trick.
+
+-->
+
 Use calibration: measure error, tune circuit to fix error
 
 For every single chip, measure voltage across known resistor $$R_1$$ and tune $$R_{var}$$ such that we get $$I_1 = 1 \mu A$$
@@ -1764,6 +1909,13 @@ Measure the voltage across a known resistor $R_1$ and tune $R_{var}$ until the c
 ---
 
 ## Temperature variation
+
+<!--pan_doc:
+
+The mirror must also survive from -40 C to 125 C, and temperature pulls on
+the square law from two directions at once.
+
+-->
 
 Mobility decreases with temperature
 
@@ -1828,6 +1980,13 @@ one-line answer.
 ---
 
 ## How do we fix temperature variation?
+
+<!--pan_doc:
+
+For this resistor-plus-mirror bias the honest answer is short; the
+reference chapter builds the circuits that do better.
+
+-->
 
 Accept it, or don't use this circuit.
 
@@ -2034,6 +2193,64 @@ $$ PSD_{flicker}(f) \propto \frac{1}{f} $$
 
 The drain current jumps between discrete levels as single carriers are trapped and released - visible directly in the time domain on small devices.
 -->
+
+---
+
+## Noise equations
+
+<!--pan_doc:
+
+For hand calculation two spectral densities are enough. The channel is a
+piece of resistive silicon, so it makes thermal noise; the oxide
+interface has traps, so it makes flicker noise. Referred to the drain and
+the gate respectively:
+
+-->
+
+Thermal noise current at the drain
+
+ $$ \overline{i_{nd}^2} = 4 k T \gamma g_m \Delta f $$
+
+ $$ \gamma \approx 2/3 \text{ (long channel), } 1 \text{ to } 2 \text{ (short channel)} $$
+
+Flicker noise voltage at the gate
+
+ $$ \overline{v_{ng}^2} = \frac{K_f}{W L C_{ox} f} \Delta f $$
+
+Noise corner, where the two are equal
+
+ $$ f_c = \frac{K_f}{W L C_{ox}} \frac{g_m}{4 k T \gamma} $$
+
+<!--pan_doc:
+
+Two design consequences fall straight out. Thermal noise, referred to the
+gate, is $4kT\gamma/g_m$ - spend current, get quiet. Flicker noise only
+cares about gate area. The corner $f_c$ where they cross can sit anywhere
+from kilohertz to beyond a hundred megahertz in nanoscale CMOS, so never
+assume flicker is a low frequency detail. If flicker hurts: more area, a
+PMOS input pair (holes run a little deeper, away from the interface
+traps), or the circuit tricks - chopping and autozeroing - from the noise
+chapter.
+
+-->
+
+---
+
+## Summary
+
+<!--pan_doc:
+
+The one-page version of this chapter:
+
+-->
+
+- The gate controls a barrier: weak inversion is exponential, strong inversion is quadratic
+- Transconductance is two times current over overdrive, or current over nVT - whichever is smaller
+- Intrinsic gain falls with overdrive and with shorter length
+- Four capacitances set the speed, and the smallest one (Cgd, Miller) often sets the pole
+- Match with area (Pelgrom), buy speed with overdrive and short length, buy gain with long length
+- Nothing is constant: supply, process, temperature, mismatch and noise all move - design for the box, not the point
+
 ---
 
 

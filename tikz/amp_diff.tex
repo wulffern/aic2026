@@ -1,0 +1,40 @@
+\input{tikz/fig_header.tex}
+
+% Differential pair, large signal: two matched transistors share a tail
+% current, and the differential input steers the current between the two
+% branches. Ideal current source loads carry half the tail current each.
+
+\begin{circuitikz}[american, thick, transform shape, circuit ee IEC]
+
+  \input{tikz/ckt_lib.tex}
+
+  \def\xl{0}
+  \def\xr{4.0}
+  \def\xm{2.0}
+  \def\ysrc{1.8}    % source level of the pair
+  \def\ydr{3.4}     % drain level (\ysrc + \grid)
+  \def\ytop{5.0}    % supply level
+
+  % tail current source
+  \draw (\xm,0) \vground;
+  \draw (\xm,1.4) to [I, l=$I_{DC}$] (\xm,0);
+  \draw (\xl,\ysrc) -- (\xl,1.4) -- (\xr,1.4) -- (\xr,\ysrc);
+  \fill (\xm,1.4) circle (0.075);
+
+  % the pair
+  \draw (\xl,\ysrc) \lvnmos{M1}{$v_+$};
+  \draw (\xr,\ysrc) \lvmnmos{M2}{$v_-$};
+
+  % current source loads
+  \draw (\xl,\ytop) to [I, l=$\frac{I_{DC}}{2}$] (\xl,\ydr);
+  \draw (\xr,\ytop) to [I, l_=$\frac{I_{DC}}{2}$] (\xr,\ydr);
+  \draw (\xl,\ytop) \vsupply;
+  \draw (\xr,\ytop) \vsupply;
+
+  % differential output between the two drains
+  \draw (\xl,\ydr) to [short,*-o] ++(-0.7,0);
+  \node[anchor=east] at ({\xl-0.8},\ydr) {$v_{o+}$};
+  \draw (\xr,\ydr) \portOut{$v_{o-}$};
+
+\end{circuitikz}
+\end{document}

@@ -1,0 +1,28 @@
+\input{tikz/fig_header.tex}
+
+% Common gate, large signal: the gate sits at a bias voltage, the signal
+% goes in at the source, and the output is taken at the drain.
+
+\begin{circuitikz}[american, thick, transform shape, circuit ee IEC]
+
+  \input{tikz/ckt_lib.tex}
+
+  \def\ys{1.6}      % source level
+
+  % input at the source
+  \draw (-1.5,\ys) node [anchor=east] {$v_i$}
+        to [short, o-, i=$i$] (0,\ys);
+
+  % transistor with the gate at a bias voltage
+  \draw (0,\ys) \lvnmos{M1}{$V_B$};
+
+  % current source load from the supply to the drain
+  \draw (0,{\ys+\grid}) coordinate (dnode);
+  \draw (0,{\ys+2*\grid}) to [I, l=$I_{B}$] (dnode);
+  \draw (0,{\ys+2*\grid}) \vsupply;
+
+  % output at the drain
+  \draw (dnode) \portOut{$v_o$};
+
+\end{circuitikz}
+\end{document}

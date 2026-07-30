@@ -1,0 +1,35 @@
+\input{tikz/fig_header.tex}
+
+% The inverter as a transconductor: both transistors amplify the same
+% input, so the transconductances add while the current is shared.
+
+\begin{circuitikz}[american, thick, transform shape, circuit ee IEC]
+
+  \input{tikz/ckt_lib.tex}
+
+  % NMOS on the bottom, PMOS on top, gates tied
+  \draw (0,0) \vground;
+  \draw (0,0) \lvnmos{M1}{};
+  \draw (0,\grid) \lvpmos{M2}{};
+  \draw (0,{2*\grid}) \vsupply;
+  \node[anchor=west] at (0.5,{2*\grid+0.3}) {$V_{DD}=0.8$V};
+
+  % common gate wire with the input port
+  \coordinate (g1) at (M1.G);
+  \coordinate (g2) at (M2.G);
+  \draw (g1) -- ++(-0.4,0) coordinate (g1a);
+  \draw (g2) -- ++(-0.4,0) coordinate (g2a);
+  \draw (g1a) -- (g2a);
+  \coordinate (gin) at (-1.15,\grid);
+  \fill (gin) circle (0.075);
+  \draw (gin) to [short,-o] ++(-0.7,0) node[anchor=east] {$v_i$};
+
+  % output at the shared drain
+  \draw (0,\grid) \portOut{$v_o$};
+
+  % the point of the circuit
+  \node[anchor=west, color=blue] at (1.6,\grid+1.0) {$g_m = g_{mn} + g_{mp}$};
+  \node[anchor=west, color=blue] at (1.6,\grid-1.0) {same $I_D$, twice the $g_m$};
+
+\end{circuitikz}
+\end{document}

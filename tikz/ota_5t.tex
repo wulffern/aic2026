@@ -1,0 +1,46 @@
+\input{tikz/fig_header.tex}
+
+% The five transistor OTA: NMOS input pair, PMOS current mirror load,
+% NMOS tail source. The starting point of every OTA discussion.
+
+\begin{circuitikz}[american, thick, transform shape, circuit ee IEC]
+
+  \input{tikz/ckt_lib.tex}
+
+  \def\xl{0}
+  \def\xr{3.2}
+  \def\xm{1.6}
+  \def\ytail{0}     % tail source at ground
+  \def\ysrc{2.2}    % pair source level
+  \def\ydr{3.8}     % pair drain level (\ysrc + \grid)
+  \def\ytop{5.4}    % supply level (\ydr + \grid)
+
+  % tail transistor
+  \draw (\xm,0) \vground;
+  \draw (\xm,0) \lvnmos{M5}{$V_{B}$};
+  \draw (\xl,\ysrc) -- (\xl,1.9) -- (\xr,1.9) -- (\xr,\ysrc);
+  \draw (\xm,\grid) -- (\xm,1.9);
+  \fill (\xm,1.9) circle (0.075);
+
+  % input pair
+  \draw (\xl,\ysrc) \lvnmos{M1}{$v_p$};
+  \draw (\xr,\ysrc) \lvmnmos{M2}{$v_n$};
+
+  % PMOS mirror: M3 diode connected (left), M4 output (right)
+  \draw (\xl,\ydr) \lvmpmos{M3}{};
+  \draw (\xr,\ydr) \lvpmos{M4}{};
+  \draw (\xl,\ytop) \vsupply;
+  \draw (\xr,\ytop) \vsupply;
+
+  % gate wire and the diode connection of M3
+  \draw (M3.G) -- (M4.G);
+  \coordinate (g3) at (M3.G);
+  \fill (g3) circle (0.075);
+  \draw (g3) |- (\xl,\ydr);
+  \fill (\xl,\ydr) circle (0.075);
+
+  % output
+  \draw (\xr,\ydr) \portOut{$v_o$};
+
+\end{circuitikz}
+\end{document}

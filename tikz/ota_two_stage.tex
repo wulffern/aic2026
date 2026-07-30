@@ -1,0 +1,66 @@
+\input{tikz/fig_header.tex}
+
+% Two stage Miller OTA: a five transistor first stage followed by a
+% common source second stage, with the compensation capacitor C_c
+% wrapped around the second stage.
+
+\begin{circuitikz}[american, thick, transform shape, circuit ee IEC]
+
+  \input{tikz/ckt_lib.tex}
+
+  \def\xl{0}
+  \def\xr{3.2}
+  \def\xm{1.6}
+  \def\xo{6.6}      % second stage column
+  \def\ysrc{2.2}
+  \def\ydr{3.8}
+  \def\ytop{5.4}
+
+  % ---- first stage: five transistor OTA ----
+  \draw (\xm,0) \vground;
+  \draw (\xm,0) \lvnmos{M5}{$V_{B1}$};
+  \draw (\xl,\ysrc) -- (\xl,1.9) -- (\xr,1.9) -- (\xr,\ysrc);
+  \draw (\xm,\grid) -- (\xm,1.9);
+  \fill (\xm,1.9) circle (0.075);
+
+  \draw (\xl,\ysrc) \lvnmos{M1}{$v_p$};
+  \draw (\xr,\ysrc) \lvmnmos{M2}{$v_n$};
+
+  \draw (\xl,\ydr) \lvmpmos{M3}{};
+  \draw (\xr,\ydr) \lvpmos{M4}{};
+  \draw (\xl,\ytop) \vsupply;
+  \draw (\xr,\ytop) \vsupply;
+
+  \draw (M3.G) -- (M4.G);
+  \coordinate (g3) at (M3.G);
+  \fill (g3) circle (0.075);
+  \draw (g3) |- (\xl,\ydr);
+  \fill (\xl,\ydr) circle (0.075);
+
+  % ---- second stage: PMOS common source with NMOS current source ----
+  \draw (\xo,\ydr) \lvpmos{M6}{};
+  \draw (\xo,\ytop) \vsupply;
+
+  % first stage output to the gate of M6
+  \draw (\xr,\ydr) -- (5.0,\ydr);
+  \fill (\xr,\ydr) circle (0.075);
+  \node[anchor=south] at (4.3,{\ydr+0.05}) {$v_{o1}$};
+  \coordinate (g6) at (M6.G);
+  \draw (5.0,\ydr) |- (g6);
+
+  \draw (\xo,0) \vground;
+  \draw (\xo,0) \lvnmos{M7}{$V_{B2}$};
+  \draw (\xo,\grid) -- (\xo,\ydr);
+
+  % compensation capacitor from output back to v_o1
+  \fill (\xo,2.9) circle (0.075);
+  \draw (\xo,2.9) -- (6.0,2.9);
+  \draw (6.0,2.9) to [C, l_=$C_c$] (5.0,2.9);
+  \draw (5.0,2.9) -- (5.0,\ydr);
+  \fill (5.0,\ydr) circle (0.075);
+
+  % output
+  \draw (\xo,2.2) \portOut{$v_o$};
+
+\end{circuitikz}
+\end{document}

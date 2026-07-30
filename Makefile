@@ -21,6 +21,7 @@ FILES = l00_jayn \
 	l00_diode \
 	lr0_mosfet \
 	lr0_circuits \
+	lr0_ota \
 	lr0_passives \
 	lr0_noise \
 	lr0_tools \

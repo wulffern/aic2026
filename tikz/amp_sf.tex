@@ -1,0 +1,22 @@
+\input{tikz/fig_header.tex}
+
+% Source follower, large signal: input at the gate, output at the source,
+% bias current from an ideal source. Level shifter with gain slightly
+% below one.
+
+\begin{circuitikz}[american, thick, transform shape, circuit ee IEC]
+
+  \input{tikz/ckt_lib.tex}
+
+  \def\ys{2.2}      % source level
+
+  \draw (0,0) \vground;
+  \draw (0,\ys) to [I, l=$I_{B}$] (0,0);
+
+  \draw (0,\ys) \lvnmos{M1}{$v_i$};
+  \draw (0,{\ys+\grid}) \vsupply;
+
+  \draw (0,\ys) \portOut{$v_o$};
+
+\end{circuitikz}
+\end{document}

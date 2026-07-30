@@ -1,0 +1,44 @@
+\input{tikz/fig_header.tex}
+
+% Why a source follower exists: a photodiode dumps its charge on a tiny
+% 1 fF node. Buffered by the follower, the sense node keeps its full
+% signal swing while the follower drives the big 1 pF load.
+
+\begin{circuitikz}[american, thick, transform shape, circuit ee IEC]
+
+  \input{tikz/ckt_lib.tex}
+
+  \def\ysig{2.4}    % the sense node rail
+
+  % photodiode into the sense node
+  \draw (0,0) \vground;
+  \draw (0,0) to [full diode, invert] (0,\ysig);
+  \draw (0,\ysig) to [nos] (1.6,\ysig);
+
+  % the 1 fF sense capacitor
+  \draw (2.4,\ysig) to [C, l=1fF] (2.4,0);
+  \draw (2.4,0) \vground;
+  \fill (2.4,\ysig) circle (0.075);
+  \draw (1.6,\ysig) -- (3.6,\ysig);
+
+  % reset switch to the supply
+  \draw (3.6,\ysig) to [nos] (3.6,{\ysig+1.5});
+  \draw (3.6,{\ysig+1.5}) \vsupply;
+  \node[anchor=south] at (3.6,{\ysig+1.85}) {3.0V};
+  \fill (3.6,\ysig) circle (0.075);
+  \node[anchor=south, color=blue] at (2.9,{\ysig+0.6}) {$\Delta V$};
+  \draw (3.6,\ysig) -- (4.4,\ysig);
+
+  % the source follower
+  \draw (4.4,\ysig) node[nmos, anchor=G] (M1) {};
+  \draw (M1.D) -- ++(0,0.4) coordinate (vddtap) \vsupply;
+  \node[anchor=south] at ([yshift=14pt]vddtap) {3.0V};
+
+  % bias current and the big load
+  \draw (M1.S) -- ++(0,-0.4) coordinate (osrc);
+  \draw (osrc) to [I, l_=5$\mu$A] ++(0,-1.8) \vground;
+  \draw (osrc) to [short,*-] ++(1.6,0) coordinate (oc);
+  \draw (oc) to [C, l=1pF] ++(0,-1.8) \vground;
+
+\end{circuitikz}
+\end{document}
