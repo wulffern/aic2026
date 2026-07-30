@@ -145,6 +145,12 @@ posts-parallel:
 jstart:
 	docker run --rm --name aic_docs --volume="${SITE}:/srv/jekyll" -p 3002:4000 -it jekyll/jekyll:${JEKYLL_VERSION} jekyll serve --watch --drafts
 
+# Book-style site prototype (just-the-docs). Regenerates chapters from
+# docs/_posts, then serves on http://localhost:3003
+jbook:
+	${PYTHON} py/mkbooksite.py
+	docker run --rm --name aic_book --volume="$(shell pwd)/docs-book:/srv/jekyll" -p 3003:4000 -it jekyll/jekyll:4.2.2 sh -c "bundle install --quiet && bundle exec jekyll serve --watch --host 0.0.0.0"
+
 TEX_STAMPS = ${addprefix ${BUILDDIR}/,${addsuffix .tex,tex_intro ${FILES}}}
 
 ${BUILDDIR}/%.tex: lectures/%.md py/lecture.py pdf/aic.bib pdf/short_tmplt.tex pdf/ieee-with-url.csl | version

@@ -165,3 +165,10 @@ dmypy.json
 # Figure review renders (make preview / make tikz-preview)
 preview/
 .build/
+
+# Book-site prototype: generated chapters and shared assets
+docs-book/chapters/
+docs-book/assets/
+docs-book/_site/
+docs-book/Gemfile.lock
+docs-book/.jekyll-cache/
