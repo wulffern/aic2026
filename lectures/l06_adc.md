@@ -332,7 +332,7 @@ and we add some "noise", or "quantization noise" $e[n]$, where $x[n] = y[n] - e[
 
 -->
 
-![inline fit](../media/l6_adc.svg)
+![inline fit](../media/l6_adc_tikz.pdf)
 
 ---
 
@@ -356,7 +356,7 @@ The figure below shows the input signal x and the quantized signal y.
 
 -->
 
-![inline fit](../media/l6_ct.svg)
+![inline fit](../media/l6_ct_tikz.pdf)
 
 ---
 
@@ -372,7 +372,7 @@ This noise does not look random to me, but I can't see what it is, and I'm prett
 -->
 
 
-![inline fit](../media/l6_cten.svg)
+![inline fit](../media/l6_cten_tikz.pdf)
 
 ---
 
@@ -769,7 +769,7 @@ Do you see now why a circuit like the one below is useful? If not, you should re
 
 ---
 
-![inline fit](../media/l4_sdloop.svg)
+![inline fit](../media/l4_sdloop_tikz.pdf)
 
 ---
 
@@ -790,7 +790,7 @@ But how can we now calculate the transfer function $\frac{D_o}{V_i}$? Both $adc$
 
 -->
 
-![inline fit](../media/l4_sd.svg)
+![inline fit](../media/l4_sd_tikz.pdf)
 
 ---
 
@@ -835,7 +835,7 @@ $$ y[n] = e[n] + h*(u[n] - y[n])$$
 
 which could be drawn in a signal flow graph as below.
 
-![left fit](../media/l6_sdadc.svg)
+![left fit](../media/l6_sdadc_tikz.pdf)
 
 in the Z-domain the equation would turn into 
 
@@ -847,7 +847,7 @@ The whole point of this exercise was to somehow shape the quantization noise, an
 
 <!--pan_skip: -->
 
-![left fit](../media/l6_sdadc.svg)
+![left fit](../media/l6_sdadc_tikz.pdf)
 
 
 ## Sample domain 

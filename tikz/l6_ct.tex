@@ -1,0 +1,43 @@
+\input{tikz/fig_header.tex}
+
+% A continuous-time, continuous-value input x (blue) and its sampled and
+% quantized version y (red).  The red axis on the right carries a tick per
+% quantization level, one LSB apart, which is why the staircase only visits
+% those values.  l6_cten continues from this drawing: same sine, plus the
+% sample-and-hold and the error e[n].
+%
+% The staircase is computed, not traced: 12 samples of the sine rounded to
+% the 0.4-unit grid, so unlike the hand original the quantization is
+% arithmetically consistent with the tick marks.
+
+\begin{circuitikz}[american, transform shape]
+
+  \definecolor{sigblue}{rgb}{0.10,0.10,0.55}
+  \definecolor{sigred}{rgb}{0.90,0.25,0.12}
+
+  % ---- axes ----
+  \draw[sigblue, thick, ->] (0,0) -- (0,5.2);
+  \node[sigblue, anchor=east] at (-0.15,4.9) {$x$};
+  \draw[sigblue, thick, ->] (0,0) -- (8.9,0);
+  \node[sigblue, anchor=north] at (8.7,-0.15) {$t$};
+
+  % the quantization-level axis: one tick per LSB
+  \draw[sigred, thick, ->] (8.4,0) -- (8.4,5.2);
+  \node[sigred, anchor=west] at (8.6,4.9) {$y$};
+  \foreach \l in {0.4,0.8,1.2,1.6,2.0,2.4,2.8,3.2,3.6,4.0,4.4,4.8}
+    \draw[sigred, thick] (8.25,\l) -- (8.55,\l);
+
+  % ---- the input ----
+  \draw[sigblue, very thick] plot[domain=0:8, samples=120]
+    (\x, {2.4+1.9*sin(45*\x-25)});
+
+  % ---- sampled and quantized to the LSB grid ----
+  \draw[sigred, very thick]
+    (0.0,1.6) -- (0.667,1.6) -- (0.667,2.4) -- (1.333,2.4) -- (1.333,3.6)
+    -- (2.0,3.6) -- (2.0,4.0) -- (2.667,4.0) -- (2.667,4.4) -- (3.333,4.4)
+    -- (3.333,4.0) -- (4.0,4.0) -- (4.0,3.2) -- (4.667,3.2) -- (4.667,2.4)
+    -- (5.333,2.4) -- (5.333,1.2) -- (6.0,1.2) -- (6.0,0.8) -- (6.667,0.8)
+    -- (6.667,0.4) -- (7.333,0.4) -- (7.333,0.8) -- (8.0,0.8);
+
+\end{circuitikz}
+\end{document}

@@ -1,0 +1,26 @@
+\input{tikz/fig_header.tex}
+
+% Quantization as additive noise: the quantized output y[n] is the input
+% x[n] plus a quantization error e[n], so x[n] = y[n] - e[n] as the lecture
+% text puts it.  Same summing-node vocabulary as the sigma-delta drawings
+% (l4_sdloop, l4_sd, l6_sdadc), which all use tikz/sfg_lib.tex.
+
+\begin{circuitikz}[american, thick, transform shape]
+
+  \input{tikz/sfg_lib.tex}
+
+  \def\ym{0}      % the signal path
+  \def\xs{3.0}    % summing node
+
+  \node[anchor=east] at (0.1,\ym) {$x[n]$};
+  \draw[->] (0.2,\ym) -- ({\xs-\sfgR},\ym);
+  \sfgSum{\xs}{\ym}
+  \draw[->] ({\xs+\sfgR},\ym) -- (5.8,\ym);
+  \node[anchor=west] at (5.85,\ym) {$y[n]$};
+
+  % the error enters from above
+  \draw[->] (\xs,1.7) -- (\xs,{\ym+\sfgR});
+  \node[anchor=west] at ({\xs+0.15},1.35) {$e[n]$};
+
+\end{circuitikz}
+\end{document}

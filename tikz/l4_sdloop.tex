@@ -1,0 +1,45 @@
+\input{tikz/fig_header.tex}
+
+% The feedback loop the sigma-delta modulator grows out of: the output is
+% subtracted from the input and the error V_x is shaped by H(s).  The
+% algebra below the drawing is the original's, and its point: as H(s) goes
+% to infinity, V_o = V_i.
+%
+% l4_sd is this same loop with an ADC and a DAC inserted; the geometry of
+% the sum and the H block match so the two read as one step apart.
+
+\begin{circuitikz}[american, thick, transform shape]
+
+  \input{tikz/sfg_lib.tex}
+
+  \def\ym{3.0}    % the forward path
+  \def\yt{4.6}    % the feedback path
+  \def\xs{2.2}    % summing node
+  \def\xb{4.6}    % centre of the H(s) block
+  \def\xt{6.8}    % where the feedback taps the output
+
+  % forward path
+  \node[anchor=east] at (0.2,\ym) {$V_{i}$};
+  \draw[->] (0.3,\ym) -- ({\xs-\sfgR},\ym);
+  \sfgSum{\xs}{\ym}
+  \draw[->] ({\xs+\sfgR},\ym) -- ({\xb-\sfgBw},\ym);
+  \node[anchor=south] at (3.2,{\ym+0.08}) {$V_{x}$};
+  \sfgBox{\xb}{\ym}{$H(s)$}
+  \draw[->] ({\xb+\sfgBw},\ym) -- (8.2,\ym);
+  \node[anchor=west] at (8.25,\ym) {$V_{o}$};
+
+  % feedback, subtracted at the top of the sum
+  \sfgDot{\xt}{\ym}
+  \draw (\xt,\ym) -- (\xt,\yt) -- (\xs,\yt);
+  \draw[->] (\xs,\yt) -- (\xs,{\ym+\sfgR});
+  \node[anchor=south west] at ({\xs+0.12},{\ym+0.32}) {$-$};
+
+  % the loop algebra, as in the original
+  \node[anchor=west] at (1.0,1.6) {$V_{i}-V_{o}=V_{x}$};
+  \node[anchor=west] at (4.6,1.6) {$V_{o}=V_{x}\,H(s)$};
+  \node[anchor=west] at (1.0,0.5) {$V_{i}=V_{o}+\dfrac{V_{o}}{H(s)}$};
+  \node[anchor=west] at (4.6,0.5)
+    {$H(s)=\infty \;\Rightarrow\; V_{o}=V_{i}$};
+
+\end{circuitikz}
+\end{document}

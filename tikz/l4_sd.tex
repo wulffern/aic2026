@@ -1,0 +1,55 @@
+\input{tikz/fig_header.tex}
+
+% The l4_sdloop feedback loop with an ADC and a DAC inserted: the digital
+% word D_o between them is the output we keep, the DAC closes the loop in
+% the analog domain, so D_o = adc[H(s)(V_i - dac(D_o))].
+%
+% The converter outline is the pentagon used for the ADCs in l4_radio.
+
+\begin{circuitikz}[american, thick, transform shape]
+
+  \input{tikz/sfg_lib.tex}
+
+  \def\ym{3.0}    % the forward path
+  \def\yt{4.6}    % the feedback path
+  \def\xs{1.9}    % summing node
+  \def\xb{3.9}    % centre of the H(s) block
+  \def\xt{9.2}    % where the feedback taps the output
+  \def\xd{6.9}    % where D_o taps the digital wire
+
+  % forward path
+  \node[anchor=east] at (0.2,\ym) {$V_{i}$};
+  \draw[->] (0.3,\ym) -- ({\xs-\sfgR},\ym);
+  \sfgSum{\xs}{\ym}
+  \draw[->] ({\xs+\sfgR},\ym) -- ({\xb-\sfgBw},\ym);
+  \node[anchor=north] at (2.55,{\ym-0.12}) {$V_{x}$};
+  \sfgBox{\xb}{\ym}{$H(s)$}
+  \draw ({\xb+\sfgBw},\ym) -- (5.6,\ym);
+
+  % the ADC
+  \draw (5.6,\ym) -- (5.95,{\ym+0.5}) -- (6.75,{\ym+0.5})
+     -- (6.75,{\ym-0.5}) -- (5.95,{\ym-0.5}) -- cycle;
+  \node at (6.28,\ym) {\small ADC};
+
+  % the digital wire, tapped as the output D_o
+  \draw (6.75,\ym) -- (7.6,\ym);
+  \sfgDot{\xd}{\ym}
+  \draw[->] (\xd,\ym) -- (\xd,{\ym-1.3});
+  \draw ({\xd-0.18},{\ym-0.85}) -- ({\xd+0.18},{\ym-0.55});
+  \node[anchor=west] at ({\xd+0.22},{\ym-1.05}) {$D_{o}$};
+
+  % the DAC closes the loop in the analog domain
+  \draw (7.6,\ym) -- (7.95,{\ym+0.5}) -- (8.75,{\ym+0.5})
+     -- (8.75,{\ym-0.5}) -- (7.95,{\ym-0.5}) -- cycle;
+  \node at (8.28,\ym) {\small DAC};
+  \draw (8.75,\ym) -- (9.7,\ym);
+  \node[anchor=west] at (9.75,\ym) {$V_{o}$};
+
+  % feedback, subtracted at the top of the sum
+  \sfgDot{\xt}{\ym}
+  \draw (\xt,\ym) -- (\xt,\yt) -- (\xs,\yt);
+  \draw[->] (\xs,\yt) -- (\xs,{\ym+\sfgR});
+  \node[anchor=south west] at ({\xs+0.12},{\ym+0.32}) {$-$};
+
+\end{circuitikz}
+\end{document}

@@ -1,0 +1,77 @@
+\input{tikz/fig_header.tex}
+
+% What quantization noise actually looks like.  Top: the sine from l6_ct,
+% its sample-and-hold in green (x at time n) and the quantized output in
+% red (y).  Bottom: their difference e[n], which stays between +LSB/2 and
+% -LSB/2 and is clearly not white.
+%
+% Both staircases and the error are computed from the same 9 samples
+% (LSB = 0.55 units), so the bottom trace really is green minus red; the
+% error panel is drawn at twice the vertical scale so it can be read.
+
+\begin{circuitikz}[american, transform shape]
+
+  \definecolor{sigblue}{rgb}{0.10,0.10,0.55}
+  \definecolor{sigred}{rgb}{0.90,0.25,0.12}
+  \definecolor{siggreen}{rgb}{0.00,0.45,0.20}
+
+  % ================= top panel: x, its S/H, and y =================
+
+  \draw[sigblue, thick, ->] (0,0) -- (0,5.2);
+  \node[sigblue, anchor=east] at (-0.15,4.9) {$x$};
+  \draw[sigblue, thick, ->] (0,0) -- (8.9,0);
+  \node[siggreen, anchor=north] at (8.7,-0.2) {$n$};
+  % one tick per sample
+  \foreach \i in {1,2,3,4,5,6,7,8}
+    \draw[sigblue, thick] ({\i*0.889},-0.13) -- ({\i*0.889},0.13);
+
+  % the quantization-level axis: one tick per LSB
+  \draw[sigred, thick, ->] (8.4,0) -- (8.4,5.2);
+  \node[sigred, anchor=west] at (8.6,4.9) {$y$};
+  \foreach \l in {0.55,1.10,1.65,2.20,2.75,3.30,3.85,4.40,4.95}
+    \draw[sigred, thick] (8.25,\l) -- (8.55,\l);
+
+  % the input
+  \draw[sigblue, very thick] plot[domain=0:8, samples=120]
+    (\x, {2.4+1.9*sin(45*\x-25)});
+
+  % sample-and-hold of x: the exact value, held
+  \draw[siggreen, very thick]
+    (0.0,1.597) -- (0.889,1.597) -- (0.889,2.892) -- (1.778,2.892)
+    -- (1.778,3.956) -- (2.667,3.956) -- (2.667,4.293) -- (3.556,4.293)
+    -- (3.556,3.744) -- (4.444,3.744) -- (4.444,2.566) -- (5.333,2.566)
+    -- (5.333,1.310) -- (6.222,1.310) -- (6.222,0.565) -- (7.111,0.565)
+    -- (7.111,0.678) -- (8.0,0.678);
+
+  % quantized output: the same samples rounded to the LSB grid
+  \draw[sigred, very thick]
+    (0.0,1.65) -- (0.889,1.65) -- (0.889,2.75) -- (1.778,2.75)
+    -- (1.778,3.85) -- (2.667,3.85) -- (2.667,4.40) -- (3.556,4.40)
+    -- (3.556,3.85) -- (4.444,3.85) -- (4.444,2.75) -- (5.333,2.75)
+    -- (5.333,1.10) -- (6.222,1.10) -- (6.222,0.55) -- (8.0,0.55);
+
+  % ================= bottom panel: the error =================
+
+  \def\ey{-2.6}   % baseline of the error plot
+
+  \draw[sigblue, thick, ->] (0,\ey) -- (8.9,\ey);
+  \draw[sigblue, thick, <->] (0,{\ey-1.05}) -- (0,{\ey+1.05});
+  \node[sigblue, anchor=east] at (-1.65,\ey) {$e[n]$};
+  \draw[sigblue, thick] (-0.13,{\ey+0.55}) -- (0.13,{\ey+0.55});
+  \node[sigblue, anchor=east] at (-0.15,{\ey+0.55})
+    {$+\frac{1}{2}\,\mathrm{LSB}$};
+  \draw[sigblue, thick] (-0.13,{\ey-0.55}) -- (0.13,{\ey-0.55});
+  \node[sigblue, anchor=east] at (-0.15,{\ey-0.55})
+    {$-\frac{1}{2}\,\mathrm{LSB}$};
+
+  % e[n] = S/H minus quantized, at twice the top panel's vertical scale
+  \draw[very thick]
+    (0.0,{\ey-0.106}) -- (0.889,{\ey-0.106}) -- (0.889,{\ey+0.284})
+    -- (1.778,{\ey+0.284}) -- (1.778,{\ey+0.213}) -- (2.667,{\ey+0.213})
+    -- (2.667,{\ey-0.214}) -- (4.444,{\ey-0.214}) -- (4.444,{\ey-0.369})
+    -- (5.333,{\ey-0.369}) -- (5.333,{\ey+0.420}) -- (6.222,{\ey+0.420})
+    -- (6.222,{\ey+0.029}) -- (7.111,{\ey+0.029}) -- (7.111,{\ey+0.256})
+    -- (8.0,{\ey+0.256});
+
+\end{circuitikz}
+\end{document}

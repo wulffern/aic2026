@@ -1,0 +1,43 @@
+\input{tikz/fig_header.tex}
+
+% Signal flow graph of the noise-shaping loop in the sample domain:
+%   y[n] = e[n] + h * (u[n] - y[n])
+% The first sum subtracts the fed-back output, H(z) shapes the error, and
+% the quantizer is the second sum adding e[n] -- the l6_adc model dropped
+% into the l4_sdloop feedback loop.
+
+\begin{circuitikz}[american, thick, transform shape]
+
+  \input{tikz/sfg_lib.tex}
+
+  \def\ym{3.0}    % the forward path
+  \def\yb{1.2}    % the feedback path
+  \def\xs{2.0}    % first summing node
+  \def\xb{3.9}    % centre of the H(z) block
+  \def\xq{6.6}    % second summing node, the quantizer
+  \def\xt{7.7}    % where the feedback taps the output
+
+  % forward path
+  \node[anchor=east] at (0.2,\ym) {$u[n]$};
+  \draw[->] (0.3,\ym) -- ({\xs-\sfgR},\ym);
+  \sfgSum{\xs}{\ym}
+  \draw[->] ({\xs+\sfgR},\ym) -- ({\xb-\sfgBw},\ym);
+  \sfgBox{\xb}{\ym}{$H(z)$}
+  \draw[->] ({\xb+\sfgBw},\ym) -- ({\xq-\sfgR},\ym);
+  \node[anchor=south] at (5.75,{\ym+0.08}) {$x[n]$};
+  \sfgSum{\xq}{\ym}
+  \draw[->] ({\xq+\sfgR},\ym) -- (8.6,\ym);
+  \node[anchor=west] at (8.65,\ym) {$y[n]$};
+
+  % the quantization error enters at the quantizer
+  \draw[->] (\xq,4.6) -- (\xq,{\ym+\sfgR});
+  \node[anchor=south west] at ({\xq+0.12},4.35) {$e[n]$};
+
+  % feedback, subtracted at the bottom of the first sum
+  \sfgDot{\xt}{\ym}
+  \draw (\xt,\ym) -- (\xt,\yb) -- (\xs,\yb);
+  \draw[->] (\xs,\yb) -- (\xs,{\ym-\sfgR});
+  \node[anchor=north east] at ({\xs-0.25},{\ym-0.35}) {$-$};
+
+\end{circuitikz}
+\end{document}
