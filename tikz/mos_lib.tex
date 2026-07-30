@@ -131,13 +131,13 @@
     .. controls (6.0,1.1) and (6.3,0.6) .. (6.4,0.2) -- cycle;
   % drain n+ region
   \draw[line width=1.4pt, gray!70] (6.7,4.6) -- (6.7,2.1) -- (10.4,2.1);
-  \node[anchor=west, scale=1.0] at (7.6,1.6) {DRAIN \; $n+$};
+  \node[anchor=west, scale=1.0] at (7.6,1.25) {DRAIN \; $n+$};
   % V_DS-sat and ~V_DS marks with the x span
-  \draw[thick] (4.2,4.68) -- (4.2,4.9);
-  \node[anchor=south east, scale=0.8] at (4.25,4.92) {$V_{DS\text{-}sat}$};
-  \draw[thick] (6.6,4.68) -- (6.6,4.9);
-  \node[anchor=south west, scale=0.8] at (6.55,4.92) {$\sim V_{DS}$};
-  \draw[latex-latex, thin] (4.3,4.79) -- (6.5,4.79);
+  \draw[thick] (4.2,4.68) -- (4.2,4.92);
+  \node[anchor=east, scale=0.8, fill=white, inner sep=1pt] at (4.1,4.82) {$V_{DS\text{-}sat}$};
+  \draw[thick] (6.6,4.68) -- (6.6,4.92);
+  \node[anchor=west, scale=0.8, fill=white, inner sep=1pt] at (6.7,4.82) {$\sim V_{DS}$};
+  \draw[latex-latex, thin] (4.3,4.8) -- (6.5,4.8);
   \node[anchor=south, scale=0.8] at (5.4,4.88) {$x$};
   % bias
   \node[echarge, anchor=west, scale=1.1] at (8.2,5.6) {$V_{DS} \gg V_{eff}$};

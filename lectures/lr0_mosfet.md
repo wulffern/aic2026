@@ -928,17 +928,6 @@ $$ g_{m} = \frac{\partial I_{DS}}{\partial V_{GS}} $$
 
 $$ g_{ds} = \frac{1}{r_{ds}}  = \frac{\partial I_{DS}}{\partial V_{DS}} $$
 
-<!--pan_doc:
-
-The large signal function $I_{DS} = f(V_{GS},V_{DS})$ is non-linear, but
-zoom far enough into any smooth curve and it looks straight. For signals
-much smaller than the bias point we replace the transistor with the local
-derivatives: $g_m$ tells us how much drain current we get per volt of
-gate-source wiggle, and $g_{ds}$ how much leaks out per volt of drain-source
-wiggle. Those two numbers are most of analog design.
-
--->
-
 
 ![right fit](../media/small_signal_tikz.pdf)
 
@@ -1011,16 +1000,12 @@ Define intrinsic gain as
 ![right fit](../media/vgaini.pdf)
 
 <!--pan_doc:
-<sub>Figure 27: Simulated intrinsic gain as a function of gate-source voltage</sub>
+<sub>Figure 27: Simulated intrinsic gain versus gate-source voltage (the x-axis, vgaini, is $V_{GS} = V_{eff} + V_{tn}$)</sub>
 
 The intrinsic gain falls as $V_{eff}$ increases, as the $2/(\lambda V_{eff})$
 expression predicts. If you need gain, don't burn all your headroom on
 effective voltage.
 -->
-
-
-
-<sub>vgaini = Gate Source Voltage = $$V_{eff} + V_{tn} $$ </sub>
 
 ---
 
@@ -1121,6 +1106,24 @@ voltage we met in the diode chapter.
 
 ## Be careful with Cgd (blame Miller)
 
+<!--pan_doc:
+
+Of the four capacitances, $C_{gd}$ is the smallest on paper - just the
+overlap - and the most dangerous in practice. The reason is where it sits:
+between the input and the output of an amplifying stage. Look at the left
+of Figure 31: a common source stage with a current source load, gain
+$A = -g_m r_{d}$ from gate to drain, and $C_{gd}$ strapped across exactly
+that gain.
+
+Why that matters is Miller's theorem, sketched in the dashed frame on the
+right of the figure. Take any admittance $Y$ connected around an inverting
+amplifier $-A$. Wiggle the input by $v$: the output moves by $-Av$, so the
+voltage across $Y$ is $(1+A)v$, and the input has to supply $(1+A)$ times
+the current it would if $Y$ simply went to ground. The feedback element can
+therefore be replaced by two grounded ones,
+
+-->
+
 [.column]
 
 If $$ Y(s) = 1/sC $$ then 
@@ -1141,7 +1144,12 @@ If $$ Y(s) = 1/sC $$ then
 <!--pan_doc:
 <sub>Figure 31: Miller's theorem applied to $C_{gd}$</sub>
 
-An admittance $Y$ across an inverting gain $-A$ can be split into $Y(1+A)$ at the input and $Y(1+1/A)$ at the output. $C_{gd}$ sits across the gain $-g_m r_{ds}$ of the transistor itself, so from the gate it looks like a capacitor multiplied by the gain.
+For the capacitor this means the input sees $C_{in} = (1+A)C$, drawn as
+$C_1$ at the gate in the figure, while the output sees a nearly unchanged
+$C_{out} = (1+1/A)C$. With $C = C_{gd}$ and $A = g_m r_{ds}$, the gate is
+loaded by $C_{gd}$ multiplied by the stage gain - 10 to 100 times the
+overlap capacitance you read from the layout. This is why the input pole of
+a high-gain stage is so often set by its smallest capacitor.
 -->
 
 ---

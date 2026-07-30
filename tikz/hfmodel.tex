@@ -41,7 +41,10 @@
   \fill (\xrds,\ytop) circle (0.075);
   \draw (4.1,\ytop) to [C, l=$C_{db}$] (4.1,{\ytop+1.2});
   \fill (4.1,\ytop) circle (0.075);
-  \draw (4.1,{\ytop+1.2}) \vground;
+  % ground pointing up: the bars shrink away from the wire
+  \draw (3.9,{\ytop+1.2}) -- (4.3,{\ytop+1.2});
+  \draw (3.975,{\ytop+1.3}) -- (4.225,{\ytop+1.3});
+  \draw (4.05,{\ytop+1.4}) -- (4.15,{\ytop+1.4});
   \draw (\xterm+0.09,\ytop) circle (0.09);
   \node[anchor=west] at ({\xterm+0.3},\ytop) {$v_d$};
   \draw[-latex] ({\xterm-0.4},{\ytop+0.3}) -- ({\xterm-1.2},{\ytop+0.3});
