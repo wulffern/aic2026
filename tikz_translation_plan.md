@@ -356,6 +356,16 @@ That is 10 figures, in three lectures.
 ### Pending approval
 - none
 
+### lr0_mosfet batch 1 — switched 2026-07-30
+`large_signal`, `small_signal`, `small_signal_w_gs`, `hfmodel`, `miller`
+redrawn in circuitikz and switched in `lectures/lr0_mosfet.md` after
+point-by-point comparison (terminals, source arrow directions — the
+$g_s v_{sb}$ source points up as in the originals — element labels, the
+$C_1$/$C_{gd}$ colour cues and the dashed Miller frame all match).
+`fig_nmospmos` was already clean vector art and needs no redraw. Still
+open in this lecture: the annotated cross-sections and the band diagrams
+(batches 2 and 3 in Current next figure).
+
 Also converted and switched: `l3_ptat`, `l3_ptat1`, `l3_ptat2` — 13 figures total.
 
 Development now happens directly on `main` at the user's request; the CI job

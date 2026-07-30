@@ -578,7 +578,7 @@ or symbolically
 
 -->
 
-![right fit](../media/large_signal.pdf)
+![right fit](../media/large_signal_tikz.pdf)
 
 <!--pan_doc:
 <sub>Figure 16: Large signal model</sub>
@@ -861,7 +861,7 @@ $$ g_{m} = \frac{\partial I_{DS}}{\partial V_{GS}} $$
 $$ g_{ds} = \frac{1}{r_{ds}}  = \frac{\partial I_{DS}}{\partial V_{DS}} $$
 
 
-![right fit](../media/small_signal.pdf)
+![right fit](../media/small_signal_tikz.pdf)
 
 <!--pan_doc:
 <sub>Figure 26: Low frequency small signal model</sub>
@@ -922,7 +922,7 @@ effective voltage.
 
 ---
 
-![original fit](../media/small_signal_w_gs.pdf)
+![original fit](../media/small_signal_w_gs_tikz.pdf)
 
 <!--pan_doc:
 <sub>Figure 28: Small signal model with the bulk transconductance</sub>
@@ -937,7 +937,7 @@ The bulk is a back-gate: if source and bulk move relative to each other, the thr
 ---
 
 
-![inline fit](../media/hfmodel.pdf)
+![inline fit](../media/hfmodel_tikz.pdf)
 
 <!--pan_doc:
 <sub>Figure 29: High frequency small signal model</sub>
@@ -1011,7 +1011,7 @@ If $$ Y(s) = 1/sC $$ then
 
 [.column]
 
-![inline fit](../media/miller.pdf)
+![inline fit](../media/miller_tikz.pdf)
 
 <!--pan_doc:
 <sub>Figure 31: Miller's theorem applied to $C_{gd}$</sub>

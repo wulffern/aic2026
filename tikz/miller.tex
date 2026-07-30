@@ -1,0 +1,101 @@
+\input{tikz/fig_header.tex}
+
+% Miller's theorem, three panels. Top: the common source stage where it
+% matters, C_gd across the gain -g_m r_d, and the equivalent C_1 seen at
+% the gate. Middle and bottom (dashed frame): an admittance Y across an
+% inverting amplifier splits into Y_1 at the input and Y_2 at the output.
+
+\begin{circuitikz}[american, thick, transform shape]
+
+  \input{tikz/ckt_lib.tex}
+
+  % --------------------------------------------------------------
+  % Top: common source stage
+  % --------------------------------------------------------------
+  \def\yA{6.4}
+
+  \draw (2,\yA) \vground;
+  \draw (2,\yA) \lvnmos{M}{};
+  \coordinate (drain) at (2,{\yA+1.6});
+
+  % drain node out to the right; the load hangs over the wire so the
+  % C_gd loop above the transistor stays clear
+  \draw (drain) -- (4.4,{\yA+1.6});
+  \node[anchor=west] at (4.55,{\yA+1.6}) {$v_d$};
+  \node[anchor=west, color=blue] at (3.3,{\yA+0.9}) {$A = -g_m r_{d}$};
+
+  % current source load
+  \fill (3.4,{\yA+1.6}) circle (0.075);
+  \draw (3.4,{\yA+1.6}) to [I] (3.4,{\yA+3.0});
+  \draw (3.1,{\yA+3.0}) -- (3.7,{\yA+3.0});
+
+  % gate in from the left
+  \coordinate (gate) at (M.gate);
+  \draw (gate) -- ++(-1.6,0) coordinate (gin);
+  \node[anchor=east] at ($(gin)+(-0.1,0)$) {$v_g$};
+
+  % C_1, the Miller capacitance seen from the gate
+  \fill ($(gate)+(-1.2,0)$) circle (0.075);
+  \draw ($(gate)+(-1.2,0)$) to [C] ($(gate)+(-1.2,-1.2)$);
+  \draw ($(gate)+(-1.2,-1.2)$) \vground;
+  \node[anchor=west, color=red] at ($(gate)+(-0.9,-0.95)$) {$C_1$};
+
+  % C_gd over the top of the transistor, gate to drain
+  \coordinate (cgdL) at ($(gate)+(-0.6,0)$);
+  \coordinate (cgdT) at ($(gate)+(-0.6,1.65)$);
+  \draw (cgdL) -- (cgdT);
+  \fill (cgdL) circle (0.075);
+  \draw (cgdT) to [C, l=$C_{gd}$] (cgdT -| 2,0);
+  \draw (cgdT -| 2,0) -- (drain);
+  \fill (drain) circle (0.075);
+
+  % --------------------------------------------------------------
+  % Middle: Y across an inverting amplifier
+  % --------------------------------------------------------------
+  \def\yB{3.2}
+  \newcommand{\amp}[2]{ % x y, triangle pointing right, 1.2 wide 1.0 tall
+    \draw (#1,{#2-0.5}) -- (#1,{#2+0.5}) -- ({#1+1.2},#2) -- cycle;
+    \node[anchor=center] at ({#1+0.45},#2) {$-A$};
+  }
+
+  \amp{1.4}{\yB}
+  \draw (0.2,\yB) -- (1.4,\yB);
+  \draw (2.6,\yB) -- (3.8,\yB);
+  % feedback path through Y
+  \fill (0.6,\yB) circle (0.075);
+  \fill (3.4,\yB) circle (0.075);
+  \draw (0.6,\yB) -- ++(0,-1.0);
+  \draw (3.4,\yB) -- ++(0,-1.0);
+  \node[draw, minimum width=1.2cm, minimum height=0.55cm] (Ybox) at (2.0,{\yB-1.0}) {$Y$};
+  \draw (0.6,{\yB-1.0}) -- (Ybox.west);
+  \draw (Ybox.east) -- (3.4,{\yB-1.0});
+
+  % the Miller step
+  \draw[-latex, thick] (2.0,{\yB-1.6}) -- (2.0,{\yB-2.2});
+  \node[anchor=west, color=blue] at (2.3,{\yB-1.9}) {Miller};
+
+  % --------------------------------------------------------------
+  % Bottom: split into Y_1 and Y_2
+  % --------------------------------------------------------------
+  \def\yC{-0.4}
+
+  \amp{1.4}{\yC}
+  \draw (0.2,\yC) -- (1.4,\yC);
+  \draw (2.6,\yC) -- (3.8,\yC);
+  \fill (0.6,\yC) circle (0.075);
+  \fill (3.4,\yC) circle (0.075);
+  \draw (0.6,\yC) -- ++(0,-0.5);
+  \draw (3.4,\yC) -- ++(0,-0.5);
+  \node[draw, minimum width=0.7cm, minimum height=0.55cm] (Y1) at (0.6,{\yC-0.8}) {$Y_1$};
+  \node[draw, minimum width=0.7cm, minimum height=0.55cm] (Y2) at (3.4,{\yC-0.8}) {$Y_2$};
+  \draw (Y1.south) -- ++(0,-0.2);
+  \draw (0.6,{\yC-1.3}) \vground;
+  \draw (Y2.south) -- ++(0,-0.2);
+  \draw (3.4,{\yC-1.3}) \vground;
+
+  % dashed frame around the theorem
+  \draw[dashed, rounded corners=8pt, color=gray]
+    (-0.5,{\yB+1.0}) rectangle (4.6,{\yC-2.0});
+
+\end{circuitikz}
+\end{document}

@@ -1,0 +1,46 @@
+\input{tikz/fig_header.tex}
+
+% Small signal model including the bulk transconductance g_s*v_sb (the
+% back-gate). Note the arrow direction: the g_s source points up, as in
+% the original hand drawing.
+
+\begin{circuitikz}[american, thick, transform shape]
+
+  \input{tikz/ckt_lib.tex}
+
+  \def\ytop{2.6}
+  \def\xgm{2.2}
+  \def\xgs{4.4}
+  \def\xrds{5.6}
+  \def\xterm{6.8}
+
+  % Gate terminal, floating
+  \draw (0.09,\ytop) circle (0.09);
+  \node[anchor=east] at (-0.1,\ytop) {$v_g$};
+  \node[anchor=north] at (0.1,{\ytop-0.25}) {$+$};
+  \node[anchor=west, color=blue] at (-0.15,1.3) {$v_{gs}$};
+  \node[anchor=south] at (0.1,0.25) {$-$};
+
+  % Transconductance and back-gate transconductance
+  \draw (\xgm,\ytop) to [cI, l_=$g_m v_{gs}$] (\xgm,0);
+  \draw (\xgs,0) to [cI, l=$g_s v_{sb}$] (\xgs,\ytop);
+
+  % Output resistance
+  \draw (\xrds,\ytop) to [R, l=$r_{ds}$] (\xrds,0);
+
+  % Rails to the terminals
+  \draw (\xgm,\ytop) -- (\xterm,\ytop);
+  \fill (\xgs,\ytop) circle (0.075);
+  \fill (\xrds,\ytop) circle (0.075);
+  \draw (\xterm+0.09,\ytop) circle (0.09);
+  \node[anchor=west] at ({\xterm+0.3},\ytop) {$v_d$};
+
+  \draw (0.4,0) -- (\xterm,0);
+  \fill (\xgm,0) circle (0.075);
+  \fill (\xgs,0) circle (0.075);
+  \fill (\xrds,0) circle (0.075);
+  \draw (\xterm+0.09,0) circle (0.09);
+  \node[anchor=west] at ({\xterm+0.3},0) {$v_s$};
+
+\end{circuitikz}
+\end{document}

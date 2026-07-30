@@ -1,0 +1,35 @@
+\input{tikz/fig_header.tex}
+
+% Large signal model of the MOSFET: the drain current is a voltage
+% controlled current source f(V_GS, V_DS). The gate terminal floats (no
+% gate current at DC), with the V_GS polarity marked down the left side.
+
+\begin{circuitikz}[american, thick, transform shape]
+
+  \input{tikz/ckt_lib.tex}
+
+  \def\ytop{2.6}   % top rail (drain side)
+  \def\xsrc{2.2}   % the controlled source column
+  \def\xterm{4.4}  % D and S terminals
+
+  % Gate terminal, floating
+  \draw (0.09,\ytop) circle (0.09);
+  \node[anchor=east] at (-0.1,\ytop) {G};
+  \node[anchor=north] at (0.1,{\ytop-0.25}) {$+$};
+  \node[anchor=west, color=blue] at (-0.15,1.3) {$V_{GS}$};
+  \node[anchor=south] at (0.1,0.25) {$-$};
+
+  % Controlled source between the rails
+  \draw (\xsrc,\ytop) to [cI, l=$f(V_{GS}\text{,} V_{DS})$] (\xsrc,0);
+
+  % Rails to the terminals
+  \draw (\xsrc,\ytop) -- (\xterm,\ytop);
+  \draw (\xterm+0.09,\ytop) circle (0.09);
+  \node[anchor=west] at ({\xterm+0.3},\ytop) {D};
+
+  \draw (0.4,0) -- (\xterm,0);
+  \draw (\xterm+0.09,0) circle (0.09);
+  \node[anchor=west] at ({\xterm+0.3},0) {S};
+
+\end{circuitikz}
+\end{document}
