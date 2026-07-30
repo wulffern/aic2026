@@ -85,13 +85,13 @@ of the analog circuit must be described in a SystemVerilog file.
 But how do we describe an analog function in SystemVerilog? SystemVerilog is simulated 
 in an digital simulator. 
 
-![](../media/dig_des.svg)
+![](../media/dig_des_tikz.pdf)
 
 -->
 
 <!--pan_skip: -->
 
-![](../media/dig_des_lr.svg)
+![](../media/dig_des_lr_tikz.pdf)
 
 ---
 

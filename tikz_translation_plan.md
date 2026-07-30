@@ -538,6 +538,21 @@ come up.
    Draw and explain it as something to recognise and avoid, not as a design to
    copy. The warning is the point of including it.
 
+### 2026-07-30 session progress (autonomous batch)
+
+- `lr0_passives`: five sketches redrawn and switched (`pas_poly`,
+  `pas_ndiff`, `pas_metal`, `pas_pn`, `pas_pres`); `inversion.pdf`
+  replaced by the existing `mosfet_strong_inversion` cartoon; the MOM
+  capacitor 3D render kept (generated artwork). Verified against
+  originals point by point; pn depletion made asymmetric (ND >> NA).
+- `lr0_circuits`: triage of `l8/fig_cm*`, `fig_l8_cmsys`,
+  `fig_l8_cmfixproc`, `fig_diff` found clean vector art, no redraw
+  needed. `cm_sdeg` and `cm_gain_boost` were redrawn earlier the same
+  day on the author's figure-14/16 note.
+- `dig_des` + `dig_des_lr` redrawn as TikZ flowcharts (house font,
+  red/blue path colors, pill terminals) and switched in BOTH
+  `l01_intro` and `l11_aver`. Topology checked edge for edge.
+
 ### Current next figure
 `l04_dac` is complete, so the queue moves on. In order, and each one triaged
 by listing its figures first rather than trusting the queue below:

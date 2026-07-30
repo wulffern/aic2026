@@ -1,0 +1,44 @@
+\input{tikz/fig_header.tex}
+
+% The open source IC design flow, portrait: analog path in red, digital
+% path in blue, from Idea to Tapeout.
+
+\begin{tikzpicture}[thick,
+  ana/.style={draw=red, rectangle, align=center, minimum height=1.0cm,
+              inner xsep=8pt},
+  dig/.style={draw=blue, rectangle, align=center, minimum height=1.0cm,
+              inner xsep=8pt},
+  term/.style={draw=blue, rectangle, rounded corners=13pt, align=center, inner sep=10pt},
+  a/.style={-latex},
+  ab/.style={latex-latex}]
+
+  \node[term] (idea)   at (0.6,11.2) {Idea};
+  \node[ana]  (xschem) at (3.6,9.6)  {Analog Design\\Xschem};
+  \node[dig]  (amod)   at (1.2,7.8)  {Analog Model\\SystemVerilog};
+  \node[ana]  (asim)   at (5.6,7.8)  {Analog Simulation\\ngspice};
+  \node[dig]  (ddes)   at (1.2,6.0)  {Digital Design\\SystemVerilog};
+  \node[ana]  (alay)   at (5.6,6.0)  {Analog Layout\\Magic};
+  \node[dig]  (dsim)   at (1.2,4.2)  {Digital Simulation\\iverilog/verilator/gtkwave};
+  \node[ana]  (lvs)    at (5.6,4.2)  {LVS\\netgen};
+  \node[dig]  (gds)    at (3.6,2.6)  {GDSII};
+  \node[ana]  (par)    at (7.2,2.6)  {Parasitics\\Magic};
+  \node[dig]  (lane)   at (1.2,1.0)  {RTL to GDSII\\OpenLane};
+  \node[term] (tape)   at (1.2,-0.9) {Tapeout};
+
+  \draw[a]  (idea) -- (xschem);
+  \draw[a]  (idea) to[out=-90, in=110] (ddes.north west);
+  \draw[a]  (xschem) -- (amod);
+  \draw[ab] (xschem) -- (asim);
+  \draw[a]  (amod) -- (ddes);
+  \draw[ab] (ddes) -- (dsim);
+  \draw[ab] (asim) -- (alay);
+  \draw[a]  (alay) -- (lvs);
+  \draw[a]  (lvs) -- (gds);
+  \draw[a]  (lvs) -- (par);
+  \draw[a]  (par) to[out=60, in=-20] (asim.east);
+  \draw[a]  (gds) -- (lane);
+  \draw[ab] (dsim) -- (lane);
+  \draw[a]  (lane) -- (tape);
+
+\end{tikzpicture}
+\end{document}

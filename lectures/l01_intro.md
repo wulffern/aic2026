@@ -170,7 +170,7 @@ If you're comfortable with not knowing, and an insatiable desire to understand h
 it's likely that you'll find analog flow interesting. 
 
 
-![inline](../media/dig_des.svg)
+![inline](../media/dig_des_tikz.pdf)
 
 <!--pan_doc:
 <sub>Figure 3: Analog and Digital design process  </sub>
@@ -230,7 +230,7 @@ it's likely that you'll find analog flow interesting.
 
 <!--pan_skip: -->
 
-![inline](../media/dig_des_lr.svg)
+![inline](../media/dig_des_lr_tikz.pdf)
 
 ---
 
