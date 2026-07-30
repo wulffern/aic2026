@@ -25,7 +25,7 @@ Priority order: derivation-heavy lectures first.
 
 | lecture | status | notes |
 |---|---|---|
-| `lr0_mosfet` | **reviewed 2026-07-30** | findings 4–13 below, all fixed |
+| `lr0_mosfet` | **reviewed 2026-07-30** | findings 4–13 below, all fixed; second-half prose filled in; three figure-review rounds (physics, clarity, in-context) done |
 | `l03_refbias` | pending | bandgap curvature maths; Figure 11/12 prose |
 | `l05_sc` | pending | findings 1, 2 below |
 | `l06_adc` | pending | finding 3 below |

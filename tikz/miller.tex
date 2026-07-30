@@ -12,7 +12,7 @@
   % --------------------------------------------------------------
   % Top: common source stage
   % --------------------------------------------------------------
-  \def\yA{6.4}
+  \def\yA{1.2}
 
   \draw (2,\yA) \vground;
   \draw (2,\yA) \lvnmos{M}{};
@@ -49,10 +49,11 @@
   \draw (cgdT -| 2,0) -- (drain);
   \fill (drain) circle (0.075);
 
+  \begin{scope}[xshift=6.4cm]
   % --------------------------------------------------------------
   % Middle: Y across an inverting amplifier
   % --------------------------------------------------------------
-  \def\yB{3.2}
+  \def\yB{4.4}
   \newcommand{\amp}[2]{ % x y, triangle pointing right, 1.2 wide 1.0 tall
     \draw (#1,{#2-0.5}) -- (#1,{#2+0.5}) -- ({#1+1.2},#2) -- cycle;
     \node[anchor=center] at ({#1+0.45},#2) {$-A$};
@@ -77,7 +78,7 @@
   % --------------------------------------------------------------
   % Bottom: split into Y_1 and Y_2
   % --------------------------------------------------------------
-  \def\yC{-0.4}
+  \def\yC{0.6}
 
   \amp{1.4}{\yC}
   \draw (0.2,\yC) -- (1.4,\yC);
@@ -96,6 +97,7 @@
   % dashed frame around the theorem
   \draw[dashed, rounded corners=8pt, color=gray]
     (-0.5,{\yB+1.0}) rectangle (4.6,{\yC-2.0});
+  \end{scope}
 
 \end{circuitikz}
 \end{document}

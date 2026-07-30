@@ -1,0 +1,53 @@
+\input{tikz/fig_header.tex}
+
+% The NAND gate at transistor level: two parallel PMOS pull the output
+% high unless both inputs are high, in which case the stacked NMOS pull
+% it low.
+
+\begin{circuitikz}[american, thick, transform shape]
+
+  \input{tikz/ckt_lib.tex}
+
+  % NMOS stack
+  \draw (0,0) \vground;
+  \draw (0,0) \lvnmos{MNB}{};
+  \draw (0,1.6) \lvnmos{MNA}{};
+  \coordinate (nout) at (0,3.2);
+
+  % two parallel PMOS
+  \draw (-1.2,4.2) \lvpmos{MPA}{};
+  \draw (1.2,4.2) \lvpmos{MPB}{};
+  \draw (-1.2,5.8) \vsupply;
+  \draw (1.2,5.8) \vsupply;
+
+  % drains to the output node
+  \draw (-1.2,4.2) -- (-1.2,3.6) -- (1.2,3.6) -- (1.2,4.2);
+  \draw (nout) -- (0,3.6);
+  \fill (0,3.6) circle (0.075);
+  \draw (0,3.6) -- (2.6,3.6);
+  \draw (2.69,3.6) circle (0.09);
+  \node[anchor=west] at (2.85,3.6) {$Y$};
+
+  % A: outer column, straight to MPA's gate and MNA's gate
+  \coordinate (gA) at (MNA.gate);
+  \coordinate (gPA) at (MPA.gate);
+  \draw (gPA) -- (-3.0,0 |- gPA);
+  \draw (gA) -- (-3.0,0 |- gA);
+  \draw (-3.0,0 |- gPA) -- (-3.0,0 |- gA);
+  \fill (-3.0,0 |- gA) circle (0.075);
+  \draw (-3.6,0 |- gA) -- (-3.0,0 |- gA);
+  \node[anchor=east] at (-3.75,0 |- gA) {$A$};
+
+  % B: inner column, jogs under MPA's gate lead to reach MPB
+  \coordinate (gB) at (MNB.gate);
+  \coordinate (gPB) at (MPB.gate);
+  \coordinate (Bjog) at ($(gPB)+(-0.25,-0.45)$);
+  \draw (gPB) -- ($(gPB)+(-0.25,0)$) -- (Bjog) -- (-2.4,0 |- Bjog);
+  \draw (-2.4,0 |- Bjog) -- (-2.4,0 |- gB);
+  \draw (gB) -- (-2.4,0 |- gB);
+  \fill (-2.4,0 |- gB) circle (0.075);
+  \draw (-3.6,0 |- gB) -- (-2.4,0 |- gB);
+  \node[anchor=east] at (-3.75,0 |- gB) {$B$};
+
+\end{circuitikz}
+\end{document}

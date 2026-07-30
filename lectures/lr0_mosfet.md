@@ -205,7 +205,7 @@ consume lots of power. There are smarter ways to use the transistors.
 
 -->
 
-![inline](../media/nand_tr.png)  
+![inline](../media/nand_tikz.pdf)  
 
 <!--pan_doc:
 <sub>Figure 8:  NAND </sub>
@@ -665,6 +665,17 @@ Define $$ V_{eff} \equiv V_{GS} - V_{tn} $$ , where $$ V_{tn} $$ is the "thresho
 | 0                | moderate inversion             |
 | more than 100 mV | strong inversion               |
 
+<!--pan_doc:
+
+The single most useful voltage to think in is not $V_{GS}$, but the effective
+voltage $V_{eff} = V_{GS} - V_{tn}$: how far above (or below) the threshold
+voltage we are. It tells us which physics dominates. Below threshold the
+current is diffusion over a barrier and exponential in $V_{eff}$. Well above
+threshold we have a proper inversion layer and drift current. And in
+between, in moderate inversion, both mechanisms matter at the same time.
+
+-->
+
 
 
 
@@ -685,6 +696,18 @@ $$ I_{DS} \approx I_{D0} \frac{W}{L} e^{V_{eff}/n V_{T}} \text{  if } V_{DS} > 3
 
 $$ n \approx 1.5 $$
 
+<!--pan_doc:
+
+This is the same equation we derived from the barrier picture earlier, now
+with the condition $V_{DS} > 3V_T$ made explicit: once the drain is a few
+thermal voltages below the barrier, injection from the drain side has died
+out and the current stops caring about $V_{DS}$. The slope factor $n$ is the
+capacitive division between the oxide capacitance and the depletion
+capacitance - the gate does not get to move the surface potential
+one-to-one - and lands around 1.5 in this process.
+
+-->
+
 <!--pan_skip: -->
 
 ![right fit](../media/vgate.pdf)
@@ -693,6 +716,18 @@ $$ n \approx 1.5 $$
 **Moderate inversion**
 
 Very useful region in real designs. Hard for hand-calculation. Trust the model.
+
+<!--pan_doc:
+
+I'm serious about "very useful": a large fraction of well-designed analog
+transistors end up biased around moderate inversion, because it buys most of
+the $g_m/I_D$ of weak inversion at a fraction of the area and parasitics.
+And I'm equally serious about "trust the model": neither the exponential nor
+the square-law expression is right here, so hand calculation can only
+bracket the answer. Set up the bias with the simulator, and use the hand
+expressions to sanity-check the trend.
+
+-->
 
 <!--pan_skip: -->
 
@@ -712,6 +747,21 @@ V_{eff} V_{DS} - V_{DS}^2/2
 & \text{if }  V_{DS} > V_{eff} \\[15pt]
 \end{cases}
 $$
+
+<!--pan_doc:
+
+Three cases, one story. For tiny $V_{DS}$ the channel is a uniform resistor
+and the current is linear in both voltages. As $V_{DS}$ grows the drain end
+of the channel gets less gate-to-channel voltage, so the channel thins there
+and the $-V_{DS}^2/2$ term bends the curve over. And at $V_{DS} = V_{eff}$
+the drain end pinches off entirely: past that point the current is set by
+the channel alone and stops (mostly) caring about the drain.
+
+To see where the equations come from it helps to watch the carriers. The
+cross-sections below walk the gate voltage up from negative to positive
+before we do the same with the drain.
+
+-->
 
 <!--pan_skip: -->
 
@@ -756,6 +806,17 @@ first few electrons make it into the channel region - the exponential
 subthreshold current from earlier.
 -->
 
+<!--pan_doc:
+
+And this is where the threshold voltage gets its definition: $V_{tn}$ is the
+gate-source voltage where the electron concentration at the surface equals
+the hole concentration in the bulk, $p_p = n_{ch}$. Nothing physically
+dramatic happens at exactly that voltage - the electron concentration is
+exponential in surface potential either side of it - but it's a well-defined
+line in the sand, and every equation in this chapter leans on it.
+
+-->
+
 ---
 
 <!--pan_skip: -->
@@ -763,6 +824,13 @@ subthreshold current from earlier.
 # The threshold voltage ($$ V_{tn} $$) is defined as $$ p_p = n_{ch} $$ 
 
 ---
+
+<!--pan_doc:
+
+Now hold the gate at a fixed 0.5 V - a little above threshold - and sweep
+the drain instead.
+
+-->
 
 ## Drain source voltage
 
@@ -860,6 +928,17 @@ $$ g_{m} = \frac{\partial I_{DS}}{\partial V_{GS}} $$
 
 $$ g_{ds} = \frac{1}{r_{ds}}  = \frac{\partial I_{DS}}{\partial V_{DS}} $$
 
+<!--pan_doc:
+
+The large signal function $I_{DS} = f(V_{GS},V_{DS})$ is non-linear, but
+zoom far enough into any smooth curve and it looks straight. For signals
+much smaller than the bias point we replace the transistor with the local
+derivatives: $g_m$ tells us how much drain current we get per volt of
+gate-source wiggle, and $g_{ds}$ how much leaks out per volt of drain-source
+wiggle. Those two numbers are most of analog design.
+
+-->
+
 
 ![right fit](../media/small_signal_tikz.pdf)
 
@@ -883,6 +962,18 @@ Define $$ \ell = \mu_n C_{ox} \frac{W}{L} $$ and $$ V_{eff} = V_{GS} - V_{tn} $$
  
  $$  g_m = \ell V_{eff} = 2 \frac{I_D}{V_{eff}^2} V_{eff} = \frac{2 I_D}{V_{eff}} $$
 
+<!--pan_doc:
+
+The same $g_m$ written three ways, and each is useful for a different
+question. $g_m = \ell V_{eff}$ answers "what does another 100 mV of gate
+drive buy me". $g_m = \sqrt{2\ell I_D}$ answers "what does another micro amp
+buy me" - only square-root much, which is why burning current for
+bandwidth gets expensive. And $g_m = 2I_D/V_{eff}$ is the designer's
+favorite, because it needs no process constants at all: pick a current and
+an effective voltage, and the transconductance follows.
+
+-->
+
 [.column]
 ---
 
@@ -895,6 +986,17 @@ Define $$ \ell = \mu_n C_{ox} \frac{W}{L} $$ and $$ V_{eff} = V_{GS} - V_{tn} $$
  Assume channel length modulation is not there, then 
  
  $$I_D = \frac{1}{2} \ell V_{eff}^2 $$ which means $$\frac{1}{r_{ds}} = g_{ds} \approx \lambda I_D $$
+
+<!--pan_doc:
+
+$\lambda$ is the channel length modulation parameter: the pinch-off point
+in Figure 25 creeps towards the source as $V_{DS}$ grows, the effective
+channel shortens, and the current rises a little. The practical
+consequences: the output resistance is inversely proportional to the
+current you run, and since $\lambda$ shrinks with channel length, a longer
+transistor is the cheapest way to buy output resistance.
+
+-->
 
 ---
 
@@ -973,6 +1075,18 @@ $$
 
 $$ C_{gd} = C_{ox} W L_{ov} $$
 
+<!--pan_doc:
+
+In triode the channel is uniform and the whole gate area capacitance
+$WLC_{ox}$ splits evenly between source and drain. In saturation the drain
+end is pinched off - the channel charge lives mostly at the source end -
+and integrating the charge distribution gives the famous $\frac{2}{3}$.
+$C_{gd}$ then keeps only the overlap capacitance $C_{ox} W L_{ov}$, where
+$L_{ov}$ is the small distance the drain diffusion pokes in underneath the
+gate. Small, but as the Miller section shows, not harmless.
+
+-->
+
 ---
 
  $$C_{sb}$$ and $$C_{db}$$
@@ -991,6 +1105,17 @@ $$\Phi_0 = V_T ln\left(\frac{N_A N_D}{n_i^2}\right)$$
 $$ C_{db} = A_d C_{jd} $$
 
 $$ C_{jd} = \frac{C_{j0}}{\sqrt{1 + \frac{V_{DB}}{\Phi_0}}} $$
+
+<!--pan_doc:
+
+The source and drain diffusions sit in reverse biased junctions to the
+bulk, and a reverse biased junction is a capacitor whose plates are the
+depletion edges. More reverse bias, wider depletion, smaller capacitance -
+hence the square root. $A_s$ and $A_d$ are the junction areas (the source
+side includes the channel area $A_{ch}$), and $\Phi_0$ is the built-in
+voltage we met in the diode chapter.
+
+-->
 
 ---
 
@@ -1027,6 +1152,15 @@ An admittance $Y$ across an inverting gain $-A$ can be split into $Y(1+A)$ at th
 
 If $$ V_{eff} < 0 $$ diffusion currents dominate.
 
+<!--pan_doc:
+
+Back to weak inversion, now wearing the model hat rather than the physics
+hat. Everything is the barrier picture from the first half of this chapter,
+compressed into three constants: $V_T$ sets the exponential slope, $n$ the
+capacitive division, and $I_{D0}$ collects the rest.
+
+-->
+
  $$ I_{D} = I_{D0} \frac{W}{L} e^{V_{eff} / n V_T} $$, where
  
  $$ V_T = kT/q $$, $$n = (C_{ox} + C_{j0})/C_{ox}$$
@@ -1036,6 +1170,16 @@ If $$ V_{eff} < 0 $$ diffusion currents dominate.
  $$ g_m = \frac{I_D}{nV_T} $$
 
 ![right fit](../media/weakinv_tikz.pdf)
+
+<!--pan_doc:
+
+Differentiate an exponential and you get the exponential back, divided by
+$nV_T$: in weak inversion the transconductance is proportional to the
+current, full stop. No $W/L$, no mobility, no $C_{ox}$ - just current and
+temperature. That is as good as $g_m$ per current gets in a MOSFET, and it
+is the reason the next slide's ratio flattens out on the left.
+
+-->
 
 ---
 
@@ -1081,6 +1225,17 @@ Electron speed limit in silicon
  $$ v = \mu_n E = \mu_n \frac{dV}{dx} $$
  
  $$ \mu_n \approx 100 \text{ to  } 600 \text{  } cm^2/Vs $$ in nanoscale CMOS
+
+<!--pan_doc:
+
+The mobility model says velocity is proportional to field. But carriers in
+silicon scatter off the lattice, and above roughly $10^7$ cm/s more field
+just means more scattering, not more speed. Shrink $L$ at constant voltage
+and the lateral field $V/L$ grows without bound - the estimate below
+crosses the speed limit somewhere around a micrometer, which is why every
+modern process lives with velocity saturation.
+
+-->
  
 [.column]
  
@@ -1122,6 +1277,21 @@ current becomes closer to linear, rather than quadratic, in $V_{eff}$.
 
  $$ @ V_{DS} = V_{eff} \Rightarrow I_{D} = \frac{1}{2} \ell V_{eff}^2 $$
 
+<!--pan_doc:
+
+This is the derivation behind the square law, and it is worth reading once
+in your life. The local channel charge is $Q(x) = C_{ox}[V_{eff} - V(x)]$ -
+less charge where the channel voltage has climbed - the current is charge
+times width times velocity, and since the same $I_D$ must flow through
+every slice of the channel, integrating from source to drain turns the
+local statement into $I_D = \ell\,[V_{eff}V_{DS} - V_{DS}^2/2]$. Evaluate
+at $V_{DS} = V_{eff}$ and the familiar $\frac{1}{2}\ell V_{eff}^2$ falls
+out. Every assumption in this chain - constant mobility, gradual channel,
+charge proportional to local voltage - is something a short-channel
+transistor violates.
+
+-->
+
 ---
 
  
@@ -1148,6 +1318,18 @@ $$ g_{m} = \frac{\partial I_{D}}{\partial V_{GS}} =   \ell V_{eff} $$
 
 With mobility degradation
 $$ g_{m(mob-deg)} = \frac{\ell}{2 \theta} $$
+
+<!--pan_doc:
+
+Velocity saturation is one of several effects that make the effective
+mobility fall as we crank $V_{eff}$: the vertical field also squeezes the
+carriers against the rough oxide interface where they scatter more. The
+fitting function above captures the trend, and its punchline is the last
+equation: push $V_{eff}$ hard enough and $g_m$ stops growing entirely at
+$\ell/2\theta$. Past that point, extra gate drive costs headroom and buys
+nothing.
+
+-->
 
 ---
 
@@ -1177,7 +1359,27 @@ Saturation velocity (same as the electron speed limit above):
 <sub>Don't confuse it with the thermal velocity $\approx 2.3 \times 10^5$ m/s</sub>
 
 
- **Doping ($$N_A \text{ or } N_D$$) reduces $$\mu$$** 
+ <!--pan_skip: -->
+
+ **Doping ($$N_A \text{ or } N_D$$) reduces $$\mu$$**
+
+---
+
+<!--pan_doc:
+
+Doping reduces the mobility as well: every ionized donor or acceptor is a
+charged scattering center, so a heavily doped channel is a slower channel.
+
+Everything in this chapter holds for the PMOS with the signs flipped - and
+one important asymmetry: holes move by electrons shuffling between bonds in
+the valence band, and are roughly three times slower than conduction band
+electrons. That factor shows up everywhere: for the same current and
+$V_{eff}$ a PMOS is about three times wider, with correspondingly larger
+capacitances. It is also why the NMOS usually gets the signal path and the
+PMOS the loads - though in some modern strained processes the gap has
+narrowed to less than a factor of two.
+
+--> 
 
 ---
 
@@ -1188,6 +1390,17 @@ Saturation velocity (same as the electron speed limit above):
  As we make transistors smaller, we find new effects that matter, and that must be modeled.
 
  <sub> which is an opportunity for engineers to come up with cool names </sub>
+
+<!--pan_doc:
+
+The square law is a long-channel story. Below a micrometer or so, and
+especially below 100 nm, a zoo of second-order effects grows to first
+order. The point of this section is not that you memorize each one - the
+foundry's model team already did - but that you recognize the names when
+they show up in a design review, and know which knob (length, layout,
+bias) each one responds to. The paper below is a fine map of the zoo.
+
+-->
 
 ---
 
@@ -1306,6 +1519,17 @@ With a reverse biased bulk ($V_{SB} > 0$), holes generated by impact ionization 
 
 ---
 
+<!--pan_doc:
+
+For the rest of the chapter we leave the single ideal transistor behind and
+ask the question that actually decides whether circuits work: what happens
+when you make two of them? The vehicle is deliberately humble - a current
+mirror that is supposed to copy 1 uA - because every mechanism that breaks
+the copy also breaks amplifiers, converters and references, just with more
+algebra in the way.
+
+-->
+
 Provide $$I_2 = 1 \mu A $$ 
 
 Let's use off-chip resistor $$R$$, and pick $$R$$ such that $$I_1 = 1 \mu A $$
@@ -1346,6 +1570,16 @@ If $$V_{DD}$$ changes, then current changes.
 
 **Fix**: Keep $$V_{DD}$$ constant
 
+<!--pan_doc:
+
+The reference current is set by the resistor, and the resistor sees
+$V_{DD} - V_{GS}$. Nothing about the mirror rejects a change in supply -
+the "fix" really is to regulate the supply, or, as the reference chapter
+shows, to build a current source that never lets $V_{DD}$ into the
+equation in the first place.
+
+-->
+
 <!--pan_skip: -->
 
 ![right 200%](../media/fig_l8_cmsys.pdf)
@@ -1370,6 +1604,19 @@ If $$ WPE_{1} \ne WPE_{2} \rightarrow I_1 \ne I_2 $$
 If $$ Stress_{1} \ne Stress_{2} \rightarrow I_1 \ne I_2 $$
 ...
 
+<!--pan_doc:
+
+Every line above is the same statement: the two transistors only copy the
+current if they see the same everything. Different $V_{DS}$ is channel
+length modulation and DIBL; different orientation or current direction is
+mobility anisotropy and asymmetric implants; different surroundings are
+WPE and stress from the previous section. These are systematic errors: the
+simulator with the right layout-aware models will show them, and matched
+layout - same orientation, same environment, dummies, common centroid -
+removes them. They cost area and care, not luck.
+
+-->
+
 <!--pan_skip: -->
 
 ![right 200%](../media/fig_l8_cmsys.pdf)
@@ -1383,6 +1630,17 @@ Assume strong inversion and active **$$ V_{eff} = \sqrt{\frac{2}{\mu_p C_{ox} \f
  $$ I_1 = \frac{V_{DD} - V_{GS}}{R} =  \frac{V_{DD} - \sqrt{\frac{2}{\mu_p C_{ox} \frac{W}{L}} I_1}  - V_{tp}}{R} $$ 
 
  $$\mu_p$$, $$C_{ox}$$, $$V_{tp}$$ will all vary from die to die, and wafer lot to wafer lot.
+
+<!--pan_doc:
+
+Solve that equation for $I_1$ and every process-dependent constant is
+inside it. Oxide grows a little thicker one lot, implant doses drift a
+little the next - the current changes even though every device on your die
+still matches its neighbor perfectly. That is the distinction to hold on
+to: process variation moves the whole die together; mismatch, later, moves
+neighbors apart.
+
+-->
 
 
 <!--pan_skip: -->
@@ -1402,6 +1660,18 @@ Common to use 5 corners, or [Monte-Carlo](https://en.wikipedia.org/wiki/Monte_Ca
 | Mff | Fast | Fast |
 | Msf | Slowish | Fastish |
 | Mfs | Fastish | Slowish |
+
+<!--pan_doc:
+
+The foundry does not promise a particular die, it promises a box: every
+shipped wafer falls between slow-slow and fast-fast. Simulating the four
+corners plus typical asks "does the circuit still work at the walls of the
+box". Monte Carlo instead samples the inside of the box, and is what you
+use when corners are too pessimistic or the failure is a yield number
+rather than a hard edge. Note that NMOS and PMOS need not move together -
+Msf and Mfs are exactly the corners that kill ratioed and skewed circuits.
+
+-->
 
 <!--pan_skip: -->
 
@@ -1437,11 +1707,36 @@ Threshold voltage decreases with temperature.
 
 $$ I_D = \frac{1}{2}\mu_n C_{ox} \frac{W}{L} (V_{GS} - V_{tn})^2$$
 
+<!--pan_skip: -->
+
 High $$I_D = $$ fast digital circuits
 
 Low $$I_D = $$ slow digital circuits 
 
+---
+
+<!--pan_doc:
+
+More drain current charges the load capacitances faster, so high $I_D$
+means fast digital circuits and low $I_D$ slow ones. So:
+
+-->
+
 **What is fast? High temperature or low temperature?**
+
+<!--pan_doc:
+
+Two knobs fight each other. Mobility drops with temperature (more lattice
+scattering), which slows the transistor down. The threshold voltage also
+drops with temperature, which - at a fixed $V_{GS}$ - speeds it up. Which
+effect wins depends on how much $V_{eff}$ you have: at high $V_{DD}$ the
+mobility term dominates and hot means slow; near threshold the $V_{tn}$
+term dominates and hot means fast. The crossover is called temperature
+inversion, and modern low-voltage processes sit close enough to it that
+you cannot guess - which is exactly why the slide below refuses to give a
+one-line answer.
+
+-->
 
 <!--pan_skip: -->
 
@@ -1484,6 +1779,17 @@ If you need stability over temperature, use 7.3.2 and 7.3.4 in CJM (SUN\_BIAS\_G
 
 ---
 
+<!--pan_doc:
+
+Even two transistors drawn identically, side by side, at the same
+temperature on the same die, are not identical. There are only a few
+thousand doping atoms under a small gate, and counting statistics does not
+care about your schematic: each device gets its own threshold voltage and
+its own $\ell$. Unlike everything above, this cannot be simulated away or
+laid out away - only averaged away with area.
+
+-->
+
  $$\ell =  \mu_p C_{ox} \frac{W}{L}$$
  
  $$ I_D = \frac{1}{2} \ell (V_{GS} - V_{tp})^2$$
@@ -1508,6 +1814,17 @@ where $$A_P$$ and $$S_P$$ are measured, and $$D$$ is the distance between device
 
 Assume closely spaced devices ($$ D \approx 0$$) $$ \Rightarrow \sigma^2 (\Delta P) = \frac{A^2_P}{WL} $$
 
+<!--pan_doc:
+
+Pelgrom's law is bedrock: the variance of the difference between two
+matched devices scales as one over the gate area, because a bigger gate
+averages over more atomic-scale randomness. $A_P$ is a process constant
+you look up - for the threshold voltage it is a few mV per micrometer -
+and the $S_P D$ term says devices drift apart with distance, which is why
+matched pairs sit next to each other.
+
+-->
+
 
 [^1]: M. J. M. Pelgrom, C. J. Duinmaijer, and A. P. G. Welbers, “Matching properties of MOS transistors,” IEEE J. Solid-State Cir- cuits, vol. 24, no. 5, pp. 1433–1440, Oct. 1989.
  
@@ -1521,6 +1838,16 @@ Valid in  weak, moderate and strong inversion
 
 
 [^2]: Peter Kinget, see CJM
+
+<!--pan_doc:
+
+Kinget's expression turns Pelgrom into design guidance: the relative
+current error has a threshold-voltage part, amplified by $(g_m/I_D)^2$,
+and a gain-factor part. Everything a designer chooses - region, area,
+current - is in there, and the two slides below read the two consequences
+straight out of it.
+
+-->
 
 ---
 
@@ -1583,6 +1910,16 @@ Threshold mismatch between the two input transistors appears directly as an inpu
 ---
 
 ## Transistor Noise
+
+<!--pan_doc:
+
+Mismatch is randomness frozen in at manufacturing; noise is randomness
+that keeps happening while the circuit runs. Three flavors matter in a
+MOSFET, and they are connected: popcorn noise is one trap doing its thing,
+flicker noise is the chorus of many traps, and thermal noise is simply hot
+charge.
+
+-->
 
 **Thermal noise**
 Random scattering of carriers, generation-recombination in channel? 
