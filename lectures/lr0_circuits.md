@@ -552,7 +552,7 @@ gain of an NMOS follower is typically 0.8 to 0.9.
 
 ---
 
-## Output resistance 
+### Output resistance 
 
 <!--pan_doc:
 
@@ -580,6 +580,8 @@ high impedance node you have, a follower turns it into a node that can
 drive real capacitance.
 
 -->
+
+<!--pan_skip: -->
 
 ![right fit](../media/amp_sf_ss_tikz.pdf)
 
@@ -634,7 +636,7 @@ Another example of a source follower can be found in A 92.5mW 205MS/s 10b Pipeli
 
 ---
 
-#[fit] Common gate
+##[fit] Common gate
 
 <!--pan_doc:
 
@@ -709,9 +711,9 @@ $r_{ds}$, as drawn in Figure 23.
 
 <!--pan_doc: 
 <sub>Figure 23: Common gate output resistance</sub>
-
-$$ r_{out} = r_{ds} $$
 -->
+
+ $$ r_{out} = r_{ds} $$
 
 ---
 
@@ -778,7 +780,7 @@ bulk effect adds to $g_m$ instead of stealing from it.
 
 ---
 
-#[fit] Common source
+##[fit] Common source
 
 <!--pan_doc:
 
@@ -855,7 +857,7 @@ $-g_m R$. First gain, then everything else.
 
 ---
 
-# Differential pair
+## Differential pair
 
 <!--pan_doc:
 
@@ -898,8 +900,6 @@ is free:
 
 -->
 
-![left fit](../media/amp_diff_tikz.pdf)
-
  Can choose between 
 
  $$ v_o = g_m r_{ds} v_i$$
@@ -909,6 +909,10 @@ is free:
  $$ v_o = -g_m r_{ds} v_i$$
  
  by flipping input (or output) connections
+
+<!--pan_skip: -->
+
+![left fit](../media/amp_diff_tikz.pdf)
 
 ---
 

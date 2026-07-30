@@ -24,8 +24,8 @@
   \fill (\xm,1.9) circle (0.075);
 
   % input pair
-  \draw (\xl,\ysrc) \lvnmos{M1}{$v_p$};
-  \draw (\xr,\ysrc) \lvmnmos{M2}{$v_n$};
+  \draw (\xl,\ysrc) \lvnmos{M1}{$v_n$};
+  \draw (\xr,\ysrc) \lvmnmos{M2}{$v_p$};
 
   % diode connected PMOS loads
   \draw (\xl,\ydr) \lvpmos{M3}{};
@@ -34,7 +34,7 @@
   \draw (\xr,\ytop) \vsupply;
 
   % M3 diode connection and mirror out to M5 (left branch)
-  \draw (\xa,\ydr) \lvpmos{M5}{};
+  \draw (\xa,\ydr) \lvmpmos{M5}{};
   \draw (\xa,\ytop) \vsupply;
   \coordinate (g3) at (M3.G);
   \coordinate (g5) at (M5.G);
@@ -45,7 +45,7 @@
   \node[anchor=south, scale=0.8] at (-1.3,4.75) {$K:1$};
 
   % M4 diode connection and mirror out to M6 (right branch)
-  \draw (\xb,\ydr) \lvmpmos{M6}{};
+  \draw (\xb,\ydr) \lvpmos{M6}{};
   \draw (\xb,\ytop) \vsupply;
   \coordinate (g4) at (M4.G);
   \coordinate (g6) at (M6.G);
@@ -67,6 +67,7 @@
   % diode connection of M7
   \coordinate (d7) at (\xa,1.9);
   \fill (d7) circle (0.075);
+  \fill (g7) circle (0.075);
   \draw (g7) |- (d7);
   % mirror gate wire routed underneath the ground row
   \draw (g7) -- ++(-0.35,0) coordinate (g7a);
@@ -78,6 +79,17 @@
   % output
   \draw (\xb,\ydr) \portOut{$v_o$};
   \fill (\xb,\ydr) circle (0.075);
+
+  % device names
+  \node[anchor=west, scale=0.8] at (0.35,3.0) {M1};
+  \node[anchor=east, scale=0.8] at (2.85,3.0) {M2};
+  \node[anchor=west, scale=0.8] at (0.35,4.95) {M3};
+  \node[anchor=east, scale=0.8] at (2.85,4.95) {M4};
+  \node[anchor=east, scale=0.8] at (-2.95,4.95) {M5};
+  \node[anchor=west, scale=0.8] at (6.15,4.95) {M6};
+  \node[anchor=west, scale=0.8] at (-2.25,1.15) {M7};
+  \node[anchor=east, scale=0.8] at (5.45,1.15) {M8};
+  \node[anchor=west, scale=0.8] at (1.95,0.5) {M9};
 
 \end{circuitikz}
 \end{document}

@@ -265,7 +265,7 @@ and corners go straight through.
 <!--pan_doc:
 
 Nauta showed in 1992 how to make a real OTA out of nothing but inverters,
-Figure 6 [@Nauta95]. Two inverters amplify differentially. On the outputs,
+Figure 6 [@nauta92]. Two inverters amplify differentially. On the outputs,
 a cross coupled pair fights common mode motion and a shorted inverter on
 each output loads it resistively - together they hold the output common
 mode without a single tail source or CMFB loop, and the differential gain
