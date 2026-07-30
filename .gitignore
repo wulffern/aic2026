@@ -174,3 +174,5 @@ docs-book/Gemfile.lock
 docs-book/.jekyll-cache/
 docs-book/vendor/
 docs-book/.bundle/
+docs-book/index.md
+docs-book/pages/

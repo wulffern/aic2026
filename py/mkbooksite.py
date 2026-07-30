@@ -33,7 +33,59 @@ def post_lecture_id(text):
     return m.group(1) if m else None
 
 
+# top level pages from docs/, in sidebar order ahead of the chapters
+PAGES = ["plan", "syllabus", "downloads", "examples", "about"]
+
+
+def front_matter(text):
+    m = re.search(r"^---\n(.*?)\n---\n", text, re.S)
+    return m.group(1), text[m.end():]
+
+
+def write_page(path, title, nav_order, permalink, body):
+    front = "\n".join(
+        [
+            "---",
+            "layout: default",
+            f"title: {title}",
+            f"nav_order: {nav_order}",
+            f"permalink: {permalink}",
+            "---",
+            "",
+        ]
+    )
+    with open(path, "w") as fo:
+        fo.write(front + body)
+
+
+def make_pages():
+    pagedir = os.path.join(BOOK, "pages")
+    os.makedirs(pagedir, exist_ok=True)
+    for f in os.listdir(pagedir):
+        os.remove(os.path.join(pagedir, f))
+
+    # the landing page keeps the current site's content
+    with open(os.path.join(ROOT, "docs", "index.md")) as fi:
+        _, body = front_matter(fi.read())
+    write_page(os.path.join(BOOK, "index.md"), "Home", 0, "/", body)
+
+    n = 0
+    for name in PAGES:
+        src = os.path.join(ROOT, "docs", f"{name}.md")
+        if not os.path.exists(src):
+            print(f"no page found for: {name}")
+            continue
+        with open(src) as fi:
+            head, body = front_matter(fi.read())
+        title = re.search(r"title:\s*(.*)", head).group(1).strip()
+        perm = re.search(r"permalink:\s*(.*)", head).group(1).strip()
+        n += 1
+        write_page(os.path.join(pagedir, f"{n:02d}_{name}.md"), title, n, perm, body)
+    print(f"wrote {n + 1} pages to docs-book/")
+
+
 def main():
+    make_pages()
     os.makedirs(CHAPTERS, exist_ok=True)
     for f in os.listdir(CHAPTERS):
         os.remove(os.path.join(CHAPTERS, f))
@@ -55,26 +107,48 @@ def main():
 
     for n, lid in enumerate(order, start=1):
         text = posts[lid]
-        m = re.search(r"^---\n(.*?)\n---\n", text, re.S)
-        head, body = m.group(1), text[m.end():]
+        head, body = front_matter(text)
         title = re.search(r"title:\s*(.*)", head).group(1).strip()
         permalink = re.search(r"permalink:\s*(.*)", head).group(1).strip()
-
-        front = "\n".join(
-            [
-                "---",
-                "layout: default",
-                f"title: {title}",
-                f"nav_order: {n}",
-                f"permalink: {permalink}",
-                "---",
-                "",
-            ]
+        # chapters sort after the top level pages in the sidebar
+        write_page(
+            os.path.join(CHAPTERS, f"{n:02d}_{lid}.md"),
+            title, n + 10, permalink, body,
         )
-        out = os.path.join(CHAPTERS, f"{n:02d}_{lid}.md")
-        with open(out, "w") as fo:
-            fo.write(front + body)
     print(f"wrote {len(order)} chapters to docs-book/chapters/")
+
+    make_slides_page(order, posts)
+
+
+def make_slides_page(order, posts):
+    """One page linking every HTML slide deck."""
+    htmldir = os.path.join(ROOT, "docs", "assets", "html")
+    if not os.path.isdir(htmldir):
+        print("no docs/assets/html - skipping the slides page")
+        return
+    decks = {f[:-5] for f in os.listdir(htmldir) if f.endswith(".html")}
+
+    lines = ["Every lecture as an HTML slide deck - scroll, swipe or use the",
+             "arrow keys; `f` is fullscreen.", ""]
+    listed = set()
+    for lid in order:
+        if lid not in decks:
+            continue
+        title = re.search(r"title:\s*(.*)", posts[lid]).group(1).strip()
+        lines.append(f"- [{title}](/aic2026/assets/html/{lid}.html)")
+        listed.add(lid)
+
+    extras = sorted(decks - listed)
+    if extras:
+        lines += ["", "## Other decks", ""]
+        for lid in extras:
+            lines.append(f"- [{lid}](/aic2026/assets/html/{lid}.html)")
+
+    write_page(
+        os.path.join(BOOK, "pages", "06_slides.md"),
+        "Slides", 6, "/slides/", "\n".join(lines) + "\n",
+    )
+    print(f"wrote slides page with {len(listed)} decks + {len(extras)} extras")
 
     # share the assets with the existing site - except the old theme's
     # stylesheet, which imports minima and breaks the just-the-docs build
