@@ -36,6 +36,18 @@ def post_lecture_id(text):
 # top level pages from docs/, in sidebar order ahead of the chapters
 PAGES = ["plan", "syllabus", "downloads", "examples", "about"]
 
+# titles for decks that are not lectures (the s_* standalone decks)
+DECK_TITLES = {
+    "s_exam": "Exam notes",
+    "s_maxwell": "Maxwell",
+    "s_need_to_know": "Need to know",
+    "s_mac": "Analog neural networks (MAC)",
+    "s_chinf": "Channel information",
+    "s_tut2": "Tutorial 2",
+    "s_project_scratch": "Project scratch",
+    "tex_intro": "LaTeX introduction",
+}
+
 
 def front_matter(text):
     m = re.search(r"^---\n(.*?)\n---\n", text, re.S)
@@ -105,6 +117,13 @@ def main():
     if missing:
         print("no post found for: " + " ".join(sorted(missing)))
 
+    # posts outside the FILES list (guest lectures etc.) keep their URLs:
+    # they go in after the ordered chapters
+    extras = sorted(set(posts) - set(order))
+    if extras:
+        print("extra posts appended: " + " ".join(extras))
+    order += extras
+
     for n, lid in enumerate(order, start=1):
         text = posts[lid]
         head, body = front_matter(text)
@@ -140,15 +159,26 @@ def make_slides_page(order, posts):
 
     extras = sorted(decks - listed)
     if extras:
-        lines += ["", "## Other decks", ""]
+        lines += ["", "## Other decks", "",
+                  "Not part of the lecture series or the book.", ""]
         for lid in extras:
-            lines.append(f"- [{lid}](/aic2026/assets/html/{lid}.html)")
+            title = DECK_TITLES.get(lid, lid)
+            lines.append(f"- [{title}](/aic2026/assets/html/{lid}.html)")
 
     write_page(
         os.path.join(BOOK, "pages", "06_slides.md"),
         "Slides", 6, "/slides/", "\n".join(lines) + "\n",
     )
     print(f"wrote slides page with {len(listed)} decks + {len(extras)} extras")
+
+    # keep the 404 page working
+    src404 = os.path.join(ROOT, "docs", "404.html")
+    if os.path.exists(src404):
+        with open(src404) as fi:
+            _, body = front_matter(fi.read())
+        with open(os.path.join(BOOK, "404.html"), "w") as fo:
+            fo.write("---\nlayout: default\npermalink: /404.html\n"
+                     "nav_exclude: true\n---\n" + body)
 
     # share the assets with the existing site - except the old theme's
     # stylesheet, which imports minima and breaks the just-the-docs build
