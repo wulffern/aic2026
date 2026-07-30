@@ -158,6 +158,10 @@ For the ISM bands, there are regions, as seen below.
 
 ![left fit](../media/International_Telecommunication_Union_regions_with_dividing_lines.svg)
 
+<!--pan_doc:
+<sub>Figure 1: ITU regions that set the ISM band allocations: region 1 (yellow), region 2 (blue), region 3 (pink)</sub>
+-->
+
 - Yellow: Region 1
 - Blue: Region 2
 - Pink: Region 3
@@ -307,6 +311,10 @@ There exists a bible of batteries, see picture below. It's worth a read if you w
 
 ![left 70%](../media/lindens_handbook_of_batteries.png)
 
+<!--pan_doc:
+<sub>Figure 2: Linden's Handbook of Batteries, the reference work on primary and secondary cell chemistry</sub>
+-->
+
 Mouse is maybe AA,  3000 mAh
 
 |Cell |Chemistry|  Voltage (V) | Capacity (Ah) |
@@ -401,6 +409,10 @@ go back 180 degrees. In this example the dot would move around the unit circle, 
 ![left fit](../media/l7_bpsk_real.pdf)
 
 <!--pan_doc:
+<sub>Figure 3: BPSK constellation: the two symbols sit on the real axis, 180 degrees apart</sub>
+-->
+
+<!--pan_doc:
 
 There is another way to change phase 180 degrees, and that's simply to swap the phase in the transmitter circuit. Imagine as below we have a local oscillator driving 
 pseudo differential common source stages with switches on top. If we flip the switches we can change the phase 180 degrees pretty fast. 
@@ -412,6 +424,10 @@ that change both phase and amplitude.
 
 ![right fit](../media/l7_bpsk_circuit.pdf)
 
+<!--pan_doc:
+<sub>Figure 4: BPSK transmitter: a local oscillator drives a pseudo-differential common source pair, and the $b_0$ switches swap the output phase 180 degrees into the antenna balun</sub>
+-->
+
 ---
 
 <!--pan_doc:
@@ -421,6 +437,10 @@ Standards like Zigbee used offset quadrature phase shift keying, with a constell
 -->
 
 ![inline fit](../media/l7_qpsk.pdf)
+
+<!--pan_doc:
+<sub>Figure 5: QPSK constellation: four symbols at $\pm 1 \pm j$, or $\sqrt{2}e^{\pm j\pi/4}$, so 2 bits per symbol</sub>
+-->
 
 <!--pan_doc:
 
@@ -435,6 +455,10 @@ If we have a PLL as a local oscillator, where we can change the phase (or freque
 
 ![inline fit](../media/l7_const_env.pdf)
 
+<!--pan_doc:
+<sub>Figure 6: Constant envelope transmitter: the phase is modulated in the local oscillator, and a power amplifier drives the antenna</sub>
+-->
+
 ---
 
 <!--pan_doc:
@@ -446,6 +470,10 @@ where phase change is done in the PLL, and amplitude in the power amplifier.
 
 ![inline fit](../media/l7_polar.pdf)
 
+<!--pan_doc:
+<sub>Figure 7: Polar transmitter: phase $\phi$ is modulated in the local oscillator and amplitude $A$ in the power amplifier</sub>
+-->
+
 ---
 
 <!--pan_doc:
@@ -456,6 +484,10 @@ the amplitude, but it does need to be linear.
 -->
 
 ![inline fit](../media/l8_cartesian.pdf)
+
+<!--pan_doc:
+<sub>Figure 8: Cartesian transmitter: I and Q digital-to-analog converters, complex mixers driven by the local oscillator, and a linear power amplifier</sub>
+-->
 
 ---
 
@@ -471,6 +503,10 @@ and it's harder and harder to distinguish the points from each other.
 --->
 
 ![left fit](../media/l8_8psk.pdf)
+
+<!--pan_doc:
+<sub>Figure 9: 8-PSK constellation: eight points on the unit circle, so 3 bits per symbol</sub>
+-->
 
 
 <!--pan_doc:
@@ -505,6 +541,10 @@ origin. In the transmitter circuit, it's difficult to turn the carrier off, so w
 
 ![right fit](../media/EDR.png)
 
+<!--pan_doc:
+<sub>Figure 10: Bluetooth Core Specification, radio specification: Enhanced Data Rate uses $\pi/4$-DQPSK at 2 Mb/s and 8DPSK at 3 Mb/s</sub>
+-->
+
 ---
 
 
@@ -520,6 +560,10 @@ If you wanted to research "new fancy modulation schemes" I'd think about [Sphere
 -->
 
 ![original fit](../media/l8_16qam.pdf)
+
+<!--pan_doc:
+<sub>Figure 11: 16-QAM constellation: a 4 by 4 grid of points in phase and amplitude, so 4 bits per symbol</sub>
+-->
 
 ---
 
@@ -541,6 +585,10 @@ For a 1 GHz bandwidth at 2.4 GHz carrier we'd have problems with the phase. At 1
 
 ![inline fit](../media/l10_single_carrier.pdf)
 
+<!--pan_doc:
+<sub>Figure 12: Single carrier link: amplitude $A_m(t)$ and phase $\phi_m(t)$ are modulated onto I and Q, transmitted, and de-modulated after the receiver</sub>
+-->
+
 
 <!--pan_doc:
 
@@ -555,6 +603,10 @@ The name "multiple carriers" is a bit misleading. Although there are multiple ca
 ---
 
 ![inline fit](../media/l10_multiple_carrier.pdf)
+
+<!--pan_doc:
+<sub>Figure 13: OFDM link: the sub-carriers are modulated in frequency space, an IFFT makes the time domain I and Q for the transmitter, and an FFT at the receiver recovers the sub-carriers</sub>
+-->
 
 <!--pan_doc:
 
@@ -598,6 +650,10 @@ analog-to-digital converter. That way we could support any transmitter. Fantasti
 -->
 
 ![left fit](../media/lg_lna_adc.pdf)
+
+<!--pan_doc:
+<sub>Figure 14: Software defined radio receiver: antenna, low noise amplifier and analog-to-digital converter, nothing else</sub>
+-->
 
 <!--pan_doc:
 
@@ -702,6 +758,10 @@ The advertiser channels have been intentionally placed where there is space betw
 
 ![inline](../media/map.PNG)
 
+<!--pan_doc:
+<sub>Figure 15: Bluetooth LE channel map: advertising channels (green) at 2402, 2426 and 2480 MHz, data channels (blue), and the WiFi channels (yellow)</sub>
+-->
+
 ---
 
 <!--pan_doc:
@@ -721,6 +781,10 @@ Take any spectrum analyzer anywhere, and you'll see traffic on 2402, 2426, and 2
 
 ![inline](../media/ble_connection.jpg)
 
+<!--pan_doc:
+<sub>Figure 16: Advertising: the peripheral transmits advertisements once per advertisement interval while the central scans, until the central initiates a connection</sub>
+-->
+
 ---
 
 <!--pan_doc:
@@ -735,6 +799,10 @@ Bluetooth LE is the perfect standard for wireless mice.
 <!--![inline](https://devzone.nordicsemi.com/resized-image/__size/1042x0/__key/communityserver-blogs-components-weblogfiles/00-00-00-00-28/2148.pastedimage1646833758482v3.png)-->
 
 ![inline](../media/ble_connection.png)
+
+<!--pan_doc:
+<sub>Figure 17: In a connection, central and peripheral exchange transmit and receive packets once every connection interval</sub>
+-->
 
 ---
 
@@ -776,6 +844,10 @@ be either polar or Cartesian.
 -->
 
 ![inline fit](../media/l10_lprxarch.pdf)
+
+<!--pan_doc:
+<sub>Figure 18: Typical Bluetooth radio: antenna and match, LNA, mixer, I and Q anti-alias filters and ADCs, an all-digital PLL, and the transmit path</sub>
+-->
 
 ---
 
@@ -828,6 +900,10 @@ In a LNA the input impedance must be matched to what is required by the antenna/
 
 ![left fit](../media/l10_lna.pdf)
 
+<!--pan_doc:
+<sub>Figure 19: Low noise transconductance amplifier: complementary common source PMOS and NMOS, AC coupled from the antenna match and biased through resistors by $V_{gp}$ and $V_{gn}$</sub>
+-->
+
 ---
 
 ## [fit] MIXER
@@ -854,6 +930,10 @@ A 370uW 5.5dB-NF BLE/BT5.0/IEEE 802.15.4-Compliant Receiver with >63dB Adjacent 
 
 
 ![left fit](../media/l10_mix.pdf)
+
+<!--pan_doc:
+<sub>Figure 20: Passive complex mixer: four MOS switches driven by 25% duty-cycle clocks $I_1$, $I_2$, $Q_1$ and $Q_2$ split the LNA current into the I and Q outputs</sub>
+-->
 
 
 ---
@@ -897,6 +977,10 @@ range of an ADC may be 1 V. Assume we place the lowest input signal at 0.1 V, so
 
 ![inline fit](../media/l4_activebiquad_tikz.pdf)
 
+<!--pan_doc:
+<sub>Figure 21: General purpose Active-RC biquad, used here as the anti-alias filter</sub>
+-->
+
 
 ---
 
@@ -918,7 +1002,15 @@ If I were to pick, I'd make something like A 68 dB SNDR Compiled Noise-Shaping S
 
 ![left fit](../media/l6_harald_arch.gif)
 
+<!--pan_doc:
+<sub>Figure 22: Architecture of the noise-shaping SAR ADC: capacitive DAC with multiplexers, loop filter H(z), integrating comparator, SAR logic, calibration logic and code correction</sub>
+-->
+
 ![right fit](../media/l6_fig_harald_circuit.gif)
+
+<!--pan_doc:
+<sub>Figure 23: The switched-capacitor loop filter with two OTAs (the first one chopped), the clock phases relative to the SAR activity, and the resulting NTF with -27.8 dB in-band suppression</sub>
+-->
 
 ---
 
@@ -943,6 +1035,10 @@ delay of the comparator automatically adjusts with capacitance corner, so it's m
 
 ![fit](../media/fig_sar_logic.pdf)
 
+<!--pan_doc:
+<sub>Figure 24: SAR ADC schematic: (a) capacitor array with self-timed SAR logic chain and comparator, (b) enable flip-flop, (c) bottom-plate switching of the CDAC, (d) comparator clock generation</sub>
+-->
+
 ---
 
 <!--pan_doc:
@@ -955,6 +1051,10 @@ I have a completed ADC.
 
 
 ![fit](../media/l06_fig_toplevel.pdf)
+
+<!--pan_doc:
+<sub>Figure 25: Layout of the two compiled SAR ADCs with comparator, logic, CDAC and switch: (a) 180 nm IO-transistor version, (b) core-transistor version</sub>
+-->
 
 
 ---
@@ -974,11 +1074,19 @@ You can spend your life on PLLs.
 
 ![inline](../media/l08_pll_2mod_tikz.pdf)
 
+<!--pan_doc:
+<sub>Figure 26: Two-point modulation: the modulation is applied to the oscillator and the opposite signal to the sigma-delta feedback divider, so the loop does not see it</sub>
+-->
+
 
 ---
 AD-PLL with Bang-Bang phase detector for steady-state 
 
 ![inline](../media/pll_master_arch_28feb2020.pdf)
+
+<!--pan_doc:
+<sub>Figure 27: All-digital PLL with a bang-bang phase detector for steady-state: phase error logic, digital loop filter, DCO calibration engine with frequency offset estimator, and steady-state detect</sub>
+-->
 
 ---
 
@@ -1030,6 +1138,10 @@ $$ P_{RX_{sens}} + 174 - 60 =  NF + Eb/N0 = 17 dB$$
 
 ![right 100%](../media/nrf53_rx.png)
 
+<!--pan_doc:
+<sub>Figure 28: nRF5340 radio specification: -97.5 dBm sensitivity at 1 Mbps Bluetooth LE, 2.6 mA in receive and 3.2 mA in transmit</sub>
+-->
+
 ---
 
 <!--pan_doc:
@@ -1041,6 +1153,10 @@ I hope you understand now that it's actually complicated.
 -->
 
 ![fit](../media/nrf53.png)
+
+<!--pan_doc:
+<sub>Figure 29: nRF5340 block diagram, where the entire radio is the single RADIO block (circled) in the network core</sub>
+-->
 
 ---
 

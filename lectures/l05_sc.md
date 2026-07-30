@@ -51,6 +51,11 @@ A general purpose Active-RC bi-quadratic (two-quadratic equations) filter is sho
 ![left fit](../media/l4_activebiquad_tikz.pdf)
 
 <!--pan_doc:
+<sub>Figure 1: General purpose Active-RC biquad</sub>
+-->
+
+
+<!--pan_doc:
 
 If you want to spend a bit of time, then try and calculate the transfer function below.
 
@@ -129,6 +134,11 @@ Active-RC filters are great for linearity, but if we need accurate time constant
 
 ![fit right](../media/l4_gmcbi_tikz.pdf)
 
+<!--pan_doc:
+<sub>Figure 2: General purpose Gm-C biquad</sub>
+-->
+
+
 $$ H(s) = \frac{\left[ s^2\frac{C_X}{C_X + C_B} + s\frac{G_{m5}}{C_X + C_B} + \frac{G_{m2}G_{m4}}{C_A(C_X + C_B)}\right]}
 {\left[s^2 + s\frac{G_{m3}}{C_X + C_B} + \frac{G_{m1}G_{m2}}{C_A(C_X + C_B)} \right]}$$
 
@@ -164,6 +174,11 @@ Consider the circuit below. Assume that the two transistors are ideal (no-charge
 
 -->
 ![left fit](../media/l05_fund1_tikz.pdf)
+
+<!--pan_doc:
+<sub>Figure 3: Switched capacitor with two transistor switches and the non-overlapping clock phases $\phi_1$ and $\phi_2$</sub>
+-->
+
 
 <!--pan_doc:
 
@@ -238,6 +253,11 @@ The circuit below is drawn slightly differently, but the same equation applies.
 -->
 
 ![left](../media/l05_fund2_tikz.pdf)
+
+<!--pan_doc:
+<sub>Figure 4: The same switched capacitor rotated, now between the input and an output voltage source</sub>
+-->
+
  
 
 <!--pan_doc:
@@ -270,6 +290,11 @@ Let's try the circuit below.
 -->
 
 ![left fit](../media/l05_fund3_tikz.pdf)
+
+<!--pan_doc:
+<sub>Figure 5: Switched capacitor with series switches, charging $C_1$ to $V_I$ in $\phi_1$ and $V_O$ in $\phi_2$</sub>
+-->
+
 
 $$ Z_{I} = \frac{ V_{I} - V_{O} }{ \left(Q_{\phi1\$} - Q_{\phi2\$}\right) f_{\phi}}$$
 
@@ -324,6 +349,11 @@ at least for the latter parts of $\phi_2$ the gain is four.
 -->
 
 ![right fit](../media/lewis.png)
+
+<!--pan_doc:
+<sub>Figure 6: Switched capacitor sample-and-hold amplifier with gain of 4, and its two-phase non-overlapping clock</sub>
+-->
+
 
 <!--pan_doc: 
 
@@ -556,6 +586,11 @@ Try to play around with the code and see what happens.
 
 ![fit](../media/l5_dtfig.svg)
 
+<!--pan_doc:
+<sub>Figure 7: Time domain and spectrum of the emulated continuous time signal (left) and the sampled signal with its spectral copies (right)</sub>
+-->
+
+
 ---
 
 <!--pan_doc:
@@ -573,6 +608,11 @@ appear in-band. That's why it's important to band limit analog signals before th
 
 ![fit](../media/l5_sh_tikz.pdf)
 
+<!--pan_doc:
+<sub>Figure 8: Spectrum before and after sampling: unwanted signals above $f_s/2$ fold into the wanted band</sub>
+-->
+
+
 ---
 
 <!--pan_doc:
@@ -583,6 +623,11 @@ our wanted signal (green) is undisturbed.
 -->
 
 ![fit](../media/l5_shaaf_tikz.pdf)
+
+<!--pan_doc:
+<sub>Figure 9: An anti-alias low-pass filter attenuates the unwanted components before sampling</sub>
+-->
+
 
 ---
 
@@ -602,6 +647,11 @@ a good place to start to delve into the latest on signal reconstruction.
 -->
 
 ![fit](../media/l5_subsample_tikz.pdf)
+
+<!--pan_doc:
+<sub>Figure 10: Sub-sampling: a band-pass filtered signal above $f_s/2$ folds down to low frequency on sampling</sub>
+-->
+
 
 ---
 
@@ -680,6 +730,11 @@ Growing without bounds is the same as "being unstable".
 
 ![left fit](../media/l5_sdomain_tikz.pdf)
 
+<!--pan_doc:
+<sub>Figure 11: A complex conjugate pole pair in the s-plane</sub>
+-->
+
+
 ---
 ##[fit] Z-domain
 
@@ -702,6 +757,11 @@ $$ s = \frac{z -1}{z + 1}$$
 
 
 ![left fit](../media/l5_zdomain_tikz.pdf)
+
+<!--pan_doc:
+<sub>Figure 12: The z-plane with the unit circle and a complex conjugate pole pair</sub>
+-->
+
 
 ---
 ## First order filter 
@@ -747,6 +807,11 @@ the pole of $H(z) = b/(z-a)$ sits at $z = a$, and $b$ only scales the output.
 -->
 
 ![left fit](../media/l5_zunstable_tikz.pdf)
+
+<!--pan_doc:
+<sub>Figure 13: Poles inside the unit circle are stable, poles outside are unstable</sub>
+-->
+
 
 ---
 ## Second order filter
@@ -805,6 +870,11 @@ watch the pole move inside the unit circle and the corner frequency follow it.
 ![ fit ](../media/l5_iir.svg)
 
 <!--pan_doc:
+<sub>Figure 14: Time domain and spectrum of the sampled signal (left) and the second order IIR filtered output (right)</sub>
+-->
+
+
+<!--pan_doc:
 
 ```python
 #- Second-order IIR filter with a complex conjugate
@@ -847,6 +917,11 @@ $$ H(z) = \frac{1}{3}\sum_{i=0}^2 z^{-1}$$
 
 ![left fit](../media/l5_fir_tikz.pdf)
 
+<!--pan_doc:
+<sub>Figure 15: FIR filter summing the input and two delayed samples, each weighted by 1/3</sub>
+-->
+
+
 ---
 
 #[fit] Switched-Capacitor
@@ -862,6 +937,11 @@ Think of the two phases as two different configurations of a circuit, each with 
 --->
 
 ![left fit](../media/l5_scintro1_tikz.pdf)
+
+<!--pan_doc:
+<sub>Figure 16: SC circuit during phase 1: $V_1$ is stored on $C_1$ while $C_2$ is shorted</sub>
+-->
+
 
 <!--pan_doc:
 
@@ -891,6 +971,11 @@ Imagine we (very carefully) open the circuit around $C_2$ and close the circuit 
 ---
 
 ![left fit](../media/l5_scintro2_tikz.pdf)
+
+<!--pan_doc:
+<sub>Figure 17: SC circuit during phase 2: the OTA transfers the charge from $C_1$ to $C_2$</sub>
+-->
+
 
 <!--pan_doc:
 
@@ -948,6 +1033,11 @@ During phase 2 we configure the circuit to leverage the OTA to do the charge tra
 
 ![left fit](../media/l5_scamp_tikz.pdf)
 
+<!--pan_doc:
+<sub>Figure 18: Switched capacitor gain circuit sampling $V_i$ on $C_1$ in phase 1 and transferring the charge to $C_2$ in phase 2</sub>
+-->
+
+
 
 <!--pan_doc:
 
@@ -959,6 +1049,11 @@ For charge to be conserved the clocks for the switch phases must never be high a
 -->
 
 ![right fit](../media/l5_scfig_tikz.pdf)
+
+<!--pan_doc:
+<sub>Figure 19: Discrete time output of the gain circuit, only valid towards the end of phase 2</sub>
+-->
+
 
 ---
 
@@ -995,6 +1090,11 @@ accumulate the input charge every cycle.
 ![left fit](../media/l5_scint_tikz.pdf)
 
 <!--pan_doc:
+<sub>Figure 20: Switched capacitor integrator: without the reset switch the charge accumulates on $C_2$</sub>
+-->
+
+
+<!--pan_doc:
 
 The output now will grow without bounds, so integrators are most often used in filter circuits, or sigma-delta ADCs where there 
 is feedback to control the voltage swing at the output of the OTA. 
@@ -1002,6 +1102,11 @@ is feedback to control the voltage swing at the output of the OTA.
 -->
 
 ![right fit](../media/l5_scifig_tikz.pdf)
+
+<!--pan_doc:
+<sub>Figure 21: Integrator output growing every clock cycle as the input charge is accumulated</sub>
+-->
+
 
 ---
 
@@ -1130,6 +1235,11 @@ is the minimum gate length in that technology.
 
 ![fit](../media/diff_ota.png)
 
+<!--pan_doc:
+<sub>Figure 22: Fully differential two-stage OTA with common mode feedback, sized in multiples of the minimum gate length F</sub>
+-->
+
+
 ---
 
 <!--pan_doc:
@@ -1139,6 +1249,11 @@ As bias circuit to make the voltages the below will work
 -->
 
 ![fit](../media/diff_ota_bias.png)
+
+<!--pan_doc:
+<sub>Figure 23: Bias circuit generating the OTA bias voltages from a 10 uA reference current</sub>
+-->
+
 
 
 
@@ -1160,6 +1275,11 @@ but usually we don't have enough headroom to use a single NMOS or PMOS. We may n
 -->
 
 ![original fit](../media/l5_sw1_tikz.pdf)
+
+<!--pan_doc:
+<sub>Figure 24: Switch implementations: NMOS, PMOS, transmission gate, and the transmission gate symbol</sub>
+-->
+
 
 ---
 
@@ -1188,6 +1308,11 @@ as shown on the right.
 
 ![original fit](../media/l5_sw2_tikz.pdf)
 
+<!--pan_doc:
+<sub>Figure 25: Transmission gate with switched bulks (left) and a bootstrapped switch (right)</sub>
+-->
+
+
 ---
 
 <!--pan_doc:
@@ -1201,6 +1326,11 @@ cross coupled dummy transistors. The JSSC SAR I've also ported to GF130NM, as sh
 
 ![original fit](../media/l00_SAR9B_CV.png)
 
+<!--pan_doc:
+<sub>Figure 26: Layout and transient simulation of the 9-bit SAR ADC, with the bootstrapped sampling switch at the bottom</sub>
+-->
+
+
 ---
 
 <!--pan_doc:
@@ -1210,6 +1340,11 @@ looks like the one below.
 -->
 
 ![original fit](../media/l5_sw3_tikz.pdf)
+
+<!--pan_doc:
+<sub>Figure 27: Fully differential bootstrapped switch with cross coupled dummy transistors</sub>
+-->
+
 
 ---
 
@@ -1230,6 +1365,11 @@ The non-overlap generator is standard. Use the one shown below. Make sure you si
 
 ![original fit](../media/l5_novl_tikz.pdf)
 
+<!--pan_doc:
+<sub>Figure 28: Non-overlapping clock generator and the resulting phases $\phi_1$ and $\phi_2$</sub>
+-->
+
+
 ---
 
 
@@ -1247,6 +1387,11 @@ $$ V_O(z) = 10 \frac{kT}{q} \ln (N)z^{-1} $$
 -->
 
 ![fit](../media/l5_scex_tikz.pdf)
+
+<!--pan_doc:
+<sub>Figure 29: Switched capacitor amplifier scaling the bipolar generated voltage by $C_1/C_2 = 10$</sub>
+-->
+
 
 
 <!--pan_doc:

@@ -158,6 +158,10 @@ close to zero as we need.
 
 ![fit](../media/l4_achai_tikz.pdf)
 
+<!--pan_doc:
+<sub>Figure 1: Analog signal chain from sensor through AFE (amplification, frequency selectivity, domain transfer) to ADC</sub>
+-->
+
 ---
 
 
@@ -252,6 +256,9 @@ I can't tell you how the Nordic radio works, but I can tell you how others usual
 
 ![fit](../media/l4_radio_tikz.pdf)
 
+<!--pan_doc:
+<sub>Figure 2: Typical radio receiver frontend: LNA, complex mixer driven by a local oscillator, anti-alias filters and ADCs for the I and Q paths</sub>
+-->
 
 <!--pan_doc:
 
@@ -326,6 +333,10 @@ I would encourage you to try and derive from the signal flow graph the $H(s)$ an
 ![left fit](../media/l4_first_order_tikz.pdf)
 
 <!--pan_doc:
+<sub>Figure 3: Signal flow graph of a general first order filter with coefficients $k_0$, $k_1$ and $\omega_0$</sub>
+-->
+
+<!--pan_doc:
 
 Signal flow graphs are useful when dealing with linear systems. 
 
@@ -371,6 +382,9 @@ to our wanted $H(s)$ we can proceed with the circuit implementation.
 
 ![left fit](../media/l4_biquad_tikz.pdf)
 
+<!--pan_doc:
+<sub>Figure 4: Signal flow graph of the bi-quadratic (second order) filter</sub>
+-->
 
  $$ H(s) = \frac{k_2 s^2 + k_1 s + k_0}{s^2 + \frac{\omega_0}{Q} s +
  \omega_o^2}$$
@@ -422,6 +436,9 @@ In a Gm-C filter the input and output nodes can have significant swing, and thus
 
 ![left fit](../media/l4_gmc_tikz.pdf)
 
+<!--pan_doc:
+<sub>Figure 5: Single-ended Gm-C integrator: a transconductor driving a capacitor</sub>
+-->
 
 $$ V_o = \frac{I_o}{s C} = \frac{\omega_{ti}}{s} V_i $$
 
@@ -440,6 +457,10 @@ In a real IC we would almost always use differential circuit, as shown below. Th
 
 ![fit left ](../media/l4_gmc_diff_tikz.pdf)
 
+<!--pan_doc:
+<sub>Figure 6: Fully differential Gm-C integrator</sub>
+-->
+
 $$ s C V_o = G_m Vi $$
 
 $$ H(s) = \frac{V_o}{V_i} = \frac{G_m}{sC}$$
@@ -454,6 +475,10 @@ the qualities I like the most is that the outputs can be flipped to implement ne
 -->
 
 ![fit left ](../media/l4_gmc_diff1_tikz.pdf)
+
+<!--pan_doc:
+<sub>Figure 7: Differential Gm-C integrator with outputs flipped to implement negative gain</sub>
+-->
 
 $$ H(s) = \frac{V_o}{V_i} = -\frac{G_m}{sC}$$
 
@@ -471,6 +496,9 @@ I would encourage you to try and calculate the transfer function.
 
 ![left fit](../media/l4_gmc1st_tikz.pdf)
 
+<!--pan_doc:
+<sub>Figure 8: First-order Gm-C filter with transconductors $G_{m1}$, $G_{m2}$ and capacitors $C_X$ and $C_A$</sub>
+-->
 
 <!--pan_doc: 
 
@@ -496,6 +524,9 @@ Below is a general purpose Gm-C bi-quadratic system.
 
 ![fit right](../media/l4_gmcbi_tikz.pdf)
 
+<!--pan_doc:
+<sub>Figure 9: General purpose differential Gm-C biquad with five transconductors</sub>
+-->
 
 $$ H(s) = \frac{k_2 s^2 + k_1 s + k_0}{s^2 + \frac{\omega_0}{Q} s +
  \omega_o^2}$$
@@ -537,6 +568,10 @@ One of my Ph.d's used the transonductor below on his master thesis [Design Consi
 
 ![inline fit](../media/l04_ff_gm.pdf)
 
+<!--pan_doc:
+<sub>Figure 10: Transconductor from the master thesis: a differential pair with common-gate cascodes to limit the Miller effect</sub>
+-->
+
 ---
 
 #[fit] Active-RC
@@ -570,6 +605,10 @@ you're trying to come up with a clever idea, or I decide to give this exact prob
 
 
 ![left fit](../media/l4_activerc_first_tikz.pdf)
+
+<!--pan_doc:
+<sub>Figure 11: General purpose first-order active-RC filter with parallel RC input and feedback networks</sub>
+-->
 
 $$ H(s) = \frac{ k_1 s + k_0 }{s + w_o}$$
 
@@ -677,6 +716,10 @@ exactly where they are.
 
 -->
 
+<!--pan_doc:
+<sub>Figure 12: General purpose active-RC biquad built from two OTAs</sub>
+-->
+
 $$ H(s) = \frac{k_2 s^2 + k_1 s + k_0}{s^2 + \frac{\omega_0}{Q} s +
  \omega_o^2}$$
 
@@ -687,6 +730,10 @@ $$H(s) = \frac{\left[ \frac{C_1}{C_B}s^2 + \frac{G_2}{C_B}s + (\frac{G_1G_3}{C_A
 # The OTA is not ideal
 
 ![left fit](../media/l4_activerc_tikz.pdf)
+
+<!--pan_doc:
+<sub>Figure 13: Active-RC integrator: OTA with resistor input and capacitor feedback</sub>
+-->
  
  $$ H(s) \approx \frac{A_0}{(1 + s A_o R C)(1 + \frac{s}{w_{ta}})}$$
  
@@ -742,6 +789,10 @@ It's possible to show that if the gain from $V(Vpi,Vpm)$ to ADC1i input is large
 
 ![inline](../media/qt_sd.png) 
 
+<!--pan_doc:
+<sub>Figure 14: Continuous-time quadrature cascaded sigma-delta modulator with in-phase and quadrature paths</sub>
+-->
+
 ---
 
 # My favorite OTA
@@ -761,6 +812,10 @@ Below is the differential current mirror OTA.
 ![fit](../media/l04_ota_diff_tikz.pdf)
 
 <!--pan_doc:
+<sub>Figure 15: Differential current mirror OTA</sub>
+-->
+
+<!--pan_doc:
 
 In a differential OTA we need to control the output common mode. In order to control the common mode, we must sense the common mode.
 
@@ -774,6 +829,10 @@ The reference for the common mode can be from a bandgap, or in the case below, V
 
 ![fit](../media/l04_ota_vsens_tikz.pdf)
 
+<!--pan_doc:
+<sub>Figure 16: Common mode sense circuit with source followers and the resistor divider generating the reference $V_{CREF}$</sub>
+-->
+
 ---
 
 <!--pan_doc:
@@ -785,6 +844,10 @@ The nice thing about the circuit below is that the common mode feedback loop has
 -->
 
 ![fit](../media/l04_ota_vcmfb_tikz.pdf)
+
+<!--pan_doc:
+<sub>Figure 17: Common mode feedback OTA comparing the sensed $V_{COUT}$ to the reference $V_{CREF}$</sub>
+-->
 
 ---
 
@@ -798,6 +861,9 @@ You can find the schematic for the OTA at
 
 ![fit inline](../media/l04_ota_sch.svg)
 
+<!--pan_doc:
+<sub>Figure 18: CNR_OTA schematic in SKY130: bias, differential OTA, common mode sense (VCM) and common mode feedback OTA</sub>
+-->
 
 <!--pan_doc:
 

@@ -21,9 +21,13 @@ date: 2026-02-06
 
 #[fit] Digital to Analog Conversion
 
+
+
 ---
 
 <!--pan_doc: 
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/tt12PDahC0Q?si=FAl1f51OmRpZPgxY" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 Processing of signals has shifted into the digital domain. But the real world is
 analog. In order to interact with the analog we need to convert the digital
@@ -41,6 +45,11 @@ Related to Ampere we have the derived units of charge (Ampere Seconds), Volt
 
 <!--![left](https://www.nist.gov/sites/default/files/images/2021/08/23/NIST.SP_.1247.png)-->
 ![left fit](../media/NIST.SP_.1247.png)
+
+<!--pan_doc:
+<sub>Figure 1: NIST poster of the SI base units and the derived units</sub>
+-->
+
 
 <!--pan_doc:
 
@@ -82,6 +91,11 @@ $$ dt = \frac{L dI}{V} $$
 
 ![left fit](../media/dac_r_div_tikz.pdf)
 
+<!--pan_doc:
+<sub>Figure 2: 1-bit DAC: three series resistors with transistor switches selecting the output tap</sub>
+-->
+
+
 
 $$ I_{ref} = \frac{V_{ref}}{3 R}$$
 
@@ -101,6 +115,11 @@ $$
 
 ![left fit](../media/dac_r_div2_tikz.pdf)
 
+<!--pan_doc:
+<sub>Figure 3: 1-bit DAC with two resistors, selecting either $V_{REF}$ or the midpoint</sub>
+-->
+
+
 $$ I_{ref} = \frac{V_{ref}}{2 R}$$
 
 $$ V_{out} = \frac{b_0 2 R V_{ref}}{2 R}  + \frac{\overline{b_0} R V_{ref}}{2 R} $$
@@ -114,6 +133,11 @@ $$
 ---
 
 ![left fit](../media/dac_r_div2b_tikz.pdf)
+
+<!--pan_doc:
+<sub>Figure 4: Two possible 2-bit resistor string DACs with switch trees</sub>
+-->
+
 
 <!--pan_skip: -->
 
@@ -140,10 +164,20 @@ DAC output will contain gain errors, offset errors, and non-linear components
 
 ![left fit](../media/dac_error.svg)
 
+<!--pan_doc:
+<sub>Figure 5: DAC output with gain error and non-linearity, and the resulting INL and DNL</sub>
+-->
+
+
 ---
 
 
 ![left fit](../media/dac_inl_dnl.svg)
+
+<!--pan_doc:
+<sub>Figure 6: DAC output compared to the ideal straight line, with INL and DNL versus digital code</sub>
+-->
+
 
 
 $$ DNL[k] = \frac{V[k+1] - V[k]}{V_{LSB}} - 1 $$
@@ -158,6 +192,11 @@ $$ INL[k] = \frac{V[k] - V_{ideal}[k]}{V_{LSB}} $$
 
 ![left fit](../media/dac_r_switches_tikz.pdf)
 
+<!--pan_doc:
+<sub>Figure 7: Binary switch tree for a resistor string DAC</sub>
+-->
+
+
 As number of resistors grow, the switches grow as 
 
 $$ \sum_{n=1}^{N} 2^n = 2^{N+1} - 2 $$
@@ -166,6 +205,11 @@ $$ \sum_{n=1}^{N} 2^n = 2^{N+1} - 2 $$
 
 ![left fit](../media/dac_r_rows_tikz.pdf)
 
+<!--pan_doc:
+<sub>Figure 8: Row and column switch matrix for a resistor string DAC</sub>
+-->
+
+
 Use a matrix with R rows and C columns. Need R + C switches, or
 
 $$ 2^{N} + 2^{N/2} $$
@@ -173,6 +217,11 @@ $$ 2^{N} + 2^{N/2} $$
 ---
 
 ![left fit](../media/dac_r_segmented_tikz.pdf)
+
+<!--pan_doc:
+<sub>Figure 9: Segmented DAC switch arrangement combining switch matrices and a tree</sub>
+-->
+
 
 Switches in a 10-bit digital to analog converter.
 
@@ -196,6 +245,11 @@ $$ R_{in} = 2R || 2R = R $$
 
 ![left fit](../media/dac_2r_0_tikz.pdf)
 
+<!--pan_doc:
+<sub>Figure 10: R-2R ladder termination: two 2R resistors in parallel equal R</sub>
+-->
+
+
 ---
 
 $$ R_{in} = R + R = 2R $$
@@ -203,6 +257,11 @@ $$ R_{in} = R + R = 2R $$
 $$ I_{0} = \frac{V_0}{2R} = \frac{V_1}{4R} $$
 
 ![left fit](../media/dac_2r_1_tikz.pdf)
+
+<!--pan_doc:
+<sub>Figure 11: One R-2R ladder section: the series R makes the input resistance 2R</sub>
+-->
+
 
 ---
 
@@ -214,6 +273,11 @@ $$ I_{1} = \frac{V_1}{2R}$$
 
 ![left fit](../media/dac_2r_2_tikz.pdf)
 
+<!--pan_doc:
+<sub>Figure 12: R-2R ladder section with the binary weighted branch currents $I_1$ and $I_0$</sub>
+-->
+
+
 ---
 
 $$ I_{RF} = I_1b_1 + I_0b_0 = \frac{V_{REF}}{2R}b_1 + \frac{V_{REF}}{4R}b_0 $$
@@ -222,6 +286,11 @@ $$ V_{O} = \left(\frac{V_{REF}}{2R}b_1 + \frac{V_{REF}}{4R}b_0\right)R_{F0}$$
 
 ![left fit](../media/dac_2r_full_tikz.pdf)
 
+<!--pan_doc:
+<sub>Figure 13: 2-bit R-2R DAC with switched branch currents summed by a transimpedance amplifier</sub>
+-->
+
+
 ---
 
 ## Binary coding 
@@ -229,6 +298,11 @@ $$ V_{O} = \left(\frac{V_{REF}}{2R}b_1 + \frac{V_{REF}}{4R}b_0\right)R_{F0}$$
 For 4 states (2-bit) there are 12 possible transitions
 
 ![left fit](../media/dac_bin_states_tikz.pdf)
+
+<!--pan_doc:
+<sub>Figure 14: The 12 possible transitions between the four 2-bit binary states</sub>
+-->
+
 
 ---
 
@@ -244,12 +318,22 @@ Both cause a non-monotonic glitch during transition.
 
 ![left fit](../media/dac_bin_btran_tikz.pdf)
 
+<!--pan_doc:
+<sub>Figure 15: Binary code transitions with MSB first (left) and LSB first (right), both non-monotonic</sub>
+-->
+
+
 --- 
 
 ## Thermometer encoding 
 
 
 ![left fit](../media/dac_thermo_states_tikz.pdf)
+
+<!--pan_doc:
+<sub>Figure 16: Transitions between the thermometer encoded states</sub>
+-->
+
 
 --- 
 
@@ -261,10 +345,19 @@ $$ 0 \rightarrow 1 \rightarrow 2  \rightarrow 3$$
 
 ![left fit](../media/dac_thermo_tran_tikz.pdf)
 
+<!--pan_doc:
+<sub>Figure 17: Thermometer code transitions are monotonic regardless of bit order</sub>
+-->
+
 --- 
 
 
 ![right fit](../media/dac_r_thermo_tikz.pdf)
+
+<!--pan_doc:
+<sub>Figure 18: Thermometer coded resistor DAC with equal resistors summed by a transimpedance amplifier</sub>
+-->
+
 
 <!--pan_skip: -->
 
@@ -278,10 +371,20 @@ $$ 0 \rightarrow 1 \rightarrow 2  \rightarrow 3$$
 
 ![fit](../media/dac_i_tikz.pdf)
 
+<!--pan_doc:
+<sub>Figure 19: Current mode DAC: binary sized differential current cells switched into a transimpedance output stage</sub>
+-->
+
+
 
 --- 
 
 ![fit](../media/dac_i_vbias_tikz.pdf)
+
+<!--pan_doc:
+<sub>Figure 20: Current mode DAC where the switch drive swings around $V_{bias}$ instead of rail to rail</sub>
+-->
+
 
 ---
 
