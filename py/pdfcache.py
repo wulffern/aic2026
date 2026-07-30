@@ -50,6 +50,13 @@ def chapter_key(name):
             for m in re.finditer(rb"\\includegraphics(?:\[[^\]]*\])?\{([^}]+)\}", body):
                 img = os.path.join("pdf", m.group(1).decode())
                 h.update(m.group(1))
+                #- Downloaded images are named by the sha256 of their URL and
+                #  re-fetched on every CI run; servers do not return byte-
+                #  identical files, so hashing their content caused spurious
+                #  rebuilds. The name already pins the URL, which is what the
+                #  lecture actually specifies.
+                if re.match(r"[0-9a-f]{64}\.", os.path.basename(img)):
+                    continue
                 try:
                     with open(img, "rb") as fi:
                         h.update(fi.read())
