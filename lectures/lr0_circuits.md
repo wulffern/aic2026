@@ -381,7 +381,7 @@ what the output resistance is ($r_{out} = v_{x}/i_x$)
 
 -->
 
-![right fit](../media/l8/cm_sdeg.pdf)
+![right fit](../media/cm_sdeg_tikz.pdf)
 
 <!--pan_doc: 
 <sub>Figure 14: Source degenerated current mirror small signal model </sub>
@@ -456,7 +456,7 @@ $$
 r_{out} \approx  r_{ds2}(A r_{ds4} g_{m4})
 $$
 
-![right fit](../media/l8/cm_gain_boost.pdf)
+![right fit](../media/cm_gain_boost_tikz.pdf)
 
 <!--pan_doc: 
 <sub>Figure 16: Active cascode current mirror </sub>

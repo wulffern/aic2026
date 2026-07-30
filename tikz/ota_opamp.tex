@@ -1,0 +1,43 @@
+\input{tikz/fig_header.tex}
+
+% From OTA to op amp: add a class AB output stage so the amplifier can
+% drive a resistive load. The AB block level shifts the gate drives so
+% both output devices conduct a small quiescent current.
+
+\begin{circuitikz}[american, thick, transform shape, circuit ee IEC]
+
+  \input{tikz/ckt_lib.tex}
+
+  % the OTA as a triangle
+  \draw (0,1.1) -- (0,-1.1) -- (2.0,0) -- cycle;
+  \draw (-1.0,0.55) node[anchor=east] {$v_p$} to [short,o-] (0,0.55);
+  \draw (-1.0,-0.55) node[anchor=east] {$v_n$} to [short,o-] (0,-0.55);
+  \node[anchor=west, scale=0.9] at (0.15,0) {OTA};
+
+  % class AB level shift block
+  \draw (2.0,0) -- (2.6,0);
+  \draw (2.6,-0.7) rectangle (3.6,0.7);
+  \node[anchor=center, scale=0.9] at (3.1,0) {AB};
+
+  % output devices: PMOS common source up, NMOS common source down
+  \draw (5.0,0) \lvpmos{MO1}{};
+  \draw (5.0,\grid) \vsupply;
+  \draw (5.0,-\grid) \lvnmos{MO2}{};
+  \draw (5.0,-\grid) \vground;
+
+  \coordinate (gp) at (MO1.G);
+  \coordinate (gn) at (MO2.G);
+  \draw (3.6,0.45) -- (4.0,0.45) -- (4.0,0.8) -- (gp);
+  \draw (3.6,-0.45) -- (4.0,-0.45) -- (4.0,-0.8) -- (gn);
+
+  % output and the resistive load
+  \fill (5.0,0) circle (0.075);
+  \draw (5.0,0) -- (6.4,0);
+  \draw (6.4,0) to [short,*-o] ++(0.0,0.0);
+  \node[anchor=south] at (6.4,0.15) {$v_o$};
+  \draw (6.4,0) -- (7.4,0);
+  \draw (7.4,-1.6) \vresistor{$R_L$};
+  \draw (7.4,-1.6) \vground;
+
+\end{circuitikz}
+\end{document}

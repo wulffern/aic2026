@@ -11,7 +11,7 @@ date: 2026-01-16
 
 <!--pan_doc:
 
-**Keywords:** OTA, Headroom, Five Transistor, Current Mirror OTA, Two-Stage, Miller Compensation, Folded Cascode, Inverter-Based, Nauta, CMFB, Dynamic Amplifiers
+**Keywords:** OTA, Headroom, Five Transistor, Current Mirror OTA, Two-Stage, Miller Compensation, Folded Cascode, Inverter-Based, Nauta, CMFB, Bias, Op Amp, Dynamic Amplifiers, Verification
 
 -->
 
@@ -377,6 +377,109 @@ sensing network.
 
 <!--pan_doc:
 <sub>Figure 8: A common mode feedback amplifier</sub>
+
+The amplifier of Figure 8 is the continuous time flavor: the output
+average is sensed, compared against $V_{CREF}$, and the result trims
+the tail bias. It corrects at every moment, but the sensing network
+loads the outputs, and at 0.8 V any sensing follower costs headroom.
+
+-->
+
+---
+
+## Switched capacitor CMFB
+
+<!--pan_doc:
+
+In a sampled system the standard answer is the switched capacitor CMFB
+in Figure 9. The two $C_1$ sense the average of the outputs and level
+shift it directly onto the tail bias node $v_{cmfb}$ - no amplifier, no
+headroom, and capacitors are perfectly linear. The switched $C_2$
+refresh the level shift towards $V_{cm} - V_B$ on every $\phi_1$, so
+leakage and startup errors bleed away in a few clock cycles.
+
+-->
+
+![fit](../media/ota_cmfb_sc_tikz.pdf)
+
+<!--pan_doc:
+<sub>Figure 9: Switched capacitor CMFB</sub>
+
+The price is clocked operation: between the phases the common mode is
+held only by the capacitors, so the loop corrects at the clock rate
+rather than continuously. In a switched capacitor filter or ADC that
+clock already exists, which is why nearly every fully differential OTA
+in a sampled system uses this network.
+-->
+
+---
+
+# Bias circuits
+
+<!--pan_doc:
+
+Every $V_B$ in this chapter has quietly assumed a bias network. The
+reference chapter builds the reference current itself; here is how that
+current becomes the gate voltages the OTAs need, Figure 10.
+
+-->
+
+![fit](../media/ota_bias_tikz.pdf)
+
+<!--pan_doc:
+<sub>Figure 10: Mirror bias and wide swing cascode bias</sub>
+
+The left branch is the workhorse: the reference current into a diode
+connected device gives $V_B = V_t + V_{DSAT}$, which every tail and
+mirror gate in this chapter copies. The right branch makes the cascode
+bias: the same current into a device with a quarter of the $W/L$ needs
+twice the effective voltage, so its gate sits at $V_t + 2V_{DSAT}$.
+A cascode gated by $V_{BC}$ then holds its mirror transistor right at
+the edge of saturation - the wide swing bias that the folded cascode's
+0.4 V of output swing depends on.
+
+Three practical rules come with the schematic. Distribute currents,
+not voltages: a $V_B$ routed across the chip picks up every IR drop
+and ground difference on the way, so send a mirrored current and
+rebuild the voltage locally. Decouple every bias gate to its source
+rail with a capacitor - the bias node is part of the signal circuit at
+high frequency. And remember the bias block in the verification below:
+an OTA that starts before its bias does is an oscillator with
+ambitions.
+
+-->
+
+---
+
+# From OTA to op amp
+
+<!--pan_doc:
+
+An OTA's output is a current source: high output resistance, happy with
+a capacitor, helpless into a resistor. The op amp is the same circuit
+plus an output stage that buys a low output resistance, Figure 11.
+
+-->
+
+![fit](../media/ota_opamp_tikz.pdf)
+
+<!--pan_doc:
+<sub>Figure 11: An op amp is an OTA plus an output stage</sub>
+
+The class AB block level shifts the two gate drives so both output
+devices idle at a small quiescent current, yet either can deliver many
+times that current into the load - power efficiency a class A follower
+cannot match. At 0.8 V the output pair is drawn as two common source
+devices, because source followers no longer fit: a follower costs a
+full $V_{GS}$ of swing, the common source pair costs one $V_{DSAT}$
+per rail.
+
+On chip, almost every load is a capacitor or a switched capacitor, so
+inside the chip you nearly always want the OTA and its high output
+resistance - the loop gain is free gain. The op amp earns its output
+stage at the pad ring: reference buffers, regulator error amplifiers
+driving pass devices, anything that leaves the die.
+
 -->
 
 ---
@@ -431,6 +534,69 @@ Read the table bottom up: at 0.8 V the pressure is towards the bottom
 rows. Start with the five transistor OTA, and move only when a
 measured, simulated shortfall - gain, swing, drive, power - pushes you
 to a specific neighbor.
+
+-->
+
+---
+
+# Verifying the OTA
+
+<!--pan_doc:
+
+Designing the OTA is the smaller half of the work. Before it goes into
+a system, a standard battery of analyses must say yes - and each row
+below has a reason to exist, usually a chip that failed without it.
+
+-->
+
+| Analysis | Testbench | Look for |
+| :-- | :-- | :-- |
+| Operating point | closed loop, DC | every device saturated, all corners |
+| Loop gain | stb / broken loop | DC gain, UGF, phase margin > 60 deg |
+| CMFB loop gain | stb on the CM loop | stable on its own, faster than the disturbance |
+| Noise | AC noise, closed loop | input referred, thermal and flicker |
+| Offset | Monte Carlo mismatch | sigma of input referred offset |
+| Swing | sweep output, plot gain | where the gain collapses |
+| Slew and settling | large signal step | settles to accuracy in the time budget |
+| PSRR / CMRR | AC from supply / CM | worst case versus frequency |
+| Start-up | transient from zero | bias and CMFB wake up, always |
+| Power | DC, all corners | the budget holds where it is slowest |
+
+---
+
+<!--pan_doc:
+
+A few of the rows deserve their own sentence.
+
+The operating point check is first because it is cheap and catches
+most disasters: a single transistor pushed into triode at the
+slow-slow, low supply, hot corner explains many a "the gain is 20 dB
+too low in the lab" story. Check it across corners, supplies and
+temperature before trusting any small signal number.
+
+The loop gain must be measured with the loading in place - the real
+feedback network, the real sampling capacitors - because the phase
+margin depends on the load more than on the OTA. For a fully
+differential OTA there are two loops, and the CMFB loop must be
+analyzed separately: it has its own crossover and its own phase
+margin, and an unstable CMFB loop looks exactly like an oscillating
+OTA.
+
+Offset and noise are budget items, not pass/fail: Monte Carlo gives
+the offset sigma that the system - a comparator threshold, an ADC
+code - must absorb, and the input referred noise integrated over the
+signal band must sit under the quantization or thermal floor it feeds.
+
+Slew and settling only exist in a large signal transient. The small
+signal bandwidth promises nothing about a full scale step: the input
+pair steers all its tail current, the OTA slews at $I/C$, and only the
+last stretch is exponential. In a switched capacitor circuit the
+settling budget is half a clock period, and it is the transient - with
+mismatch, with corners - that says whether the budget holds.
+
+And start-up: simulate the whole thing from zero supply, every time.
+Bias loops and CMFB loops both have a stable state called "off", and
+finding it in silicon is the most expensive way to learn this rule.
 
 -->
 

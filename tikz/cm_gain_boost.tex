@@ -1,0 +1,80 @@
+\input{tikz/fig_header.tex}
+
+% Active cascode (gain boosted) current mirror: amplifiers regulate the
+% drains of the mirror devices by driving the cascode gates, multiplying
+% the output resistance by the amplifier gain A.
+
+\begin{circuitikz}[american, thick, transform shape, circuit ee IEC]
+
+  \input{tikz/ckt_lib.tex}
+
+  \def\xl{0}
+  \def\xr{6.4}
+  \def\ycas{1.6}    % cascode row bottom
+  \def\ytop{3.2}    % top of the cascodes
+
+  % ---- mirror devices ----
+  \draw (\xl,0) \vground;
+  \draw (\xl,0) \lvnmos{M1}{};
+  \draw (\xr,0) \vground;
+  \draw (\xr,0) \lvmnmos{M2}{};
+
+  % ---- cascodes, gates facing the amplifiers in the middle ----
+  \draw (\xl,\ycas) \lvmnmos{M3}{};
+  \draw (\xr,\ycas) \lvnmos{M4}{};
+
+  % ---- input and output branches ----
+  \draw (\xl,\ytop) to [short,-o, i_<=$i_{in}$] (\xl,4.4);
+  \draw (\xr,\ytop) to [short,-o, i^<=$i_{out}$] (\xr,4.4);
+
+  % ---- mirror gate wire, routed under the ground row ----
+  \coordinate (g1) at (M1.G);
+  \coordinate (g2) at (M2.G);
+  \draw (g1) -- ++(-0.5,0) coordinate (g1a);
+  \draw (g1a) -- (g1a |- 0,-0.8) coordinate (g1b);
+  \draw (g2) -- ++(0.5,0) coordinate (g2a);
+  \draw (g2a) -- (g2a |- 0,-0.8) coordinate (g2b);
+  \draw (g1b) -- (g2b);
+
+  % ---- diode connection: M1 gate up to the input node ----
+  \fill (g1a) circle (0.075);
+  \draw (g1a) -- (g1a |- 0,4.1) coordinate (g1c);
+  \draw (g1c) -- (\xl,4.1);
+  \fill (\xl,4.1) circle (0.075);
+
+  % ---- left boost amplifier: drives M3's gate ----
+  \draw (2.55,2.9) -- (2.55,1.9) -- (1.65,2.4) -- cycle;
+  \node[anchor=east, scale=0.8] at (2.5,2.15) {$+$};
+  \node[anchor=east, scale=0.8] at (2.5,2.65) {$-$};
+  \coordinate (g3) at (M3.G);
+  \draw (1.65,2.4) -- (1.15,2.4);
+  \draw (1.15,2.4) |- (g3);
+  % + input senses the drain of M1
+  \draw (2.55,2.15) -- (2.95,2.15) -- (2.95,\ycas) -- (\xl,\ycas);
+  \fill (\xl,\ycas) circle (0.075);
+
+  % ---- right boost amplifier: drives M4's gate ----
+  \draw (3.85,2.9) -- (3.85,1.9) -- (4.75,2.4) -- cycle;
+  \node[anchor=west, scale=0.8] at (3.9,2.15) {$+$};
+  \node[anchor=west, scale=0.8] at (3.9,2.65) {$-$};
+  \coordinate (g4) at (M4.G);
+  \draw (4.75,2.4) -- (5.15,2.4);
+  \draw (5.15,2.4) |- (g4);
+  % + input senses the drain of M2
+  \draw (3.85,2.15) -- (3.45,2.15) -- (3.45,\ycas) -- (\xr,\ycas);
+  \fill (\xr,\ycas) circle (0.075);
+
+  % ---- shared reference for the two minus inputs ----
+  \draw (2.55,2.65) -- (3.85,2.65);
+  \fill (3.2,2.65) circle (0.075);
+  \draw (3.2,2.65) -- (3.2,3.9);
+  \draw (3.2,3.9) to [short,-o] ++(0,0.3) node[anchor=south] {$V_{B}$};
+
+  % ---- device names ----
+  \node[anchor=west, scale=0.8] at (0.35,0.8) {M1};
+  \node[anchor=east, scale=0.8] at (6.05,0.8) {M2};
+  \node[anchor=east, scale=0.8] at (-0.35,2.4) {M3};
+  \node[anchor=west, scale=0.8] at (6.75,2.4) {M4};
+
+\end{circuitikz}
+\end{document}

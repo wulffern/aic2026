@@ -1,0 +1,52 @@
+\input{tikz/fig_header.tex}
+
+% Small signal model of the source degenerated current mirror output
+% branch. The gate is quiet - the diode side impedance 1/gm1 + R_S
+% carries no signal current - and the test source at the drain fights
+% g_m2 v_gs, r_ds2 and the degeneration resistor.
+
+\begin{circuitikz}[american, thick, transform shape, circuit ee IEC]
+
+  \input{tikz/ckt_lib.tex}
+
+  \def\ytop{2.6}    % drain rail
+  \def\xgm{3.8}
+  \def\xrds{5.6}
+  \def\xterm{6.8}
+
+  % gate bias branch: quiet, so the gate sits at AC ground
+  \draw (0,\ytop) to [R, l_=$1/g_{m1}$] (0,0.6);
+  \draw (0,0.6) to [R, l_=$R_S$] (0,-1.4);
+  \draw (0,-1.4) \vground;
+  \draw (0,\ytop) -- (1.3,\ytop);
+  \node[anchor=south, color=blue] at (0.4,{\ytop+0.15}) {$v_g = 0$};
+
+  % floating gate marker with v_gs annotation down to the source rail
+  \draw (1.39,\ytop) circle (0.09);
+  \node[anchor=south] at (1.2,{\ytop+0.1}) {G};
+  \node[anchor=north] at (1.4,{\ytop-0.25}) {$+$};
+  \node[anchor=west, color=blue] at (0.9,1.3) {$v_{gs}$};
+  \node[anchor=south] at (1.4,0.25) {$-$};
+
+  % transistor elements between drain rail and source rail
+  \draw (\xgm,\ytop) to [cI, l_=$g_{m2} v_{gs}$] (\xgm,0);
+  \draw (\xrds,\ytop) to [R, l_=$r_{ds2}$] (\xrds,0);
+
+  % drain rail with the test source
+  \draw (\xgm,\ytop) -- (\xterm,\ytop);
+  \fill (\xrds,\ytop) circle (0.075);
+  \draw (\xterm,\ytop) to [short, -o, i_=$i_x$] ({\xterm+1.0},\ytop);
+  \draw ({\xterm+1.09},\ytop) -- ({\xterm+1.6},\ytop);
+  \draw ({\xterm+1.6},\ytop) to [V, l_=$v_x$] ({\xterm+1.6},{\ytop-1.6});
+  \draw ({\xterm+1.6},{\ytop-1.6}) \vground;
+
+  % source rail with the degeneration resistor
+  \draw (\xgm,0) -- (\xterm,0);
+  \fill (\xrds,0) circle (0.075);
+  \fill (4.7,0) circle (0.075);
+  \draw (\xterm,0) to [short,-o] ++(0.4,0) node[anchor=west] {$v_s$};
+  \draw (4.7,0) to [R, l=$R_S$, i=$i_x$] (4.7,-2.0);
+  \draw (4.7,-2.0) \vground;
+
+\end{circuitikz}
+\end{document}

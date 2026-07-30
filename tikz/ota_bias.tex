@@ -1,0 +1,45 @@
+\input{tikz/fig_header.tex}
+
+% Bias generation for the OTAs: a reference current into a diode
+% connected device makes the mirror/tail bias V_B, and the same current
+% into a quarter W/L diode device makes the wide swing cascode bias
+% V_BC = V_t + 2 V_DSAT.
+
+\begin{circuitikz}[american, thick, transform shape, circuit ee IEC]
+
+  \input{tikz/ckt_lib.tex}
+
+  % ---- branch 1: mirror / tail bias ----
+  \draw (0,0) \vground;
+  \draw (0,0) \lvnmos{MB1}{};
+  \coordinate (g1) at (MB1.G);
+  \fill (g1) circle (0.075);
+  \draw (g1) |- (0,\grid);
+  \fill (0,\grid) circle (0.075);
+  \draw (0,3.6) to [I, l=$I_{ref}$] (0,\grid);
+  \draw (0,3.6) \vsupply;
+  \draw (g1) -- ++(-0.6,0) coordinate (b1);
+  \draw (b1) to [short,-o] ++(-0.3,0) node [anchor=east] {$V_{B}$};
+
+  % ---- branch 2: wide swing cascode bias ----
+  \draw (3.2,0) \vground;
+  \draw (3.2,0) \lvmnmos{MB2}{};
+  \coordinate (g2) at (MB2.G);
+  \fill (g2) circle (0.075);
+  \draw (g2) |- (3.2,\grid);
+  \fill (3.2,\grid) circle (0.075);
+  \draw (3.2,3.6) to [I, l_=$I_{ref}$] (3.2,\grid);
+  \draw (3.2,3.6) \vsupply;
+  \draw (g2) -- ++(0.6,0) coordinate (b2);
+  \draw (b2) to [short,-o] ++(0.3,0) node [anchor=west] {$V_{BC}$};
+
+  % sizes
+  \node[anchor=east, scale=0.8] at (-0.75,0.3) {$\frac{W}{L}$};
+  \node[anchor=east, scale=0.8] at (2.45,0.3) {$\frac{W}{4L}$};
+
+  % what each output is worth
+  \node[anchor=west, color=blue, scale=0.9] at (-1.6,-1.1) {$V_B = V_t + V_{DSAT}$};
+  \node[anchor=west, color=blue, scale=0.9] at (2.4,-1.1) {$V_{BC} = V_t + 2V_{DSAT}$};
+
+\end{circuitikz}
+\end{document}
