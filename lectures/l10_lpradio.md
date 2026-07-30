@@ -972,7 +972,7 @@ You can spend your life on PLLs.
 ---
 
 
-![inline](../media/l08_pll_2mod.pdf)
+![inline](../media/l08_pll_2mod_tikz.pdf)
 
 
 ---

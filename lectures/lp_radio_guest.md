@@ -301,7 +301,7 @@ In radio design there are so many choices it's easy to get lost.
 
 ---
 
-![inline](../media/l08_pll_2mod.pdf)
+![inline](../media/l08_pll_2mod_tikz.pdf)
 
 
 ---

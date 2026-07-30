@@ -340,7 +340,7 @@ Most modern radios, however, will have a two-point modulation. The modulation si
 
 -->
 
-![fit](../media/l08_pll_2mod.pdf)
+![fit](../media/l08_pll_2mod_tikz.pdf)
 
 
 ---

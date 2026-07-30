@@ -49,7 +49,7 @@
 <path clip-rule="nonzero" d="M 108 51 L 141 51 L 141 83.003906 L 108 83.003906 Z M 108 51 "/>
 </clipPath>
 <clipPath id="clip-2">
-<path clip-rule="nonzero" d="M 165 51 L 198 51 L 198 83.003906 L 165 83.003906 Z M 165 51 "/>
+<path clip-rule="nonzero" d="M 154 40 L 209 40 L 209 83.003906 L 154 83.003906 Z M 154 40 "/>
 </clipPath>
 <clipPath id="clip-3">
 <path clip-rule="nonzero" d="M 159 49 L 203 49 L 203 83.003906 L 159 83.003906 Z M 159 49 "/>
@@ -91,7 +91,7 @@
 </g>
 <path fill="none" stroke-width="0.79701" stroke-linecap="butt" stroke-linejoin="miter" stroke="rgb(0%, 0%, 0%)" stroke-opacity="1" stroke-miterlimit="10" d="M 120.474063 0.00128125 L 145.985781 0.00128125 " transform="matrix(1, 0, 0, -1, 19.815, 67.013)"/>
 <g clip-path="url(#clip-2)">
-<path fill="none" stroke-width="0.79701" stroke-linecap="butt" stroke-linejoin="miter" stroke="rgb(0%, 0%, 0%)" stroke-opacity="1" stroke-miterlimit="10" d="M 145.985781 -15.592469 L 145.985781 15.591125 L 177.169375 15.591125 L 177.169375 -15.592469 Z M 145.985781 -15.592469 " transform="matrix(1, 0, 0, -1, 19.815, 67.013)"/>
+<path fill="none" stroke-width="0.79701" stroke-linecap="butt" stroke-linejoin="miter" stroke="rgb(0%, 0%, 0%)" stroke-opacity="1" stroke-miterlimit="10" d="M 177.169375 0.00128125 C 177.169375 8.610656 170.188906 15.591125 161.575625 15.591125 C 152.96625 15.591125 145.985781 8.610656 145.985781 0.00128125 C 145.985781 -8.612 152.96625 -15.592469 161.575625 -15.592469 C 170.188906 -15.592469 177.169375 -8.612 177.169375 0.00128125 Z M 177.169375 0.00128125 " transform="matrix(1, 0, 0, -1, 19.815, 67.013)"/>
 </g>
 <g clip-path="url(#clip-3)">
 <path fill="none" stroke-width="0.79701" stroke-linecap="butt" stroke-linejoin="miter" stroke="rgb(0%, 0%, 0%)" stroke-opacity="1" stroke-miterlimit="10" d="M 151.3725 0.00128125 C 153.036563 3.192687 154.626406 6.235656 156.474063 6.235656 C 158.321719 6.235656 159.911563 3.192687 161.575625 0.00128125 C 163.239688 -3.194031 164.833438 -6.237 166.677188 -6.237 C 168.524844 -6.237 170.118594 -3.194031 171.782656 0.00128125 " transform="matrix(1, 0, 0, -1, 19.815, 67.013)"/>
