@@ -1,0 +1,70 @@
+\input{tikz/fig_header.tex}
+
+% The clocks of a wireless SoC (an nRF-style IC): a 32 MHz crystal
+% oscillator that feeds the system PLL and the radio's own PLL/LO, and a
+% slow 32768 Hz clock that can come from either a crystal oscillator or an
+% RC oscillator.  The question mark is the original's: what does the MCU
+% actually run on?
+
+\begin{circuitikz}[american, thick,
+  blk/.style={draw=blue, rectangle, minimum width=1.3cm,
+              minimum height=1.0cm, text=red}]
+
+  % a two-pin crystal package at (#1,#2), pins to the right
+  \newcommand{\xtal}[2]{%
+    \draw[blue] ({#1-0.7},{#2+0.25}) -- ({#1-0.1},{#2+0.25});
+    \draw[blue] ({#1-0.7},{#2-0.25}) -- ({#1-0.1},{#2-0.25});
+    \draw[blue] ({#1-0.1},{#2+0.25}) -- ({#1+0.3},{#2+0.25})
+                -- ({#1+0.3},{#2-0.25}) -- ({#1-0.1},{#2-0.25});
+    \draw[blue] ({#1-0.1},{#2+0.4}) rectangle ({#1+0.1},{#2-0.4});}
+
+  % the IC boundary
+  \draw[blue] (0,0) rectangle (7.0,7.6);
+
+  % 32 MHz crystal oscillator and system PLL
+  \node[blk] (xo1) at (1.3,6.6) {XO};
+  \node[blk] (pll) at (1.3,5.3) {PLL};
+  \node[blk, minimum width=2.4cm] (mcu) at (4.4,3.4) {MCU};
+
+  % the radio with its own PLL and the LO buffer
+  \draw[blue] (3.3,4.6) rectangle (6.3,6.3);
+  \node[red,anchor=north] at (4.8,6.25) {\small RADIO};
+  \node[blk, minimum width=1.0cm, minimum height=0.8cm] (rpll) at (4.2,5.3) {\small PLL};
+  \draw[blue] (5.0,4.9) -- (5.0,5.7) -- (5.7,5.3) -- cycle;   % the LO buffer
+  \node[armygreen, anchor=north west] at (5.0,4.95) {\small LO};
+
+  % antenna, outside the chip
+  \draw[blue] (5.7,5.3) -- (8.0,5.3) -- (8.0,8.4);
+  \draw[blue] (8.0,8.4) -- (7.6,9.0) (8.0,8.4) -- (8.4,9.0) (7.6,9.0) -- (8.4,9.0);
+
+  % 32 MHz crystal, outside the chip
+  \xtal{-0.7}{6.6}
+  \draw[blue] (-0.4,6.6) -- (xo1.west);
+
+  % XO to the PLLs, and the 32 MHz label
+  \draw[blue] (xo1.east) -- (2.6,6.6);
+  \node[armygreen, anchor=south west] at (2.0,6.85) {32 MHz};
+  \draw[blue] (2.6,6.6) -- (2.6,5.3);
+  \draw[blue, latex-latex] (pll.east) -- (rpll.west);
+  \fill[blue] (2.6,5.3) circle (0.05);
+
+  % what runs the MCU?
+  \draw[blue, dotted, -latex] (2.6,5.3) -- (2.6,3.4) -- (mcu.west);
+  \node[armygreen] at (2.35,4.5) {?};
+
+  % 32768 Hz: crystal oscillator or RC oscillator
+  \xtal{-0.7}{2.6}
+  \node[blk] (xo2) at (1.3,2.6) {XO};
+  \draw[blue] (-0.4,2.6) -- (xo2.west);
+  \node[blk] (rc) at (1.3,1.0) {RC};
+
+  % the switch that picks one of the two
+  \draw[blue] (xo2.east) -- (2.4,2.6) -- (2.4,2.0);
+  \draw[blue] (rc.east) -- (2.4,1.0) -- (2.4,1.6);
+  \fill[blue] (2.4,2.0) circle (0.05);
+  \fill[blue] (2.4,1.6) circle (0.05);
+  \draw[blue] (2.4,1.6) -- (2.9,1.95);   % the wiper
+  \node[armygreen, anchor=south west] at (2.7,2.1) {32768 Hz};
+
+\end{circuitikz}
+\end{document}

@@ -795,7 +795,7 @@ Clocks $$\alpha = 1$$
 
 ## Stop activity
 
-![inline fit ](../media/logic.pdf)  ![inline fit ](../media/stop_activity.pdf) 
+![inline fit ](../media/logic_tikz.pdf)  ![inline fit ](../media/stop_activity.pdf) 
 
 ---
 ## Reduce frequency

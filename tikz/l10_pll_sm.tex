@@ -1,0 +1,49 @@
+\input{tikz/fig_header.tex}
+
+% The small-signal (s-domain) model of the PLL: phase in, phase error
+% phi_d through the detector gain K_pd, the loop filter K_lp H_lp(s), the
+% oscillator K_osc/s, and 1/N back to the minus input of the sum.
+
+\begin{circuitikz}[american, thick, transform shape]
+
+  \input{tikz/sfg_lib.tex}
+
+  \def\ym{0}      % the forward path
+  \def\yb{-2.0}   % the feedback path
+  \def\xs{1.6}    % summing node
+  \def\xp{3.1}    % left edge of the K_pd triangle
+  \def\xl{6.2}    % loop filter
+  \def\xo{9.3}    % oscillator
+  \def\xn{6.2}    % divider
+  \def\xt{10.9}   % where the feedback taps the output
+
+  % forward path
+  \node[anchor=east] at (0.1,\ym) {$\phi_{in}(s)$};
+  \draw[->] (0.1,\ym) -- ({\xs-\sfgR},\ym);
+  \sfgSum{\xs}{\ym}
+  \draw[->] ({\xs+\sfgR},\ym) -- (\xp,\ym);
+  \node[anchor=south] at (2.7,0.35) {$\phi_{d}(s)$};
+
+  % the phase detector gain, a triangle
+  \draw (\xp,0.55) -- (\xp,-0.55) -- ({\xp+1.1},0) -- cycle;
+  \node[anchor=east] at ({\xp+0.75},0) {$K_{pd}$};
+  \draw[->] ({\xp+1.1},\ym) -- ({\xl-\sfgBw},\ym);
+
+  % loop filter and oscillator
+  \sfgBox{\xl}{\ym}{$K_{lp}H_{lp}(s)$}
+  \draw[->] ({\xl+\sfgBw},\ym) -- ({\xo-\sfgBw},\ym);
+  \sfgBox{\xo}{\ym}{$K_{osc}/s$}
+  \draw ({\xo+\sfgBw},\ym) -- (12.1,\ym);
+  \node[anchor=south] at (11.6,0.35) {$\phi(s)$};
+
+  % feedback through 1/N into the bottom of the sum
+  \sfgDot{\xt}{\ym}
+  \draw (\xt,\ym) -- (\xt,\yb) -- ({\xn+\sfgBw},\yb);
+  \sfgBox{\xn}{\yb}{$1/N$}
+  \draw ({\xn-\sfgBw},\yb) -- (\xs,\yb);
+  \draw[->] (\xs,\yb) -- (\xs,{\ym-\sfgR});
+  \node[anchor=south] at (2.7,{\yb+0.15}) {$\phi_{div}(s)$};
+  \node[anchor=north east] at ({\xs-0.12},{\ym-0.32}) {$-$};
+
+\end{circuitikz}
+\end{document}

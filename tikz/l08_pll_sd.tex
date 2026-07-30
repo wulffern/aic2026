@@ -1,0 +1,51 @@
+\input{tikz/fig_header.tex}
+
+% The fractional PLL: the feedback divider hops between integers under
+% sigma-delta control, so the average division ratio is fractional and the
+% resolution is fine without dividing down the reference.  Geometry
+% matches l10_freq_fb.
+
+\begin{circuitikz}[american, thick, transform shape]
+
+  \input{tikz/sfg_lib.tex}
+
+  \newcommand{\pllBox}[3]{%
+    \draw ({#1-0.55},{#2-0.55}) rectangle ({#1+0.55},{#2+0.55});
+    \node at (#1,#2) {#3};}
+  \newcommand{\pllOsc}[2]{%
+    \pllBox{#1}{#2}{}
+    \draw ({#1-0.36},#2) sin ({#1-0.18},{#2+0.22}) cos (#1,#2)
+          sin ({#1+0.18},{#2-0.22}) cos ({#1+0.36},#2);}
+
+  \def\ym{0}      % the forward path
+  \def\yt{1.8}    % the feedback path
+  \def\xs{1.8}    % summing node
+  \def\xh{3.7}    % H(s)
+  \def\xo{5.7}    % oscillator
+  \def\xd{3.7}    % sigma-delta on the feedback path
+  \def\xn{5.7}    % divider on the feedback path
+  \def\xt{7.2}    % where the feedback taps the output
+
+  % forward path
+  \node[anchor=east] at (0.1,\ym) {$f_{in}$};
+  \draw[->] (0.1,\ym) -- ({\xs-\sfgR},\ym);
+  \sfgSum{\xs}{\ym}
+  \draw[->] ({\xs+\sfgR},\ym) -- ({\xh-0.55},\ym);
+  \pllBox{\xh}{\ym}{$H(s)$}
+  \draw ({\xh+0.55},\ym) -- ({\xo-0.55},\ym);
+  \pllOsc{\xo}{\ym}
+  \draw ({\xo+0.55},\ym) -- (8.6,\ym);
+  \node[anchor=south] at (8.2,0.25) {$f_{o}$};
+
+  % feedback: divider, then the sigma-delta, then down into the sum
+  \sfgDot{\xt}{\ym}
+  \draw (\xt,\ym) -- (\xt,\yt) -- ({\xn+0.55},\yt);
+  \pllBox{\xn}{\yt}{$\div N$}
+  \draw[->] ({\xn-0.55},\yt) -- ({\xd+0.55},\yt);
+  \pllBox{\xd}{\yt}{$\Sigma\Delta$}
+  \draw ({\xd-0.55},\yt) -- (\xs,\yt);
+  \draw[->] (\xs,\yt) -- (\xs,{\ym+\sfgR});
+  \node[anchor=south west] at ({\xs+0.12},{\ym+0.32}) {$-$};
+
+\end{circuitikz}
+\end{document}

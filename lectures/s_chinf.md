@@ -199,7 +199,7 @@ The latch-up process can start with electrons injected into the p-type substrate
 
 ---
 
-![fit](../media/logic.pdf)
+![fit](../media/logic_tikz.pdf)
 
 
 ---

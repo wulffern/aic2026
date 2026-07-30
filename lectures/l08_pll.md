@@ -216,7 +216,7 @@ PLLs take a reference input, and can generate a higher frequency, (or indeed low
 
 -->
 
-![fit](../media/l10_clockic.pdf)
+![fit](../media/l10_clockic_tikz.pdf)
 
 ---
 
@@ -244,7 +244,7 @@ For an analog designer the constraints from digital will tell us what's the maxi
 
 -->
 
-![fit](../media/logic.pdf)
+![fit](../media/logic_tikz.pdf)
 
 ---
 
@@ -259,7 +259,7 @@ as we make $H(s)$ infinite we can force the output to be an exact copy of the in
 
 ---
 
-![fit](../media/l10_fb.pdf)
+![fit](../media/l10_fb_tikz.pdf)
 
 ---
 
@@ -279,7 +279,7 @@ If we design the $H(s)$ correctly, then we have $f_o = N \times f_{in}$
 
 -->
 
-![fit](../media/l10_freq_fb.pdf)
+![fit](../media/l10_freq_fb_tikz.pdf)
 
 ---
 
@@ -288,7 +288,7 @@ Sometimes you want a finer frequency resolution, in that case you'd add a divide
 
 -->
 
-![fit](../media/l08_pll_m.pdf)
+![fit](../media/l08_pll_m_tikz.pdf)
 
 ---
 
@@ -302,7 +302,7 @@ We can also use a fractional divider, where we swap between two, or more, intege
 
 -->
 
-![fit](../media/l08_pll_sd.pdf)
+![fit](../media/l08_pll_sd_tikz.pdf)
 
 ---
 
@@ -329,7 +329,7 @@ One option is shown below. We could modulate our frequency reference directly. T
 
 ---
 
-![fit](../media/l08_pll_mod.pdf)
+![fit](../media/l08_pll_mod_tikz.pdf)
 
 
 ---
@@ -405,7 +405,7 @@ The $K_{osc}/s$ is our oscillator transfer function. And the $1/N$ is our feedba
 -->
 
 
-![left fit](../media/l10_pll_sm.pdf)
+![left fit](../media/l10_pll_sm_tikz.pdf)
 
 ## Loop gain
 
