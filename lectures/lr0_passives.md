@@ -172,13 +172,17 @@ Tricky temperature dependence
 
 <!--pan_doc:
 
-The diffusion resistor comes with baggage: the resistor body forms a pn
-junction to the bulk, so it carries a distributed, voltage dependent
-junction capacitance, and the depletion region eats into the conducting
-cross section, so the resistance itself moves with the voltage. Add a
-temperature coefficient set by doping and mobility in opposite
-directions, and the diffusion resistor is a device you use when the poly
-resistor is unavailable, not because you want to.
+The diffusion resistor comes with baggage. The resistor body forms a pn
+junction to whatever surrounds it, so it carries a distributed, voltage
+dependent junction capacitance, and the depletion region eats into the
+conducting cross section, so the resistance itself moves with the
+voltage. The substrate is p- in every modern process, so an n+ resistor
+sits straight in it, but a p+ resistor needs an n-well around it - and
+that well is a third terminal you must bias, with its own junction to
+the substrate underneath. Add a temperature coefficient set by doping
+and mobility pulling in opposite directions, and the diffusion resistor
+is a device you use when the poly resistor is unavailable, not because
+you want to.
 
 -->
 
@@ -186,7 +190,7 @@ resistor is unavailable, not because you want to.
 ![right fit](../media/pas_ndiff_tikz.pdf)
 
 <!--pan_doc:
-<sub>Figure 2: Diffusion resistor</sub>
+<sub>Figure 2: Diffusion resistors: n+ in the substrate, p+ in an n-well</sub>
 -->
 
 ---

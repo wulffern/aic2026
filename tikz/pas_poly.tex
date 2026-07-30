@@ -10,8 +10,8 @@
   \def\sh{0.5}   % strip height
   \def\sp{1.2}   % strip pitch
 
-  % dummy strips top and bottom
-  \fill[poly] (0,{5*\sp}) rectangle (\sw,{5*\sp+\sh});
+  % dummy strips top and bottom, at the same pitch as the active strips
+  \fill[poly] (0,{4*\sp}) rectangle (\sw,{4*\sp+\sh});
   \fill[poly] (0,{-\sp}) rectangle (\sw,{-\sp+\sh});
 
   % four active strips
@@ -48,8 +48,8 @@
   % labels
   \node[anchor=east] at (-1.7,0.25) {B};
   \node[anchor=east] at (-1.7,{3*\sp+0.25}) {A};
-  \node[anchor=west, scale=0.8, color=black!60] at (6.3,{5*\sp+0.25}) {dummy};
-  \node[anchor=west, scale=0.8, color=black!60] at (6.3,{-\sp+0.25}) {dummy};
+  \node[anchor=west, scale=0.8, color=black!60] at (6.9,{4*\sp+0.25}) {dummy};
+  \node[anchor=west, scale=0.8, color=black!60] at (6.9,{-\sp+0.25}) {dummy};
 
 \end{tikzpicture}
 \end{document}

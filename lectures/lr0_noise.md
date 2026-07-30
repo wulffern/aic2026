@@ -53,11 +53,8 @@ $$\begin{aligned}
 
 # Average Power
 
-Average power is defined for a continuous system as
-(<a href="#eq:powcont" data-reference-type="ref"
-data-reference="eq:powcont">[eq:powcont]</a>) and for discrete samples
-it can be defined as (<a href="#eq:powsamp" data-reference-type="ref"
-data-reference="eq:powsamp">[eq:powsamp]</a>). 
+Average power is defined for a continuous system, and for discrete
+samples, as the two definitions below. 
 
 $P_{av}$ usually has the
 unit $A^2$ or $V^2$, so we have to multiply/devide by the impedance to
@@ -68,16 +65,11 @@ $$P_{av} = \lim_{T\to\infty} \frac{1}{T} \int^{+T/2}_{-T/2} x^2(t) dt$$
 
 $$P_{av} = \frac{1}{N}\sum_{i=0}^N x^2(i)$$
 
-If x(t) has a mean of zero then, according to
-(<a href="#eq:var" data-reference-type="ref"
-data-reference="eq:var">[eq:var]</a>), $P_{av}$ is equal to the variance
-of x(t).
+If x(t) has a mean of zero then, according to the definition of
+variance above, $P_{av}$ is equal to the variance of x(t).
 
 Many different notations are used to denote average power and RMS value
-of voltage or current, some of them are listed in Table
-<a href="#t:avgpow" data-reference-type="ref"
-data-reference="t:avgpow">[t:avgpow]</a> and Table
-<a href="#t:rms" data-reference-type="ref" data-reference="t:rms">2</a>.
+of voltage or current, some of them are listed in the two tables below.
 Notation can be a confusing thing, it changes from book to book and
 makes expressions look different. 
 
@@ -171,11 +163,8 @@ $$S_y(f) = S_x(f)|H(f)|^2$$ , where $S_y(f)$ is the output power
 spectral density, $S_x(f)$ is the input power spectral density and
 $H(f)$ is the transfer function of a time-invariant linear system.
 
-If we insert (<a href="#eq:psd_hf" data-reference-type="ref"
-data-reference="eq:psd_hf">[eq:psd_hf]</a>) into
-(<a href="#eq:ms_psd" data-reference-type="ref"
-data-reference="eq:ms_psd">[eq:ms_psd]</a>), with $S_x(f) =
-a\:constant = D_v$ we get
+If we insert the filter relation into the mean square relation above,
+with $S_x(f) = a\:constant = D_v$ we get
 
 $$\overline{x^2(t)} = \int{S_y(f)df} = D_v\int{|H(f)|^2 df} = D_v f_x$$
 , where $f_x$ is what we call the noise bandwidth. For a single time
@@ -187,9 +176,7 @@ bandwidth and $f_0$ is the 3dB frequency.
 We haven’t told you this yet, but thermal noise is white and white means
 that the power spectral density is flat (constant over all frequencies).
 If $S_x(f)$ is our thermal noise source and $H(f)$ is a standard low
-pass filter, then equation
-(<a href="#eq:psd_hf" data-reference-type="ref"
-data-reference="eq:psd_hf">[eq:psd_hf]</a>) tells us that the output
+pass filter, then the filter relation above tells us that the output
 spectral density will be shaped by $H(f)$. At frequencies above the
 $f_x$ in $H(f)$ we expect the root power spectral density to fall by
 20dB per decade.
@@ -215,9 +202,8 @@ distribution, thus thermal noise is white.
 # PSD of a white noise source
 
 If we have a true random process with Gaussian distribution we know that
-the autocorrelation function only has a value for $\tau=0$. From
-equation (<a href="#eq:autocor" data-reference-type="ref"
-data-reference="eq:autocor">[eq:autocor]</a>) we have that
+the autocorrelation function only has a value for $\tau=0$. From the
+definition of auto-correlation above we have that
 
 $$\begin{aligned}
 R_x(\tau ) &={}  \lim_{T\to\infty} \frac{1}{T}\int^{+T/2}_{-T/2}{ x(t)x(t - \tau) dt} \\
@@ -226,9 +212,8 @@ R_x(\tau ) &={}  \lim_{T\to\infty} \frac{1}{T}\int^{+T/2}_{-T/2}{ x(t)x(t - \tau
 \end{aligned}$$
 
 The reason being that in a true random process $x(t)$ is uncorrelated
-with $x(t + \tau )$ where $\tau$ is an integer. If we use equation
-(<a href="#eq:psd" data-reference-type="ref"
-data-reference="eq:psd">[eq:psd]</a>) we see that
+with $x(t + \tau )$ where $\tau$ is an integer. If we use the
+definition of power spectral density above we see that
 
 $$\begin{aligned}
   S_x(f) &=\: 2\int_{-\infty}^{\infty}{\overline{x^2(t)}\delta(\tau)e^{-j 2 \pi f \tau} d\tau} \\
@@ -262,8 +247,7 @@ $$\begin{aligned}
 
 If $\overline{e_{1}^2}$ and $\overline{e_{2}^2}$ are uncorrelated noise
 sources we can skip the last term in
-(<a href="#eq:noisesum" data-reference-type="ref"
-data-reference="eq:noisesum">[eq:noisesum]</a>) and just write
+the sum above and just write
 
 $$\overline{e_{tot}^2} = \overline{e_{1}^2} + \overline{e_{2}^2}$$ Most
 natural noise sources are uncorrelated.
@@ -311,7 +295,7 @@ $$NF = 10 \log(F)$$ The noise factor can also be defined as
 $$F = \frac{SNR_{input}}{SNR_{output}}$$
 
 This brings us right into what is known as Friis formula. The noise factor
-definition above is only correct at room temperature, for more details, see [@friis].
+definition is only correct at room temperature, for more details, see [@friis].
 If we have a
 multistage system, for example several amplifiers in cascade, the total
 noise figure of the system is defined as
@@ -362,9 +346,8 @@ no problem having two different definitions for two different functions.
 In reality $S_{x1}(f)$ and $S_{x2}(f)$ are different functions of
 frequency, and we could say that
 
-$$S_{x2}(f) = 2S_{x1}(f)$$ if
-(<a href="#eq:rxequal" data-reference-type="ref"
-data-reference="eq:rxequal">[eq:rxequal]</a>) is true.
+$$S_{x2}(f) = 2S_{x1}(f)$$ if the two auto-correlation functions are
+equal.
 
 ## Sources of Confusion
 
@@ -378,32 +361,20 @@ unsure I was about which of the two definitions that was correct. After
 months of searching (not actively, but sporadicly) I eventually found
 the original source of the definition of spectral density
 [@einstein14]. Having the original source helped, but I
-still don’t know when the original definition split into
-(<a href="#eq:psd1" data-reference-type="ref"
-data-reference="eq:psd1">[eq:psd1]</a>) and
-(<a href="#eq:psd2" data-reference-type="ref"
-data-reference="eq:psd2">[eq:psd2]</a>). However, I’m pretty sure the
-it’s just a matter of convenience. To see why
-(<a href="#eq:psd2" data-reference-type="ref"
-data-reference="eq:psd2">[eq:psd2]</a>) is the most common among sources
-concerning noise we look at the inverse Fourier Transform. By the way,
-if you had not noticed yet,
-(<a href="#eq:psd1" data-reference-type="ref"
-data-reference="eq:psd1">[eq:psd1]</a>) says that *Spectral density is
-the Fourier Transform of the Auto-Correlation function*. The inverse
-Fourier Transform of (<a href="#eq:psd1" data-reference-type="ref"
-data-reference="eq:psd1">[eq:psd1]</a>) is
+still don’t know when the original definition split into the
+$S_{x1}$ and $S_{x2}$ forms above. However, I’m pretty sure it’s just
+a matter of convenience. To see why the $S_{x2}$ form is the most
+common among sources concerning noise we look at the inverse Fourier
+Transform. By the way, if you had not noticed yet, both forms say that
+*Spectral density is the Fourier Transform of the Auto-Correlation
+function*. The inverse Fourier Transform of $S_{x1}$ is
 
 $$R_{x1}(\tau) = \frac{1}{2\pi}\int_{-\infty}^{\infty}{S_{x1}(f)e^{j\omega\tau}dw} = \int_{-\infty}^{\infty}{S_{x1}(f)e^{j\omega\tau}df}$$
-,since $dw = df dw/df = 2\pi df$. And for
-(<a href="#eq:psd2" data-reference-type="ref"
-data-reference="eq:psd2">[eq:psd2]</a>)
+,since $dw = df dw/df = 2\pi df$. And for $S_{x2}$
 
 $$R_{x2}(\tau) = \frac{1}{2}\int_{-\infty}^{\infty}{S_{x2}(f)e^{jw\tau}df}$$
 Before we proceed lets get rid of the $e$’s. We know that $e^{j\alpha} =
-\cos \alpha + j \sin \alpha$. So we could rewrite
-(<a href="#eq:psd1" data-reference-type="ref"
-data-reference="eq:psd1">[eq:psd1]</a>) as
+\cos \alpha + j \sin \alpha$. So we could rewrite $S_{x1}$ as
 
 $$S_{x1}(f) = \int_{-\infty}^{\infty}{R_{x1}(\tau)[\cos(\omega \tau) + j \sin( \omega
   \tau)]d\tau}$$ and it turns out that since $R_{x1}(\tau)$ is an even
@@ -430,13 +401,10 @@ We can rewrite $R_{x2}(\tau)$ as
 $$R_{x2}(\tau) = \overline{x_2(t)x_2(t + \tau)} = \int_0^{\infty}{S_{x2}(f)\cos(\omega\tau)df}$$
 and if $\tau = 0$
 
-$$\overline{x_2^2(t)} = \int_0^{\infty}{S_{x2}(f)df}$$ So using spectral
-density definition (<a href="#eq:psd2" data-reference-type="ref"
-data-reference="eq:psd2">[eq:psd2]</a>) we see that average power (mean
-square value of $x_2(t)$) is equal to the integral from 0 to infinity of
-the spectral density. If we use
-(<a href="#eq:psd1" data-reference-type="ref"
-data-reference="eq:psd1">[eq:psd1]</a>) average power would be
+$$\overline{x_2^2(t)} = \int_0^{\infty}{S_{x2}(f)df}$$ So using the
+$S_{x2}$ definition we see that average power (mean square value of
+$x_2(t)$) is equal to the integral from 0 to infinity of the spectral
+density. If we use $S_{x1}$ instead, average power would be
 
 $$\overline{x_1^2(t)} = 2\int_0^{\infty}{S_{x1}(f)df}$$ But if
 $R_{x1}(\tau) = R_{x2}(\tau)$ then
@@ -444,11 +412,8 @@ $R_{x1}(\tau) = R_{x2}(\tau)$ then
 $$\overline{x_2^2(t)} = \overline{x_1^2(t)}$$ even though
 $S_{x1}(f) \neq S_{x2}(f)$.
 
-Definition (<a href="#eq:psd1" data-reference-type="ref"
-data-reference="eq:psd1">[eq:psd1]</a>) is called the two-sided spectral
-density and (<a href="#eq:psd2" data-reference-type="ref"
-data-reference="eq:psd2">[eq:psd2]</a>) is called the one-sided spectral
-density.
+$S_{x1}$ is called the two-sided spectral density, and $S_{x2}$ the
+one-sided spectral density.
 
 ## Example: Thermal Noise
 
@@ -457,21 +422,14 @@ known to anyone that has studied analog electronics. We normally define
 the voltage spectral density of thermal noise as
 
 $$S_{th}(f) = 4kTR$$ where k is Boltzmann’s constant, T the temperature in
-Kelvin and R the resistance. But
-(<a href="#eq:othermal" data-reference-type="ref"
-data-reference="eq:othermal">[eq:othermal]</a>) is the spectral density
-when it is defined as in (<a href="#eq:psd2" data-reference-type="ref"
-data-reference="eq:psd2">[eq:psd2]</a>). If we were to use
-(<a href="#eq:psd1" data-reference-type="ref"
-data-reference="eq:psd1">[eq:psd1]</a>) then the spectral density of
-thermal noise would be
+Kelvin and R the resistance. But that is the spectral density in the
+one-sided $S_{x2}$ definition. If we were to use the two-sided
+$S_{x1}$ definition, then the spectral density of thermal noise would
+be
 
 $$S_{th}(f) = 2kTR$$ Both these spectral densities would give the same
-average power value if we use the inverse Fourier Transform of
-(<a href="#eq:psd1" data-reference-type="ref"
-data-reference="eq:psd1">[eq:psd1]</a>) and
-(<a href="#eq:psd2" data-reference-type="ref"
-data-reference="eq:psd2">[eq:psd2]</a>).[^2]
+average power value if we use the inverse Fourier Transform of the
+matching definition.[^2]
 
 ## Einstein: The source
 
@@ -486,9 +444,8 @@ intensity (spectral density) as
 $$I(\theta) =  \int_0^{T}{\mathfrak{M}(\Delta) \cos ( \pi \frac{\Delta}{\theta})d\Delta}$$
 ,where the period $\theta = T/n$ and $T$ is a very large value. The
 paper is very short, only 1 page, but it is worth reading. Note that
-(<a href="#eq:psd1" data-reference-type="ref"
-data-reference="eq:psd1">[eq:psd1]</a>) is often referred to as the
-*Wiener-Khintchine* theorem.
+the spectral density as the Fourier Transform of the auto-correlation
+function is often referred to as the *Wiener-Khintchine* theorem.
 
 [^2]: Note that if you calculate the average power of $S_{th}(f)$ you’ll
     get infinity. You have to include the bandwidth of the circuit you
