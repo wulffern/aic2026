@@ -226,7 +226,9 @@ Process lectures in this order unless reprioritized later.
 - layout-heavy figures in `l06_adc`
 - system/project overview drawings in `l01_project`
 - map/logo/reference illustrations in `l10_lpradio`, `lp_radio_guest`, `lx_energysrc`
-- semiconductor physics figures in `lr0_mosfet`, `lr0_passives`, `l00_diode`
+- semiconductor physics figures in `lr0_passives`, `l00_diode`
+  (`lr0_mosfet`'s were promoted to the head of the queue on 2026-07-30 at
+  the author's request — see Current next figure)
 - measurement/graph-heavy figures across `l00_*`, `s_chinf`, and guest lectures
 
 ## Public Interfaces and Naming
@@ -481,6 +483,28 @@ come up.
 ### Current next figure
 `l04_dac` is complete, so the queue moves on. In order, and each one triaged
 by listing its figures first rather than trusting the queue below:
+
+0. **`lr0_mosfet`** — promoted to the top of the queue by the author,
+   2026-07-30 ("lets bump the mosfet to the top of the tikz redraw list").
+   Previously parked in Phase 3 as semiconductor-physics artwork; that
+   parking no longer applies to this lecture. Triage by listing, but the
+   figure set is roughly three kinds:
+   - *Straight circuitikz*: `large_signal`, `small_signal`,
+     `small_signal_w_gs`, `hfmodel`, `miller` (top schematic + the two
+     block diagrams), `fig_nmospmos`. Classic schematic redraws.
+   - *Annotated cross-sections* (hand-drawn carrier cartoons):
+     `mosfet_off/subthreshold/strong_inversion(+_and_saturation)`,
+     `accumulated/depleted/weakinv`, `vds_l_veff/vds_veff/vds_h_veff`,
+     `drain_close`, `caps`, `gateleakage`, `hci`, `chisel`, `wpe`,
+     `stress`, `3dcross`. TikZ filled shapes + node labels; keep the
+     red/blue carrier colour language, which the new Figure 18–20 captions
+     now describe in words.
+   - *Band/potential diagrams*: `mos_np`, `mos_bands`, `mos_bands_drainv`,
+     `mos_gbands(_bend,_muchbend)`, `dibl`. Curves + annotations, close to
+     the `l5_sdomain`/`l5_zdomain` style already drawn.
+   Out of scope in this lecture: the simulation plots (`vgate`, `vdrain`,
+   `vgaini`, `gmid`) and the paper scan (`aicdn*`), plus
+   `Red_and_blue_pill.jpg` for obvious reasons.
 
 1. **`l01_intro`** and **`l11_aver`** — they share `dig_des` and `dig_des_lr`,
    so whichever is drawn first finishes both, and the reference switch has to
