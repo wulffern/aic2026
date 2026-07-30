@@ -1,0 +1,44 @@
+\input{tikz/fig_header.tex}
+
+% Channel initiated secondary electrons: with reverse bulk bias, holes
+% from impact ionization drive secondary electron generation in the
+% bulk, and the vertical field can inject those into the gate oxide.
+
+\begin{tikzpicture}[scale=0.85]
+  \input{tikz/mos_lib.tex}
+  \drainzoomframe
+
+  % V_eff mark at the pinch-off point on the oxide
+  \node[anchor=south, scale=0.75] at (3.2,4.87) {$V_{EFF}$};
+
+  % forces, as in the original: F_g into the gate, F_OS towards the
+  % source, F_OB into the bulk
+  \draw[fieldy, line width=2pt, -latex] (5.2,5.1) -- (5.2,4.65);
+  \node[fieldy!80!black, anchor=west, fill=white, inner sep=1pt] at (5.35,4.9) {$F_g$};
+  \draw[fieldy, line width=2pt, -latex] (5.3,4.15) -- (4.5,4.15);
+  \node[fieldy!80!black, anchor=north] at (4.9,4.0) {$F_{OS}$};
+  \draw[fieldy, line width=2pt, -latex] (6.9,3.4) -- (6.9,2.7);
+  \node[fieldy!80!black, anchor=west] at (7.05,3.05) {$F_{OB}$};
+
+  % field at the drain junction
+  \foreach \x in {7.4,8.2,9.0,9.8}{
+    \draw[fieldy, thick, -latex] (\x,2.05) -- (\x,1.55);
+  }
+
+  % primary electron into the corner, hole driven into the bulk,
+  % secondary electrons generated at depth, one injected up to the gate
+  \node[echarge, anchor=center, scale=0.8] at (4.4,4.35) {$\ominus$};
+  \draw[echarge, thick, -latex] (4.6,4.3) .. controls (5.3,4.2) .. (5.7,3.9);
+  \node[hcharge, anchor=center, scale=0.8] at (5.8,3.7) {$\oplus$};
+  \draw[hcharge, thick, -latex] (5.75,3.55) .. controls (5.6,3.0) .. (5.9,2.4);
+  \node[hcharge, anchor=center, scale=0.8] at (5.95,2.25) {$\oplus$};
+  \node[echarge, anchor=center, scale=0.8] at (6.25,2.35) {$\ominus$};
+  \draw[echarge, thick, -latex] (6.3,2.5) .. controls (6.9,3.6) and (6.6,4.4) .. (6.2,5.15);
+
+  \node[anchor=west, fill=white, inner sep=1pt] at (7.6,3.5) {$\vec{F} = q\vec{E}$};
+
+  % reverse biased bulk
+  \node[white, anchor=center, scale=1.2] at (2.0,1.2) {$V_{SB} > 0$};
+
+\end{tikzpicture}
+\end{document}

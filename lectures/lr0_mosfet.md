@@ -837,7 +837,7 @@ The pinch-off point, where the channel voltage equals $V_{DS,sat}$, moves slight
 
 ---
 
-![original 80%](../media/drain_close.pdf)
+![original 80%](../media/drain_close_tikz.pdf)
 
 <!--pan_doc:
 <sub>Figure 25: Close-up of the drain end in saturation</sub>
@@ -947,7 +947,7 @@ The four capacitances $C_{gs}$, $C_{gd}$, $C_{sb}$ and $C_{db}$ set the poles an
 
 ---
 
-![inline fit](../media/caps.pdf)
+![inline fit](../media/caps_tikz.pdf)
 
 <!--pan_doc:
 <sub>Figure 30: Where the capacitances live in the device</sub>
@@ -1226,7 +1226,7 @@ In a long channel (top) the source barrier $|\Phi_B|$ has a wide, flat top and t
 
 ---
 
-![original fit](../media/wpe.pdf)
+![original fit](../media/wpe_tikz.pdf)
 
 <!--pan_doc:
 <sub>Figure 36: Well proximity effect</sub>
@@ -1249,7 +1249,7 @@ During the well implant, ions scatter off the edge of the photoresist and land i
 
 What can change stress?
 
-![right fit](../media/stress.pdf)
+![right fit](../media/stress_tikz.pdf)
 
 <!--pan_doc:
 <sub>Figure 37: Mechanical stress components on the channel</sub>
@@ -1264,7 +1264,7 @@ Stress changes mobility, so anything that changes the stress - shallow trench is
 
 ---
 
-![original fit](../media/gateleakage.pdf)
+![original fit](../media/gateleakage_tikz.pdf)
 
 <!--pan_doc:
 <sub>Figure 38: Gate tunneling current</sub>
@@ -1278,7 +1278,7 @@ With an oxide only 1-2 nm thick, the electron wave function does not stop at the
 
 ---
 
-![original 80%](../media/hci.pdf)
+![original 80%](../media/hci_tikz.pdf)
 
 <!--pan_doc:
 <sub>Figure 39: Hot carrier injection</sub>
@@ -1292,7 +1292,7 @@ In saturation the field across the pinched-off region near the drain is high. Ca
 
 ---
 
-![original 80%](../media/chisel.pdf)
+![original 80%](../media/chisel_tikz.pdf)
 
 <!--pan_doc:
 <sub>Figure 40: Channel initiated secondary electrons</sub>

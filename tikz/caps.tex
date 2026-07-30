@@ -1,0 +1,76 @@
+\input{tikz/fig_header.tex}
+
+% Where the transistor capacitances live. Blue: source diffusion and the
+% inversion channel tapering towards the drain. Red: the p- bulk. The
+% four capacitances are drawn in green at the junctions they belong to.
+
+\definecolor{echarge}{RGB}{30,60,220}
+\definecolor{hcharge}{RGB}{220,30,30}
+\definecolor{capgreen}{RGB}{20,160,60}
+
+\begin{tikzpicture}[scale=0.85]
+
+  % p- bulk
+  \fill[hcharge!55, rounded corners=10pt] (-0.2,-3.4) rectangle (10.2,-1.05);
+  % the bulk rises towards the surface in the pinched gap before the
+  % drain, then dips underneath the drain diffusion
+  \fill[hcharge!55] (3.4,-1.6) .. controls (5.2,-0.9) and (6.3,-0.3) .. (6.95,-0.18)
+      .. controls (7.2,-0.5) and (7.3,-0.95) .. (7.6,-1.05)
+      -- (10.2,-1.05) -- (10.2,-1.6) -- cycle;
+
+  % source diffusion + channel wedge (blue)
+  \fill[echarge!75, rounded corners=6pt]
+    (0.2,0) -- (0.2,-1.35) -- (2.6,-1.35)
+    .. controls (3.4,-1.3) and (3.6,-0.9) .. (4.2,-0.45)
+    .. controls (5.2,-0.12) and (6.0,-0.06) .. (6.75,-0.04)
+    -- (6.75,0) -- cycle;
+
+  % drain n+ region (outlined, mostly depleted of the channel)
+  \draw[line width=1.2pt, rounded corners=4pt] (7.15,0) -- (7.15,-0.85) -- (9.8,-0.85) -- (9.8,0);
+  \node[anchor=west, scale=0.9] at (8.9,-0.35) {$n+$};
+  \node[anchor=east, scale=0.9, white] at (0.9,-0.6) {$n+$};
+
+  % surface and gate
+  \draw[line width=1.4pt] (-0.2,0) -- (10.2,0);
+  \draw[line width=1.6pt, rounded corners=8pt] (2.8,0.14) rectangle (7.2,1.0);
+
+  % terminals
+  \draw[thick] (1.5,0) -- (1.5,0.65);
+  \node[anchor=south] at (1.5,0.7) {$v_s$};
+  \draw[thick] (5.0,1.0) -- (5.0,1.5);
+  \node[anchor=south] at (5.0,1.55) {$v_g$};
+  \draw[thick] (8.4,0) -- (8.4,0.65);
+  \node[anchor=south] at (8.4,0.7) {$v_o$};
+
+  % bias labels
+  \node[echarge, anchor=south west] at (5.6,1.45) {$V_{gs} > V_t$};
+  \node[echarge, anchor=south west] at (7.9,1.45) {$V_{DS} > V_{eff}$};
+
+  % green capacitors: stem-plate-plate-stem, vertical
+  \newcommand{\vcap}[3]{% x ytop label  (plates centered between)
+    \draw[capgreen, thick] (#1,#2) -- (#1,#2-0.28);
+    \draw[capgreen, line width=1.6pt] (#1-0.28,#2-0.28) -- (#1+0.28,#2-0.28);
+    \draw[capgreen, line width=1.6pt] (#1-0.28,#2-0.44) -- (#1+0.28,#2-0.44);
+    \draw[capgreen, thick] (#1,#2-0.44) -- (#1,#2-0.72);
+    \fill[capgreen] (#1,#2) circle (0.06);
+    \fill[capgreen] (#1,#2-0.72) circle (0.06);
+    \node[echarge, anchor=west] at (#1+0.35,#2-0.36) {#3};
+  }
+
+  \newcommand{\vcapl}[3]{% label to the left
+    \draw[capgreen, thick] (#1,#2) -- (#1,#2-0.28);
+    \draw[capgreen, line width=1.6pt] (#1-0.28,#2-0.28) -- (#1+0.28,#2-0.28);
+    \draw[capgreen, line width=1.6pt] (#1-0.28,#2-0.44) -- (#1+0.28,#2-0.44);
+    \draw[capgreen, thick] (#1,#2-0.44) -- (#1,#2-0.72);
+    \fill[capgreen] (#1,#2) circle (0.06);
+    \fill[capgreen] (#1,#2-0.72) circle (0.06);
+    \node[echarge, anchor=east] at (#1-0.35,#2-0.36) {#3};
+  }
+
+  \vcap{3.6}{0.5}{$C_{gs}$}
+  \vcapl{6.8}{0.55}{$C_{gd}$}
+  \vcap{2.0}{-1.0}{$C_{sb}$}
+  \vcap{8.6}{-0.5}{$C_{db}$}
+
+\end{tikzpicture}
+\end{document}

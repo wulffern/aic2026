@@ -1,0 +1,35 @@
+\input{tikz/fig_header.tex}
+
+% Close-up of the drain end in saturation: the field from the depleted
+% gap between the pinch-off point and the drain sweeps electrons across.
+
+\begin{tikzpicture}[scale=0.85]
+  \input{tikz/mos_lib.tex}
+  \drainzoomframe
+
+  % field from the gate down through the oxide
+  \foreach \x in {1.6,2.5,3.4,4.3}{
+    \draw[fieldy, thick, -latex] (\x,5.15) -- (\x,4.65);
+  }
+
+  % strong lateral field across the depleted gap: fan of arrows from the
+  % drain boundary towards the pinch-off point
+  \foreach \ys/\ye in {4.35/4.4, 3.9/4.15, 3.4/3.9, 2.9/3.6, 2.4/3.3}{
+    \draw[fieldy, thick, -latex] (6.6,\ys) .. controls (5.8,{\ys+0.1}) .. (4.6,\ye);
+  }
+  \node[anchor=west, fill=white, inner sep=1pt] at (7.0,2.75) {$\vec{E}_{DEPLETION} = $ High!};
+  \draw[thin] (6.95,2.75) -- (5.6,3.2);
+
+  % weak field inside the drain
+  \foreach \x in {7.4,8.2,9.0,9.8}{
+    \draw[fieldy, thick, -latex] (\x,2.05) -- (\x,1.55);
+  }
+  \node[anchor=west, fill=white, inner sep=1pt] at (7.9,3.9) {$\vec{E}_{DRAIN} = $ Low};
+  \draw[fieldy, thick, -latex] (7.5,4.3) -- (7.0,4.05);
+
+  % an electron swept across the gap
+  \node[echarge, anchor=center] at (3.6,4.3) {$\ominus$};
+  \draw[echarge, thick, -latex] (3.85,4.32) -- (5.1,4.42);
+
+\end{tikzpicture}
+\end{document}
