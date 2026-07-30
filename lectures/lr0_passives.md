@@ -122,6 +122,14 @@ does rely on absolute values, then it usually needs to be trimmed in production.
 
 ## Polysilicon
 
+<!--pan_doc:
+
+The workhorse resistor is the gate material itself: polysilicon. In
+Figure 1 the resistor is a strip of poly with contacts at both ends,
+sitting on field oxide so it is insulated from the substrate.
+
+-->
+
 Can be both N-doped, and P-doped
 
 Often with two flavors, with, and without silicide 
@@ -130,9 +138,29 @@ Silicide reduces resistance of polysilicon
 
 ![right](../media/l6/poly.pdf)
 
+<!--pan_doc:
+<sub>Figure 1: Polysilicon resistor</sub>
+
+In a modern process the poly on top of transistors is silicided - a
+metal alloy on the surface that reduces the sheet resistance to a few
+ohms per square, great for gates, useless for resistors. The foundry
+therefore offers a mask that blocks the silicide, and the unsilicided
+flavor has a sheet resistance of hundreds of ohms per square with a
+small temperature coefficient. When an analog schematic says
+"resistor", it is nearly always unsilicided poly.
+
+-->
+
 ---
 
 ## Diffusion
+
+<!--pan_doc:
+
+A doped region in the silicon also conducts, and Figure 2 shows it used
+as a resistor.
+
+-->
 
 Use doped region as resistor
 
@@ -142,12 +170,35 @@ Non-linear capacitance
 
 Tricky temperature dependence
 
+<!--pan_doc:
+
+The diffusion resistor comes with baggage: the resistor body forms a pn
+junction to the bulk, so it carries a distributed, voltage dependent
+junction capacitance, and the depletion region eats into the conducting
+cross section, so the resistance itself moves with the voltage. Add a
+temperature coefficient set by doping and mobility in opposite
+directions, and the diffusion resistor is a device you use when the poly
+resistor is unavailable, not because you want to.
+
+-->
+
 
 ![right fit](../media/l6/ndiff.pdf)
+
+<!--pan_doc:
+<sub>Figure 2: Diffusion resistor</sub>
+-->
 
 ---
 
 ## Metal
+
+<!--pan_doc:
+
+Metal, Figure 3, is at the other end of the scale: at milliohms per
+square you would need a kilometer of it for a useful resistance.
+
+-->
 
 Usually too low omhic to be a useful resistor
 
@@ -155,8 +206,23 @@ Useful for "separating nets" in schematic and layout
 
 Must be considered for power supply and ground routing (high currents)
 
+<!--pan_doc:
+
+A zero ohm metal "resistor" still earns its place in the schematic: it
+splits a net in two, which lets layout tools keep sense lines away from
+current carrying lines, and lets the extraction report where the IR
+drop goes. In power routing the metal resistance is not a device you
+add but a parasitic you budget: milliohms times amperes is millivolts
+of ground bounce.
+
+-->
+
 
 ![right fit](../media/l6/metal.pdf)
+
+<!--pan_doc:
+<sub>Figure 3: Metal resistor</sub>
+-->
 
 ---
 
@@ -165,16 +231,38 @@ Must be considered for power supply and ground routing (high currents)
 ---
 ## What is S, M, L, XL on a chip?
 
+<!--pan_doc:
+
+Capacitors are where the silicon area goes, so before the devices, a
+sense of scale. The nRF52832 die is about 9.6 million square
+micrometers, and on it, a component below five thousand square
+micrometers is small, while anything above two hundred thousand - a
+fiftieth of the die - is extra large and had better earn its keep.
+
+-->
+
 [nRF52832](https://www.nordicsemi.com/products/nrf52832) $$ 3200 \mu m \times 3000 \mu m = 9600 k \mu m^2$$ 
 
-S $$ < 5 \text{ } k\mu m^2$$
-M $$ < 50 \text{ } k\mu m^2$$
-L $$ < 200 \text{ } k\mu m^2$$
-XL $$ > 200 \text{ } k\mu m^2$$
+| Size | Area |
+|:--:|:--:|
+| S | below 5 k square um |
+| M | below 50 k square um |
+| L | below 200 k square um |
+| XL | above 200 k square um |
 
 ---
 
 ## Metal-Oxide-Metal finger capacitors
+
+<!--pan_doc:
+
+The default capacitor in a modern process is drawn, not grown: thin
+metal fingers side by side, alternating polarity, stacked over several
+metal layers, as in Figure 4. The lateral spacing between fingers is
+smaller than the vertical oxide between layers, so the sideways fringe
+field does most of the work.
+
+-->
 
 Unit capacitance $$ \approx 1 fF/\mu m^2/layer $$
 
@@ -182,11 +270,42 @@ Unit capacitance $$ \approx 1 fF/\mu m^2/layer $$
 
 ![right fit](../media/l6/fig_capacitors_vertical.pdf)
 
+<!--pan_doc:
+<sub>Figure 4: Metal-oxide-metal finger capacitor</sub>
+
+The MOM capacitor is linear, matches to a tenth of a percent when drawn
+as identical units, and costs nothing but metal. Its weakness is
+density: at about a femtofarad per square micrometer per layer, ten
+picofarads is a hundred micrometers on a side - a Medium on the scale
+above, for one capacitor.
+
+-->
+
 ---
 
 ## MOS capacitors
 
+<!--pan_doc:
+
+When density matters more than linearity, use the thinnest oxide on the
+die: the gate oxide. A MOSFET with source, drain and bulk tied together
+is a capacitor from the gate to the channel, Figure 5, and it is about
+ten times denser than the MOM capacitor.
+
+The price is that the capacitance depends on the bias. Below threshold
+there is no channel and the gate sees the oxide in series with the
+depletion region; above threshold the inversion layer forms and the
+capacitance jumps to the full oxide value. A MOS capacitor is a fine
+decoupling capacitor - the bias is fixed and nobody cares about
+linearity - and a poor filter capacitor.
+
+-->
+
 ![right fit](../media/inversion.pdf)
+
+<!--pan_doc:
+<sub>Figure 5: MOS capacitance versus gate voltage</sub>
+-->
 
 ---
 
@@ -208,6 +327,15 @@ M1 D G S B nmos  w=1u  l=1u
 
 .op
 ```
+
+<!--pan_doc:
+
+The operating point readout below, from the SPICE deck on the left,
+shows where the number comes from: at this bias the gate-gate
+capacitance $C_{gg}$ of the 1 um by 1 um device reads about 10 fF -
+ten femtofarads per square micrometer, right at the estimate.
+
+-->
 
 Moscap is $$ \approx 10 fF / \mu m^2 $$
 
@@ -267,9 +395,31 @@ A varactor is a "variable capacitor", usually it's a device that varies the capa
 
 ![inline fit](../media/l6/pn.pdf)
 
+<!--pan_doc:
+<sub>Figure 6: A reverse biased pn junction as a varactor</sub>
+
+The junction depletion capacitance falls as the reverse bias grows -
+the same square root we met in the diode chapter - which makes a
+reverse biased junction a voltage controlled capacitor. The other
+common varactor is the MOS capacitor biased around its transition. The
+customer for both is the oscillator chapter: a varactor in an LC tank
+turns a fixed oscillator into a voltage controlled one.
+
+-->
+
 ---
 
 #[fit] Inductors
+
+<!--pan_doc:
+
+Inductors on chip are spirals in the top metals, like the ones visible
+on the nRF51822 die photograph in Figure 7. The top layers are the
+thick, low resistance ones, and resistance is the enemy: the quality
+factor of an integrated inductor - some tens at gigahertz - is set by
+the metal losses and by eddy currents in the substrate below.
+
+-->
 
 Usually two top metals, because they are thick (low ohmic)
 
@@ -277,28 +427,75 @@ Use foundry model
 
 3D electro magnetic simulation often needed
 
+<!--pan_doc:
+
+An inductor is the least portable device on the die: its value and its
+losses depend on everything nearby, so use the foundry's characterized
+model, and if the layout deviates from it - or the frequency is high
+enough that every via matters - budget for a 3D electromagnetic
+simulation. Nanohenries cost hundreds of micrometers on a side, which
+is why inductors only appear where nothing else will do: LC
+oscillators, RF matching and power converters.
+
+-->
+
 <!--![right 200%](https://s.zeptobars.com/nRF51822.jpg) -->
 
 ![right 200%](../media/nRF51822.jpg) 
+
+<!--pan_doc:
+<sub>Figure 7: nRF51822 die - the spirals are inductors</sub>
+-->
 
 ---
 
 # Variation in passives
 
-Absolute value for resistors and capacitors $$ \approx \pm 10 $$ % to $$ \pm 20 $$ %
+<!--pan_doc:
 
-Relative precision for closely spaced devices $$ \approx $$ 0.1 % to  1 % 
+The rule from the resistor introduction deserves numbers. Nothing on an
+IC has a trustworthy absolute value: oxide thickness, implant dose and
+line width all drift from lot to lot, and the passives drift with them.
+What the process does guarantee is that two identical devices drawn
+next to each other drift together.
 
-Relative precision for devices on same die $$ > 2 $$% or Relative 
+-->
+
+Absolute value for resistors and capacitors: 10 % to 20 %
+
+Relative precision for closely spaced devices: 0.1 % to 1 %
+
+Relative precision for devices far apart on the same die: worse than 2 %
 
 ---
 
 
 # Relative precision 
 
+<!--pan_doc:
+
+Figure 8 shows the payoff in circuit form: a resistor divider whose
+output is half the input to a tenth of a percent, and two capacitors
+whose charge ratio holds equally well - even though every one of those
+devices may be off by ten percent in absolute value. The precision is
+earned in layout: identical unit devices, interdigitated or common
+centroid so process gradients hit both halves equally, dummies at the
+edges so every unit sees the same neighborhood.
+
+This is the deal the whole chapter has been building to: design
+circuits so that only ratios matter - two resistors setting a gain, a
+capacitor array setting a DAC - and the process variation cancels out
+of the equation.
+
+-->
+
 Resistors and Capacitors can be matched extremely well
 
 ![right fit ](../media/l6/pres_good.pdf)
+
+<!--pan_doc:
+<sub>Figure 8: Ratios of matched devices hold to a tenth of a percent</sub>
+-->
 
 
 ---
@@ -344,7 +541,20 @@ Reverse bias diodes to ground are useful for signals with long routing to transi
 
 
 
-#[fit] Thanks!
+## Summary
+
+<!--pan_doc:
+
+The one-page version of this chapter:
+
+-->
+
+- Metal is not a schematic wire: budget resistance, capacitance and current for every long route
+- Resistors: unsilicided poly first; diffusion if you must; metal never
+- Capacitors: MOM for linearity and matching, MOS cap for density at a fixed bias
+- Varactors turn junctions or MOS caps into tunable capacitors for oscillators
+- Inductors are area-hungry and non-portable: foundry model or EM simulation
+- Absolute values drift by tens of percent; ratios of matched units hold a tenth of a percent - design with ratios
 
 
 
