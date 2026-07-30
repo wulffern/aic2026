@@ -1,8 +1,8 @@
 \input{tikz/fig_header.tex}
 
-% Gate tunneling: the oxide is 1-2 nm thin, so the electron wave
-% function is non-zero on the far side. Blue: a channel electron leaking
-% into the gate. Red: a gate carrier leaking into the channel.
+% Gate tunneling: the wave function oscillates in the silicon, decays
+% exponentially through the thin oxide barrier - no oscillation inside a
+% barrier - and re-emerges with a small amplitude on the far side.
 
 \definecolor{echarge}{RGB}{30,60,220}
 \definecolor{hcharge}{RGB}{220,30,30}
@@ -11,7 +11,7 @@
 
   % gate block
   \draw[line width=1.4pt, rounded corners=6pt] (2.4,4.4) -- (2.4,7.2) -- (7.6,7.2) -- (7.6,4.4);
-  \node[anchor=center, scale=1.2] at (5.0,6.4) {GATE};
+  \node[anchor=center, scale=1.2] at (5.0,6.6) {GATE};
 
   % thin oxide between gate bottom and the surface
   \draw[line width=1.2pt] (2.4,4.4) -- (7.6,4.4);
@@ -28,20 +28,29 @@
   \node[anchor=center, scale=0.9] at (9.0,0.9) {$n+$};
   \node[anchor=center, scale=0.9] at (6.4,0.5) {$p-$};
 
-  % electron wave function reaching from the channel into the gate
-  \draw[echarge, thick]
-    (4.0,3.3) sin (4.15,3.6) cos (4.3,3.9) sin (4.45,4.25) cos (4.3,4.6)
-    sin (4.15,4.95) cos (4.3,5.3) sin (4.4,5.55);
-  \fill[echarge] (4.05,3.15) circle (0.09);
-  \node[echarge, anchor=east, scale=0.9] at (3.5,5.6) {$|\psi_1(x)|^2 > 0$};
-  \draw[echarge, thin, -latex] (3.55,5.45) -- (4.15,5.1);
+  % channel electron: oscillates below the surface, decays through the
+  % oxide, small oscillation inside the gate
+  \draw[echarge, thick, samples=80, domain=2.2:4.05, variable=\y]
+    plot ({4.0+0.35*sin(360*(\y-2.2))},\y);
+  \draw[echarge, thick, samples=40, domain=4.05:4.4, variable=\y]
+    plot ({4.0+0.35*exp(-8*(\y-4.05))*sin(360*(4.05-2.2))},\y);
+  \draw[echarge, thick, samples=60, domain=4.4:5.8, variable=\y]
+    plot ({4.0+0.09*sin(360*(\y-4.4)+200)},\y);
+  \fill[echarge] (4.0,2.05) circle (0.09);
+  \node[echarge, anchor=east, scale=0.9] at (3.3,5.7) {$|\psi_1(x)|^2 > 0$};
+  \draw[echarge, thin, -latex] (3.35,5.55) -- (3.95,5.2);
 
-  % gate carrier wave function reaching down into the channel
-  \draw[hcharge, thick]
-    (6.0,5.4) sin (6.15,5.1) cos (6.3,4.8) sin (6.45,4.45) cos (6.3,4.1)
-    sin (6.15,3.75) cos (6.3,3.45) sin (6.4,3.2);
-  \fill[hcharge] (6.05,5.55) circle (0.09);
-  \node[hcharge, anchor=north, scale=0.9] at (6.6,2.95) {$|\psi_2(x)|^2 > 0$};
+  % gate carrier: oscillates in the gate, decays down through the oxide,
+  % small oscillation in the channel
+  \draw[hcharge, thick, samples=80, domain=4.4:6.3, variable=\y]
+    plot ({6.1+0.35*sin(360*(6.3-\y))},\y);
+  \draw[hcharge, thick, samples=40, domain=4.05:4.4, variable=\y]
+    plot ({6.1+0.35*exp(-8*(4.4-\y))*sin(360*(6.3-4.4))},\y);
+  \draw[hcharge, thick, samples=60, domain=2.6:4.05, variable=\y]
+    plot ({6.1+0.09*sin(360*(4.05-\y)+200)},\y);
+  \fill[hcharge] (6.1,6.45) circle (0.09);
+  \node[hcharge, anchor=north, scale=0.9] at (6.7,2.4) {$|\psi_2(x)|^2 > 0$};
+  \draw[hcharge, thin, -latex] (6.65,2.5) -- (6.15,2.9);
 
 \end{tikzpicture}
 \end{document}

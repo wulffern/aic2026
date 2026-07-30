@@ -9,14 +9,15 @@
   \drainzoomframe
 
   % V_eff mark at the pinch-off point on the oxide
-  \node[anchor=south, scale=0.75] at (3.2,4.87) {$V_{EFF}$};
+  \draw[thick] (4.2,4.68) -- (4.2,4.92);
+  \node[anchor=east, scale=0.8, fill=white, inner sep=1pt] at (4.1,4.82) {$V_{EFF}$};
 
   % forces, as in the original: F_g into the gate, F_OS towards the
   % source, F_OB into the bulk
-  \draw[fieldy, line width=2pt, -latex] (5.2,5.1) -- (5.2,4.65);
-  \node[fieldy!80!black, anchor=west, fill=white, inner sep=1pt] at (5.35,4.9) {$F_g$};
-  \draw[fieldy, line width=2pt, -latex] (5.3,4.15) -- (4.5,4.15);
-  \node[fieldy!80!black, anchor=north] at (4.9,4.0) {$F_{OS}$};
+  \draw[fieldy, line width=2pt, -latex] (5.6,5.15) -- (5.6,4.7);
+  \node[fieldy!80!black, anchor=north west, scale=0.95] at (5.72,4.62) {$F_g$};
+  \draw[fieldy, line width=2pt, -latex] (5.0,3.9) -- (4.2,3.9);
+  \node[fieldy!80!black, anchor=north, scale=0.95] at (4.6,3.75) {$F_{OS}$};
   \draw[fieldy, line width=2pt, -latex] (6.9,3.4) -- (6.9,2.7);
   \node[fieldy!80!black, anchor=west] at (7.05,3.05) {$F_{OB}$};
 
@@ -25,17 +26,20 @@
     \draw[fieldy, thick, -latex] (\x,2.05) -- (\x,1.65);
   }
 
-  % primary electron into the corner, hole driven into the bulk,
-  % secondary electrons generated at depth, one injected up to the gate
-  \node[echarge, anchor=center, scale=1.05] at (4.4,4.35) {$\ominus$};
-  \draw[echarge, thick, -latex] (4.6,4.3) .. controls (5.3,4.2) .. (5.7,3.9);
-  \node[hcharge, anchor=center, scale=1.05] at (5.8,3.7) {$\oplus$};
-  \draw[hcharge, thick, -latex] (5.75,3.55) .. controls (5.6,3.0) .. (5.9,2.4);
-  \node[hcharge, anchor=center, scale=1.05] at (5.95,2.25) {$\oplus$};
-  \node[echarge, anchor=center, scale=1.05] at (6.25,2.35) {$\ominus$};
-  \draw[echarge, thick, -latex] (6.3,2.5) .. controls (6.9,3.6) and (6.6,4.4) .. (6.2,5.15);
+  % the chain: a hole from impact ionization near the corner is driven
+  % into the bulk, generates a secondary electron at depth, and the
+  % vertical field injects that electron up into the gate
+  \node[echarge, anchor=center, scale=1.05] at (4.5,4.38) {$\ominus$};
+  \draw[echarge, line width=1.2pt, -latex] (4.75,4.33) -- (5.55,4.05);
+  \node[hcharge, anchor=center, scale=1.05] at (5.85,3.8) {$\oplus$};
+  \draw[hcharge, line width=1.3pt, -latex] (5.85,3.6) .. controls (5.8,3.0) .. (6.0,2.5);
+  \foreach \a in {30,100,170,250,320}{
+    \draw[black!60, thin] (6.05,2.35) -- ++(\a:0.16);
+  }
+  \node[echarge, anchor=center, scale=1.05] at (6.35,2.5) {$\ominus$};
+  \draw[echarge, line width=1.3pt, -latex] (6.45,2.65) .. controls (7.0,3.7) and (6.7,4.5) .. (6.3,5.15);
 
-  \node[anchor=west, fill=white, inner sep=1pt] at (7.6,3.5) {$\vec{F} = q\vec{E}$};
+  \node[anchor=west, fill=white, inner sep=1.5pt] at (7.9,3.35) {$\vec{F} = q\vec{E}$};
 
   % reverse biased bulk
   \node[white, anchor=center, scale=1.2] at (2.0,1.2) {$V_{SB} > 0$};

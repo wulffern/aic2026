@@ -656,6 +656,14 @@ same transistor can be both a decent switch and an amplifier.
 ## Inversion level
 
 
+<!--pan_doc:
+
+The curve above spans six orders of magnitude, so "the" operating region of
+a MOSFET does not exist - there are three, and they are named by how
+inverted the channel is.
+
+-->
+
 Define $$ V_{eff} \equiv V_{GS} - V_{tn} $$ , where $$ V_{tn} $$ is the "threshold voltage" 
 
 
@@ -939,6 +947,14 @@ For small perturbations around an operating point the transistor is just two ele
 
 ---
 
+<!--pan_doc:
+
+Now put the square law into the two derivatives, starting with $g_m$. A
+little algebra gives the same transconductance in three different
+currencies:
+
+-->
+
 ## Transconductance 
 
 [.column]
@@ -966,6 +982,14 @@ an effective voltage, and the transconductance follows.
 [.column]
 ---
 
+<!--pan_doc:
+
+For the output conductance we need the piece the ideal square law leaves
+out: let the current grow linearly with $V_{DS}$ through a channel length
+modulation term $\lambda$, and differentiate.
+
+-->
+
 Define $$ \ell = \mu_n C_{ox} \frac{W}{L} $$ and $$ V_{eff} = V_{GS} - V_{tn} $$ 
 
  $$ I_D = \frac{1}{2} \ell V_{eff}^2\left[1 + \lambda (V_{DS} - V_{eff})\right] $$ 
@@ -988,6 +1012,13 @@ transistor is the cheapest way to buy output resistance.
 -->
 
 ---
+
+<!--pan_doc:
+
+The two derivatives combine into the most important figure of merit of a
+single transistor: the largest voltage gain it can possibly give you.
+
+-->
 
 ## Intrinsic gain
 
@@ -1043,6 +1074,13 @@ $C_{gs}$ and $C_{gd}$ are oxide (and overlap) capacitances, while $C_{sb}$ and $
 -->
 
 ---
+
+<!--pan_doc:
+
+The gate capacitances first. How the gate charge splits between source and
+drain depends on the region of operation:
+
+-->
 
 $$C_{gs} $$ and $$C_{gd}$$
 
@@ -1191,6 +1229,13 @@ is the reason the next slide's ratio flattens out on the left.
 
 ---
 
+<!--pan_doc:
+
+The two regions can be compared on one axis: how much transconductance a
+microampere buys.
+
+-->
+
 Bang for the buck
 
  Subthreshold:  
@@ -1262,6 +1307,13 @@ current becomes closer to linear, rather than quadratic, in $V_{eff}$.
 ---
 
 [.column]
+
+<!--pan_doc:
+
+Where does the square law actually come from? Charge, times width, times
+velocity - integrated along the channel:
+
+-->
 
 ## Square law model
 
@@ -1437,7 +1489,7 @@ The annotations - stress components, fields, trap densities and proximity effect
 <!--pan_doc:
 <sub>Figure 35: Drain induced barrier lowering</sub>
 
-In a long channel (top) the source barrier $|\Phi_B|$ has a wide, flat top and the drain is far away. In a short channel (bottom left) the barrier is a narrow peak, and pulling the drain potential down (bottom right, dashed) also pulls the top of the barrier down. A lower barrier means more current at the same gate voltage: the threshold voltage effectively drops as $V_{DS}$ increases, which degrades the output resistance.
+In a long channel (top) the source barrier $\Phi_B$ has a wide, flat top and the drain is far away. In a short channel (bottom left) the barrier is a narrow peak, and pulling the drain potential down (bottom right, dashed) also pulls the top of the barrier down. A lower barrier means more current at the same gate voltage: the threshold voltage effectively drops as $V_{DS}$ increases, which degrades the output resistance.
 -->
 
 
@@ -1490,7 +1542,7 @@ Stress changes mobility, so anything that changes the stress - shallow trench is
 <!--pan_doc:
 <sub>Figure 38: Gate tunneling current</sub>
 
-With an oxide only 1-2 nm thick, the electron wave function does not stop at the oxide: $|\psi(x)|^2$ is non-zero on the other side, so carriers tunnel between channel and gate. The gate is no longer a perfect insulator, which matters for sample-and-holds and anything with high impedance nodes.
+With an oxide only 1-2 nm thick, the electron wave function does not stop at the oxide: $\psi(x)$ is non-zero on the other side, so carriers tunnel between channel and gate. The gate is no longer a perfect insulator, which matters for sample-and-holds and anything with high impedance nodes.
 -->
 
 ---
@@ -1838,6 +1890,13 @@ matched pairs sit next to each other.
  
 ---
 
+<!--pan_doc:
+
+Pelgrom gives the spread of the raw parameters; what a designer needs is
+the spread of the *current*. Kinget's expression connects the two:
+
+-->
+
 ## Transistors with same $$V_{GS}$$[^2]
 
 $$\frac{\sigma_{I_D}^2}{I_D^2} = \frac{1}{WL}\left[\left(\frac{gm}{I_D}\right)^2 \sigma_{vt}^2 + \frac{\sigma_{\ell}^2}{\ell^2}\right] $$
@@ -1860,6 +1919,12 @@ straight out of it.
 ---
 
 
+<!--pan_doc:
+
+The $1/\sqrt{WL}$ scaling has a brutal price tag attached:
+
+-->
+
 $$\frac{\sigma_{I_D}^2}{I_D^2} = \frac{1}{WL}\left[\left(\frac{gm}{I_D}\right)^2 \sigma_{vt}^2 + \frac{\sigma_{\ell}^2}{\ell^2}\right] $$
 $$\frac{\sigma_{I_D}}{I_D} \propto \frac{1}{\sqrt{WL}}$$
 
@@ -1879,6 +1944,13 @@ $$1 \%$$ would require **100** times the area
 
 ---
 
+<!--pan_doc:
+
+Area is not the only knob - the Kinget expression says the operating
+region matters too, and it cuts both ways:
+
+-->
+
 ## What else can we do?
 
 $$\frac{\sigma_{I_D}^2}{I_D^2} = \frac{1}{WL}\left[\left(\frac{gm}{I_D}\right)^2 \sigma_{vt}^2 + \frac{\sigma_{\ell}^2}{\ell^2}\right] $$
@@ -1896,6 +1968,14 @@ Weak inversion $$\Rightarrow \frac{gm}{I_D} = \frac{q}{n k T} \approx 25$$
 ---
 
 $$\frac{\sigma_{I_D}^2}{I_D^2} = \frac{1}{WL}\left[\left(\frac{gm}{I_D}\right)^2 \sigma_{vt}^2 + \frac{\sigma_{\ell}^2}{\ell^2}\right] $$
+
+<!--pan_doc:
+
+For a differential pair the same mismatch is best expressed as a voltage:
+divide the current error by $g_m$ and it becomes the offset you would have
+to apply at the input to cancel it.
+
+-->
 
 $$\sigma_{I_D}^2 = \frac{1}{WL}\left[gm^2 \sigma_{vt}^2 + I_D^2\frac{\sigma_{\ell}^2}{\ell^2}\right] $$
 
