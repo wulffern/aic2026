@@ -53,28 +53,29 @@ wired by `UI.bind()` from `data-bind` attributes, and `Plot.mount()` handles
 device pixel ratio and resizing. A page's own script is then usually two
 functions, `compute()` and `render()`.
 
-Every page states which script it comes from and where it deviates. There are a
-few deviations, all deliberate and all noted on the page itself:
+Every page states which script it comes from and where it deviates. Three
+historical script bugs the pages originally worked around were fixed in the
+scripts on 2026-07-30 (`ex/iir.py` now multiplies `a` into `y[i-1]`; the
+`np.linspace(0,N,N)` time bases became `np.arange(N)`; `ex/sd_1st.py` grew a
+clamped 2^B-level quantiser and a 0.7 FS input). The remaining deviations, all
+deliberate and all noted on the page itself:
 
-* `iir.html` makes the feedback coefficient a slider. The Python computes `a`
-  but never multiplies it into `y[i-1]`, so the script really runs with a = 1.
-* `quantization.html` and `oversampling.html` default to an integer time vector
-  rather than the scripts' `np.linspace(0,N,N)`, whose step is N/(N-1). The
-  off-bin tone that produces leaks through the window sidelobes and caps the
-  measured SQNR near 69 dB regardless of the number of bits. Both pages keep the
-  original behaviour behind a checkbox, because the difference is worth seeing.
-* `sigma-delta.html` offers a clamp on the quantiser. The Python does not clamp,
-  so its "1-bit" converter emits more than two levels whenever the integrator
-  state runs past full scale.
+* `quantization.html` and `oversampling.html` keep the old off-bin
+  `np.linspace(0,N,N)` time base behind the coherent-sampling checkbox,
+  because the leakage failure mode (SQNR pinned near 69 dB regardless of
+  bits) is worth seeing.
+* `sigma-delta.html` keeps the old unclamped quantiser behind a checkbox for
+  the same reason: a "1-bit" converter emitting seven levels is a good
+  cautionary tale.
 * Noise is seeded (`DSP.randn(n, seed)`) rather than reseeded per call, so the
   floor stays put while a slider moves.
-* A "Bits" slider means B bits = 2^B levels, on every page. The scripts' `adc()`
-  counts *fractional* bits — its step is 2^-bits, so a signal spanning +/-1 gets
-  2^(bits+1)+1 levels, five of them at "1 bit", and beats 6.02B + 1.76 by a whole
-  bit. `quantization.html`, `oversampling.html` and `sigma-delta.html` therefore
-  default to `DSP.quantizeBits` (mid-riser, 2^B levels, saturating) or
-  `DSP.quantizeSD` (2^B levels reaching +/-1, so B=1 is sign()), each with the
-  script's version one checkbox away.
+* A "Bits" slider means B bits = 2^B levels, on every page. `ex/q.py`'s
+  `adc()` (quoted verbatim in the lecture, so left alone) counts *fractional*
+  bits — its step is 2^-bits, so a signal spanning +/-1 gets 2^(bits+1)+1
+  levels, five of them at "1 bit", and beats 6.02B + 1.76 by a whole bit.
+  `quantization.html` and `oversampling.html` therefore default to
+  `DSP.quantizeBits` (mid-riser, 2^B levels, saturating), with the script's
+  version one checkbox away.
 * `biquad.html` and `xosc.html` do by hand the algebra their notebooks hand to
   sympy, because a CAS is far too big to ship to a browser. The biquad result
   was checked against the notebook's three flow-graph equations at 200 random
@@ -90,9 +91,11 @@ few deviations, all deliberate and all noted on the page itself:
 ## Checking a page against its script
 
 `common/dsp.js` mirrors numpy closely enough to compare numbers directly. For
-example, `ex/q.py` at its defaults gives an SQNR of 15.1 dB, and so does
-`quantization.html`. When changing either side, check a few numbers rather than
-the shape of the curve. Reference values, all reproduced by the pages:
+example, `ex/q.py` before the 2026-07-30 time-base fix gave an SQNR of
+15.1 dB, and `quantization.html` reproduces that with the script `adc()`
+ticked and coherent sampling unticked. When changing either side, check a few
+numbers rather than the shape of the curve. Reference values, all reproduced
+by the pages:
 
 | source | quantity | value |
 |---|---|---|

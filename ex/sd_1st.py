@@ -13,7 +13,8 @@ fm1 = 1/N*213
 f1 = 1/128 - 1/N
 #f1 = fbin
 fd = fm1
-x_s = np.sin(2*np.pi*f1*t) + + 1/2**15*np.random.randn(N)
+#- 0.7 of full scale: a true 1-bit loop overloads at full-scale input
+x_s = 0.7*np.sin(2*np.pi*f1*t) + 1/2**15*np.random.randn(N)
 
 #----------------------------------------------
 #- Model an ADC
@@ -25,7 +26,18 @@ nfs = 4
 u = x_s[0::nfs]
 
 bits = 1
-y_sn = np.round(u*2**bits)/2**bits
+
+def quantize(v,bits):
+    #- 2**bits levels reaching +/-1, so bits=1 is a genuine two-level
+    #- quantizer. Without the clamp the "1-bit" output takes more than two
+    #- values whenever the integrator runs past full scale.
+    levels = 2**bits
+    if(levels == 2):
+        return 1.0 if v >= 0 else -1.0
+    step = 2/(levels-1)
+    return float(np.clip(np.round(v/step)*step,-1,1))
+
+y_sn = np.array([quantize(v,bits) for v in u])
 
 dither = 1
 M = len(u)
@@ -33,7 +45,8 @@ y_sd = np.zeros(M)
 x = np.zeros(M)
 for n in range(1,M):
     x[n] = x[n-1] + (u[n]-y_sd[n-1])
-    y_sd[n] = np.round(x[n]*2**bits  + dither*np.random.randn()/4)/2**bits
+    #- dither is a quarter of a quantizer step, as before the clamp fix
+    y_sd[n] = quantize(x[n] + dither*np.random.randn()/(4*2**bits),bits)
 
 #- Remove the first samples to get rid of the initial
 # settling

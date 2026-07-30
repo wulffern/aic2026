@@ -93,7 +93,7 @@
     </div>
     <div class="ckrow">
       <input type="checkbox" data-bind="script" id="sl-script">
-      <label for="sl-script">Use the script's quantiser instead</label>
+      <label for="sl-script">Use the unclamped quantiser instead</label>
     </div>
   </div>
 </div>
@@ -141,13 +141,15 @@
     of oversampling.
   </p>
   <p>
-    One caveat about the word &ldquo;one-bit&rdquo;. The Python's quantizer is
-    <code>np.round(x*2**bits)/2**bits</code>, unclamped, so at bits = 1 it emits
-    seven levels rather than two and its output is not a bitstream at all. This
-    page defaults to a proper B-bit quantizer whose 2<sup>B</sup> levels reach
-    &plusmn;1 &mdash; at B = 1 that is <code>sign(x)</code>, a genuine
-    comparator. The <b>output</b> readout counts the levels that actually came
-    out, and ticking <b>use the script's quantiser</b> shows you the difference.
+    One caveat about the word &ldquo;one-bit&rdquo;. A quantizer that rounds to
+    a grid but never saturates (<code>np.round(x*2**bits)/2**bits</code>, which
+    is what <code>ex/sd_1st.py</code> did before it was fixed) emits seven
+    levels at bits = 1 rather than two, and its output is not a bitstream at
+    all. This page and the script both use a proper B-bit quantizer whose
+    2<sup>B</sup> levels reach &plusmn;1 &mdash; at B = 1 that is
+    <code>sign(x)</code>, a genuine comparator. The <b>output</b> readout
+    counts the levels that actually came out, and ticking <b>use the unclamped
+    quantiser</b> reproduces the old behaviour.
   </p>
 
   <h2>THINGS WORTH TRYING</h2>
@@ -178,7 +180,7 @@
       noise; this is what happens when the error is not.
     </li>
     <li>
-      Tick <b>use the script's quantiser</b>. The output readout jumps from two
+      Tick <b>use the unclamped quantiser</b>. The output readout jumps from two
       levels to seven, the SNR moves, and what you are modulating is no longer a
       one-bit converter. Everything after the modulator is unchanged: the same
       sinc<sup>2</sup> average reconstructs the sine either way, which is a

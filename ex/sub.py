@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 
 #- Create a time vector
 N = 2**13
-t = np.linspace(0,N,N)
+t = np.arange(N)
 
 #- Create the "continuous time" signal with multiple sinusoidal signals and some noise
 f1 = 3023/N

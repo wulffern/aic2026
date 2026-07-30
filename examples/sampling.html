@@ -146,13 +146,13 @@
       of these scripts.
     </li>
     <li>
-      Now tick <b>coherent sampling</b> as well. The time vector becomes
-      0, 1, 2, &hellip; instead of the script's
-      <code>np.linspace(0,N,N)</code>, every tone lands exactly on a bin, the
-      record wraps around seamlessly, and the unwindowed spectrum is suddenly
-      the cleanest of the four combinations. Coherent sampling is the
-      alternative to windowing, and it is better when you can arrange it &mdash;
-      with several tones and several rates you often cannot.
+      Now tick <b>coherent sampling</b> as well. Every tone lands exactly on a
+      bin, the record wraps around seamlessly, and the unwindowed spectrum is
+      suddenly the cleanest of the four combinations. Coherent sampling is the
+      alternative to windowing, and it is better when you can arrange it.
+      <code>ex/dt.py</code> deliberately parks its tone halfway between two
+      bins (f1 = 233.5/N), so its record is never coherent and the window
+      always has a job to do.
     </li>
     <li>
       Push the <b>duty cycle</b> towards 1 (on phases = P). The images do not
@@ -221,9 +221,11 @@ const fmts = {
    couple of ms) that every slider move can just recompute everything. */
 function compute() {
   const N = 1 << S.nbits;
-  // The script's time vector is np.linspace(0,N,N), whose step is N/(N-1) and
-  // not 1, so no tone completes a whole number of periods inside the record.
-  // Integer indices make every tone here land exactly on a bin instead.
+  // Unticked, the incoherent record is emulated the way the script's
+  // original np.linspace(0,N,N) time base did it (step N/(N-1), so no tone
+  // completes a whole number of periods). The script itself now uses integer
+  // indices with a deliberately half-bin tone; either way the record is
+  // incoherent. Ticked, integer indices put every tone exactly on a bin.
   const t = S.coh ? DSP.arange(N) : DSP.linspace(0, N, N);
   const f1 = S.f1 / N;
   const fd = S.fd / N;

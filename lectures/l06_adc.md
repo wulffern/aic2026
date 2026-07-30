@@ -533,9 +533,9 @@ Can you see how the noise (what is not the two spikes) is not white? White noise
 ![fit](../media/l6_q_1.svg)
 
 <!--pan_doc:
-If you run the python script you can zoom in and check the highest spikes. The fundamental is at 127, so odd harmonics would be 381, 635, 889, and from the function of the quantization noise we would expect those to be the highest harmonics (at least when we look at the Bessel function), however, we can see that it's close, but that bin 396 is the highest. Is the math's wrong? 
+If you run the python script you can zoom in and check the highest spikes. The fundamental is at 127, so odd harmonics would be 381, 635, 889, and from the function of the quantization noise we would expect those to be the highest harmonics (at least when we look at the Bessel function), however, we can see that it's close, but that bin 651 is the highest. Is the math's wrong? 
 
-No, the math is correct. Never bet against mathematics. If you change the python script to reduce the frequency, `fdivide=2**9`, and increase number of points, `N=2**16`, as in the plot below, you'll see it's the 11'th harmonic that is highest. 
+No, the math is correct. Never bet against mathematics. Bin 651 is the 11'th harmonic in disguise: $11 \times 127 = 1397$, which is above half the sample rate and folds to $2048 - 1397 = 651$. If you change the python script to reduce the frequency, `fdivide=2**9`, and increase number of points, `N=2**16`, as in the plot below, the 11'th harmonic no longer folds, and you'll see it directly at bin 1397. 
 
 ![fit](../media/l6_q_1_fharm.svg)
 
@@ -1088,14 +1088,23 @@ The quantizer generates the next $y_{sd}$ and I have the option to add dither.
 
 
 ```python
+def quantize(v,bits):
+    #- 2**bits levels reaching +/-1, so bits=1 is
+    #- a genuine two-level quantizer
+    levels = 2**bits
+    if(levels == 2):
+        return 1.0 if v >= 0 else -1.0
+    step = 2/(levels-1)
+    return float(np.clip(np.round(v/step)*step,-1,1))
+
 # u is discrete time, continuous value input
 M = len(u)
 y_sd = np.zeros(M)
 x = np.zeros(M)
 for n in range(1,M):
     x[n] = x[n-1] + (u[n]-y_sd[n-1])
-    y_sd[n] = np.round(x[n]*2**bits  
-    + dither*np.random.randn()/4)/2**bits
+    y_sd[n] = quantize(x[n]
+        + dither*np.random.randn()/(4*2**bits),bits)
 
 ```
 ---

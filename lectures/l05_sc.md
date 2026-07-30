@@ -492,8 +492,9 @@ features for creating ranges, and arrays.
 
 Secondly, I create continuous time signal. The time vector can be used in numpy functions, like `np.sin()`, and I combine three sinusoid plus some noise. 
 The sampling vector is a repeating pattern of 11001100, so our sample rate should be 1/2'th of the input sample rate. 
-FFT's can be unwieldy beasts. I like to use [coherent sampling](https://en.wikipedia.org/wiki/Talk%3ACoherent_sampling), however, with 
-multiple signals and samplerates I did not bother to figure out whether it was possible.
+FFT's can be unwieldy beasts. I like to use [coherent sampling](https://en.wikipedia.org/wiki/Talk%3ACoherent_sampling), however, here
+the tone is deliberately placed halfway between two FFT bins, so the record is
+not coherent.
 
 The alternative to coherent sampling is to apply a window function before the FFT, that's the reason for the 
 Hanning window below.
@@ -512,11 +513,13 @@ seconds of your time.
 ```python 
 #- Create a time vector
 N = 2**13
-t = np.linspace(0,N,N)
+t = np.arange(N)
 
 #- Create the "continuous time" signal with multiple 
 #- "sinusoidal signals and some noise
-f1 = 233/N
+#- f1 is deliberately halfway between FFT bins, so the
+#- record is not coherent and the window has a job to do
+f1 = 233.5/N
 fd = 1/N*119
 x_s = np.sin(2*np.pi*f1*t) + 1/1024*np.random.randn(N) + \
     0.5*np.sin(2*np.pi*(f1-fd)*t) + 0.5*np.sin(2*np.pi*(f1+fd)*t)
@@ -781,7 +784,7 @@ print("|z| = " + str(z_abs))
 y = np.zeros(N)
 y[0] = a
 for i in range(1,N):
-    y[i] = b*x_sn[i-1] + y[i-1]
+    y[i] = b*x_sn[i-1] + a*y[i-1]
 ```
 
 

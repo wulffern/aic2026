@@ -36,13 +36,13 @@
     </div>
     <div class="cr">
       <label>a (feedback)</label>
-      <input type="range" data-bind="a" id="sl-a" min="0" max="1" step="0.001" value="1">
+      <input type="range" data-bind="a" id="sl-a" min="0" max="1" step="0.001" value="0.25">
       <span class="v" id="v-a"></span>
     </div>
     <div class="note">
-      <code>ex/iir.py</code> has no coefficient on <code>y[i-1]</code>, i.e.
-      a = 1: the pole sits exactly on the unit circle and the filter is a plain
-      accumulator. Pull a below 1 to move it inside.
+      <code>ex/iir.py</code> uses a = 0.25. Push a to 1 and the pole sits
+      exactly on the unit circle: the filter degenerates into a plain
+      accumulator with infinite DC gain.
     </div>
   </div>
 
@@ -132,14 +132,13 @@
   <h2>THINGS WORTH TRYING</h2>
   <ul>
     <li>
-      Leave <b>a = 1</b>, which is what the script does. The pole is exactly on
-      the unit circle, the DC gain is infinite, and the output wanders: this is
-      an accumulator, not a filter that settles. It still attenuates high
-      frequencies at 20 dB/decade, which is what the plot in the lecture shows.
+      Push <b>a</b> up to 1. The pole lands exactly on the unit circle, the DC
+      gain is infinite, and the output wanders: that is an accumulator, not a
+      filter that settles.
     </li>
     <li>
-      Pull <b>a</b> down to 0.99, 0.9, 0.5. The pole moves in, the DC gain
-      becomes finite at b/(1&minus;a), and the corner frequency
+      Walk <b>a</b> through 0.99, 0.9, 0.5, 0.25. The pole moves in, the DC
+      gain becomes finite at b/(1&minus;a), and the corner frequency
       &asymp; (1&minus;a)/2&pi; moves up. At a = 0 there is no feedback left
       and you have a one-sample delay with gain b.
     </li>
@@ -165,12 +164,11 @@ z_abs = np.abs(z)
 y = np.zeros(N)
 y[0] = a
 for i in range(1,N):
-    y[i] = b*x_sn[i-1] + y[i-1]</code></pre>
+    y[i] = b*x_sn[i-1] + a*y[i-1]</code></pre>
   <p class="src">
     Source: <a href="https://github.com/wulffern/aic2026/blob/main/ex/iir.py">ex/iir.py</a>.
-    Note that <code>a</code> is computed but never multiplied into
-    <code>y[i-1]</code>, so the script really runs with a = 1. This page makes
-    that coefficient a slider so you can see what it was meant to do.
+    This page makes the <code>a</code> coefficient a slider so you can watch
+    the pole move.
     There are faster ways to do this in Python; see
     <a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.iirfilter.html">scipy.signal.iirfilter</a>.
   </p>

@@ -6,7 +6,21 @@ by `make examples`, linked from `docs/examples.md` and from eight lectures.
 
 What follows is what was deliberately *not* done, and why.
 
-## 1. Source-material discrepancies in `ex/`
+## 1. Source-material discrepancies in `ex/` — RESOLVED 2026-07-30
+
+All three fixed per the author's decision ("fix according to prose"):
+`ex/iir.py` multiplies `a` into `y[i-1]`; `ex/sd_1st.py` has a clamped
+2^B-level quantiser (B=1 is sign()) and a 0.7 FS input, dither stays 1/4 LSB;
+the `np.linspace(0,N,N)` time bases became `np.arange(N)` in `dt.py`,
+`sub.py`, `iir.py`, `q.py` and `osr.py`. `dt.py` keeps its record
+deliberately incoherent (f1 = 233.5/N) so `l05_sc`'s windowing paragraph
+stays true. All ten committed figures were regenerated and compared against
+the old ones; the `l06_adc` harmonic-bin prose was updated (the highest spur
+is now bin 651 — the folded 11th harmonic, 2048−1397 — replacing the old
+"bin 396" discussion). The pages' script-quirk notes were rewritten as
+historical. Original findings below, kept for the record.
+
+## 1-old. Source-material discrepancies in `ex/`
 
 The interactive pages were written by porting the `ex/*.py` scripts to
 JavaScript and cross-checking the numbers. Three of the scripts turned out to

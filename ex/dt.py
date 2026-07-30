@@ -7,10 +7,12 @@ Hann = True
 
 #- Create a time vector
 N = 2**13
-t = np.linspace(0,N,N)
+t = np.arange(N)
 
 #- Create the "continuous time" signal with multiple sinusoidal signals and some noise
-f1 = 233/N
+#- f1 is deliberately halfway between FFT bins, so the record is not
+#- coherent and the window below has a job to do
+f1 = 233.5/N
 fd = 1/N*119
 x_s = np.sin(2*np.pi*f1*t) + 1/1024*np.random.randn(N) +   0.5*np.sin(2*np.pi*(f1-fd)*t) + 0.5*np.sin(2*np.pi*(f1+fd)*t)
 
@@ -36,9 +38,9 @@ plt.plot(x_s)
 plt.xlabel("Continuous time, continuous value")
 plt.subplot(2,2,2)
 plt.plot(x_sn)
-plt.ylabel("Frequency Domain")
 plt.xlabel("Discrete time, continuous value")
 plt.subplot(2,2,3)
+plt.ylabel("Frequency Domain")
 plt.plot(20*np.log10(np.abs(X_s)))
 plt.subplot(2,2,4)
 plt.plot(20*np.log10(np.abs(X_sn)))
@@ -46,7 +48,7 @@ plt.plot(20*np.log10(np.abs(X_sn)))
 fig = plt.gcf()
 fig.set_size_inches(12, 7)
 plt.tight_layout()
-plt.savefig(f"l5_dt.pdf")
+plt.savefig(f"l5_dtfig.pdf")
 plt.show()
 
 

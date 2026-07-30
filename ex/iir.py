@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 
 #- Create a time vector
 N = 2**13
-t = np.linspace(0,N,N)
+t = np.arange(N)
 
 #- Create the "continuous time" signal with multiple sinusoidal signals and some noise
 f1 = 3023/N
@@ -26,7 +26,7 @@ print("|z| = " + str(z_abs))
 y = np.zeros(N)
 y[0] = a
 for i in range(1,N):
-    y[i] = b*x_sn[i-1] + y[i-1]
+    y[i] = b*x_sn[i-1] + a*y[i-1]
 
 
 #- Convert to frequency domain with a hanning window to avoid FFT bin

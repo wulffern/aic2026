@@ -198,12 +198,12 @@
       scale.
     </li>
     <li>
-      Untick <b>coherent sampling</b> to get the script's
-      <code>np.linspace(0,N,N)</code> time vector back. Its step is N/(N&minus;1)
-      rather than 1, so the tone sits a fraction of a bin off, leaks through the
-      window sidelobes, and pins the measured SQNR at around 69 dB however many
-      bits you ask for. Getting the time vector right matters as much as getting
-      the converter right.
+      Untick <b>coherent sampling</b> to see the off-bin failure mode
+      (<code>ex/q.py</code> used a <code>np.linspace(0,N,N)</code> time vector
+      with step N/(N&minus;1) before it was fixed). The tone sits a fraction of
+      a bin off, leaks through the window sidelobes, and pins the measured SQNR
+      at around 69 dB however many bits you ask for. Getting the time vector
+      right matters as much as getting the converter right.
     </li>
   </ul>
 
@@ -261,12 +261,13 @@ function compute() {
   const N = 1 << S.nbits;
   const nfs = Math.round(S.nfs);
   const bits = Math.round(S.bits);
-  // ex/q.py uses np.linspace(0,N,N), whose step is N/(N-1) rather than 1, so
-  // the record holds a fraction of a period too many and the tone lands a
-  // hundredth of a bin off. That leaks enough through the Hann sidelobes to
-  // cap the measured SQNR at about 69 dB no matter how many bits you ask for.
-  // Integer sample indices make the record coherent, so the readout keeps
-  // tracking 6.02B + 1.76 all the way up.
+  // ex/q.py used np.linspace(0,N,N) before it was fixed: step N/(N-1) rather
+  // than 1, so the record held a fraction of a period too many and the tone
+  // landed a hundredth of a bin off. That leaked enough through the Hann
+  // sidelobes to cap the measured SQNR at about 69 dB no matter how many bits
+  // you asked for. The unticked state keeps that failure mode reproducible;
+  // integer sample indices (the script's behaviour now) make the record
+  // coherent, so the readout keeps tracking 6.02B + 1.76 all the way up.
   const t = S.coh ? DSP.arange(N) : DSP.linspace(0, N, N);
 
   // f1 = 1/fdivide - 1/N, as in ex/q.py: one bin short of an exact power of
