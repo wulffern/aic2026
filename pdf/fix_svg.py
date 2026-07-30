@@ -19,8 +19,12 @@ def imgConvert(ftype,fotype,path):
         if(ftype == ".svg"):
             fmt = fotype.strip(".")
             cmds.append(f"rsvg-convert --format={fmt} --dpi-x=100 --dpi-y=100 -o {fopath} {path}")
+        #- exclude-chunks=date,time: ImageMagick otherwise stamps
+        #  date:create/date:modify into every PNG, so an unchanged source
+        #  converted on two CI runs produced different bytes — which
+        #  defeated the standalone PDF cache (py/pdfcache.py).
         magick = "magick" if platform == "darwin" else "convert"
-        cmds.append(f"{magick} -density 100 {path} {fopath}")
+        cmds.append(f"{magick} -density 100 {path} -define png:exclude-chunks=date,time {fopath}")
         for cmd in cmds:
             if(os.system(cmd) == 0 and os.path.exists(fopath)):
                 break
