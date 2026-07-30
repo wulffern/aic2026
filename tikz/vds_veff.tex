@@ -6,6 +6,9 @@
 \begin{tikzpicture}[scale=0.85]
   \input{tikz/mos_lib.tex}
   \bulkframe
+  % the inversion layer tapers to nothing exactly at the drain: the
+  % local gate-to-channel voltage there is down to V_tn
+  \fill[echarge!85] (2.9,-0.02) -- (2.9,-0.20) -- (7.05,-0.03) -- (7.05,-0.02) -- cycle;
   \sideholes
   \neckrow{-2.4}{0.15}
   % depletion edge, much deeper towards the drain

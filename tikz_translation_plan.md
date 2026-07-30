@@ -356,6 +356,25 @@ That is 10 figures, in three lectures.
 ### Pending approval
 - none
 
+### lr0_mosfet — physics review round, 2026-07-30
+The author suspected translation losses; a figure-by-figure physics
+review of all 29 new drawings found three, all cases where the redraw
+dropped something the captions or prose explicitly claim:
+- the V_DS sequence showed no inversion layer while the captions
+  describe one — the electron sheet is now drawn: full in triode,
+  tapering to zero at the drain at $V_{DS}=V_{eff}$, ending before the
+  drain in saturation (with the $V_{Ch}$ arrow on the pinch point);
+- `weakinv` showed no electrons while the prose says the first few
+  arrive — a sparse handful now sits under the oxide;
+- `mos_bands_drainv` had four equal current arrows while the prose
+  argues 1 and 3 outweigh 2 and 4 — 2 and 4 are now visibly smaller,
+  4 smallest (drain-to-bulk injection is the suppressed one).
+Verified correct and left alone: the controlled-source directions (the
+upward $g_s v_{sb}$ equals $g_{mb} v_{bs}$ with the standard sign),
+Miller's $(1+1/A)$, the field/force directions in the drain-corner trio
+(the CHISEL forces are consistently forces on holes), the band-bending
+sequence, DIBL, and the concentration curves.
+
 ### lr0_mosfet — COMPLETE 2026-07-30
 All three batches drawn and switched (31 `_tikz` references in the
 lecture). Batch 3 closed it out: `mos_np`, `mos_bands`,
