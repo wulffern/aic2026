@@ -35,22 +35,20 @@ probably noise!
 
 The mean of a signal x(t) is defined as
 
-$$\label{mean} \overline{x(t)} = \lim_{T\to\infty} \frac{1}{T}\int^{+T/2}_{-T/2}{ x(t) dt}$$
+$$\overline{x(t)} = \lim_{T\to\infty} \frac{1}{T}\int^{+T/2}_{-T/2}{ x(t) dt}$$
 The mean square of x(t) defined as
 
-$$\label{eq:meansquare} \overline{x^2(t)} =\lim_{T\to\infty} \frac{1}{T}\int^{+T/2}_{-T/2}{ x^2(t) dt}$$
+$$\overline{x^2(t)} =\lim_{T\to\infty} \frac{1}{T}\int^{+T/2}_{-T/2}{ x^2(t) dt}$$
 The variance of x(t) defined as
 
-$$\label{eq:var} \sigma^2 = \overline{x^2(t)} - \overline{x(t)}^2$$ 
+$$\sigma^2 = \overline{x^2(t)} - \overline{x(t)}^2$$ 
 For a signals with
 a mean of zero the variance is equal to the mean square. The
 auto-correlation of x(t) is defined as
 
 $$\begin{aligned}
-\label{eq:autocor}
-  R_x(\tau ) &{}={}& \overline{x(t)x(t + \tau)} \nonumber\\
-&{}={}& \: \lim_{T\to\infty} \frac{1}{T}\int^{+T/2}_{-T/2}{ x(t)x(t+\tau) dt}
-%   & =& \lim_{T\to\infty}\frac{1}{T} \int_{-\infty}^{\infty}{x(t)x(t- \tau) dt} \\
+  R_x(\tau ) &= \overline{x(t)x(t + \tau)} \\
+&= \: \lim_{T\to\infty} \frac{1}{T}\int^{+T/2}_{-T/2}{ x(t)x(t+\tau) dt}
 \end{aligned}$$
 
 # Average Power
@@ -66,11 +64,9 @@ unit $A^2$ or $V^2$, so we have to multiply/devide by the impedance to
 get the power in Watts. To get Volts and Amperes we use the
 root-mean-square (RMS) value which is defined as $\sqrt{P_{av}}$.
 
-$$\label{eq:powcont}
-P_{av} = \lim_{T\to\infty} \frac{1}{T} \int^{+T/2}_{-T/2} x^2(t) dt$$
+$$P_{av} = \lim_{T\to\infty} \frac{1}{T} \int^{+T/2}_{-T/2} x^2(t) dt$$
 
-$$\label{eq:powsamp}
-P_{av} = \frac{1}{N}\sum_{i=0}^N x^2(i)$$
+$$P_{av} = \frac{1}{N}\sum_{i=0}^N x^2(i)$$
 
 If x(t) has a mean of zero then, according to
 (<a href="#eq:var" data-reference-type="ref"
@@ -139,19 +135,18 @@ $\frac{I}{\sqrt{Hz}}$ for current.
 The power spectral density is defined as two times the Fourier transform
 of the auto-correlation function [@ziel]
 
-$$\label{eq:psd}
-S_x(f) = 2\int_{-\infty}^{\infty}{R_x(\tau)e^{-j2\pi f \tau}d\tau}$$
+$$S_x(f) = 2\int_{-\infty}^{\infty}{R_x(\tau)e^{-j2\pi f \tau}d\tau}$$
 This can also be written as
 
 $$\begin{aligned}
-S_x(f) &{}={}& 2\left[\int_{-\infty}^{\infty}{R_x(\tau)\cos(\omega \tau)d\tau} - \int_{-\infty}^{\infty}{R_x(\tau)j\sin(\omega  \tau)d\tau}\right] \nonumber\\
-&{}={}& 2\left[\int_{-\infty}^{0}{R_x(\tau)\cos(\omega \tau)d\tau}
- +\int_{0}^{\infty}{R_x(\tau)\cos(\omega \tau)d\tau}\right] \nonumber \\
-&{}-{}& 2j\left[\int_{-\infty}^{0}{R_x(\tau)\sin(\omega \tau)d\tau}
- +  \int_{0}^{\infty}{R_x(\tau)\sin(\omega \tau)d\tau} \right]  \nonumber \\
-&{}={}& 4\int_{0}^{\infty}{R_x(\tau)\cos(\omega \tau)d\tau} \nonumber \\
-&{}-{}& 2j\left[- \int_{0}^{\infty}{R_x(\tau)\sin(\omega \tau)d\tau} +  \int_{0}^{\infty}{R_x(\tau)\sin(\omega \tau)d\tau} \right] \nonumber \\
-&{}={}& 4\int_{0}^{\infty}{R_x(\tau)\cos(\omega \tau)d\tau}
+S_x(f) &= 2\left[\int_{-\infty}^{\infty}{R_x(\tau)\cos(\omega \tau)d\tau} - \int_{-\infty}^{\infty}{R_x(\tau)j\sin(\omega  \tau)d\tau}\right] \\
+&= 2\left[\int_{-\infty}^{0}{R_x(\tau)\cos(\omega \tau)d\tau}
+ +\int_{0}^{\infty}{R_x(\tau)\cos(\omega \tau)d\tau}\right] \\
+&- 2j\left[\int_{-\infty}^{0}{R_x(\tau)\sin(\omega \tau)d\tau}
+ +  \int_{0}^{\infty}{R_x(\tau)\sin(\omega \tau)d\tau} \right] \\
+&= 4\int_{0}^{\infty}{R_x(\tau)\cos(\omega \tau)d\tau} \\
+&- 2j\left[- \int_{0}^{\infty}{R_x(\tau)\sin(\omega \tau)d\tau} +  \int_{0}^{\infty}{R_x(\tau)\sin(\omega \tau)d\tau} \right] \\
+&= 4\int_{0}^{\infty}{R_x(\tau)\cos(\omega \tau)d\tau}
 \end{aligned}$$
 
 , since $e^{-j\omega \tau} = \cos(\omega \tau) - j \sin (\omega
@@ -160,13 +155,11 @@ $\tau=0$ while $\sin(\omega \tau)$ is asymmetric around $\tau = 0$.
 
 The inverse of power spectral density is defined as
 
-$$\label{eq:autopsd}
-R_x(\tau)  = \frac{1}{2}\int_{-\infty}^{\infty}{S_x(f)e^{j 2 \pi f \tau} df} = \int_{0}^{\infty}{S_x(f) \cos(\omega \tau)df}$$
+$$R_x(\tau)  = \frac{1}{2}\int_{-\infty}^{\infty}{S_x(f)e^{j 2 \pi f \tau} df} = \int_{0}^{\infty}{S_x(f) \cos(\omega \tau)df}$$
 
 If we set $\tau=0$ we get
 
-$$\label{eq:ms_psd}
-  \overline{x^2(t)} = \int_{0}^{\infty}{S_x(f)df}$$ which means we can
+$$\overline{x^2(t)} = \int_{0}^{\infty}{S_x(f)df}$$ which means we can
 easily calculate the average power if we know the power spectral
 density. As we will see later it is common to express noise sources in
 PSD form.
@@ -174,8 +167,7 @@ PSD form.
 Another very useful theorem when working with noise in the frequency
 domain is this
 
-$$\label{eq:psd_hf}
-  S_y(f) = S_x(f)|H(f)|^2$$ , where $S_y(f)$ is the output power
+$$S_y(f) = S_x(f)|H(f)|^2$$ , where $S_y(f)$ is the output power
 spectral density, $S_x(f)$ is the input power spectral density and
 $H(f)$ is the transfer function of a time-invariant linear system.
 
@@ -228,9 +220,9 @@ equation (<a href="#eq:autocor" data-reference-type="ref"
 data-reference="eq:autocor">[eq:autocor]</a>) we have that
 
 $$\begin{aligned}
-R_x(\tau ) &{}={}&{}  \lim_{T\to\infty} \frac{1}{T}\int^{+T/2}_{-T/2}{ x(t)x(t - \tau) dt} \nonumber\\
-&{}={}&{} \left[ \lim_{T\to\infty} \frac{1}{T}\int^{+T/2}_{-T/2}{ x^2(t) dt} \right] \delta(\tau) \nonumber\\
-&{}={}&{}\: \overline{x^2(t)}\delta(\tau)
+R_x(\tau ) &={}  \lim_{T\to\infty} \frac{1}{T}\int^{+T/2}_{-T/2}{ x(t)x(t - \tau) dt} \\
+&={} \left[ \lim_{T\to\infty} \frac{1}{T}\int^{+T/2}_{-T/2}{ x^2(t) dt} \right] \delta(\tau) \\
+&={}\: \overline{x^2(t)}\delta(\tau)
 \end{aligned}$$
 
 The reason being that in a true random process $x(t)$ is uncorrelated
@@ -239,10 +231,10 @@ with $x(t + \tau )$ where $\tau$ is an integer. If we use equation
 data-reference="eq:psd">[eq:psd]</a>) we see that
 
 $$\begin{aligned}
-  S_x(f) &{}={}&\: 2\int_{-\infty}^{\infty}{\overline{x^2(t)}\delta(\tau)e^{-j 2 \pi f \tau} d\tau} \nonumber\\
-&{}={}&\:2\overline{x^2(t)} \int_{-\infty}^{\infty}{\delta(\tau)e^{-j 2 \pi f \tau}
-    d\tau} \nonumber \\
-&{}={}& 2\overline{x^2(t)}
+  S_x(f) &=\: 2\int_{-\infty}^{\infty}{\overline{x^2(t)}\delta(\tau)e^{-j 2 \pi f \tau} d\tau} \\
+&=\:2\overline{x^2(t)} \int_{-\infty}^{\infty}{\delta(\tau)e^{-j 2 \pi f \tau}
+    d\tau} \\
+&= 2\overline{x^2(t)}
 \end{aligned}$$
 
 , since
@@ -260,12 +252,11 @@ $$v_{tot}^2(t) = (v_1(t) + v_2(t))^2 = v_1^2(t) + 2v_1(t)v_2(t) + v_2^2(t)$$
 The average power is defined as
 
 $$\begin{aligned}
-\label{eq:noisesum}
-  \overline{e_{tot}^2} &{}={}& \lim_{T\to\infty} \frac{1}{T}\int^{+T/2}_{-T/2}{ v_{tot}^2(t) dt}  \nonumber\\
-&{}={}& \lim_{T\to\infty} \frac{1}{T}\int^{+T/2}_{-T/2}{ v_1^2(t) dt} \nonumber\\
-&{}+{}&  \lim_{T\to\infty} \frac{1}{T}\int^{+T/2}_{-T/2}{ v_2^2(t) dt} \nonumber\\
-&{}+{}& \lim_{T\to\infty} \frac{1}{T}\int^{+T/2}_{-T/2}{ 2v_1(t)v_2(t) dt} \nonumber\\
-&{}={}& \overline{e_{1}^2} + \overline{e_{2}^2}
+  \overline{e_{tot}^2} &= \lim_{T\to\infty} \frac{1}{T}\int^{+T/2}_{-T/2}{ v_{tot}^2(t) dt} \\
+&= \lim_{T\to\infty} \frac{1}{T}\int^{+T/2}_{-T/2}{ v_1^2(t) dt} \\
+&+  \lim_{T\to\infty} \frac{1}{T}\int^{+T/2}_{-T/2}{ v_2^2(t) dt} \\
+&+ \lim_{T\to\infty} \frac{1}{T}\int^{+T/2}_{-T/2}{ 2v_1(t)v_2(t) dt} \\
+&= \overline{e_{1}^2} + \overline{e_{2}^2}
 + \lim_{T\to\infty} \frac{1}{T}\int^{+T/2}_{-T/2}{ 2v_1(t)v_2(t) dt}
 \end{aligned}$$
 
@@ -283,9 +274,9 @@ Signal to Noise Ratio (SNR) is a common method to specify the relation
 between signal power and noise power in linear systems. It is defined as
 
 $$\begin{aligned}
-  SNR &{}={}& 10 \log\left(\frac{Signal\:power}{Noise\:power}\right)\nonumber\\
-    &{}={}& 10 \log\left(\frac{\overline{v_{sig}^2}}{\overline{e_{n}^2}}\right)\nonumber\\
-  &{}={}&  20 \log\left(\frac{v_{rms}}{\sqrt{\overline{e_{n}^2}}}\right)
+  SNR &= 10 \log\left(\frac{Signal\:power}{Noise\:power}\right)\\
+    &= 10 \log\left(\frac{\overline{v_{sig}^2}}{\overline{e_{n}^2}}\right)\\
+  &=  20 \log\left(\frac{v_{rms}}{\sqrt{\overline{e_{n}^2}}}\right)
 \end{aligned}$$
 
 Another useful ratio is Signal to Noise and Distortion (SNDR), since
@@ -354,13 +345,11 @@ There are two different definitions of spectral density used in the
 literature. They differ by a factor of two. The one used in signal
 processing books, like [@gray.r.m], is
 
-$$\label{eq:psd1}
-S_{x1}(f) = \int_{-\infty}^{\infty}{R_{x1}(\tau)e^{-j\omega\tau}d\tau}$$
+$$S_{x1}(f) = \int_{-\infty}^{\infty}{R_{x1}(\tau)e^{-j\omega\tau}d\tau}$$
 And the one often used in books about noise, like [@ziel],
 is
 
-$$\label{eq:psd2}
-S_{x2}(f) = 2\int_{-\infty}^{\infty}{R_{x2}(\tau)e^{-j\omega\tau}d\tau}$$
+$$S_{x2}(f) = 2\int_{-\infty}^{\infty}{R_{x2}(\tau)e^{-j\omega\tau}d\tau}$$
 In both cases $R_{xi}(\tau)$ is the auto-correlation function defined as
 
 $$R_{xi}(\tau) = \overline{x_i(t)x_i(t+\tau)}$$ As we can plainly see
@@ -368,7 +357,7 @@ $$R_{xi}(\tau) = \overline{x_i(t)x_i(t+\tau)}$$ As we can plainly see
 $$S_{x1}(f) \neq S_{x2}(f)$$ , there is no way these two can be made
 equal if
 
-$$\label{eq:rxequal}R_{x1}(\tau) = R_{x2}(\tau)$$ This is ok, there is
+$$R_{x1}(\tau) = R_{x2}(\tau)$$ This is ok, there is
 no problem having two different definitions for two different functions.
 In reality $S_{x1}(f)$ and $S_{x2}(f)$ are different functions of
 frequency, and we could say that
@@ -425,15 +414,15 @@ even.
 The definitions then become
 
 $$\begin{aligned}
-S_{x1}(f) &{}={}& \int_{-\infty}^{\infty}{R_{x1}(\tau)\cos(\omega\tau)d\tau}\nonumber\\
-R_{x1}(\tau) &{}={}& \int_{-\infty}^{\infty}{S_{x1}(f)\cos(\omega\tau)df}
+S_{x1}(f) &= \int_{-\infty}^{\infty}{R_{x1}(\tau)\cos(\omega\tau)d\tau}\\
+R_{x1}(\tau) &= \int_{-\infty}^{\infty}{S_{x1}(f)\cos(\omega\tau)df}
 \end{aligned}$$
 
 and
 
 $$\begin{aligned}
-S_{x2}(f) &{}={}& 2\int_{-\infty}^{\infty}{R_{x2}(\tau)\cos(\omega\tau)d\tau}\nonumber\\
-R_{x2}(\tau) &{}={}& \frac{1}{2}\int_{-\infty}^{\infty}{S_{x2}(f)\cos(\omega\tau)df}
+S_{x2}(f) &= 2\int_{-\infty}^{\infty}{R_{x2}(\tau)\cos(\omega\tau)d\tau}\\
+R_{x2}(\tau) &= \frac{1}{2}\int_{-\infty}^{\infty}{S_{x2}(f)\cos(\omega\tau)df}
 \end{aligned}$$
 
 We can rewrite $R_{x2}(\tau)$ as
@@ -467,8 +456,7 @@ The spectral density of thermal noise in electronic circuit should be
 known to anyone that has studied analog electronics. We normally define
 the voltage spectral density of thermal noise as
 
-$$\label{eq:othermal}
-S_{th}(f) = 4kTR$$ where k is Boltzmann’s constant, T the temperature in
+$$S_{th}(f) = 4kTR$$ where k is Boltzmann’s constant, T the temperature in
 Kelvin and R the resistance. But
 (<a href="#eq:othermal" data-reference-type="ref"
 data-reference="eq:othermal">[eq:othermal]</a>) is the spectral density
