@@ -54,6 +54,21 @@ def front_matter(text):
     return m.group(1), text[m.end():]
 
 
+# just-the-docs' collapsible in-page TOC, replacing the wall of links the
+# kramdown TOC painted at the top of every chapter. The sidebar and the
+# anchored headings do the heavy lifting; this stays folded until asked.
+JTD_TOC = """<details markdown="block">
+  <summary>Table of contents</summary>
+  {: .text-delta }
+- TOC
+{:toc}
+</details>"""
+
+
+def fold_toc(body):
+    return re.sub(r"\*\s*TOC\s*\n\{:toc\s*\}", JTD_TOC, body)
+
+
 def write_page(path, title, nav_order, permalink, body):
     front = "\n".join(
         [
@@ -67,7 +82,7 @@ def write_page(path, title, nav_order, permalink, body):
         ]
     )
     with open(path, "w") as fo:
-        fo.write(front + body)
+        fo.write(front + fold_toc(body))
 
 
 def make_pages():
