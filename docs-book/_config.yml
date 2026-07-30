@@ -27,6 +27,14 @@ aux_links:
     - "/aic2026/assets/aic.pdf"
   "GitHub":
     - "https://github.com/wulffern/aic2026"
+  # add Google Scholar / YouTube / other activity links here, e.g.
+  # "Scholar":
+  #   - "https://scholar.google.com/citations?user=..."
+
+# Google Analytics: drop the GA4 measurement id here and the theme wires
+# it up - no theme fork needed.
+# ga_tracking: G-XXXXXXXXXX
+# ga_tracking_anonymize_ip: true
 
 nav_external_links:
   - title: analogicus.com

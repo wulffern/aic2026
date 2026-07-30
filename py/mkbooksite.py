@@ -76,12 +76,16 @@ def main():
             fo.write(front + body)
     print(f"wrote {len(order)} chapters to docs-book/chapters/")
 
-    # share the assets with the existing site
+    # share the assets with the existing site - except the old theme's
+    # stylesheet, which imports minima and breaks the just-the-docs build
     src = os.path.join(ROOT, "docs", "assets")
     dst = os.path.join(BOOK, "assets")
     if os.path.isdir(src):
         shutil.copytree(src, dst, dirs_exist_ok=True)
-        print("copied docs/assets -> docs-book/assets")
+        css = os.path.join(dst, "css")
+        if os.path.isdir(css):
+            shutil.rmtree(css)
+        print("copied docs/assets -> docs-book/assets (minus css/)")
 
 
 if __name__ == "__main__":
