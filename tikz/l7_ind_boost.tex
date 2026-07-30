@@ -1,0 +1,32 @@
+\input{tikz/fig_header.tex}
+
+% Inductive boost DC/DC: inductor from Vin, switch to ground at the
+% switch node, diode (anode at the node) to the output capacitor.
+
+\begin{circuitikz}[american, thick, transform shape, circuit ee IEC]
+
+  \input{tikz/ckt_lib.tex}
+
+  % input and inductor
+  \draw (0,3.2) node[anchor=east] {$V_{in}$} to [short,o-] (0.4,3.2);
+  \draw (0.4,3.2) to [L] (3.2,3.2);
+
+  % switch to ground at the switch node
+  \fill (3.2,3.2) circle (0.075);
+  \draw (3.2,3.2) to [nos] (3.2,1.6);
+  \draw (3.2,1.6) \vground;
+
+  % diode to the output, anode at the switch node
+  \draw (3.2,3.2) to [D] (5.4,3.2);
+
+  % output capacitor
+  \fill (5.4,3.2) circle (0.075);
+  \draw (5.4,1.6) \vcapacitor{};
+  \draw (5.4,1.6) \vground;
+
+  % output
+  \draw (5.4,3.2) to [short,-o] (6.2,3.2);
+  \node[anchor=west] at (6.3,3.2) {$V_{out}$};
+
+\end{circuitikz}
+\end{document}

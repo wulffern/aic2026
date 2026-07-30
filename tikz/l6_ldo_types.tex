@@ -1,0 +1,77 @@
+\input{tikz/fig_header.tex}
+
+% Three ways to control an LDO pass-fet: modulate the gate-source
+% voltage, switch the number of parallel instances digitally, or turn
+% the pass-fet on and off with a duty cycle.
+
+\begin{circuitikz}[american, thick, transform shape, circuit ee IEC]
+
+  \input{tikz/ckt_lib.tex}
+
+  % ---------------- 1: modulate Vgs ----------------
+  \draw (0,3.2) \lvpmos{MA}{};
+  \draw (0,4.8) \vsupply;
+  \draw (MA.G) -- ++(-1.0,0);
+  \node[anchor=east, align=center] at (-1.7,4.0) {Modulate\\$V_{GS}$};
+
+  \draw (0,3.2) -- (0,2.4);
+  \fill (0,2.4) circle (0.075);
+  \draw (0,2.4) -- (1.4,2.4);
+  \draw (0,0.8) \vcapacitor{};
+  \draw (0,0.8) \vground;
+  \draw (1.4,2.4) to [vR, l=$I_{load}$] (1.4,0.8);
+  \draw (1.4,0.8) \vground;
+
+  % ---------------- 2: digital control ----------------
+  \draw (5.6,3.2) \lvpmos{MB1}{};
+  \draw (5.6,4.8) \vsupply;
+  \draw (6.8,3.2) \lvpmos{MB2}{};
+  \draw (6.8,4.8) \vsupply;
+  \draw (8.0,3.2) \lvpmos{MB3}{};
+  \draw (8.0,4.8) \vsupply;
+
+  % gate bus below the drain rail
+  \coordinate (gb1) at (MB1.G);
+  \coordinate (gb2) at (MB2.G);
+  \coordinate (gb3) at (MB3.G);
+  \draw (gb1) -- ++(0,-1.2);
+  \draw (gb2) -- ++(0,-1.2);
+  \draw (gb3) -- ++(0,-1.2);
+  \draw (gb1) ++(0,-1.2) coordinate (bus1) -- ++(2.4,0);
+  \fill (gb2) ++(0,-1.2) circle (0.075);
+  \draw (bus1) -- ++(-0.8,0);
+  \draw (bus1) ++(-0.55,-0.15) -- ++(0.3,0.3);
+  \node[anchor=east, align=center] at (4.1,2.8) {Digital\\control};
+
+  % common drain rail and load
+  \draw (5.6,3.2) -- (8.0,3.2);
+  \fill (6.8,3.2) circle (0.075);
+  \draw (8.0,3.2) -- (8.0,2.4);
+  \fill (8.0,2.4) circle (0.075);
+  \draw (8.0,2.4) -- (9.4,2.4);
+  \draw (8.0,0.8) \vcapacitor{};
+  \draw (8.0,0.8) \vground;
+  \draw (9.4,2.4) to [vR, l=$I_{load}$] (9.4,0.8);
+  \draw (9.4,0.8) \vground;
+
+  % ---------------- 3: duty cycle control ----------------
+  \draw (13.2,3.2) \lvpmos{MC}{};
+  \draw (13.2,4.8) \vsupply;
+  \draw (MC.G) -- ++(-0.5,0);
+
+  % square wave on the gate
+  \draw (MC.G) ++(-2.1,-0.15) -- ++(0.25,0) -- ++(0,0.45) -- ++(0.35,0)
+        -- ++(0,-0.45) -- ++(0.3,0) -- ++(0,0.45) -- ++(0.35,0)
+        -- ++(0,-0.45) -- ++(0.25,0);
+  \node[anchor=east, align=center] at (10.6,4.4) {Duty cycle\\control};
+
+  \draw (13.2,3.2) -- (13.2,2.4);
+  \fill (13.2,2.4) circle (0.075);
+  \draw (13.2,2.4) -- (14.6,2.4);
+  \draw (13.2,0.8) \vcapacitor{};
+  \draw (13.2,0.8) \vground;
+  \draw (14.6,2.4) to [vR, l=$I_{load}$] (14.6,0.8);
+  \draw (14.6,0.8) \vground;
+
+\end{circuitikz}
+\end{document}

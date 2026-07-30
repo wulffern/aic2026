@@ -210,7 +210,7 @@ but the architecture of the analog design would be either a linear regulator, or
 
 -->
 
-![original fit](../media/l9_sarc.pdf)
+![original fit](../media/l9_sarc_tikz.pdf)
 
 ---
 
@@ -268,7 +268,7 @@ the PMOS to force the input voltages of the OTA to be equal.
 
 -->
 
-![left fit](../media/l9_ldo_pmos.pdf)
+![left fit](../media/l9_ldo_pmos_tikz.pdf)
 
 <!--pan_doc:
 
@@ -317,7 +317,7 @@ Another interesting phenomena with NMOS pass-fet is that the PSRR is usually bet
 
 -->
 
-![right fit](../media/l9_ldo_nmos.pdf)
+![right fit](../media/l9_ldo_nmos_tikz.pdf)
 
 ---
 
@@ -386,7 +386,7 @@ we choose will depend on the application.
 -->
 ---
 
-![fit](../media/l6_ldo_types.pdf)
+![fit](../media/l6_ldo_types_tikz.pdf)
 
 
 
@@ -462,7 +462,7 @@ If we have a control loop on the output voltage, then we can get an output volta
 
 -->
 
-![inline fit](../media/l7_ind_buck.pdf)
+![inline fit](../media/l7_ind_buck_tikz.pdf)
 
 ---
 
@@ -484,7 +484,7 @@ Often we have to insert an LDO after a capacitive buck to make the output voltag
 
 -->
 
-![inline fit](../media/l7_cap_buck.pdf)
+![inline fit](../media/l7_cap_buck_tikz.pdf)
 
 
 ---
@@ -501,7 +501,7 @@ In a similar manner to the Buck, the output voltage will be impacted by how long
 
 -->
 
-![inline fit](../media/l7_ind_boost.pdf)
+![inline fit](../media/l7_ind_boost_tikz.pdf)
 
 ---
 
@@ -517,7 +517,7 @@ The configuration below is quite often called a "Charge pump", and can be config
 -->
 
 
-![inline fit](../media/l7_cap_boost.pdf)
+![inline fit](../media/l7_cap_boost_tikz.pdf)
 
 ---
 
@@ -539,7 +539,7 @@ Most DC/DCs are feedback systems, so the control will be adjusted to force the o
 
 -->
 
-![left fit](../media/l7_buck.pdf)
+![left fit](../media/l7_buck_tikz.pdf)
 
 <!--pan_doc:
 
@@ -668,7 +668,7 @@ In pulsed-frequency mode we switch the NMOS and PMOS when it's needed. If there 
 
 -->
 
-![left fit](../media/l9_sw_arch.pdf)
+![left fit](../media/l9_sw_arch_tikz.pdf)
 
 ---
 

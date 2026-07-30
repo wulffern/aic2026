@@ -1,0 +1,42 @@
+\input{tikz/fig_header.tex}
+
+% Capacitive buck DC/DC: charge two capacitors in series to Vin, then
+% reconfigure them in parallel to get Vin/2. The letters mark the
+% capacitor terminals through the reconfiguration.
+
+\begin{circuitikz}[american, thick, transform shape, circuit ee IEC]
+
+  \input{tikz/ckt_lib.tex}
+
+  % series stack charged to Vin
+  \draw (0,4.6) -- (0,4.8) node[anchor=south] {$+$};
+  \draw (0,3.0) \vcapacitor{};
+  \draw (0,1.4) \vcapacitor{};
+  \draw (0,1.4) \vground;
+  \node[anchor=south west] at (0.1,1.05) {$-$};
+  \node[anchor=east] at (-0.5,3.0) {$V_{in}$};
+
+  % terminal letters, top to bottom
+  \node[scale=0.8, anchor=west] at (0.15,4.35) {A};
+  \node[scale=0.8, anchor=west] at (0.15,3.30) {B};
+  \node[scale=0.8, anchor=west] at (0.15,2.75) {C};
+  \node[scale=0.8, anchor=west] at (0.15,1.70) {D};
+
+  % reconfigure
+  \draw[-latex, very thick] (1.7,3.0) -- (2.9,3.0);
+
+  % parallel pair at Vin/2
+  \draw (4.1,4.2) -- (5.7,4.2);
+  \node[anchor=south] at (4.9,4.35) {$V_{in}/2$};
+  \draw (4.1,2.6) \vcapacitor{};
+  \draw (4.1,2.6) \vground;
+  \draw (5.7,2.6) \vcapacitor{};
+  \draw (5.7,2.6) \vground;
+
+  \node[scale=0.8, anchor=west] at (4.25,3.95) {A};
+  \node[scale=0.8, anchor=west] at (4.25,2.90) {B};
+  \node[scale=0.8, anchor=west] at (5.85,3.95) {C};
+  \node[scale=0.8, anchor=west] at (5.85,2.90) {D};
+
+\end{circuitikz}
+\end{document}

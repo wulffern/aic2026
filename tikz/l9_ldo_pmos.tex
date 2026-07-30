@@ -1,0 +1,41 @@
+\input{tikz/fig_header.tex}
+
+% LDO with a PMOS pass-fet. The 1.2 V reference is divided down to the
+% negative OTA input, the output feeds back to the positive input, and
+% the OTA drives the PMOS gate. The common source PMOS inverts, so
+% feedback to the positive input closes a negative loop.
+
+\begin{circuitikz}[american, thick, transform shape, circuit ee IEC]
+
+  \input{tikz/ckt_lib.tex}
+
+  % reference divider
+  \draw (0,6.0) to [short,o-] (0,6.0);
+  \node[anchor=south] at (0,6.15) {$1.2 V$};
+  \draw (0,4.4) \vresistor{};
+  \draw (0,2.8) \vresistor{};
+  \draw (0,2.8) \vground;
+  \fill (0,4.4) circle (0.075);
+
+  % OTA, minus on top from the divider, plus from the feedback
+  \draw (0,4.4) -- (1.6,4.4);
+  \draw (1.6,4.4) \cicOtaSSWP{$-$}{$+$};
+
+  % PMOS pass-fet
+  \draw (6.4,3.2) \lvpmos{M1}{};
+  \draw (6.4,4.8) \vsupply;
+  \node[anchor=south] at (6.4,5.25) {$1.5 V$};
+  \draw (cicOtaS_out) -- (M1.G);
+
+  % output node and load
+  \fill (6.4,3.2) circle (0.075);
+  \draw (6.4,3.2) -- (7.8,3.2);
+  \node[anchor=south] at (7.8,3.3) {$0.8 V$};
+  \draw (7.8,3.2) to [vR, l=$I_{load}$] (7.8,1.6);
+  \draw (7.8,1.6) \vground;
+
+  % feedback to the positive input
+  \draw (6.4,3.2) -- (6.4,2.4) -- (1.2,2.4) -- (1.2,3.6) -- (1.6,3.6);
+
+\end{circuitikz}
+\end{document}

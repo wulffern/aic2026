@@ -1,0 +1,87 @@
+\input{tikz/fig_header.tex}
+
+% Inductive buck converter: control block drives the PMOS (A bar) and
+% NMOS (B) switches, the inductor delivers charge packets to the output
+% RC. Below: the switch node voltage Vx and inductor current Ix over
+% one period.
+
+\begin{circuitikz}[american, thick, transform shape, circuit ee IEC]
+
+  \input{tikz/ckt_lib.tex}
+
+  % control block
+  \draw (-0.9,1.4) rectangle (0.9,3.8);
+  \node[anchor=center] at (0,2.6) {Control};
+  \draw[-latex] (-2.4,2.6) node[anchor=east] {$V_O$} -- (-0.9,2.6);
+
+  % PMOS high side
+  \draw (3.2,3.4) \lvpmos{MP}{};
+  \draw (3.2,5.0) \vsupply;
+  \node[anchor=south] at (3.2,5.45) {$V_{DDH}$};
+  \draw (0.9,3.4) -- (1.6,3.4) -- (1.6,4.2) -- (MP.G);
+  \node[anchor=south] at (1.9,4.25) {$\bar{A}$};
+
+  % NMOS low side
+  \draw (3.2,0.2) \lvnmos{MN}{};
+  \draw (3.2,0.2) \vground;
+  \draw (0.9,1.8) -- (1.6,1.8) -- (1.6,1.0) -- (MN.G);
+  \node[anchor=south] at (1.9,1.05) {$B$};
+
+  % switch node
+  \draw (3.2,1.8) -- (3.2,3.4);
+  \fill (3.2,2.8) circle (0.075);
+  \node[anchor=south east] at (3.1,2.9) {$V_1$};
+
+  % inductor to the output
+  \draw (3.2,2.8) -- (3.8,2.8);
+  \draw (3.8,2.8) to [L] (5.8,2.8);
+  \node[anchor=south] at (3.95,3.0) {$+$};
+  \node[anchor=south] at (4.8,3.1) {$V_X$};
+  \node[anchor=south] at (5.65,3.0) {$-$};
+  \draw[-latex] (4.0,2.45) -- (4.9,2.45);
+  \node[anchor=north] at (4.45,2.4) {$I_X$};
+
+  % output RC
+  \fill (5.8,2.8) circle (0.075);
+  \draw (5.8,1.2) \vcapacitor{$C$};
+  \draw (5.8,1.2) \vground;
+  \draw (5.8,2.8) -- (7.2,2.8);
+  \fill (7.2,2.8) circle (0.075);
+  \draw (7.2,1.2) \vresistor{$R$};
+  \draw (7.2,1.2) \vground;
+  \draw[-latex] (8.0,2.4) -- (8.0,1.6);
+  \node[anchor=west] at (8.1,2.0) {$I_O$};
+  \draw (7.2,2.8) to [short,-o] (8.6,2.8);
+  \node[anchor=west] at (8.7,2.8) {$V_O$};
+
+  % ------------- Vx waveform -------------
+  \draw[-latex] (0,-4.4) -- (0,-1.8);
+  \node[anchor=east] at (-0.1,-2.0) {$V_X$};
+  \draw[-latex] (0,-4.2) -- (4.6,-4.2);
+  \node[anchor=west] at (4.65,-4.2) {$t$};
+  \draw (0.3,-4.2) -- (0.3,-2.6) -- (1.2,-2.6) -- (1.2,-4.2)
+        -- (3.0,-4.2) -- (3.0,-2.6) -- (3.9,-2.6) -- (3.9,-4.2);
+  \node[anchor=north, scale=0.8] at (0.3,-4.3) {$t_0$};
+  \node[anchor=north, scale=0.8] at (1.2,-4.3) {$t_1$};
+  \node[anchor=north, scale=0.8] at (3.0,-4.3) {$t_2$};
+  \draw[latex-latex] (0.3,-4.75) -- (3.0,-4.75);
+  \node[anchor=north, scale=0.8] at (1.65,-4.8) {$T$};
+
+  % ------------- Ix waveform -------------
+  \draw[-latex] (6.0,-4.4) -- (6.0,-1.8);
+  \node[anchor=east] at (5.9,-2.0) {$I_X$};
+  \draw[-latex] (6.0,-4.2) -- (10.6,-4.2);
+  \node[anchor=west] at (10.65,-4.2) {$t$};
+  \draw (6.3,-4.2) -- (7.2,-2.4) -- (9.0,-4.2);
+  \node[anchor=south east, scale=0.9] at (6.9,-3.2) {$I_1$};
+  \node[anchor=south west, scale=0.9] at (8.2,-3.2) {$I_2$};
+  \node[anchor=north, scale=0.8] at (6.3,-4.3) {$t_0$};
+  \node[anchor=north, scale=0.8] at (7.2,-4.3) {$t_1$};
+  \node[anchor=north, scale=0.8] at (9.0,-4.3) {$t_2$};
+
+  % timing notes
+  \node[anchor=west, scale=0.9, align=left] at (9.4,-2.4)
+    {$t_0 = 0$\\$t_1 = D\,T$\\$t_2 = T$};
+
+\end{circuitikz}
+\end{document}

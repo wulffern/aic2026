@@ -1,0 +1,67 @@
+\input{tikz/fig_header.tex}
+
+% Switched regulator architecture: an FSM drives the high and low side
+% switches. One comparator (Vz) senses the zero crossing of the
+% inductor current across the NMOS, the other (Vol) compares the output
+% voltage to a reference.
+
+\begin{circuitikz}[american, thick, transform shape, circuit ee IEC]
+
+  \input{tikz/ckt_lib.tex}
+
+  % FSM
+  \draw (-0.9,1.4) rectangle (0.9,4.0);
+  \node[anchor=center] at (0,2.7) {FSM};
+  \draw[-latex] (-2.4,2.7) node[anchor=east] {CK} -- (-0.9,2.7);
+
+  % PMOS high side
+  \draw (3.6,3.4) \lvpmos{MP}{};
+  \draw (3.6,5.0) \vsupply;
+  \draw (0.9,3.4) -- (1.8,3.4) -- (1.8,4.2) -- (MP.G);
+  \node[anchor=south] at (2.1,4.25) {$\bar{A}$};
+
+  % NMOS low side
+  \draw (3.6,0.2) \lvnmos{MN}{};
+  \draw (3.6,0.2) \vground;
+  \draw (0.9,1.8) -- (1.8,1.8) -- (1.8,1.0) -- (MN.G);
+  \node[anchor=south] at (2.1,1.05) {$B$};
+
+  % switch node
+  \draw (3.6,1.8) -- (3.6,3.4);
+  \fill (3.6,2.8) circle (0.075);
+  \node[anchor=south east] at (3.5,2.9) {DCC};
+
+  % inductor and output cap
+  \draw (3.6,2.8) -- (4.8,2.8);
+  \draw (4.8,2.8) to [L] (6.6,2.8);
+  \fill (6.6,2.8) circle (0.075);
+  \draw (6.6,1.2) \vcapacitor{};
+  \draw (6.6,1.2) \vground;
+  \draw (6.6,2.8) -- (7.0,2.8);
+  \fill (7.0,2.8) circle (0.075);
+  \draw (7.0,2.8) to [short,-o] (7.6,2.8);
+  \node[anchor=west] at (7.7,2.8) {$V_O$};
+
+  % zero cross comparator, output points left to the FSM
+  \draw (3.8,-0.8) -- (3.8,-1.8) -- (2.6,-1.3) -- cycle;
+  \node[anchor=east, scale=0.8] at (3.8,-1.05) {$-$};
+  \node[anchor=east, scale=0.8] at (3.8,-1.55) {$+$};
+  \draw (3.8,-1.05) -- (4.2,-1.05) -- (4.2,-1.4);
+  \draw (4.2,-1.4) \vground;
+  \fill (4.6,2.8) circle (0.075);
+  \draw (4.6,2.8) -- (4.6,-1.55) -- (3.8,-1.55);
+  \draw (2.6,-1.3) -- (0.0,-1.3) -- (0.0,1.4);
+  \node[anchor=south] at (1.3,-1.25) {$V_Z$};
+
+  % output voltage comparator
+  \draw (5.4,-1.9) -- (5.4,-2.9) -- (4.2,-2.4) -- cycle;
+  \node[anchor=east, scale=0.8] at (5.4,-2.15) {$-$};
+  \node[anchor=east, scale=0.8] at (5.4,-2.65) {$+$};
+  \draw (7.0,2.8) -- (7.0,-2.15) -- (5.4,-2.15);
+  \draw (5.4,-2.65) to [short,-o] (6.4,-2.65);
+  \node[anchor=west] at (6.5,-2.65) {$V_{REF}$};
+  \draw (4.2,-2.4) -- (-0.5,-2.4) -- (-0.5,1.4);
+  \node[anchor=south] at (1.3,-2.35) {$V_{OL}$};
+
+\end{circuitikz}
+\end{document}

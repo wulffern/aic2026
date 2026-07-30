@@ -1,0 +1,33 @@
+\input{tikz/fig_header.tex}
+
+% Inductive buck DC/DC: switch from Vin, freewheel diode to ground
+% (cathode at the switch node), inductor to the output capacitor.
+
+\begin{circuitikz}[american, thick, transform shape, circuit ee IEC]
+
+  \input{tikz/ckt_lib.tex}
+
+  % input and switch
+  \draw (0,3.2) node[anchor=east] {$V_{in}$} to [short,o-] (0.4,3.2);
+  \draw (0.4,3.2) to [nos] (1.8,3.2);
+  \draw (1.8,3.2) -- (2.6,3.2);
+
+  % freewheel diode, cathode at the switch node
+  \fill (2.6,3.2) circle (0.075);
+  \draw (2.6,1.6) to [D] (2.6,3.2);
+  \draw (2.6,1.6) \vground;
+
+  % inductor to the output
+  \draw (2.6,3.2) to [L] (5.4,3.2);
+
+  % output capacitor
+  \fill (5.4,3.2) circle (0.075);
+  \draw (5.4,1.6) \vcapacitor{};
+  \draw (5.4,1.6) \vground;
+
+  % output
+  \draw (5.4,3.2) to [short,-o] (6.2,3.2);
+  \node[anchor=west] at (6.3,3.2) {$V_{out}$};
+
+\end{circuitikz}
+\end{document}
