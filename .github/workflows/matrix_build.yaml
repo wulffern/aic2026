@@ -147,11 +147,29 @@ jobs:
           name: prepared-sources
           path: .
 
+      # Rolling cache: restore the newest snapshot for this shard, save a
+      # fresh one under a unique key. Hits are decided per chapter inside
+      # py/pdfcache.py on a content hash, not by this key.
+      - name: Restore standalone PDF cache
+        uses: actions/cache/restore@v6
+        with:
+          path: ~/.cache/aic-standalone
+          key: standalone-pdf-${{ matrix.shard }}-${{ github.run_id }}
+          restore-keys: |
+            standalone-pdf-${{ matrix.shard }}-
+
       - name: Build standalone shard
         shell: bash
         run: |
           git config --global --add safe.directory "$(pwd)"
-          make standalone-list FILES="${{ matrix.files }}"
+          make standalone-cached FILES="${{ matrix.files }}"
+
+      - name: Save standalone PDF cache
+        uses: actions/cache/save@v6
+        if: always()
+        with:
+          path: ~/.cache/aic-standalone
+          key: standalone-pdf-${{ matrix.shard }}-${{ github.run_id }}
 
       - name: Package standalone shard
         shell: bash

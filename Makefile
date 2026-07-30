@@ -182,6 +182,14 @@ standalone-one:
 	cd pdf && $(MAKE) standalone FNAME="$$f.tex"; \
 	cp "pdf/$$f.pdf" "docs/assets/"
 
+# Like standalone-list, but chapters whose content hash matches a cached PDF
+# are copied instead of rebuilt. The version stamp is excluded from the hash
+# on purpose (see py/pdfcache.py). CI restores/saves CACHEDIR around this.
+CACHEDIR = ~/.cache/aic-standalone
+standalone-cached:
+	@test -n "${FILES}" || (echo "Usage: make standalone-cached FILES=\"l03_refbias l04_afe\""; exit 1)
+	${PYTHON} py/pdfcache.py --cache ${CACHEDIR} ${FILES}
+
 standalone-list:
 	@test -n "${FILES}" || (echo "Usage: make standalone-list FILES=\"l03_refbias l04_afe\""; exit 1)
 	-mkdir -p docs/assets
