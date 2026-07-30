@@ -1,94 +1,97 @@
 \input{tikz/fig_header.tex}
 
 % Current starved ring oscillator: a PMOS mirror copies I_control into
-% the supply of each inverter, and a Vcontrol PMOS in parallel with each
-% mirror device adds a voltage controlled current. Three inverters in a
-% ring, each loaded by a capacitor C.
-%
-% Wires that cross without a dot are not connected.
+% the supply of each inverter, and a V_control PMOS in series with each
+% branch throttles it further. One column per stage, no crossings.
 
 \begin{circuitikz}[american, thick, transform shape, circuit ee IEC]
 
   \input{tikz/ckt_lib.tex}
 
-  \def\ydr{5.8}   % drains of the mirror row
-  \def\ygr{5.3}   % mirror gate rail
-  \def\yvj{2.3}   % where the Vcontrol devices join the supply wires
-  \def\yvr{1.7}   % Vcontrol gate rail
-  \def\xz{-2.6}   % the diode connected reference
+  \def\xa{2.6}    % stage columns
+  \def\xb{5.2}
+  \def\xc{7.8}
+  \def\ymir{5.6}  % mirror row (PMOS drain at \ymir, source at +\grid)
+  \def\yctl{4.0}  % V_control row
+  \def\yinv{1.4}  % the ring
+  \def\ycap{0.0}
 
-  % ---- PMOS mirror row: diode reference and three outputs ----
-  \draw (\xz,\ydr) to [Tpmos, n=P0, mirror] (\xz,{\ydr+1.6});
-  \draw (\xz,{\ydr+1.6}) \vsupply;
-  \draw (0,\ydr)   to [Tpmos, n=P1] (0,{\ydr+1.6});
-  \draw (0,{\ydr+1.6}) \vsupply;
-  \draw (2.4,\ydr) to [Tpmos, n=P2] (2.4,{\ydr+1.6});
-  \draw (2.4,{\ydr+1.6}) \vsupply;
-  \draw (4.8,\ydr) to [Tpmos, n=P3] (4.8,{\ydr+1.6});
-  \draw (4.8,{\ydr+1.6}) \vsupply;
+  % ---- the mirror: diode device fed by I_control ----
+  \draw (0,{\ymir+\grid}) \vsupply;
+  \draw (0,\ymir) \lvmpmos{MD}{};
+  \coordinate (gmd) at (MD.G);
+  \fill (gmd) circle (0.075);
+  \draw (gmd) |- (0,\ymir);
+  \fill (0,\ymir) circle (0.075);
+  \draw (0,\ymir) to [I, l_=$I_{control}$] (0,{\ymir-2.0});
+  \draw (0,{\ymir-2.0}) \vground;
 
-  % gate rail below the row, tied to the reference drain
-  \draw (P0.G) -- ++(0.2,0) coordinate (t0) -- (t0 |- 0,\ygr) coordinate (gr0);
-  \draw (P1.G) -- ++(-0.2,0) coordinate (t1) -- (t1 |- 0,\ygr) coordinate (gr1);
-  \draw (P2.G) -- ++(-0.2,0) coordinate (t2) -- (t2 |- 0,\ygr) coordinate (gr2);
-  \draw (P3.G) -- ++(-0.2,0) coordinate (t3) -- (t3 |- 0,\ygr) coordinate (gr3);
-  \draw (\xz,\ygr) -- (gr3);
-  \fill (\xz,\ygr) circle (0.07);
-  \fill (gr0) circle (0.07);
-  \fill (gr1) circle (0.07);
-  \fill (gr2) circle (0.07);
+  % mirror outputs, one per stage
+  \draw (\xa,{\ymir+\grid}) \vsupply;
+  \draw (\xa,\ymir) \lvpmos{M1}{};
+  \draw (\xb,{\ymir+\grid}) \vsupply;
+  \draw (\xb,\ymir) \lvpmos{M2}{};
+  \draw (\xc,{\ymir+\grid}) \vsupply;
+  \draw (\xc,\ymir) \lvpmos{M3}{};
 
-  % reference current
-  \draw (\xz,\ydr) -- (\xz,4.6) to [I, l_=$I_{control}$] (\xz,2.8)
-        -- (\xz,2.5) \vground;
+  % common gate rail
+  \coordinate (g1) at (M1.G);
+  \coordinate (g2) at (M2.G);
+  \coordinate (g3) at (M3.G);
+  \draw (gmd) -- (g1);
+  \draw (g1) -- (g2);
+  \draw (g2) -- (g3);
+  \fill (g1) circle (0.075);
+  \fill (g2) circle (0.075);
 
-  % ---- Vcontrol PMOS in parallel with each mirror output ----
-  \draw (-1.5,2.9) to [Tpmos, n=V1] (-1.5,4.5);
-  \draw (-1.5,4.5) \vsupply;
-  \draw (0.9,2.9)  to [Tpmos, n=V2] (0.9,4.5);
-  \draw (0.9,4.5) \vsupply;
-  \draw (3.3,2.9)  to [Tpmos, n=V3] (3.3,4.5);
-  \draw (3.3,4.5) \vsupply;
+  % ---- V_control PMOS in series with each branch ----
+  \draw (\xa,\yctl) \lvmpmos{M4}{};
+  \draw (\xb,\yctl) \lvmpmos{M5}{};
+  \draw (\xc,\yctl) \lvmpmos{M6}{};
+  \coordinate (g4) at (M4.G);
+  \coordinate (g5) at (M5.G);
+  \coordinate (g6) at (M6.G);
+  \draw (g4) -- (g5);
+  \draw (g5) -- (g6);
+  \fill (g5) circle (0.075);
+  \fill (g6) circle (0.075);
+  \draw (g6) -- ++(0.9,0) coordinate (vctap);
+  \draw (vctap) to [short,-o] ++(0.4,0) node[anchor=west] {$V_{control}$};
 
-  % their drains join the inverter supply wires
-  \draw (-1.5,2.9) -- (-1.5,\yvj) -- (0,\yvj);
-  \fill (0,\yvj) circle (0.07);
-  \draw (0.9,2.9) -- (0.9,\yvj) -- (2.4,\yvj);
-  \fill (2.4,\yvj) circle (0.07);
-  \draw (3.3,2.9) -- (3.3,\yvj) -- (4.8,\yvj);
-  \fill (4.8,\yvj) circle (0.07);
+  % branch wiring: mirror drain to control source
+  \draw (\xa,\ymir) -- (\xa,{\yctl+\grid});
+  \draw (\xb,\ymir) -- (\xb,{\yctl+\grid});
+  \draw (\xc,\ymir) -- (\xc,{\yctl+\grid});
 
-  % Vcontrol gate rail
-  \draw (V1.G) -- ++(-0.2,0) coordinate (u1) -- (u1 |- 0,\yvr) coordinate (vr1);
-  \draw (V2.G) -- ++(-0.2,0) coordinate (u2) -- (u2 |- 0,\yvr) coordinate (vr2);
-  \draw (V3.G) -- ++(-0.2,0) coordinate (u3) -- (u3 |- 0,\yvr) coordinate (vr3);
-  \draw (-3.6,\yvr) to [short,o-] (vr3);
-  \node[anchor=east] at (-3.7,\yvr) {$V_{control}$};
-  \fill (vr1) circle (0.07);
-  \fill (vr2) circle (0.07);
+  % ---- the ring ----
+  \draw ({\xa-0.9},\yinv) node[not port] (i1) {};
+  \draw ({\xb-0.9},\yinv) node[not port] (i2) {};
+  \draw ({\xc-0.9},\yinv) node[not port] (i3) {};
 
-  % ---- The ring ----
-  \node[not port] (g1) at (0,0) {};
-  \node[not port] (g2) at (2.4,0) {};
-  \node[not port] (g3) at (4.8,0) {};
+  % each inverter's supply comes from its starved branch
+  \draw (\xa,\yctl) -- (\xa,{\yinv+1.1}) -- ({\xa-0.9},{\yinv+1.1}) -- (i1.north);
+  \draw (\xb,\yctl) -- (\xb,{\yinv+1.1}) -- ({\xb-0.9},{\yinv+1.1}) -- (i2.north);
+  \draw (\xc,\yctl) -- (\xc,{\yinv+1.1}) -- ({\xc-0.9},{\yinv+1.1}) -- (i3.north);
 
-  \draw (g1.out) -- (g2.in);
-  \draw (g2.out) -- (g3.in);
-  \draw (g3.out) -- (6.6,0) -- (6.6,-3.0) -- (-1.4,-3.0) -- (-1.4,0)
-        -- (g1.in);
+  % stage to stage, caps on each output
+  \draw (i1.out) -- (i2.in 1);
+  \draw (i2.out) -- (i3.in 1);
+  \coordinate (o1) at ({\xa+0.75},\yinv);
+  \coordinate (o2) at ({\xb+0.75},\yinv);
+  \fill (o1) circle (0.075);
+  \fill (o2) circle (0.075);
+  \draw (o1) to [C, l=$C$] ({\xa+0.75},{\ycap-0.9});
+  \draw ({\xa+0.75},{\ycap-0.9}) \vground;
+  \draw (o2) to [C, l=$C$] ({\xb+0.75},{\ycap-0.9});
+  \draw ({\xb+0.75},{\ycap-0.9}) \vground;
+  \coordinate (o3) at ({\xc+0.65},\yinv);
+  \fill (o3) circle (0.075);
+  \draw (o3) to [C, l_=$C$] ({\xc+0.65},{\ycap-0.9});
+  \draw ({\xc+0.65},{\ycap-0.9}) \vground;
 
-  % starved supplies down onto each inverter
-  \draw (0,\ydr) -- (g1.north);
-  \draw (2.4,\ydr) -- (g2.north);
-  \draw (4.8,\ydr) -- (g3.north);
-
-  % load capacitors
-  \draw (1.4,0) to [short,*-] (1.4,-0.6);
-  \draw (1.4,-2.2) \vground \vcapacitor{$C$};
-  \draw (3.8,0) to [short,*-] (3.8,-0.6);
-  \draw (3.8,-2.2) \vground \vcapacitor{$C$};
-  \draw (6.05,0) to [short,*-] (6.05,-0.6);
-  \draw (6.05,-2.2) \vground \vcapacitor{$C$};
+  % feedback
+  \draw (o3) -- ({\xc+1.4},\yinv) -- ({\xc+1.4},{\ycap-1.7})
+        -- ({\xa-1.9},{\ycap-1.7}) -- ({\xa-1.9},\yinv) -- (i1.in 1);
 
 \end{circuitikz}
 \end{document}

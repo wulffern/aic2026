@@ -121,6 +121,10 @@ Also, when they say
 
 ![left fit](../media/microchip_cesium.jpeg)
 
+<!--pan_doc:
+<sub>Figure 1: Microchip 5071B cesium primary time and frequency standard</sub>
+-->
+
 
 ---
 
@@ -143,6 +147,10 @@ __A rubidium clock is basically a crystal oscillator locked to an atomic referen
 <!--![left fit](https://cdn.sparkfun.com/r/455-455/assets/parts/1/3/1/0/0/14830-Atomic_Clock-04.jpg)-->
 ![left fit](../media/14830-Atomic_Clock-04.jpg)
 
+<!--pan_doc:
+<sub>Figure 2: Microsemi Miniature Atomic Clock (MAC), a coin-sized rubidium module</sub>
+-->
+
 
 ---
 
@@ -159,6 +167,10 @@ The negative feedback loop ensures that the 5 MHz clock coming out is proportion
 
 <!--![ fit](https://upload.wikimedia.org/wikipedia/commons/0/0a/Rubidium-oscillator.jpg)-->
 ![fit](../media/Rubidium-oscillator.jpg)
+
+<!--pan_doc:
+<sub>Figure 3: Block diagram of a rubidium clock, where light through a Rb-87 gas cell and a photo detector lock a quartz oscillator to the hyper-fine transition</sub>
+-->
 
 ---
 
@@ -182,6 +194,11 @@ Oscillators](https://en.wikipedia.org/wiki/Crystal_oscillator)
 
 <!--![fit](https://upload.wikimedia.org/wikipedia/commons/thumb/d/dc/Quartz_crystal_internal.jpg/440px-Quartz_crystal_internal.jpg)--> 
 ![fit](../media/Quartz_crystal_internal.jpg)
+
+<!--pan_doc:
+<sub>Figure 4: A packaged 27 MHz quartz crystal (top), and an opened package showing the quartz blank (bottom)</sub>
+-->
+
 ---
 
 <!--pan_doc:
@@ -198,6 +215,11 @@ a correct enough frequency.
 
 <!--![fit](https://upload.wikimedia.org/wikipedia/commons/thumb/8/8b/Crystal_modes_multilingual.svg/300px-Crystal_modes_multilingual.svg.png)-->
 ![fit](../media/Crystal_modes_multilingual.png)
+
+<!--pan_doc:
+<sub>Figure 5: Vibration modes of a quartz crystal: longitudinal, thickness shear, flexural, face shear, and tuning fork</sub>
+-->
+
 ---
 
 <!--pan_doc:
@@ -211,6 +233,10 @@ Our job is to make a circuit that we can connect to the two pins and provide the
 -->
 
 ![left fit](../media/xosc_model_tikz.pdf)
+
+<!--pan_doc:
+<sub>Figure 6: Electrical model of a crystal, a series $R_s$, $L$, $C_F$ branch in parallel with the package capacitance $C_p$</sub>
+-->
 
 Assuming zero series resistance
 
@@ -241,6 +267,10 @@ I would encourage you to read The Crystal Oscillator [@razavi17] for more detail
 
 ![fit](../media/xosc_res.pdf)
 
+<!--pan_doc:
+<sub>Figure 7: Magnitude and phase of the crystal impedance versus frequency, showing the series and parallel resonance points</sub>
+-->
+
 ---
 
 
@@ -257,6 +287,10 @@ The XC1 and XC2 will oscillate in opposite directions. As XC1 increases, XC2 wil
 -->
 
 ![right fit](../media/xosc_pierce_tikz.pdf)
+
+<!--pan_doc:
+<sub>Figure 8: Pierce oscillator, an inverter with bias resistor $R_1$ on the IC driving the crystal and load capacitors on the PCB</sub>
+-->
 
 
 <!--pan_doc: 
@@ -334,7 +368,11 @@ Volume 6, Part A, Chapter 3.1 (page 2653) for details.
 ---
 
 
-![fit](../media/at_crystal.jpeg)
+![fit](../media/at_crystal_tikz.pdf)
+
+<!--pan_doc:
+<sub>Figure 9: Frequency deviation in ppm versus temperature for AT-cut crystals with different cutting angles</sub>
+-->
 
 ---
 
@@ -368,6 +406,10 @@ $$ R \approx \frac{1}{gm} \approx \frac{1}{\mu_n C_{ox} \frac{W}{L} (VDD - V_{th
 $$ C \approx \frac{2}{3} C_{ox} W L$$
 
 ![left fit](../media/osc_ring_tikz.pdf)
+
+<!--pan_doc:
+<sub>Figure 10: Ring oscillator, a loop of inverters where each stage adds a delay $t_{pd}$</sub>
+-->
 
 ---
 
@@ -434,6 +476,10 @@ the power consumption.
 
 ![left fit](../media/osc_ring_c_tikz.pdf)
 
+<!--pan_doc:
+<sub>Figure 11: Ring oscillator with an added capacitive load $C$ on each inverter output</sub>
+-->
+
 ---
 ## Realistic 
 
@@ -470,6 +516,10 @@ Still today, there are radio receivers that use a PLLs to directly demodulate th
 -->
 
 ![left](../media/osc_ring_adv_tikz.pdf)
+
+<!--pan_doc:
+<sub>Figure 12: Current-starved, capacitance loaded ring oscillator with coarse frequency control from the $I_{control}$ mirror and fine control from the $V_{control}$ transistors</sub>
+-->
 
 
 <!--pan_doc:
@@ -515,6 +565,10 @@ the frequency can go up. We could measure the free-running frequency in producti
 
 ![left](../media/osc_ring_cap_tikz.pdf)
 
+<!--pan_doc:
+<sub>Figure 13: Digital frequency control of a ring oscillator stage with binary weighted capacitors ($C$, $2C$, $4C$) switched by bits $D_0$ to $D_2$</sub>
+-->
+
 ---
 
 ## Differential
@@ -533,6 +587,10 @@ Another cool thing about differential circuits is that it's easy to multiply by 
 -->
 
 ![left](../media/osc_ring_diff_tikz.pdf)
+
+<!--pan_doc:
+<sub>Figure 14: Differential ring oscillator, where a wire crossing provides the multiply by -1</sub>
+-->
 
 ---
 
@@ -556,6 +614,11 @@ guess that there are two oscillators in the nRF51822. Maybe it's a [multiple con
 <!--![fit](https://s.zeptobars.com/nRF51822.jpg) -->
 
 ![fit](../media/nRF51822.jpg)
+
+<!--pan_doc:
+<sub>Figure 15: Die photograph of the nRF51822, where the two round LC oscillator inductors are easily identifiable</sub>
+-->
+
 ---
 
 <!--pan_doc:
@@ -569,6 +632,10 @@ The NMOS at the bottom provide the "negative transconductance" to compensate for
 
 
 ![left](../media/lcosc_tikz.pdf)
+
+<!--pan_doc:
+<sub>Figure 16: LC oscillator with current mirror bias, LC tank, varactor tuning ($V_{cnt}$) and a cross-coupled NMOS pair providing the negative transconductance</sub>
+-->
 
 
 $$ f \propto \frac{1}{\sqrt{LC}}$$
@@ -592,6 +659,10 @@ A last common oscillator is the relaxation oscillator, or "RC" oscillator. By no
 ---
 
 ![left fit](../media/rcosc_tikz.pdf)
+
+<!--pan_doc:
+<sub>Figure 17: Relaxation (RC) oscillator, where a comparator and flip-flop toggle as the capacitor voltage $V_2$ charges to the threshold $V_1 = IR$</sub>
+-->
 
 $$ V_1 = I R $$
 

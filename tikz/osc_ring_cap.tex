@@ -8,23 +8,32 @@
 
   \input{tikz/ckt_lib.tex}
 
-  % the inverter (one stage of the ring)
-  \node[not port] (g1) at (-0.8,0) {};
-  \draw (g1.in) -- ++(-0.7,0);
-  \draw (g1.north) -- ++(0,0.9);
-  \draw (g1.out) -- (6.2,0);
+  \def\yr{0}      % the output rail
+  \def\xa{1.6}    % branch columns
+  \def\xb{4.2}
+  \def\xc{6.8}
 
-  % switched binary weighted capacitors
-  \draw (1.2,-3.2) \vground \vcapacitor{$C$};
-  \draw (1.2,-1.6) \lvnmos{M0}{$D_0$};
-  \draw (1.2,0) to [short,-*] ++(0,0);
+  % one stage of the ring
+  \draw (-3.4,\yr) node[anchor=east] {from ring} to [short,o-] (-2.6,\yr);
+  \node[not port] (inv) at (-1.8,\yr) {};
+  \draw (inv.out) -- (8.2,\yr);
+  \draw (8.2,\yr) to [short,-o] ++(0.5,0) node[anchor=west] {to ring};
 
-  \draw (3.7,-3.2) \vground \vcapacitor{$2C$};
-  \draw (3.7,-1.6) \lvnmos{M1}{$D_1$};
-  \draw (3.7,0) to [short,-*] ++(0,0);
+  % binary weighted branches: NMOS switch over capacitor
+  \draw (\xa,{\yr-1.9}) \lvnmos{MS0}{$D_0$};
+  \draw (\xa,\yr) to [short,*-] (\xa,{\yr-0.3});
+  \draw (\xa,{\yr-1.9}) to [C, l=$C$] (\xa,{\yr-3.3});
+  \draw (\xa,{\yr-3.3}) \vground;
 
-  \draw (6.2,-3.2) \vground \vcapacitor{$4C$};
-  \draw (6.2,-1.6) \lvnmos{M2}{$D_2$};
+  \draw (\xb,{\yr-1.9}) \lvnmos{MS1}{$D_1$};
+  \draw (\xb,\yr) to [short,*-] (\xb,{\yr-0.3});
+  \draw (\xb,{\yr-1.9}) to [C, l=$2C$] (\xb,{\yr-3.3});
+  \draw (\xb,{\yr-3.3}) \vground;
+
+  \draw (\xc,{\yr-1.9}) \lvnmos{MS2}{$D_2$};
+  \draw (\xc,\yr) to [short,*-] (\xc,{\yr-0.3});
+  \draw (\xc,{\yr-1.9}) to [C, l=$4C$] (\xc,{\yr-3.3});
+  \draw (\xc,{\yr-3.3}) \vground;
 
 \end{circuitikz}
 \end{document}
