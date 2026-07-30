@@ -27,14 +27,13 @@ aux_links:
     - "/aic2026/assets/aic.pdf"
   "GitHub":
     - "https://github.com/wulffern/aic2026"
-  # add Google Scholar / YouTube / other activity links here, e.g.
-  # "Scholar":
-  #   - "https://scholar.google.com/citations?user=..."
+  "Scholar":
+    - "https://scholar.google.com/citations?user=uMepikoAAAAJ&hl=en&oi=ao"
 
-# Google Analytics: drop the GA4 measurement id here and the theme wires
-# it up - no theme fork needed.
-# ga_tracking: G-XXXXXXXXXX
-# ga_tracking_anonymize_ip: true
+# Same GA4 measurement id the wulffern/minima theme carries in its
+# head.html - here it is config, not theme code.
+ga_tracking: G-JR1G6C914F
+ga_tracking_anonymize_ip: true
 
 nav_external_links:
   - title: analogicus.com
