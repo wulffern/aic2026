@@ -30,20 +30,28 @@ else:
 X_s = np.fft.fftshift(np.fft.fft(np.multiply(w[0:N],x_s)))
 X_sn = np.fft.fftshift(np.fft.fft(np.multiply(w[0:N],x_sn)))
 
-
+#- Frequency axis normalized to the emulation rate, so 0 Hz is in the
+#- middle and the edges are +/- fs/2
+f = (np.arange(N) - N/2)/N
 
 plt.subplot(2,2,1)
 plt.ylabel("Time Domain")
-plt.plot(x_s)
+plt.plot(x_s,color="black",linewidth=0.7)
+plt.grid(True)
 plt.xlabel("Continuous time, continuous value")
 plt.subplot(2,2,2)
-plt.plot(x_sn)
+plt.plot(x_sn,color="black",linewidth=0.7)
+plt.grid(True)
 plt.xlabel("Discrete time, continuous value")
 plt.subplot(2,2,3)
-plt.ylabel("Frequency Domain")
-plt.plot(20*np.log10(np.abs(X_s)))
+plt.ylabel("Frequency Domain [dB20]")
+plt.plot(f,20*np.log10(np.abs(X_s)),color="black",linewidth=0.7)
+plt.grid(True)
+plt.xlabel("f / fs")
 plt.subplot(2,2,4)
-plt.plot(20*np.log10(np.abs(X_sn)))
+plt.plot(f,20*np.log10(np.abs(X_sn)),color="black",linewidth=0.7)
+plt.grid(True)
+plt.xlabel("f / fs")
 
 fig = plt.gcf()
 fig.set_size_inches(12, 7)

@@ -58,22 +58,27 @@ X_sn = freqDomain(x_sn,hann)
 Y_sn = freqDomain(y_sn,hann)
 
 M = len(Y_sn)
-f_xs = np.arange(0,N,1) - N/2
-f_xn = np.arange(0,M,1) - M/2
+#- Frequency axes normalized to each record's own sample rate, so 0 Hz is
+#- in the middle and the edges are +/- fs/2
+f_xs = (np.arange(0,N,1) - N/2)/N
+f_xn = (np.arange(0,M,1) - M/2)/M
 
 plt.subplot(1,3,1)
-plt.plot(f_xs,20*np.log10(np.abs(X_s)))
-plt.xlabel("Continuous time, continuous value")
-plt.ylabel("Frequency Domain")
+plt.plot(f_xs,20*np.log10(np.abs(X_s)),color="black",linewidth=0.7)
+plt.grid(True)
+plt.xlabel("f / fs\nContinuous time, continuous value")
+plt.ylabel("Frequency Domain [dB20]")
 plt.ylim(-160,0)
 plt.subplot(1,3,2)
-plt.plot(f_xn,20*np.log10(np.abs(X_sn)))
-plt.xlabel("Discrete time, continuous value")
+plt.plot(f_xn,20*np.log10(np.abs(X_sn)),color="black",linewidth=0.7)
+plt.grid(True)
+plt.xlabel("f / fs\nDiscrete time, continuous value")
 plt.ylim(-160,0)
 plt.subplot(1,3,3)
-plt.plot(f_xn,20*np.log10(np.abs(Y_sn)))
-plt.xlabel("Discrete time, Discrete value")
-plt.text(M*1/5,-20,str(bits) + "-bit\nf1 =" + str(int(f1*N)) + "\nf3 =" + str(int(f1*N*3)) + "\nf5 =" + str(int(f1*N*5)) )
+plt.plot(f_xn,20*np.log10(np.abs(Y_sn)),color="black",linewidth=0.7)
+plt.grid(True)
+plt.xlabel("f / fs\nDiscrete time, Discrete value")
+plt.text(0.15,-35,str(bits) + "-bit\nf1 = bin " + str(int(f1*N)) + "\nf3 = bin " + str(int(f1*N*3)) + "\nf5 = bin " + str(int(f1*N*5)) + "\n(bin = f/fs × " + str(M) + ")")
 plt.ylim(-160,0)
 
 fig = plt.gcf()

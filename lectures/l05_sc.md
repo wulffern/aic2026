@@ -550,7 +550,7 @@ Below are the plots. On the left side is the "continuous value, continuous time"
 
 The top plots are the time domain, while the bottom plots is frequency domain. 
 
-The FFT is complex, so that's why there are six sinusoids bottom left. The "0 Hz" would be at x-axis index 4096 ($2^{13}/2$). 
+The FFT is complex, so that's why there are six sinusoids bottom left. The frequency axis is normalized to the sample rate, so it runs from $-f_s/2$ to $+f_s/2$ with 0 Hz in the middle. 
 
 The spectral copies can be seen bottom right. How many spectral copies, and the distance between them will depend on the sample rate (length of `t_s_unit`). 
 Try to play around with the code and see what happens.
