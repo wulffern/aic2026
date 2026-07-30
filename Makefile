@@ -46,7 +46,7 @@ FILES = l00_jayn \
 	l00_ades \
 	lr0_logic \
 	l00_questions
-	#l04_mac\
+	#s_mac\
 
 
 
@@ -262,7 +262,10 @@ slides-vendor:
 
 # tex_intro is not in FILES, but it is a chapter and downloads.md links a deck
 # for it, so it has to be rendered too or that link is dead.
-SLIDEFILES = ${FILES} tex_intro
+# s_* are standalone decks: not in the lecture series or the book, but used
+# as slides, so they render too (linked from the Downloads page).
+STANDALONE_DECKS = s_chinf s_exam s_mac s_maxwell s_need_to_know s_project_scratch s_tut2
+SLIDEFILES = ${FILES} tex_intro ${STANDALONE_DECKS}
 
 slides: slides-vendor
 	${foreach f, ${SLIDEFILES}, ${PYTHON} py/slides.py lectures/${f}.md || exit; }

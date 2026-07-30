@@ -54,10 +54,10 @@ Links whose host publishes citable literature: `ieeexplore.ieee.org`,
   (Synopsys, Cadence, Siemens, ngspice, Nordic, …), `analogicus.com` (30).
 - Google Patents — `l06_adc` links a patent; not a paper.
 - IEEE URLs that are not one article: `/search/` result pages (`l04_afe` Gm-C,
-  `l12_chinf` LVDS and SERDES), `/book/`, and the eight `/mediastore_new/` image
+  `s_chinf` LVDS and SERDES), `/book/`, and the eight `/mediastore_new/` image
   URLs in `lx_energysrc` (those are figures, and already commented out).
 - Links straight to an image file on an otherwise citable host — the ResearchGate
-  band-diagram figure in `l00_need_to_know` is artwork, not a reference.
+  band-diagram figure in `s_need_to_know` is artwork, not a reference.
 
 `linkbib.py` encodes both lists, so the scan output *is* the scope.
 
@@ -224,7 +224,7 @@ In [@tang20] they used a leakage based digital ring oscillator
 
 Ten of the thirteen *Want to learn more?* sections live inside `<!--pan_doc: -->`,
 so they never reach a slide and `[@key]` is safe. Three do not: **`l03_refbias`,
-`l04_mac`, and `lx_energysrc`** have the section in plain body text, where
+`s_mac`, and `lx_energysrc`** have the section in plain body text, where
 `py/slides.py` would render the literal string `[@key]` on a slide. For those
 three, either wrap the section in `pan_doc` like the others (recommended — it is
 what the rest of the course does) or leave them as plain links. Decide before
@@ -310,7 +310,7 @@ Three ways out, cheapest last:
    author-year mark fixes all 58 at once and improves the two that predate this
    work. This is the one to do.
 2. **Wrap the affected sections in `pan_doc`.** Correct for the *Want to learn
-   more?* lists in `l03_refbias`, `l04_mac` and `lx_energysrc`, which are already
+   more?* lists in `l03_refbias`, `s_mac` and `lx_energysrc`, which are already
    web-and-book content rather than slide content. Does nothing for the inline
    prose citations.
 3. **Leave it.** The string is ugly on a slide but not wrong, and the decks are

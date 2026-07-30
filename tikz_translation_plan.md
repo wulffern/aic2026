@@ -227,7 +227,7 @@ Process lectures in this order unless reprioritized later.
 - system/project overview drawings in `l01_project`
 - map/logo/reference illustrations in `l10_lpradio`, `lp_radio_guest`, `lx_energysrc`
 - semiconductor physics figures in `lr0_mosfet`, `lr0_passives`, `l00_diode`
-- measurement/graph-heavy figures across `l00_*`, `l12_chinf`, and guest lectures
+- measurement/graph-heavy figures across `l00_*`, `s_chinf`, and guest lectures
 
 ## Public Interfaces and Naming
 Naming convention:
@@ -625,7 +625,7 @@ PDF has to be the one the current source produces.
 shared with `l05_sc`, and switching them finished that lecture too;
 `l4_activebiquad` is also referenced as a **PDF** by `l10_lpradio` and
 `lp_radio_guest`, and those switched in the same round. `fig_inv` is used by
-four lectures (`l04_afe`, `l02_esd`, `l12_chinf`, `lr0_mosfet`) and all four
+four lectures (`l04_afe`, `l02_esd`, `s_chinf`, `lr0_mosfet`) and all four
 switched together.
 
 `grep -o '](\.\./media/[^)]*)'` is not enough on its own: it finds `.pdf`

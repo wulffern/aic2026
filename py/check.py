@@ -26,18 +26,20 @@ import sys
 #- Lectures that exist but are deliberately not built. Anything new in
 #  lectures/ that is neither here nor in FILES fails check 4, so a lecture
 #  cannot silently rot outside the build.
+#  s_* are standalone decks: not part of the lecture series or the book,
+#  but rendered to HTML slides (see SLIDEFILES in the Makefile).
 EXCLUDED = {
-    "exam",             # exam notes, not course material
     "g00_m1p1",         # guest lectures, slides live elsewhere
     "g01_m1p2",
     "g03",
-    "l00_need_to_know",
-    "l04_mac",          # commented out of FILES in the Makefile
-    "l12_chinf",
     "lp_radio_guest",
-    "lr0_tut2",
-    "maxwell",          # scratch, not yet a lecture
-    "project_scratch",
+    "s_chinf",
+    "s_exam",
+    "s_mac",
+    "s_maxwell",
+    "s_need_to_know",
+    "s_project_scratch",
+    "s_tut2",
     "tex_intro",        # book front matter, built via texfiles, not FILES
 }
 
