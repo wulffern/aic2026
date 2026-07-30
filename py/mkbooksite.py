@@ -176,19 +176,11 @@ def make_slides_page(order, posts):
         lines.append(f"- [{title}](/aic2026/assets/html/{lid}.html)")
         listed.add(lid)
 
-    extras = sorted(decks - listed)
-    if extras:
-        lines += ["", "## Other decks", "",
-                  "Not part of the lecture series or the book.", ""]
-        for lid in extras:
-            title = DECK_TITLES.get(lid, lid)
-            lines.append(f"- [{title}](/aic2026/assets/html/{lid}.html)")
-
     write_page(
         os.path.join(BOOK, "pages", "06_slides.md"),
         "Slides", 6, "/slides/", "\n".join(lines) + "\n",
     )
-    print(f"wrote slides page with {len(listed)} decks + {len(extras)} extras")
+    print(f"wrote slides page with {len(listed)} decks")
 
     # keep the 404 page working
     src404 = os.path.join(ROOT, "docs", "404.html")
