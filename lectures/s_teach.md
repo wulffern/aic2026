@@ -20,7 +20,7 @@ Carsten Wulff
 Spring 2026. A temperature sensor each, in 130 nm CMOS, on the
 Tiny Tapeout **ttsky26c** shuttle.
 
-In 2025 it was 2 of 7. In 2024 it was 0 of 1.
+In 2025 it was 2 of 7. In 2024 it was 0 of 5.
 
 Nothing dramatic happened in between. I added one thing a year.
 
@@ -39,12 +39,13 @@ The course has run five times.
 | Lectures                     |   15 |   19 |   25 |   39 |   46 |
 | Lines of lecture source      | 7100 |11800 |16000 |25700 |26600 |
 | Figures                      |  238 |  517 |  514 |  722 |  925 |
-| Checks per student repo      |    – |    – |    3 |    5 |    7 |
-| Project groups               |    – |    – |    1 |    7 |    4 |
-| Student commits              |    – |    – |   71 |  772 |  762 |
+| Checks per student repo      |    – |    – |    – |    5 |    7 |
+| Project groups               |    – |    – |    5 |    7 |    4 |
+| Student commits              |    – |    – |  289 |  772 |  762 |
+| Commits per group            |    – |    – |   58 |  110 |  190 |
 | Groups reaching tapeout      |    – |    – |    0 |    2 |    4 |
 
-Nothing here more than doubled in one year. All of it doubled over five.
+The groups did not get bigger. They got **three times deeper**.
 
 ---
 
@@ -64,20 +65,29 @@ The course does not start from zero in January. It starts from last year.
 
 I am not doing more work per student. The work I did is still working.
 
+And the July fixes were mostly *my* bugs:
+
+> Fixed ports. At some point I must have flipped the ports in the template :-D
+
+That is a one-time cost. The template is right now.
+
 ---
 
-# What it cost
+# What I actually did, each year
 
-I planned this course for two years before it ran once.
+My own commits in the student repos:
 
-- 2020: first thoughts, 3 January. It did not run.
-- 2024: three CI workflow files. **75 lines of YAML.**
-- 2025: two more workflows, and I named tapeout as the goal.
-- 2026: the Tiny Tapeout pre-check moved into CI, and Nordic paid the shuttle.
+- **2024** — 13 commits over 5 groups. Made the repos, fixed the tech setup,
+  retrofitted GitHub Actions in October. **0 of 5 taped out.**
+- **2025** — 14 commits over 7 groups. Almost all of it `Made JNW_GRxx` and
+  `Updated gitignore`. I barely touched their designs. **2 of 7 taped out**, as
+  one shared submission I authored myself.
+- **2026** — 38 commits over 4 groups. A library and a default schematic in
+  January. Then, 19–21 July, I did the tapeout integration on all four:
+  ports, bounding boxes, labels, tile boundary, LVS and DRC clean.
+  **4 of 4, four separate submissions.**
 
-The step that took 2 of 7 groups to 4 of 4 was not a better lecture.
-It was removing the last manual step between a finished layout and a
-submitted design.
+I did not hand this one to them. I closed the last mile myself, in three days.
 
 ---
 
@@ -86,5 +96,7 @@ submitted design.
 Students were always able to do this.
 
 Every year I take away one more reason they could not.
+
+Some years that is a CI workflow. This year it was three days in July.
 
 Five editions later, all of them get silicon.

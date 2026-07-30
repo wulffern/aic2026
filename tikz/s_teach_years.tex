@@ -4,6 +4,10 @@
 % I added that year. Below: what the students got out of it, one square per
 % project group, filled if the group reached a tapeout.
 %
+% Group counts are the analogicus repos with a contributor other than me:
+% cnr_gr02..06 (5), jnw_gr01..07 (7), lelo_gr01..04 (4). The other gr repos
+% in each series were created but never used by a group.
+%
 % 2020 is planning only -- the course did not run. Dates from the original
 % course-plan git repo (data/2019/NTNU/archive/tfe41xx_aic/admin/plan):
 % "First thoughts on course" 2020-01-03, plan reviewed 2020-02-14. The 2021
@@ -38,9 +42,9 @@
     1/2.4/{Taught TFE4152 instead.\\Built the Markdown\\$\rightarrow$ web + PDF pipeline},
     2/1.1/{\textbf{TFE4188 runs.}\\15 lectures, my own\\chip in GF 130 nm},
     3/2.4/{Open PDK (Sky130).\\Students get the\\same tools I use},
-    4/1.1/{GitHub CI:\\DRC / LVS / GDS\\on every push},
-    5/2.4/{Docs workflow.\\Tiny Tapeout named\\as the goal},
-    6/1.1/{Tapeout pre-check\\in CI. Shuttle paid for}%
+    4/1.1/{One repo per group.\\No automation yet},
+    5/2.4/{GitHub CI, built Oct 2024.\\DRC / LVS / GDS / docs\\on every push},
+    6/1.1/{Library + default\\schematic in January.\\I did the last mile in July}%
   }{
     \draw[lead] (\i*\dx,0.3) -- (\i*\dx,\h-0.12);
     \node[add,anchor=south] at (\i*\dx,\h) {\t};
@@ -52,9 +56,12 @@
   \node[note,anchor=east,align=right] at (-1.1,-2.5)
     {reached\\tapeout};
 
-  % 2024: one group, no tapeout
-  \node[todo] at (4*\dx,-1.55) {};
-  \node[note,anchor=north] at (4*\dx,-2.3) {0 of 1};
+  % 2024: five groups, none taped out
+  \foreach \k in {0,...,4} {
+    \pgfmathsetmacro{\xx}{4*\dx + (\k-2)*0.42}
+    \node[todo] at (\xx,-1.55) {};
+  }
+  \node[note,anchor=north] at (4*\dx,-2.3) {0 of 5};
 
   % 2025: seven groups, two of them taped out on ttsky25a
   \foreach \k in {0,...,6} {
@@ -63,7 +70,7 @@
                 \node[todo] at (\xx,-1.55) {}; \fi
   }
   \node[note,anchor=north] at (5*\dx,-2.3) {2 of 7};
-  \node[note,anchor=north] at (5*\dx,-2.9) {\textsc{ttsky25a}};
+  \node[note,anchor=north] at (5*\dx,-2.9) {\textsc{ttsky25a}, one\\shared submission};
 
   % 2026: four groups, all four taped out on ttsky26c
   \foreach \k in {0,...,3} {
@@ -71,7 +78,7 @@
     \node[done] at (\xx,-1.55) {};
   }
   \node[note,anchor=north,font=\small\bfseries] at (6*\dx,-2.3) {4 of 4};
-  \node[note,anchor=north] at (6*\dx,-2.95) {\textsc{ttsky26c}};
+  \node[note,anchor=north] at (6*\dx,-2.95) {\textsc{ttsky26c}, four\\separate submissions};
 
 \end{tikzpicture}
 \end{document}
