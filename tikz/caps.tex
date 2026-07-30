@@ -54,7 +54,7 @@
     \draw[capgreen, thick] (#1,#2-0.44) -- (#1,#2-0.72);
     \fill[capgreen] (#1,#2) circle (0.06);
     \fill[capgreen] (#1,#2-0.72) circle (0.06);
-    \node[echarge, anchor=west] at (#1+0.35,#2-0.36) {#3};
+    \node[echarge, anchor=west, fill=white, inner sep=1pt, opacity=0.85, text opacity=1] at (#1+0.38,#2-0.36) {#3};
   }
 
   \newcommand{\vcapl}[3]{% label to the left
@@ -64,13 +64,13 @@
     \draw[capgreen, thick] (#1,#2-0.44) -- (#1,#2-0.72);
     \fill[capgreen] (#1,#2) circle (0.06);
     \fill[capgreen] (#1,#2-0.72) circle (0.06);
-    \node[echarge, anchor=east] at (#1-0.35,#2-0.36) {#3};
+    \node[echarge, anchor=east, fill=white, inner sep=1pt, opacity=0.85, text opacity=1] at (#1-0.38,#2-0.36) {#3};
   }
 
-  \vcap{3.6}{0.5}{$C_{gs}$}
-  \vcapl{6.8}{0.55}{$C_{gd}$}
+  \vcapl{3.4}{0.5}{$C_{gs}$}
+  \vcap{6.8}{0.55}{$C_{gd}$}
   \vcap{2.0}{-1.0}{$C_{sb}$}
-  \vcap{8.6}{-0.5}{$C_{db}$}
+  \vcap{8.6}{-0.45}{$C_{db}$}
 
 \end{tikzpicture}
 \end{document}

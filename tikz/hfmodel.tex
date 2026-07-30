@@ -43,9 +43,9 @@
   \fill (4.1,\ytop) circle (0.075);
   \draw (4.1,{\ytop+1.2}) \vground;
   \draw (\xterm+0.09,\ytop) circle (0.09);
-  \node[anchor=west] at ({\xterm+0.35},{\ytop+0.35}) {$v_d$};
-  \draw[-latex] ({\xterm+0.6},{\ytop+0.25}) -- ({\xterm-0.1},{\ytop+0.25});
-  \node[anchor=south] at ({\xterm+0.15},{\ytop+0.3}) {$i_d$};
+  \node[anchor=west] at ({\xterm+0.3},\ytop) {$v_d$};
+  \draw[-latex] ({\xterm-0.4},{\ytop+0.3}) -- ({\xterm-1.2},{\ytop+0.3});
+  \node[anchor=south] at ({\xterm-0.8},{\ytop+0.35}) {$i_d$};
 
   % Source rail, C_sb down to the AC grounded bulk
   \draw (\xg,0) -- (\xterm,0);
@@ -57,9 +57,9 @@
   \fill (2.1,0) circle (0.075);
   \draw (2.1,-1.2) \vground;
   \draw (\xterm+0.09,0) circle (0.09);
-  \node[anchor=west] at ({\xterm+0.35},-0.35) {$v_s$};
-  \draw[-latex] ({\xterm-0.1},-0.25) -- ({\xterm-0.1},-0.8);
-  \node[anchor=east] at ({\xterm-0.2},-0.5) {$i_s$};
+  \node[anchor=west] at ({\xterm+0.3},0) {$v_s$};
+  \draw[-latex] ({\xterm-0.8},-0.25) -- ({\xterm-0.8},-0.85);
+  \node[anchor=east] at ({\xterm-0.9},-0.55) {$i_s$};
 
 \end{circuitikz}
 \end{document}
