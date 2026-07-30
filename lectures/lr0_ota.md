@@ -26,6 +26,11 @@ network says - a switched capacitor integrator, a filter, an ADC residue
 amplifier, a regulator error amplifier. Almost every analog system in this
 book has an OTA somewhere inside it.
 
+The idea is old: the name and the first commercial part arrived in 1969,
+when Wheatley and Wittlinger argued that the OTA obsoletes the op amp
+[@wheatley69], and the OTA-based filter tradition that grew from it is
+summarized in Geiger and Sanchez-Sinencio's tutorial [@geiger85].
+
 This chapter walks through the OTA topologies that still make sense in
 nanoscale CMOS, where the supply is around 0.8 V. That last constraint is
 the important one: half the classic topologies in the textbooks were
@@ -188,6 +193,16 @@ second stage, creating a right half plane zero at $g_{m6}/C_c$ that
 steals phase. The standard fix is a resistor in series with $C_c$, which
 moves the zero to infinity - or on top of the second pole, if you are
 feeling precise.
+
+The subtler flaw is the supply rejection. Above the dominant pole, $C_c$
+effectively shorts the output to the first stage output, which turns
+M6 into a diode connected device seen from the loop - and M6's source
+sits on $V_{DD}$. High frequency supply ripple therefore walks through
+the output stage with close to unity gain, exactly where the loop gain
+is already too small to fight it. Of the topologies in this chapter,
+the two stage Miller OTA is the one that most needs a quiet analog
+supply - or a regulator from the voltage regulation chapter - between
+it and the digital switching noise.
 
 -->
 
@@ -370,12 +385,15 @@ sensing network.
 
 <!--pan_doc:
 
-The newest branch of the family tree throws away the bias current
-entirely. A dynamic amplifier integrates its input onto a capacitor for
-a clocked instant and then stops: the "gain" is $g_m T / C$, the power
-is $C V^2 f$, and between samples the amplifier burns nothing. Ring
-amplifiers do the same with an inverter chain that slams the output and
-then dead-bands itself into a precision settle.
+The newest branch of the family tree is also, on inspection, one of the
+oldest: Hosticka showed dynamic CMOS amplifiers already in 1980
+[@hosticka80], and scaling has made the idea mainstream. A dynamic
+amplifier throws away the bias current entirely: it integrates its
+input onto a capacitor for a clocked instant and then stops. The "gain"
+is $g_m T / C$, the power is $C V^2 f$, and between samples the
+amplifier burns nothing. Ring amplifiers [@hershberg12] do the same
+with an inverter chain that slams the output and then dead-bands
+itself into a precision settle.
 
 They only work in sampled systems - a SAR or pipeline ADC stage, a
 discrete time filter - but there they have taken over: an amplifier that
