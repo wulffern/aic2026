@@ -1,0 +1,116 @@
+\input{tikz/fig_header.tex}
+
+% The D latch: symbol, transmission gate implementation, and the
+% clocked inverter transistor level.
+
+\begin{circuitikz}[american, thick, transform shape, circuit ee IEC]
+
+  \input{tikz/ckt_lib.tex}
+
+  % ----------------------------------------------------------------
+  % Symbol and gate level, top row
+  % ----------------------------------------------------------------
+  \begin{scope}[shift={(-1.0,11.2)}]
+
+    % latch symbol
+    \draw (-4.3,-1.2) rectangle (-2.1,1.2);
+    \node[anchor=west] at (-4.25,0.7)  {$D$};
+    \node[anchor=east] at (-2.15,0.7)  {$Q$};
+    \node[anchor=east] at (-2.15,-0.5) {$\overline{Q}$};
+    \node[scale=1.4] at (-3.3,0.1) {$L$};
+    \draw (-3.6,-1.2) -- (-3.3,-0.95) -- (-3.0,-1.2);
+    \draw (-3.3,-1.2) -- (-3.3,-1.8);
+    \draw (-4.9,0.7) -- (-4.3,0.7);
+    \draw (-2.1,0.7) -- (-1.5,0.7);
+    \draw (-2.1,-0.5) -- (-1.5,-0.5);
+
+    \draw[armygreen, very thick, -latex] (-1.0,0) -- (0.1,0);
+
+    % D through an inverter and a transmission gate
+    \node[not port] (gi1) at (2.5,0) {};
+    \draw (1.0,0) node[anchor=east] {$D$} to [short,o-] (gi1.in);
+
+    % TG1, transparent when C is high
+    \draw (3.9,0.5) -- (3.9,-0.5) -- (4.6,0) -- cycle;
+    \draw (5.3,0.5) -- (5.3,-0.5) -- (4.6,0) -- cycle;
+    \draw (4.6,0.55) circle (0.09);
+    \node at (4.6,1.0)  {$\overline{C}$};
+    \node at (4.6,-0.85) {$C$};
+    \draw (gi1.out) -- (3.9,0);
+
+    % node X, with the QB tap
+    \draw (5.3,0) -- (6.9,0);
+    \fill (6.9,0) circle (0.075);
+    \draw (6.9,0) -- (6.9,1.7) -- (12.4,1.7) to [short,-o] ++(0.4,0)
+      node[anchor=west] {$\overline{Q}$};
+
+    % output inverter
+    \node[not port] (gi2) at (8.7,0) {};
+    \draw (6.9,0) -- (gi2.in);
+    \draw (gi2.out) -- (12.4,0) to [short,-o] ++(0.4,0)
+      node[anchor=west] {$Q$};
+
+    % feedback: Q through an inverter and TG2, transparent when C is low
+    \node[not port, xscale=-1] (gi3) at (9.8,-2.0) {};
+    \fill (11.5,0) circle (0.075);
+    \draw (11.5,0) -- (11.5,-2.0) -- (gi3.in);
+    \draw (gi3.out) -- (8.3,-2.0);
+    \draw (8.3,-1.5) -- (8.3,-2.5) -- (7.6,-2.0) -- cycle;
+    \draw (6.9,-1.5) -- (6.9,-2.5) -- (7.6,-2.0) -- cycle;
+    \draw (7.6,-1.45) circle (0.09);
+    \node at (7.6,-1.05) {$C$};
+    \node at (7.6,-2.85) {$\overline{C}$};
+    \draw (6.9,-2.0) -- (6.9,0);
+
+  \end{scope}
+
+  % ----------------------------------------------------------------
+  % Transistor level, bottom
+  % ----------------------------------------------------------------
+
+  % write stack, transparent when C is high
+  \draw (0,0) \vground;
+  \draw (0,0) \lvnmos{MND}{};
+  \draw (0,\grid) \lvnmos{MNC}{$C$};
+  \draw (0,{2*\grid}) \lvpmos{MPC}{$\overline{C}$};
+  \draw (0,{3*\grid}) \lvpmos{MPD}{};
+  \draw (0,{4*\grid}) \vsupply;
+
+  % D ties the outer gates together
+  \draw (MPD.gate) -- ++(-1.6,0) coordinate (dtop);
+  \draw (MND.gate) -- ++(-1.6,0) coordinate (dbot);
+  \draw (dtop) -- (dbot);
+  \fill (dtop) circle (0.075);
+  \draw (dtop) to [short,-o] ++(-0.5,0) node[anchor=east] {$D$};
+
+  % forward inverter
+  \node[not port] (linv) at (3.0,{2*\grid}) {};
+  \draw (0,{2*\grid}) -- (linv.in);
+
+  % hold stack, transparent when C is low
+  \draw (6.6,0) \vground;
+  \draw (6.6,0) \lvnmos{MNQ}{};
+  \draw (6.6,\grid) \lvnmos{MNCB}{$\overline{C}$};
+  \draw (6.6,{2*\grid}) \lvpmos{MPCR}{$C$};
+  \draw (6.6,{3*\grid}) \lvpmos{MPQ}{};
+  \draw (6.6,{4*\grid}) \vsupply;
+
+  % the inverter output drives the hold stack input rail and Q
+  \draw (MPQ.gate) -- ++(-1.6,0) coordinate (rt);
+  \draw (MNQ.gate) -- ++(-1.6,0) coordinate (rb);
+  \draw (rt) -- (rb);
+  \draw (linv.out) -- ++(0.35,0) coordinate (qn);
+  \fill (qn) circle (0.075);
+  \fill (rt) circle (0.075);
+  \draw (rt) -- ++(0,2.4) -- ++(4.6,0) to [short,-o] ++(0.4,0)
+    node[anchor=west] {$Q$};
+
+  % QB node and the feedback to the inverter input
+  \draw (6.6,{2*\grid}) -- ++(1.4,0) coordinate (fb);
+  \fill (fb) circle (0.075);
+  \draw (fb) to [short,-o] ++(0.5,0) node[anchor=west] {$\overline{Q}$};
+  \draw (fb) -- ++(0,-4.2) -- (1.2,-1.0) -- (1.2,{2*\grid});
+  \fill (1.2,{2*\grid}) circle (0.075);
+
+\end{circuitikz}
+\end{document}

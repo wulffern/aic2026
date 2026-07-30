@@ -1,0 +1,83 @@
+\input{tikz/fig_header.tex}
+
+% Synchronous digital design: registers, a cloud of combinational
+% logic, and registers again. always_ff, always_comb, always_ff.
+
+\begin{circuitikz}[thick]
+
+  \newcommand{\dffbox}{
+    \draw (0,0) rectangle (1.8,2.4);
+    \node[anchor=west] at (0.05,1.95) {$D$};
+    \node[anchor=east] at (1.75,1.95) {$Q$};
+    \node[anchor=east] at (1.75,0.55) {$\overline{Q}$};
+    \draw (1.8,0.55) -- (2.3,0.55);
+    \draw (0.5,0) -- (0.8,0.25) -- (1.1,0);
+  }
+
+  % ----------------------------------------------------------------
+  % input registers
+  % ----------------------------------------------------------------
+  \begin{scope}[shift={(0,4.5)}] \dffbox \end{scope}
+  \begin{scope}[shift={(0,-1.5)}] \dffbox \end{scope}
+  \node at (0.9,2.1) {$\vdots$};
+
+  \draw (-1.2,6.45) node[anchor=east] {$A[0]$} -- (0,6.45);
+  \draw (-1.2,0.45) node[anchor=east] {$A[N]$} -- (0,0.45);
+
+  % ----------------------------------------------------------------
+  % output registers
+  % ----------------------------------------------------------------
+  \begin{scope}[shift={(10.4,4.5)}] \dffbox \end{scope}
+  \begin{scope}[shift={(10.4,-1.5)}] \dffbox \end{scope}
+  \node at (11.3,2.1) {$\vdots$};
+
+  \draw (12.2,6.45) -- (13.4,6.45) node[anchor=west] {$X[0]$};
+  \draw (12.2,0.45) -- (13.4,0.45) node[anchor=west] {$X[N]$};
+
+  % ----------------------------------------------------------------
+  % combinational cloud
+  % ----------------------------------------------------------------
+  \draw[blue] plot [smooth cycle, tension=1]
+    coordinates {(3.6,3.0) (3.9,5.0) (4.6,6.2) (5.6,6.6) (6.6,6.9)
+                 (7.8,6.4) (8.6,5.4) (8.9,3.4) (8.7,1.4) (8.0,-0.2)
+                 (6.6,-0.9) (5.2,-0.6) (4.2,0.4) (3.7,1.6)};
+
+  \node[nor port, scale=0.8]  at (6.2,5.2) {};
+  \node[not port, scale=0.8]  at (6.1,3.1) {};
+  \node[nand port, scale=0.8] at (6.2,1.0) {};
+
+  % wires into and out of the cloud
+  \draw (1.8,6.45) -- (4.4,6.45);
+  \node[anchor=south] at (3.0,6.55) {$Y[0]$};
+  \draw (1.8,0.45) -- (4.4,0.45);
+  \node[anchor=south] at (3.0,0.55) {$Y[N]$};
+  \draw (8.3,6.45) -- (10.4,6.45);
+  \node[anchor=south] at (9.5,6.55) {$B[0]$};
+  \draw (8.3,0.45) -- (10.4,0.45);
+  \node[anchor=south] at (9.5,0.55) {$B[N]$};
+
+  % bus ticks on top of the cloud
+  \foreach \x/\ys/\lx/\anch/\txt in {4.9/6.1/4.55/east/$A$, 6.6/6.8/6.95/west/$X$,
+                                 8.1/5.9/8.45/west/$C \rightarrow V$}{
+    \draw (\x,\ys) -- (\x,7.9);
+    \draw ({\x-0.25},7.15) -- ({\x+0.25},7.65);
+    \node[anchor=\anch] at (\lx,7.9) {\txt};
+  }
+
+  % ----------------------------------------------------------------
+  % clock
+  % ----------------------------------------------------------------
+  \draw (-3.0,-2.8) -- (14.8,-2.8);
+  \draw (11.2,-1.5) -- (11.2,-2.8);
+  \draw (0.8,-1.5) -- (0.8,-2.8);
+  \draw (0.8,4.5) -- (0.8,3.5) -- (-3.0,3.5) -- (-3.0,-2.8);
+  \draw (11.2,4.5) -- (11.2,3.5) -- (14.8,3.5) -- (14.8,-2.8);
+  \fill (0.8,-2.8) circle (0.075);
+  \fill (11.2,-2.8) circle (0.075);
+
+  \node at (0.9,-3.6)        {\texttt{always\_ff}};
+  \node[blue] at (6.2,-3.6)  {\texttt{always\_comb}};
+  \node at (11.3,-3.6)       {\texttt{always\_ff}};
+
+\end{circuitikz}
+\end{document}

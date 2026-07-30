@@ -84,7 +84,7 @@ $$ V_{GS} < V_{TH}$$ when $$V_G = 0$$
 #[fit] Logic cells
 --- 
 
-![original fit](../media/l13/binary.pdf)
+![original fit](../media/l13/binary_tikz.pdf)
 
 ---
 
@@ -292,7 +292,7 @@ $$\overline{Q} =\overline{S} + \overline{Q}$$
 | 1 | 1 | 1 | 0 |
 
 
-![right 200% ](../media/l13/dlatch.pdf)
+![right 200% ](../media/l13/dlatch_tikz.pdf)
 
 
 ---
@@ -329,13 +329,13 @@ $$\text{Y} = \text{A+B} = \overline{\overline{\text{A+B}}}$$
 
  $$\text{Y} =  \overline{\text{AB} + \text{CD}}$$
  
-![right fit](../media/l13/an2oi.pdf)
+![right fit](../media/l13/an2oi_tikz.pdf)
 
 
 ---
 
 
-![original fit](../media/l13/inv_tg.pdf)
+![original fit](../media/l13/inv_tg_tikz.pdf)
 
 ---
 [.table-separator: #000000, stroke-width(1)] 
@@ -350,7 +350,7 @@ $$\text{Y} = \text{A+B} = \overline{\overline{\text{A+B}}}$$
 | 1 | 0 | 1 |
 | 1 | 1 | 0 |
 
-![right fit](../media/l13/ivtrix.pdf)
+![right fit](../media/l13/ivtrix_tikz.pdf)
 
 ---
 
@@ -366,21 +366,21 @@ $$\text{Y} = \text{A+B} = \overline{\overline{\text{A+B}}}$$
 | 1 | NOT(P0) |
 | 1 | NOT(P0) |
 
-![right fit](../media/l13/mux.pdf)
+![right fit](../media/l13/mux_tikz.pdf)
 
 ---
 D-Latch (12 transistors)
 
-![original fit](../media/l13/latch.pdf)
+![original fit](../media/l13/latch_tikz.pdf)
 
 ---
 D-Flip Flop (< 26 transistors)
 
-![original fit](../media/l13/d_ff.pdf)
+![original fit](../media/l13/d_ff_tikz.pdf)
 
 ---
 
-![original fit](../media/l13/digital_ff_comb.pdf)
+![original fit](../media/l13/digital_ff_comb_tikz.pdf)
 
 ---
 
@@ -419,14 +419,14 @@ Consider other types of logic "rule breaking", so you should know why you need i
 ---
 
 
-![original fit](../media/l13/digital_ff_comb.pdf)
+![original fit](../media/l13/digital_ff_comb_tikz.pdf)
 
 ---
 
 # Flip-flops and speed
 
 [.column]
-![inline fit](../media/l13/d_ff.pdf)
+![inline fit](../media/l13/d_ff_tikz.pdf)
 
 [.column]
 
@@ -1111,7 +1111,7 @@ $$P_{tot} = \alpha C V_{DD}^2 f$$
 1. Turn off VDD
 1. Reduce VDD
 
-![right fit](../media/l13/digital_ff_comb.pdf)
+![right fit](../media/l13/digital_ff_comb_tikz.pdf)
 
 ---
 

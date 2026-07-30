@@ -1,0 +1,98 @@
+\input{tikz/fig_header.tex}
+
+% Tristate inverter, labeled: inverter plus transmission gate is
+% almost the clocked inverter stack, with A, E and EB called out.
+
+\begin{circuitikz}[american, thick, transform shape, circuit ee IEC]
+
+  \input{tikz/ckt_lib.tex}
+
+  % ----------------------------------------------------------------
+  % Top row: symbol = inverter + TG ~ clocked inverter
+  % ----------------------------------------------------------------
+  \begin{scope}[shift={(0,8.5)}]
+
+    % symbol: inverter into a transmission gate
+    \node[not port] (ti1) at (1.4,0) {};
+    \draw (0.0,0) node[anchor=east] {$A$} to [short,o-] (ti1.in);
+    \draw (ti1.out) -- (3.4,0);
+    \draw (3.4,0.5) -- (3.4,-0.5) -- (4.1,0) -- cycle;
+    \draw (4.8,0.5) -- (4.8,-0.5) -- (4.1,0) -- cycle;
+    \draw (4.1,0.55) circle (0.09);
+    \node at (4.1,1.0)  {$\overline{E}$};
+    \node at (4.1,-0.85) {$E$};
+    \draw (4.8,0) -- (5.6,0) node[anchor=west] {$Y$};
+
+    \node[armygreen, scale=1.4] at (7.0,0) {$=$};
+
+    % transistor level: inverter, then a pass gate
+    \draw (10.2,-1.6) \vground;
+    \draw (10.2,-1.6) \lvnmos{TMN}{};
+    \draw (10.2,0) \lvpmos{TMP}{};
+    \draw (10.2,1.6) \vsupply;
+    \draw (TMP.gate) -- ++(-0.4,0) coordinate (tga);
+    \draw (TMN.gate) -- ++(-0.4,0) coordinate (tgb);
+    \draw (tga) -- (tgb);
+    \coordinate (tgin) at ([xshift=-0.4cm]tga);
+    \fill ([yshift=-0.8cm]tga) circle (0.075);
+    \draw ([yshift=-0.8cm]tga) to [short,-o] ++(-0.7,0)
+      node[anchor=east] {$A$};
+
+    % pass gate
+    \draw (10.2,0) -- (11.6,0);
+    \draw (11.6,0.6) -- (11.6,-0.6);
+    \draw (11.6,0.6) to [Tpmos, n=TGP] ++(1.8,0);
+    \draw (11.6,-0.6) to [Tnmos, mirror, n=TGN] ++(1.8,0);
+    \draw (13.4,0.6) -- (13.4,-0.6);
+    \draw (13.4,0) -- (14.1,0) node[anchor=west] {$Y$};
+    \draw (TGP.gate) to [short,-o] ++(0,0.3)
+      node[anchor=south] {$\overline{E}$};
+    \draw (TGN.gate) to [short,-o] ++(0,-0.3)
+      node[anchor=north] {$E$};
+
+    \node[armygreen, scale=1.4] at (15.2,0) {$\approx$};
+
+    % clocked inverter stack
+    \draw (17.6,-3.2) \vground;
+    \draw (17.6,-3.2) \lvnmos{CIA}{$A$};
+    \draw (17.6,-1.6) \lvnmos{CIE}{$E$};
+    \draw (17.6,0) \lvpmos{CIEB}{$\overline{E}$};
+    \draw (17.6,1.6) \lvpmos{CIAB}{$A$};
+    \draw (17.6,3.2) \vsupply;
+    \draw (17.6,0) -- ++(0.8,0) node[anchor=west] {$Y$};
+
+  \end{scope}
+
+  % ----------------------------------------------------------------
+  % Bottom row: tristate symbol ~ the four transistor stack
+  % ----------------------------------------------------------------
+  \begin{scope}[shift={(2.0,0)}]
+
+    % tristate inverter symbol, enable bubble on top
+    \node[not port] (tb) at (1.4,0) {};
+    \draw (0.2,0) -- (tb.in);
+    \draw (tb.out) -- (3.2,0);
+    \draw (1.35,0.34) circle (0.09);
+    \draw (1.35,0.43) -- (1.35,1.0);
+
+    \node[armygreen, scale=1.4] at (4.4,0) {$\approx$};
+
+    % clocked inverter with the input tied top and bottom
+    \draw (7.4,-3.2) \vground;
+    \draw (7.4,-3.2) \lvnmos{BN}{};
+    \draw (7.4,-1.6) \lvnmos{BE}{};
+    \draw (7.4,0) \lvpmos{BEB}{};
+    \draw (7.4,1.6) \lvpmos{BP}{};
+    \draw (7.4,3.2) \vsupply;
+    \draw (BE.gate) to [short,-o] ++(-0.3,0) node[anchor=east] {$E$};
+    \draw (BEB.gate) to [short,-o] ++(-0.3,0) node[anchor=east] {$\overline{E}$};
+    \draw (BP.gate) -- ++(-1.5,0) coordinate (bt);
+    \draw (BN.gate) -- ++(-1.5,0) coordinate (bb);
+    \draw (bt) -- (bb);
+    \node[anchor=south east] at (bt) {$A$};
+    \draw (7.4,0) -- ++(0.8,0) node[anchor=west] {$Y$};
+
+  \end{scope}
+
+\end{circuitikz}
+\end{document}

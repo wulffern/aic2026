@@ -1,0 +1,125 @@
+\input{tikz/fig_header.tex}
+
+% From SR latch to gated D latch: truth table, symbol, the cross
+% coupled NAND pair, and the four NAND implementation.
+
+\begin{circuitikz}[thick]
+
+  % ----------------------------------------------------------------
+  % SR truth table
+  % ----------------------------------------------------------------
+  \begin{scope}[shift={(0,10.4)}]
+    \def\cw{1.0}
+    \def\rh{0.7}
+    \foreach \i in {1,2,3,4} {
+      \draw ({\i*\cw},{0.5*\rh}) -- ({\i*\cw},{-4*\rh});
+    }
+    \draw (0,0) -- ({4*\cw},0);
+    \node at ({0.5*\cw},{0.55*\rh}) {$S$};
+    \node at ({1.5*\cw},{0.55*\rh}) {$R$};
+    \node at ({2.5*\cw},{0.55*\rh}) {$Q$};
+    \node at ({3.5*\cw},{0.55*\rh}) {$\overline{Q}$};
+    \foreach \r/\vs/\vr/\vq/\vn in {1/0/0/L/L, 2/0/1/0/1, 3/1/0/1/0, 4/1/1/X/X}{
+      \node at ({0.5*\cw},{-(\r-0.5)*\rh}) {\vs};
+      \node at ({1.5*\cw},{-(\r-0.5)*\rh}) {\vr};
+      \node at ({2.5*\cw},{-(\r-0.5)*\rh}) {\vq};
+      \node at ({3.5*\cw},{-(\r-0.5)*\rh}) {\vn};
+    }
+  \end{scope}
+
+  % ----------------------------------------------------------------
+  % SR latch symbol
+  % ----------------------------------------------------------------
+  \begin{scope}[shift={(8.0,10.4)}]
+    \draw (0,-2.1) rectangle (2.0,0.35);
+    \node[anchor=west] at (0.05,0)    {$S$};
+    \node[anchor=west] at (0.05,-1.75) {$R$};
+    \node[anchor=east] at (1.95,0)    {$Q$};
+    \node[anchor=east] at (1.95,-1.75) {$\overline{Q}$};
+    \draw (-0.7,0) -- (0,0);
+    \draw (-0.7,-1.75) -- (0,-1.75);
+    \draw (2.0,0) -- (2.7,0);
+    \draw (2.0,-1.75) -- (2.7,-1.75);
+  \end{scope}
+
+  % ----------------------------------------------------------------
+  % Cross coupled NAND pair
+  % ----------------------------------------------------------------
+  \begin{scope}[shift={(0,0)}]
+    \node[nand port] (n1) at (8,6.6) {};
+    \node[nand port] (n2) at (8,4.6) {};
+
+    \draw (n1.in 1) to [short,-o] ++(-1.6,0) node[anchor=east] {$S$};
+    \draw (n2.in 2) to [short,-o] ++(-1.6,0) node[anchor=east] {$R$};
+
+    \draw (n1.out) -- ++(0.4,0) coordinate (sq1);
+    \draw (sq1) to [short,-o] ++(1.8,0) node[anchor=west] {$Q$};
+    \draw (n2.out) -- ++(0.4,0) coordinate (sq2);
+    \draw (sq2) to [short,-o] ++(1.8,0) node[anchor=west] {$\overline{Q}$};
+
+    \draw (n2.in 1) -- ++(-0.5,0) coordinate (n2a);
+    \draw (n1.in 2) -- ++(-0.5,0) coordinate (n1a);
+    \draw (sq1) -- (n2a);
+    \draw (sq2) -- (n1a);
+    \fill (sq1) circle (0.075);
+    \fill (sq2) circle (0.075);
+  \end{scope}
+
+  % ----------------------------------------------------------------
+  % Gated D latch symbol
+  % ----------------------------------------------------------------
+  \begin{scope}[shift={(8.0,2.6)}]
+    \draw (0,-2.1) rectangle (2.0,0.35);
+    \node[anchor=west] at (0.05,0)    {$D$};
+    \node[anchor=east] at (1.95,0)    {$Q$};
+    \node[anchor=east] at (1.95,-1.75) {$\overline{Q}$};
+    \draw (-0.7,0) -- (0,0);
+    \draw (2.0,0) -- (2.7,0);
+    \draw (2.0,-1.75) -- (2.7,-1.75);
+    % clock input on the bottom edge
+    \draw (0.75,-2.1) -- (1.0,-1.8) -- (1.25,-2.1);
+    \draw (1.0,-2.1) -- (1.0,-2.7) node[anchor=north] {$C$};
+  \end{scope}
+
+  % ----------------------------------------------------------------
+  % Gated D latch, four NANDs
+  % ----------------------------------------------------------------
+  \begin{scope}[shift={(0,0)}]
+    \node[nand port] (g1) at (7,-2.6)  {};
+    \node[nand port] (g2) at (7,-5.2)  {};
+    \node[nand port] (g3) at (11.6,-2.6) {};
+    \node[nand port] (g4) at (11.6,-5.2) {};
+
+    % D input
+    \draw (g1.in 1) to [short,-o] ++(-2.2,0) node[anchor=east] {$D$};
+
+    % C input feeds the bottom NAND and branches up to the top one
+    \draw (g2.in 2) -- ++(-1.0,0) coordinate (cbr);
+    \draw (cbr) to [short,-o] ++(-1.2,0) node[anchor=east] {$C$};
+    \draw (cbr) |- (g1.in 2);
+    \fill (cbr) circle (0.075);
+
+    % top NAND output: to the right pair, and down to the bottom NAND
+    \draw (g1.out) -- ++(0.5,0) coordinate (a);
+    \fill (a) circle (0.075);
+    \draw (a) -- ++(0.6,0) |- (g3.in 1);
+    \draw (a) -- ++(0,-1.3) -- ++(-3.6,0) |- (g2.in 1);
+
+    % bottom NAND output to the right pair
+    \draw (g2.out) -- ++(0.5,0) |- (g4.in 2);
+
+    % cross coupled output pair
+    \draw (g3.out) -- ++(0.4,0) coordinate (dq1);
+    \draw (dq1) to [short,-o] ++(1.6,0) node[anchor=west] {$Q$};
+    \draw (g4.out) -- ++(0.4,0) coordinate (dq2);
+    \draw (dq2) to [short,-o] ++(1.6,0) node[anchor=west] {$\overline{Q}$};
+    \draw (g4.in 1) -- ++(-0.5,0) coordinate (g4a);
+    \draw (g3.in 2) -- ++(-0.5,0) coordinate (g3a);
+    \draw (dq1) -- (g4a);
+    \draw (dq2) -- (g3a);
+    \fill (dq1) circle (0.075);
+    \fill (dq2) circle (0.075);
+  \end{scope}
+
+\end{circuitikz}
+\end{document}

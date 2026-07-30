@@ -1,0 +1,77 @@
+\input{tikz/fig_header.tex}
+
+% AOI22: Y = /(AB + CD). Parallel PMOS pairs in series pull up, series
+% NMOS pairs in parallel pull down. Full schematic and compact sketch.
+
+\begin{circuitikz}[american, thick, transform shape, circuit ee IEC]
+
+  \input{tikz/ckt_lib.tex}
+
+  % ----------------------------------------------------------------
+  % Full schematic
+  % ----------------------------------------------------------------
+  \begin{scope}[shift={(0,7.5)}]
+
+    % left branch: A over C, A over B
+    \draw (0,0) \vground;
+    \draw (0,0) \lvnmos{MNB}{$B$};
+    \draw (0,\grid) \lvnmos{MNA}{$A$};
+    \draw (0,{2*\grid}) \lvpmos{MPC}{$C$};
+    \draw (0,{3*\grid}) \lvpmos{MPA}{$A$};
+    \draw (0,{4*\grid}) \vsupply;
+
+    % right branch: B over D, C over D
+    \draw (3.2,0) \vground;
+    \draw (3.2,0) \lvnmos{MND}{$D$};
+    \draw (3.2,\grid) \lvnmos{MNC}{$C$};
+    \draw (3.2,{2*\grid}) \lvpmos{MPD}{$D$};
+    \draw (3.2,{3*\grid}) \lvpmos{MPB}{$B$};
+    \draw (3.2,{4*\grid}) \vsupply;
+
+    % the PMOS pairs join between the rows
+    \draw (0,{3*\grid}) -- (3.2,{3*\grid});
+    \fill (0,{3*\grid}) circle (0.075);
+    \fill (3.2,{3*\grid}) circle (0.075);
+
+    % output rail
+    \draw (0,{2*\grid}) -- (3.2,{2*\grid});
+    \fill (0,{2*\grid}) circle (0.075);
+    \draw (3.2,{2*\grid}) \portOut{Y};
+
+  \end{scope}
+
+  % ----------------------------------------------------------------
+  % Compact sketch, pull up and pull down called out
+  % ----------------------------------------------------------------
+  \begin{scope}[shift={(4.6,0.4)}, scale=0.7, transform shape]
+
+    \draw (0,0) \vground;
+    \draw (0,0) \lvnmos{SNB}{$B$};
+    \draw (0,\grid) \lvnmos{SNA}{$A$};
+    \draw (0,{2*\grid}) \lvpmos{SPC}{$C$};
+    \draw (0,{3*\grid}) \lvpmos{SPA}{$A$};
+    \draw (0,{4*\grid}) \vsupply;
+
+    \draw (2.2,0) \vground;
+    \draw (2.2,0) \lvmnmos{SND}{$D$};
+    \draw (2.2,\grid) \lvmnmos{SNC}{$C$};
+    \draw (2.2,{2*\grid}) \lvmpmos{SPD}{$D$};
+    \draw (2.2,{3*\grid}) \lvmpmos{SPB}{$B$};
+    \draw (2.2,{4*\grid}) \vsupply;
+
+    \draw (0,{3*\grid}) -- (2.2,{3*\grid});
+    \fill (0,{3*\grid}) circle (0.075);
+    \fill (2.2,{3*\grid}) circle (0.075);
+
+    \draw (0,{2*\grid}) -- (2.2,{2*\grid});
+    \fill (0,{2*\grid}) circle (0.075);
+    \fill (2.2,{2*\grid}) circle (0.075);
+    \draw (2.2,{2*\grid}) -- ++(0.9,0) node[anchor=west] {$Y$};
+
+    \node at (-2.4,{3.5*\grid}) {PU};
+    \node at (-2.4,{1*\grid})   {PD};
+
+  \end{scope}
+
+\end{circuitikz}
+\end{document}

@@ -567,7 +567,13 @@ sketch - kept on purpose, it has charm; author's call), the plots
 (`transistor_log/lin`), tool screenshots, and batch 2: `binary`,
 `mux`, `latch`, `dlatch`, `d_ff`, `digital_ff_comb`, `inv_tg`,
 `an2oi`, `ivtrix`, `fig_sar_logic`, `mealy/moore_machine`, plus the
-`l14/`, `l16/`, `l19/` sets.
+`l14/`, `l16/`, `l19/` sets. UPDATE, same day: batch 2 is done too -
+`binary`, `dlatch`, `latch`, `d_ff`, `digital_ff_comb`, `mux`,
+`an2oi`, `inv_tg`, `ivtrix` all drawn, verified against the originals
+point by point (topology, labels, truth-table values), and switched in
+`lr0_logic` and `s_need_to_know`. Remaining in this lecture: the
+`l14/`, `l16/`, `l19/` sets, `mealy/moore_machine`, and
+`fig_sar_logic`.
 
 ### Current next figure
 `l04_dac` is complete, so the queue moves on. In order, and each one triaged

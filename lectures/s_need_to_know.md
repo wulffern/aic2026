@@ -553,7 +553,7 @@ D-Flip Flop
 
 ---
 
-![original fit](../media/digital_ff_comb.pdf)
+![original fit](../media/l13/digital_ff_comb_tikz.pdf)
 
 ---
 # SystemVerilog
@@ -582,7 +582,7 @@ module counter(
 endmodule // counter
 ```
 
-![right fit](../media/digital_ff_comb.pdf)
+![right fit](../media/l13/digital_ff_comb_tikz.pdf)
 
 ---
 
@@ -780,7 +780,7 @@ Clocks $$\alpha = 1$$
 1. Turn off $$V_{DD}$$
 1. Reduce $$V_{DD}$$
 
-![right fit](../media/digital_ff_comb.pdf)
+![right fit](../media/l13/digital_ff_comb_tikz.pdf)
 
 ---
 

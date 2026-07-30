@@ -1,0 +1,74 @@
+\input{tikz/fig_header.tex}
+
+% 2:1 mux from two clocked inverter branches: the select enables one
+% branch, the other is off. Drawn twice, compact and with all ports.
+
+\begin{circuitikz}[american, thick, transform shape, circuit ee IEC]
+
+  \input{tikz/ckt_lib.tex}
+
+  % ----------------------------------------------------------------
+  % Top: P0 and P1 branches with the input tied top and bottom
+  % ----------------------------------------------------------------
+  \begin{scope}[shift={(3.4,9.0)}]
+
+    % P0 branch
+    \draw (0,0) \vground;
+    \draw (0,0) \lvnmos{TNA}{};
+    \draw (0,\grid) \lvnmos{TNS}{$S$};
+    \draw (0,{2*\grid}) \lvpmos{TPS}{$\overline{S}$};
+    \draw (0,{3*\grid}) \lvpmos{TPA}{};
+    \draw (0,{4*\grid}) \vsupply;
+    \draw (TPA.gate) -- ++(-1.6,0) coordinate (p0t);
+    \draw (TNA.gate) -- ++(-1.6,0) coordinate (p0b);
+    \draw (p0t) -- (p0b);
+    \fill (p0t) circle (0.075);
+    \draw (p0t) to [short,-o] ++(-0.5,0) node[anchor=east] {$P_0$};
+
+    % P1 branch
+    \draw (5,0) \vground;
+    \draw (5,0) \lvnmos{TNB}{};
+    \draw (5,\grid) \lvnmos{TNSB}{$\overline{S}$};
+    \draw (5,{2*\grid}) \lvpmos{TPSB}{$S$};
+    \draw (5,{3*\grid}) \lvpmos{TPB}{};
+    \draw (5,{4*\grid}) \vsupply;
+    \draw (TPB.gate) -- ++(-1.6,0) coordinate (p1t);
+    \draw (TNB.gate) -- ++(-1.6,0) coordinate (p1b);
+    \draw (p1t) -- (p1b);
+    \fill (p1t) circle (0.075);
+    \draw (p1t) to [short,-o] ++(-0.5,0) node[anchor=east] {$P_1$};
+
+    % joined outputs, hopping over the P1 input rail
+    \draw (0,{2*\grid}) -- (2.7,{2*\grid}) arc (180:0:0.15) -- (5,{2*\grid});
+    \fill (0,{2*\grid}) circle (0.075);
+    \draw (5,{2*\grid}) \portOut{Y};
+
+  \end{scope}
+
+  % ----------------------------------------------------------------
+  % Bottom: the same mux with every gate as a port
+  % ----------------------------------------------------------------
+  \begin{scope}[shift={(0,0)}]
+
+    \draw (0,0) \vground;
+    \draw (0,0) \lvnmos{BNA}{$P_0$};
+    \draw (0,\grid) \lvnmos{BNS}{$\overline{S}$};
+    \draw (0,{2*\grid}) \lvpmos{BPS}{$S$};
+    \draw (0,{3*\grid}) \lvpmos{BPA}{$P_0$};
+    \draw (0,{4*\grid}) \vsupply;
+
+    \draw (3.4,0) \vground;
+    \draw (3.4,0) \lvnmos{BNB}{$P_1$};
+    \draw (3.4,\grid) \lvnmos{BNSB}{$S$};
+    \draw (3.4,{2*\grid}) \lvpmos{BPSB}{$\overline{S}$};
+    \draw (3.4,{3*\grid}) \lvpmos{BPB}{$P_1$};
+    \draw (3.4,{4*\grid}) \vsupply;
+
+    \draw (0,{2*\grid}) -- (4.6,{2*\grid});
+    \fill (0,{2*\grid}) circle (0.075);
+    \fill (3.4,{2*\grid}) circle (0.075);
+
+  \end{scope}
+
+\end{circuitikz}
+\end{document}
