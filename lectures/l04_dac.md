@@ -39,7 +39,7 @@ ampere, kelvin, mole and candela (</aic2026/a_refresher>). Assume that
 electronic circuits interact with the real world in terms of second and ampere.
 
 Related to Ampere we have the derived units of charge (Ampere Seconds), Volt
-(W/A), Ohm (V/A), or indeed Simens (1/$\Omega$). 
+(W/A), Ohm (V/A), or indeed Siemens (1/$\Omega$). 
 
 -->
 
@@ -150,6 +150,27 @@ $$
 
 What is correct?
 
+<!--pan_doc:
+
+Both, and neither, which is the honest answer and also the useful one.
+
+The two columns differ by one LSB of offset. The right hand one puts
+code 0 at 0 V, which is what most people expect a converter to do and
+what makes a zero code mean zero volts. The left hand one puts the top
+code at exactly $V_{ref}$, which is convenient if $V_{ref}$ is the thing
+you are trying to reproduce. Neither can do both, because four codes
+cannot span five levels.
+
+This is the same choice as the mid-rise against mid-tread question in
+the ADC chapter, and the next figure is exactly this: the two
+conventions plotted against the ideal line, and the error each one
+makes. Notice there that the choice does not change the *size* of the
+error, only its sign — one convention errs low everywhere and the other
+high. Only a half-LSB offset centres it, which is why converters are
+usually specified with one.
+
+-->
+
 ---
 
 #[fit] DAC errors
@@ -158,14 +179,23 @@ What is correct?
 
 Digital to analog converters do not add quantization error. The quantization error is already in the digital word.
 
-$$ V_{out} = a_1^1 D_{in}^1 + B + \left( a_n^n D_{in}^n + ... a_2^2 D_{in}^2\right) $$
+$$ V_{out} = B + a_1 D_{in} + \left( a_2 D_{in}^2 + \dots + a_n D_{in}^n \right) $$
+
+<!--pan_doc:
+
+Read that as three separate defects. $B$ is offset, a constant added to
+every code. $a_1$ is gain, which stretches the transfer curve but keeps
+it straight. Everything in the bracket is non-linearity, and it is the
+only part that a calibration of gain and offset cannot remove.
+
+-->
 
 DAC output will contain gain errors, offset errors, and non-linear components
 
 ![left fit](../media/dac_error_tikz.pdf)
 
 <!--pan_doc:
-<sub>Figure 5: DAC output with gain error and non-linearity, and the resulting INL and DNL</sub>
+<sub>Figure 5: Quantization error of a 2-bit DAC. The digital code (top), two conventions for turning that code back into a voltage (middle), and the error each one makes (bottom)</sub>
 -->
 
 
