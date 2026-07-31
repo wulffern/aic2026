@@ -1,10 +1,11 @@
 \input{tikz/fig_header.tex}
 
-% Synchronous logic as the analog designer meets it: a clock gate (enable
-% logic, an active-low latch and an AND) making Clk out, and below it the
-% registers-cloud-registers picture that Clk out drives.  The lower half
-% is the same drawing as l13/digital_ff_comb, without the always_ff /
-% always_comb captions.
+% Synchronous logic as the analog designer meets it: registers, a cloud of
+% combinational logic, registers, all on one clock.
+%
+% The source PDF is a crop of a larger page. Only this picture is inside
+% media/logic.pdf's CropBox - the clock gate above it on that page is a
+% different figure (media/l16/stop_clock.pdf), so it does not belong here.
 
 \begin{circuitikz}[thick]
 
@@ -16,39 +17,6 @@
     \draw (1.8,0.55) -- (2.3,0.55);
     \draw (0.5,0) -- (0.8,0.25) -- (1.1,0);
   }
-
-  % ----------------------------------------------------------------
-  % the clock gate
-  % ----------------------------------------------------------------
-  \begin{scope}[shift={(2.4,10.2)}]
-    % enable logic
-    \draw (-0.6,1.2) rectangle (1.6,2.6);
-    \node[align=center] at (0.5,1.9) {Enable\\Logic};
-    \draw[-latex] (-1.8,1.9) -- (-0.6,1.9);
-    \draw (1.6,1.9) -- (2.6,1.9);
-
-    % the latch, transparent on clock low
-    \draw (2.6,0) rectangle (4.4,2.4);
-    \node[anchor=west] at (2.65,1.95) {$D$};
-    \node[anchor=east] at (4.35,1.95) {$Q$};
-    \node[anchor=east] at (4.35,0.55) {$\overline{Q}$};
-    \node[scale=1.3] at (3.3,1.0) {$L$};
-    \draw (4.4,0.55) -- (4.9,0.55);
-    \draw (3.1,0) -- (3.4,0.25) -- (3.7,0);
-    \draw (3.4,-0.3) circle (0.15);
-
-    % clock in, to the latch (inverted) and the AND
-    \draw (1.4,-1.0) to[short,o-] (3.4,-1.0) -- (3.4,-0.45);
-    \node[anchor=east] at (1.3,-1.0) {Clk in};
-    \fill (3.4,-1.0) circle (0.075);
-
-    % the AND gate, in 1 level with Q
-    \node[and port, scale=0.9] (cg) at (7.0,1.68) {};
-    \draw (4.4,1.95) -- (cg.in 1);
-    \draw (3.4,-1.0) -- (6.0,-1.0) -- (cg.in 2 -| 6.0,0) -- (cg.in 2);
-    \draw (cg.out) to[short,-o] ++(0.8,0);
-    \node[anchor=south] at (8.0,1.95) {Clk out};
-  \end{scope}
 
   % ----------------------------------------------------------------
   % input registers

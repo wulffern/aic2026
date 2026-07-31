@@ -2,6 +2,10 @@
 
 % Critical path example: arrival times (blue) propagate through gate
 % delays (red), the slowest input sets the output arrival time.
+%
+% The source PDF is a crop: the handwritten derivation further down
+% that page is outside this figure's CropBox, so it is not part of
+% this figure. The lecture text carries the algebra.
 
 \begin{circuitikz}[thick]
 
@@ -37,19 +41,6 @@
     node[blue, anchor=east] {$a_4{=}20$};
   \draw (g5.out) -- ++(0.5,0) -- (g3.in 2);
   \node[blue, anchor=south, scale=0.8] at (7.1,-2.25) {$a_8{=}100$};
-
-  % notes
-  \draw (0,-4.1) -- (10.6,-4.1);
-  \node[anchor=west] at (0,-4.8)
-    {Most paths will be fast enough};
-  \node[anchor=west] at (0,-5.7)
-    {There will be some ``critical paths'' that};
-  \node[anchor=west] at (0,-6.3)
-    {must be analyzed, and maybe fixed};
-  \draw (0,-7.0) -- (10.6,-7.0);
-  \node[anchor=west] at (0,-7.7) {Fix timing at:};
-  \node[anchor=west] at (0.5,-8.4) {Architecture};
-  \node[anchor=west] at (0.5,-9.0) {micro arch};
 
 \end{circuitikz}
 \end{document}

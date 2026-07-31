@@ -3,6 +3,10 @@
 % Switching probability example: two NANDs into a NOR is an AND of all
 % four inputs, and the output activity factor follows from the input
 % probabilities.
+%
+% The source PDF is a crop: the handwritten derivation further down
+% that page is outside this figure's CropBox, so it is not part of
+% this figure. The lecture text carries the algebra.
 
 \begin{circuitikz}[thick]
 
@@ -21,35 +25,6 @@
   \draw[blue] (n3.out) -- ++(0.5,0) node[red, anchor=west] {Y};
   \node[red, anchor=south west] at (2.75,0.05) {X};
   \node[red, anchor=south west] at (2.75,-1.65) {Z};
-
-  % boolean algebra (De Morgan)
-  \node[armygreen, anchor=west] at (0,-3.4)
-    {$\overline{\overline{AB} + \overline{CD}}
-      \;\overset{\mathrm{DM}}{=}\;
-      \overline{\overline{AB}} \cdot \overline{\overline{CD}} = ABCD$};
-  \node[armygreen, anchor=west] at (0,-4.4)
-    {$\overline{D + E} = \overline{D} \cdot \overline{E}$};
-  \node[armygreen, anchor=west] at (0,-5.2)
-    {$\overline{DE} = \overline{D} + \overline{E}$};
-
-  % probabilities
-  \node[armygreen, anchor=west] at (0,-6.3)
-    {$P_A = P_B = P_C = P_D = 0.5 = P$};
-  \node[armygreen, anchor=west] at (0,-7.3)
-    {$P_Y$?};
-  \node[armygreen, anchor=west] at (0.5,-8.2)
-    {$P_X = 1 - P \cdot P = 1 - \tfrac{1}{4} = \tfrac{3}{4}$};
-  \node[armygreen, anchor=west] at (0.5,-9.2)
-    {$P_Z = 1 - P \cdot P = 1 - \tfrac{1}{4} = \tfrac{3}{4}$};
-  \node[armygreen, anchor=west] at (0.5,-10.2)
-    {$\overline{P_X} = \tfrac{1}{4}$};
-  \node[armygreen, anchor=west] at (0.5,-11.0)
-    {$\overline{P_Z} = \tfrac{1}{4}$};
-  \node[armygreen, anchor=west] at (0.5,-12.0)
-    {$P_Y = \tfrac{1}{4} \cdot \tfrac{1}{4} = \tfrac{1}{16}$};
-  \node[armygreen, anchor=west] at (0.5,-13.1)
-    {$\alpha = \tfrac{1}{16}\left(1 - \tfrac{1}{16}\right)
-      = \tfrac{15}{16} \cdot \tfrac{1}{16}$};
 
 \end{circuitikz}
 \end{document}
