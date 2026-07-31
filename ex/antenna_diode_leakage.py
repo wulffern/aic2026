@@ -4,11 +4,17 @@
 # scaled to any diode area. Based on ex/vd.py.
 
 import os
+import sys
+
 from scipy import constants
 import numpy as np
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
+
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                                "..", "py"))
+from tikzplot import Figure
 
 h = constants.physical_constants["Planck constant"][0]
 k = constants.Boltzmann
@@ -115,3 +121,28 @@ if __name__ == "__main__":
     out = os.path.join(here, "..", "media", "antenna_diode_leak.pdf")
     plt.savefig(out)
     print(f"wrote {os.path.normpath(out)}")
+
+    #- The same plot as TikZ, so it matches the schematics.
+    tfig = Figure("""Reverse leakage of an n+/p-well antenna diode against temperature.
+
+Normalised to a 1 um^2 junction, so it scales linearly with a real
+diode's area. Diffusion dominates at high temperature, generation at low
+temperature, and the crossover is the kink.
+
+The two shaded bands are where plasma induced damage actually happens
+during processing. That is the only time the antenna diode has a job to
+do, so the leakage inside those bands is the number that matters, not
+the leakage at room temperature where the chip will eventually run.""")
+
+    ax = tfig.axes(xlabel="Temperature [K]",
+                   ylabel="Reverse leakage [A/$\\mu$m$^2$]",
+                   ylog=True, width=11.0, height=6.5,
+                   legend_pos="north west")
+    ax.vspan(300, 375, colour="red", label="Plasma etch")
+    ax.vspan(470, 675, colour="blue", label="Plasma deposition")
+    ax.plot(T, I_s, colour="blue", label="Diffusion $I_S$",
+            decimate=False)
+    ax.plot(T, I_gen, colour="armygreen", label="Generation $I_{gen}$",
+            decimate=False)
+    ax.plot(T, I_leak, colour="black", label="Total", decimate=False)
+    tfig.save("antenna_diode_leak")

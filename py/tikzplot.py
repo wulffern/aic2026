@@ -85,6 +85,8 @@ class Axes:
         self.opts = opts
         self.traces = []
         self.extra = []
+        self.background = []
+        self.legend_patches = []
 
     def plot(self, x, y, colour=None, label=None, style="very thick",
              decimate=True, columns=600):
@@ -112,6 +114,24 @@ class Axes:
         self.traces.append(([("\\pgfkeysvalueof{/pgfplots/xmin}", y),
                              ("\\pgfkeysvalueof{/pgfplots/xmax}", y)],
                             colour, style, label, "hline"))
+        return self
+
+    def vspan(self, x0, x1, colour="blue", opacity=0.12, label=None):
+        """Shade a vertical band, for a region of interest on the x axis.
+
+        Drawn on the axis background so it sits under the traces rather
+        than washing them out.
+        """
+        # x comes from the data, y from the axis frame. Reading ymin and
+        # ymax out of pgfplots only works when they were set explicitly,
+        # and on an auto-scaled log axis they are not, so take the full
+        # height from `rel axis cs` and combine the two with |-.
+        self.background.append(
+            f"\\fill[{colour}, opacity={opacity}] "
+            f"({{axis cs:{_fmt(x0)},0}} |- {{rel axis cs:0,0}}) "
+            f"rectangle ({{axis cs:{_fmt(x1)},0}} |- {{rel axis cs:0,1}});")
+        if label:
+            self.legend_patches.append((colour, opacity, label))
         return self
 
     def annotate(self, x, y, text, anchor="south west", colour="black"):
@@ -158,7 +178,7 @@ class Axes:
                 opts.append(f"{pg[0]}={_fmt(v[0])}")
                 opts.append(f"{pg[1]}={_fmt(v[1])}")
         legend_pos = o.pop("legend_pos", "north east")
-        if any(t[3] for t in self.traces):
+        if any(t[3] for t in self.traces) or self.legend_patches:
             opts.append(f"legend pos={legend_pos}")
         opts.extend(o.pop("options", []))
         if o:
@@ -166,7 +186,7 @@ class Axes:
         return opts
 
     def _body(self):
-        lines = []
+        lines = list(self.background)
         for pts, colour, style, label, kind in self.traces:
             if kind == "stem":
                 # the sticks are drawn separately; this empty plot exists
@@ -182,6 +202,12 @@ class Axes:
                     f"coordinates {{{coords}}};")
             if label:
                 lines.append(f"\\addlegendentry{{{label}}}")
+        for colour, opacity, label in self.legend_patches:
+            # an invisible plot whose legend mark is the shaded colour
+            lines.append(
+                f"\\addlegendimage{{area legend, fill={colour}, "
+                f"opacity={opacity}, draw=none}}")
+            lines.append(f"\\addlegendentry{{{label}}}")
         lines.extend(self.extra)
         return lines
 

@@ -1236,7 +1236,7 @@ wide-bandgap materials such as silicon carbide.
 
 -->
 
-![right fit Reverse leakage of a 0.2x0.2 um$^2$ antenna ndiode\label{fig:antenna_leak}](../media/antenna_diode_leak.pdf)
+![right fit Reverse leakage of a 0.2x0.2 um$^2$ antenna ndiode\label{fig:antenna_leak}](../media/antenna_diode_leak_tikz.pdf)
 
 <!--pan_doc:
 <sub>Figure 5: Reverse leakage density (A/um$^2$) of an n+/p-well

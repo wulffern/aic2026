@@ -463,7 +463,7 @@ dim room is a current problem rather than a voltage one.
 
 -->
 
-![right fit](../media/pv.pdf)
+![right fit](../media/pv_tikz.pdf)
 
 <!--pan_doc:
 <sub>Figure 13: Diode voltage and delivered power versus load current for the photodiode model, with the maximum power point near 0.9 mA</sub>
@@ -482,7 +482,7 @@ as the optimum changes with light conditions.
 
 <!--pan_skip: -->
 
-![left original fit](../media/pv.pdf)
+![left original fit](../media/pv_tikz.pdf)
 
 [ANYSOLAR](https://www.digikey.no/en/products/detail/anysolar-ltd/KXOB25-03X4F-TB/13999196)
 

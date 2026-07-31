@@ -1,7 +1,14 @@
 #!/usr/bin/env python3
 
+import os
+import sys
+
 import numpy as np
 import matplotlib.pyplot as plt
+
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                                "..", "py"))
+from tikzplot import Figure
 
 m = 1e-3
 i_load = np.logspace(-5,-3)
@@ -29,4 +36,22 @@ plt.xlabel("Current load [mA]")
 plt.ylabel("Power Load [mW]")
 plt.grid()
 plt.savefig("../media/pv.pdf")
-plt.show()
+
+#- The same two panels as TikZ, so the plot matches the schematics.
+tfig = Figure("""A photovoltaic cell's diode voltage and delivered power against load.
+
+The cell is a current source of 1 mA in parallel with a diode. Draw
+little current and the diode takes it all, so the voltage is high and
+the power low. Draw all of it and the voltage collapses. The power peaks
+somewhere in between, and finding that point is what a maximum power
+point tracker does.""", columns=1)
+
+ax = tfig.axes(xlabel="Current load [mA]", ylabel="Diode voltage [V]",
+               width=9.0, height=3.6)
+ax.plot(i_load/m, V_D, colour="black", decimate=False)
+
+ax = tfig.axes(xlabel="Current load [mA]", ylabel="Power to load [mW]",
+               width=9.0, height=3.6)
+ax.plot(i_load/m, P_load/m, colour="black", decimate=False)
+
+tfig.save("pv")
