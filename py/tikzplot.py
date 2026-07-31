@@ -96,9 +96,37 @@ class Axes:
         y = [float(v) for v in y]
         if colour is None:
             colour = COLOURS[len(self.traces) % len(COLOURS)]
+        x, y = self._clip(x, y)
         pts = _envelope(x, y, columns) if decimate else list(zip(x, y))
         self.traces.append((pts, colour, style, label, "line"))
         return self
+
+    def _clip(self, x, y):
+        """Drop data outside the axis window, and clamp what is left.
+
+        pgfplots clips the drawing but still has to place every
+        coordinate, and a transient that runs to 10 ms while the axis
+        shows 50 us overflows TeX's dimension limit and fails the build
+        outright. Trimming here also keeps the .tex small.
+
+        One point either side of the window is kept, so a line still
+        enters and leaves the frame instead of stopping at its edge.
+        """
+        xlim = self.opts.get("xlim")
+        ylim = self.opts.get("ylim")
+        if xlim:
+            lo, hi = xlim
+            keep = [i for i, v in enumerate(x) if lo <= v <= hi]
+            if not keep:
+                return x, y
+            a = max(0, keep[0] - 1)
+            b = min(len(x), keep[-1] + 2)
+            x, y = x[a:b], y[a:b]
+        if ylim:
+            lo, hi = ylim
+            pad = (hi - lo) * 0.5
+            y = [min(max(v, lo - pad), hi + pad) for v in y]
+        return x, y
 
     def stem(self, x, y, colour="red", label=None, baseline=0.0):
         """Add vertical sticks, for a harmonic or an impulse response."""
@@ -194,6 +222,22 @@ class Axes:
             v = o.pop(key, None)
             if v:
                 opts.append(f"{key}={{{v}}}")
+        # Fixed-point tick labels with a chosen number of decimals. Note
+        # the fully qualified keys: writing `/pgf/number format/.cd` here
+        # leaves that key directory active, and pgfplots' own `at` for
+        # the axis scale label is then looked up inside it and the build
+        # fails with a baffling pgfkeys error.
+        for axis in ("x", "y"):
+            prec = o.pop(f"{axis}precision", None)
+            if prec is None:
+                continue
+            opts.append(f"scaled {axis} ticks=false")
+            opts.append(
+                f"{axis}ticklabel style={{"
+                f"/pgf/number format/fixed, "
+                f"/pgf/number format/zerofill, "
+                f"/pgf/number format/precision={prec}}}")
+
         for key, pg in (("xlim", ("xmin", "xmax")), ("ylim", ("ymin", "ymax"))):
             v = o.pop(key, None)
             if v is not None:

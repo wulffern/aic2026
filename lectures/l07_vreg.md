@@ -665,7 +665,7 @@ In the figure below we can see how the current during A increases fast, while du
 
 
 
-![right fit](../media/l07_buck_pwm_fig_start.pdf)
+![right fit](../media/l07_buck_pwm_fig_start_tikz.pdf)
 
 <!--pan_doc:
 <sub>Figure 15: Start-up of the PWM buck model: the inductor current Ix increases fast during A=1, while the output voltage vo grows like a second order function</sub>
@@ -685,7 +685,7 @@ $$ V_o = V_{in} \times \text{ Duty-Cycle}$$
 
 -->
 
-![fit](../media/l07_buck_pwm_fig_.pdf)
+![fit](../media/l07_buck_pwm_fig__tikz.pdf)
 
 <!--pan_doc:
 <sub>Figure 16: PWM buck model over a longer time: inductor and load currents (top), output voltage settling towards steady state (middle), and switch control A (bottom)</sub>
@@ -705,10 +705,10 @@ If the DC/DC was 100% efficient, then the current from the 4 V input supply woul
 
 ---
 
-![fit](../media/l07_buck_pwm_fig_settled.pdf)
+![fit](../media/l07_buck_pwm_fig_settled_tikz.pdf)
 
 <!--pan_doc:
-<sub>Figure 17: PWM buck model in steady state: sawtooth inductor current ripple around the load current, and a settled output voltage near 1 V</sub>
+<sub>Figure 17: PWM buck model in steady state. The inductor current swings 76 mA peak to peak to supply a 1 mA load, and the output capacitor turns that into 1.6 mV of ripple on a 998 mV output</sub>
 -->
 
 
@@ -793,7 +793,7 @@ Below you can see a period of the PFM buck. The state can be seen in the bottom 
 
 [Jupyter PFM BUCK model](https://github.com/wulffern/aic2026/blob/main/jupyter/buck_pfm.ipynb) - [interactive](https://wulffern.github.io/aic2026/assets/examples/buck-pfm.html)
 
-![right fit](../media/l07_buck_pfm_fig_save.pdf)
+![right fit](../media/l07_buck_pfm_fig_save_tikz.pdf)
 
 <!--pan_doc:
 <sub>Figure 21: One period of the PFM buck model: inductor and load currents (top), output voltage (middle), and FSM state (bottom)</sub>
