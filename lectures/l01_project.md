@@ -284,16 +284,16 @@ The sixth and last milestone is the tapeout on <tinytapeout.com>. It's optional,
 
 ## Specification 
 
-The temperature sensor shall be design to fit with the specification below. 
+The temperature sensor shall be designed to fit the specification below. 
 
 -->
 
 
 | Key     | Parameter        | Value | Unit | Description                                                    |
 |---------|------------------|-------|------|----------------------------------------------------------------|
-| Area    | Area             | < 15  | km^2 | Must fit in 161 um x 111 um tiny tapeout 1x1 block             |
+| Area    | Area             | < 15000 | um^2 | Must fit in 161 um x 111 um tiny tapeout 1x1 block, which is 17871 um^2 |
 | Tc      | Conversion time  | < 30  | us   | Analog should only be active for one 32768 Hz period           |
-| Ts      | Sample rate      | 100   | ms   |                                                                |
+| Ts      | Sample period    | 100   | ms   | One conversion every 100 ms, so 10 samples per second          |
 | Ileak   | Leakage current  | < 1   | nA   | Typical temperature (25 C)                                     |
 | Iact    | Active current   | < 100 | uA   | Typical temperature (25 C)                                                                  |
 | Iavg    | Average current  | < 50  | nA   | Active current x conversion time/sample rate + leakage current. Typical temperature (25 C)   |
@@ -311,6 +311,24 @@ specifications, and try to answer the question. Which one is better?
 The figure of merit for our temperature sensor will be
 
 $$FOM = \left(\frac{T_{c}}{T_s}I_{act} + I_{leak}\right) K_{errtwo} \text{ [AK]}$$
+
+<!--pan_doc:
+
+The bracket is exactly $I_{avg}$ from the table above, so the figure of
+merit is *average current times error* — what the sensor costs you
+multiplied by how wrong it is. Lower is better, and there is no way to
+win by being cheap and inaccurate or by being accurate and expensive.
+
+It is worth checking that the specification is self consistent before
+designing to it, because specifications often are not. With the numbers
+in the table, $\frac{30\ \mu s}{100\ ms}\times 100\ \mu A + 1\ nA = 31$ nA,
+comfortably inside the 50 nA the table allows for $I_{avg}$. Notice also
+where the current goes: the analog block draws 100 uA but only for 30 us
+in every 100 ms, so duty cycling turns it into 30 nA and the leakage,
+at 1 nA, is almost an afterthought. That ratio is why the conversion
+time is specified at all.
+
+-->
 
 
 
