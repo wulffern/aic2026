@@ -229,7 +229,7 @@ to the difference of charge at the end of phase 1 and phase 2.
 Inserting for the charges, we can see that the impedance is 
 -->
  
- $$ Z_{I} = \frac{V_{I}}{\left(V_{I} C  - 0 \right) f_{\phi}} = \frac{1}{C_1 f_\phi}$$
+ $$ Z_{I} = \frac{V_{I}}{\left(C_1 V_{I} - 0 \right) f_{\phi}} = \frac{1}{C_1 f_\phi}$$
  
  
 <!--pan_doc:
@@ -272,7 +272,7 @@ $$ Q_{\phi1\$} = C_1 (V_I - V_O)$$
 
 $$ Q_{\phi2\$} = 0 $$
 
-$$ Z_{I} = \frac{V_{I} - V_{O}}{\left(C_1 (V_I - V_O)\right) f_{\phi}} = \frac{1}{C_1 f_\phi}$$
+$$ Z_{I} = \frac{V_{I} - V_{O}}{C_1 \left(V_I - V_O\right) f_{\phi}} = \frac{1}{C_1 f_\phi}$$
 
 <!--pan_doc:
 
@@ -298,7 +298,7 @@ Let's try the circuit below.
 
 $$ Z_{I} = \frac{ V_{I} - V_{O} }{ \left(Q_{\phi1\$} - Q_{\phi2\$}\right) f_{\phi}}$$
 
-$$ Q_{\phi1\$} = C_1 V_I )$$
+$$ Q_{\phi1\$} = C_1 V_I$$
 
 $$ Q_{\phi2\$} = C_1 V_O $$
 
@@ -308,7 +308,7 @@ Inserted into the impedance we get the same result.
 
 -->
 
-$$ Z_{I} = \frac{V_{I} - V_{O}}{\left(C_1 V_I - C_1 V_O)\right) f_{\phi}} = \frac{1}{C_1 f_\phi}$$
+$$ Z_{I} = \frac{V_{I} - V_{O}}{\left(C_1 V_I - C_1 V_O\right) f_{\phi}} = \frac{1}{C_1 f_\phi}$$
 
 
 
@@ -751,7 +751,7 @@ We can translate between Laplace-domain and Z-domain with the
 -->
 Bi-linear transform 
 
-$$ s = \frac{z -1}{z + 1}$$
+$$ s = \frac{2}{T}\frac{z -1}{z + 1}$$
 
 <sub>Warning: First-order approximation [https://en.wikipedia.org/wiki/Bilinear_transform](https://en.wikipedia.org/wiki/Bilinear_transform)</sub>
 
@@ -911,9 +911,15 @@ But be wary of rules like "IIR are always better than FIR" or visa versa. Especi
 the book was probably written a decade ago, and based on papers two decades old, which were based on three decades old state of the art. 
 Our abilities to use computers for design has improved a bit the last three decades.
 
+The simplest useful FIR is a moving average. Take the current sample and
+the two before it, weight each by a third, and add them. There is no
+feedback path anywhere in it, so a disturbance can only live for as many
+samples as there are taps, and then it is gone. That is the whole of the
+stability argument.
+
 -->
 
-$$ H(z) = \frac{1}{3}\sum_{i=0}^2 z^{-1}$$
+$$ H(z) = \frac{1}{3}\sum_{i=0}^2 z^{-i} = \frac{1}{3}\left(1 + z^{-1} + z^{-2}\right)$$
 
 ![left fit](../media/l5_fir_tikz.pdf)
 
@@ -945,8 +951,8 @@ Think of the two phases as two different configurations of a circuit, each with 
 
 <!--pan_doc:
 
-This is the SC circuit during the sampling phase. Imagine that we somehow have stored a voltage 
-$V_1 = \ell$ on capacitor $C_1$ (the switches for
+This is the SC circuit during the sampling phase. Imagine that we somehow have stored some voltage
+$V_1$ on capacitor $C_1$ (the switches for
 that sampling or storing are not shown). The charge on $C_1$ is 
 
 -->
@@ -1146,6 +1152,42 @@ Capacitors don't make noise, but switched-capacitor circuits do have noise. The 
 and OTA's. Both phases of the switched capacitor circuit contribute noise. As such, the output noise of a SC circuit is usually 
 
 $$ V_n^2 > \frac{2 k T}{C}$$
+
+This is worth deriving rather than quoting, because it is the number that
+sets the size of almost every capacitor in this course, and because the way
+it falls out is genuinely surprising.
+
+A closed switch is a resistor $R_{on}$, and a resistor produces a thermal
+noise density of $4kTR$. That noise reaches the capacitor through the RC
+low-pass the switch and capacitor form together, whose equivalent noise
+bandwidth is $1/(4RC)$. Multiply the two:
+
+$$ \overline{v_n^2} = 4kTR \times \frac{1}{4RC} = \frac{kT}{C} $$
+
+**The resistance cancels.** A wider switch has less noise density and more
+bandwidth, in exactly compensating proportion, so the sampled noise does not
+care how good the switch is. It does not care about the clock frequency
+either. The only thing that sets it is the capacitor.
+
+When the switch opens, whatever noise voltage happened to be on the
+capacitor at that instant is trapped there and becomes part of the sample.
+So each sampling event contributes $kT/C$, and a switched-capacitor circuit
+samples on both phases. The two events are separated in time and
+uncorrelated, so by the rule derived just below their variances add,
+which is where the factor of two comes from. The inequality is there because
+the OTA is also in the signal path and contributes on top.
+
+Put a number on it. At room temperature with a 1 pF capacitor,
+
+$$ \sqrt{\frac{kT}{C}} = \sqrt{\frac{1.38\times10^{-23} \times 300}{10^{-12}}} \approx 64\ \mu V_{rms} $$
+
+Now look at what that costs. To halve the noise you need four times the
+capacitor, and the OTA has to drive that capacitor within half a clock
+period, so its transconductance — and its current — must go up fourfold too.
+Every extra bit of resolution costs four times the capacitor and four times
+the power. That single relation is why analog circuits stopped getting
+cheaper when transistors did, and it is worth carrying out of this chapter
+even if you forget the charge equations.
 
 I find that sometimes it's useful with a repeat of mathematics, and since we're talking about noise.
 

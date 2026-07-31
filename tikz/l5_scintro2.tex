@@ -7,6 +7,11 @@
 % Same circuit and same geometry as l5_scintro1 via tikz/sc_lib.tex; only the
 % two switch states differ, which is the point of the pair.
 
+% Deviation from the original: the hand drawn sketch labels these
+% "V_1 = l" and "V_2 =", with nothing after the equals sign. The
+% dangling equals reads as a missing value rather than as a label, so
+% the labels here are just the voltage names.
+
 \begin{circuitikz}[american, thick, transform shape]
 
   \input{tikz/ckt_lib.tex}
@@ -19,8 +24,8 @@
   % the short across C2 opened
   \scSwOpen{4.8}{\scYsh}
 
-  \node[anchor=west] at (0.7,\scYin+1.05) {$V_{1} =$};
-  \node[anchor=west] at (4.1,\scYctwo-1.05) {$V_{2} =$};
+  \node[anchor=west] at (0.7,\scYin+1.05) {$V_{1}$};
+  \node[anchor=west] at (4.1,\scYctwo-1.05) {$V_{2}$};
 
 \end{circuitikz}
 \end{document}

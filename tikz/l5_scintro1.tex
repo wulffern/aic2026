@@ -11,6 +11,11 @@
 % which is grounded, so its right plate goes to -V1 when the switch closes in
 % phase 2, exactly as the prose says.
 
+% Deviation from the original: the hand drawn sketch labels these
+% "V_1 = l" and "V_2 =", with nothing after the equals sign. The
+% dangling equals reads as a missing value rather than as a label, so
+% the labels here are just the voltage names.
+
 \begin{circuitikz}[american, thick, transform shape]
 
   \input{tikz/ckt_lib.tex}
@@ -23,8 +28,8 @@
   % C2 shorted, so V2 = 0
   \scSwClosed{4.8}{\scYsh}
 
-  \node[anchor=west] at (0.7,\scYin+1.05) {$V_{1} = \ell$};
-  \node[anchor=west] at (4.1,\scYctwo-1.05) {$V_{2} =$};
+  \node[anchor=west] at (0.7,\scYin+1.05) {$V_{1}$};
+  \node[anchor=west] at (4.1,\scYctwo-1.05) {$V_{2}$};
 
 \end{circuitikz}
 \end{document}
