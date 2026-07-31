@@ -34,20 +34,24 @@
     %- phi2 grounds the left plate, and the charge moves to C
     \fill (\xsw+0.95,\y) circle (0.075);
   }
-  %- phi2 pulls each left plate to the common mode, and the charge on
-  %- 4C has nowhere to go but onto C. Routed outward, where there is room.
+  %- phi2 shorts each left plate to ground, and the charge on 4C has
+  %- nowhere to go but onto C. A reference is not needed: the OTA holds
+  %- its own input, so shorting the far plate is enough.
   \def\xcm{\xsw+0.95}
   \draw (\xcm,\ytop) -- (\xcm,\ytop+0.55)
-        to [switch] (\xcm,\ytop+1.55);
-  \node[scale=0.8, anchor=west] at (\xcm+0.15,\ytop+1.05) {$\phi_2$};
-  \draw (\xcm-0.28,\ytop+1.55) -- (\xcm+0.28,\ytop+1.55);
-  \node[scale=0.75, anchor=south] at (\xcm,\ytop+1.62) {$V_{CM}$};
+        to [switch] (\xcm,\ytop+1.5);
+  \node[scale=0.8, anchor=west] at (\xcm+0.15,\ytop+1.02) {$\phi_2$};
+  \draw (\xcm,\ytop+1.5) node[rotate=180]{} ;
+  \draw (\xcm-0.3,\ytop+1.5) -- (\xcm+0.3,\ytop+1.5);
+  \draw (\xcm-0.19,\ytop+1.62) -- (\xcm+0.19,\ytop+1.62);
+  \draw (\xcm-0.08,\ytop+1.74) -- (\xcm+0.08,\ytop+1.74);
 
   \draw (\xcm,\ybot) -- (\xcm,\ybot-0.55)
-        to [switch] (\xcm,\ybot-1.55);
-  \node[scale=0.8, anchor=west] at (\xcm+0.15,\ybot-1.05) {$\phi_2$};
-  \draw (\xcm-0.28,\ybot-1.55) -- (\xcm+0.28,\ybot-1.55);
-  \node[scale=0.75, anchor=north] at (\xcm,\ybot-1.62) {$V_{CM}$};
+        to [switch] (\xcm,\ybot-1.5);
+  \node[scale=0.8, anchor=west] at (\xcm+0.15,\ybot-1.02) {$\phi_2$};
+  \draw (\xcm-0.3,\ybot-1.5) -- (\xcm+0.3,\ybot-1.5);
+  \draw (\xcm-0.19,\ybot-1.62) -- (\xcm+0.19,\ybot-1.62);
+  \draw (\xcm-0.08,\ybot-1.74) -- (\xcm+0.08,\ybot-1.74);
 
   % ---- feedback capacitor C with its reset switch, top and bottom ----
   % routed with right angles only: up from the summing node, across, down
@@ -80,18 +84,24 @@
   \node[anchor=west, scale=0.9] at (\xout+0.15,\ytop) {$OUT_+$};
   \node[anchor=west, scale=0.9] at (\xout+0.15,\ybot) {$OUT_-$};
 
-  % ---- the two phases, drawn once so the labels above mean something ----
+  % ---- the two phases. Non-overlapping is the whole point of the
+  % ---- figure, so the dead time is drawn to scale: each phase falls
+  % ---- 0.4 before the other rises.
   \begin{scope}[yshift=-5.4cm, xshift=1.2cm]
-    \draw[->] (-0.4,0) -- (7.6,0) node[anchor=north east, scale=0.85] {$t$};
-    \foreach \dy/\lbl/\off in {1.2/$\phi_1$/0, 0/$\phi_2$/1.6} {
-      \node[anchor=east, scale=0.9] at (-0.5,\dy+0.35) {\lbl};
-      \draw ({-0.4+\off},\dy) -- ({0.4+\off},\dy) -- ({0.5+\off},\dy+0.7)
-            -- ({2.5+\off},\dy+0.7) -- ({2.6+\off},\dy) -- ({3.6+\off},\dy)
-            -- ({3.7+\off},\dy+0.7) -- ({5.7+\off},\dy+0.7)
-            -- ({5.8+\off},\dy) -- ({6.4+\off},\dy);
-    }
-    \node[anchor=north, scale=0.85, align=center] at (3.6,-0.35)
-      {never both high at once, or the charge escapes};
+    \draw[->] (-0.5,0) -- (8.4,0) node[anchor=north east, scale=0.85] {$t$};
+    \node[anchor=east, scale=0.9] at (-0.6,1.55) {$\phi_1$};
+    \node[anchor=east, scale=0.9] at (-0.6,0.35) {$\phi_2$};
+    %- phi1 high 0.2-1.8 and 4.2-5.8
+    \draw (-0.4,1.2) -- (0.2,1.2) -- (0.2,1.9) -- (1.8,1.9) -- (1.8,1.2)
+          -- (4.2,1.2) -- (4.2,1.9) -- (5.8,1.9) -- (5.8,1.2) -- (8.0,1.2);
+    %- phi2 high 2.2-3.8 and 6.2-7.8, so each gap is 0.4
+    \draw (-0.4,0) -- (2.2,0) -- (2.2,0.7) -- (3.8,0.7) -- (3.8,0)
+          -- (6.2,0) -- (6.2,0.7) -- (7.8,0.7) -- (7.8,0) -- (8.0,0);
+    %- mark one of the dead times, since it is the point
+    \draw[red, <->] (1.8,2.25) -- (2.2,2.25);
+    \node[red, anchor=south, scale=0.8] at (2.0,2.3) {dead time};
+    \draw[red, dotted] (1.8,1.9) -- (1.8,2.25);
+    \draw[red, dotted] (2.2,0.7) -- (2.2,2.25);
   \end{scope}
 
 \end{circuitikz}

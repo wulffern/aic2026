@@ -1134,11 +1134,11 @@ $$NTF = \frac{1}{1 + 1/(z-1)} = \frac{z-1}{z} = 1 - z^{-1}$$
 
 In order calculate the Signal to Quantization Noise Ratio we need to have an expression for how the NTF above filters the quantization noise. 
 
-In the book they replace the $z$ with the continuous time variable
+In the book they replace the $z$ by the Laplace variable and then walk out onto the imaginary axis, $s = j\omega$, which is where a transfer function turns into a frequency response.
 
 -->
 
-$$z = e^{sT} \overset{s=j\omega}{\rightarrow}  e^{j\omega T} = e^{j2 \pi f/f_s}$$
+$$z = e^{sT} \;\underset{s=j\omega}{\longrightarrow}\;  e^{j\omega T} = e^{j2 \pi f/f_s}$$
 
 <!--pan_doc:
 
@@ -1146,11 +1146,11 @@ inserted into the NTF we get the function below. The three lines are one trick a
 
 -->
 
-$$NTF(f) = 1- e^{-j2 \pi f/f_s} $$
- 
-$$ = \frac{e^{j \pi f/f_s} -e^{-j \pi f/f_s}}{2j}\times 2j \times e^{-j\pi f/f_s}$$
- 
-$$ = \sin{\frac{\pi f}{f_s}} \times 2j \times e^{-j \pi f/f_s}$$
+$$\begin{aligned}
+NTF(f) &= 1- e^{-j2 \pi f/f_s} \\
+       &= \frac{e^{j \pi f/f_s} -e^{-j \pi f/f_s}}{2j}\times 2j \times e^{-j\pi f/f_s} \\
+       &= \sin\left(\frac{\pi f}{f_s}\right) \times 2j \times e^{-j \pi f/f_s}
+\end{aligned}$$
 
 
 <!--pan_doc:
@@ -1238,21 +1238,22 @@ $$ ENOB = (SQNR - 1.76)/6.02 $$
 
 ---
 
-<!--pan_doc:
-
-The table below shows the effective number of bits for oversampling, and sigma-delta modulators.  For a 1-bit quantizer, pure oversampling
-does not make sense at all. For first-order and second-order sigma delta modulators, and a OSR of 1024 we can get high resolution ADCs.
-
--->
-
-
 Assume 1-bit quantizer, what would be the maximum ENOB?
 
-| OSR  | Oversampling | First-Order | Second Order | 
+| OSR  | Oversampling | First-order | Second-order |
 |:----:|:------------:|:-----------:|:------------:|
-| 4    | 2            | 3.1         | 3.9          |
-| 64   | 4            | 9.1         | 13.9         |
-| 1024 | 6            | 15.1        | 23.9         |
+| 4    | 2.0          | 3.1         | 3.9          |
+| 64   | 4.0          | 9.1         | 13.9         |
+| 1024 | 6.0          | 15.1        | 23.9         |
+
+<!--pan_doc:
+<sub>Table: ENOB of a 1-bit quantizer ($B = 1$), from the three expressions above.</sub>
+
+Read down a column and you see what a decoder buys you; read across a row and you see what an architecture buys you. Plain oversampling is hopeless: a thousand-fold increase in sample rate turns one bit into six. First-order shaping turns the same thousand-fold into fifteen, and second-order into twenty-four. That is the entire argument for building the loop, and it is why a 1-bit modulator followed by a decimation filter is a sensible way to make a 20-bit converter, while a 1-bit oversampled ADC is not a way to make anything.
+
+The second-order column also shows the crossover discussed above. At $OSR=4$ second-order leads first-order by less than a bit, because the extra 7.7 dB penalty has barely been paid off; by $OSR=1024$ it leads by nine.
+
+-->
 
 ---
 
