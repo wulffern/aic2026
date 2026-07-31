@@ -20,6 +20,7 @@ It needs, at the paths below:
 
   * github.com/wulffern/aicex   at ~/pro/aicex
   * github.com/wulffern/dicex   at ~/pro/dicex
+  * sun_pll_sky130nm            at ~/pro/aicex/ip/sun_pll_sky130nm
 
 Trimming matters. The gm/ID sweeps are cicsim raw files with sixty-odd
 columns of which six are plotted, and reading them needs cicsim
@@ -33,6 +34,7 @@ import sys
 HOME = os.path.expanduser("~")
 AICEX = os.environ.get("AICEX", f"{HOME}/pro/aicex")
 DICEX = os.environ.get("DICEX", f"{HOME}/pro/dicex")
+SUNPLL = os.environ.get("SUNPLL", f"{AICEX}/ip/sun_pll_sky130nm")
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 DATA = os.path.join(HERE, "data")
@@ -115,10 +117,50 @@ def fetch_dicex():
     return n
 
 
+def fetch_rosc_kvco():
+    """Ring oscillator frequency against control voltage, all corners.
+
+    cicsim leaves the measurements in the ngspice log rather than in a
+    data file, so they are parsed out here: a `vrosc = ` line sets the
+    control voltage and the `tpd = ` line after it gives the period.
+    A corner where the oscillator was too slow to produce enough edges
+    inside the simulated window logs `Error: measure` instead, and that
+    point is simply absent — which is itself a result worth keeping.
+    """
+    import glob
+    import re
+    logs = sorted(glob.glob(f"{SUNPLL}/sim/ROSC/output_tran/*.log"))
+    if not logs:
+        print(f"  missing {SUNPLL}/sim/ROSC/output_tran/*.log")
+        return 0
+    out = os.path.join(DATA, "rosc_kvco.csv")
+    n = 0
+    with open(out, "w", newline="") as fo:
+        w = csv.writer(fo)
+        w.writerow(["corner", "vrosc", "freq"])
+        for path in logs:
+            corner = (os.path.basename(path)
+                      .replace("tran_LayGt", "").replace("Vt.log", ""))
+            v = None
+            for line in open(path):
+                m = re.match(r"^vrosc\s+=\s+(\S+)", line)
+                if m:
+                    v = float(m.group(1))
+                    continue
+                m = re.match(r"^tpd\s+=\s+(\S+)", line)
+                if m and v is not None:
+                    w.writerow([corner, f"{v:.4g}", f"{1/float(m.group(1)):.7g}"])
+                    n += 1
+    print(f"  rosc_kvco.csv ({n} points from {len(logs)} corners)")
+    return 1
+
+
 def main():
     os.makedirs(DATA, exist_ok=True)
     print(f"from {AICEX}:")
     a = fetch_jnw()
+    print(f"from {SUNPLL}:")
+    a += fetch_rosc_kvco()
     print(f"from {DICEX}:")
     b = fetch_dicex()
     print(f"{a + b} files in {os.path.relpath(DATA, os.path.dirname(HERE))}")

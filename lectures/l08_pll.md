@@ -545,10 +545,29 @@ Below I've made a plot of the oscillation frequency over corners.
 
 -->
 
-![right fit](../media/SUN_PLL_ROSC_KVCO.pdf)
+![right fit](../media/SUN_PLL_ROSC_KVCO_tikz.pdf)
 
 <!--pan_doc:
-<sub>Figure 13: Simulated ring-oscillator frequency versus control voltage VDD\_ROSC across process corners</sub>
+<sub>Figure 13: Simulated ring-oscillator frequency versus control voltage VDD\_ROSC over nine process and temperature corners. The slope at the typical corner is about 1 GHz/V, which is $K_{osc}$; the spread is a factor of eleven at 1.2 V, narrowing to under three at 1.5 V</sub>
+
+Two things in that plot are worth more than the slope.
+
+The first is the spread. A ring oscillator has nothing setting its
+frequency except how fast its own inverters switch, so process and
+temperature move it by a factor of eleven at the bottom of the control
+range. Every corner does cross the 256 MHz the loop needs, but the
+slow-cold one only at about 1.44 V, near the top of what the control
+node can deliver. The usable tuning range is not the width of the
+control range, it is whatever is left above that crossing in the worst
+corner.
+
+The second is the missing point. At slow-cold and 1.1 V there is no
+measurement, because the oscillator was too slow to produce enough edges
+inside the simulated window and the measurement failed rather than
+returning a plausible wrong number. A failed measurement in the corner
+you were already worried about is information, not an inconvenience —
+and it is a good argument for reading the simulator's errors rather than
+only its plots.
 -->
 
 ---
