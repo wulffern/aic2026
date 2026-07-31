@@ -502,7 +502,7 @@ $$K_{osc} = 2 \pi\frac{ df}{dV_{cntl}}$$
 ![right fit](../media/SUN_PLL_ROSC.pdf)
 
 <!--pan_doc:
-<sub>Figure 12: SUN\_PLL top-level schematic; the ring oscillator SUN\_PLL\_ROSC is controlled through its supply VDD\_ROSC</sub>
+<sub>Figure 12: The ring oscillator block SUN\_PLL\_ROSC, whose supply VDD\_ROSC is the control voltage and whose output is CK</sub>
 -->
 
 ---
@@ -570,7 +570,7 @@ $$ K_{pd} = \frac{I_{cp}}{2 \pi} $$
 ![right fit](../media/SUN_PLL_CP.pdf)
 
 <!--pan_doc:
-<sub>Figure 14: SUN\_PLL top-level schematic; the phase-frequency detector SUN\_PLL\_PFD and charge-pump SUN\_PLL\_CP compare the reference and feedback clocks</sub>
+<sub>Figure 14: The phase-frequency detector SUN\_PLL\_PFD comparing CK\_REF with CK\_FB, driving the charge pump SUN\_PLL\_CP through CP\_UP\_N and CP\_DOWN</sub>
 -->
 
 ---
@@ -600,7 +600,7 @@ sR\frac{C_1C_2}{C_1 + C_2}}$$
 ![right fit](../media/SUN_PLL_LP.pdf)
 
 <!--pan_doc:
-<sub>Figure 15: SUN\_PLL top-level schematic; the loop filter SUN\_PLL\_LPF is followed by the unity-gain buffer SUN\_PLL\_BUF that drives the oscillator supply</sub>
+<sub>Figure 15: The loop filter SUN\_PLL\_LPF on VLPF, followed by the buffer SUN\_PLL\_BUF that drives the oscillator supply VDD\_ROSC</sub>
 -->
 
 ---
@@ -620,7 +620,7 @@ $$ K_{div} = \frac{1}{N}$$
 ![right fit](../media/SUN_PLL_DIV.pdf)
 
 <!--pan_doc:
-<sub>Figure 16: SUN\_PLL top-level schematic; the feedback divider SUN\_PLL\_DIVN divides the output clock by 32</sub>
+<sub>Figure 16: The feedback divider SUN\_PLL\_DIVN, dividing CK by 32 to make CK\_FB</sub>
 -->
 
 

@@ -63,10 +63,14 @@ compress:
 	gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.5 -dPDFSETTINGS=/ebook \
 	-dNOPAUSE -dQUIET -dBATCH -sOutputFile=aic_compress.pdf aic.pdf
 
+# The figures are generated at print resolution, which the PDF wants and
+# the ebook does not: epubshrink.py downsamples them and drops pointless
+# alpha channels afterwards, which is worth about a third of the file.
 ebook:
 	cat aic.tex |perl -pe "s/chapters/chapters_epub/ig" > aic_epub.latex
 	cat chapters.tex |perl -pe "s/fiximg/fiximg_png/ig" > chapters_epub.tex
-	pandoc aic_epub.latex -t native | pandoc -f native -t epub3 -o aic.epub --mathml
+	pandoc aic_epub.latex -t native | pandoc -f native -t epub3 -o aic.epub --mathml --metadata title="Advanced Integrated Circuits"
+	${PYTHON} ../py/epubshrink.py aic.epub
 #pandoc --gladtex -o aic.epub aic_epub.latex
 
 # Two passes, not three: the standalone chapters have no index or bibtex

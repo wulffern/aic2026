@@ -611,13 +611,27 @@ The right plot is after quantization, where I've used the function below.
 ```python
 def adc(x,bits):
     levels = 2**bits
-    y = np.round(x*levels)/levels
-    return y
+    delta = 2/levels
+    y = np.floor(x/delta)*delta + delta/2
+    return np.clip(y, -1 + delta/2, 1 - delta/2)
 ```
+
+A B-bit converter has exactly $2^B$ levels, spaced by $\Delta = 2/2^B$,
+sitting half a step off zero. The obvious one-liner
+`np.round(x*2**bits)/2**bits` looks like a quantizer but is not one: its
+step is $2^{-B}$, so at one bit it produces five output levels over
+$\pm 1$ rather than two, and the measured SQNR comes out a whole bit too
+good. The plots below are a real one bit converter - two levels, one
+comparator.
 
 I really need you to internalize a few things from the right most plot. Really think through what I'm about to say.
 
 Can you see how the noise (what is not the two spikes) is not white? White noise would be flat in the frequency domain, but the noise is not flat. 
+
+Notice also that this is a genuine one bit quantizer: two levels, so the
+output is a square wave, and what you are looking at is its odd harmonic
+series - exactly the $A_p$ of the Bessel formula above, folded back into
+the band wherever a harmonic lands above $f_s/2$.
 
 -->
 
