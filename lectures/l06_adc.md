@@ -88,7 +88,7 @@ A common figure of merit for low-to-medium resolution ADCs is the Walden figure 
 
 -->
 
-$$ FOM_W = \frac{P}{2^B f_s}$$ 
+$$ FOM_W = \frac{P}{2^{ENOB} f_s}$$ 
 
 Below 10 fJ/conv.step is good.
 
@@ -458,11 +458,21 @@ a paper back in 1985 on quantization noise.
 
 <!--pan_doc:
 
-In short, quantization noise is defined as 
+In short, the quantizer *output* for a sinusoidal input is an exact harmonic series,
 
 -->
 
-$$e_n(t) = \sum_{p=1}^\infty{A_p\sin{p\omega t}}$$
+$$y(t) = \sum_{p=1}^\infty{A_p\sin{p\omega t}}$$
+
+<!--pan_doc:
+
+and the quantization noise is what is left when the input is taken back out,
+
+$$ e_n(t) = y(t) - A\sin{\omega t} $$
+
+which is the same series with the $\delta_{p1}A$ term removed. It is worth keeping the two apart. The series below carries the fundamental at nearly full amplitude, so it is emphatically not something with zero mean and variance $\Delta^2/12$; the *difference* is.
+
+-->
 
 where p is the harmonic index, and
 
@@ -499,7 +509,7 @@ where n is the number of bits, we can rewrite as
 
 ---
 
-$$e_n(t) = \sum_{p=1}^\infty{A_p\sin{p\omega t}}$$
+$$y(t) = \sum_{p=1}^\infty{A_p\sin{p\omega t}}$$
 
 $$ A_p = \delta_{p1}2^{n-1} + \sum_{m=1}^\infty{\frac{2}{m\pi}J_p(2m\pi
   2^{n-1})},  p=odd$$
@@ -551,8 +561,19 @@ is the same, but the distribution is nothing like it.
 If you want to feel this rather than read it, the
 [interactive version](https://wulffern.github.io/aic2026/assets/examples/bessel-quantization.html)
 puts the bit count on a slider. Walk it up and watch the harmonics fall
-about 6 dB per bit and crowd together, until somewhere around eight
-bits calling them a noise floor finally becomes fair.
+and crowd together, until somewhere around eight bits calling them a
+noise floor finally becomes fair.
+
+Watch the rate they fall at, because it is not the 6 dB per bit you
+might expect. An individual harmonic drops about **9 dB per bit**,
+tending to $30\log 2 = 9.03$ dB. The 6 dB per bit belongs to the
+*total* quantization noise power, and the difference between the two is
+the whole reason the noise floor idea works at all: each harmonic falls
+9 dB, but the number of harmonics crammed below $f_s/2$ doubles, which
+adds 3 dB back. Nine down, three up, six net. So as you add bits the
+spectrum does not merely shrink, it redistributes — fewer and fewer dB
+in each of more and more spikes, until no individual spike is worth
+naming and the aggregate is all that is left.
 
 -->
 
@@ -584,7 +605,7 @@ $$ SQNR = 10 \log\left(\frac{A^2/2}{\Delta^2/12}\right) = 10 \log\left(\frac{6 A
 
 $$ \Delta = \frac{2A}{2^B}$$
 
-$$ SQNR = 10 \log\left(\frac{6 A^2}{4 A^2/2^B}\right) = 20 B \log 2 + 10 \log 6/4$$
+$$ SQNR = 10 \log\left(\frac{6 A^2}{4 A^2/2^{2B}}\right) = 20 B \log 2 + 10 \log 6/4$$
 
 $$ SQNR  \approx 6.02 B + 1.76$$
 
@@ -604,7 +625,15 @@ $$
 sin(x) = \frac{e^{ix} - e^{-ix}}{2i}
 $$
 
-The second plot from the left is after sampling, notice that the noise level increases. The increase in the noise level should be due to noise folding, and reduced number of points in the FFT, but I have not confirmed (maybe you could confirm?).
+The second plot from the left is after sampling, notice that the noise level increases. The rise is exactly $10\log(nfs) = 6.02$ dB, and it is worth being careful about why, because there are two tempting explanations and they are not two effects to be added together.
+
+Both are named in the same expression. With a Hann window and the peak normalisation that `freqDomain` uses, the noise floor per bin relative to the tone is
+
+$$ \text{floor} = \frac{6\sigma^2}{M} $$
+
+where $\sigma$ is the time-domain noise and $M$ the record length. The record length is right there in the denominator, so a four times shorter record does raise the floor 6 dB. But $\sigma^2$ is in the numerator, and whether it survives decimation is exactly the folding question. Decimating without an anti-alias filter preserves the total noise power, $\sigma$ does not change, and the floor rises the full 6 dB. Put an ideal brick-wall filter in front and $\sigma^2$ drops by four as well, the two effects cancel term for term, and the floor does not move at all.
+
+So the answer is 6.02 dB in total and the two mechanisms must not be added: they are two ways of booking the same rise, and the experiment that separates them is to filter before decimating. It is the first appearance in this chapter of a rule worth keeping — throwing samples away only helps if something band-limits the noise first.
 
 The right plot is after quantization, where I've used the function below.
 
@@ -642,9 +671,19 @@ the band wherever a harmonic lands above $f_s/2$.
 <!--pan_doc:
 <sub>Figure 20: FFT of a sinusoid with noise as continuous value (left), after sampling (middle), and after 1-bit quantization (right), where the quantization noise shows up as distinct harmonic spikes rather than a white noise floor</sub>
 
-If you run the python script you can zoom in and check the highest spikes. The fundamental is at 127, so odd harmonics would be 381, 635, 889, and from the function of the quantization noise we would expect those to be the highest harmonics (at least when we look at the Bessel function), however, we can see that it's close, but that bin 651 is the highest. Is the math's wrong? 
+If you run the python script you can zoom in and check the highest spikes. A 1-bit quantizer is a sign detector, so its output for a sine input is a square wave, and a square wave has only odd harmonics with amplitudes falling as $1/p$. That is exactly what the plot shows. The fundamental is at bin 127, and the measured spikes are
 
-No, the math is correct. Never bet against mathematics. Bin 651 is the 11'th harmonic in disguise: $11 \times 127 = 1397$, which is above half the sample rate and folds to $2048 - 1397 = 651$. If you change the python script to reduce the frequency, `fdivide=2**9`, and increase number of points, `N=2**16`, as in the plot below, the 11'th harmonic no longer folds, and you'll see it directly at bin 1397. 
+| harmonic | $20\log(1/p)$ | measured | bin |
+|---|---|---|---|
+| 3 | $-9.54$ dB | $-9.54$ dB | 381 |
+| 5 | $-13.98$ dB | $-13.98$ dB | 635 |
+| 7 | $-16.90$ dB | $-16.90$ dB | 889 |
+| 9 | $-19.08$ dB | $-19.08$ dB | **905** |
+| 11 | $-20.83$ dB | $-20.83$ dB | **651** |
+
+Agreement to the second decimal with a formula you can write down from memory is a good afternoon's work. But look at the last two rows. The ninth harmonic should be at $9 \times 127 = 1143$ and the eleventh at $11 \times 127 = 1397$, and neither bin exists — the record is only 2048 points, so anything above 1024 is above half the sample rate. They fold: $2048 - 1143 = 905$ and $2048 - 1397 = 651$. The harmonics march monotonically down in amplitude, but from bin 889 onwards they march *backwards* along the frequency axis, which is why a spectrum plot of an aliased converter can look like nonsense until you work out which harmonic each spike really is.
+
+This is worth internalising, because in a real converter you do not get to compare against a formula. A spike at 651 with nothing at 1397 is not evidence of some mysterious distortion mechanism; it is the eleventh harmonic, folded. If you change the python script to reduce the frequency, `fdivide=2**9`, and increase number of points, `N=2**16`, as in the plot below, the eleventh harmonic no longer folds, and you'll see it directly at bin 1397.
 
 ![fit](../media/l6_q_1_fharm.svg)
 
@@ -688,6 +727,10 @@ Everybody that thinks that quantization noise **is** white will design non-funct
 ---
 
 <!--pan_doc:
+
+Here is the question this section answers. If the quantizer's noise is a fixed amount that we cannot reduce, can we win anything by sampling faster than the signal actually demands, and then averaging the extra samples away?
+
+The answer is yes, and the reason is that signal and noise behave differently under summation. A slow signal is nearly the same from one sample to the next, so summing samples adds it up coherently. Noise is not, so it adds up incoherently. Everything below is bookkeeping on that one asymmetry.
 
 Assume a signal $x[n] = a[n] + b[n]$ where $a$ is a sampled sinusoid and $b$ is a random process where cross-correlation is zero for any time except for $n=0$. Assume that we sum two (or more) equally spaced signal components, for example 
 
@@ -754,7 +797,8 @@ We can see that the signal to noise ratio increases with increased oversampling 
 
 ## Signal to Quantization Noise Ratio
 
-The 
+Now put the two halves together. The quantizer always makes the same total amount of noise, $\Delta^2/12$, and always spreads it evenly from zero to $f_s/2$. Sampling faster than we need does not reduce that total, it only spreads it over a wider band, so the part that lands inside the band we actually care about shrinks by the oversampling ratio.
+
 -->
 in-band quantization noise for a oversampling ratio (OSR) 
 
@@ -762,7 +806,7 @@ $$ \overline{e_n(t)^2} =\frac{\Delta^2}{12 OSR}$$
 
 <!--pan_doc:
 
-And the improvement in SQNR can be calculated as 
+That single division by OSR is the whole of oversampling, and everything else in this section is arithmetic on it. Dividing the noise power by OSR multiplies the ratio by OSR:
 -->
 
 $$ SQNR = 10 \log\left(\frac{6 A^2}{\Delta^2/OSR}\right) = 10 \log\left(\frac{6 A^2}{\Delta^2}\right) + 10 \log(OSR)$$
@@ -771,22 +815,23 @@ $$ SQNR \approx 6.02B + 1.76 + 10 \log(OSR)$$
 
 <!--pan_doc:
 
-For an OSR of 2 and 4 the SQNR improves by
+so the SQNR improves by $10\log(2) \approx 3$ dB for an OSR of 2, and $10\log(4) \approx 6$ dB for an OSR of 4 — 3 dB for every doubling.
 -->
 
 $$ 10 \log(2) \approx 3 dB$$
-
-<!--pan_doc:
-and for OSR=4 
--->
 
 $$ 10 \log(4) \approx 6 dB$$
 
 <!--pan_doc:
 
-which is roughly equivalent to a 
+Compare that with the 6.02 dB a real bit is worth and the exchange rate falls out: three decibels is half a bit, so oversampling buys
 -->
 0.5-bit per doubling of OSR
+
+<!--pan_doc:
+
+It is a poor exchange rate, and it is worth feeling how poor before moving on. Going from an 8-bit converter to a 12-bit one by oversampling alone needs $OSR = 2^8 = 256$, which means running the analog front end 256 times faster than the signal requires. That is the wall that noise shaping exists to get around.
+-->
 
 ---
 
@@ -841,14 +886,14 @@ The noise has all frequencies, and it's the high frequency components that start
 
 The low frequency components will add, and we can notice how the noise power increases close to the zero frequency (middle of the x-axis).
 
-For an OSR of 4 we can notice how the noise floor has 4 zero's.
+For an OSR of 4 we can count four dips in the noise floor, although there are really three nulls: a length-4 moving average has zeros at $f_s/4$, $f_s/2$ and $3f_s/4$, and on this two-sided plot the $f_s/2$ null is split across both edges so you see half of it twice. For OSR=2 there is one null, at $f_s/2$, and it shows up only as the two edges.
 
 -->
 
 ![fit](../media/l6_osr_4.svg)
 
 <!--pan_doc:
-<sub>Figure 24: The same FFTs with OSR=4 (right), where the noise floor shows four zeros and the noise power increases close to zero frequency</sub>
+<sub>Figure 24: The same FFTs with OSR=4 (right), where the moving-average filter puts three nulls in the noise floor, seen as four dips on this two-sided plot, and the noise power increases close to zero frequency</sub>
 
 The code for the plots is  [osr.py](https://github.com/wulffern/aic2026/blob/main/ex/osr.py). I would encourage you to play a bit with the code, and make sure you understand oversampling. If you would rather drag a slider than edit a file, the [interactive version](https://wulffern.github.io/aic2026/assets/examples/oversampling.html) plots the measured in-band SNR against OSR next to the ideal 3 dB per octave.
 
@@ -863,7 +908,11 @@ The code for the plots is  [osr.py](https://github.com/wulffern/aic2026/blob/mai
 
 <!--pan_doc:
 
-Look at the OSR=4 plot above. The OSR=4 does decrease the noise compared to the discrete time discrete value plot, however, the noise level of the discrete time continuous value is much lower. 
+Look at the OSR=4 plot above, and look at it honestly, because it does not show what you might hope. Near zero frequency the averaged floor is not lower than the unaveraged one — measured from the script it is about 0.8 dB *higher* for OSR=4, which is the same thing the previous paragraph said when it noted that the low-frequency components add. The averaging filter has done almost nothing to the noise in the band we care about, because that noise is in its passband.
+
+So where is the 6 dB that the theory promised? It is there, but it comes from *restricting the band*, not from the filter. Integrate the same unaveraged spectrum over $|f| < f_s/8$ instead of the whole $f_s/2$ and the signal-to-noise ratio improves by close to $10\log(4)$, exactly as the derivation said. The filter's job is not to create that improvement but to make it safe to collect: it removes the out-of-band noise that would otherwise fold back on top of the signal when you decimate. These plots never decimate, so the payoff is invisible in them. That is a limitation of the figure, not of oversampling.
+
+What the plots do show clearly is the ceiling. Even with the averaging, the noise level of the discrete-time continuous-value plot is much lower than anything the quantized paths achieve.
 
 What if we could do something, add some circuitry, before the quantization such that the quantization noise was reduced?
 
@@ -902,7 +951,7 @@ Do you see now why a circuit like the one below is useful? If not, you should re
 Let's modify the feedback circuit into the one below. I've added an ADC and a DAC to the feedback loop, and the $D_o$ is now the output we're interested in. The equation for the loop would be
 
 $$
-D_o = adc\left[H(s)\left(dac(D_o) - V_i\right)\right]
+D_o = adc\left[H(s)\left(V_i - dac(D_o)\right)\right]
 $$
 
 But how can we now calculate the transfer function $\frac{D_o}{V_i}$? Both $adc$ and $dac$ could be non-linear functions, so we can't disentangle the equation. Let's make assumptions. 
@@ -928,7 +977,7 @@ But how can we now calculate the transfer function $\frac{D_o}{V_i}$? Both $adc$
 
 The DAC must be linear, otherwise our noise-shaping ADC will not work. 
 
-One way to force linearity is to use a 1-bit DAC, which has only two points, so should be linear. For example $$ V_o = A \times D_o$$, where $D_o \in (0,1)$. 
+One way to force linearity is to use a 1-bit DAC, which has only two points, so should be linear. For example $$ V_o = A \times D_o$$, where $D_o \in \{0,1\}$. 
 Even a 1-bit DAC could be non-linear if $A$ is time-variant, so $V_o[n] = A(t)\times D_o[n]$,
 this could happen if the reference voltage for the DAC changed with time. 
 
@@ -1010,7 +1059,7 @@ Imagine what will happen if H is infinite. Then the signal transfer function (ST
 
 Assume U is zero 
  
-$$ Y = E + HY \rightarrow NTF = \frac{1}{1 + H}$$
+$$ Y = E - HY \rightarrow NTF = \frac{1}{1 + H}$$
 
 <!--pan_doc:
 
@@ -1067,7 +1116,7 @@ $$STF = \frac{1/(z-1)}{1 + 1/(z-1)} = \frac{1}{z} = z^{-1}$$
 and the noise transfer function 
 -->
 
-$$NFT = \frac{1}{1 + 1/(z-1)} = \frac{z-1}{z} = 1 - z^{-1}$$
+$$NTF = \frac{1}{1 + 1/(z-1)} = \frac{z-1}{z} = 1 - z^{-1}$$
 
 ---
 
@@ -1083,9 +1132,7 @@ $$z = e^{sT} \overset{s=j\omega}{\rightarrow}  e^{j\omega T} = e^{j2 \pi f/f_s}$
 
 <!--pan_doc:
 
-inserted into the NTF we get the function below. 
-
-
+inserted into the NTF we get the function below. The three lines are one trick applied once, so it is worth knowing what you are looking for before reading them. We want $1 - e^{-j\theta}$ turned into something whose magnitude we can read off, and the only identity available is $\sin\theta = (e^{j\theta}-e^{-j\theta})/2j$. So we factor out half the exponent, $e^{-j\pi f/f_s}$, which leaves a difference of two conjugate exponentials in the bracket — exactly the shape of that identity — and then divide and multiply by $2j$ to make it literally a sine. Everything pulled out has magnitude 1, so it contributes phase and nothing else.
 
 -->
 
@@ -1105,7 +1152,7 @@ When we take the absolute value to figure out how the NTF changes with frequency
 -->
 
 
-$$|NFT(f)| = \left|2 \sin\left(\frac{\pi f}{f_s}\right)\right|$$
+$$|NTF(f)| = \left|2 \sin\left(\frac{\pi f}{f_s}\right)\right|$$
 
 ---
 
@@ -1124,16 +1171,21 @@ The in-band noise power for the shaped quantization noise is
 
 -->
 
-$$ P_n = \int_{-f_0}^{f_0} \frac{\Delta^2}{12}\frac{1}{f_s}\left[2 \sin\left(\frac{\pi f}{f_s}\right)\right]^2 dt$$
+$$ P_n = \int_{-f_0}^{f_0} \frac{\Delta^2}{12}\frac{1}{f_s}\left[2 \sin\left(\frac{\pi f}{f_s}\right)\right]^2 df$$
 
 <!--pan_doc:
 
-and with a bunch of tedious maths, we can get to the conclusion 
+The integral is not actually tedious, and it is worth doing once because it explains both of the odd-looking constants in the answer. In band, $f$ is much smaller than $f_s$, so $\sin(\pi f/f_s) \approx \pi f/f_s$ and the integrand becomes a parabola:
+
+$$ P_n \approx \frac{\Delta^2}{12}\frac{1}{f_s}\frac{4\pi^2}{f_s^2}\int_{-f_0}^{f_0} f^2 df = \frac{\Delta^2}{12}\frac{4\pi^2}{f_s^3}\frac{2f_0^3}{3} $$
+
+That $f_0^3$ is where the whole advantage comes from. Ordinary oversampling had the in-band noise falling as $f_0$; here it falls as $f_0^3$, because the shaping makes the noise density itself proportional to $f^2$. Substituting $OSR = f_s/2f_0$:
+
+$$ P_n \approx \frac{\Delta^2}{12}\frac{\pi^2}{3}\frac{1}{OSR^3} $$
+
+The $OSR^3$ becomes the $30\log(OSR)$ — three times the $10\log(OSR)$ of plain oversampling — and the $\pi^2/3$ becomes the penalty $10\log(\pi^2/3) = 5.17$ dB. Take the ratio to $P_s = A^2/2$ and
 
 -->
-
-$$ \vdots $$
-
 
 $$SQNR = 6.02 B + 1.76 - 5.17 + 30 \log(OSR)$$ 
 
@@ -1150,7 +1202,11 @@ If we compare to pure oversampling, where the SQNR improves by $10 \log(OSR)$, a
 
 <!--pan_doc: 
 
-Below is the signal-to-quantization noise ratio's for Nyquist up to second order sigma-delta. 
+Below is the signal-to-quantization noise ratio's for Nyquist up to second order sigma-delta. Read them as one family. Every line starts from the same $6.02B + 1.76$, and each step down the list buys a steeper dependence on OSR at the cost of a larger fixed penalty.
+
+The second-order line follows from repeating the derivation above with $NTF = (1-z^{-1})^2$, so the noise density goes as $f^4$ instead of $f^2$. The integral then produces $OSR^5$, hence $50\log(OSR)$, and $\pi^4/5$ in place of $\pi^2/3$, hence $10\log(\pi^4/5) = 12.9$ dB. The pattern continues: an $L$'th order modulator gives $(20L+10)\log(OSR)$ and a penalty of $10\log(\pi^{2L}/(2L+1))$.
+
+The penalties are real, and at low OSR they can outweigh the steeper slope. Setting the first- and second-order expressions equal gives a crossover at $OSR \approx 2.4$: below that, second-order shaping is *worse* than first-order, because the extra 7.7 dB of penalty has not yet been earned back by the extra $20\log(OSR)$. Higher order is not automatically better, it is better *eventually*, and where "eventually" starts is a number you can compute before committing to an architecture.
 
 -->
 
@@ -1210,6 +1266,10 @@ For each sample in the input vector $u$ I compute the input to the quantizer $x$
 
 The quantizer generates the next $y_{sd}$ and I have the option to add dither. 
 
+Three details in the full script are not in this excerpt and matter if you want to reproduce the plots. The input is scaled to 0.7 of full scale, because a true 1-bit loop overloads if you drive it all the way — the integrator runs away and the output degenerates into a slow square wave. The first two samples are thrown away, because the integrator starts at zero and needs a moment to settle. And the dither amplitude is a quarter of a quantizer step, which is enough to break up idle tones without swamping the signal.
+
+One inconsistency is worth flagging rather than hiding. This `quantize` uses a step of $2/(2^B-1)$ for more than one bit, a mid-tread converter whose levels include zero, while the `adc` function earlier in this chapter uses $\Delta = 2/2^B$, a mid-rise converter with no zero level. Both are real converters and both appear in real silicon; they differ by half a step and by whether a zero input produces a zero output. The $\Delta^2/12$ result holds for either. Just do not mix the two definitions when you are comparing measured numbers against theory, which is exactly the sort of half-LSB discrepancy that costs an afternoon.
+
 -->
 
 
@@ -1258,6 +1318,8 @@ If we look at the noise we can also see the non-white quantization noise, which 
 
 In the figure below I've turned on dither, and we can see how the noise looks "better", which I know is not a qualitative statement, but ask anyone that's done 1-bit quantizers. It's important to have enough random noise.
 
+Be clear about what has been bought and what has been paid, though, because the y-axis of the plot tells both halves of the story. The distinct tones are gone and the floor is smooth, which is what "better" means here: a smooth floor is predictable, it does not move when the input does, and it will not land a spur in the middle of your signal band on a Tuesday. But the floor is also *higher*, and the notch at zero frequency is shallower. Running the loop with and without dither, the in-band signal-to-noise ratio drops by a decibel or two. Dither is not free noise reduction; it converts a small amount of signal-to-noise ratio into a large amount of predictability. That is usually a good trade for a 1-bit quantizer with a slow input, where the alternative is idle tones parked wherever the input DC level happens to put them, and a bad trade for a many-bit quantizer that was never going to produce tones in the first place.
+
 -->
 
 ![fit](../media/l6_sd_d1_b1.svg)
@@ -1270,15 +1332,17 @@ In the figure below I've turned on dither, and we can see how the noise looks "b
 
 <!--pan_doc:
 
-In papers it's common to use a logarithmic x-axis for the power spectral density, as shown below. In the plot I only show the positive 
-frequencies of the FFT. From the shape of the quantization noise we can also see the first order behavior. 
+In papers it's common to use a logarithmic frequency axis, as shown below. In the plot I only show the positive 
+frequencies of the FFT. From the shape of the quantization noise we can also see the first order behavior, as a straight 20 dB per decade rise, which is much easier to read off a log axis than off the linear ones above.
+
+Two things have changed from the previous two figures, and it is worth saying so rather than letting you wonder. The quantizer here is 5-bit, not 1-bit, so the floor is far lower and there are no idle tones to speak of. And the y-axis is a magnitude spectrum in dB, not a power spectral density: nothing has been normalised to the bin width, so the absolute level is only meaningful relative to the tone.
 
 -->
 
 ![fit](../media/l6_sdlog_d1_b5.svg)
 
 <!--pan_doc:
-<sub>Figure 30: Power spectral density of the sigma-delta modulator output on a logarithmic frequency axis, showing the first-order 20 dB/decade shaping of the quantization noise</sub>
+<sub>Figure 30: Magnitude spectrum of the output of a 5-bit first-order sigma-delta modulator on a logarithmic frequency axis, showing the 20 dB/decade shaping of the quantization noise</sub>
 -->
 
 ---
@@ -1302,7 +1366,7 @@ Resonators in Open-Loop Sigma-Delta Modulators [@wulff09]
 which was a pure theoretical work. 
 The idea was to use  modulo integrators (local control of integrator output swing) in front of large latency multi-bit quantizers to achieve a high SNR. 
 
-The plot below shows a fifth order NFT where there are two complex conjugate  zeros, and a zero at zero frequency. With a higher 
+The plot below shows a fifth order NTF where there are two complex conjugate zero *pairs*, and a zero at zero frequency. With a higher 
 order filter one can use a lower OSR, and still achieve high ENOB. 
 
 -->
@@ -1389,7 +1453,7 @@ infer the state of the input $u(t)$ using a form of [Bayesian Statistics](https:
 <!--pan_doc:
 
 Below we can see a power spectral density plot of the ADC, and we can observe how the quantization noise is shaped. I think it's 
-a third order NTF with a zero at zero frequency and a complex conjugate pole at 8 MHzish.
+a third order NTF with a zero at zero frequency and a complex conjugate zero pair, a notch, at 8 MHzish.
 -->
 
 ![inline](../media/l6_fredrik_psd.svg)

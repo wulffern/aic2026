@@ -105,8 +105,11 @@
       floor. The white noise line sits far below the real harmonics.
     </li>
     <li>
-      Walk the bits up. The harmonics drop about 6&nbsp;dB per bit and get
-      denser and more irregular, because the Bessel functions oscillate. By
+      Walk the bits up. Each individual harmonic drops about 9&nbsp;dB per
+      bit &mdash; not the 6&nbsp;dB you might expect, because 6&nbsp;dB per
+      bit is the <em>total</em> noise power, and the number of harmonics
+      doubles at the same time, adding 3&nbsp;dB back. They also get denser
+      and more irregular, because the Bessel functions oscillate. By
       8&nbsp;bits the spikes are so many and so small that calling them
       &ldquo;a noise floor&rdquo; finally becomes a fair description &mdash;
       which is exactly when the &Delta;&sup2;/12 model starts being useful.
