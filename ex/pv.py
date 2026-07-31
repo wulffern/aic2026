@@ -35,7 +35,9 @@ plt.plot(i_load/m,P_load/m)
 plt.xlabel("Current load [mA]")
 plt.ylabel("Power Load [mW]")
 plt.grid()
-plt.savefig("../media/pv.pdf")
+#- next to the script, not into media/: the figure the book uses is
+#- the TikZ one below, and ex/*.pdf is gitignored
+plt.savefig("pv.pdf")
 
 #- The same two panels as TikZ, so the plot matches the schematics.
 tfig = Figure("""A photovoltaic cell's diode voltage and delivered power against load.

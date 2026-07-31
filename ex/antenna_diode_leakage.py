@@ -117,8 +117,10 @@ if __name__ == "__main__":
                  r"200-1000 K")
     plt.tight_layout()
 
+    #- next to the script, not into media/: the figure the book uses is
+    #- the TikZ one below, and ex/*.pdf is gitignored
     here = os.path.dirname(os.path.abspath(__file__))
-    out = os.path.join(here, "..", "media", "antenna_diode_leak.pdf")
+    out = os.path.join(here, "antenna_diode_leak.pdf")
     plt.savefig(out)
     print(f"wrote {os.path.normpath(out)}")
 
