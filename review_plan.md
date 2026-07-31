@@ -183,7 +183,7 @@ Still open in this chapter:
 ## Queued from the author, 2026-07-31
 
 1. **Script-generated plots to TikZ** — infrastructure done
-   2026-07-31, 32 of 44 figures converted.
+   2026-07-31, 41 of 44 figures converted.
 
    `py/tikzplot.py` renders plot data through `tikz/fig_header.tex`, so
    a plot and a schematic on the same page share a font, a line width
@@ -201,10 +201,21 @@ Still open in this chapter:
    panels, so the library covers every case in the book.
 
    **Where the data lives.** `~/pro/aicex/ip/jnw_atr_sky130a/sim` for
-   the gm/ID sweeps (cicsim raw files); `~/pro/dicex` for everything
-   else so far — `lectures/l14` for the flip-flop timing, `ex4` for the
-   ring oscillator sweeps, `sim/spice/NCHIO` for the NMOS curves. None
-   of it is needed to build the book, only to regenerate a figure.
+   the gm/ID sweeps (cicsim raw files); `~/pro/dicex` for the flip-flop
+   timing (`lectures/l14`), the ring oscillator sweeps (`ex4`) and the
+   NMOS curves (`sim/spice/NCHIO`). The PLL loop model, the DAC
+   linearity pair and the four buck figures need no data at all — they
+   were notebook cells computing their own numbers, now scripts in
+   `ex/`. None of it is needed to build the book, only to regenerate a
+   figure.
+
+   **Two bugs the conversion found.** The PLL phase margin was 55
+   degrees because the notebook evaluated the loop on a 50-point grid
+   and took the first sample below 0 dB as the crossover; interpolated
+   it is 51 degrees at 0.59 MHz. And `l07_buck_pwm_fig_settled` had
+   been shipping with an empty middle panel, its y limits pinned to a
+   range the settled output voltage never enters. Both are fixed, and
+   the scripts now print the numbers the captions quote.
 
    The gm/ID seven came out of `jupyter/circuits.ipynb` and now come
    from `ex/jnw_gmid.py`, which reads the ngspice sweeps under
@@ -212,18 +223,14 @@ Still open in this chapter:
    produces figures that quietly stop agreeing with each other; one
    script over one pass of the data cannot.
 
-   **Still matplotlib.** 12 of the original 44 remain, all of them
-   simulator output whose raw data has not been located yet:
-   `l07_buck_pfm_fig_save`, the three `l07_buck_pwm_fig_*`,
-   `l7_loadreg`, `cpumax`, `l5_velocity`, `sun_pll_lay_typ`,
-   `SUN_PLL_ROSC_KVCO`, `pll`, and the two DAC figures `dac_error` and
-   `dac_inl_dnl` in `jupyter/dac.ipynb`.
-
-   The DAC pair is the easy one: same treatment as the gm/ID curves,
-   move the figure generation out of the notebook into a script. The
-   SUN_PLL three should be in the sun_pll_sky130nm repo. The buck and
-   load-regulation plots and `cpumax` have not been found; `l5_velocity`
-   may be hand-plotted rather than simulated.
+   **Still matplotlib.** Three of the original 44 remain, all
+   simulator output whose raw data has not been located:
+   `l7_loadreg`, `cpumax`, `SUN_PLL_ROSC_KVCO` and `sun_pll_lay_typ`.
+   The two SUN_PLL ones come from testbenches in the
+   `sun_pll_sky130nm` repository (sim/ROSC and sim/SUN_PLL), so they are
+   a matter of running those and exporting; `l5_velocity` turned out to
+   be a hand-drawn illustration rather than a plot, and `cpumax` has no
+   trace anywhere.
 
    One figure that will improve when converted: `pll.pdf` has its
    x-axis label hidden behind the legend box, noted in the `l08_pll`
