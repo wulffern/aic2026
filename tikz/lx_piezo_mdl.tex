@@ -1,0 +1,24 @@
+\input{tikz/fig_header.tex}
+
+% Electrical model of a piezoelectric transducer.
+%
+% Strain moves charge, so the source is a current, and the plates it
+% moves the charge between are a capacitor sitting across it. Drawn
+% beside the triboelectric model, which is the same two elements in the
+% other arrangement, because the difference between a parallel and a
+% series capacitance is the difference between the two harvesters.
+
+\begin{circuitikz}[american, thick, transform shape]
+
+  \draw (0,0) to [sI, l=$i_p(t)$] (0,2.6);
+  \draw (0,0) node[ground]{};
+
+  \draw (2.2,0) to [C, l_=$C_p$] (2.2,2.6);
+  \draw (2.2,0) node[ground]{};
+
+  \draw (0,2.6) -- (2.2,2.6) -- (3.4,2.6);
+  \fill (2.2,2.6) circle (0.075);
+  \draw (3.4,2.6) node[ocirc]{};
+
+\end{circuitikz}
+\end{document}

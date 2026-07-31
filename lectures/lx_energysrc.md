@@ -340,7 +340,7 @@ In A 3.5-mV Input Single-Inductor Self-Starting Boost Converter With Loss-Aware 
 
 
 
-![left fit](../media/l11_teg_mdl.pdf)
+![left fit](../media/l11_teg_mdl_tikz.pdf)
 
 <!--pan_doc:
 <sub>Figure 10: Model of a thermoelectric generator - a 1 to 50 mV/K source in series with a source resistance below 10 ohm - together with the self-starting boost converter architecture from Bose et al.</sub>
@@ -388,7 +388,7 @@ single photodiode is used. It is possible to stack photodiodes to get a higher o
 
 -->
 
-![left fit](../media/l11_pv_mdl.pdf)
+![left fit](../media/l11_pv_mdl_tikz.pdf)
 
 <!--pan_doc:
 <sub>Figure 12: Circuit model of a photodiode - a photo current source in parallel with a diode, delivering a load current IL</sub>
@@ -546,7 +546,7 @@ It is common to use tricks to reduce the energy waste due to the rectifier.
 An example of piezoelectric energy harvester can be found in A Fully Integrated Split-Electrode SSHC Rectifier for Piezoelectric Energy Harvesting [@du19]
 
 
-![left fit](../media/lx_piezo_mdl.pdf)
+![left fit](../media/lx_piezo_mdl_tikz.pdf)
 
 <!--pan_doc:
 <sub>Figure 14: Model of a piezoelectric transducer - an AC current source in parallel with the transducer capacitance</sub>
@@ -715,7 +715,7 @@ Take a look in A Fully Energy-Autonomous Temperature-to-Time Converter Powered b
 for more details.
 
 
-![right](../media/lx_trib_mdl.pdf)
+![right](../media/lx_trib_mdl_tikz.pdf)
 
 <!--pan_doc:
 <sub>Figure 16: Model of a triboelectric generator - an AC source in series with the transducer capacitance</sub>

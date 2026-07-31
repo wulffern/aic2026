@@ -1,0 +1,20 @@
+\input{tikz/fig_header.tex}
+
+% Electrical model of a triboelectric generator.
+%
+% The same two elements as the piezoelectric model, rearranged: here the
+% capacitance is in series with the source rather than across it. That
+% one change is why a triboelectric harvester presents a high impedance
+% and hundreds of volts at almost no current, while a piezoelectric one
+% does not.
+
+\begin{circuitikz}[american, thick, transform shape]
+
+  \draw (0,0) to [sV, l=$v_t(t)$] (0,2.6);
+  \draw (0,0) node[ground]{};
+
+  \draw (0,2.6) to [C, l=$C_t$] (2.6,2.6);
+  \draw (2.6,2.6) node[ocirc]{};
+
+\end{circuitikz}
+\end{document}

@@ -1,0 +1,21 @@
+\input{tikz/fig_header.tex}
+
+% Electrical model of a thermoelectric generator.
+%
+% A Seebeck voltage proportional to the temperature difference, in
+% series with the resistance of the material it had to be made from.
+% Both numbers matter and they pull against each other: the voltage is
+% tens of millivolts, which is below what any transistor will start on,
+% and the source resistance is low enough that drawing the current is
+% not the problem. Getting the first volt out of it is.
+
+\begin{circuitikz}[american, thick, transform shape]
+
+  \draw (0,0) to [V, l=$1$--$50$ mV/K, invert] (0,2.4);
+  \draw (0,0) node[ground]{};
+
+  \draw (0,2.4) to [R, l=$< 10\ \Omega$] (3.2,2.4);
+  \draw (3.2,2.4) node[ocirc]{};
+
+\end{circuitikz}
+\end{document}

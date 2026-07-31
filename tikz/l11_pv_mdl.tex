@@ -1,0 +1,30 @@
+\input{tikz/fig_header.tex}
+
+% Electrical model of a photodiode.
+%
+% Light makes a current that does not care what the terminal voltage is,
+% so it is a current source; the junction is still a diode and sits in
+% parallel with it. Everything a photovoltaic harvester does follows from
+% those two elements fighting over the same node: at short circuit all
+% the photocurrent leaves as I_L, at open circuit all of it goes back
+% through the diode, and the maximum power point is in between.
+
+\begin{circuitikz}[american, thick, transform shape]
+
+  %- photocurrent flows up into the output node
+  \draw (0,0) to [I, l=$I_{ph}$] (0,2.6);
+  \draw (0,0) node[ground]{};
+
+  %- and the junction shunts it back down, which is the competition
+  \draw (2.2,2.6) to [D, l=$D$] (2.2,0);
+  \draw (2.2,0) node[ground]{};
+
+  \draw (0,2.6) -- (2.2,2.6) -- (3.6,2.6);
+  \fill (2.2,2.6) circle (0.075);
+
+  \draw[red, ->] (2.9,2.9) -- (3.5,2.9);
+  \node[red, anchor=south] at (3.2,2.95) {$I_L$};
+  \draw (3.6,2.6) node[ocirc]{};
+
+\end{circuitikz}
+\end{document}
