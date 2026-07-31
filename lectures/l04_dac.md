@@ -240,7 +240,8 @@ $$ \sum_{n=1}^{N} 2^n = 2^{N+1} - 2 $$
 -->
 
 
-Use a matrix with R rows and C columns. Need R + C switches, or
+Give every tap a switch onto a column line, and every column line a
+switch to the output. For $2^N$ taps in a square arrangement that is
 
 $$ 2^{N} + 2^{N/2} $$
 
@@ -256,12 +257,51 @@ $$ 2^{N} + 2^{N/2} $$
 Switches in a 10-bit digital to analog converter.
 
 $$
-\begin{array}{ll}
-\text{Tree: } &2^{N+1}-2 = 2046 \\
-\text{Matrix : } &2^{N}  + 2^{N/2}  = 1056 \\ 
-\text{6b Matrix + 4b Tree: } & 2^{M+1} - 2 + 2^{N} + 2^{N/2} = 80 
+\begin{array}{lll}
+\text{Tree} & 2^{N+1}-2 & = 2046 \\
+\text{Matrix} & 2^{N}  + 2^{N/2}  & = 1056 \\
+\text{Two strings, 6b + 4b} & 2^{M} + 2^{N-M} & = 80 \\
+\text{Two strings, 5b + 5b} & 2^{M} + 2^{N-M} & = 64
 \end{array}
 $$
+
+<!--pan_doc:
+
+Those three lines are not three versions of the same circuit, and the
+difference between the first two and the last is the point of this
+section.
+
+The tree and the matrix both address one string of $2^N$ resistors, so
+both need at least one switch per tap. The tree adds switches at every
+internal node on top of that, which is why it is the worst of the three;
+the matrix adds only one per column, which is why it is roughly half the
+tree. Neither can go below $2^N$, because every tap has to be reachable
+on its own.
+
+It is worth being clear that combining them does not help. A tree of
+matrix blocks — a plausible reading of the figure above — still needs
+its $2^N$ tap switches and now pays for the tree as well: a 4-bit tree
+over sixteen 6-bit matrices comes to 1182, worse than the plain matrix
+at 1056. Every split is worse. There is nothing to win by decoding the
+same string more cleverly.
+
+The saving comes from not having one string at all. Put a coarse string
+of $2^M$ resistors in series and let a fine string of $2^{N-M}$
+resistors interpolate between two adjacent coarse taps, and each
+selector only has to reach its own string: $2^M + 2^{N-M}$ switches
+rather than $2^N$. For ten bits split six and four that is 80, and the
+best split is five and five at 64 — against 1056 for the matrix. Trading
+one big decoder for two small ones is worth a factor of sixteen here,
+and the reason is simply that $2^M + 2^{N-M}$ grows far more slowly than
+$2^N$.
+
+Nothing is free: the fine string loads the coarse one and disturbs the
+very voltage it is interpolating, a real two-string DAC needs a second
+switch per coarse tap to bracket the segment, and the matching now has
+to hold between two strings rather than within one. But the switch count
+is no longer what stops you.
+
+-->
 
 Large number of bits, will be large number of resistors and switches. 
 
