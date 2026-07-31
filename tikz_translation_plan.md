@@ -223,10 +223,21 @@ Process lectures in this order unless reprioritized later.
   - `LELO_EX`
 
 ### Phase 3: Case-by-case later
-- layout-heavy figures in `l06_adc`
+
+Re-prioritised by the author 2026-07-31. In order:
+
+1. `lr0_passives`, `l00_diode`, `l00_refresher` — the semiconductor
+   physics artwork. The best remaining candidates.
+2. `lx_energysrc` — worth doing, but the originals are *very* busy.
+   Draw only what the text actually needs rather than reproducing the
+   clutter; a redraw that copies every annotation misses the point.
+
+**Not doing:** the layout-heavy `l06_adc` figures. Those are already
+TikZ based, so there is nothing to convert.
+
+Still unsorted, lower value:
 - system/project overview drawings in `l01_project`
-- map/logo/reference illustrations in `l10_lpradio`, `lp_radio_guest`, `lx_energysrc`
-- semiconductor physics figures in `lr0_passives`, `l00_diode`
+- map/logo/reference illustrations in `l10_lpradio`, `lp_radio_guest`
   (`lr0_mosfet`'s were promoted to the head of the queue on 2026-07-30 at
   the author's request — see Current next figure)
 - measurement/graph-heavy figures across `l00_*`, `s_chinf`, and guest lectures
