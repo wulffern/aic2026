@@ -222,25 +222,33 @@ Process lectures in this order unless reprioritized later.
 - `lr0_tut1`
   - `LELO_EX`
 
-### Phase 3: Case-by-case later
+### Phase 3: mostly finished, 2026-07-31
 
-Re-prioritised by the author 2026-07-31. In order:
+Triaged by listing every figure in each chapter rather than trusting the
+queue, and most of it turned out to be already done or not convertible.
 
-1. `lr0_passives`, `l00_diode`, `l00_refresher` — the semiconductor
-   physics artwork. The best remaining candidates.
-2. `lx_energysrc` — worth doing, but the originals are *very* busy.
-   Draw only what the text actually needs rather than reproducing the
-   clutter; a redraw that copies every annotation misses the point.
+**Done.** The radio chapter's nine drawable figures: four constellations
+(shared frame in `constellation_lib.tex`), three transmitter
+architectures, two link diagrams. The energy chapter's four harvester
+models, which are the figures that chapter reasons from.
 
-**Not doing:** the layout-heavy `l06_adc` figures. Those are already
-TikZ based, so there is nothing to convert.
+**Nothing left to convert.** `l00_diode` is fully TikZ already.
+`lr0_passives` has one PDF left and it is a 3D rendering of real layout,
+not a sketch — redrawing it would lose information. `l00_refresher` is
+seven canonical reference images (Wikipedia band diagrams, the NIST SI
+poster, the Standard Model table); redrawing those is effort for no gain
+and loses the recognisability. `l06_adc` was already TikZ, which is why
+it came off this list.
 
-Still unsorted, lower value:
-- system/project overview drawings in `l01_project`
-- map/logo/reference illustrations in `l10_lpradio`, `lp_radio_guest`
-  (`lr0_mosfet`'s were promoted to the head of the queue on 2026-07-30 at
-  the author's request — see Current next figure)
-- measurement/graph-heavy figures across `l00_*`, `s_chinf`, and guest lectures
+**Not doing.** Photographs, die shots, maps, logos, datasheet
+screenshots and figures cited from papers, which is what the rest of the
+energy and radio chapters consist of.
+
+**Still open, low value.** System/project overview drawings in
+`l01_project`; `l10_lpradio` keeps three schematics from other sources
+(`fig_sar_logic`, `l06_fig_toplevel`, `pll_master_arch_28feb2020`).
+Two figures have no source at all and would need re-simulating:
+`l5_velocity` and `cpumax`.
 
 ## Public Interfaces and Naming
 Naming convention:
