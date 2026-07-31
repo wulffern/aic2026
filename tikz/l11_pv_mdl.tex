@@ -8,16 +8,29 @@
 % those two elements fighting over the same node: at short circuit all
 % the photocurrent leaves as I_L, at open circuit all of it goes back
 % through the diode, and the maximum power point is in between.
+%
+% The junction is drawn as a photodiode rather than a plain one. It is
+% the same junction either way, but the two arrows say where the
+% photocurrent came from; without them the figure is a diode next to a
+% current source that arrives from nowhere.
+%
+% Ground comes from \vground rather than node[ground]. fig_header loads
+% the circuits.ee.IEC library, which claims the name "ground" for a node
+% that only draws inside a "circuit ee IEC" scope. Used outside one it
+% silently draws nothing, which is how these four energy source models
+% ended up with bare stubs hanging off the bottom.
 
 \begin{circuitikz}[american, thick, transform shape]
 
+  \input{tikz/ckt_lib.tex}
+
   %- photocurrent flows up into the output node
   \draw (0,0) to [I, l=$I_{ph}$] (0,2.6);
-  \draw (0,0) node[ground]{};
+  \draw (0,0) \vground;
 
   %- and the junction shunts it back down, which is the competition
-  \draw (2.2,2.6) to [D, l=$D$] (2.2,0);
-  \draw (2.2,0) node[ground]{};
+  \draw (2.2,2.6) to [pD, l_=$D$] (2.2,0);
+  \draw (2.2,0) \vground;
 
   \draw (0,2.6) -- (2.2,2.6) -- (3.6,2.6);
   \fill (2.2,2.6) circle (0.075);

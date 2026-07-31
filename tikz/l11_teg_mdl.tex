@@ -9,10 +9,19 @@
 % and the source resistance is low enough that drawing the current is
 % not the problem. Getting the first volt out of it is.
 
+%
+% Ground comes from \vground rather than the ee.IEC ground node.
+% fig_header loads the circuits.ee.IEC library, which claims that name
+% for a node that only draws inside a "circuit ee IEC" scope. Used
+% outside one it silently draws nothing, which is how these four energy
+% source models ended up with bare stubs hanging off the bottom.
+
 \begin{circuitikz}[american, thick, transform shape]
 
+  \input{tikz/ckt_lib.tex}
+
   \draw (0,0) to [V, l=$1$--$50$ mV/K, invert] (0,2.4);
-  \draw (0,0) node[ground]{};
+  \draw (0,0) \vground;
 
   \draw (0,2.4) to [R, l=$< 10\ \Omega$] (3.2,2.4);
   \draw (3.2,2.4) node[ocirc]{};

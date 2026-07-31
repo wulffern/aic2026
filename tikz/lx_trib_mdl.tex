@@ -8,10 +8,19 @@
 % and hundreds of volts at almost no current, while a piezoelectric one
 % does not.
 
+%
+% Ground comes from \vground rather than the ee.IEC ground node.
+% fig_header loads the circuits.ee.IEC library, which claims that name
+% for a node that only draws inside a "circuit ee IEC" scope. Used
+% outside one it silently draws nothing, which is how these four energy
+% source models ended up with bare stubs hanging off the bottom.
+
 \begin{circuitikz}[american, thick, transform shape]
 
+  \input{tikz/ckt_lib.tex}
+
   \draw (0,0) to [sV, l=$v_t(t)$] (0,2.6);
-  \draw (0,0) node[ground]{};
+  \draw (0,0) \vground;
 
   \draw (0,2.6) to [C, l=$C_t$] (2.6,2.6);
   \draw (2.6,2.6) node[ocirc]{};

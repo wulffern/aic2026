@@ -8,13 +8,22 @@
 % other arrangement, because the difference between a parallel and a
 % series capacitance is the difference between the two harvesters.
 
+%
+% Ground comes from \vground rather than the ee.IEC ground node.
+% fig_header loads the circuits.ee.IEC library, which claims that name
+% for a node that only draws inside a "circuit ee IEC" scope. Used
+% outside one it silently draws nothing, which is how these four energy
+% source models ended up with bare stubs hanging off the bottom.
+
 \begin{circuitikz}[american, thick, transform shape]
 
+  \input{tikz/ckt_lib.tex}
+
   \draw (0,0) to [sI, l=$i_p(t)$] (0,2.6);
-  \draw (0,0) node[ground]{};
+  \draw (0,0) \vground;
 
   \draw (2.2,0) to [C, l_=$C_p$] (2.2,2.6);
-  \draw (2.2,0) node[ground]{};
+  \draw (2.2,0) \vground;
 
   \draw (0,2.6) -- (2.2,2.6) -- (3.4,2.6);
   \fill (2.2,2.6) circle (0.075);
