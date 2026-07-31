@@ -583,16 +583,16 @@ The setup time is not a number the flip-flop advertises, it is a number
 you measure. Sweep the moment the data changes relative to the rising
 clock edge, simulate, and look at where the output stops following the
 input. The two plots below are two points either side of that boundary,
-and the sweep point is printed on the time axis of each.
+8 ps and 10 ps.
 -->
 
-![inline fit](../media/l14/dff_setup_8.pdf)![inline fit](../media/l14/dff_setup_10.pdf)
+![inline fit](../media/dff_setup_8_tikz.pdf)![inline fit](../media/dff_setup_10_tikz.pdf)
 
 <!--pan_doc:
-<sub>Figure 33: Simulated d, ck, q and qn of the D flip-flop for two positions of the data edge, and the position is printed on the time axis of each plot. In the failing case the data changes too close to the rising clock edge at 0.5 ns, the flip-flop does not capture it, and q only goes high at the second edge at 1.5 ns. In the passing case the data has settled early enough, and q rises with the first edge</sub>
+<sub>Figure 33: Simulated d, ck, q and qn of the D flip-flop for two setup times, 8 ps and 10 ps. With 8 ps the data changes too close to the rising clock edge at 0.5 ns, the flip-flop does not capture it, and q only goes high at the second edge at 1.5 ns. With 10 ps the data has settled early enough and q rises with the first edge. Two picoseconds separate the two</sub>
 
 Left of that boundary the flip-flop still switches, but late: notice how
-q in the failing plot rises a full clock period after it should. That is
+q in the 8 ps plot rises a full clock period after it should. That is
 the failure mode setup violations produce in a real chip. Nothing is
 stuck, nothing looks broken on a scope, the data simply arrives one
 cycle behind, and it only happens on the corners and the temperatures
@@ -610,10 +610,10 @@ finish. Move the data edge towards the clock edge and the flip-flop
 eventually samples the *new* value instead of the old one.
 -->
 
-![inline fit](../media/l14/dff_hold_-40.pdf)![inline fit](../media/l14/dff_hold_-30.pdf)
+![inline fit](../media/dff_hold_-40_tikz.pdf)![inline fit](../media/dff_hold_-30_tikz.pdf)
 
 <!--pan_doc:
-<sub>Figure 34: The same signals for two positions of the data edge around the second rising clock edge at 1.5 ns, again marked on the time axis. In the passing case the data change is far enough from the edge that the flip-flop takes the new low value and q falls at 1.5 ns. In the failing case the data moves closer to the edge, the change is not taken, and q stays high for another period</sub>
+<sub>Figure 34: The same signals for two hold times, -40 ps and -30 ps, that is, the data changing 40 ps and 30 ps before the second rising clock edge at 1.5 ns. At -40 ps the flip-flop takes the new low value and q falls. At -30 ps the change is not taken and q stays high for another period</sub>
 
 Hold violations are worse than setup violations, and it is worth being
 clear about why. A setup violation you can fix after the fact by slowing
@@ -997,18 +997,18 @@ For close to optimal delay, use $$f = 4$$ <sub><sub>(Used to be $$f=e$$)</sub></
 #[fit] Trends
 
 ---
-![original fit](../media/l14/rosc_vdd.pdf)
+![original fit](../media/rosc_vdd_tikz.pdf)
 
 <!--pan_doc:
-<sub>Figure 41: Ring oscillator frequency in MHz and power in uW versus supply voltage, with the derivatives of frequency with respect to supply and of power with respect to frequency below</sub>
+<sub>Figure 41: Ring oscillator frequency and power against supply voltage, with the supply sensitivity and the energy per cycle below. The sensitivity peaks near 0.6 V at more than 4 GHz per volt, and the energy per cycle is worst where the ring is fastest</sub>
 -->
 
 ---
 
-![original fit](../media/l14/rosc_temp.pdf)
+![original fit](../media/rosc_temp_tikz.pdf)
 
 <!--pan_doc:
-<sub>Figure 42: Ring oscillator frequency falling from 2.1 GHz to 0.85 GHz as temperature rises from minus 40 to 150 degrees Celsius, with the derivative of frequency with respect to temperature below</sub>
+<sub>Figure 42: Ring oscillator frequency falling from 2.14 GHz to 0.84 GHz, a factor of 2.6, as temperature rises from minus 40 to 150 degrees Celsius. The slope below runs from about minus 12 MHz per degree in the cold to minus 3 when hot, so the sensitivity is itself temperature dependent</sub>
 -->
 
 ---
