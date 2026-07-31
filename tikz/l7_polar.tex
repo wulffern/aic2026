@@ -1,0 +1,27 @@
+\input{tikz/fig_header.tex}
+
+% Polar transmitter: phase into the oscillator, amplitude into the
+% amplifier.
+%
+% The same picture as the constant envelope transmitter with one extra
+% input, and that one input is what costs you. The amplifier now has to
+% reproduce an amplitude rather than just saturate, so it cannot be run
+% in compression, and its efficiency falls. Everything the chapter says
+% about non-constant envelope schemes is this arrow.
+
+\begin{tikzpicture}[thick]
+  \input{tikz/sfg_lib.tex}
+
+  \sfgBox{0}{0}{LO}
+  \draw (\sfgBw,0) -- (3.4,0);
+  \sfgAmp{4.3}{0}{PA}
+  \sfgAntenna{5.3}{0}
+  \draw (4.3,0) -- (5.3,0);
+
+  \draw[red, ->] (-1.6,1.4) -- (0,1.4) -- (0,\sfgBh);
+  \node[red, anchor=east] at (-1.7,1.4) {$\phi_m(t)$};
+
+  \draw[red, ->] (3.85,1.4) -- (3.85,0.28);
+  \node[red, anchor=south] at (3.85,1.45) {$A_m(t)$};
+\end{tikzpicture}
+\end{document}

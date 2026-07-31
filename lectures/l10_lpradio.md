@@ -465,7 +465,7 @@ If we have a PLL as a local oscillator, where we can change the phase (or freque
 
 ---
 
-![inline fit](../media/l7_const_env.pdf)
+![inline fit](../media/l7_const_env_tikz.pdf)
 
 <!--pan_doc:
 <sub>Figure 6: Constant envelope transmitter: the phase is modulated in the local oscillator, and a power amplifier drives the antenna</sub>
@@ -480,7 +480,7 @@ where phase change is done in the PLL, and amplitude in the power amplifier.
 
 -->
 
-![inline fit](../media/l7_polar.pdf)
+![inline fit](../media/l7_polar_tikz.pdf)
 
 <!--pan_doc:
 <sub>Figure 7: Polar transmitter: phase $\phi$ is modulated in the local oscillator and amplitude $A$ in the power amplifier</sub>
@@ -495,7 +495,7 @@ components in digital, then use two digital to analog converters, and a set of c
 the amplitude, but it does need to be linear. 
 -->
 
-![inline fit](../media/l8_cartesian.pdf)
+![inline fit](../media/l8_cartesian_tikz.pdf)
 
 <!--pan_doc:
 <sub>Figure 8: Cartesian transmitter: I and Q digital-to-analog converters, complex mixers driven by the local oscillator, and a linear power amplifier</sub>
