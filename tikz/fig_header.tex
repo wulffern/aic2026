@@ -154,6 +154,13 @@
 % That makes a circuitikz resistor visibly heavier than the wire it sits
 % on, and heavier than the hand rolled zig-zag in ckt_lib.tex. One is the
 % house width: everything is drawn at the environment's own thickness.
+% Arrow tips: one filled tip everywhere, set through the '>' knob so a
+% figure only ever writes ->, <- or <->. Latex (from arrows.meta)
+% scales with the line width, so it stays in proportion if a drawing
+% is ever set thicker or thinner than the house 'thick'.
+\usetikzlibrary{arrows.meta}
+\tikzset{>={Latex}}
+
 \ctikzset{bipoles/thickness=1}
 \ctikzset{tripoles/mos style/arrows}
 \ctikzset{tripoles/pmos style/emptycircle}

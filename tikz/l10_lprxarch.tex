@@ -13,7 +13,7 @@
   % the antenna
   \draw (0,5.0) -- (0,5.8);
   \draw (-0.4,6.4) -- (0,5.8) -- (0.4,6.4);
-  \draw[-latex] (0,5.0) -- (0.7,5.0);
+  \draw[->] (0,5.0) -- (0.7,5.0);
 
   % the matching network, shared by RX and TX
   \draw (0.7,0.6) rectangle (1.9,5.2);
@@ -21,11 +21,11 @@
 
   % the RX front end
   \node[blk] (lna) at (2.9,5.0) {LNA};
-  \draw[-latex] (1.9,5.0) -- (lna.west);
+  \draw[->] (1.9,5.0) -- (lna.west);
 
   \draw (4.0,3.4) rectangle (4.8,5.6);
   \node[anchor=center] at (4.4,4.5) {MIX};
-  \draw[-latex] (lna.east) -- (4.0,5.0);
+  \draw[->] (lna.east) -- (4.0,5.0);
 
   % the two baseband branches
   \node[blk] (aafi) at (5.9,\yI) {AAF};
@@ -33,32 +33,32 @@
   \node[blk] (aafq) at (5.9,\yQ) {AAF};
   \node[blk] (adcq) at (7.5,\yQ) {ADC};
 
-  \draw[-latex] (4.8,\yI) -- (aafi.west);
-  \draw[-latex] (aafi.east) -- (adci.west);
-  \draw[-latex] (adci.east) -- ++(0.8,0);
+  \draw[->] (4.8,\yI) -- (aafi.west);
+  \draw[->] (aafi.east) -- (adci.west);
+  \draw[->] (adci.east) -- ++(0.8,0);
   \node[anchor=west] at (8.95,\yI) {$I_{RX}$};
 
-  \draw[-latex] (4.8,\yQ) -- (aafq.west);
-  \draw[-latex] (aafq.east) -- (adcq.west);
-  \draw[-latex] (adcq.east) -- ++(0.8,0);
+  \draw[->] (4.8,\yQ) -- (aafq.west);
+  \draw[->] (aafq.east) -- (adcq.west);
+  \draw[->] (adcq.east) -- ++(0.8,0);
   \node[anchor=west] at (8.95,\yQ) {$Q_{RX}$};
 
   % the all digital PLL that makes the LO
   \draw (4.0,2.4) rectangle (8.05,3.1);
   \node[anchor=center] at (6.0,2.75) {AD PLL};
-  \draw[-latex] (9.0,2.75) -- (8.05,2.75);
+  \draw[->] (9.0,2.75) -- (8.05,2.75);
   \node[anchor=west] at (9.1,2.75) {$f_{REF}$};
-  \draw[latex-latex] (4.4,3.1) -- (4.4,3.4);
+  \draw[<->] (4.4,3.1) -- (4.4,3.4);
 
   % the transmitter
   \draw (2.6,0.6) rectangle (8.05,2.0);
   \node[anchor=center] at (5.3,1.3) {TX};
-  \draw[latex-latex] (4.4,2.0) -- (4.4,2.4);
-  \draw[-latex] (9.0,1.6) -- (8.05,1.6);
+  \draw[<->] (4.4,2.0) -- (4.4,2.4);
+  \draw[->] (9.0,1.6) -- (8.05,1.6);
   \node[anchor=west] at (9.1,1.6) {$I_{TX}$};
-  \draw[-latex] (9.0,1.0) -- (8.05,1.0);
+  \draw[->] (9.0,1.0) -- (8.05,1.0);
   \node[anchor=west] at (9.1,1.0) {$Q_{TX}$};
-  \draw[-latex] (2.6,1.3) -- (1.9,1.3);
+  \draw[->] (2.6,1.3) -- (1.9,1.3);
 
 \end{circuitikz}
 \end{document}

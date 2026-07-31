@@ -16,7 +16,7 @@
   % thin oxide between gate bottom and the surface
   \draw[line width=1.2pt] (2.4,4.4) -- (7.6,4.4);
   \draw[line width=1.2pt] (0.0,4.05) -- (10.0,4.05);
-  \draw[latex-latex, thin, echarge] (8.0,4.4) -- (8.0,4.05);
+  \draw[<->, thin, echarge] (8.0,4.4) -- (8.0,4.05);
   \node[echarge, anchor=west, scale=0.85] at (8.15,4.25) {$\sim$1-2nm};
 
   % source and drain wells
@@ -38,7 +38,7 @@
     plot ({4.0+0.09*sin(360*(\y-4.4)+200)},\y);
   \fill[echarge] (4.0,2.05) circle (0.09);
   \node[echarge, anchor=east, scale=0.9] at (3.3,5.7) {$|\psi_1(x)|^2 > 0$};
-  \draw[echarge, thin, -latex] (3.35,5.55) -- (3.95,5.2);
+  \draw[echarge, thin, ->] (3.35,5.55) -- (3.95,5.2);
 
   % gate carrier: oscillates in the gate, decays down through the oxide,
   % small oscillation in the channel
@@ -50,7 +50,7 @@
     plot ({6.1+0.09*sin(360*(4.05-\y)+200)},\y);
   \fill[hcharge] (6.1,6.45) circle (0.09);
   \node[hcharge, anchor=north, scale=0.9] at (6.7,2.4) {$|\psi_2(x)|^2 > 0$};
-  \draw[hcharge, thin, -latex] (6.65,2.5) -- (6.15,2.9);
+  \draw[hcharge, thin, ->] (6.65,2.5) -- (6.15,2.9);
 
 \end{tikzpicture}
 \end{document}

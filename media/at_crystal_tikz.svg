@@ -377,6 +377,6 @@
 <use xlink:href="#glyph-2-15" x="343.704486" y="68.448"/>
 <use xlink:href="#glyph-2-4" x="348.685786" y="68.448"/>
 </g>
-<path fill="none" stroke-width="0.3985" stroke-linecap="butt" stroke-linejoin="miter" stroke="rgb(0%, 0%, 0%)" stroke-opacity="1" stroke-miterlimit="10" d="M 293.388781 119.05525 L 293.388781 77.289625 " transform="matrix(1, 0, 0, -1, 45.662, 189.524)"/>
-<path fill-rule="nonzero" fill="rgb(0%, 0%, 0%)" fill-opacity="1" d="M 339.050781 115.820312 C 339.25 114.757812 339.847656 113.03125 340.546875 111.835938 L 337.558594 111.835938 C 338.253906 113.03125 338.851562 114.757812 339.050781 115.820312 "/>
+<path fill="none" stroke-width="0.3985" stroke-linecap="butt" stroke-linejoin="miter" stroke="rgb(0%, 0%, 0%)" stroke-opacity="1" stroke-miterlimit="10" d="M 293.388781 119.05525 L 293.388781 78.285719 " transform="matrix(1, 0, 0, -1, 45.662, 189.524)"/>
+<path fill-rule="nonzero" fill="rgb(0%, 0%, 0%)" fill-opacity="1" stroke-width="0.3985" stroke-linecap="butt" stroke-linejoin="miter" stroke="rgb(0%, 0%, 0%)" stroke-opacity="1" stroke-miterlimit="10" d="M 3.76071 -0.00086875 C 3.299773 0.112413 1.268523 0.753038 -0.00100875 1.444444 L -0.00100875 -1.446181 C 1.268523 -0.750869 3.299773 -0.11415 3.76071 -0.00086875 Z M 3.76071 -0.00086875 " transform="matrix(0, 1, 1, 0, 339.05165, 111.23929)"/>
 </svg>

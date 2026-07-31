@@ -98,8 +98,8 @@
 <path fill="none" stroke-width="0.79701" stroke-linecap="butt" stroke-linejoin="miter" stroke="rgb(0%, 0%, 0%)" stroke-opacity="1" stroke-miterlimit="10" d="M 110.554125 -153.070781 L 116.222094 -153.070781 M 116.222094 -153.070781 L 121.890062 -153.070781 M 113.386156 -155.906719 L 116.222094 -155.906719 M 116.222094 -155.906719 L 119.058031 -155.906719 M 114.804125 -158.742656 L 116.222094 -158.742656 M 116.222094 -158.742656 L 117.640062 -158.742656 " transform="matrix(1, 0, 0, -1, 38.399, 26.98)"/>
 </g>
 <path fill="none" stroke-width="0.79701" stroke-linecap="butt" stroke-linejoin="miter" stroke="rgb(0%, 0%, 0%)" stroke-opacity="1" stroke-miterlimit="10" d="M 107.718187 -153.070781 L 116.222094 -153.070781 " transform="matrix(1, 0, 0, -1, 38.399, 26.98)"/>
-<path fill="none" stroke-width="0.79701" stroke-linecap="butt" stroke-linejoin="miter" stroke="rgb(0%, 0%, 0%)" stroke-opacity="1" stroke-miterlimit="10" d="M 126.554125 -0.00046875 L 144.56975 -0.00046875 " transform="matrix(1, 0, 0, -1, 38.399, 26.98)"/>
-<path fill-rule="nonzero" fill="rgb(0%, 0%, 0%)" fill-opacity="1" d="M 160.289062 26.980469 C 161.671875 27.238281 163.917969 28.015625 165.472656 28.921875 L 165.472656 25.039062 C 163.917969 25.945312 161.671875 26.722656 160.289062 26.980469 "/>
+<path fill="none" stroke-width="0.79701" stroke-linecap="butt" stroke-linejoin="miter" stroke="rgb(0%, 0%, 0%)" stroke-opacity="1" stroke-miterlimit="10" d="M 128.06975 -0.00046875 L 144.56975 -0.00046875 " transform="matrix(1, 0, 0, -1, 38.399, 26.98)"/>
+<path fill-rule="nonzero" fill="rgb(0%, 0%, 0%)" fill-opacity="1" stroke-width="0.79701" stroke-linecap="butt" stroke-linejoin="miter" stroke="rgb(0%, 0%, 0%)" stroke-opacity="1" stroke-miterlimit="10" d="M 4.533676 0.00046875 C 3.978989 0.137188 1.52977 0.922344 -0.00148 1.773906 L -0.00148 -1.772969 C 1.52977 -0.921406 3.978989 -0.13625 4.533676 0.00046875 Z M 4.533676 0.00046875 " transform="matrix(-1, 0, 0, 1, 166.46727, 26.98)"/>
 <g fill="rgb(0%, 0%, 0%)" fill-opacity="1">
 <use xlink:href="#glyph-0-3" x="186.685" y="29.637"/>
 </g>

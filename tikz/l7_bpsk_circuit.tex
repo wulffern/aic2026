@@ -77,12 +77,12 @@
   \def\yj{2.4}   % the imaginary axis
   \def\ah{1.15}  % half height of a panel
 
-  \draw[-latex] (\px,\yr) -- (\px+4.2,\yr);
+  \draw[->] (\px,\yr) -- (\px+4.2,\yr);
   \draw (\px,{\yr-\ah}) -- (\px,{\yr+\ah});
   \node[anchor=east] at (\px-0.15,{\yr+\ah}) {$R$};
   \node[anchor=north] at (\px+4.15,{\yr-0.1}) {$t$};
 
-  \draw[-latex] (\px,\yj) -- (\px+4.2,\yj);
+  \draw[->] (\px,\yj) -- (\px+4.2,\yj);
   \draw (\px,{\yj-\ah}) -- (\px,{\yj+\ah});
   \node[anchor=east] at (\px-0.15,{\yj+\ah}) {$j$};
   \node[anchor=north] at (\px+4.15,{\yj-0.1}) {$t$};

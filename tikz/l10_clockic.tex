@@ -47,11 +47,11 @@
   \draw (xo1.east) -- (2.6,6.6);
   \node[armygreen, anchor=south west] at (2.75,6.45) {32 MHz};
   \draw (2.6,6.6) -- (2.6,5.3);
-  \draw[latex-latex] (pll.east) -- (rpll.west);
+  \draw[<->] (pll.east) -- (rpll.west);
   \fill (2.6,5.3) circle (0.05);
 
   % the system PLL clocks the MCU
-  \draw[-latex] (pll.south) -- (1.3,3.4) -- (mcu.west);
+  \draw[->] (pll.south) -- (1.3,3.4) -- (mcu.west);
 
   % 32768 Hz: crystal oscillator or RC oscillator
   \xtal{-1.5}{2.6}

@@ -23,12 +23,12 @@
 
   % the implant rain
   \foreach \x in {2.9,3.6,...,7.3}{
-    \draw[implant, thick, -latex] (\x,5.5) -- (\x+0.15,3.0);
+    \draw[implant, thick, ->] (\x,5.5) -- (\x+0.15,3.0);
   }
   \node[anchor=center, scale=1.0] at (5.0,5.85) {Ion-Implant};
 
   % the scattered ion off the resist edge
-  \draw[hcharge, line width=1.6pt, -latex] (2.42,3.4) -- (3.3,2.75);
+  \draw[hcharge, line width=1.6pt, ->] (2.42,3.4) -- (3.3,2.75);
   \node[hcharge, anchor=east, scale=0.9] at (2.35,2.95) {Sc};
 
   % two identical transistors, different distance to the well edge

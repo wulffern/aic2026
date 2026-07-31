@@ -10,8 +10,8 @@
 \begin{tikzpicture}[thick, xscale=0.72, yscale=4.4]
 
   % axes
-  \draw[-latex] (-0.3,0) -- (15.8,0) node[anchor=north east] {$x$};
-  \draw[-latex] (0,-0.55) -- (0,1.15);
+  \draw[->] (-0.3,0) -- (15.8,0) node[anchor=north east] {$x$};
+  \draw[->] (0,-0.55) -- (0,1.15);
   \foreach \x in {0,2,4,6,8,10,12,14} {
     \draw (\x,-0.02) -- (\x,0.02);
     \node[anchor=north, scale=0.9] at (\x,-0.03) {\x};

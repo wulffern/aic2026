@@ -10,16 +10,16 @@
 
   % field from the gate down through the oxide
   \foreach \x in {1.3,2.0,2.7}{
-    \draw[fieldy, thick, -latex] (\x,5.1) -- (\x,4.7);
+    \draw[fieldy, thick, ->] (\x,5.1) -- (\x,4.7);
   }
   % field at the drain junction
   \foreach \x in {7.4,8.2,9.0}{
-    \draw[fieldy, thick, -latex] (\x,2.05) -- (\x,1.65);
+    \draw[fieldy, thick, ->] (\x,2.05) -- (\x,1.65);
   }
 
   % one primary electron, accelerated across the gap
   \node[echarge, anchor=center, scale=1.15] at (3.6,4.35) {$\ominus$};
-  \draw[echarge, line width=1.3pt, -latex] (3.9,4.33) -- (5.6,4.08);
+  \draw[echarge, line width=1.3pt, ->] (3.9,4.33) -- (5.6,4.08);
 
   % impact ionization: a small burst at the impact point
   \foreach \a in {20,80,150,210,300}{
@@ -29,10 +29,10 @@
   % products: an electron kicked up towards the oxide, a hole driven
   % into the bulk, and the primary carrying on to the drain
   \node[echarge, anchor=center, scale=1.05] at (6.15,4.35) {$\ominus$};
-  \draw[echarge, line width=1.2pt, -latex] (6.25,4.5) -- (6.5,5.05);
+  \draw[echarge, line width=1.2pt, ->] (6.25,4.5) -- (6.5,5.05);
   \node[hcharge, anchor=center, scale=1.05] at (5.65,3.7) {$\oplus$};
-  \draw[hcharge, line width=1.2pt, -latex] (5.5,3.5) -- (4.95,2.8);
-  \draw[echarge, line width=1.2pt, -latex] (6.05,3.95) -- (6.5,3.75);
+  \draw[hcharge, line width=1.2pt, ->] (5.5,3.5) -- (4.95,2.8);
+  \draw[echarge, line width=1.2pt, ->] (6.05,3.95) -- (6.5,3.75);
 
   % force on a charge in the field
   \node[anchor=west, fill=white, inner sep=1.5pt] at (7.4,3.4) {$\vec{F} = q\vec{E}$};

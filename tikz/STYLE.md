@@ -37,13 +37,22 @@ Heavier strokes are for **annotation**, not for circuitry: the green
 
 ## Arrow tips
 
-*(pending: the author is choosing between the options in
-`tikz/_arrowopts.tex` — render it to see them side by side. Once chosen,
-the choice goes here and `fig_header.tex` sets it globally.)*
+One filled tip everywhere: `Latex` from `arrows.meta`, set globally in
+`fig_header.tex` as
 
-Today the repo is split: roughly half the arrows are the tikz default
-`->` (a thin open tip) and half are `-latex` (a filled triangle). Pick
-one and use it everywhere.
+```latex
+\tikzset{>={Latex}}
+```
+
+So a figure only ever writes `->`, `<-` or `<->` and gets the house tip.
+Do not write `-latex`, `-stealth` or `-{Triangle}` in a figure: if the
+tip ever needs to change, it should change in one place.
+
+`Latex` scales with the line width, so an arrow on a `very thick`
+annotation stroke stays in proportion instead of looking undersized.
+
+`tikz/_arrowopts.tex` renders the candidates side by side, if the
+question ever comes up again.
 
 ## Colour
 

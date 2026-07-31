@@ -29,13 +29,13 @@
   \draw[densely dotted, black!50] (\dx,\dy) -- (\dx,{\bh+\dy});
 
   % dimensions
-  \draw[blue, thick, latex-latex] (-0.25,-0.15) -- ({\dx-0.25},{\dy-0.15});
+  \draw[blue, thick, <->] (-0.25,-0.15) -- ({\dx-0.25},{\dy-0.15});
   \node[blue, anchor=east] at (-0.15,0.35) {$W > 20$ nm};
 
-  \draw[blue, thick, latex-latex] (0.1,{\bh+\dy+0.35}) -- ({\len+0.1},{\bh+\dy+0.35});
+  \draw[blue, thick, <->] (0.1,{\bh+\dy+0.35}) -- ({\len+0.1},{\bh+\dy+0.35});
   \node[blue, anchor=south] at ({\len/2},{\bh+\dy+0.45}) {$L = ?$};
 
-  \draw[blue, thick, latex-latex] ({\len+\dx+0.35},\dy) -- ({\len+\dx+0.35},{\bh+\dy});
+  \draw[blue, thick, <->] ({\len+\dx+0.35},\dy) -- ({\len+\dx+0.35},{\bh+\dy});
   \node[blue, anchor=west] at ({\len+\dx+0.5},{\bh/2+\dy}) {$H < 1 \mu$m};
 
 \end{tikzpicture}
