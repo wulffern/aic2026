@@ -1,18 +1,29 @@
 #!/usr/bin/env python3
 
+import os
+import sys
+
 import numpy as np
 import matplotlib.pyplot as plt
+
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                                "..", "py"))
+from tikzplot import Figure
 
 
 #- Enable hanning window
 hann = True
 
 #- Create a time vector
-N = 2**13
+#- Overridable, so the three variants the lecture uses can be
+#- regenerated without editing the file:
+#-   Q_BITS=10 python3 q.py
+#-   Q_N=16 Q_FDIV=9 Q_SUFFIX=_fharm python3 q.py
+N = 2**int(os.environ.get("Q_N", 13))
 t = np.arange(N)
 
 #- Create the "continuous time" signal
-fdivide = 2**6
+fdivide = 2**int(os.environ.get("Q_FDIV", 6))
 f1 = 1/fdivide - 1/N
 x_s = np.sin(2*np.pi*f1*t) + + 1/2**15*np.random.randn(N)
 
@@ -39,7 +50,7 @@ def adc(x,bits):
     return np.clip(y, -1 + delta/2, 1 - delta/2)
 
 # To discrete value
-bits = 1
+bits = int(os.environ.get("Q_BITS", 1))
 y_sn = adc(x_sn,bits)
 
 #----------------------------------------------
@@ -93,4 +104,35 @@ fig = plt.gcf()
 fig.set_size_inches(12, 7)
 plt.tight_layout()
 plt.savefig("l6_quant.pdf")
-plt.show()
+
+#- The same three panels as TikZ, so the plot matches the schematics.
+tfig = Figure(f"""Where quantization noise actually goes, for a {bits}-bit quantizer.
+
+Three spectra of the same signal: continuous, then sampled, then
+quantized. The middle panel's floor sits 10 log(nfs) above the left
+one's, which is noise folding. The right panel is the point of the
+figure: quantization noise is not a floor at all, it is a comb of odd
+harmonics, and for a 1-bit quantizer their amplitudes are exactly 1/p.
+
+Harmonics above half the sample rate fold back, so the ninth and
+eleventh appear below the seventh on the frequency axis while still
+being smaller in amplitude.""", columns=3)
+
+panels = ((f_xs, X_s, "Continuous time, continuous value"),
+          (f_xn, X_sn, "Discrete time, continuous value"),
+          (f_xn, Y_sn, "Discrete time, discrete value"))
+for i, (fx, spec, name) in enumerate(panels):
+    ax = tfig.axes(xlabel="$f/f_s$", title=name,
+                   ylabel="Magnitude [dB20]" if i == 0 else None,
+                   ylim=(-160, 0), width=4.6, height=5.0)
+    ax.plot(fx, 20*np.log10(np.abs(spec)), colour="black")
+    if i == 2:
+        #- the chapter argues in bin numbers, so keep them on the figure
+        ax.annotate(-0.47, -80,
+                    f"{bits}-bit\\\\ $f_1$ = bin {int(f1*N)}"
+                    f"\\\\ $f_3$ = bin {int(f1*N*3)}"
+                    f"\\\\ $f_5$ = bin {int(f1*N*5)}"
+                    f"\\\\ bin = $f/f_s \\times$ {M}",
+                    anchor="north west")
+
+tfig.save(f"l6_q_{bits}" + os.environ.get("Q_SUFFIX", ""))

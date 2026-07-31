@@ -666,7 +666,7 @@ the band wherever a harmonic lands above $f_s/2$.
 
 ---
 
-![fit](../media/l6_q_1.svg)
+![fit](../media/l6_q_1_tikz.pdf)
 
 <!--pan_doc:
 <sub>Figure 20: FFT of a sinusoid with noise as continuous value (left), after sampling (middle), and after 1-bit quantization (right), where the quantization noise shows up as distinct harmonic spikes rather than a white noise floor</sub>
@@ -685,7 +685,7 @@ Agreement to the second decimal with a formula you can write down from memory is
 
 This is worth internalising, because in a real converter you do not get to compare against a formula. A spike at 651 with nothing at 1397 is not evidence of some mysterious distortion mechanism; it is the eleventh harmonic, folded. If you change the python script to reduce the frequency, `fdivide=2**9`, and increase number of points, `N=2**16`, as in the plot below, the eleventh harmonic no longer folds, and you'll see it directly at bin 1397.
 
-![fit](../media/l6_q_1_fharm.svg)
+![fit](../media/l6_q_1_fharm_tikz.pdf)
 
 <sub>Figure 21: The same 1-bit quantization with lower input frequency and a 16384-point FFT, where the 11th harmonic appears directly at bin 1397 instead of folding</sub>
 
@@ -703,7 +703,7 @@ A consequence is that the quantization noise becomes more and more uniform, as c
 
 ---
 
-![fit](../media/l6_q_10.svg)
+![fit](../media/l6_q_10_tikz.pdf)
 
 
 <!--pan_doc:
@@ -874,7 +874,7 @@ The noise has all frequencies, and it's the high frequency components that start
 
 -->
 
-![fit](../media/l6_osr_2.svg)
+![fit](../media/l6_osr_2_tikz.pdf)
 
 <!--pan_doc:
 <sub>Figure 23: FFTs from continuous value to 10-bit quantized to oversampled with OSR=2 (right), where the averaging filter nulls the noise towards half the sample rate</sub>
@@ -890,7 +890,7 @@ For an OSR of 4 we can count four dips in the noise floor, although there are re
 
 -->
 
-![fit](../media/l6_osr_4.svg)
+![fit](../media/l6_osr_4_tikz.pdf)
 
 <!--pan_doc:
 <sub>Figure 24: The same FFTs with OSR=4 (right), where the moving-average filter puts three nulls in the noise floor, seen as four dips on this two-sided plot, and the noise power increases close to zero frequency</sub>
@@ -1306,7 +1306,7 @@ If we look at the noise we can also see the non-white quantization noise, which 
 
 -->
 
-![fit](../media/l6_sd_d0_b1.svg)
+![fit](../media/l6_sd_d0_b1_tikz.pdf)
 
 <!--pan_doc:
 <sub>Figure 28: First-order sigma-delta modulator with 1-bit quantizer and no dither, where the noise-shaped spectrum (right) tends towards zero at zero frequency but contains distinct tones</sub>
@@ -1322,7 +1322,7 @@ Be clear about what has been bought and what has been paid, though, because the 
 
 -->
 
-![fit](../media/l6_sd_d1_b1.svg)
+![fit](../media/l6_sd_d1_b1_tikz.pdf)
 
 <!--pan_doc:
 <sub>Figure 29: The same first-order 1-bit sigma-delta modulator with dither enabled, where the noise-shaped spectrum (right) is smoother and more noise-like</sub>
@@ -1339,7 +1339,7 @@ Two things have changed from the previous two figures, and it is worth saying so
 
 -->
 
-![fit](../media/l6_sdlog_d1_b5.svg)
+![fit](../media/l6_sdlog_d1_b5_tikz.pdf)
 
 <!--pan_doc:
 <sub>Figure 30: Magnitude spectrum of the output of a 5-bit first-order sigma-delta modulator on a logarithmic frequency axis, showing the 20 dB/decade shaping of the quantization noise</sub>

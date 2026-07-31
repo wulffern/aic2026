@@ -1,7 +1,14 @@
 #!/usr/bin/env python3
 
+import os
+import sys
+
 import numpy as np
 import matplotlib.pyplot as plt
+
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                                "..", "py"))
+from tikzplot import Figure
 
 
 
@@ -112,4 +119,31 @@ fig = plt.gcf()
 fig.set_size_inches(12, 7)
 plt.tight_layout()
 plt.savefig("l6_osr_" + str(OSR) + ".pdf")
-plt.show()
+
+#- The same four panels as TikZ, so the plot matches the schematics.
+tfig = Figure(f"""Oversampling with a moving average, OSR = {OSR}.
+
+Four spectra of the same signal: continuous, sampled, quantized, and
+then filtered by a length-{OSR} moving average. Read the last panel
+carefully. The nulls are the filter's zeros, but the floor near zero
+frequency is not lower than in the panel before it - if anything it is
+slightly higher, because the low frequency noise components add.
+
+What oversampling buys is not visible here, because these panels are
+never decimated. The gain comes from counting only the noise inside the
+narrower band, and the filter's job is to stop the rest folding back in
+when the decimation does happen.""", columns=4)
+
+panels = ((X_s, "Continuous time, continuous value", None),
+          (X_sn, "Discrete time, continuous value", None),
+          (Y_sn, "Discrete time, discrete value", f"{bits}-bit"),
+          (Y_on, "Oversampled", f"OSR = {OSR}"))
+for i, (spec, name, note) in enumerate(panels):
+    ax = tfig.axes(xlabel="$f/f_s$", title=name,
+                   ylabel="Magnitude [dB20]" if i == 0 else None,
+                   ylim=(-160, 0), width=3.5, height=4.6)
+    ax.plot(faxis(spec), 20*np.log10(np.abs(spec)), colour="black")
+    if note:
+        ax.annotate(-0.47, -12, note, anchor="north west")
+
+tfig.save("l6_osr_" + str(OSR))

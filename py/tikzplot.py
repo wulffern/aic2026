@@ -116,7 +116,7 @@ class Axes:
 
     def annotate(self, x, y, text, anchor="south west", colour="black"):
         self.extra.append(
-            f"\\node[anchor={anchor}, {colour}, scale=0.85] "
+            f"\\node[anchor={anchor}, {colour}, scale=0.85, align=left] "
             f"at (axis cs:{_fmt(x)},{_fmt(y)}) {{{text}}};")
         return self
 
@@ -132,6 +132,7 @@ class Axes:
             "tick align=outside",
             "tick label style={font=\\small}",
             "label style={font=\\small}",
+            "title style={font=\\small, yshift=-1mm}",
             "legend cell align=left",
             "legend style={font=\\small, draw=gray!50, fill=white, "
             "fill opacity=0.85, text opacity=1}",

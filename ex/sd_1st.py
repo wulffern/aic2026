@@ -1,7 +1,14 @@
 #!/usr/bin/env python3
 
+import os
+import sys
+
 import numpy as np
 import matplotlib.pyplot as plt
+
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                                "..", "py"))
+from tikzplot import Figure
 
 #- Create a time vector
 N = 2**12
@@ -25,7 +32,10 @@ x_s = 0.7*np.sin(2*np.pi*f1*t) + 1/2**15*np.random.randn(N)
 nfs = 4
 u = x_s[0::nfs]
 
-bits = 1
+#- Overridable, so the three variants the lecture uses can be
+#- regenerated without editing the file:
+#-   SD_BITS=1 SD_DITHER=0 python3 sd_1st.py
+bits = int(os.environ.get("SD_BITS", 1))
 
 def quantize(v,bits):
     #- 2**bits levels reaching +/-1, so bits=1 is a genuine two-level
@@ -39,7 +49,7 @@ def quantize(v,bits):
 
 y_sn = np.array([quantize(v,bits) for v in u])
 
-dither = 1
+dither = int(os.environ.get("SD_DITHER", 1))
 M = len(u)
 y_sd = np.zeros(M)
 x = np.zeros(M)
@@ -119,4 +129,37 @@ plt.ylabel("Magnitude [dB20]")
 plt.grid(True)
 
 plt.savefig(f"l6_sdlog_d{dither}_b{bits}.pdf")
-plt.show()
+
+#- The same panels as TikZ, so the plots match the schematics.
+dither_note = "with dither" if dither else "no dither"
+tfig = Figure(f"""A first order sigma-delta modulator, {bits}-bit, {dither_note}.
+
+Four spectra: continuous, sampled, quantized without shaping, and then
+the modulator output. The last panel is the one to look at. The noise is
+not smaller in total - it cannot be - it has been pushed away from zero
+frequency, which is where the signal is.""", columns=4)
+
+panels = ((X_s, "Continuous time, continuous value", None),
+          (u, "Discrete time, continuous value", None),
+          (Y_sn, "Discrete time, discrete value", f"{bits}-bit"),
+          (Y_sdn, "Noise-shaped", f"dither = {dither}"))
+for i, (spec, name, note) in enumerate(panels):
+    ax = tfig.axes(xlabel="$f/f_s$", title=name,
+                   ylabel="Magnitude [dB20]" if i == 0 else None,
+                   ylim=(-160, 0), width=3.5, height=4.6)
+    ax.plot(faxis(spec), 20*np.log10(np.abs(spec)), colour="black")
+    if note:
+        #- bottom left, since the noise-shaped trace lives at the top
+        ax.annotate(-0.47, -155, note, anchor="south west")
+tfig.save(f"l6_sd_d{dither}_b{bits}")
+
+#- and the log-frequency view, where first order shaping is a straight line
+lfig = Figure(f"""The same {bits}-bit modulator output on a log frequency axis.
+
+Only the positive frequencies are shown. First order shaping is a
+straight 20 dB per decade rise on this axis, which is far easier to
+recognise than the curve it makes on a linear one.""")
+ax = lfig.axes(xlabel="Normalized frequency", ylabel="Magnitude [dB20]",
+               xlog=True, width=10.0, height=6.0)
+ax.plot(x_sdn_short[1:], 20*np.log10(np.abs(Y_sdn_short[1:])), colour="black")
+lfig.save(f"l6_sdlog_d{dither}_b{bits}")
