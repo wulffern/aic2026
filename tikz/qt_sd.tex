@@ -1,0 +1,68 @@
+\input{tikz/fig_header.tex}
+
+% A quadrature continuous-time sigma-delta modulator, drawn the way the
+% text asks you to read it rather than the way it is built.
+%
+% Inspired by the modulator in "A 56 mW Continuous-Time Quadrature
+% Cascaded Sigma-Delta Modulator With 77 dB DR in a Near Zero-IF 20 MHz
+% Band". The original is fully differential, cascaded, and carries every
+% tuning resistor; the surrounding text tells the reader to set the
+% cross-coupling to zero, follow one path, and ignore the second stage,
+% so that is what this draws, with the cross-coupling and the second
+% stage shown as the two things you add back afterwards.
+
+\begin{tikzpicture}[thick]
+  \input{tikz/sfg_lib.tex}
+
+  \def\yi{1.9}
+  \def\yq{-1.9}
+
+  \foreach \y/\tag/\sg in {\yi/i/1, \yq/q/-1} {
+    \draw[->] (-3.6,\y) -- (-2.47,\y);
+    \node[anchor=east, scale=0.9] at (-3.7,\y) {$V_{\tag}$};
+    \node[scale=0.85, anchor=south] at (-3.1,\y+0.1) {$R_1$};
+
+    \sfgSum{-2.2}{\y}
+    \sfgBox{0.4}{\y}{$\displaystyle\frac{1}{s}$}
+    \draw[->] (-1.95,\y) -- (-0.6,\y);
+
+    \sfgBox{3.6}{\y}{$H_2(s)$}
+    \draw[->] (1.4,\y) -- (2.6,\y);
+
+    \draw[->] (4.6,\y) -- (5.6,\y);
+    \sfgTall{5.6}{\y-0.7}{6.9}{\y+0.7}{ADC};
+    \draw[->] (6.9,\y) -- (8.3,\y);
+    \node[anchor=west, scale=0.9] at (8.4,\y) {$Y_{\tag}$};
+    \node[scale=0.8, anchor=south] at (7.6,\y+0.1) {4b};
+
+    %- the feedback that makes it a sigma-delta at all
+    \draw (7.6,\y) -- (7.6,{\y+\sg*1.5});
+    \fill (7.6,\y) circle (0.075);
+    \sfgTall{2.9}{\y+\sg*1.5-0.4}{4.3}{\y+\sg*1.5+0.4}{DAC};
+    \draw[->] (7.6,{\y+\sg*1.5}) -- (4.3,{\y+\sg*1.5});
+    \draw (2.9,{\y+\sg*1.5}) -- (-2.2,{\y+\sg*1.5});
+    \draw[->] (-2.2,{\y+\sg*1.5}) -- (-2.2,{\y+\sg*0.3});
+  }
+
+  %- The cross-coupling, tapped from each integrator output and taken to
+  %- the other path's summing node. Two separate verticals so they do not
+  %- run on top of each other in the middle.
+  \draw[red, thick] (1.4,\yi) -- (1.4,0.85) -- (-2.35,0.85);
+  \draw[red, thick, ->] (-2.35,0.85) -- (-2.35,{\yq+0.22});
+  \fill[red] (1.4,\yi) circle (0.075);
+
+  \draw[red, thick] (1.4,\yq) -- (1.4,-0.85) -- (-2.05,-0.85);
+  \draw[red, thick, ->] (-2.05,-0.85) -- (-2.05,{\yi-0.22});
+  \fill[red] (1.4,\yq) circle (0.075);
+
+  \node[red, scale=0.85, anchor=west] at (1.7,0.0)
+    {$R_{fb}$: the cross-coupling};
+
+  \node[anchor=north, align=center, scale=0.9] at (2.6,-4.4)
+    {Set $R_{fb}$ to infinity and the two halves are ordinary real\\
+     sigma-delta modulators. Connect them, and the noise transfer\\
+     function stops being symmetric about zero frequency, which is\\
+     what a near zero-IF receiver needs.};
+
+\end{tikzpicture}
+\end{document}

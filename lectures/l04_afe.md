@@ -788,10 +788,10 @@ It's possible to show that if the gain from $V(Vpi,Vpm)$ to ADC1i input is large
 -->
 
 
-![inline](../media/qt_sd.png) 
+![fit](../media/qt_sd_tikz.pdf)
 
 <!--pan_doc:
-<sub>Figure 14: Continuous-time quadrature cascaded sigma-delta modulator with in-phase and quadrature paths</sub>
+<sub>Figure 14: One stage of a continuous-time quadrature sigma-delta modulator, drawn as the text suggests reading it: two real modulators joined by the cross-coupling that makes them complex. Inspired by Breems et al. [@breems07], which is fully differential, cascaded, and has a tuning resistor on everything</sub>
 -->
 
 ---

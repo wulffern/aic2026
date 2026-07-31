@@ -1486,10 +1486,20 @@ and that may look like an exercise in "Let's make something complex", however, m
 20 MHz Band](https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=4381437)
 
 
-![inline](../media/qt_sd.png)
+![fit](../media/qt_sd_tikz.pdf)
 
 <!--pan_doc:
-<sub>Figure 35: Continuous-time quadrature cascaded sigma-delta modulator for radio receivers: two cross-coupled I and Q integrator chains with 4-bit ADCs and feedback DACs</sub>
+<sub>Figure 35: One stage of the quadrature modulator, with the second cascaded stage and the differential wiring left out. Inspired by Breems et al. [@breems07]</sub>
+
+The cross-coupling in red is the whole of what makes it quadrature. Take
+it away and there are two independent real modulators, each with a noise
+transfer function that is symmetric about zero frequency, because a real
+circuit cannot tell $+f$ from $-f$. Put it back and the pair responds to
+a rotating phasor rather than an oscillating one, so the notch can sit
+on one side of zero and not the other. That is exactly what a near
+zero-IF receiver wants: the wanted channel is a little above zero, its
+image a little below, and only a complex modulator can quieten one
+without quietening both.
 -->
 
 ---

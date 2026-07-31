@@ -348,10 +348,25 @@ at least for the latter parts of $\phi_2$ the gain is four.
 
 -->
 
-![right fit](../media/lewis.png)
+![fit](../media/sc_sha4_tikz.pdf)
 
 <!--pan_doc:
-<sub>Figure 6: Switched capacitor sample-and-hold amplifier with gain of 4, and its two-phase non-overlapping clock</sub>
+<sub>Figure 6: A fully differential switched-capacitor sample-and-hold with a gain of four, and the two-phase clock that runs it. Inspired by Fig. 6 of Lewis and Gray [@Lewis87]</sub>
+
+Follow the charge and the gain falls out. During $\phi_1$ the input is
+sampled onto $4C$ while the reset switch shorts $C$, so the feedback
+capacitor starts empty. During $\phi_2$ the left plate of $4C$ is pulled
+to $V_{CM}$, and the charge that was on it, $4C V_{in}$, has nowhere to
+go except onto $C$ — the OTA's input is high impedance and holds its own
+node at $V_{CM}$. Charge conservation then gives $C V_{out} = 4C
+V_{in}$, so the gain is 4, and it is 4 because one capacitor is four
+times another rather than because any transistor did something
+particular.
+
+The real circuit in the paper carries a common-mode feedback network and
+a dummy switch beside every real one, both left out here. They matter
+enormously when you build it and not at all when you are working out
+what it does.
 -->
 
 

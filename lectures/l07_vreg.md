@@ -61,11 +61,6 @@ if you want to dive deep into primary (non-chargeable) or secondary (chargeable)
 
 -->
 
-![left 70%](../media/lindens_handbook_of_batteries.png)
-
-<!--pan_doc:
-<sub>Figure 1: Linden's Handbook of Batteries, a reference work on battery chemistries and their voltages. Source: cover of Linden's Handbook of Batteries, 5th ed. (McGraw Hill)</sub>
--->
 
 
 <!--pan_doc:
@@ -101,7 +96,7 @@ Lanny explains how to design around some of the breakdown effects.
 ![fit](../media/nanoscale_effects_tikz.pdf)
 
 <!--pan_doc:
-<sub>Figure 2: A nanoscale NMOS in cross-section. Mechanical stress from the isolation trenches, the transverse and lateral fields in the channel, traps at the oxide interface, and hot carriers where the field peaks near the drain</sub>
+<sub>Figure 1: A nanoscale NMOS in cross-section. Mechanical stress from the isolation trenches, the transverse and lateral fields in the channel, traps at the oxide interface, and hot carriers where the field peaks near the drain</sub>
 
 Two of those four are the ones that kill it. The transverse field
 $E_y$ is what the gate oxide has to withstand, and the traps are the
@@ -135,7 +130,7 @@ Below is an example of ReRAM. In the Pristine state the conductance is low, resi
 ![fit](../media/forming.png)
 
 <!--pan_doc:
-<sub>Figure 3: ReRAM conductance distributions in the pristine, formed (LRS), and reset (HRS) states</sub>
+<sub>Figure 2: ReRAM conductance distributions in the pristine, formed (LRS), and reset (HRS) states</sub>
 -->
 
 
@@ -235,7 +230,7 @@ but the architecture of the analog design would be either a linear regulator, or
 ![original fit](../media/l9_sarc_tikz.pdf)
 
 <!--pan_doc:
-<sub>Figure 4: Example supply planning from VBUS and VBAT down to IO and core voltage, with a regulator between each domain</sub>
+<sub>Figure 3: Example supply planning from VBUS and VBAT down to IO and core voltage, with a regulator between each domain</sub>
 -->
 
 ---
@@ -272,7 +267,7 @@ regulators there are on an IC. The picture below is from nRF5340 (page 23)
 ![original fit](../media/l9_nrf53.pdf)
 
 <!--pan_doc:
-<sub>Figure 5: Regulators in the nRF5340, from the product specification. Source: Nordic Semiconductor, nRF5340 Product Specification</sub>
+<sub>Figure 4: Regulators in the nRF5340, from the product specification. Source: Nordic Semiconductor, nRF5340 Product Specification</sub>
 -->
 
 ---
@@ -301,7 +296,7 @@ the PMOS to force the input voltages of the OTA to be equal.
 ![left fit](../media/l9_ldo_pmos_tikz.pdf)
 
 <!--pan_doc:
-<sub>Figure 6: Linear regulator with a PMOS pass-fet controlled by an OTA feedback loop</sub>
+<sub>Figure 5: Linear regulator with a PMOS pass-fet controlled by an OTA feedback loop</sub>
 -->
 
 
@@ -355,7 +350,7 @@ Another interesting phenomena with NMOS pass-fet is that the PSRR is usually bet
 ![right fit](../media/l9_ldo_nmos_tikz.pdf)
 
 <!--pan_doc:
-<sub>Figure 7: Linear regulator with an NMOS pass-fet controlled by an OTA feedback loop</sub>
+<sub>Figure 6: Linear regulator with an NMOS pass-fet controlled by an OTA feedback loop</sub>
 -->
 
 ---
@@ -417,7 +412,7 @@ Sometimes it's easier to split the range into multiple ranges, which is what the
 ![fit](../media/l7_loadreg_tikz.pdf)
 
 <!--pan_doc:
-<sub>Figure 8: Simulated pass-fet drain current against gate-source voltage for the 500 mA LDO testbench, five decades of current over one volt of gate drive</sub>
+<sub>Figure 7: Simulated pass-fet drain current against gate-source voltage for the 500 mA LDO testbench, five decades of current over one volt of gate drive</sub>
 -->
 
 
@@ -435,7 +430,7 @@ we choose will depend on the application.
 ![fit](../media/l6_ldo_types_tikz.pdf)
 
 <!--pan_doc:
-<sub>Figure 9: Pass-fet control options: analog Vgs modulation, digital control of parallel instances, and duty-cycle control</sub>
+<sub>Figure 8: Pass-fet control options: analog Vgs modulation, digital control of parallel instances, and duty-cycle control</sub>
 -->
 
 
@@ -515,7 +510,7 @@ If we have a control loop on the output voltage, then we can get an output volta
 ![inline fit](../media/l7_ind_buck_tikz.pdf)
 
 <!--pan_doc:
-<sub>Figure 10: Principle of an inductive buck DC/DC converter: a switch, freewheeling diode, inductor and load capacitor</sub>
+<sub>Figure 9: Principle of an inductive buck DC/DC converter: a switch, freewheeling diode, inductor and load capacitor</sub>
 -->
 
 ---
@@ -541,7 +536,7 @@ Often we have to insert an LDO after a capacitive buck to make the output voltag
 ![inline fit](../media/l7_cap_buck_tikz.pdf)
 
 <!--pan_doc:
-<sub>Figure 11: Principle of a capacitive buck: two capacitors charged in series are reconfigured in parallel to halve the voltage</sub>
+<sub>Figure 10: Principle of a capacitive buck: two capacitors charged in series are reconfigured in parallel to halve the voltage</sub>
 -->
 
 
@@ -562,7 +557,7 @@ In a similar manner to the Buck, the output voltage will be impacted by how long
 ![inline fit](../media/l7_ind_boost_tikz.pdf)
 
 <!--pan_doc:
-<sub>Figure 12: Principle of an inductive boost DC/DC converter: the inductor current is pushed through the diode to an output above Vin</sub>
+<sub>Figure 11: Principle of an inductive boost DC/DC converter: the inductor current is pushed through the diode to an output above Vin</sub>
 -->
 
 ---
@@ -582,7 +577,7 @@ The configuration below is quite often called a "Charge pump", and can be config
 ![inline fit](../media/l7_cap_boost_tikz.pdf)
 
 <!--pan_doc:
-<sub>Figure 13: Principle of a capacitive boost (charge pump): two capacitors charged in parallel are stacked in series to double the voltage</sub>
+<sub>Figure 12: Principle of a capacitive boost (charge pump): two capacitors charged in parallel are stacked in series to double the voltage</sub>
 -->
 
 ---
@@ -608,7 +603,7 @@ Most DC/DCs are feedback systems, so the control will be adjusted to force the o
 ![left fit](../media/l7_buck_tikz.pdf)
 
 <!--pan_doc:
-<sub>Figure 14: Inductive switch-mode buck converter with control block, and waveforms of the inductor voltage Vx and current Ix</sub>
+<sub>Figure 13: Inductive switch-mode buck converter with control block, and waveforms of the inductor voltage Vx and current Ix</sub>
 -->
 
 
@@ -676,7 +671,7 @@ In the figure below we can see how the current during A increases fast, while du
 ![right fit](../media/l07_buck_pwm_fig_start_tikz.pdf)
 
 <!--pan_doc:
-<sub>Figure 15: Start-up of the PWM buck model: the inductor current Ix increases fast during A=1, while the output voltage vo grows like a second order function</sub>
+<sub>Figure 14: Start-up of the PWM buck model: the inductor current Ix increases fast during A=1, while the output voltage vo grows like a second order function</sub>
 -->
 
 ---
@@ -696,7 +691,7 @@ $$ V_o = V_{in} \times \text{ Duty-Cycle}$$
 ![fit](../media/l07_buck_pwm_fig__tikz.pdf)
 
 <!--pan_doc:
-<sub>Figure 16: PWM buck model over a longer time: inductor and load currents (top), output voltage settling towards steady state (middle), and switch control A (bottom)</sub>
+<sub>Figure 15: PWM buck model over a longer time: inductor and load currents (top), output voltage settling towards steady state (middle), and switch control A (bottom)</sub>
 -->
 
 
@@ -720,7 +715,7 @@ So the whole of the inefficiency here is ripple current heating the switches, an
 ![fit](../media/l07_buck_pwm_fig_settled_tikz.pdf)
 
 <!--pan_doc:
-<sub>Figure 17: PWM buck model in steady state. The inductor current swings 76 mA peak to peak to supply a 1 mA load, and the output capacitor turns that into 1.6 mV of ripple on a 998 mV output</sub>
+<sub>Figure 16: PWM buck model in steady state. The inductor current swings 76 mA peak to peak to supply a 1 mA load, and the output capacitor turns that into 1.6 mV of ripple on a 998 mV output</sub>
 -->
 
 
@@ -742,7 +737,7 @@ We can see 3 inductor/capacitor pairs. One for the "VDDH", and two for "DECRF" a
 ![original fit](../media/l9_sw_nRF53.png)
 
 <!--pan_doc:
-<sub>Figure 18: nRF5340 application schematic with three inductor/capacitor pairs, revealing three internal DC/DC converters. Source: Nordic Semiconductor, nRF5340 Product Specification</sub>
+<sub>Figure 17: nRF5340 application schematic with three inductor/capacitor pairs, revealing three internal DC/DC converters. Source: Nordic Semiconductor, nRF5340 Product Specification</sub>
 -->
 
 ---
@@ -763,7 +758,7 @@ In pulsed-frequency mode we switch the NMOS and PMOS when it's needed. If there 
 ![left fit](../media/l9_sw_arch_tikz.pdf)
 
 <!--pan_doc:
-<sub>Figure 19: PFM buck architecture with an FSM driving the switches, a zero-cross comparator, and an output voltage comparator</sub>
+<sub>Figure 18: PFM buck architecture with an FSM driving the switches, a zero-cross comparator, and an output voltage comparator</sub>
 -->
 
 ---
@@ -788,7 +783,7 @@ When $vz=1$ happens in the state diagram, or the zero cross comparator triggers,
 ![fit](../media/l9_sw_state.pdf)
 
 <!--pan_doc:
-<sub>Figure 20: Finite state machine for PFM control with IDLE, UP, and DWN states</sub>
+<sub>Figure 19: Finite state machine for PFM control with IDLE, UP, and DWN states</sub>
 -->
 
 ---
@@ -808,7 +803,7 @@ Below you can see a period of the PFM buck. The state can be seen in the bottom 
 ![right fit](../media/l07_buck_pfm_fig_save_tikz.pdf)
 
 <!--pan_doc:
-<sub>Figure 21: One period of the PFM buck model: inductor and load currents (top), output voltage (middle), and FSM state (bottom)</sub>
+<sub>Figure 20: One period of the PFM buck model: inductor and load currents (top), output voltage (middle), and FSM state (bottom)</sub>
 -->
 
 ---

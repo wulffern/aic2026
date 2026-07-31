@@ -203,13 +203,7 @@ of the few ESD books in existence, shown below, and rely on you understanding of
 
 -->
 
-<!--![right 110%](https://media.wiley.com/product_data/coverImage300/18/04714987/0471498718.jpg)
 
-![right 110%](../media/esdbook.jpg)
-
-<!--pan_doc:
-<sub>Figure 2: A book on ESD. Source: cover of Amerasekera and Duvvury, ESD in Silicon Integrated Circuits (Wiley)</sub>
--->
 
 
 <!--pan_doc: 
@@ -292,7 +286,7 @@ HBM is the "simple" version of ESD, a model can be seen in Figure 3. Some of the
 ![right fit](../media/esd_hbm_finger.pdf)
 
 <!--pan_doc:
-<sub>Figure 3: Human body model (HBM)</sub>
+<sub>Figure 2: Human body model (HBM)</sub>
 
 More on circuits that protect from HBM later.
 
@@ -336,7 +330,7 @@ place it on an metal plate with an insulator in-between, and charge the metal pl
 ![left fit](../media/cdm.pdf)
 
 <!--pan_doc:
-<sub>Figure 4: Charged Device Model (CDM) testing</sub>
+<sub>Figure 3: Charged Device Model (CDM) testing</sub>
 -->
 
 
@@ -372,7 +366,7 @@ The gate source of the PMOS in the second inverter will see approximately 1 kV a
 ![fit](../media/cdm1.pdf)
 
 <!--pan_doc:
-<sub>Figure 5: Cross domain voltage problem with CDM (or indeed HBM) events </sub>
+<sub>Figure 4: Cross domain voltage problem with CDM (or indeed HBM) events </sub>
 -->
 
 
@@ -406,7 +400,7 @@ But the IC must not die, so we have to lead the current to ground somehow.
 ![left fit](../media/esd_hbm_model.pdf)
 
 <!--pan_doc:
-<sub>Figure 6: ESD HBM zap example </sub>
+<sub>Figure 5: ESD HBM zap example </sub>
 -->
 
 
@@ -423,7 +417,7 @@ nor where it will leave our circuit, so we must make sure that all combinations 
 ![inline fit](../media/l02_hbm_overview.pdf)
 
 <!--pan_doc:
-<sub>Figure 7: ESD zap permutations </sub>
+<sub>Figure 6: ESD zap permutations </sub>
 -->
 
 
@@ -441,7 +435,7 @@ not affect the normal operation of our IC.
 ![inline fit](../media/l02_01.pdf)
 
 <!--pan_doc:
-<sub>Figure 8: Protection for zap from ground to VDD </sub>
+<sub>Figure 7: Protection for zap from ground to VDD </sub>
 -->
 
 
@@ -456,7 +450,7 @@ The same is true for current in on VSS and out on PIN. Here we can also use a di
 
 
 <!--pan_doc:
-<sub>Figure 9: Protection for zap from ground to PIN </sub>
+<sub>Figure 8: Protection for zap from ground to PIN </sub>
 -->
 
 
@@ -484,7 +478,7 @@ A circuit that can sometimes be used, if the ESD design window is not too small,
 ![inline fit](../media/l02_all.pdf)
 
 <!--pan_doc:
-<sub>Figure 10: Full protection with diodes and grounded gate NMOS (GGNMOS) </sub>
+<sub>Figure 9: Full protection with diodes and grounded gate NMOS (GGNMOS) </sub>
 -->
 
 
@@ -505,7 +499,7 @@ We need to think about how electrons, holes PN-junctions and bipolars work. Let'
 ![left fit](../media/l02_ggnmos.pdf)
 
 <!--pan_doc:
-<sub>Figure 11: The grounded gate NMOS (GGNMOS) </sub>
+<sub>Figure 10: The grounded gate NMOS (GGNMOS) </sub>
 -->
 
 
@@ -541,7 +535,7 @@ Assume a transistor like the one in Figure 12. The gate, source and bulk is conn
 ![fit](../media/ggnmos.pdf)
 
 <!--pan_doc:
-<sub>Figure 12: Cross section of the grounded gate NMOS </sub>
+<sub>Figure 11: Cross section of the grounded gate NMOS </sub>
 -->
 
 
@@ -633,7 +627,7 @@ that the voltage across the transistor gate does not go to breakdown levels.
 ![original fit](../media/l6/esd.pdf)
 
 <!--pan_doc:
-<sub>Figure 13: Full protection of an input including secondary protection </sub>
+<sub>Figure 12: Full protection of an input including secondary protection </sub>
 -->
 
 
@@ -660,7 +654,7 @@ The last inverter is just to get the polarity of the TO\_CORE signal the same as
 ![right fit](../media/l6/fig_methodology.pdf)
 
 <!--pan_doc:
-<sub>Figure 14: Full digital input including Schmitt trigger and level shifters </sub>
+<sub>Figure 13: Full digital input including Schmitt trigger and level shifters </sub>
 -->
 
 
@@ -684,7 +678,7 @@ Assume we have the circuit in Figure 15. Under certain conditions we can get a s
 ![left fit](../media/l02_latchup.pdf)
 
 <!--pan_doc:
-<sub>Figure 15: Inverter that suddenly shorts from VDD to ground located close to a PAD</sub>
+<sub>Figure 14: Inverter that suddenly shorts from VDD to ground located close to a PAD</sub>
 -->
 
 
@@ -727,7 +721,7 @@ with electron injection (1), then forward bias of PMOS source/drain junction (2)
 ![fit](../media/scr_eh.pdf)
 
 <!--pan_doc:
-<sub>Figure 16: Cross section of an inverter </sub>
+<sub>Figure 15: Cross section of an inverter </sub>
 -->
 
 
@@ -797,7 +791,7 @@ path when you actually want to understand the physics of latch-up.
 ![original fit](../media/l8/scr_model.pdf)
 
 <!--pan_doc:
-<sub>Figure 17: Cross section of an inverter including the parasitic bipolars </sub>
+<sub>Figure 16: Cross section of an inverter including the parasitic bipolars </sub>
 -->
 
 
