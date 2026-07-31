@@ -1,0 +1,54 @@
+\input{tikz/fig_header.tex}
+
+% What gets added to the square law below about 100 nm.
+%
+% Replaces a figure reproduced from Lewyn's paper, which showed every
+% effect at once. This draws four families and only four, because the
+% sections that follow take them one at a time and the job of this
+% figure is to say what is coming.
+%
+% Colour follows the house rules: armygreen for the mechanical, blue for
+% fields, red for the two that do damage.
+
+\begin{tikzpicture}[scale=0.9]
+  \input{tikz/mos_lib.tex}
+  \fetframe
+
+  %- shallow trench isolation either side: the source of the stress
+  \fill[gray!22] (-2.2,-1.5) rectangle (-0.15,0);
+  \fill[gray!22] (8.95,-1.5) rectangle (11.0,0);
+  \node[gray!55!black, scale=0.8] at (-1.2,-0.75) {STI};
+  \node[gray!55!black, scale=0.8] at (10.0,-0.75) {STI};
+  \draw (-2.2,0) -- (11.0,0);
+
+  %- 1. mechanical stress from the trench walls, pushing inwards
+  \draw[armygreen, very thick, ->] (-0.1,-2.15) -- (1.3,-2.15);
+  \draw[armygreen, very thick, ->] (8.9,-2.15) -- (7.5,-2.15);
+  \node[armygreen, scale=0.85] at (4.4,-2.15) {mechanical stress};
+
+  %- 2. the two fields in the channel
+  \draw[blue, very thick, ->] (4.4,0.95) -- (4.4,-0.55);
+  \node[blue, anchor=west, scale=0.85] at (4.5,-0.35) {$E_y$};
+  \draw[blue, very thick, ->] (3.3,-1.0) -- (5.5,-1.0);
+  \node[blue, anchor=north, scale=0.85] at (4.4,-1.05) {$E_x$};
+
+  %- 3. traps, right at the surface under the gate
+  \foreach \x in {3.1,3.5,3.9,4.3,4.7,5.1,5.5} {
+    \node[red, scale=0.75] at (\x,0) {$\boldsymbol{\times}$};
+  }
+  \node[red, anchor=south east, scale=0.85, align=right] at (2.4,1.55)
+    {interface and\\ oxide traps};
+  \draw[red, thick, ->] (2.5,1.5) -- (3.3,0.2);
+
+  %- 4. the drain end, where the lateral field peaks
+  \draw[red, very thick, ->] (7.6,1.55) -- (6.4,0.15);
+  \node[red, anchor=south west, scale=0.85, align=left] at (7.5,1.55)
+    {hot carriers where\\ the field peaks};
+
+  \node[anchor=north, align=center, scale=0.9] at (4.4,-2.75)
+    {Four families of effect, each with its own corner of the device model,\\
+     and each taken separately in the sections that follow. Below about\\
+     100 nm every one of them is first order.};
+
+\end{tikzpicture}
+\end{document}

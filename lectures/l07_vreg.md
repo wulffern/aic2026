@@ -98,10 +98,17 @@ Lanny explains how to design around some of the breakdown effects.
 -->
 
 
-![](../media/advmos.pdf)
+![fit](../media/nanoscale_effects_tikz.pdf)
 
 <!--pan_doc:
-<sub>Figure 2: Cross section of a nanoscale NMOS transistor showing stress components, electric fields, and oxide trap densities</sub>
+<sub>Figure 2: A nanoscale NMOS in cross-section. Mechanical stress from the isolation trenches, the transverse and lateral fields in the channel, traps at the oxide interface, and hot carriers where the field peaks near the drain</sub>
+
+Two of those four are the ones that kill it. The transverse field
+$E_y$ is what the gate oxide has to withstand, and the traps are the
+damage accumulating in it; the hot carriers at the drain end are the
+other. Neither is a failure you see immediately, which is what makes
+them dangerous - the device works, and then some months later it does
+not.
 -->
 
 

@@ -1568,16 +1568,15 @@ bias) each one responds to. The paper below is a fine map of the zoo.
 
 ---
 
-![original fit](../media/aicdn_front.png)
-
-[https://ieeexplore.ieee.org/document/5247174](https://ieeexplore.ieee.org/document/5247174 )
+Analog Circuit Design in Nanoscale CMOS Technologies [@lewyn09] --
+[ieeexplore.ieee.org/document/5247174](https://ieeexplore.ieee.org/document/5247174)
 
 ---
 
-![original fit](../media/aicdn.pdf)
+![fit](../media/nanoscale_effects_tikz.pdf)
 
 <!--pan_doc:
-<sub>Figure 34: Nanoscale CMOS cross-section from the paper above</sub>
+<sub>Figure 34: Four families of short-channel effect on one cross-section - mechanical stress from the isolation trenches, the transverse and lateral fields in the channel, traps at the oxide interface, and hot carriers where the lateral field peaks near the drain</sub>
 
 The annotations - stress components, fields, trap densities and proximity effects - are all things that measurably change the current of a modern transistor, and each has its own corner of the device model.
 -->
