@@ -47,7 +47,7 @@ Related to Ampere we have the derived units of charge (Ampere Seconds), Volt
 ![left fit](../media/NIST.SP_.1247.png)
 
 <!--pan_doc:
-<sub>Figure 1: NIST poster of the SI base units and the derived units</sub>
+<sub>Figure 1: NIST poster of the SI base units and the derived units. Image: NIST, US Department of Commerce (US federal work)</sub>
 -->
 
 

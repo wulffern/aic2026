@@ -201,7 +201,7 @@ Imagine we have Iron and copper wires, as shown below, and we heat one end. In t
 ![fit](../media/Thermoelectric_effect.png)
 
 <!--pan_doc:
-<sub>Figure 4: The thermoelectric effect - iron and copper wires joined at a heated end drive a current through a meter connected at the cold end</sub>
+<sub>Figure 4: The thermoelectric effect - iron and copper wires joined at a heated end drive a current through a meter connected at the cold end. Image: Cmglee, CC BY-SA 4.0, via Wikimedia Commons</sub>
 -->
 
 
@@ -232,7 +232,7 @@ valence band.
 ![inline fit](../media/Absolute_Seebeck_coefficients_of_various_metals_up_to_high_temperatures.svg)
 
 <!--pan_doc:
-<sub>Figure 5: Absolute Seebeck coefficient versus temperature for a range of metals, spanning roughly +20 uV/K for tungsten to -60 uV/K for palladium</sub>
+<sub>Figure 5: Absolute Seebeck coefficient versus temperature for a range of metals, spanning roughly +20 uV/K for tungsten to -60 uV/K for palladium. Image: Nanite, CC0, via Wikimedia Commons</sub>
 -->
 
 
@@ -241,7 +241,7 @@ valence band.
 ![right fit](../media/Mott_Seebeck_silicon.png)
 
 <!--pan_doc:
-<sub>Figure 6: Seebeck coefficient and conductivity of silicon as a function of Fermi level, with the sign flipping between the valence and conduction band edges</sub>
+<sub>Figure 6: Seebeck coefficient and conductivity of silicon as a function of Fermi level, with the sign flipping between the valence and conduction band edges. Image: Nanite, CC0, via Wikimedia Commons</sub>
 -->
 
 ---
@@ -264,7 +264,7 @@ Assume we have a temperature difference of 50 degrees, then maybe we could get a
 ![fit](../media/Thermoelectric_Generator_Diagram.png)
 
 <!--pan_doc:
-<sub>Figure 7: Thermoelectric generator, where n-type and p-type legs between a heat source and a cool side drive a current through the load resistor</sub>
+<sub>Figure 7: Thermoelectric generator, where n-type and p-type legs between a heat source and a cool side drive a current through the load resistor. Image: Ken Brazier, CC BY-SA 4.0, via Wikimedia Commons</sub>
 -->
 
 <!--pan_doc:
@@ -280,7 +280,7 @@ we heat one end, and cool the other. Maybe you've heard of [Peltier elements](ht
 ![fit](../media/Thermoelectric_Cooler_Diagram.png)
 
 <!--pan_doc:
-<sub>Figure 8: The same structure run in reverse as a Peltier cooler, where a forced current cools the top surface and dissipates heat at the bottom</sub>
+<sub>Figure 8: The same structure run in reverse as a Peltier cooler, where a forced current cools the top surface and dissipates heat at the bottom. Image: Ken Brazier, CC BY-SA 4.0, via Wikimedia Commons</sub>
 -->
 
 
@@ -311,7 +311,7 @@ underneath Voyager in the picture below. The radioisotopes provide the heat, spa
 ![left fit](../media/1280px-Voyager_spacecraft_model.png)
 
 <!--pan_doc:
-<sub>Figure 9: The Voyager spacecraft, whose radioisotope thermoelectric generator is the finned cylinder below the dish</sub>
+<sub>Figure 9: The Voyager spacecraft, whose radioisotope thermoelectric generator is the finned cylinder below the dish. Image: NASA, public domain, via Wikimedia Commons</sub>
 -->
 
 ---
@@ -567,7 +567,7 @@ Near Field Communication (NFC) operates at close physical distances
 ![left fit](../media/FarNearFields-USP-4998112-1.png)
 
 <!--pan_doc:
-<sub>Figure 15: The reactive near field, radiative (Fresnel) near field and far field regions around an antenna</sub>
+<sub>Figure 15: The reactive near field, radiative (Fresnel) near field and far field regions around an antenna. Image: Goran M Djuknic, public domain (US patent), via Wikimedia Commons</sub>
 -->
 
 Reactive near field or inductive near field

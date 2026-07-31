@@ -65,7 +65,7 @@ nm.
 
 ![Silicon crystal unit cell\label{fig:silicon}](../media/503px-Silicon-unit-cell-3D-balls.png)
 
-<sub>Figure 1: Silicon crystal unit cell</sub>
+<sub>Figure 1: Silicon crystal unit cell. Image: Ben Mills, public domain, via Wikimedia Commons</sub>
 
 As you hopefully know, the energy levels of an electron around a positive
 nucleus are quantized, and we call them orbitals (or shells). For an atom far

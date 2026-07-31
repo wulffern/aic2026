@@ -229,7 +229,7 @@ transistors work.
 ---
 
 <!--pan_doc:
-<sub>Figure 9: The choice  </sub>
+<sub>Figure 9: The choice. Image: W.carter, CC BY-SA 4.0, via Wikimedia Commons</sub>
 
 
 

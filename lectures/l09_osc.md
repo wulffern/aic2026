@@ -169,7 +169,7 @@ The negative feedback loop ensures that the 5 MHz clock coming out is proportion
 ![fit](../media/Rubidium-oscillator.jpg)
 
 <!--pan_doc:
-<sub>Figure 3: Block diagram of a rubidium clock, where light through a Rb-87 gas cell and a photo detector lock a quartz oscillator to the hyper-fine transition</sub>
+<sub>Figure 3: Block diagram of a rubidium clock, where light through a Rb-87 gas cell and a photo detector lock a quartz oscillator to the hyper-fine transition. Image: Pamela L. Corey, public domain (US federal work), via Wikimedia Commons</sub>
 -->
 
 ---
@@ -196,7 +196,7 @@ Oscillators](https://en.wikipedia.org/wiki/Crystal_oscillator)
 ![fit](../media/Quartz_crystal_internal.jpg)
 
 <!--pan_doc:
-<sub>Figure 4: A packaged 27 MHz quartz crystal (top), and an opened package showing the quartz blank (bottom)</sub>
+<sub>Figure 4: A packaged 27 MHz quartz crystal (top), and an opened package showing the quartz blank (bottom). Image: Chamblis, CC BY-SA 4.0, via Wikimedia Commons</sub>
 -->
 
 ---
@@ -217,7 +217,7 @@ a correct enough frequency.
 ![fit](../media/Crystal_modes_multilingual.png)
 
 <!--pan_doc:
-<sub>Figure 5: Vibration modes of a quartz crystal: longitudinal, thickness shear, flexural, face shear, and tuning fork</sub>
+<sub>Figure 5: Vibration modes of a quartz crystal: longitudinal, thickness shear, flexural, face shear, and tuning fork. Image: Wdwd after Jitka, CC BY-SA 3.0, via Wikimedia Commons</sub>
 -->
 
 ---

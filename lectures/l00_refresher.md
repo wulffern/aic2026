@@ -51,7 +51,7 @@ look at the units below, and you can see it's $Q=CV$ [^1]
 
 <!--pan_doc: 
 
-<sub>Figure 1: Si base units, from [https://www.nist.gov/pml/owm/metric-si/si-units](https://www.nist.gov/pml/owm/metric-si/si-units)</sub>
+<sub>Figure 1: Si base units, from [https://www.nist.gov/pml/owm/metric-si/si-units](https://www.nist.gov/pml/owm/metric-si/si-units). Image: NIST, US Department of Commerce (US federal work)</sub>
 
 -->
 
@@ -68,7 +68,7 @@ into smaller parts. Explained further in the [standard model of particle physics
 
 <!--pan_doc:
 
-<sub>Figure 2: Standard model of particle physics, Wikipedia</sub>
+<sub>Figure 2: Standard model of particle physics, Wikipedia. Image: Cush after MissMJ, public domain, via Wikimedia Commons</sub>
 
 Electrons have a negative charge of $q \approx 1.602 \times 10^{-19}$. The proton a positive charge. The two charges balance exactly! If you have a trillion electrons and a trillion protons inside a volume, the net external charge will be $0$ (assuming we measure from some distance away). I find this fact absolutely incredible. There must be a fundamental connection between the charge of the proton and electron. It's insane that the charges balance out so exactly.
 
@@ -208,7 +208,7 @@ The discrete energy levels of the electron transition into bands of allowed ener
 
 <!--pan_doc:
 
-<sub>Figure 3: [Electronic band structure, Wikipedia](https://en.wikipedia.org/wiki/Electronic_band_structure)</sub>
+<sub>Figure 3: [Electronic band structure, Wikipedia](https://en.wikipedia.org/wiki/Electronic_band_structure). Image: Chetvorno, CC0, via Wikimedia Commons</sub>
 
 For a crystal, the allowed energy bands is captured in the [band structure](https://en.wikipedia.org/wiki/Electronic_band_structure)
 
@@ -227,7 +227,7 @@ faces, and 4 atoms inside the unit cell at a nearest neighbor distance of 0.235 
 ![left fit](../media/503px-Silicon-unit-cell-3D-balls.png)
 
 <!--pan_doc:
-<sub>Figure 4: [Silicon, Wikipedia](https://en.wikipedia.org/wiki/Silicon)</sub>
+<sub>Figure 4: [Silicon, Wikipedia](https://en.wikipedia.org/wiki/Silicon). Image: Ben Mills, public domain, via Wikimedia Commons</sub>
 -->
 
 ---
@@ -322,7 +322,7 @@ In metals, the band splitting of the energy levels causes the valence band and c
 
 <!--pan_doc:
 
-<sub>Figure 5: Band splitting in materials. [Electronic Band Structure, Wikipedia](https://en.wikipedia.org/wiki/Electronic_band_structure)</sub>
+<sub>Figure 5: Band splitting in materials. [Electronic Band Structure, Wikipedia](https://en.wikipedia.org/wiki/Electronic_band_structure). Image: Nanite, CC0, via Wikimedia Commons</sub>
 
 Electrons can easily transition between bound state and free state. As such, electrons in metals are shared over large distances, and there are many electrons readily available to move under an applied field, or difference in electron density. That's why metals conduct well.
 
@@ -382,7 +382,7 @@ of distance in the material.
 ![right fit](../media/Pn-junction_zero_bias.png)
 
 <!--pan_doc:
-<sub>Figure 6: [Band diagram of a PN junction, Wikipedia](https://en.wikipedia.org/wiki/Band_diagram)</sub>
+<sub>Figure 6: [Band diagram of a PN junction, Wikipedia](https://en.wikipedia.org/wiki/Band_diagram). Image: Brews ohare, CC BY-SA 3.0, via Wikimedia Commons</sub>
 -->
 
 The horizontal axis is the distance in the material, the vertical axis is the energy.

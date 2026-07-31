@@ -159,7 +159,7 @@ For the ISM bands, there are regions, as seen below.
 ![left fit](../media/International_Telecommunication_Union_regions_with_dividing_lines.svg)
 
 <!--pan_doc:
-<sub>Figure 1: ITU regions that set the ISM band allocations: region 1 (yellow), region 2 (blue), region 3 (pink)</sub>
+<sub>Figure 1: ITU regions that set the ISM band allocations: region 1 (yellow), region 2 (blue), region 3 (pink). Image: Maximilian Doerrbecker (Chumwa), CC BY-SA 2.5, via Wikimedia Commons</sub>
 -->
 
 - Yellow: Region 1
