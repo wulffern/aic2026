@@ -142,7 +142,7 @@ In SystemDotNet I implemented the event queue as a hash table, so it ran a bit f
 ![left fit](../media/systemdotnet.png)
 
 <!--pan_doc:
-<sub>Figure 3: Event queue implemented as a hash table in SystemDotNet, where events at 10, 20, 21 and 30 ns are looked up by time step before being run</sub>
+<sub>Figure 3: Event queue implemented as a hash table in SystemDotNet, where events at 10, 20, 21 and 30 ns are looked up by time step before being run. Source: the SystemDotNet project on SourceForge</sub>
 -->
 
 ### Digital Simulators

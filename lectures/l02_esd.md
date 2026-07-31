@@ -208,7 +208,7 @@ of the few ESD books in existence, shown below, and rely on you understanding of
 ![right 110%](../media/esdbook.jpg)
 
 <!--pan_doc:
-<sub>Figure 2: A book on ESD </sub>
+<sub>Figure 2: A book on ESD. Source: cover of Amerasekera and Duvvury, ESD in Silicon Integrated Circuits (Wiley)</sub>
 -->
 
 

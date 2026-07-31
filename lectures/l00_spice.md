@@ -44,7 +44,7 @@ Published in 1973 by Nagel and Pederson
 ![right fit](../media/nagel.png)
 
 <!--pan_doc:
-<sub>Figure 1: Title page of Nagel and Pederson's 1973 SPICE paper from the 16th Midwest Symposium on Circuit Theory</sub>
+<sub>Figure 1: Title page of Nagel and Pederson's 1973 SPICE paper from the 16th Midwest Symposium on Circuit Theory. Source: L. W. Nagel, SPICE2 memorandum ERL-M520, UC Berkeley, 1975</sub>
 -->
 
 

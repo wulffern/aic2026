@@ -638,7 +638,7 @@ guess that there are two oscillators in the nRF51822. Maybe it's a [multiple con
 ![fit](../media/nRF51822.jpg)
 
 <!--pan_doc:
-<sub>Figure 15: Die photograph of the nRF51822, where the two round LC oscillator inductors are easily identifiable</sub>
+<sub>Figure 15: Die photograph of the nRF51822, where the two round LC oscillator inductors are easily identifiable. Source: die photograph by zeptobars.com (licence not confirmed)</sub>
 -->
 
 ---

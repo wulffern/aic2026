@@ -64,7 +64,7 @@ if you want to dive deep into primary (non-chargeable) or secondary (chargeable)
 ![left 70%](../media/lindens_handbook_of_batteries.png)
 
 <!--pan_doc:
-<sub>Figure 1: Linden's Handbook of Batteries, a reference work on battery chemistries and their voltages</sub>
+<sub>Figure 1: Linden's Handbook of Batteries, a reference work on battery chemistries and their voltages. Source: cover of Linden's Handbook of Batteries, 5th ed. (McGraw Hill)</sub>
 -->
 
 
@@ -272,7 +272,7 @@ regulators there are on an IC. The picture below is from nRF5340 (page 23)
 ![original fit](../media/l9_nrf53.pdf)
 
 <!--pan_doc:
-<sub>Figure 5: Regulators in the nRF5340, from the product specification</sub>
+<sub>Figure 5: Regulators in the nRF5340, from the product specification. Source: Nordic Semiconductor, nRF5340 Product Specification</sub>
 -->
 
 ---
@@ -742,7 +742,7 @@ We can see 3 inductor/capacitor pairs. One for the "VDDH", and two for "DECRF" a
 ![original fit](../media/l9_sw_nRF53.png)
 
 <!--pan_doc:
-<sub>Figure 18: nRF5340 application schematic with three inductor/capacitor pairs, revealing three internal DC/DC converters</sub>
+<sub>Figure 18: nRF5340 application schematic with three inductor/capacitor pairs, revealing three internal DC/DC converters. Source: Nordic Semiconductor, nRF5340 Product Specification</sub>
 -->
 
 ---

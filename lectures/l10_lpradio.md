@@ -312,7 +312,7 @@ There exists a bible of batteries, see picture below. It's worth a read if you w
 ![left 70%](../media/lindens_handbook_of_batteries.png)
 
 <!--pan_doc:
-<sub>Figure 2: Linden's Handbook of Batteries, the reference work on primary and secondary cell chemistry</sub>
+<sub>Figure 2: Linden's Handbook of Batteries, the reference work on primary and secondary cell chemistry. Source: cover of Linden's Handbook of Batteries, 5th ed. (McGraw Hill)</sub>
 -->
 
 Mouse is maybe AA,  3000 mAh
@@ -794,7 +794,7 @@ Take any spectrum analyzer anywhere, and you'll see traffic on 2402, 2426, and 2
 ![inline](../media/ble_connection.jpg)
 
 <!--pan_doc:
-<sub>Figure 16: Advertising: the peripheral transmits advertisements once per advertisement interval while the central scans, until the central initiates a connection</sub>
+<sub>Figure 16: Advertising: the peripheral transmits advertisements once per advertisement interval while the central scans, until the central initiates a connection. Source: Nordic Semiconductor DevZone</sub>
 -->
 
 ---
@@ -813,7 +813,7 @@ Bluetooth LE is the perfect standard for wireless mice.
 ![inline](../media/ble_connection.png)
 
 <!--pan_doc:
-<sub>Figure 17: In a connection, central and peripheral exchange transmit and receive packets once every connection interval</sub>
+<sub>Figure 17: In a connection, central and peripheral exchange transmit and receive packets once every connection interval. Source: Nordic Semiconductor DevZone</sub>
 -->
 
 ---
@@ -1171,7 +1171,7 @@ of it. That is the number the rest of this chapter is really about.
 ![right 100%](../media/nrf53_rx.png)
 
 <!--pan_doc:
-<sub>Figure 28: nRF5340 radio specification: -97.5 dBm sensitivity at 1 Mbps Bluetooth LE, 2.6 mA in receive and 3.2 mA in transmit</sub>
+<sub>Figure 28: nRF5340 radio specification: -97.5 dBm sensitivity at 1 Mbps Bluetooth LE, 2.6 mA in receive and 3.2 mA in transmit. Source: Nordic Semiconductor, nRF5340 Product Specification</sub>
 -->
 
 ---

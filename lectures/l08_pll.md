@@ -169,7 +169,7 @@ In the figure below you can see the following items.
 ![fit](../media/l08_nrf53.png)
 
 <!--pan_doc:
-<sub>Figure 1: nRF5 development kit PCB with (1) 32 MHz crystal, (2) 32 KiHz crystal, (3) PCB antenna, and (4) DC/DC inductor</sub>
+<sub>Figure 1: nRF5 development kit PCB with (1) 32 MHz crystal, (2) 32 KiHz crystal, (3) PCB antenna, and (4) DC/DC inductor. Source: Nordic Semiconductor, nRF5340 documentation</sub>
 -->
 
 
