@@ -15,10 +15,15 @@ media/gmid.{pdf,svg} are its output.
 """
 
 import os
+import sys
 
 import cicsim as cs
 import matplotlib.pyplot as plt
 import numpy as np
+
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                                "..", "py"))
+from tikzplot import Figure
 
 home = os.getenv("HOME")
 jnwatr = "pro/aicex/ip/jnw_atr_sky130a/sim"
@@ -72,4 +77,28 @@ fig.set_size_inches(8, 5)
 plt.tight_layout()
 plt.savefig("gmid.pdf")
 plt.savefig("gmid.svg")
-plt.show()
+
+#- The same plot as TikZ, so it matches the schematics.
+tfig = Figure(f"""The gm/ID design curve, measured, against the two asymptotes.
+
+A simulated sky130 nfet with the two hand calculations the lecture
+derives laid over it. Weak inversion gives the flat ceiling 1/(n VT),
+with n = {n:.2f} read out of the simulation's own subthreshold slope
+rather than assumed. Strong inversion gives 2/Veff falling away to the
+right, drawn only where Veff exceeds 50 mV, since it means nothing at
+threshold.
+
+Neither asymptote describes the device between them, which is where most
+designs sit. That gap is the argument for having the curve at all.""")
+ax = tfig.axes(xlabel="$V_{GS}$ [V]", ylabel="$g_m/I_D$ [1/V]",
+               ylim=(0, 30), xlim=(0, float(max(vgs))),
+               width=10.0, height=6.0)
+ax.plot(vgs, gmid, colour="black",
+        label="sky130 nfet\\_01v8 (ngspice)", decimate=False)
+ax.plot(vgs[strong], (2 / veff)[strong], colour="blue",
+        style="dotted, thick", label="$2/V_{eff}$", decimate=False)
+ax.hline(1 / (n * VT), colour="red",
+         label=f"$1/(nV_T)$, $n$ = {n:.2f}")
+ax.vline(vt0, colour="armygreen")
+ax.annotate(vt0 + 0.02, 20, f"$V_{{tn}} \\approx$ {vt0:.2f} V")
+tfig.save("gmid")

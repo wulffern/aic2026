@@ -170,7 +170,7 @@ the same, while the "doubling every 11 degrees" is just wrong.
 
 -->
 
-![right fit Intrinsic carrier concentration versus temperature\label{fig:ni}](../media/ni.pdf)
+![right fit Intrinsic carrier concentration versus temperature\label{fig:ni}](../media/ni_tikz.pdf)
 
 <!--pan_doc:
 <sub>Figure 2: Intrinsic carrier concentration versus temperature</sub>
@@ -889,7 +889,7 @@ across temperature to within a few mV.
 -->
 
 
-![right fit Diode forward voltage as a function of temperature \label{fig:vd}](../media/vd.pdf)
+![right fit Diode forward voltage as a function of temperature \label{fig:vd}](../media/vd_tikz.pdf)
 
 <!--pan_doc:
 <sub>Figure 3: Diode forward voltage as a function of temperature</sub>

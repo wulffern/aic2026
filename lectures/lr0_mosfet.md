@@ -1335,7 +1335,7 @@ Bang for the buck
  
  $$ \frac{g_m}{I_D} = \frac{2}{V_{eff}}$$ 
 
-![right fit](../media/gmid.svg)
+![right fit](../media/gmid_tikz.pdf)
 
 <!--pan_doc:
 <sub>Figure 32: Simulated $g_m/I_D$ of a sky130 nfet_01v8 ([gmid.py](https://github.com/wulffern/aic2026/blob/main/ex/gmid.py))</sub>

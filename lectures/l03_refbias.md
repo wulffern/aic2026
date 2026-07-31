@@ -258,7 +258,7 @@ And if we plot the diode voltage, we can see that the voltage decreases as a fun
 
 -->
 
-![fit](../media/vd.svg)
+![fit](../media/vd_tikz.pdf)
 
 <!--pan_doc:
 

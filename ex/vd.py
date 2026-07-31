@@ -1,9 +1,16 @@
 #!/usr/bin/env python3
 # based on Streetman
+import os
+import sys
+
 from scipy import constants
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
+
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                                "..", "py"))
+from tikzplot import Figure
 
 sns.set_theme(style="dark")
 
@@ -117,3 +124,48 @@ if __name__ == "__main__":
     plt.xlabel("Temperature [C]")
 
     plt.show()
+
+    #- The same data as TikZ, split the way the lectures use it: the
+    #- carrier concentration is its own figure, the diode voltage and its
+    #- curvature another. See py/tikzplot.py.
+    nfig = Figure("""Intrinsic carrier concentration of silicon against temperature.
+
+Three ways of computing the same thing. The "simple" rule of doubling
+every 11 degrees is the one worth carrying in your head, and the plot
+shows where it stops being true: it is good around room temperature and
+optimistic in the cold, because it takes no account of the bandgap
+sitting in an exponent.
+
+All three agree to within a factor of two over the range an integrated
+circuit will actually see, which is the useful conclusion.""")
+    ax = nfig.axes(xlabel="Temperature [$^\\circ$C]",
+                   ylabel="$n_i$ [1/cm$^3$]", ylog=True,
+                   width=10.0, height=6.0, legend_pos="north west")
+    ax.plot(C, n_i_adv, colour="blue", label="Advanced", decimate=False)
+    ax.plot(C, n_i_simple, colour="red", label="Simple, doubling per 11 $^\\circ$C",
+            decimate=False)
+    ax.plot(C, n_i_bsim, colour="armygreen", label="BSIM 4.8", decimate=False)
+    nfig.save("ni")
+
+    vfig = Figure("""Diode forward voltage against temperature, and its curvature.
+
+The top panel is why a diode makes a usable temperature sensor: at a
+fixed current the forward voltage falls almost exactly linearly, here
+by 0.95 mV per degree. The textbook figure of about 2 mV per degree is
+for a diode carrying rather more current than the 1 uA used here; the
+slope depends on the bias, the linearity does not.
+
+The bottom panel is the "almost". Subtracting the best straight line
+leaves a bow of about 3 mV peak to peak, and that residual is the
+curvature term a bandgap reference has to deal with. It is small, it is
+systematic, and it is the reason a first order bandgap is flat to a few
+millivolts rather than to nothing.""", columns=1)
+    ax = vfig.axes(ylabel="Diode voltage [V]",
+                   xlabel="Temperature [$^\\circ$C]",
+                   width=9.5, height=3.6)
+    ax.plot(C, Vd, colour="black", decimate=False)
+    ax = vfig.axes(ylabel="Non-linear component [mV]",
+                   xlabel="Temperature [$^\\circ$C]",
+                   width=9.5, height=3.6)
+    ax.plot(C, vd_lin_err*m, colour="red", decimate=False)
+    vfig.save("vd")
