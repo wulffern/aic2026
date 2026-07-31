@@ -182,12 +182,33 @@ Still open in this chapter:
 
 ## Queued from the author, 2026-07-31
 
-1. **Script-generated plots to TikZ.** Many figures come out of the
-   python in `ex/`, and they carry matplotlib's look rather than the
-   book's. The ADC FFT figures done in TikZ are the reference for what
-   they should look like. Worth a pass that emits TikZ coordinates from
-   the scripts, the way `tikz/bessel.tex` and `tikz/quant_noise.tex`
-   already do, so the plots match the schematics.
+1. **Script-generated plots to TikZ** — infrastructure done
+   2026-07-31, 13 of 44 figures converted.
+
+   `py/tikzplot.py` renders plot data through `tikz/fig_header.tex`, so
+   a plot and a schematic on the same page share a font, a line width
+   and a palette. `fig_header.tex` gained `groupplots` and a pinned
+   `compat=1.16`. See the new section in `tikz/STYLE.md` for how to use
+   it from a script.
+
+   Converted: the three switched-capacitor plots, all eight ADC spectra,
+   the photovoltaic sweep and the antenna diode leakage. The last two
+   were chosen to exercise log axes, legends and shaded bands, so the
+   library now covers every case in the book.
+
+   **Still matplotlib, and why.** The remaining 31 figures fall in two
+   groups. About a dozen come from simulator output rather than a
+   script — the `jnw_*` gm/ID sweeps, the `dff_*` setup and hold
+   transients, `SUN_PLL_ROSC_KVCO`, `sun_pll_lay_typ`, `l07_buck_*`,
+   `rosc_temp`, `rosc_vdd`, `cpumax`, `l7_loadreg`. Those need their raw
+   data exported next to the script before they can move; converting
+   them is a data-plumbing job, not a plotting one. The rest come from
+   `ex/gmid.py`, `ex/vd.py`, `ex/pv_v.py` and the jupyter notebooks, and
+   are straightforward — the same few lines at the end of each script.
+
+   One figure that will improve when converted: `pll.pdf` has its
+   x-axis label hidden behind the legend box, noted in the `l08_pll`
+   review above.
 
 ## `l05_sc` — reviewed 2026-07-31
 
