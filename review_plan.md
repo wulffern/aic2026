@@ -183,7 +183,7 @@ Still open in this chapter:
 ## Queued from the author, 2026-07-31
 
 1. **Script-generated plots to TikZ** — infrastructure done
-   2026-07-31, 21 of 44 figures converted.
+   2026-07-31, 32 of 44 figures converted.
 
    `py/tikzplot.py` renders plot data through `tikz/fig_header.tex`, so
    a plot and a schematic on the same page share a font, a line width
@@ -191,12 +191,20 @@ Still open in this chapter:
    `compat=1.16`. See the new section in `tikz/STYLE.md` for how to use
    it from a script.
 
-   Converted, 21 figures: the three switched-capacitor plots, all eight
+   Converted, 32 figures: the three switched-capacitor plots, all eight
    ADC spectra, the photovoltaic sweep, the antenna diode leakage, the
    seven gm/ID design curves, the intrinsic carrier concentration, the
-   diode forward voltage, and the measured gm/ID curve. Between them
-   they exercise log axes, legends, shaded bands and reference rules, so
-   the library covers every case in the book.
+   diode forward voltage, the measured gm/ID curve, the four flip-flop
+   setup and hold transients, the two ring oscillator sweeps, and the
+   three basic NMOS curves. Between them they exercise log axes,
+   legends, shaded bands, reference rules and stacked shared-axis
+   panels, so the library covers every case in the book.
+
+   **Where the data lives.** `~/pro/aicex/ip/jnw_atr_sky130a/sim` for
+   the gm/ID sweeps (cicsim raw files); `~/pro/dicex` for everything
+   else so far — `lectures/l14` for the flip-flop timing, `ex4` for the
+   ring oscillator sweeps, `sim/spice/NCHIO` for the NMOS curves. None
+   of it is needed to build the book, only to regenerate a figure.
 
    The gm/ID seven came out of `jupyter/circuits.ipynb` and now come
    from `ex/jnw_gmid.py`, which reads the ngspice sweeps under
@@ -204,25 +212,18 @@ Still open in this chapter:
    produces figures that quietly stop agreeing with each other; one
    script over one pass of the data cannot.
 
-   **Still matplotlib, and why.** 23 of the original 44 remain, in
-   three groups.
+   **Still matplotlib.** 12 of the original 44 remain, all of them
+   simulator output whose raw data has not been located yet:
+   `l07_buck_pfm_fig_save`, the three `l07_buck_pwm_fig_*`,
+   `l7_loadreg`, `cpumax`, `l5_velocity`, `sun_pll_lay_typ`,
+   `SUN_PLL_ROSC_KVCO`, `pll`, and the two DAC figures `dac_error` and
+   `dac_inl_dnl` in `jupyter/dac.ipynb`.
 
-   *No generating script exists anywhere in the repo* — `vgate`,
-   `vdrain`, `vgaini`, `l5_velocity`, `vgmid`. Their data has to be
-   found or re-simulated before anything can be drawn.
-
-   *Simulator output that needs its raw data exported first* — the
-   `dff_*` setup and hold transients, `rosc_temp`, `rosc_vdd`, `cpumax`,
-   `l07_buck_*`, `l7_loadreg`, `sun_pll_lay_typ`,
-   `SUN_PLL_ROSC_KVCO`, `pll`. Each has a script or testbench in another
-   repo; the work is data plumbing rather than plotting. `ex/jnw_gmid.py`
-   is the pattern to copy: read the raw file, emit all the figures from
-   one pass.
-
-   *Notebook figures* — `dac_error` and `dac_inl_dnl` in
-   `jupyter/dac.ipynb`, plus whatever `l6_mwald` and `l6_msch` come
-   from. Same treatment as the gm/ID curves: move the figure generation
-   into a script, keep the notebook for exploring.
+   The DAC pair is the easy one: same treatment as the gm/ID curves,
+   move the figure generation out of the notebook into a script. The
+   SUN_PLL three should be in the sun_pll_sky130nm repo. The buck and
+   load-regulation plots and `cpumax` have not been found; `l5_velocity`
+   may be hand-plotted rather than simulated.
 
    One figure that will improve when converted: `pll.pdf` has its
    x-axis label hidden behind the legend box, noted in the `l08_pll`
