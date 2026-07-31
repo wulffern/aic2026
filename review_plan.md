@@ -183,7 +183,7 @@ Still open in this chapter:
 ## Queued from the author, 2026-07-31
 
 1. **Script-generated plots to TikZ** — infrastructure done
-   2026-07-31, 13 of 44 figures converted.
+   2026-07-31, 21 of 44 figures converted.
 
    `py/tikzplot.py` renders plot data through `tikz/fig_header.tex`, so
    a plot and a schematic on the same page share a font, a line width
@@ -191,20 +191,38 @@ Still open in this chapter:
    `compat=1.16`. See the new section in `tikz/STYLE.md` for how to use
    it from a script.
 
-   Converted: the three switched-capacitor plots, all eight ADC spectra,
-   the photovoltaic sweep and the antenna diode leakage. The last two
-   were chosen to exercise log axes, legends and shaded bands, so the
-   library now covers every case in the book.
+   Converted, 21 figures: the three switched-capacitor plots, all eight
+   ADC spectra, the photovoltaic sweep, the antenna diode leakage, the
+   seven gm/ID design curves, the intrinsic carrier concentration, the
+   diode forward voltage, and the measured gm/ID curve. Between them
+   they exercise log axes, legends, shaded bands and reference rules, so
+   the library covers every case in the book.
 
-   **Still matplotlib, and why.** The remaining 31 figures fall in two
-   groups. About a dozen come from simulator output rather than a
-   script — the `jnw_*` gm/ID sweeps, the `dff_*` setup and hold
-   transients, `SUN_PLL_ROSC_KVCO`, `sun_pll_lay_typ`, `l07_buck_*`,
-   `rosc_temp`, `rosc_vdd`, `cpumax`, `l7_loadreg`. Those need their raw
-   data exported next to the script before they can move; converting
-   them is a data-plumbing job, not a plotting one. The rest come from
-   `ex/gmid.py`, `ex/vd.py`, `ex/pv_v.py` and the jupyter notebooks, and
-   are straightforward — the same few lines at the end of each script.
+   The gm/ID seven came out of `jupyter/circuits.ipynb` and now come
+   from `ex/jnw_gmid.py`, which reads the ngspice sweeps under
+   `~/pro/aicex/ip/jnw_atr_sky130a/sim`. A notebook re-run out of order
+   produces figures that quietly stop agreeing with each other; one
+   script over one pass of the data cannot.
+
+   **Still matplotlib, and why.** 23 of the original 44 remain, in
+   three groups.
+
+   *No generating script exists anywhere in the repo* — `vgate`,
+   `vdrain`, `vgaini`, `l5_velocity`, `vgmid`. Their data has to be
+   found or re-simulated before anything can be drawn.
+
+   *Simulator output that needs its raw data exported first* — the
+   `dff_*` setup and hold transients, `rosc_temp`, `rosc_vdd`, `cpumax`,
+   `l07_buck_*`, `l7_loadreg`, `sun_pll_lay_typ`,
+   `SUN_PLL_ROSC_KVCO`, `pll`. Each has a script or testbench in another
+   repo; the work is data plumbing rather than plotting. `ex/jnw_gmid.py`
+   is the pattern to copy: read the raw file, emit all the figures from
+   one pass.
+
+   *Notebook figures* — `dac_error` and `dac_inl_dnl` in
+   `jupyter/dac.ipynb`, plus whatever `l6_mwald` and `l6_msch` come
+   from. Same treatment as the gm/ID curves: move the figure generation
+   into a script, keep the notebook for exploring.
 
    One figure that will improve when converted: `pll.pdf` has its
    x-axis label hidden behind the legend box, noted in the `l08_pll`
