@@ -1212,14 +1212,35 @@ chip comes back and the reference never wakes up.
 ![fit](../media/l3_startup_tikz.pdf)
 
 <!--pan_doc:
-<sub>Figure 23: A constant $g_m$ bias with a startup device. $M_{SU}$ conducts while the NMOS rail is low and turns itself off once the loop is running</sub>
+<sub>Figure 23: A constant $g_m$ bias with a startup branch. $M_{SU}$ lifts the NMOS rail while it is stuck at ground, and $M_D$ is what makes it let go once the loop is running</sub>
 
-The fix is a device that is *only* on in the dead state. $M_{SU}$ is a PMOS
-whose gate hangs on the NMOS rail. While the loop is asleep that rail is at
-ground, so $M_{SU}$ conducts and drags the PMOS rail down, which turns the
-mirror on and injects current into the loop. As soon as current flows the
-NMOS rail rises, $M_{SU}$ turns itself off, and in steady state it costs
-nothing but leakage.
+The fix is a device that is *only* on in the dead state, and the first
+question is which of the two dead rails it should attack. Only one of them
+can be moved cheaply. The PMOS rail is stuck at $V_{DD}$, and there is
+nothing useful a device hanging off the supply can do to a node already at
+the supply. The NMOS rail is stuck at ground, and a PMOS from $V_{DD}$ can
+lift it. That is the one to go after.
+
+So $M_{SU}$ is a PMOS from the supply onto the NMOS rail, with its gate on
+that same rail. While the loop is asleep the rail is at ground, $M_{SU}$ has
+the full supply from gate to source, and it conducts and lifts the rail
+until the NMOS pair turns on and the loop takes over. As the rail rises,
+$M_{SU}$'s own drive falls, so it backs off without being told to.
+
+It does not back off far enough, and this is the part that bites in a
+low-power design. Awake, the NMOS rail only climbs to a gate-source drop,
+call it 400 mV, which leaves $M_{SU}$ with $|V_{GS}| = V_{DD} - 400$ mV. In a
+low-threshold process that is still an on transistor, quietly injecting
+current into the rail it was supposed to have released. If the loop's own
+branch current is a few hundred nanoamps, that injection is not a rounding
+error — it sets the reference.
+
+$M_D$ is the fix. A second diode-connected PMOS in series means the startup
+branch needs two thresholds of headroom instead of one, so it stops
+conducting once the rail has risen. Asleep, the full supply across two
+diodes is still plenty to get things moving. The cost is a little headroom
+in a branch that only matters before the reference wakes up, which is the
+cheapest headroom in the circuit.
 
 Two rules follow from this, and they are worth more than the circuit:
 

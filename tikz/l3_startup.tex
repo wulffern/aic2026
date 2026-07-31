@@ -1,6 +1,7 @@
 \input{tikz/fig_header.tex}
 
-% Why a self biased loop needs a startup device.
+% Why a self biased loop needs a startup device, and why one transistor
+% is not enough at low current.
 %
 % The PMOS mirror (diode on the left) forces the two branch currents
 % equal, and the NMOS pair (diode on the right, K times wider, with R in
@@ -9,10 +10,31 @@
 % zero current, where the PMOS rail sits at VDD and the NMOS rail at
 % ground, both devices off, nothing to wake them.
 %
-% M_SU is a PMOS whose gate hangs on the NMOS rail. Asleep, that rail is
-% low, so M_SU conducts and drags the PMOS rail down until current
-% starts. Awake, the rail rises and M_SU turns itself off, so it costs
-% nothing in steady state.
+% Which of the two stuck rails can a startup device actually move? Only
+% the NMOS one. It is the rail sitting at ground, so a PMOS from the
+% supply can lift it. Aiming that PMOS at the PMOS rail instead - the
+% obvious first drawing, and the one this figure used to show - is
+% useless, because that rail is already at VDD and a PMOS cannot pull
+% anything down.
+%
+% So M_SU is a PMOS from the supply onto the NMOS rail, with its gate on
+% that same rail. Asleep the rail is at ground, M_SU sees the full supply
+% across gate and source, conducts, and lifts the rail until the NMOS
+% pair turns on and the loop takes over. As the rail rises, M_SU's own
+% drive falls, so it backs off on its own.
+%
+% It does not back off far enough. Awake, the NMOS rail only reaches a
+% gate-source drop, perhaps 400 mV, leaving M_SU with |V_GS| = VDD - 400
+% mV. In a low threshold process that is still an on transistor, quietly
+% injecting current into the rail it is supposed to have let go of. In a
+% low power cell, where the branch current is small, that injection is
+% not a rounding error, it moves the reference.
+%
+% M_D is the fix: a second diode connected PMOS in series, so the branch
+% needs two thresholds of headroom rather than one and stops conducting
+% once the rail has risen. Asleep, VDD across two diodes is still plenty
+% to start things off. It costs a little headroom in a branch that only
+% matters before the reference wakes up.
 
 \begin{circuitikz}[american, thick, transform shape, circuit ee IEC]
 
@@ -20,17 +42,25 @@
 
   \def\xl{0}       % left branch
   \def\xr{3.2}     % right branch
-  \def\xs{6.8}     % startup device
+  \def\xs{7.4}     % startup branch
   \def\yp{4.4}     % PMOS drain row (source one grid above)
   \def\yn{1.2}     % NMOS source row (drain one grid above)
+  \def\yv{7.6}     % supply rail
+
+  % ---- supply rail ----
+  \draw (-0.8,\yv) -- ({\xs+0.8},\yv);
+  \draw (1.2,\yv) \vsupply;
+  \draw (\xl,{\yp+\grid}) -- (\xl,\yv);
+  \draw (\xr,{\yp+\grid}) -- (\xr,\yv);
+  \fill (\xl,\yv) circle (0.075);
+  \fill (\xr,\yv) circle (0.075);
 
   % ---- PMOS mirror, diode connected on the left ----
-  \draw (\xl,{\yp+\grid}) \vsupply;
-  \draw (\xr,{\yp+\grid}) \vsupply;
   \draw (\xl,\yp) \lvmpmos{MP1}{};
   \draw (\xr,\yp) \lvpmos{MP2}{};
   \coordinate (gp1) at (MP1.G);
   \coordinate (gp2) at (MP2.G);
+  \path (gp1) -- (gp2) coordinate[midway] (gpm);
   \draw (gp1) -- (gp2);
   \fill (gp1) circle (0.075);
   \draw (gp1) |- (\xl,\yp);
@@ -42,7 +72,7 @@
   \draw (\xl,\yn) \vground;
   \coordinate (gn1) at (MN1.G);
   \coordinate (gn2) at (MN2.G);
-  \draw (gn1) -- (gn2);
+  \draw (gn1) -- node[above, pos=0.3, scale=0.85] {NMOS rail} (gn2);
   \fill (gn2) circle (0.075);
   \draw (gn2) |- (\xr,{\yn+\grid});
   \fill (\xr,{\yn+\grid}) circle (0.075);
@@ -55,33 +85,41 @@
   % branch wiring, straight down each column
   \draw (\xl,\yp) -- (\xl,{\yn+\grid});
   \draw (\xr,\yp) -- (\xr,{\yn+\grid});
-  \node[anchor=east, scale=0.9] at ({\xl-0.15},2.9) {$I$};
-  \node[anchor=west, scale=0.9] at ({\xr+0.15},2.9) {$I$};
+  \node[anchor=east, scale=0.9] at ({\xl-0.15},3.3) {$I$};
+  \node[anchor=west, scale=0.9] at ({\xr+0.15},3.3) {$I$};
 
   % rail names
-  \node[anchor=south, scale=0.85] at (1.35,{\yp+1.05}) {PMOS rail};
-  \node[anchor=north, scale=0.85] at (1.35,{\yn+0.55}) {NMOS rail};
+  \node[anchor=south, yshift=2mm, scale=0.85] at (gpm) {PMOS rail};
 
-  % ---- the startup PMOS ----
-  \draw (\xs,{\yp+\grid}) \vsupply;
+  % ---- the startup branch ----
+  % The node that is stuck when the cell is asleep is the NMOS rail, at
+  % ground. A PMOS from the supply can pull it up; a PMOS aimed at the
+  % PMOS rail would be pulling on a node already sitting at VDD, which
+  % does nothing at all.
+  \draw (\xs,{\yp+\grid}) \lvmpmos{MD}{};
+  \draw (\xs,\yv) -- (\xs,{\yp+2*\grid});
+  \fill (\xs,\yv) circle (0.075);
+  \draw (MD.G) |- (\xs,{\yp+\grid});
+  \fill (\xs,{\yp+\grid}) circle (0.075);
+  \node[anchor=west, scale=0.9] at ({\xs+0.75},{\yp+\grid+0.8}) {$M_D$};
+
   \draw (\xs,\yp) \lvpmos{MSU}{};
-  \coordinate (gsu) at (MSU.G);
   \node[anchor=west, scale=0.9] at ({\xs+0.45},{\yp+0.8}) {$M_{SU}$};
 
-  % its gate hangs on the NMOS rail
-  \draw (gsu) -- (5.3,{\yp+0.8}) -- (5.3,{\yn+0.75}) -- (\xr,{\yn+0.75});
-  \fill (\xr,{\yn+0.75}) circle (0.0);
-  \draw (5.3,{\yn+0.75}) -- (2.05,{\yn+0.75});
-  \fill (2.05,{\yn+0.75}) circle (0.075);
+  % drain lifts the NMOS rail, tapping the right branch
+  \draw (\xs,\yp) -- (\xs,4.0) -- (\xr,4.0);
+  \fill (\xr,4.0) circle (0.075);
 
-  % its drain pulls the PMOS rail down
-  \draw (\xs,\yp) -- (\xs,{\yp-0.75}) -- (1.6,{\yp-0.75}) -- (1.6,\yp);
-  \fill (1.6,\yp) circle (0.075);
+  % gate hangs on the same rail, so the branch shuts itself off
+  \draw (MSU.G) -- (6.3,{\yp+0.8}) -- (6.3,4.0);
+  \fill (6.3,4.0) circle (0.075);
 
-  \node[anchor=north, align=center, scale=0.9] at (3.0,-2.6)
-    {The loop only says the two branches must agree, and zero\\
-     current in both agrees just as well. A startup device is\\
-     not optional: without it the reference may never wake up.};
+  \node[anchor=north, align=center, scale=0.9] at (3.4,-2.7)
+    {The loop only says the two branches must agree, and zero current in\\
+     both agrees just as well, so a startup device is not optional. $M_{SU}$\\
+     lifts the NMOS rail off ground until the loop takes over. $M_D$ costs\\
+     it a threshold of drive, which is what makes it let go afterwards\\
+     instead of leaking into a small branch current for ever.};
 
 \end{circuitikz}
 \end{document}
