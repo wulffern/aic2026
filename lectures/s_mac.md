@@ -203,7 +203,7 @@ $$ I_o = I_{M1} t_{input} $$
 
 ### MOSFET in sub-threshold
 
-![right fit](../media/vgate.pdf)
+![right fit](../media/vgate_tikz.pdf)
 
 $$ I = I_{D0} \frac{W}{L} e^{(V_{GS} - V_{th})/n U_{T}}\text{ ,} U_T = \frac{k T}{q} $$
 

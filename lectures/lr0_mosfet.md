@@ -642,7 +642,7 @@ In the plot below we can see the sweep of the gate voltage.
 
 $$ i(vcur) = I_{DS} $$
 
-![right fit](../media/vgate.pdf)
+![right fit](../media/vgate_tikz.pdf)
 
 <!--pan_doc:
 <sub>Figure 17: Simulated $I_{DS}$ versus $V_{GS}$ at $V_{DS}$ = 1 V</sub>
@@ -694,7 +694,7 @@ between, in moderate inversion, both mechanisms matter at the same time.
 
 <!--pan_skip: -->
 
-![right fit](../media/vgate.pdf)
+![right fit](../media/vgate_tikz.pdf)
 
 ---
 
@@ -722,7 +722,7 @@ one-to-one - and lands around 1.5 in this process.
 
 <!--pan_skip: -->
 
-![right fit](../media/vgate.pdf)
+![right fit](../media/vgate_tikz.pdf)
 
 ---
 **Moderate inversion**
@@ -743,7 +743,7 @@ expressions to sanity-check the trend.
 
 <!--pan_skip: -->
 
-![right fit](../media/vgate.pdf)
+![right fit](../media/vgate_tikz.pdf)
 
 ---
 
@@ -777,7 +777,7 @@ before we do the same with the drain.
 
 <!--pan_skip: -->
 
-![right fit](../media/vgate.pdf)
+![right fit](../media/vgate_tikz.pdf)
 
 ---
 
@@ -863,7 +863,7 @@ curve has two personalities, and the boundary between them is $V_{eff}$.
 
 $$i(vcur) = I_{DS} $$
 
-![right fit](../media/vdrain.pdf)
+![right fit](../media/vdrain_tikz.pdf)
 
 <!--pan_doc:
 <sub>Figure 21: Simulated $I_{DS}$ versus $V_{DS}$ at $V_{GS}$ = 0.5 V</sub>
@@ -899,7 +899,7 @@ $$
 
 <!--pan_skip: -->
 
-![right fit](../media/vdrain.pdf)
+![right fit](../media/vdrain_tikz.pdf)
 
 ---
 
@@ -1059,7 +1059,7 @@ Define intrinsic gain as
 
  $$ A  =  \frac{2 I_D}{V_{eff}} \times \frac{1}{ \lambda I_D } = \frac{2}{\lambda V_{eff}}  $$
 
-![right fit](../media/vgaini.pdf)
+![right fit](../media/vgaini_tikz.pdf)
 
 <!--pan_doc:
 <sub>Figure 27: Simulated intrinsic gain versus gate-source voltage (the x-axis, vgaini, is $V_{GS} = V_{eff} + V_{tn}$)</sub>
