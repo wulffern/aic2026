@@ -236,12 +236,18 @@ faces, and 4 atoms inside the unit cell at a nearest neighbor distance of 0.235 
 
 The full band structure of a silicon unit cell is complicated, it's a [3 dimensional concept](http://lampx.tugraz.at/~hadley/ss1/semiconductors/silicon_bandstructure.php)
 
-<!--![right fit](https://lampx.tugraz.at/~hadley/ss1/semiconductors/Si_bandstructure.png)-->
+<!--pan_doc:
 
-![right fit](../media/Si_bandstructure.png)
+Peter Hadley's course notes at TU Graz have the full plot, and it is
+worth looking at once: energy against wavevector along the symmetry
+directions of the crystal, with the conduction band minimum sitting off
+to one side rather than above the valence band maximum. That offset is
+what makes silicon an *indirect* bandgap semiconductor, and it is the
+reason silicon is used for transistors and not for light emitting
+diodes: an electron dropping across the gap has to shed momentum as well
+as energy, which needs a phonon to turn up at the same moment, and that
+is a far less likely event than simply emitting a photon.
 
-<!--pan_doc: 
-<sub>Figure 5: [Silicon Band Structure](http://lampx.tugraz.at/~hadley/ss1/semiconductors/silicon_bandstructure.php)</sub>
 -->
 
 ---
@@ -316,7 +322,7 @@ In metals, the band splitting of the energy levels causes the valence band and c
 
 <!--pan_doc:
 
-<sub>Figure 6: Band splitting in materials. [Electronic Band Structure, Wikipedia](https://en.wikipedia.org/wiki/Electronic_band_structure)</sub>
+<sub>Figure 5: Band splitting in materials. [Electronic Band Structure, Wikipedia](https://en.wikipedia.org/wiki/Electronic_band_structure)</sub>
 
 Electrons can easily transition between bound state and free state. As such, electrons in metals are shared over large distances, and there are many electrons readily available to move under an applied field, or difference in electron density. That's why metals conduct well.
 
@@ -376,7 +382,7 @@ of distance in the material.
 ![right fit](../media/Pn-junction_zero_bias.png)
 
 <!--pan_doc:
-<sub>Figure 7: [Band diagram of a PN junction, Wikipedia](https://en.wikipedia.org/wiki/Band_diagram)</sub>
+<sub>Figure 6: [Band diagram of a PN junction, Wikipedia](https://en.wikipedia.org/wiki/Band_diagram)</sub>
 -->
 
 The horizontal axis is the distance in the material, the vertical axis is the energy.
