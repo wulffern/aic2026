@@ -1,0 +1,367 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bessel quantization noise &mdash; aic2026</title>
+<link rel="stylesheet" href="common/aic.css">
+</head>
+<body>
+
+<header>
+  <h1>QUANTIZATION NOISE IS NOT NOISE</h1>
+  <div class="sub">
+    <a href="index.html">&larr; all examples</a> &middot;
+    the exact Bessel series behind
+    <a href="https://wulffern.github.io/aic2026/oversampling_and_sigma-delta_adcs">the ADC chapter</a> &middot;
+    data converters
+  </div>
+</header>
+
+<div id="chain">
+  <div class="cb on">SINE</div><span class="ca">&rarr;</span>
+  <div class="cb on" id="cb-adc">QUANTISE <span id="cb-bits">3</span>b</div><span class="ca">&rarr;</span>
+  <div class="cb on">ERROR e(t)</div><span class="ca">&rarr;</span>
+  <div class="cb on">ODD HARMONICS</div>
+</div>
+
+<canvas id="c"></canvas>
+
+<div id="ctrl">
+  <div class="cg">
+    <div class="cgt">QUANTISER</div>
+    <div class="cr">
+      <label>Bits</label>
+      <input type="range" data-bind="bits" id="sl-bits" min="1" max="8" step="1" value="3">
+      <span class="v" id="v-bits"></span>
+    </div>
+    <div class="cr">
+      <label>Amplitude</label>
+      <input type="range" data-bind="amp" id="sl-amp" min="0.1" max="1" step="0.01" value="1">
+      <span class="v" id="v-amp"></span>
+    </div>
+    <div class="note">
+      The theory assumes a full scale sine. Back the amplitude off and the
+      measured harmonics drift away from the Bessel prediction, which is
+      itself worth seeing.
+    </div>
+  </div>
+
+  <div class="cg">
+    <div class="cgt">THE SERIES</div>
+    <div class="cr">
+      <label>Terms m</label>
+      <input type="range" data-bind="mterms" id="sl-mterms" min="1" max="2000" step="1" value="400">
+      <span class="v" id="v-mterms"></span>
+    </div>
+    <div class="ckrow">
+      <input type="checkbox" data-bind="showsim" id="sl-showsim" checked>
+      <label for="sl-showsim">Overlay the measured spectrum</label>
+    </div>
+    <div class="ckrow">
+      <input type="checkbox" data-bind="showwhite" id="sl-showwhite" checked>
+      <label for="sl-showwhite">Show the &Delta;&sup2;/12 white noise level</label>
+    </div>
+  </div>
+
+  <div id="readout">
+    <div class="ro"><span class="k">LEVELS</span><span class="n" id="ro-levels"></span></div>
+    <div class="ro"><span class="k">A<sub>1</sub> (BESSEL)</span><span class="n" id="ro-a1"></span></div>
+    <div class="ro"><span class="k">A<sub>3</sub> (BESSEL)</span><span class="n" id="ro-a3"></span></div>
+    <div class="ro"><span class="k">A<sub>3</sub> (MEASURED)</span><span class="n" id="ro-a3m"></span></div>
+    <div class="ro"><span class="k">SQNR</span><span class="n" id="ro-sqnr"></span></div>
+    <div class="ro"><span class="k">6.02B+1.76</span><span class="n" id="ro-ideal"></span></div>
+  </div>
+</div>
+
+<div id="text">
+  <h2>WHAT YOU ARE LOOKING AT</h2>
+  <p>
+    The usual story is that a quantizer adds white noise of power
+    &Delta;&sup2;/12. That story is a convenience. Feed a quantizer a pure
+    sine and the error is not random at all: it repeats exactly once per
+    signal period, so it can only contain harmonics of the signal. Writing
+    that Fourier series out gives
+  </p>
+  <p class="eq">
+    e(t) = &Sigma;<sub>p</sub> A<sub>p</sub> sin(p&omega;t),
+    &nbsp;&nbsp;
+    A<sub>p</sub> = &delta;<sub>p1</sub>2<sup>n-1</sup> +
+    &Sigma;<sub>m</sub> (2/m&pi;) J<sub>p</sub>(2m&pi;2<sup>n-1</sup>),
+    &nbsp; p odd
+  </p>
+  <p>
+    where J<sub>p</sub> is a Bessel function of the first kind. The red stems
+    are that formula, evaluated live. The grey stems are a direct FFT of a
+    quantized sine. They land on top of each other, which is the point: the
+    formula is not an approximation.
+  </p>
+
+  <h2>THINGS TO TRY</h2>
+  <ul>
+    <li>
+      Start at <b>1 bit</b>. Two levels, so the output is a square wave and
+      the harmonics fall off as 1/p &mdash; enormous, nothing like a noise
+      floor. The white noise line sits far below the real harmonics.
+    </li>
+    <li>
+      Walk the bits up. The harmonics drop about 6&nbsp;dB per bit and get
+      denser and more irregular, because the Bessel functions oscillate. By
+      8&nbsp;bits the spikes are so many and so small that calling them
+      &ldquo;a noise floor&rdquo; finally becomes a fair description &mdash;
+      which is exactly when the &Delta;&sup2;/12 model starts being useful.
+    </li>
+    <li>
+      Drag <b>terms m</b> down to 1. One Bessel term already gets the shape
+      roughly right; the sum converges slowly (the terms fall off like
+      m<sup>-3/2</sup>) so a few hundred terms are needed before the small
+      harmonics settle. Watch A<sub>3</sub> stop wobbling.
+    </li>
+    <li>
+      Back the <b>amplitude</b> off to about 0.5. The measured harmonics move
+      but the Bessel curve does not: the formula is derived for a full scale
+      sine. This is why a real converter's distortion changes with input
+      level.
+    </li>
+    <li>
+      At any setting, compare <b>SQNR</b> with <b>6.02B+1.76</b>. They agree
+      within a fraction of a dB even though the noise is manifestly not
+      white &mdash; the total power is right, only its distribution is wrong.
+    </li>
+  </ul>
+
+  <h2>WHY IT MATTERS</h2>
+  <p>
+    Harmonics fold. An odd harmonic above f<sub>s</sub>/2 lands somewhere
+    inside your band, and no amount of oversampling removes it, because it is
+    not noise you can average away &mdash; it is a tone. That is why real
+    converters dither: adding a little genuine noise before the quantizer
+    breaks the harmonics up into something that actually is white, trading a
+    slightly higher noise floor for the absence of spurs.
+  </p>
+
+  <p class="src">
+    The static version of this figure is Figure&nbsp;18 and the new
+    quantization noise figure in the ADC chapter. Bessel values here come
+    from a small series implementation in this page; the lecture figures use
+    <code>scipy.special.jv</code> and agree to about 0.1&nbsp;%.
+  </p>
+</div>
+
+<footer>
+  TFE4188 Advanced Integrated Circuits &middot; <a href="https://wulffern.github.io/aic2026/">aic2026</a>
+</footer>
+
+<script src="common/plot.js"></script>
+<script src="common/dsp.js"></script>
+<script>
+'use strict';
+
+const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+
+const S = {};
+let D = null;
+
+const fmts = {
+  bits:   v => v + ' b',
+  amp:    v => v.toFixed(2) + ' FS',
+  mterms: v => v + ' terms',
+};
+
+// ── Bessel J_p(x), first kind, integer order ────────────────────────────────
+// The textbook rational approximations for J0 and J1, then recurrence for
+// higher orders: upward when x > p (stable there), Miller's downward
+// recurrence otherwise. Matches scipy.special.jv to about 1e-7 over every
+// order and argument this page uses, and is fast enough to re-evaluate the
+// whole series on every slider move.
+function besselJ0(x) {
+  const ax = Math.abs(x);
+  if (ax < 8.0) {
+    const y = x * x;
+    const p1 = 57568490574.0 + y*(-13362590354.0 + y*(651619640.7
+             + y*(-11214424.18 + y*(77392.33017 + y*(-184.9052456)))));
+    const p2 = 57568490411.0 + y*(1029532985.0 + y*(9494680.718
+             + y*(59272.64853 + y*(267.8532712 + y))));
+    return p1 / p2;
+  }
+  const z = 8.0/ax, y = z*z, xx = ax - 0.785398164;
+  const p1 = 1.0 + y*(-0.1098628627e-2 + y*(0.2734510407e-4
+           + y*(-0.2073370639e-5 + y*0.2093887211e-6)));
+  const p2 = -0.1562499995e-1 + y*(0.1430488765e-3 + y*(-0.6911147651e-5
+           + y*(0.7621095161e-6 + y*(-0.934935152e-7))));
+  return Math.sqrt(0.636619772/ax)*(Math.cos(xx)*p1 - z*Math.sin(xx)*p2);
+}
+
+function besselJ1(x) {
+  const ax = Math.abs(x);
+  let ans;
+  if (ax < 8.0) {
+    const y = x * x;
+    const p1 = x*(72362614232.0 + y*(-7895059235.0 + y*(242396853.1
+             + y*(-2972611.439 + y*(15704.48260 + y*(-30.16036606))))));
+    const p2 = 144725228442.0 + y*(2300535178.0 + y*(18583304.74
+             + y*(99447.43394 + y*(376.9991397 + y))));
+    return p1 / p2;
+  }
+  const z = 8.0/ax, y = z*z, xx = ax - 2.356194491;
+  const p1 = 1.0 + y*(0.183105e-2 + y*(-0.3516396496e-4
+           + y*(0.2457520174e-5 + y*(-0.240337019e-6))));
+  const p2 = 0.04687499995 + y*(-0.2002690873e-3 + y*(0.8449199096e-5
+           + y*(-0.88228987e-6 + y*0.105787412e-6)));
+  ans = Math.sqrt(0.636619772/ax)*(Math.cos(xx)*p1 - z*Math.sin(xx)*p2);
+  return x < 0 ? -ans : ans;
+}
+
+function besselJ(n, x) {
+  if (n === 0) return besselJ0(x);
+  if (n === 1) return besselJ1(x);
+  const ax = Math.abs(x);
+  if (ax === 0.0) return 0.0;
+  let ans;
+  if (ax > n) {
+    const tox = 2.0/ax;
+    let bjm = besselJ0(ax), bj = besselJ1(ax);
+    for (let k = 1; k < n; k++) { const bjp = k*tox*bj - bjm; bjm = bj; bj = bjp; }
+    ans = bj;
+  } else {
+    const tox = 2.0/ax;
+    const m = 2*Math.floor((n + Math.floor(Math.sqrt(40.0*n)))/2);
+    let jsum = false, bjp = 0.0, bj = 1.0, sum = 0.0;
+    ans = 0.0;
+    for (let k = m; k > 0; k--) {
+      const bjm = k*tox*bj - bjp;
+      bjp = bj; bj = bjm;
+      if (Math.abs(bj) > 1e10) { bj *= 1e-10; bjp *= 1e-10; ans *= 1e-10; sum *= 1e-10; }
+      if (jsum) sum += bj;
+      jsum = !jsum;
+      if (k === n) ans = bjp;
+    }
+    sum = 2.0*sum - bj;
+    ans /= sum;
+  }
+  return (x < 0.0 && n % 2 === 1) ? -ans : ans;
+}
+
+// A_p from the lecture's formula, normalised to full scale
+function besselA(p, bits, M) {
+  const h = Math.pow(2, bits - 1);
+  let s = (p === 1) ? h : 0;
+  for (let m = 1; m <= M; m++) s += (2 / (m * Math.PI)) * besselJ(p, 2 * m * Math.PI * h);
+  return s / h;
+}
+
+function compute() {
+  const bits = S.bits, amp = S.amp, M = S.mterms;
+  const levels = Math.pow(2, bits);
+  const delta = 2 / levels;
+
+  // ── time domain, one period ──
+  const NT = 600;
+  const t = new Float64Array(NT), x = new Float64Array(NT),
+        y = new Float64Array(NT), e = new Float64Array(NT);
+  for (let i = 0; i < NT; i++) {
+    t[i] = i / (NT - 1);
+    x[i] = amp * Math.sin(2 * Math.PI * t[i]);
+    let q = Math.floor(x[i] / delta) * delta + delta / 2;
+    y[i] = Math.min(1 - delta / 2, Math.max(-1 + delta / 2, q));
+    e[i] = y[i] - x[i];
+  }
+
+  // ── measured spectrum: coherent sampling, no window, exact bins ──
+  const N = 1 << 14, k = 101;
+  const re = new Float64Array(N), im = new Float64Array(N);
+  for (let i = 0; i < N; i++) {
+    const xi = amp * Math.sin(2 * Math.PI * k * i / N);
+    let q = Math.floor(xi / delta) * delta + delta / 2;
+    re[i] = Math.min(1 - delta / 2, Math.max(-1 + delta / 2, q));
+  }
+  DSP.fft(re, im);
+  const mag = p => {
+    const b = (p * k) % N;
+    return 2 * Math.hypot(re[b], im[b]) / N;
+  };
+
+  // ── harmonics ──
+  const ps = [], aB = [], aS = [];
+  for (let p = 1; p <= 21; p += 2) {
+    ps.push(p);
+    aB.push(Math.abs(besselA(p, bits, M)));
+    aS.push(mag(p));
+  }
+  const ref = aS[0] || 1;
+  const dB = v => 20 * Math.log10(Math.max(v, 1e-9) / ref);
+
+  // ── total error power, for the SQNR readout ──
+  let pe = 0;
+  for (let i = 0; i < N; i++) {
+    const xi = amp * Math.sin(2 * Math.PI * k * i / N);
+    pe += (re[i] - xi) * (re[i] - xi);
+  }
+  pe /= N;
+  const sqnr = 10 * Math.log10((amp * amp / 2) / pe);
+
+  D = {
+    t, x, y, e, ps,
+    dbB: aB.map(dB), dbS: aS.map(dB),
+    white: 20 * Math.log10((delta / Math.sqrt(12)) / (amp / Math.SQRT2)),
+    levels, sqnr, ideal: 6.02 * bits + 1.76,
+    a1: aB[0], a3: aB[1], a3m: aS[1],
+  };
+
+  document.getElementById('cb-bits').textContent = bits;
+  document.getElementById('ro-levels').textContent = levels;
+  document.getElementById('ro-a1').textContent = D.a1.toFixed(4);
+  document.getElementById('ro-a3').textContent = D.a3.toFixed(4);
+  document.getElementById('ro-a3m').textContent = D.a3m.toFixed(4);
+  document.getElementById('ro-sqnr').textContent = D.sqnr.toFixed(1) + ' dB';
+  document.getElementById('ro-ideal').textContent = D.ideal.toFixed(1) + ' dB';
+}
+
+function render(cx, W, H) {
+  const g = Plot.grid(W, H, 2, 2);
+
+  const p0 = new Plot.Panel(cx, g[0], {
+    title: 'One period', xlabel: 't / T', ylabel: 'x, y',
+  });
+  p0.limits(0, 1, -1.15, 1.15).frame();
+  p0.line(D.t, D.x, css('--curve'));
+  p0.line(D.t, D.y, css('--quant'));
+  p0.legend([['input x', css('--curve')], ['quantized y', css('--quant')]]);
+
+  const p1 = new Plot.Panel(cx, g[1], {
+    title: 'The error repeats every period', xlabel: 't / T', ylabel: 'e = y - x',
+  });
+  const em = 1.2 / Math.pow(2, S.bits);
+  p1.limits(0, 1, -em, em).frame();
+  p1.line(D.t, D.e, css('--alt2'));
+
+  const p2 = new Plot.Panel(cx, g[2], {
+    title: 'Odd harmonics: exact vs measured', xlabel: 'harmonic p', ylabel: 'dBc',
+  });
+  p2.limits(0, 22, -120, 5).frame();
+  if (S.showwhite) p2.hline(D.white, css('--grid'), [4, 4]);
+  if (S.showsim) p2.stem(D.ps, D.dbS, css('--text'));
+  p2.stem(D.ps, D.dbB, css('--alt2'));
+  p2.dots(D.ps, D.dbB, css('--alt2'), 2.5);
+  const items = [['Bessel formula', css('--alt2')]];
+  if (S.showsim) items.push(['measured FFT', css('--text')]);
+  if (S.showwhite) items.push(['Delta^2/12 model', css('--grid')]);
+  p2.legend(items, 'ne');
+
+  const p3 = new Plot.Panel(cx, g[3], {
+    title: 'Same thing, linear', xlabel: 'harmonic p', ylabel: '|A_p|',
+  });
+  const top = Math.max(...D.ps.map((p, i) => (p === 1 ? 0 : Math.pow(10, D.dbB[i] / 20))));
+  p3.limits(0, 22, 0, Math.max(top * 1.25, 1e-4)).frame();
+  p3.stem(D.ps.slice(1), D.dbB.slice(1).map(v => Math.pow(10, v / 20)), css('--alt2'));
+  p3.dots(D.ps.slice(1), D.dbB.slice(1).map(v => Math.pow(10, v / 20)), css('--alt2'), 2.5);
+  p3.note(0.03, 0.9, 'fundamental left out,\nso the harmonics are visible', css('--text'));
+}
+
+const chart = Plot.mount('c', { aspect: 0.62, aspectNarrow: 1.5, draw: render });
+UI.bind(S, fmts, () => { compute(); chart.redraw(); });
+compute();
+chart.redraw();
+</script>
+</body>
+</html>

@@ -42,13 +42,15 @@
     </div>
     <div class="ckrow">
       <input type="checkbox" data-bind="script" id="sl-script">
-      <label for="sl-script">Use the script's <code>adc()</code> instead</label>
+      <label for="sl-script">Use the old <code>round(x&middot;2<sup>B</sup>)/2<sup>B</sup></code></label>
     </div>
     <div class="note">
-      B bits means 2<sup>B</sup> levels. The script's <code>adc()</code> counts
-      <em>fractional</em> bits instead &mdash; its step is 2<sup>-bits</sup>, so
+      B bits means 2<sup>B</sup> levels. The obvious one-liner
+      <code>round(x&middot;2<sup>B</sup>)/2<sup>B</sup></code> counts
+      <em>fractional</em> bits instead &mdash; its step is 2<sup>-B</sup>, so
       &ldquo;1 bit&rdquo; gives five levels over &plusmn;1 and the SQNR beats
-      6.02B + 1.76 by a whole bit. Tick the box to see it.
+      6.02B + 1.76 by a whole bit. <code>ex/q.py</code> used to do exactly
+      that; tick the box to see what it looked like.
     </div>
   </div>
 
@@ -169,15 +171,16 @@
       6.02B + 1.76 all the way to 12 bits.
     </li>
     <li>
-      Tick <b>use the script's adc()</b>. The level count jumps from
+      Tick <b>use the old one-liner</b>. The level count jumps from
       2<sup>B</sup> to 2<sup>B+1</sup>+1 &mdash; five levels at &ldquo;1
       bit&rdquo; &mdash; and the SQNR gains a whole bit, because
-      <code>adc()</code> takes B to mean bits <em>after the binary point</em>
-      rather than converter resolution. Its step is 2<sup>-B</sup>, so a signal
-      spanning &plusmn;1 gets 2<sup>B+1</sup> steps. The ideal readout says
-      which B it is really behaving as. Nothing is wrong with the script &mdash;
-      it is just answering a different question from the one the slider label
-      asks.
+      <code>round(x&middot;2<sup>B</sup>)/2<sup>B</sup></code> takes B to mean
+      bits <em>after the binary point</em> rather than converter resolution.
+      Its step is 2<sup>-B</sup>, so a signal spanning &plusmn;1 gets
+      2<sup>B+1</sup> steps. This is a mistake worth making once on purpose:
+      a &ldquo;1-bit&rdquo; converter that produces five different outputs is
+      not a 1-bit converter, and the SQNR readout tells on it immediately.
+      <code>ex/q.py</code> now uses a proper mid-rise quantizer.
     </li>
     <li>
       Turn the <b>noise</b> up to 1/2<sup>8</sup> at 3 or 4 bits. The added

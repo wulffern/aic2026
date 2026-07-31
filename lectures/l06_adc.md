@@ -518,7 +518,7 @@ A Bessel function of the first kind looks like this
 
 ---
 
-![fit](../media/Bessel.svg)
+![fit](../media/bessel_tikz.pdf)
 
 <!--pan_doc:
 <sub>Figure 18: Bessel functions of the first kind, J0(x), J1(x) and J2(x), showing the oscillatory behavior that shapes the quantization noise harmonics</sub>
