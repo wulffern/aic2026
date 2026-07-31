@@ -430,16 +430,17 @@ Verified and left alone: every resistor divider result, the tree switch
 count, the R-2R ladder algebra, DNL and INL, the twelve transitions
 between four states, and both binary glitch paths.
 
-**Open, needs the author.** The segmented switch count does not add up:
+**Resolved 2026-07-31.** The `80` was right; the formula was not.
 
-    6b Matrix + 4b Tree: 2^(M+1) - 2 + 2^N + 2^(N/2) = 80
+Counted against the figures: tree `2^(N+1)-2 = 2046`, matrix
+`2^N + 2^(N/2) = 1056`, both confirmed. The segmented line printed
+`2^(M+1)-2 + 2^N + 2^(N/2)`, which evaluates to 102 and is a mash-up of
+the other two. The architecture it names does not work either: a tree of
+matrix blocks still needs its `2^N` tap switches and pays for the tree
+as well, giving 1182 for a 4/6 split against the matrix's 1056, and
+every split is worse. Neither decoder can go below one switch per tap.
 
-With a 4-bit tree and a 6-bit matrix the printed formula gives
-`30 + 64 + 8 = 102`, not 80. I could not find a split of ten bits that
-yields 80 from that expression; `80 = 2^6 + 2^4` exactly, which suggests
-the intended term for the tree is `2^M` rather than `2^(M+1) - 2`, but
-that contradicts the tree formula three slides earlier. The tree number
-(2046) and the matrix number (1056) both check out against the drawn
-architectures, so it is only the segmented line that is wrong. Left
-alone rather than guessed at, because the answer depends on which
-architecture was meant.
+`80 = 2^6 + 2^4` is two strings, not one — a coarse string of `2^M` with
+a fine string of `2^(N-M)` interpolating between adjacent coarse taps.
+`2^M + 2^(N-M)`, so 80 at six/four and 64 at the optimum of five/five.
+Section rewritten around that, including what it costs.
