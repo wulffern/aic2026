@@ -183,3 +183,6 @@ docs-book/404.html
 ex/*.pdf
 ex/*.svg
 ex/*.png
+
+# Local, uncommitted working note (third-party figure review)
+FIGURE-PROVENANCE.local.md
