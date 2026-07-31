@@ -249,9 +249,23 @@ Notice that at $s=0$ the impedance goes to infinity, so a crystal is high impeda
 
 -->
 
-Since the 1/(sCp) does not change much at resonance, then 
+Divide top and bottom by $s$ and the shape is easier to see:
 
-$$ Z_{in} \approx \frac{L C_F s^2 + 1}{L C_F C_p s^2 + C_F + C_P}$$
+$$ Z_{in} = \frac{1}{s}\cdot\frac{L C_F s^2 + 1}{L C_F C_P s^2 + C_F + C_P}$$
+
+<!--pan_doc:
+
+The $1/s$ out front is just the capacitive fall-off that any capacitor has, and it does not change much over the narrow band around resonance, so the fraction beside it is what matters. It has two interesting frequencies. The numerator vanishes at
+
+$$ \omega_s = \frac{1}{\sqrt{LC_F}} $$
+
+where the impedance goes to zero: *series resonance*, the motional branch turning into a short. The denominator vanishes a little higher, at
+
+$$ \omega_p = \frac{1}{\sqrt{LC_F}}\sqrt{1 + \frac{C_F}{C_P}} $$
+
+where the impedance goes to infinity: *parallel resonance*, the motional branch resonating against the package capacitance. Since $C_F$ is thousands of times smaller than $C_P$, those two frequencies are only a few hundred parts per million apart, and everything a crystal oscillator does happens in that narrow gap.
+
+-->
 
 See [Crystal oscillator impedance](https://github.com/wulffern/aic2026/blob/main/jupyter/xosc.ipynb) for a detailed explanation, or the [interactive version](https://wulffern.github.io/aic2026/assets/examples/xosc.html) where the motional and static elements are sliders and the pulling is worked out for you.
 
@@ -542,7 +556,15 @@ V_{th})^2}{C \frac{VDD}{2} N}$$
 
 $$ K_{vco} = 2 \pi \frac{\partial f}{\partial V_{control}}$$
 
-$$ K_{vco} = 2 \pi  \frac{\mu_p C_{ox} W/L }{C\frac{VDD}{2}N}$$
+$$ K_{vco} = - 2 \pi  \frac{\mu_p C_{ox} \frac{W}{L} \left(VDD - V_{control} - V_{th}\right) }{C\frac{VDD}{2}N}$$
+
+<!--pan_doc:
+
+Two things about that result. It is negative, because $V_{control}$ is the gate of a PMOS: raising it turns the device off and slows the oscillator down. And it is proportional to the overdrive $VDD - V_{control} - V_{th}$, not constant, so this oscillator's gain depends on where in its range you are sitting.
+
+That is worth knowing before designing a loop around it. The linear model in the PLL chapter takes $K_{osc}$ as a single number, and it is only a single number over the small range the loop actually uses. A quick check on the units catches the mistake of dropping the overdrive term: $\mu_p C_{ox} W/L$ is amps per volt squared, so without a voltage on top the expression is not rad/s per volt.
+
+-->
 
 
 
