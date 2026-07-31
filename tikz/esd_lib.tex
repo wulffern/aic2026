@@ -1,0 +1,90 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Shared frame for the ESD build-up sequence in l02_esd.
+%%
+%% Four figures in the chapter are the same picture with more added each
+%% time: a chip outline with three rails brought out to pads, then one
+%% diode, then two, then the whole network with the grounded gate NMOS.
+%% They only teach anything if they are literally the same drawing, so
+%% the frame lives here and each figure adds its own devices.
+%%
+%% Coordinates: pads at x = 0, rails run to \esdRight. VDD at \esdVdd,
+%% the signal pin at \esdPin, VSS at zero.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\esdVdd}{5.0}
+\newcommand{\esdPin}{2.6}
+\newcommand{\esdRight}{8.8}
+
+% A bond pad: the crossed square the chapter's originals use.
+\newcommand{\esdPad}[1]{%
+  \draw (-0.17,{#1-0.17}) rectangle (0.17,{#1+0.17});
+  \draw (-0.17,{#1-0.17}) -- (0.17,{#1+0.17});
+  \draw (-0.17,{#1+0.17}) -- (0.17,{#1-0.17});
+}
+
+% The chip outline, three rails, their pads and their names. #1 is the
+% name of the middle rail, because the overview figure calls it PIN and
+% the protection figures treat it as one signal pin among many.
+\newcommand{\esdframe}{%
+  \draw[dotted, gray] (-0.8,-1.3) rectangle ({\esdRight+0.3},{\esdVdd+1.3});
+  \foreach \y/\name/\num in {\esdVdd/VDD/1, \esdPin/PIN/2, 0/VSS/0} {
+    \draw (0,\y) -- (\esdRight,\y);
+    \esdPad{\y}
+    \node[armygreen, anchor=south west, scale=0.85] at (0.05,{\y+0.2}) {\name};
+    %- above the rail, not left of it: the zap wiring comes in on the
+    %- left and the numbers were landing on top of it
+    \node[red, anchor=south east, scale=0.9] at (-0.25,{\y+0.18}) {\num};
+  }
+}
+
+% A vertical diode conducting upward, from (#1,#2) to (#1,#3), with its
+% body centred at #4 and named #5. Every protection device in these
+% figures is one of these; drawing them through one macro is what makes
+% the reverse-biased-in-normal-operation argument in the text hold
+% across all four pictures.
+%
+% The centre is explicit because a diode spanning VSS to VDD would
+% otherwise put its symbol exactly on the pin rail it is meant to cross
+% without connecting.
+\newcommand{\esdDiode}[5]{%
+  \draw (#1,#2) -- (#1,{#4-0.45});
+  \draw (#1,{#4-0.45}) to [D] (#1,{#4+0.45});
+  \draw (#1,{#4+0.45}) -- (#1,#3);
+  \fill (#1,#2) circle (0.075);
+  \fill (#1,#3) circle (0.075);
+  \node[red, anchor=west, scale=0.8] at ({#1+0.32},#4) {#5};
+}
+
+% A grounded gate NMOS at x=#1, drain on the rail at #2, source on the
+% rail at #3, body centred at #4, node id #5 (letters only - it names a
+% TikZ node) and caption #6. The centre is explicit for the same reason
+% the diode's is: left to the midpoint, a VDD to VSS device lands on the
+% pin rail it is meant to cross without touching. The gate goes to the source through a resistor,
+% which is the whole trick: the resistor does nothing at DC, so the
+% device is off whenever the chip is running, but during a zap the
+% substrate current it develops lifts the gate and turns the parasitic
+% bipolar on.
+\newcommand{\esdggn}[6]{%
+  \node[nmos] (esdm#5) at ({#1+0.35},#4) {};
+  \draw (esdm#5.D) -- ({#1+0.35},#2);
+  \draw (esdm#5.S) -- ({#1+0.35},#3);
+  \fill ({#1+0.35},#2) circle (0.075);
+  \fill ({#1+0.35},#3) circle (0.075);
+  \draw (esdm#5.G) -- ({#1-0.35},#4);
+  \draw ({#1-0.35},#4) to [R] ({#1-0.35},{#3+0.5});
+  \draw ({#1-0.35},{#3+0.5}) -- ({#1-0.35},#3) -- ({#1+0.35},#3);
+  %- beside the device, not above it: above puts it on the rail the
+  %- device crosses without connecting
+  \node[red, anchor=west, scale=0.8, align=left]
+    at ({#1+0.95},#4) {#6};
+}
+
+% The zap itself: current forced in at one pad, taken out at another.
+\newcommand{\esdZapIn}[1]{%
+  \draw (-2.7,#1) to [I] (-1.3,#1);
+  \draw (-1.3,#1) -- (0,#1);
+}
+\newcommand{\esdZapOut}[1]{%
+  \draw (0,#1) -- (-1.3,#1);
+  \draw (-1.3,#1) \vground;
+}

@@ -1,14 +1,12 @@
-footer: Carsten Wulff 2026
-slidenumbers:true
-autoscale:true
-theme: Plain Jane, 1
-text:  Helvetica
-header:  Helvetica
-date: 2026-01-23
 
-<!--pan_title: IC and ESD  -->
 
-<!--pan_doc:
+
+
+
+
+
+
+
 
 **Keywords:** TempSense, Node Voltage, Ground, VDD, Clocks, Digital, Bias, RESET (POR), Package, Why ESD, 
 CDM (Gauss, INV), HBM (01,10,02,20,12,21**), GGNMOS, Latch-up
@@ -17,35 +15,13 @@ CDM (Gauss, INV), HBM (01,10,02,20,12,21**), GGNMOS, Latch-up
 
 Video is from 2024, so the plan might not be exactly the same. In addition, we're not using Caravel for the tapeout, but rather TinyTapeout.
 
--->
-
-<!--pan_skip: -->
-
-## TFE4188 - Introduction to Lecture 2
-# ICs and ESD
-
----
-
-<!--pan_skip: -->
-
-# Goal 
-
-Understand the **real-world** constraints on our IC
-
-Understand why you must **always handle ESD** on an IC
-
----
 
 
-<!--pan_skip: -->
 
-# The **real world** constrains our IC
 
----
 
 # What blocks must our IC include?
 
-<!--pan_doc:
 
 
 The project is to design an integrated temperature sensor. 
@@ -56,18 +32,14 @@ sensor. Before we have made the temperature sensor, we need to think what the si
 Maybe we read [Kofi Makinwa's overview of temperature sensors](http://ei.ewi.tudelft.nl/docs/TSensor_survey.xls)
 and find one of the latest papers, 
 
--->
 
 A BJT-based CMOS Temperature Sensor with Duty-cycle-modulated Output and ±0.54 °C (3-sigma) Inaccuracy from -40 °C to 125 °C [@huang21].
 
-<!--pan_doc:
 
 At this point, you may struggle to understand the details of the paper, but at least it should be possible to see what comes in and out of the module. 
 What I could find is in the table below, maybe you can find more?
 
--->
 
----
 
 | Pin      | Function       | in/out | Value    | Unit |
 |:---------|:---------------|:-------|:---------|:-----|
@@ -81,7 +53,6 @@ What I could find is in the table below, maybe you can find more?
 | PHI2_1V2 | digital        | out    | 0 or 1.2 | V    |
 | DCM_1V2  | digital        | out    | 0 or 1.2 | V    |
 
-<!--pan_doc:
 
 This list contains supplies, clocks, digital outputs, bias currents and a ground. Let me explain what they are.
 
@@ -124,21 +95,16 @@ Even a temperature sensor needs something else on the IC. We need digital input/
 I would claim that any System-On-Chip will always need these blocks!
 
 I want you to pause, take a look at the 
--->
 
 [course plan](https://analogicus.com/aic2026/plan/)
 
-<!--pan_doc:
 and now you might understand why I've selected the topics.
 
---->
 
----
 
 
 ### One more thing
 
-<!--pan_doc:
 
 There is one more function we need when we have digital logic and a power supply. We need a "RESET" system. 
 
@@ -162,29 +128,22 @@ If we make a delay based POR, then we need a long delay, which means large resis
 Below is an idea for a [Power-On-Reset](https://patents.google.com/patent/GB2509147A/en?inventor=carsten+wulff&oq=carsten+wulff)  I had way back when. 
 The POR uses a delay based on the tunneling current in a thin oxide transistor (2), and uses a thick-oxide transistor (3) as a capacitor. The output X would go to a Schmitt
 trigger (5).
--->
 
 
-![inline fit](../media/por.pdf)
+<!-- ../media/por.pdf -->
 
-<!--pan_doc:
-<sub>Figure 1: Power On Reset using gate tunneling  </sub>
--->
+![](media/por.pdf)
 
 
+<small><sub>_Figure 1: Power On Reset using gate tunneling  _</sub></small>
 
----
-<!--pan_skip: -->
 
-#[fit] ESD
 
----
 
 # Electrostatic Discharge 
 
 If you make an IC, you must consider Electrostatic Discharge (ESD) Protection circuits
 
-<!--pan_doc: 
 
 ESD events are tricky. They are short (ns), high current (Amps) and poorly modeled in the SPICE model. 
 
@@ -201,61 +160,20 @@ project will be infinitely delayed, or in other words, canceled.
 Now imagine it's your responsibility to ensure it meets the 1 kV specification, what would you do? I would recommend you read one
 of the few ESD books in existence, shown below, and rely on you understanding of PN-junctions.
 
--->
 
 
 
 
-<!--pan_doc: 
 
 The industry has agreed on some common test criteria for electrostatic discharge. Test that model
 what happens when a person touches your IC, during soldering, and PCB mounting. If your IC passes the test 
 then it's probably going to survive in volume production
 
--->
 
 Standards for testing at [JEDEC](https://www.jedec.org/category/technology-focus-area/esd-electrostatic-discharge-0)
 
----
-
-<!--pan_skip: -->
 
 
-## When do ESD events occur?
-
-[.column]
-
-## Before/during PCB 
-
-**Human body model (HBM)**
-
-<!--pan_doc: 
-
-Models a person touching a device with a finger.
-
--->
-
-**Charged device model (CDM)**
-
-<!--pan_doc:
-
-Models a device in an electric field where one pin is suddenly connected
-
--->
-
-[.column]
-
-## After PCB
-
-**Human body model (HBM)** 
-
-**System level ESD** 
-
-
-
----
-
-<!--pan_doc:
 
 The JEDEC standard splits ESD events into Human body model, Charged device model, and System level ESD. 
 
@@ -267,15 +185,12 @@ in decoupling capacitors and power circuits, so those can handle a large ESD zap
 
 We won't go into details on System level ESD, as that is more a PCB type of concern. The physics are the same, but the details are different.
 
--->
 
 ## Human body model (HBM)
 
-<!--pan_doc:
 
 HBM is the "simple" version of ESD, a model can be seen in Figure 3. Some of the properties of HBM are: 
 
--->
 
 - Models a person touching a device with a finger
 - **Long** duration (around 100 ns)
@@ -283,22 +198,21 @@ HBM is the "simple" version of ESD, a model can be seen in Figure 3. Some of the
 - Can usually be handled in the I/O ring
 - 4 kV HBM ESD is 2.67 A peak current
 
-![right fit](../media/esd_hbm_finger.pdf)
+<!-- ../media/esd_hbm_finger.pdf -->
 
-<!--pan_doc:
-<sub>Figure 2: Human body model (HBM)</sub>
+![](media/esd_hbm_finger.pdf)
+
+
+<small><sub>_Figure 2: Human body model (HBM)_</sub></small>
 
 More on circuits that protect from HBM later.
 
--->
 
 
----
 ## Charged device model (CDM)
 
 
 
-<!--pan_doc: 
 
 > An IC left alone for long enough will equalize the Fermi potential across the whole IC. 
 
@@ -308,7 +222,6 @@ Not entirely a true statement, but roughly true. One exception is non-volatile m
 I'm pretty sure that if you leave an SSD hardrive to the [heat death of the universe](https://en.wikipedia.org/wiki/Heat_death_of_the_universe) 
 in maybe $10^{10^{10^{56}}}$ years, then the charges will equalize, and the Fermi level will be the same across the whole IC, so it's just a matter of time.
 
--->
 
 
 Assume there is an equal number of electrons and protons on the IC. According to Gauss' law 
@@ -316,7 +229,6 @@ Assume there is an equal number of electrons and protons on the IC. According to
 $$ \oint_{\partial \Omega} \mathbf{E} \cdot d\mathbf{S} = \frac{1}{\epsilon_0} \iiint_{V} \rho
 \cdot dV$$  
 
-<!--pan_doc:
 
 Which says that the electric field through the surface is the volume integral of the charges inside the surface. 
 If there are the same amount of protons and electrons, and the distribution is even, then there will be no field through IC surface.
@@ -325,16 +237,15 @@ As such, there is no external electric field from the IC.
 If we place an IC in an electric field, the charges inside will redistribute. Flip the IC on it's back, 
 place it on an metal plate with an insulator in-between, and charge the metal plate to 1 kV, as shown in Figure 4.
 
--->
 
-![left fit](../media/cdm.pdf)
+<!-- ../media/cdm.pdf -->
 
-<!--pan_doc:
-<sub>Figure 3: Charged Device Model (CDM) testing</sub>
--->
+![](media/cdm.pdf)
 
 
-<!--pan_doc: 
+<small><sub>_Figure 3: Charged Device Model (CDM) testing_</sub></small>
+
+
 
 Inside the integrated circuit, electrons and holes will redistribute to compensate for the electric field. Closest to the metal plate
 there will be a negative charge, and furthest away there will be a positive charge. 
@@ -359,18 +270,16 @@ For example, let's say I have two inverters powered by different supply, VDD1 an
 I will quickly bring VDD1 to zero, while VDD2 might react slower, and stay closer to 1 kV. 
 The gate source of the PMOS in the second inverter will see approximately 1 kV across the oxide, and will break. How could I prevent that?
 
--->
-
----
-
-![fit](../media/cdm1.pdf)
-
-<!--pan_doc:
-<sub>Figure 4: Cross domain voltage problem with CDM (or indeed HBM) events </sub>
--->
 
 
-<!--pan_doc: 
+<!-- ../media/cdm1.pdf -->
+
+![](media/cdm1.pdf)
+
+
+<small><sub>_Figure 4: Cross domain voltage problem with CDM (or indeed HBM) events _</sub></small>
+
+
 
 Assuming some luck, then VDD1 and VDD2 are separate, but the same voltage, or at least close enough, I can take two diodes, connected in opposite
 directions, between VDD1 and VDD2. As such, when VDD1 is grounded, VDD2 will follow but maybe be 0.6 V higher. As a result, the PMOS gate never
@@ -380,83 +289,72 @@ Now imagine an IC will hundreds of supplies, and billions of inverters. How can 
 
 CDM is tricky, because there are so many details, and it's easy to miss one that makes your circuit break.
 
--->
 
----
 
 # An HBM ESD zap example 
 
  Imagine a ESD zap between VSS and VDD. How can we protect the device? 
  
-<!--pan_doc:
 
 The positive current enters the VSS, and leaves via the VDD, so our supplies are flipped up-side down. 
 It's a fair assumption that none of the circuits inside will work as intended.
 
 But the IC must not die, so we have to lead the current to ground somehow.
  
- -->
 
-![left fit](../media/esd_hbm_model.pdf)
+<!-- ../media/esd_hbm_model.pdf -->
 
-<!--pan_doc:
-<sub>Figure 5: ESD HBM zap example </sub>
--->
+![](media/esd_hbm_model.pdf)
 
 
----
+<small><sub>_Figure 5: ESD HBM zap example _</sub></small>
 
 
-<!--pan_doc:
+
+
 
 Let's simplify and think of the possible permutations, shown in Figure 7. We don't know where the current will enter 
 nor where it will leave our circuit, so we must make sure that all combinations are covered.
 
--->
 
-![inline fit](../media/esd_perm_tikz.pdf)
+<!-- ../media/esd_perm_tikz.pdf -->
 
-<!--pan_doc:
-<sub>Figure 6: The six ways a zap can cross a three terminal chip. Three pads means six ordered pairs, and ESD protection is the promise that every one of them has somewhere for the current to go. The chip is empty here on purpose; the next three figures fill it in.</sub>
--->
+![](media/esd_perm_tikz.pdf)
 
 
----
+<small><sub>_Figure 6: The six ways a zap can cross a three terminal chip. Three pads means six ordered pairs, and ESD protection is the promise that every one of them has somewhere for the current to go. The chip is empty here on purpose; the next three figures fill it in._</sub></small>
 
-<!--pan_doc: 
+
+
 When the current enters VSS and must leave via VDD, then it's simple, we can use a diode, as shown in Figure 8. 
 
 Under normal operation the diode will be reverse biased, and although it will add some leakage, it will 
 not affect the normal operation of our IC.
 
--->
 
 
-![inline fit](../media/esd_zap01_tikz.pdf)
+<!-- ../media/esd_zap01_tikz.pdf -->
 
-<!--pan_doc:
-<sub>Figure 7: Protection for a zap from ground to VDD. One diode, reverse biased whenever the chip is running, forward biased the moment VSS goes above VDD. The column crosses the pin rail without a junction dot, which is a statement that nothing is connected there yet.</sub>
--->
+![](media/esd_zap01_tikz.pdf)
 
 
----
+<small><sub>_Figure 7: Protection for a zap from ground to VDD. One diode, reverse biased whenever the chip is running, forward biased the moment VSS goes above VDD. The column crosses the pin rail without a junction dot, which is a statement that nothing is connected there yet._</sub></small>
 
-<!--pan_doc:
+
+
 The same is true for current in on VSS and out on PIN. Here we can also use a diode, as shown in Figure 9. 
 
--->
 
-![inline fit](../media/esd_zap02_tikz.pdf)
+<!-- ../media/esd_zap02_tikz.pdf -->
 
-
-<!--pan_doc:
-<sub>Figure 8: Protection for a zap from ground to a pin. Nothing new happens, and that is the point: a signal pin sits above VSS in normal operation for the same reason VDD does, so the same reverse biased diode covers it.</sub>
--->
+![](media/esd_zap02_tikz.pdf)
 
 
----
 
-<!--pan_doc:
+<small><sub>_Figure 8: Protection for a zap from ground to a pin. Nothing new happens, and that is the point: a signal pin sits above VSS in normal operation for the same reason VDD does, so the same reverse biased diode covers it._</sub></small>
+
+
+
 
 For a current in on VDD and out on VSS we have a challenge. That's the normal way for current to flow. 
 
@@ -473,38 +371,35 @@ before VDD $>$ breakdown of circuit.
 
 A circuit that can sometimes be used, if the ESD design window is not too small, is the Grounded-Gate-NMOS in Figure 10. 
 
--->
 
-![inline fit](../media/esd_rails_all_tikz.pdf)
+<!-- ../media/esd_rails_all_tikz.pdf -->
 
-<!--pan_doc:
-<sub>Figure 9: All six permutations covered by four devices. Each device is labelled with the zap it carries, and two of them carry one jointly: a strike from VDD to the pin goes down the left grounded gate NMOS to VSS and back up through the pin diode, which is why $1\rightarrow2$ appears twice. That is the real structure of an ESD network. It is not one path per permutation but a small set of devices arranged so every permutation has a series combination available, which is why adding a pin costs two diodes rather than six.</sub>
--->
+![](media/esd_rails_all_tikz.pdf)
 
 
----
+<small><sub>_Figure 9: All six permutations covered by four devices. Each device is labelled with the zap it carries, and two of them carry one jointly: a strike from VDD to the pin goes down the left grounded gate NMOS to VSS and back up through the pin diode, which is why $1\rightarrow2$ appears twice. That is the real structure of an ESD network. It is not one path per permutation but a small set of devices arranged so every permutation has a series combination available, which is why adding a pin costs two diodes rather than six._</sub></small>
+
+
 
 # The grounded gate NMOS
 
 
-<!--pan_doc: 
 
 If you try the circuit in Figure 11 with the normal BSIM spice model, it will not work. The transistor model
 does not include that part of the physics. 
 
 We need to think about how electrons, holes PN-junctions and bipolars work. Let's refresh quantum mechanics a bit.
 
--->
 
-![left fit](../media/l02_ggnmos.pdf)
+<!-- ../media/l02_ggnmos.pdf -->
 
-<!--pan_doc:
-<sub>Figure 10: The grounded gate NMOS (GGNMOS) </sub>
--->
+![](media/l02_ggnmos.pdf)
 
 
+<small><sub>_Figure 10: The grounded gate NMOS (GGNMOS) _</sub></small>
 
-<!--pan_doc:
+
+
 
 
 Electrons sticking to atoms (bound electrons), can only exist at discrete energy levels. As we bring atoms
@@ -528,18 +423,16 @@ when they scatter off an atom. If you break too many bonds between atoms, your m
 Assume a transistor like the one in Figure 12. The gate, source and bulk is connected to ground. The drain is connected to a high voltage.
 
 
--->
-
----
-
-![fit](../media/ggnmos.pdf)
-
-<!--pan_doc:
-<sub>Figure 11: Cross section of the grounded gate NMOS </sub>
--->
 
 
-<!--pan_doc: 
+<!-- ../media/ggnmos.pdf -->
+
+![](media/ggnmos.pdf)
+
+
+<small><sub>_Figure 11: Cross section of the grounded gate NMOS _</sub></small>
+
+
 
 The process of a GGNMOS will be (1) Avalanche, (2) hole accumulation, (3) forward bias of PN-junction, and (4) direct electron
 current from source to drain. 
@@ -589,21 +482,11 @@ impedance, we'll have a drain source connection with a few kOhm output impedance
 Take a look at New Ballasting Layout Schemes to Improve ESD Robustness of I/O Buffers in Fully Silicided CMOS Process [@ker09]
  for the pretty pictures you'll get when the drain/source breaks.
 
--->
 
----
 
-<!--pan_skip: -->
-
-If you don't do the layout right
-
-New Ballasting Layout Schemes to Improve ESD Robustness of I/O Buffers in Fully Silicided CMOS Process [@ker09]
-
----
 
 # But I just want a digital input, what do I need?
 
-<!--pan_doc: 
 
 Even if it's only a digital input, you still need to consider ESD events. 
 
@@ -620,23 +503,20 @@ the core area.
 Before we get to a transistor gate oxide it's common to have a set of secondary protection circutis. A resistor further reduces the current, and two local clamps (GGPMOS and GGNMOS) ensure 
 that the voltage across the transistor gate does not go to breakdown levels.
 
--->
-
----
-
-![original fit](../media/l6/esd.pdf)
-
-<!--pan_doc:
-<sub>Figure 12: Full protection of an input including secondary protection </sub>
--->
 
 
----
+<!-- ../media/l6/esd.pdf -->
 
-##[fit] Input buffer
+![](media/esd.pdf)
 
 
-<!--pan_doc:
+<small><sub>_Figure 12: Full protection of an input including secondary protection _</sub></small>
+
+
+
+##  Input buffer
+
+
 
 An input buffer can be seen below. I like to include a RC low-pass filter to filter out the RF frequencies (I don't want my input to toggle if a phone is on top of my circuit).
 
@@ -649,84 +529,55 @@ core supply.
 
 The last inverter is just to get the polarity of the TO\_CORE signal the same as the input. _
 
--->
 
-![right fit](../media/l6/fig_methodology.pdf)
+<!-- ../media/l6/fig_methodology.pdf -->
 
-<!--pan_doc:
-<sub>Figure 13: Full digital input including Schmitt trigger and level shifters </sub>
--->
+![](media/fig_methodology.pdf)
 
 
----
-
-#[fit] Latch-up
-
----
+<small><sub>_Figure 13: Full digital input including Schmitt trigger and level shifters _</sub></small>
 
 
 
-<!--pan_doc:
+#  Latch-up
+
+
+
+
 
 Another fun physics problem can happen in digital logic that is close to an electron source, like a connection to the real world,
 what we call a pad. A pad is where you connect the bond-wire in a QFN type of package with [wire-bonding](https://en.wikipedia.org/wiki/Wire_bonding)
 
 Assume we have the circuit in Figure 15. Under certain conditions we can get a short from VDD to ground. 
 
--->
 
-![left fit](../media/l02_latchup.pdf)
+<!-- ../media/l02_latchup.pdf -->
 
-<!--pan_doc:
-<sub>Figure 14: Inverter that suddenly shorts from VDD to ground located close to a PAD</sub>
--->
+![](media/l02_latchup.pdf)
 
 
----
-
-<!--pan_skip: -->
-
-Logic cells close to large NMOS pad drivers are prone to latch-up.
-
-The latch-up process can start with electrons injected into the p-type substrate.
-
-![right 200%](../media/fig_inv_tikz.pdf)
+<small><sub>_Figure 14: Inverter that suddenly shorts from VDD to ground located close to a PAD_</sub></small>
 
 
 
----
-
-<!--pan_skip: -->
-
-1. Electrons injected into substrate, diffuse around, but will be accelerated by n-well to p-substrate built in voltage. Can end up in n-well
-2. PMOS drain can be forward biased by reduced n-well potential. Hole injection into n-well. Holes diffuse around, but will be accelerated by n-well to p-substrate built in voltage. Can end up in p-substrate under NMOS
-3. NMOS source pn-junction can be forward biased. Electrons injected into p-substrate. Diffuse around, but will be accelerated by n-well to p-substrate built in voltage.
-4. Go to 2 (latch-up)
-
-![right fit](../media/scr_eh.pdf)
-   
 
 
----
-
-<!--pan_doc:
 
 Consider the cross section of the inverter in Figure 16. The latch-up process starts
 with electron injection (1), then forward bias of PMOS source/drain junction (2), forward bias of NMOS source/drain junction (3) , and finally positive feedback .
 
 
--->
 
 
-![fit](../media/scr_eh.pdf)
+<!-- ../media/scr_eh.pdf -->
 
-<!--pan_doc:
-<sub>Figure 15: Cross section of an inverter </sub>
--->
+![](media/scr_eh.pdf)
 
 
+<small><sub>_Figure 15: Cross section of an inverter _</sub></small>
 
-<!--pan_doc: 
+
+
 
 
 ### Electron injection
@@ -783,19 +634,17 @@ happens when there is a current injected into the base of the NPN or PNP. I woul
 the physics instead of using the parasitic bipolar circuits. I've found the parasitic bipolar leads you down the wrong 
 path when you actually want to understand the physics of latch-up.
 
--->
-
----
 
 
-![original fit](../media/l8/scr_model.pdf)
 
-<!--pan_doc:
-<sub>Figure 16: Cross section of an inverter including the parasitic bipolars </sub>
--->
+<!-- ../media/l8/scr_model.pdf -->
+
+![](media/scr_model.pdf)
 
 
----
+<small><sub>_Figure 16: Cross section of an inverter including the parasitic bipolars _</sub></small>
+
+
 
 You must **always handle ESD** on an IC
 
@@ -804,9 +653,7 @@ You must **always handle ESD** on an IC
 - Get help [www.sofics.com](http://www.sofics.com)
 
 
----
 
-<!--pan_doc:
 
 # Want to learn more?
 
@@ -816,10 +663,9 @@ Overview on Latch-Up Prevention in CMOS Integrated Circuits by Circuit Solutions
 
 Overview on ESD Protection Designs of Low-Parasitic Capacitance for RF ICs in CMOS Technologies [@ker11]
 
--->
 
 
-#[fit] Thanks!
+
 
 
 

@@ -1,0 +1,24 @@
+\input{tikz/fig_header.tex}
+
+% Zap in at VSS, out at the pin: a second diode, same argument.
+%
+% Third of the four ESD build-up figures. Nothing new happens here, and
+% that is the point of showing it: a signal pin sits above VSS in normal
+% operation for the same reason VDD does, so the same reverse biased
+% diode covers it. Two of the six permutations are now dealt with, both
+% of them by the easy mechanism.
+
+\begin{circuitikz}[american, thick, transform shape]
+
+  \input{tikz/ckt_lib.tex}
+  \input{tikz/esd_lib.tex}
+
+  \esdframe
+  \esdZapIn{0}
+  \esdZapOut{\esdPin}
+
+  \esdDiode{3.2}{0}{\esdVdd}{3.9}{$0\rightarrow1$}
+  \esdDiode{4.6}{0}{\esdPin}{1.2}{$0\rightarrow2$}
+
+\end{circuitikz}
+\end{document}

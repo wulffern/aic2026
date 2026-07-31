@@ -1,0 +1,29 @@
+\input{tikz/fig_header.tex}
+
+% The six zap permutations, and nothing else.
+%
+% First of the four ESD build-up figures. Three terminals, so six
+% ordered pairs, and the whole of ESD protection design is the promise
+% that every one of them has somewhere to go. The chip is empty here on
+% purpose: the point is the list, and the three figures that follow fill
+% the box in.
+
+\begin{circuitikz}[american, thick, transform shape]
+
+  \input{tikz/ckt_lib.tex}
+  \input{tikz/esd_lib.tex}
+
+  \esdframe
+
+  %- the six ordered pairs, in the order the chapter works through them
+  \foreach \i/\from/\to/\fname/\tname in {%
+      0/0/1/VSS/VDD, 1/1/0/VDD/VSS, 2/0/2/VSS/PIN,
+      3/2/0/PIN/VSS, 4/1/2/VDD/PIN, 5/2/1/PIN/VDD} {
+    \node[red, anchor=east, scale=0.9]
+      at (-3.7,{\esdVdd-0.45-0.62*\i}) {\from\ $\rightarrow$ \to};
+    \node[armygreen, anchor=west, scale=0.9]
+      at (-3.5,{\esdVdd-0.45-0.62*\i}) {\fname\ $\rightarrow$ \tname};
+  }
+
+\end{circuitikz}
+\end{document}

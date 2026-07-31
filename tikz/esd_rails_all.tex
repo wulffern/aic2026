@@ -1,0 +1,42 @@
+\input{tikz/fig_header.tex}
+
+% All six permutations covered.
+%
+% Last of the four ESD build-up figures, and the one worth studying.
+% Four devices, and between them every ordered pair of pads has a path.
+% The label on each device is the zap it carries, and two of them carry
+% a zap jointly: a strike from VDD to the pin goes down through the
+% grounded gate NMOS on the left to VSS, then back up through the pin
+% diode, which is why 1->2 appears twice.
+%
+% That is the ESD network's real structure. It is not one path per
+% permutation; it is a small set of devices arranged so that every
+% permutation has some series combination available. Adding a pin adds
+% two diodes, not six.
+%
+% Replaces a hand drawing whose middle rail was labelled PW. The
+% surrounding text calls it the pin, and so does the figure before it.
+
+\begin{circuitikz}[american, thick, transform shape]
+
+  \input{tikz/ckt_lib.tex}
+  \input{tikz/esd_lib.tex}
+
+  \esdframe
+
+  %- VDD down to VSS, the hard direction: that is the way current is
+  %- supposed to flow, so it needs a device that stays asleep
+  \esdggn{1.4}{\esdVdd}{0}{1.2}{vdd}{$1\rightarrow0$\\$1\rightarrow2$}
+
+  %- VSS up to VDD, and VSS up to the pin
+  \esdDiode{3.2}{0}{\esdVdd}{3.9}{$0\rightarrow1$}
+  \esdDiode{4.6}{0}{\esdPin}{1.2}{$0\rightarrow2$}
+
+  %- the pin up to VDD
+  \esdDiode{6.0}{\esdPin}{\esdVdd}{3.9}{$2\rightarrow1$}
+
+  %- and the pin down to VSS, the other hard direction
+  \esdggn{7.4}{\esdPin}{0}{1.2}{pin}{$2\rightarrow0$}
+
+\end{circuitikz}
+\end{document}

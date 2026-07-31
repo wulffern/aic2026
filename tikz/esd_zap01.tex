@@ -1,0 +1,26 @@
+\input{tikz/fig_header.tex}
+
+% Zap in at VSS, out at VDD, and one diode covers it.
+%
+% Second of the four ESD build-up figures. The easy case: in normal
+% operation VDD is above VSS, so this diode is reverse biased and does
+% nothing but leak, and during a zap it is the lowest impedance path
+% between the two pads by a wide margin.
+%
+% The diode column crosses the pin rail without a junction dot. That is
+% the point of drawing all three rails from the first figure onward -
+% the crossing is a statement that nothing is connected there yet.
+
+\begin{circuitikz}[american, thick, transform shape]
+
+  \input{tikz/ckt_lib.tex}
+  \input{tikz/esd_lib.tex}
+
+  \esdframe
+  \esdZapIn{0}
+  \esdZapOut{\esdVdd}
+
+  \esdDiode{3.2}{0}{\esdVdd}{3.9}{$0\rightarrow1$}
+
+\end{circuitikz}
+\end{document}
