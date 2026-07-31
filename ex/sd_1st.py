@@ -21,6 +21,10 @@ f1 = 1/128 - 1/N
 #f1 = fbin
 fd = fm1
 #- 0.7 of full scale: a true 1-bit loop overloads at full-scale input
+#- Fixed seed, so `make plots` reproduces the committed figure
+#- rather than a new noise realisation every time. The noise is
+#- meant to look like noise, not to be any particular noise.
+np.random.seed(15)
 x_s = 0.7*np.sin(2*np.pi*f1*t) + 1/2**15*np.random.randn(N)
 
 #----------------------------------------------
@@ -32,10 +36,7 @@ x_s = 0.7*np.sin(2*np.pi*f1*t) + 1/2**15*np.random.randn(N)
 nfs = 4
 u = x_s[0::nfs]
 
-#- Overridable, so the three variants the lecture uses can be
-#- regenerated without editing the file:
-#-   SD_BITS=1 SD_DITHER=0 python3 sd_1st.py
-bits = int(os.environ.get("SD_BITS", 1))
+bits = 1
 
 def quantize(v,bits):
     #- 2**bits levels reaching +/-1, so bits=1 is a genuine two-level
@@ -49,7 +50,7 @@ def quantize(v,bits):
 
 y_sn = np.array([quantize(v,bits) for v in u])
 
-dither = int(os.environ.get("SD_DITHER", 1))
+dither = 1
 M = len(u)
 y_sd = np.zeros(M)
 x = np.zeros(M)
@@ -130,36 +131,70 @@ plt.grid(True)
 
 plt.savefig(f"l6_sdlog_d{dither}_b{bits}.pdf")
 
-#- The same panels as TikZ, so the plots match the schematics.
-dither_note = "with dither" if dither else "no dither"
-tfig = Figure(f"""A first order sigma-delta modulator, {bits}-bit, {dither_note}.
+#- The same panels as TikZ, so the plots match the schematics. The
+#- three variants the lecture uses are emitted in one run, so `make
+#- plots` reproduces every committed figure.
+def run(bits, dither):
+    """Re-run the modulator for one (bits, dither) pair."""
+    np.random.seed(15)
+    x_s = 0.7*np.sin(2*np.pi*f1*t) + 1/2**15*np.random.randn(N)
+    u = x_s[0::nfs]
+    y_sn = np.array([quantize(v, bits) for v in u])
+
+    M = len(u)
+    y_sd = np.zeros(M)
+    x = np.zeros(M)
+    for n in range(1, M):
+        x[n] = x[n-1] + (u[n] - y_sd[n-1])
+        y_sd[n] = quantize(x[n] + dither*np.random.randn()/(4*2**bits), bits)
+    return x_s, u, y_sn, y_sd[2:]
+
+
+def tikz(bits, dither, log_too):
+    x_s, u, y_sn, y_sd = run(bits, dither)
+    X_s = freqDomain(x_s)
+    U = freqDomain(u)
+    Y_sn = freqDomain(y_sn)
+    Y_sdn = freqDomain(y_sd)
+
+    dither_note = "with dither" if dither else "no dither"
+    tfig = Figure(f"""A first order sigma-delta modulator, {bits}-bit, {dither_note}.
 
 Four spectra: continuous, sampled, quantized without shaping, and then
 the modulator output. The last panel is the one to look at. The noise is
 not smaller in total - it cannot be - it has been pushed away from zero
 frequency, which is where the signal is.""", columns=4)
 
-panels = ((X_s, "Continuous time, continuous value", None),
-          (u, "Discrete time, continuous value", None),
-          (Y_sn, "Discrete time, discrete value", f"{bits}-bit"),
-          (Y_sdn, "Noise-shaped", f"dither = {dither}"))
-for i, (spec, name, note) in enumerate(panels):
-    ax = tfig.axes(xlabel="$f/f_s$", title=name,
-                   ylabel="Magnitude [dB20]" if i == 0 else None,
-                   ylim=(-160, 0), width=3.5, height=4.6)
-    ax.plot(faxis(spec), 20*np.log10(np.abs(spec)), colour="black")
-    if note:
-        #- bottom left, since the noise-shaped trace lives at the top
-        ax.annotate(-0.47, -155, note, anchor="south west")
-tfig.save(f"l6_sd_d{dither}_b{bits}")
+    panels = ((X_s, "Continuous time, continuous value", None),
+              (U, "Discrete time, continuous value", None),
+              (Y_sn, "Discrete time, discrete value", f"{bits}-bit"),
+              (Y_sdn, "Noise-shaped", f"dither = {dither}"))
+    for i, (spec, name, note) in enumerate(panels):
+        ax = tfig.axes(xlabel="$f/f_s$", title=name,
+                       ylabel="Magnitude [dB20]" if i == 0 else None,
+                       ylim=(-160, 0), width=3.5, height=4.6)
+        ax.plot(faxis(spec), 20*np.log10(np.abs(spec)), colour="black")
+        if note:
+            #- bottom left, since the noise-shaped trace lives at the top
+            ax.annotate(-0.47, -155, note, anchor="south west")
+    tfig.save(f"l6_sd_d{dither}_b{bits}")
 
-#- and the log-frequency view, where first order shaping is a straight line
-lfig = Figure(f"""The same {bits}-bit modulator output on a log frequency axis.
+    if not log_too:
+        return
+    #- and the log-frequency view, where first order shaping is a line
+    NN = len(Y_sdn)//2
+    xs = np.arange(0, NN)/NN/2
+    lfig = Figure(f"""The same {bits}-bit modulator output on a log frequency axis.
 
 Only the positive frequencies are shown. First order shaping is a
 straight 20 dB per decade rise on this axis, which is far easier to
 recognise than the curve it makes on a linear one.""")
-ax = lfig.axes(xlabel="Normalized frequency", ylabel="Magnitude [dB20]",
-               xlog=True, width=10.0, height=6.0)
-ax.plot(x_sdn_short[1:], 20*np.log10(np.abs(Y_sdn_short[1:])), colour="black")
-lfig.save(f"l6_sdlog_d{dither}_b{bits}")
+    ax = lfig.axes(xlabel="Normalized frequency", ylabel="Magnitude [dB20]",
+                   xlog=True, width=10.0, height=6.0)
+    ax.plot(xs[1:], 20*np.log10(np.abs(Y_sdn[NN:]))[1:], colour="black")
+    lfig.save(f"l6_sdlog_d{dither}_b{bits}")
+
+
+tikz(1, 0, log_too=False)
+tikz(1, 1, log_too=False)
+tikz(5, 1, log_too=True)

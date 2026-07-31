@@ -116,10 +116,33 @@ ax.plot(f, mag, colour="black")
 fig.save("l5_iir")            # writes tikz/l5_iir.tex
 ```
 
-Then `make tikz-one FNAME=l5_iir` builds it like any other figure, and
-the lecture references `media/l5_iir_tikz.pdf`. The generated `.tex` is
-committed, so building the book never needs numpy or a simulator — only
-regenerating a figure does.
+Then
+
+```sh
+make plots-one FNAME=iir     # run the script, rebuild what it produced
+make plots                   # every plot script, four at a time
+```
+
+and the lecture references `media/l5_iir_tikz.pdf`. Any script in `ex/`
+that imports `tikzplot` is picked up automatically, so adding one needs
+no edit to the Makefile.
+
+The generated `.tex` is committed, so building the book never needs
+numpy or a simulator — only regenerating a figure does.
+
+**Everything a plot script needs is in this repository.** Several
+figures come from simulations that live in the aicex and dicex
+repositories; the columns those figures use are vendored into `ex/data/`
+as plain CSV, so the scripts run on any machine with numpy and nothing
+else. `make plots-data` re-vendors them, and is the only target that
+needs the other repositories checked out — run it after a simulation has
+been re-run, not otherwise.
+
+**Anything random is seeded.** A plot whose noise is drawn fresh on
+every run cannot be reproduced, so `make plots` would rewrite figures
+that nobody changed and a reader could never get back the one in the
+book. The noise is meant to look like noise, not to be any particular
+noise, so a fixed seed costs nothing.
 
 Two things to know:
 

@@ -9,8 +9,7 @@ changes the clock.
 
 The data comes from AIM-Spice transient sweeps in the dicex course
 material (github.com/wulffern/dicex), summarised into YAML by the sweep
-scripts there. Only regenerating the figures needs that repo; the
-generated tikz/rosc_*.tex are committed.
+scripts there and vendored into `ex/data/` by `ex/fetch_data.py`.
 """
 
 import os
@@ -23,13 +22,12 @@ sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)),
                                 "..", "py"))
 from tikzplot import Figure
 
-HOME = os.getenv("HOME")
-EX4 = f"{HOME}/pro/dicex/ex4"
+DATA = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
 
 
 def sweep(name, field="f_mean"):
     """Return the sweep variable and one measured field, sorted."""
-    with open(f"{EX4}/{name}.yaml") as fi:
+    with open(os.path.join(DATA, f"{name}.yaml")) as fi:
         obj = yaml.safe_load(fi)
     keys = sorted(k for k in obj if obj[k] and field in obj[k])
     x = np.array(keys, dtype=float)

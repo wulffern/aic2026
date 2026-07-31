@@ -21,6 +21,10 @@ t = np.arange(N)
 #- coherent and the window below has a job to do
 f1 = 233.5/N
 fd = 1/N*119
+#- Fixed seed, so `make plots` reproduces the committed figure
+#- rather than a new noise realisation every time. The noise is
+#- meant to look like noise, not to be any particular noise.
+np.random.seed(11)
 x_s = np.sin(2*np.pi*f1*t) + 1/1024*np.random.randn(N) +   0.5*np.sin(2*np.pi*(f1-fd)*t) + 0.5*np.sin(2*np.pi*(f1+fd)*t)
 
 #- Create the sampling vector, and the sampled signal

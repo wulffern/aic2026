@@ -1,0 +1,130 @@
+#!/usr/bin/env python3
+"""Copy the simulation data the plot scripts need into ex/data/.
+
+Several figures are drawn from simulations that live in other
+repositories. Depending on those directly means the figures can only be
+regenerated on a machine that happens to have them checked out in the
+right place, and it means a script fails with a confusing path error
+rather than an explanation.
+
+So the data is vendored: this script reads the source repositories,
+keeps only the columns the figures actually use, and writes plain CSV
+into `ex/data/`, which is committed. Everything in `ex/` then reads from
+there and needs nothing but numpy.
+
+Run this only when a simulation has been re-run:
+
+    python3 ex/fetch_data.py
+
+It needs, at the paths below:
+
+  * github.com/wulffern/aicex   at ~/pro/aicex
+  * github.com/wulffern/dicex   at ~/pro/dicex
+
+Trimming matters. The gm/ID sweeps are cicsim raw files with sixty-odd
+columns of which six are plotted, and reading them needs cicsim
+installed; the trimmed CSV is a tenth the size and needs nothing.
+"""
+
+import csv
+import os
+import sys
+
+HOME = os.path.expanduser("~")
+AICEX = os.environ.get("AICEX", f"{HOME}/pro/aicex")
+DICEX = os.environ.get("DICEX", f"{HOME}/pro/dicex")
+
+HERE = os.path.dirname(os.path.abspath(__file__))
+DATA = os.path.join(HERE, "data")
+
+#- gm/ID sweeps: device, corner, output name
+JNW = f"{AICEX}/ip/jnw_atr_sky130a/sim"
+JNW_WANT = ("gm", "gds", "id", "vth", "vdsat", "v(g)")
+JNW_RUNS = [
+    ("JNWATR_NCH_2C1F2", "KttTtVt"),
+    ("JNWATR_NCH_2C5F0", "KttTtVt"),
+    ("JNWATR_NCH_2C1F2", "KssTlVt"),
+    ("JNWATR_NCH_2C1F2", "KssTahVt"),
+    ("JNWATR_NCH_2C1F2", "KffTlVt"),
+    ("JNWATR_NCH_2C1F2", "KffTahVt"),
+]
+
+#- straight copies, source relative to DICEX
+DICEX_FILES = [
+    f"lectures/l14/dff_{n}.csv" for n in
+    ("setup_8", "setup_10", "hold_-40", "hold_-30")
+] + [
+    "ex4/rosc_temp.yaml",
+    "ex4/rosc_vdd.yaml",
+    "sim/spice/NCHIO/vgate.csv",
+    "sim/spice/NCHIO/vdrain.csv",
+    "sim/spice/NCHIO/vgaini.csv",
+]
+
+
+def short(col):
+    """cicsim names a column @m.xdut.xm1.msky130_..._01v8[gm]; want 'gm'."""
+    return col[col.index("[") + 1:col.index("]")] if "[" in col else col
+
+
+def fetch_jnw():
+    try:
+        import cicsim as cs
+    except ImportError:
+        print("  skipped gm/ID sweeps: cicsim not installed")
+        return 0
+    n = 0
+    for device, corner in JNW_RUNS:
+        src = f"{JNW}/{device}/output_dc/dc_SchGt{corner}.raw"
+        if not os.path.exists(src):
+            print(f"  missing {src}")
+            continue
+        df = cs.toDataFrame(src)
+        #- cicsim returns both `@m.xdut...[gm]` and a plain `gm`, so
+        #- keep the first of each short name rather than both
+        keep, seen = [], set()
+        for c in df.columns:
+            k = short(c)
+            if k in JNW_WANT and k not in seen:
+                seen.add(k)
+                keep.append(c)
+        out = os.path.join(DATA, f"{device}_{corner}.csv")
+        with open(out, "w", newline="") as fo:
+            w = csv.writer(fo)
+            w.writerow([short(c) for c in keep])
+            for row in zip(*(df[c] for c in keep)):
+                w.writerow([f"{v:.7g}" for v in row])
+        print(f"  {os.path.basename(out)} "
+              f"({len(df)} rows, {len(keep)} of {len(df.columns)} columns)")
+        n += 1
+    return n
+
+
+def fetch_dicex():
+    n = 0
+    for rel in DICEX_FILES:
+        src = os.path.join(DICEX, rel)
+        if not os.path.exists(src):
+            print(f"  missing {src}")
+            continue
+        dst = os.path.join(DATA, os.path.basename(rel))
+        with open(src) as fi, open(dst, "w") as fo:
+            fo.write(fi.read())
+        print(f"  {os.path.basename(dst)}")
+        n += 1
+    return n
+
+
+def main():
+    os.makedirs(DATA, exist_ok=True)
+    print(f"from {AICEX}:")
+    a = fetch_jnw()
+    print(f"from {DICEX}:")
+    b = fetch_dicex()
+    print(f"{a + b} files in {os.path.relpath(DATA, os.path.dirname(HERE))}")
+    if a + b == 0:
+        sys.exit("nothing copied; check the paths above")
+
+
+if __name__ == "__main__":
+    main()

@@ -17,6 +17,10 @@ t = np.arange(N)
 #- Create the "continuous time" signal with multiple sinusoidal signals and some noise
 f1 = 3023/N
 fd = 1/N*119
+#- Fixed seed, so `make plots` reproduces the committed figure
+#- rather than a new noise realisation every time. The noise is
+#- meant to look like noise, not to be any particular noise.
+np.random.seed(12)
 x_s = np.sin(2*np.pi*f1*t) + 1/1024*np.random.randn(N) #+   0.5*np.sin(2*np.pi*(f1-fd)*t) + 0.5*np.sin(2*np.pi*(f1+fd)*t)
 
 #- Create the sampling vector, and the sampled signal

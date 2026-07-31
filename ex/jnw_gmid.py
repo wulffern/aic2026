@@ -10,29 +10,26 @@ from one pass over the same data, so they cannot drift apart.
 The notebook is still worth keeping for looking at the data. It is no
 longer what the book is built from.
 
-Reads the DC gate sweeps of two sky130 nfets simulated with ngspice via
-cicsim, so it needs the aicex simulation results
-(github.com/wulffern/aicex) at ~/pro/aicex. That is why this is not part
-of the CI build: the generated tikz/jnw_*.tex are committed, and only
-regenerating them needs the raw data.
+Reads the DC gate sweeps of two sky130 nfets, simulated with ngspice and
+vendored into `ex/data/` by `ex/fetch_data.py`, so it runs anywhere the
+repository does.
 
 The two devices differ only in length. JNWATR_NCH_2C1F2 is the short
 one, 2C5F0 the long one, and most of what these plots show is the price
 of that choice.
 """
 
+import csv
 import os
 import sys
 
-import cicsim as cs
 import numpy as np
 
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)),
                                 "..", "py"))
 from tikzplot import Figure
 
-HOME = os.getenv("HOME")
-SIM = f"{HOME}/pro/aicex/ip/jnw_atr_sky130a/sim"
+DATA = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
 SHORT = "JNWATR_NCH_2C1F2"
 LONG = "JNWATR_NCH_2C5F0"
 
@@ -42,19 +39,13 @@ MARKS = (10, 15)
 
 
 def load(device, corner="KttTtVt"):
-    """Read one corner of one device, with the long column names trimmed."""
-    df = cs.toDataFrame(f"{SIM}/{device}/output_dc/dc_SchGt{corner}.raw")
-    out = {}
-    for col in df.columns:
-        # cicsim returns names like
-        #   @m.xdut.xm1.msky130_fd_pr__nfet_01v8[gm]
-        # so reduce each to the part in brackets, or the plain node name
-        if "[" in col:
-            key = col[col.index("[") + 1:col.index("]")]
-        else:
-            key = col
-        out[key] = np.asarray(df[col], dtype=float)
-    return out
+    """Read one corner of one device from ex/data/."""
+    path = os.path.join(DATA, f"{device}_{corner}.csv")
+    with open(path) as fi:
+        rows = list(csv.reader(fi))
+    header, body = rows[0], rows[1:]
+    return {h: np.array([float(r[i]) for r in body])
+            for i, h in enumerate(header)}
 
 
 def main():

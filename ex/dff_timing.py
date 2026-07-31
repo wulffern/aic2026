@@ -10,9 +10,8 @@ The sweep parameter is in picoseconds and is part of each file name:
 is, the data changing 40 ps *before* the clock edge.
 
 Data from the AIM-Spice runs in the dicex course material
-(github.com/wulffern/dicex, lectures/l14), driven by `dff.py` there.
-Only regenerating the figures needs that repo; the generated
-tikz/dff_*.tex are committed.
+(github.com/wulffern/dicex, lectures/l14), vendored into `ex/data/` by
+`ex/fetch_data.py`.
 """
 
 import csv
@@ -25,8 +24,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)),
                                 "..", "py"))
 from tikzplot import Figure
 
-HOME = os.getenv("HOME")
-L14 = f"{HOME}/pro/dicex/lectures/l14"
+DATA = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
 
 # name, the sweep point in ps, and what the reader should see
 CASES = (
@@ -72,7 +70,7 @@ SIGNALS = (("v(d)", "$d$"), ("v(ck)", "$ck$"),
 
 def load(name):
     """Read one AIM-Spice CSV. The header sits below four banner lines."""
-    with open(f"{L14}/{name}.csv") as fi:
+    with open(os.path.join(DATA, f"{name}.csv")) as fi:
         rows = list(csv.reader(fi))
     for i, row in enumerate(rows):
         if row and row[0] == "Time":

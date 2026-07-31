@@ -21,6 +21,10 @@ fbin = 10
 fm1 = 1/N*213
 f1 = 1/64 - 1/N
 fd = fm1
+#- Fixed seed, so `make plots` reproduces the committed figure
+#- rather than a new noise realisation every time. The noise is
+#- meant to look like noise, not to be any particular noise.
+np.random.seed(13)
 x_s = np.sin(2*np.pi*f1*t) + + 1/2**15*np.random.randn(N)
 
 #----------------------------------------------
@@ -121,7 +125,12 @@ plt.tight_layout()
 plt.savefig("l6_osr_" + str(OSR) + ".pdf")
 
 #- The same four panels as TikZ, so the plot matches the schematics.
-tfig = Figure(f"""Oversampling with a moving average, OSR = {OSR}.
+#- Both oversampling ratios the lecture uses are emitted in one run.
+def tikz(OSR):
+    y_on = oversample(y_sn, OSR)
+    Y_on = freqDomain(y_on)
+
+    tfig = Figure(f"""Oversampling with a moving average, OSR = {OSR}.
 
 Four spectra of the same signal: continuous, sampled, quantized, and
 then filtered by a length-{OSR} moving average. Read the last panel
@@ -134,16 +143,20 @@ never decimated. The gain comes from counting only the noise inside the
 narrower band, and the filter's job is to stop the rest folding back in
 when the decimation does happen.""", columns=4)
 
-panels = ((X_s, "Continuous time, continuous value", None),
-          (X_sn, "Discrete time, continuous value", None),
-          (Y_sn, "Discrete time, discrete value", f"{bits}-bit"),
-          (Y_on, "Oversampled", f"OSR = {OSR}"))
-for i, (spec, name, note) in enumerate(panels):
-    ax = tfig.axes(xlabel="$f/f_s$", title=name,
-                   ylabel="Magnitude [dB20]" if i == 0 else None,
-                   ylim=(-160, 0), width=3.5, height=4.6)
-    ax.plot(faxis(spec), 20*np.log10(np.abs(spec)), colour="black")
-    if note:
-        ax.annotate(-0.47, -12, note, anchor="north west")
+    panels = ((X_s, "Continuous time, continuous value", None),
+              (X_sn, "Discrete time, continuous value", None),
+              (Y_sn, "Discrete time, discrete value", f"{bits}-bit"),
+              (Y_on, "Oversampled", f"OSR = {OSR}"))
+    for i, (spec, name, note) in enumerate(panels):
+        ax = tfig.axes(xlabel="$f/f_s$", title=name,
+                       ylabel="Magnitude [dB20]" if i == 0 else None,
+                       ylim=(-160, 0), width=3.5, height=4.6)
+        ax.plot(faxis(spec), 20*np.log10(np.abs(spec)), colour="black")
+        if note:
+            ax.annotate(-0.47, -12, note, anchor="north west")
 
-tfig.save("l6_osr_" + str(OSR))
+    tfig.save("l6_osr_" + str(OSR))
+
+
+tikz(2)
+tikz(4)

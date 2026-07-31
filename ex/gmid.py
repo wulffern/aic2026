@@ -9,15 +9,14 @@ lecture derives:
   weak inversion:   gm/ID = 1/(n VT), n taken from the subthreshold slope
   strong inversion: gm/ID = 2/Veff = 2/(VGS - VTH)
 
-Needs the aicex simulation data (github.com/wulffern/aicex) at
-~/pro/aicex, so this is not part of the CI build; the committed
-media/gmid.{pdf,svg} are its output.
+The sweep is vendored into `ex/data/` by `ex/fetch_data.py`, so this
+runs anywhere the repository does.
 """
 
+import csv
 import os
 import sys
 
-import cicsim as cs
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -25,19 +24,19 @@ sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)),
                                 "..", "py"))
 from tikzplot import Figure
 
-home = os.getenv("HOME")
-jnwatr = "pro/aicex/ip/jnw_atr_sky130a/sim"
-tr = "JNWATR_NCH_2C1F2"
-raw = "output_dc/dc_SchGtKttTtVt.raw"
+DATA = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
 
-df = cs.toDataFrame(f"{home}/{jnwatr}/{tr}/{raw}")
+with open(os.path.join(DATA, "JNWATR_NCH_2C1F2_KttTtVt.csv")) as fi:
+    rows = list(csv.reader(fi))
+df = {h: np.array([float(r[i]) for r in rows[1:]])
+      for i, h in enumerate(rows[0])}
 
 VT = 8.617333e-5 * (273.15 + 27)  # kT/q at the simulation's 27 C
 
-vgs = df["v(v-sweep)"].to_numpy()
-gm = df["gm"].to_numpy()
-id_ = np.abs(df["i(id)"].to_numpy())
-vth = df["v(vth)"].to_numpy()
+vgs = df["v(g)"]
+gm = df["gm"]
+id_ = np.abs(df["id"])
+vth = df["vth"]
 
 gmid = gm / id_
 

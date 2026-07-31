@@ -6,8 +6,8 @@ believe about a transistor, and all three come from the same 130 nm
 device.
 
 Data from the AIM-Spice testbenches in the dicex course material
-(github.com/wulffern/dicex, sim/spice/NCHIO). Only regenerating the
-figures needs that repo; the generated tikz/*.tex are committed.
+(github.com/wulffern/dicex, sim/spice/NCHIO), vendored into `ex/data/`
+by `ex/fetch_data.py`.
 """
 
 import csv
@@ -20,13 +20,12 @@ sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)),
                                 "..", "py"))
 from tikzplot import Figure
 
-HOME = os.getenv("HOME")
-NCHIO = f"{HOME}/pro/dicex/sim/spice/NCHIO"
+DATA = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
 
 
 def load(name):
     """Read one AIM-Spice CSV; the header sits below four banner lines."""
-    with open(f"{NCHIO}/{name}.csv") as fi:
+    with open(os.path.join(DATA, f"{name}.csv")) as fi:
         rows = list(csv.reader(fi))
     start = next(i for i, r in enumerate(rows)
                  if r and r[0].startswith(("v", "V")) and len(r) > 1)
