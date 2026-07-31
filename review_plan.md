@@ -444,3 +444,28 @@ every split is worse. Neither decoder can go below one switch per tap.
 a fine string of `2^(N-M)` interpolating between adjacent coarse taps.
 `2^M + 2^(N-M)`, so 80 at six/four and 64 at the optimum of five/five.
 Section rewritten around that, including what it costs.
+
+## `l10_lpradio` — reviewed 2026-07-31
+
+The modulation expression had the carrier phase as `2 pi f(t) t`, which
+is wrong once the frequency is modulated — differentiating gives
+`f(t) + t f'(t)`. Phase is the integral of frequency; the shorthand only
+works for a fixed carrier, and the chapter settles on GFSK.
+
+The sensitivity equation used `DR` for data rate while `DR` earlier in
+the chapter meant dynamic range. Renamed `R_b`, terms named, and the
+budget finished: `-97.5` dBm at 1 Mbps gives **16.5 dB**, not the 17
+asserted, and that is the whole allowance shared between front end and
+demodulator — GFSK wanting ~12 dB of `Eb/N0` leaves only a few dB of
+noise figure, which is what the rest of the chapter is about.
+
+Left alone on the author's instruction: the data rate estimate is
+intentionally loose engineering maths.
+
+Verified and unchanged: the entire Friis section, correct at all six
+frequencies and both path-loss exponents; and the SDR power estimate.
+
+## Review queue, second pass — remaining
+
+Only the project lectures (`l01_project`, `lp_project_report`) are left
+unreviewed.
