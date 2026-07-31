@@ -1,0 +1,42 @@
+\input{tikz/fig_header.tex}
+
+% A single carrier link, end to end.
+%
+% One carrier, and the information rides on its amplitude and phase. The
+% modulator turns those two into an I and a Q, the transmitter puts them
+% on the carrier, and the receiver undoes both steps. Drawn beside the
+% OFDM figure so the two can be compared: the blocks are the same, only
+% what arrives at the left hand edge differs.
+
+\begin{tikzpicture}[thick]
+  \input{tikz/sfg_lib.tex}
+
+  \def\yt{0.95}
+  \def\yb{-0.95}
+
+  % ---- transmitter ----
+  \draw[->] (-2.4,\yt) -- (0,\yt);
+  \draw[->] (-2.4,\yb) -- (0,\yb);
+  \node[armygreen, anchor=east] at (-2.5,\yt) {$A_m(t)$};
+  \node[armygreen, anchor=east] at (-2.5,\yb) {$\phi_m(t)$};
+
+  \sfgTall{0}{-1.5}{1.3}{1.5}{Mod}
+  \draw[->] (1.3,\yt) -- (2.7,\yt) node[midway, above] {$I$};
+  \draw[->] (1.3,\yb) -- (2.7,\yb) node[midway, above] {$Q$};
+  \sfgTall{2.7}{-1.5}{4.0}{1.5}{TX}
+  \draw (4.0,0) -- (5.0,0);
+  \sfgAntenna{5.0}{0}
+
+  % ---- receiver ----
+  \sfgAntenna{7.4}{0}
+  \draw (7.4,0) -- (8.4,0);
+  \sfgTall{8.4}{-1.5}{9.7}{1.5}{RX}
+  \draw[->] (9.7,\yt) -- (11.1,\yt) node[midway, above] {$I$};
+  \draw[->] (9.7,\yb) -- (11.1,\yb) node[midway, above] {$Q$};
+  \sfgTall{11.1}{-1.5}{12.4}{1.5}{De\\ mod}
+  \draw[->] (12.4,\yt) -- (13.4,\yt);
+  \draw[->] (12.4,\yb) -- (13.4,\yb);
+  \node[armygreen, anchor=west] at (13.5,\yt) {$A_m(t)$};
+  \node[armygreen, anchor=west] at (13.5,\yb) {$\phi_m(t)$};
+\end{tikzpicture}
+\end{document}

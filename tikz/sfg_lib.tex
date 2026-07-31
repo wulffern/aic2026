@@ -53,3 +53,10 @@
   \draw (#1,#2) -- (#1,{#2+0.45});
   \draw ({#1-0.32},{#2+0.95}) -- (#1,{#2+0.45}) -- ({#1+0.32},{#2+0.95});
 }
+
+% A tall block, for the link diagrams in the radio chapter: corners at
+% (#1,#2) and (#3,#4), carrying #5.
+\newcommand{\sfgTall}[5]{%
+  \draw (#1,#2) rectangle (#3,#4);
+  \node[align=center] at ({(#1+#3)/2},{(#2+#4)/2}) {#5};
+}

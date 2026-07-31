@@ -595,7 +595,7 @@ For a 1 GHz bandwidth at 2.4 GHz carrier we'd have problems with the phase. At 1
 
 ---
 
-![inline fit](../media/l10_single_carrier.pdf)
+![inline fit](../media/l10_single_carrier_tikz.pdf)
 
 <!--pan_doc:
 <sub>Figure 12: Single carrier link: amplitude $A_m(t)$ and phase $\phi_m(t)$ are modulated onto I and Q, transmitted, and de-modulated after the receiver</sub>
@@ -614,7 +614,7 @@ The name "multiple carriers" is a bit misleading. Although there are multiple ca
 
 ---
 
-![inline fit](../media/l10_multiple_carrier.pdf)
+![inline fit](../media/l10_multiple_carrier_tikz.pdf)
 
 <!--pan_doc:
 <sub>Figure 13: OFDM link: the sub-carriers are modulated in frequency space, an IFFT makes the time domain I and Q for the transmitter, and an FFT at the receiver recovers the sub-carriers</sub>
