@@ -86,10 +86,13 @@ examples:
 	cp -f examples/*.html ${EXAMPLEDIR}/
 	cp -f examples/common/* ${EXAMPLEDIR}/common/
 
-figures: media/antenna_diode_leak.pdf
-
-media/antenna_diode_leak.pdf: ex/antenna_diode_leakage.py
-	${PYTHON} ex/antenna_diode_leakage.py
+# Nothing to do. This used to regenerate one matplotlib figure into
+# media/; every data figure now comes from a script in ex/ through
+# py/tikzplot.py, and the generated tikz/*.tex and media/*_tikz.pdf are
+# committed. Use `make plots` to regenerate them, which needs numpy and
+# in a few cases cicsim, and is deliberately not part of the doc build.
+figures:
+	@:
 
 clean-prepared:
 	-rm -rf ${BUILDDIR}
