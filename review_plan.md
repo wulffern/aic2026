@@ -122,3 +122,31 @@ derivation (checked line by line), Pelgrom, and the intrinsic-gain algebra.
    from `ex/q.py`: folding of the wideband Gaussian noise plus the
    4× shorter record each contribute; worth writing the two numbers into
    the prose and closing the question.
+
+## `lr0_logic` hidden figures — done 2026-07-31
+
+`py/lecture.py` `_convertImage` used `re.search`, so a Deckset line
+carrying two or three images side by side lost all but the first on the
+way to `docs/_posts` and to the book. Now uses `re.findall` and emits all
+of them. Four figures surfaced: `dff_setup_10`, `dff_hold_-30`,
+`l16/logic`, and the second half of the inverter/NOR/NAND row (that last
+one sits inside a `pan_skip` block, so it stays slide-only by design).
+The three lines in `l04_afe` and `s_need_to_know` are all inside
+`pan_skip` or standalone decks, so nothing else changed.
+
+Captions for Figures 33, 34 and 57 had been written as if each pair were
+one figure and were rewritten. Note for future captions: LaTeX gives
+every image its own float and will scatter a pair across a page or a
+column boundary, so *never* write "left plot"/"right plot" for images
+from the same source line — identify each by what it shows.
+
+Closed: **`media/l16/stop_activity.pdf` and `reduce_freq.pdf` are not
+duplicates.** They render identically only without `-cropbox`; with the
+CropBox honoured they are clearly different drawings. Same trap as the
+six redrawn figures.
+
+Open question for the author: `media/l16/logic.pdf` carries three
+hand-written marks on the cloud labelled `A`, `X` and `C`→`V`. The
+caption describes them generically as the points where the dynamic power
+equation can be attacked; if the letters mean something more specific it
+is worth saying so.
