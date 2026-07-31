@@ -188,3 +188,34 @@ Still open in this chapter:
    they should look like. Worth a pass that emits TikZ coordinates from
    the scripts, the way `tikz/bessel.tex` and `tikz/quant_noise.tex`
    already do, so the plots match the schematics.
+
+## `l05_sc` — reviewed 2026-07-31
+
+The two findings recorded earlier for this chapter had already been
+resolved during the IIR work, so this was a fresh pass.
+
+Fixed: the FIR transfer function summed `z^-1` instead of `z^-i` (three
+copies of a one-sample delay, so a pure delay rather than a filter — the
+figure's own header comment had it right); the bilinear transform was
+missing its `2/T`; three stray parentheses and a bare `C` for `C_1` in
+the three switched-capacitor impedance derivations; and the dangling
+`V_1 = l` / `V_2 =` labels in the two charge-transfer figures, which were
+faithful to the hand-drawn original and read as missing values.
+
+Prose: the chapter asserted `V_n^2 > 2kT/C` with no derivation. Now
+derived, including the point that the switch resistance cancels, and the
+consequence that halving the noise costs four times the capacitor and
+four times the power.
+
+Still open in this chapter:
+
+- The impedance derivation writes `I = Q/dt = Q f`, where the `Q` is
+  really the charge *difference* per cycle. The next line uses
+  `(Q_p1 - Q_p2)` correctly, so it is only the intermediate step that is
+  loose.
+- The first-order filter section says `|a| >= 1` is unstable, while the
+  z-domain section a page earlier calls a pole exactly on the unit circle
+  an oscillator. Both are defensible, but they should agree.
+- The second half (SC gain circuit, integrator, sub-circuits, switches)
+  still has slide-derived stretches that would benefit from lead-ins,
+  though less severely than `l06_adc` did.
