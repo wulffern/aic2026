@@ -77,7 +77,7 @@ regions (weak, moderate, strong) have different behaviours.
 ---
 
 
-![fit](../media/jnw_id_vgs.pdf)
+![fit](../media/jnw_id_vgs_tikz.pdf)
 
 <!--pan_doc: 
 <sub>Figure 3: Log of drain current versus gate/source voltage </sub> 
@@ -109,7 +109,7 @@ transistor. If we had a $g_m/I_D = 15$, then we'd only need 66 $\mu$A in the tra
 
 ---
 
-![fit](../media/jnw_gmid_vgs.pdf)
+![fit](../media/jnw_gmid_vgs_tikz.pdf)
 
 <!--pan_doc: 
 <sub>Figure 4: gm/Id (Y-axis) versus Gate voltage (X-axis) </sub> 
@@ -135,7 +135,7 @@ to operate in saturation.
 -->
 
 
-![fit](../media/jnw_vdsat_gmid.pdf)
+![fit](../media/jnw_vdsat_gmid_tikz.pdf)
 
 <!--pan_doc: 
 <sub>Figure 5: Vdsat versus gm/Id </sub> 
@@ -153,7 +153,7 @@ In Figure 6 we can see that at $g_m/I_D$ of 15 we have a lower $V_{GS}$ than $g_
 
 -->
 
-![fit](../media/jnw_vg_gmid.pdf)
+![fit](../media/jnw_vg_gmid_tikz.pdf)
 
 <!--pan_doc: 
 <sub>Figure 6: Vg versus gm/Id </sub> 
@@ -177,7 +177,7 @@ For a larger intrinsic gain we should pick a longer transistor.
 
 
 
-![fit](../media/jnw_gmgds_gmid.pdf)
+![fit](../media/jnw_gmgds_gmid_tikz.pdf)
 
 <!--pan_doc: 
 <sub>Figure 7: gm/gds versus gm/Id </sub> 
@@ -259,7 +259,7 @@ the mobility becomes dominant, and lowers the $V_{GS}$.
 
 -->
 
-![fit](../media/jnw_vg_gmid_corners.pdf)
+![fit](../media/jnw_vg_gmid_corners_tikz.pdf)
 
 <!--pan_doc: 
 <sub>Figure 8: Gate-source voltage as a function of corner </sub> 
@@ -273,7 +273,7 @@ The drain-source voltage does not change that much with corner, but it does chan
 
 -->
 
-![fit](../media/jnw_vdsat_gmid_corners.pdf)
+![fit](../media/jnw_vdsat_gmid_corners_tikz.pdf)
 
 <!--pan_doc: 
 <sub>Figure 9: Drain Saturation Voltage as a function of corner </sub> 

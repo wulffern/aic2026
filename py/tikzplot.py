@@ -87,6 +87,7 @@ class Axes:
         self.extra = []
         self.background = []
         self.legend_patches = []
+        self.legend_lines = []
 
     def plot(self, x, y, colour=None, label=None, style="very thick",
              decimate=True, columns=600):
@@ -109,12 +110,33 @@ class Axes:
         self.traces.append(([], colour, "very thick", label, "stem"))
         return self
 
-    def hline(self, y, colour="armygreen", label=None, style="dashed, very thick"):
-        """A horizontal reference level across the whole axis."""
-        self.traces.append(([("\\pgfkeysvalueof{/pgfplots/xmin}", y),
-                             ("\\pgfkeysvalueof{/pgfplots/xmax}", y)],
-                            colour, style, label, "hline"))
+    def hline(self, y, colour="black", label=None,
+              style="dashed, thick"):
+        """A horizontal reference level spanning the axis."""
+        # (A |- B) takes x from A and y from B, so the frame supplies the
+        # ends and the data supplies the level. Using -| here silently
+        # draws a zero length line somewhere near the origin.
+        self._rule(f"{{rel axis cs:0,0}} |- {{axis cs:0,{_fmt(y)}}}",
+                   f"{{rel axis cs:1,0}} |- {{axis cs:0,{_fmt(y)}}}",
+                   colour, style, label)
         return self
+
+    def vline(self, x, colour="black", label=None,
+              style="dashed, thick"):
+        """A vertical reference line spanning the axis."""
+        self._rule(f"{{axis cs:{_fmt(x)},0}} |- {{rel axis cs:0,0}}",
+                   f"{{axis cs:{_fmt(x)},0}} |- {{rel axis cs:0,1}}",
+                   colour, style, label)
+        return self
+
+    def _rule(self, a, b, colour, style, label):
+        # One coordinate comes from the data and the other from the axis
+        # frame, combined with |- or -|. Reaching for /pgfplots/ymin
+        # instead only works when the limit was set by hand, and fails
+        # silently when it was not.
+        self.extra.append(f"\\draw[{colour}, {style}] ({a}) -- ({b});")
+        if label:
+            self.legend_lines.append((colour, style, label))
 
     def vspan(self, x0, x1, colour="blue", opacity=0.12, label=None):
         """Shade a vertical band, for a region of interest on the x axis.
@@ -178,7 +200,7 @@ class Axes:
                 opts.append(f"{pg[0]}={_fmt(v[0])}")
                 opts.append(f"{pg[1]}={_fmt(v[1])}")
         legend_pos = o.pop("legend_pos", "north east")
-        if any(t[3] for t in self.traces) or self.legend_patches:
+        if any(t[3] for t in self.traces) or self.legend_patches or self.legend_lines:
             opts.append(f"legend pos={legend_pos}")
         opts.extend(o.pop("options", []))
         if o:
@@ -202,6 +224,9 @@ class Axes:
                     f"coordinates {{{coords}}};")
             if label:
                 lines.append(f"\\addlegendentry{{{label}}}")
+        for colour, style, label in self.legend_lines:
+            lines.append(f"\\addlegendimage{{{colour}, {style}}}")
+            lines.append(f"\\addlegendentry{{{label}}}")
         for colour, opacity, label in self.legend_patches:
             # an invisible plot whose legend mark is the shaded colour
             lines.append(
