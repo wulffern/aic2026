@@ -458,7 +458,9 @@ Groups meet, and work on project.
 
 # Syllabus
 
-The syllabus will be from Analog Integrated Circuit Design (CJM) and Circuits for all seasons. 
+The syllabus will be from Analog Integrated Circuit Design by Carusone,
+Johns and Martin [@cjm11], which everyone calls CJM, and Circuits for
+all seasons. 
 
 These lecture notes are a supplement to the book. I try to give some background, and how to think about electronics. 
 It's not my goal to repeat information that you can find in the book.
@@ -467,11 +469,6 @@ Buy a hard-copy of the book if you don't have that. Don't expect to understand t
 
 -->
 
-![inline](../media/cjm.png)
-
-<!--pan_doc:
-<sub>Figure 4: The book we'll use  </sub>
--->
 
 
 
