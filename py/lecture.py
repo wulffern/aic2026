@@ -404,19 +404,23 @@ class Lecture():
         if(re.search("^<!--",line)):
             return line
 
-        m = re.search(r"\!\[([^\]]*)\]\(([^\)]+)\)",line)
+        # A Deckset line may carry several images side by side on one
+        # slide. Convert every one of them, or the second and third
+        # figure never reach the web page or the book.
+        srcs = re.findall(r"\!\[[^\]]*\]\(([^\)]+)\)",line)
+        if(not srcs):
+            return line
 
-        if(m):
-            imgsrc = m.groups()[1]
-
-            if(not "downloadImage" in self.options):
-                if(re.search(r"\s*https://",imgsrc)):
-                    return f"![]({imgsrc})"
-
+        out = []
+        for imgsrc in srcs:
+            if(not "downloadImage" in self.options
+               and re.search(r"\s*https://",imgsrc)):
+                out.append(f"![]({imgsrc})")
+                continue
             i = Image(imgsrc,self.options)
             self.images.append(i)
-            line = str(i)
-        return line
+            out.append(str(i))
+        return "\n".join(out)
 
 
     def _filterLine(self,line):

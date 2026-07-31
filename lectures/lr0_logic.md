@@ -578,19 +578,51 @@ XA8 QN Q AVDD AVSS IVX1_CV
 ---
 Setup time: How long before clk does the data need to change
 
+<!--pan_doc:
+The setup time is not a number the flip-flop advertises, it is a number
+you measure. Sweep the moment the data changes relative to the rising
+clock edge, simulate, and look at where the output stops following the
+input. The two plots below are two points either side of that boundary,
+and the sweep point is printed on the time axis of each.
+-->
+
 ![inline fit](../media/l14/dff_setup_8.pdf)![inline fit](../media/l14/dff_setup_10.pdf)
 
 <!--pan_doc:
-<sub>Figure 33: Simulated d, ck, q and qn of the D flip-flop when the data changes too close to the clock edge, so q is not captured until the second clock edge</sub>
+<sub>Figure 33: Simulated d, ck, q and qn of the D flip-flop for two positions of the data edge, and the position is printed on the time axis of each plot. In the failing case the data changes too close to the rising clock edge at 0.5 ns, the flip-flop does not capture it, and q only goes high at the second edge at 1.5 ns. In the passing case the data has settled early enough, and q rises with the first edge</sub>
+
+Left of that boundary the flip-flop still switches, but late: notice how
+q in the failing plot rises a full clock period after it should. That is
+the failure mode setup violations produce in a real chip. Nothing is
+stuck, nothing looks broken on a scope, the data simply arrives one
+cycle behind, and it only happens on the corners and the temperatures
+where the launching path is slowest.
 -->
 
 ---
 Hold time: How long after clk can the data change
 
+<!--pan_doc:
+Hold time is the same experiment run from the other side. Now the
+question is not whether the data arrived early enough to be captured,
+but whether it stayed put long enough afterwards for the capture to
+finish. Move the data edge towards the clock edge and the flip-flop
+eventually samples the *new* value instead of the old one.
+-->
+
 ![inline fit](../media/l14/dff_hold_-40.pdf)![inline fit](../media/l14/dff_hold_-30.pdf)
 
 <!--pan_doc:
-<sub>Figure 34: The same signals when the data is held long enough after the clock edge, so q follows d on both edges</sub>
+<sub>Figure 34: The same signals for two positions of the data edge around the second rising clock edge at 1.5 ns, again marked on the time axis. In the passing case the data change is far enough from the edge that the flip-flop takes the new low value and q falls at 1.5 ns. In the failing case the data moves closer to the edge, the change is not taken, and q stays high for another period</sub>
+
+Hold violations are worse than setup violations, and it is worth being
+clear about why. A setup violation you can fix after the fact by slowing
+the clock down; the path simply needs more time, and the same silicon
+works at a lower frequency. A hold violation does not care what the
+clock frequency is. The data races the clock over a distance that has
+nothing to do with the period, so a chip that fails hold fails at every
+frequency, including DC, and the only fix is more silicon: buffers
+inserted in the fast path, which means another place and route pass.
 -->
 
 ---
@@ -1350,10 +1382,20 @@ $$P_{tot} = \alpha C V_{DD}^2 f$$
 
 ## Stop activity
 
+<!--pan_doc:
+Stopping the clock stops the flip-flops, but it does not necessarily
+stop the combinational cloud. If the inputs to the cloud keep moving,
+every gate inside it keeps charging and discharging its load, and the
+$\alpha C V_{DD}^2 f$ bill arrives whether or not anything downstream
+cares about the answer. Stopping the activity means breaking the data
+path into the cloud, so its inputs are held constant and the logic
+inside simply stops toggling.
+-->
+
 ![inline fit ](../media/l16/logic.pdf)  ![inline fit ](../media/l16/stop_activity.pdf) 
 
 <!--pan_doc:
-<sub>Figure 57: A clock gated logic block, with the gating cell above the flip-flops and the combinational cloud</sub>
+<sub>Figure 57: The same flip-flop banks and combinational cloud drawn twice. In the first drawing the cloud is marked at the points where the dynamic power equation can be attacked. In the second the data path from the first flip-flop bank into the cloud is broken, so the cloud sees a constant input and stops switching, while the flip-flops still receive their clock</sub>
 -->
 
 ---
