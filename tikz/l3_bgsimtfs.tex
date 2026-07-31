@@ -7,8 +7,13 @@
 \begin{tikzpicture}[line width=0.8pt]
   \draw[->] (0,0) -- (6,0) node[right] {$T\ (^\circ C)$};
   \draw[->] (0,0) -- (0,3.2) node[above] {$V_{BG}$};
-  \draw[smooth] plot coordinates {(0.4,2.35) (2.0,2.37) (4.0,2.33) (5.6,2.28)} node[right] {SS};
-  \draw[smooth] plot coordinates {(0.4,2.20) (2.0,2.25) (4.0,2.23) (5.6,2.17)} node[right] {TT};
-  \draw[smooth] plot coordinates {(0.4,2.05) (2.0,2.11) (4.0,2.09) (5.6,2.03)} node[right] {FF};
+  %- The three corners were 0.15 apart, which is less than the height of
+  %- the letters naming them, so SS, TT and FF landed on top of each
+  %- other and the figure showed one smudge. Spread to 0.45, and coloured
+  %- the way the corners are coloured everywhere else in the book: red
+  %- fast, black typical, blue slow.
+  \draw[smooth, blue] plot coordinates {(0.4,2.60) (2.0,2.62) (4.0,2.58) (5.6,2.53)} node[right] {SS};
+  \draw[smooth] plot coordinates {(0.4,2.15) (2.0,2.20) (4.0,2.18) (5.6,2.12)} node[right] {TT};
+  \draw[smooth, red] plot coordinates {(0.4,1.70) (2.0,1.76) (4.0,1.74) (5.6,1.68)} node[right] {FF};
 \end{tikzpicture}
 \end{document}

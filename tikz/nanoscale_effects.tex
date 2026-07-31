@@ -26,9 +26,12 @@
   \draw[armygreen, very thick, ->] (8.9,-2.15) -- (7.5,-2.15);
   \node[armygreen, scale=0.85] at (4.4,-2.15) {mechanical stress};
 
-  %- 2. the two fields in the channel
-  \draw[blue, very thick, ->] (4.4,0.95) -- (4.4,-0.55);
-  \node[blue, anchor=west, scale=0.85] at (4.5,-0.35) {$E_y$};
+  %- 2. the two fields in the channel. E_y starts at the surface rather
+  %- than up inside the gate: drawn from y=0.95 it ran straight through
+  %- the word GATE and along the gate terminal, which are the two things
+  %- in the figure it must not be confused with.
+  \draw[blue, very thick, ->] (4.5,-0.05) -- (4.5,-0.75);
+  \node[blue, anchor=west, scale=0.85] at (4.6,-0.5) {$E_y$};
   \draw[blue, very thick, ->] (3.3,-1.0) -- (5.5,-1.0);
   \node[blue, anchor=north, scale=0.85] at (4.4,-1.05) {$E_x$};
 
@@ -38,10 +41,14 @@
   }
   \node[red, anchor=south east, scale=0.85, align=right] at (2.4,1.55)
     {interface and\\ oxide traps};
-  \draw[red, thick, ->] (2.5,1.5) -- (3.3,0.2);
+  %- Both callouts swing round the gate rather than through it. Drawn
+  %- straight they crossed the gate outline and landed on the word GATE,
+  %- so the figure appeared to be pointing at the electrode when what it
+  %- means is the interface underneath it.
+  \draw[red, thick, ->] (2.4,1.35) to[out=-90, in=155] (3.05,-0.16);
 
   %- 4. the drain end, where the lateral field peaks
-  \draw[red, very thick, ->] (7.6,1.55) -- (6.4,0.15);
+  \draw[red, very thick, ->] (7.4,1.35) to[out=-90, in=25] (5.75,-0.16);
   \node[red, anchor=south west, scale=0.85, align=left] at (7.5,1.55)
     {hot carriers where\\ the field peaks};
 

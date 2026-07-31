@@ -33,7 +33,9 @@
     \sfgTall{5.6}{\y-0.7}{6.9}{\y+0.7}{ADC};
     \draw[->] (6.9,\y) -- (8.3,\y);
     \node[anchor=west, scale=0.9] at (8.4,\y) {$Y_{\tag}$};
-    \node[scale=0.8, anchor=south] at (7.6,\y+0.1) {4b};
+    %- not at 7.6: that is where the feedback taps off, so the label sat
+    %- on top of the vertical wire
+    \node[scale=0.8, anchor=south] at (7.2,\y+0.1) {4b};
 
     %- the feedback that makes it a sigma-delta at all
     \draw (7.6,\y) -- (7.6,{\y+\sg*1.5});
@@ -45,14 +47,22 @@
   }
 
   %- The cross-coupling, tapped from each integrator output and taken to
-  %- the other path's summing node. Two separate verticals so they do not
-  %- run on top of each other in the middle.
-  \draw[red, thick] (1.4,\yi) -- (1.4,0.85) -- (-2.35,0.85);
-  \draw[red, thick, ->] (-2.35,0.85) -- (-2.35,{\yq+0.22});
+  %- the other path's summing node.
+  %-
+  %- The two arms cannot both drop straight down the middle: each summing
+  %- node already has its input on the left and its DAC on the outer
+  %- side, which leaves only the inner side, and both arms want it. Run
+  %- at x = -2.35 and -2.05 they were three tenths apart and read as one
+  %- thick wire. So the I to Q arm takes the inner approach, and the Q to
+  %- I arm goes out past the input on the far left and comes back in
+  %- underneath it.
+  \draw[red, thick] (1.4,\yi) -- (1.4,0.85) -- (-2.2,0.85);
+  \draw[red, thick, ->] (-2.2,0.85) -- (-2.2,{\yq+0.24});
   \fill[red] (1.4,\yi) circle (0.075);
 
-  \draw[red, thick] (1.4,\yq) -- (1.4,-0.85) -- (-2.05,-0.85);
-  \draw[red, thick, ->] (-2.05,-0.85) -- (-2.05,{\yi-0.22});
+  \draw[red, thick] (1.4,\yq) -- (1.4,-0.85) -- (-3.4,-0.85)
+    -- (-3.4,1.5);
+  \draw[red, thick, ->] (-3.4,1.5) -- (-2.36,{\yi-0.21});
   \fill[red] (1.4,\yq) circle (0.075);
 
   \node[red, scale=0.85, anchor=west] at (1.7,0.0)
