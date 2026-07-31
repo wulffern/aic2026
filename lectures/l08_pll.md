@@ -126,7 +126,7 @@ solving the problem.
 ## Frequency
 
 The frequency of the clock is the frequency of the fundamental. If it's a digital clock (1-bit) with 50 % duty-cycle, then we know that a digital 
-pulse train is an infinite sum of odd-harmnoics, where the fundamental is given by the period of the train. 
+pulse train is an infinite sum of odd harmonics, where the fundamental is given by the period of the train. 
 
 
 ## Noise 
@@ -430,7 +430,7 @@ I have no idea who first thought of the idea, but it turns out, that one can mod
 
 
 
-$$ \phi(t) = 2 \pi \int_0^t f(t) dt$$
+$$ \phi(t) = 2 \pi \int_0^t f(\tau) d\tau$$
 
 ---
 
@@ -469,13 +469,13 @@ $$ L(s) = \frac{ K_{osc} K_{pd} K_{lp} H_{lp}(s) }{N s} $$
 
 <!--pan_doc:
 
-Here is the magic of PLLs. Notice what happens when $s = j\omega = j 0$, or at zero frequency. If we assume that $H_{lp}(s)$ is a low pass filter, then $H_{lp}(0) = \text{constant}$. The loop gain, however, will have a $L(0) \propto \frac{1}{0}$ which approaces infinity at 0. 
+Here is the magic of PLLs. Notice what happens when $s = j\omega = j 0$, or at zero frequency. If we assume that $H_{lp}(s)$ is a low pass filter, then $H_{lp}(0) = \text{constant}$. The loop gain, however, will have a $L(0) \propto \frac{1}{0}$ which approaches infinity at 0. 
 
-That means, we have an infinite DC gain in the loop transfer function. It is the only case I know of in an analog design where we can actually have infinite gain. Infinite gain translate can translate to infinite precision.
+That means, we have an infinite DC gain in the loop transfer function. It is the only case I know of in an analog design where we can actually have infinite gain. Infinite gain translates to infinite precision.
 
 If the reference was a Rubidium oscillator we could generate any frequency with the same precision as the frequency of the Rubidium oscillator. Magic. 
 
-For the linear model, we need to figure out the factors, like $K_{vco}$, which must be determined by simulation.
+For the linear model, we need to figure out the factors, like $K_{osc}$, which must be determined by simulation.
 
 -->
 
@@ -557,14 +557,25 @@ Below I've made a plot of the oscillation frequency over corners.
 
 <!--pan_doc:
 
-The gain of the phase-detector and charge pump is the current we feed into the loop filter over a period. I don't remember why, check in the book for a detailed description.
+The two blocks compare our reference clock to our feedback clock, and produce an error signal. The gain of the pair is the average current fed into the loop filter per radian of phase error, and it is worth deriving once because the $2\pi$ looks arbitrary until you do.
 
-The two blocks compare our reference clock to our feedback clock, and produce an error signal.
+The phase-frequency detector turns a phase error into a pulse width. If the feedback clock arrives late by a phase $\Delta\phi$, the UP output is high for the fraction $\Delta\phi/2\pi$ of the reference period, because a full period is $2\pi$ of phase. During that pulse the charge pump sources its full current $I_{cp}$, and for the rest of the period it sources nothing. The average current into the filter is therefore
+
+$$ \overline{I} = I_{cp}\frac{\Delta\phi}{2\pi} $$
+
+and the gain, being average current per radian, is what is left when you divide by $\Delta\phi$:
 
 -->
 
 
 $$ K_{pd} = \frac{I_{cp}}{2 \pi} $$
+
+<!--pan_doc:
+
+Two things follow that are easy to miss. The gain does not depend on the reference frequency, because both the pulse width and the period scale together. And it is the *average* current that the loop filter sees, which is only a fair description if the filter is slow compared with the reference — the same assumption that let us draw a linear model in the first place.
+
+-->
+
 
 
 ![right fit](../media/SUN_PLL_CP.pdf)
@@ -586,7 +597,7 @@ before you explore on your own.
 
 If you're really interested in PLLs, you should buy [Design of CMOS Phase-Locked Loops](https://www.amazon.com/Design-CMOS-Phase-Locked-Loops-Architecture/dp/1108494544) by Behzad Razavi. 
 
-The loop filter has a unity gain buffer. My oscillator draws current, while the VPLF node is high impedant, so I can't draw current from the loop filter without changing the filter transfer function. 
+The loop filter has a unity gain buffer. My oscillator draws current, while the VLPF node is high impedance, so I can't draw current from the loop filter without changing the filter transfer function. 
 
 -->
 
@@ -651,7 +662,7 @@ I've made a python model of the loop, you can find it at
 
 <!--pan_doc:
 
-In the jupyter notbook below you can find some more information on the phase/frequency detector, and charge pump.
+In the jupyter notebook below you can find some more information on the phase/frequency detector, and charge pump.
 
 -->
 
@@ -667,6 +678,8 @@ Below is a plot  of the loop gain, and the transfer function from input phase to
 We can see that the loop gain at low frequency is large, and proportional to $1/s$. As such, the phase of the divided down feedback clock is the same as our reference. 
 
 The closed loop transfer function $\phi_{div}/\phi_{in}$ shows us that the divided phase at low frequency is the same as the input phase. Since the phase is the same, and the frequency must be the same, then we know that the output clock will be N times reference frequency.
+
+It is worth checking this plot against the assumption we made when we drew the linear model at all. The loop gain crosses 0 dB at roughly 500 kHz, and the reference frequency is $256\ \text{MHz}/32 = 8$ MHz, so the loop bandwidth is about a sixteenth of the reference. That clears the "one tenth of the reference" rule with room to spare, which means the model is entitled to be believed. If it had not cleared it, the phase margin the plot reports would be a number about a model that does not describe the circuit — and that is a far worse situation than a poor phase margin, because it looks fine.
 
 -->
 
