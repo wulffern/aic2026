@@ -150,3 +150,41 @@ hand-written marks on the cloud labelled `A`, `X` and `C`→`V`. The
 caption describes them generically as the points where the dynamic power
 equation can be attacked; if the letters mean something more specific it
 is worth saying so.
+
+## `l06_adc` — reviewed 2026-07-31
+
+The author's open question in the text ("the increase in the noise level
+should be due to noise folding, and reduced number of points in the FFT,
+but I have not confirmed") is answered and removed. It is exactly
+10 log(nfs) = 6.02 dB, verified over 200 trials. The two mechanisms are
+two bookings of the same 6 dB, not additive: the relative floor is
+6 sigma^2 / M, the shorter record is the M, and folding is what keeps
+sigma^2 from dropping. Filter before decimating and they cancel exactly
+(measured 0.02 dB).
+
+Four wrong results, all confirmed numerically or against the figures
+before changing anything: the bin-651 "highest harmonic" story (stale
+since the quantizer fix — the harmonics are exactly 1/p and bin 651 is
+eleventh in rank), 4A^2/2^B for 4A^2/2^{2B} in the SQNR derivation, the
+sigma-delta loop equation with the feedback sign inverted, and the NTF
+derivation asserting Y = E + HY. Plus the claim that OSR=4 lowers the
+near-DC noise floor, which is measurably 0.8 dB the other way.
+
+Still open in this chapter:
+
+- Figure 21 (`l6_q_1_fharm.svg`) is asked to show bin 1397 but at the
+  printed size every harmonic of interest is inside |f/fs| < 0.09. It
+  wants a zoomed inset before the sentence about it is fully honest.
+- `ex/sd_1st.py` and `ex/q.py` use different quantizer definitions
+  (mid-tread 2/(2^B-1) versus mid-rise 2/2^B). Both are real converters
+  and the text now says so, but making them the same function would be
+  better than explaining the difference.
+
+## Queued from the author, 2026-07-31
+
+1. **Script-generated plots to TikZ.** Many figures come out of the
+   python in `ex/`, and they carry matplotlib's look rather than the
+   book's. The ADC FFT figures done in TikZ are the reference for what
+   they should look like. Worth a pass that emits TikZ coordinates from
+   the scripts, the way `tikz/bessel.tex` and `tikz/quant_noise.tex`
+   already do, so the plots match the schematics.
