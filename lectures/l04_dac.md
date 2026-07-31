@@ -162,7 +162,7 @@ $$ V_{out} = a_1^1 D_{in}^1 + B + \left( a_n^n D_{in}^n + ... a_2^2 D_{in}^2\rig
 
 DAC output will contain gain errors, offset errors, and non-linear components
 
-![left fit](../media/dac_error.svg)
+![left fit](../media/dac_error_tikz.pdf)
 
 <!--pan_doc:
 <sub>Figure 5: DAC output with gain error and non-linearity, and the resulting INL and DNL</sub>
@@ -172,7 +172,7 @@ DAC output will contain gain errors, offset errors, and non-linear components
 ---
 
 
-![left fit](../media/dac_inl_dnl.svg)
+![left fit](../media/dac_inl_dnl_tikz.pdf)
 
 <!--pan_doc:
 <sub>Figure 6: DAC output compared to the ideal straight line, with INL and DNL versus digital code</sub>

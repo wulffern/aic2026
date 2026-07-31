@@ -679,14 +679,14 @@ We can see that the loop gain at low frequency is large, and proportional to $1/
 
 The closed loop transfer function $\phi_{div}/\phi_{in}$ shows us that the divided phase at low frequency is the same as the input phase. Since the phase is the same, and the frequency must be the same, then we know that the output clock will be N times reference frequency.
 
-It is worth checking this plot against the assumption we made when we drew the linear model at all. The loop gain crosses 0 dB at roughly 500 kHz, and the reference frequency is $256\ \text{MHz}/32 = 8$ MHz, so the loop bandwidth is about a sixteenth of the reference. That clears the "one tenth of the reference" rule with room to spare, which means the model is entitled to be believed. If it had not cleared it, the phase margin the plot reports would be a number about a model that does not describe the circuit — and that is a far worse situation than a poor phase margin, because it looks fine.
+It is worth checking this plot against the assumption we made when we drew the linear model at all. The loop gain crosses 0 dB at 0.59 MHz, and the reference frequency is $256\ \text{MHz}/32 = 8$ MHz, so the loop bandwidth is a fourteenth of the reference. That clears the "one tenth of the reference" rule, which means the model is entitled to be believed. If it had not cleared it, the phase margin the plot reports would be a number about a model that does not describe the circuit — and that is a far worse situation than a poor phase margin, because it looks fine.
 
 -->
 
-![fit](../media/pll.pdf)
+![fit](../media/pll_tikz.pdf)
 
 <!--pan_doc:
-<sub>Figure 17: Magnitude and phase of the loop gain and the closed-loop transfer function from input phase to divider phase, with a phase margin of 55 degrees</sub>
+<sub>Figure 17: Magnitude and phase of the loop gain and the closed-loop transfer function from input phase to divider phase. The loop crosses 0 dB at 0.59 MHz with 51 degrees of phase margin</sub>
 -->
 
 ---
