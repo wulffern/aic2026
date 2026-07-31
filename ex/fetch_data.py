@@ -155,12 +155,51 @@ def fetch_rosc_kvco():
     return 1
 
 
+def fetch_pll_settling():
+    """PLL output frequency against time, from power-up to lock.
+
+    The transient .raw is 35 MB; what the figure needs is the rising
+    edge times of v(CK) and the period between them, which is a few
+    thousand rows. Extracted here so the book does not carry the
+    waveform.
+    """
+    try:
+        import cicsim as cs
+    except ImportError:
+        print("  skipped PLL settling: cicsim not installed")
+        return 0
+    src = f"{SUNPLL}/sim/SUN_PLL/output_tran/full_1e4.raw"
+    if not os.path.exists(src):
+        print(f"  missing {src}")
+        return 0
+    df = cs.toDataFrames(cs.ngRawRead(src))[0].set_index("time")
+    prev, falling, vth = 0.0, False, 0.8
+    rows = []
+    for t, v in df["v(ck)"].items():
+        if not falling and v > vth:
+            rows.append((t, t - prev))
+            prev = t
+            falling = True
+        if falling and v < vth - 0.2:
+            falling = False
+    rows.pop(0)
+    out = os.path.join(DATA, "pll_settling.csv")
+    with open(out, "w", newline="") as fo:
+        w = csv.writer(fo)
+        w.writerow(["time", "period"])
+        for t, p in rows:
+            w.writerow([f"{t:.10g}", f"{p:.7g}"])
+    print(f"  pll_settling.csv ({len(rows)} edges)")
+    return 1
+
+
 def main():
     os.makedirs(DATA, exist_ok=True)
     print(f"from {AICEX}:")
     a = fetch_jnw()
     print(f"from {SUNPLL}:")
     a += fetch_rosc_kvco()
+    a += fetch_pll_settling()
     print(f"from {DICEX}:")
     b = fetch_dicex()
     print(f"{a + b} files in {os.path.relpath(DATA, os.path.dirname(HERE))}")

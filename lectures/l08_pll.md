@@ -718,15 +718,37 @@ It is also worth checking this plot against the assumption we made when we drew 
 
 The top testbench for the PLL is [tran.spi](https://github.com/wulffern/sun_pll_sky130nm/blob/main/sim/SUN_PLL/tran.spi).
 
-I power up the PLL and wait for the output clock to settle. I use [freq.py](https://github.com/wulffern/sun_pll_sky130nm/blob/main/sim/SUN_PLL/freq.py) to plot the frequency as a function of time. The orange curve is the average frequency. We can see that the output frequency settles to 256 MHz.
+I power up the PLL and wait for the output clock to settle. The frequency is measured the way a counter would measure it: find every rising edge of CK and take the reciprocal of the interval between consecutive edges. See [freq.py](https://github.com/wulffern/sun_pll_sky130nm/blob/main/sim/SUN_PLL/freq.py).
 
 
 -->
 
-![fit](../media/sun_pll_lay_typ.pdf)
+![fit](../media/sun_pll_lay_typ_tikz.pdf)
 
 <!--pan_doc:
-<sub>Figure 18: Simulated PLL output frequency versus time from power-up; the average frequency (orange) settles to 256 MHz</sub>
+<sub>Figure 18: Simulated PLL output frequency from power-up, on the extracted layout at the typical corner. The grey trace is the frequency of each individual cycle and the black one a 200 cycle average; the loop overshoots to about 500 MHz, undershoots past the target, and settles at 256.1 MHz around 12 microseconds</sub>
+
+Three things in that plot are worth pausing on.
+
+The loop starts at the top of the oscillator's range and has to be
+dragged down, so the first microsecond is not feedback at all, it is the
+control node charging. Then the loop takes over, overshoots past the
+target, and rings once before settling. That single undershoot is the
+second order response the phase margin describes; 43 degrees is what one
+visible ring looks like.
+
+The grey band does not narrow as the loop settles. That is not the
+simulation failing to converge, and it is not an error the loop could
+correct: the charge pump delivers its correction as a pulse once per
+reference period, so the oscillator is kicked 8 million times a second
+whatever the loop is doing. In a real chip this is the reference spur,
+and it is the reason a PLL's output is never as clean as its reference.
+
+Settling takes about 12 microseconds here, against roughly 8 in earlier
+versions of this design. The loop got slower because the oscillator got
+slower: the extracted layout has a third less gain than the schematic,
+and loop bandwidth is proportional to that gain. Nothing was designed
+differently; the parasitics simply arrived.
 -->
 
 
