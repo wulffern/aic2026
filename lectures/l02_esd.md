@@ -273,7 +273,7 @@ We won't go into details on System level ESD, as that is more a PCB type of conc
 
 <!--pan_doc:
 
-HBM is the "simple" version of ESD, a model can be seen in Figure 3. Some of the properties of HBM are: 
+HBM is the "simple" version of ESD, a model can be seen in Figure 2. Some of the properties of HBM are: 
 
 -->
 
@@ -323,7 +323,7 @@ If there are the same amount of protons and electrons, and the distribution is e
 As such, there is no external electric field from the IC.
 
 If we place an IC in an electric field, the charges inside will redistribute. Flip the IC on it's back, 
-place it on an metal plate with an insulator in-between, and charge the metal plate to 1 kV, as shown in Figure 4.
+place it on an metal plate with an insulator in-between, and charge the metal plate to 1 kV, as shown in Figure 3.
 
 -->
 
@@ -409,7 +409,7 @@ But the IC must not die, so we have to lead the current to ground somehow.
 
 <!--pan_doc:
 
-Let's simplify and think of the possible permutations, shown in Figure 7. We don't know where the current will enter 
+Let's simplify and think of the possible permutations, shown in Figure 6. We don't know where the current will enter 
 nor where it will leave our circuit, so we must make sure that all combinations are covered.
 
 -->
@@ -424,7 +424,7 @@ nor where it will leave our circuit, so we must make sure that all combinations 
 ---
 
 <!--pan_doc: 
-When the current enters VSS and must leave via VDD, then it's simple, we can use a diode, as shown in Figure 8. 
+When the current enters VSS and must leave via VDD, then it's simple, we can use a diode, as shown in Figure 7. 
 
 Under normal operation the diode will be reverse biased, and although it will add some leakage, it will 
 not affect the normal operation of our IC.
@@ -442,7 +442,7 @@ not affect the normal operation of our IC.
 ---
 
 <!--pan_doc:
-The same is true for current in on VSS and out on PIN. Here we can also use a diode, as shown in Figure 9. 
+The same is true for current in on VSS and out on PIN. Here we can also use a diode, as shown in Figure 8. 
 
 -->
 
@@ -471,7 +471,7 @@ drain very fast, and your phone might even catch fire.
 As such, ESD design engineers have a "ESD design window". Never let the ESD circuit trigger when VDD < normal, but always trigger the ESD circuit 
 before VDD $>$ breakdown of circuit.
 
-A circuit that can sometimes be used, if the ESD design window is not too small, is the Grounded-Gate-NMOS in Figure 10. 
+A circuit that can sometimes be used, if the ESD design window is not too small, is the Grounded-Gate-NMOS in Figure 9. 
 
 -->
 
@@ -489,7 +489,7 @@ A circuit that can sometimes be used, if the ESD design window is not too small,
 
 <!--pan_doc: 
 
-If you try the circuit in Figure 11 with the normal BSIM spice model, it will not work. The transistor model
+If you try the circuit in Figure 10 with the normal BSIM spice model, it will not work. The transistor model
 does not include that part of the physics. 
 
 We need to think about how electrons, holes PN-junctions and bipolars work. Let's refresh quantum mechanics a bit.
@@ -525,7 +525,7 @@ If an electron, or a hole have sufficient energy (accelerated by a field), they 
 when they scatter off an atom. If you break too many bonds between atoms, your material will be damaged. 
 
 
-Assume a transistor like the one in Figure 12. The gate, source and bulk is connected to ground. The drain is connected to a high voltage.
+Assume a transistor like the one in Figure 11. The gate, source and bulk is connected to ground. The drain is connected to a high voltage.
 
 
 -->
@@ -671,7 +671,7 @@ The last inverter is just to get the polarity of the TO\_CORE signal the same as
 Another fun physics problem can happen in digital logic that is close to an electron source, like a connection to the real world,
 what we call a pad. A pad is where you connect the bond-wire in a QFN type of package with [wire-bonding](https://en.wikipedia.org/wiki/Wire_bonding)
 
-Assume we have the circuit in Figure 15. Under certain conditions we can get a short from VDD to ground. 
+Assume we have the circuit in Figure 14. Under certain conditions we can get a short from VDD to ground. 
 
 -->
 
@@ -711,7 +711,7 @@ The latch-up process can start with electrons injected into the p-type substrate
 
 <!--pan_doc:
 
-Consider the cross section of the inverter in Figure 16. The latch-up process starts
+Consider the cross section of the inverter in Figure 15. The latch-up process starts
 with electron injection (1), then forward bias of PMOS source/drain junction (2), forward bias of NMOS source/drain junction (3) , and finally positive feedback .
 
 
@@ -778,7 +778,7 @@ If we can trigger the thyristor when the VDD shoots to high, then we can create 
 
 See [low-leakage](https://www.sofics.com/features/low-leakage/) ESD for a few examples.
 
-A model with the parasitic bipolars can be seen in Figure 17. The resistors in the picture is to emulate what 
+A model with the parasitic bipolars can be seen in Figure 16. The resistors in the picture is to emulate what 
 happens when there is a current injected into the base of the NPN or PNP. I would recommend that you think through
 the physics instead of using the parasitic bipolar circuits. I've found the parasitic bipolar leads you down the wrong 
 path when you actually want to understand the physics of latch-up.

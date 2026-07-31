@@ -201,7 +201,7 @@ of concern. The physics are the same, but the details are different.
 
 \subsection{Human body model (HBM)}\label{human-body-model-hbm}
 
-HBM is the ``simple'' version of ESD, a model can be seen in Figure 3.
+HBM is the ``simple'' version of ESD, a model can be seen in Figure 2.
 Some of the properties of HBM are:
 
 \begin{itemize}
@@ -258,7 +258,7 @@ field from the IC.
 If we place an IC in an electric field, the charges inside will
 redistribute. Flip the IC on it's back, place it on an metal plate with
 an insulator in-between, and charge the metal plate to 1 kV, as shown in
-Figure 4.
+Figure 3.
 
 \pandocbounded{\includegraphics[keepaspectratio]{media/cdm.pdf}}
 
@@ -332,7 +332,7 @@ somehow.
 \emph{Figure 5: ESD HBM zap example }
 
 Let's simplify and think of the possible permutations, shown in Figure
-7. We don't know where the current will enter nor where it will leave
+6. We don't know where the current will enter nor where it will leave
 our circuit, so we must make sure that all combinations are covered.
 
 \pandocbounded{\includegraphics[keepaspectratio]{media/esd_perm_tikz.pdf}}
@@ -343,7 +343,7 @@ that every one of them has somewhere for the current to go. The chip is
 empty here on purpose; the next three figures fill it in.}
 
 When the current enters VSS and must leave via VDD, then it's simple, we
-can use a diode, as shown in Figure 8.
+can use a diode, as shown in Figure 7.
 
 Under normal operation the diode will be reverse biased, and although it
 will add some leakage, it will not affect the normal operation of our
@@ -357,7 +357,7 @@ VSS goes above VDD. The column crosses the pin rail without a junction
 dot, which is a statement that nothing is connected there yet.}
 
 The same is true for current in on VSS and out on PIN. Here we can also
-use a diode, as shown in Figure 9.
+use a diode, as shown in Figure 8.
 
 \pandocbounded{\includegraphics[keepaspectratio]{media/esd_zap02_tikz.pdf}}
 
@@ -385,7 +385,7 @@ the ESD circuit trigger when VDD \textless{} normal, but always trigger
 the ESD circuit before VDD \(>\) breakdown of circuit.
 
 A circuit that can sometimes be used, if the ESD design window is not
-too small, is the Grounded-Gate-NMOS in Figure 10.
+too small, is the Grounded-Gate-NMOS in Figure 9.
 
 \pandocbounded{\includegraphics[keepaspectratio]{media/esd_rails_all_tikz.pdf}}
 
@@ -400,7 +400,7 @@ is why adding a pin costs two diodes rather than six.}
 
 \section{The grounded gate NMOS}\label{the-grounded-gate-nmos}
 
-If you try the circuit in Figure 11 with the normal BSIM spice model, it
+If you try the circuit in Figure 10 with the normal BSIM spice model, it
 will not work. The transistor model does not include that part of the
 physics.
 
@@ -439,7 +439,7 @@ field), they can free an electron/hole pair when they scatter off an
 atom. If you break too many bonds between atoms, your material will be
 damaged.
 
-Assume a transistor like the one in Figure 12. The gate, source and bulk
+Assume a transistor like the one in Figure 11. The gate, source and bulk
 is connected to ground. The drain is connected to a high voltage.
 
 \pandocbounded{\includegraphics[keepaspectratio]{media/ggnmos.pdf}}
@@ -575,7 +575,7 @@ an electron source, like a connection to the real world, what we call a
 pad. A pad is where you connect the bond-wire in a QFN type of package
 with \href{https://en.wikipedia.org/wiki/Wire_bonding}{wire-bonding}
 
-Assume we have the circuit in Figure 15. Under certain conditions we can
+Assume we have the circuit in Figure 14. Under certain conditions we can
 get a short from VDD to ground.
 
 \pandocbounded{\includegraphics[keepaspectratio]{media/l02_latchup.pdf}}
@@ -583,7 +583,7 @@ get a short from VDD to ground.
 \emph{Figure 14: Inverter that suddenly shorts from VDD to ground
 located close to a PAD}
 
-Consider the cross section of the inverter in Figure 16. The latch-up
+Consider the cross section of the inverter in Figure 15. The latch-up
 process starts with electron injection (1), then forward bias of PMOS
 source/drain junction (2), forward bias of NMOS source/drain junction
 (3) , and finally positive feedback .
@@ -656,7 +656,7 @@ VDD shoots to high, then we can create a good ESD protection circuit.
 See \href{https://www.sofics.com/features/low-leakage/}{low-leakage} ESD
 for a few examples.
 
-A model with the parasitic bipolars can be seen in Figure 17. The
+A model with the parasitic bipolars can be seen in Figure 16. The
 resistors in the picture is to emulate what happens when there is a
 current injected into the base of the NPN or PNP. I would recommend that
 you think through the physics instead of using the parasitic bipolar

@@ -1,34 +1,13 @@
-footer: Carsten Wulff 2024
-slidenumbers:true
-autoscale:true
-theme: Plain Jane, 1
-text:  Helvetica
-header:  Helvetica
-date: 2026-01-30
 
-<!--pan_skip: -->
 
-## TFE4188 - Lecture 3
-# Reference and bias
 
----
-<!--pan_skip: -->
-# Goal for today
 
-Understand **why** we need reference and bias circuits
 
-Introduction to **circuit architectures** 
 
----
-<!--pan_skip: -->
 
-#[fit] Why
 
----
 
-<!--pan_title: References and bias -->
 
-<!--pan_doc:
 
 **Keywords:** VREF, IREF, VD, BGAP, LVBGAP, VI, GMCELL
 
@@ -52,18 +31,16 @@ make on an integrated circuit.
 But before we take a look at the voltage and current source, 
 I want you to think about how you would route a current, or a voltage on an IC.
 
--->
 
-![fit](../media/l3_sources_tikz.pdf)
+<!-- ../media/l3_sources_tikz.pdf -->
 
-<!--pan_doc:
+![](media/l3_sources_tikz.pdf)
 
-<sub>Figure 1: Symbols for voltage source and current source  </sub>
--->
 
----
 
-<!--pan_doc: 
+<small><sub>_Figure 1: Symbols for voltage source and current source  _</sub></small>
+
+
 
 # Routing
 
@@ -94,19 +71,17 @@ flowing into ground at the destination. There is a circuit there.
 
 If we choose to route a reference as a voltage we need to be careful with the ground.
 
--->
 
-![fit](../media/l3_vsrc_tikz.pdf)
+<!-- ../media/l3_vsrc_tikz.pdf -->
 
-<!--pan_doc:
+![](media/l3_vsrc_tikz.pdf)
 
-<sub>Figure 2: Voltage source with ground impedance. Routing long distances it's not possible to have
-guarantee we have the same ground impedance at the destination.</sub>
--->
 
----
 
-<!--pan_doc:
+<small><sub>_Figure 2: Voltage source with ground impedance. Routing long distances it's not possible to have
+guarantee we have the same ground impedance at the destination._</sub></small>
+
+
 
 Most of the time, in order not to think about the ground impedance, we choose to route a known quantity, the reference, 
 as a current instead of a voltage. That means, however,
@@ -114,15 +89,14 @@ we must convert from a voltage to a current, but we can do that with a resistor 
 and as long as the resistor is the same on the other side of the IC, 
 then we'll know what the voltage is.
 
--->
 
-![fit](../media/l3_isrc_tikz.pdf)
+<!-- ../media/l3_isrc_tikz.pdf -->
 
-<!--pan_doc:
-<sub>Figure 3: Routing a reference as a current. </sub>
--->
+![](media/l3_isrc_tikz.pdf)
 
-<!--pan_doc:
+
+<small><sub>_Figure 3: Routing a reference as a current. _</sub></small>
+
 
 Resistors have finite matching across die, let's say 2 % 3-sigma variation. A limitation on how accurate we can distribute 
 reference across the IC with current method. 
@@ -153,17 +127,13 @@ Ask yourself, “Why do we care if there is two references?”
 And the answer is “Silicon area is expensive, to make things cheap, we must make things small”,  
 in other words,  we should not duplicate features unless we absolutely have to.
 
--->
 
 
 
----
 
-#[fit] Bandgap voltage reference
+#  Bandgap voltage reference
 
----
 
-<!--pan_doc:
 
 One of the ways to create a known reference on an integrated circuit is the "bandgap voltage reference". There are
 flavors of bandgaps, but all rely on the bandgap of silicon, which is about 1.12 eV.
@@ -172,34 +142,30 @@ We can't access the bandgap voltage directly, but we can use the fact that diode
 across the PN junction of about 1.12 V at absolute zero (actually, slightly higher, maybe 1.2 V), and that they
 have a well known temperature dependence from that point. 
 
--->
 
 
 ## A voltage complementary to temperature (CTAT)
 
-<!--pan_doc: 
 A diode connected bipolar transistor, shown in Figure 4, or indeed a PN diode, 
 assuming a fixed current, will have a voltage across that is temperature dependent
--->
 
 $$ I_D = I_S \left(e^{\frac{V_{BE}}{V_T}} - 1\right)  + I_B \approx I_S e^{\frac{ V_{BE}}{V_T}}$$
 
-![left fit](../media/l3_bjtonly_tikz.pdf)
+<!-- ../media/l3_bjtonly_tikz.pdf -->
 
-<!--pan_doc:
+![](media/l3_bjtonly_tikz.pdf)
 
-<sub>Figure 4: Diode connected bipolar transistor </sub>
--->
+
+
+<small><sub>_Figure 4: Diode connected bipolar transistor _</sub></small>
  
 
-<!--pan_doc:
 
 As $I_S$ is much smaller than $I_C$ we can ignore the -1, 
 and we assume that the base current is much smaller than the collector current.
 
 Re-arranging for $V_{BE}$ and inserting for 
 
--->
 
  $$V_T = \frac{kT}{q}$$
 
@@ -208,7 +174,6 @@ Re-arranging for $V_{BE}$ and inserting for
  $$I_S = q A n_i^2 \left[\frac{D_n}{L_n N_A} + \frac{D_p}{L_p N_D}\right]$$
  
  
-<!--pan_doc: 
 
 From this equation, it looks like the voltage $V_{BE}$ is proportional to temperature, however, 
 it turns out that the $V_{BE}$ decreases with 
@@ -225,19 +190,15 @@ not an energy, and the reference is named after it.
 
 To see the temperature coefficient, I find it easier to re-arrange the equation above.
 
--->
 
----
 
 Some algebra (see [Diodes](https://analogicus.com/aic2026/diodes))
  
  $$ V_{BE} = \frac{kT}{q}(\ell  - 3 \ln T) + V_G $$ 
 
-<!--pan_doc:
 
 The $\ell$ is a temperature independent constant given by 
 
---->
 
 
  $$ 
@@ -250,27 +211,23 @@ The $\ell$ is a temperature independent constant given by
  \end{split}
  $$
 
----
 
-<!--pan_doc:
 
 And if we plot the diode voltage, we can see that the voltage decreases as a function of temperature.
 
--->
 
-![fit](../media/vd_tikz.pdf)
+<!-- ../media/vd_tikz.pdf -->
 
-<!--pan_doc:
-
-<sub>Figure 5: Diode voltage versus temperature. Bottom plot shows deviation from a straight line. </sub>
--->
+![](media/vd_tikz.pdf)
 
 
----
+
+<small><sub>_Figure 5: Diode voltage versus temperature. Bottom plot shows deviation from a straight line. _</sub></small>
+
+
 
 ## A current proportional to temperature (PTAT)
 
-<!--pan_doc: 
 
 If we take two diodes, or bipolars, biased at different current densities, as shown in Figure 6, then
 
@@ -281,11 +238,9 @@ $$ V_{D2} = V_T \ln{\frac{I_{D}}{I_{S2}}} $$
 The OTA will force the voltage on top of the resistor to be equal to $V_{D1}$, 
 thus the voltage across the resistor $R_1$ is 
 
--->
 
 $$ V_{D1} - V_{D2} = V_T \ln{\frac{I_{D}}{I_{S1}}} - V_T \ln{\frac{I_{D}}{I_{S2}}} = V_T \ln{\frac{I_{S2}}{I_{S1}} }  = V_T \ln N $$
 
-<!--pan_doc:
 
 This is a remarkable result. The difference between two voltages is only defined by Boltzmann's constant, 
 temperature, charge, and a known size difference.
@@ -299,58 +254,49 @@ and we can see it's proportional to absolute temperature.
 We know that the $V_D$ decreases linearly with temperature, so if we combined a multi-plum of the 
 $\Delta V_{BE}$ with a $V_D$ voltage, then we should get a constant voltage.
 
--->
 
-![left fit](../media/l03_ptat_tikz.pdf)
+<!-- ../media/l03_ptat_tikz.pdf -->
 
-<!--pan_doc:
-<sub>Figure 6: Circuit to create a PTAT current controlled by the resistor and $\Delta V_{BE}$ </sub>
--->
+![](media/l03_ptat_tikz.pdf)
 
----
+
+<small><sub>_Figure 6: Circuit to create a PTAT current controlled by the resistor and $\Delta V_{BE}$ _</sub></small>
+
 
 ## How to combine a CTAT with a PTAT ?
 
----
 
-<!--pan_doc:
 
 One method is Figure 7. The voltage across resistor $R_2$ would compensate for the decrease in $V_{D3}$,
 as such, $R_2$ would be bigger than $R_1$.
 
--->
 
-![fit](../media/l03_vref1_tikz.pdf)
+<!-- ../media/l03_vref1_tikz.pdf -->
 
-<!--pan_doc:
+![](media/l03_vref1_tikz.pdf)
 
-<sub>Figure 7: A bandgap voltage reference with a constant output voltage. </sub>
--->
 
----
 
-<!--pan_doc:
+<small><sub>_Figure 7: A bandgap voltage reference with a constant output voltage. _</sub></small>
+
+
 
 Another method would be to stack the $R_2$ on top of $R_1$ as shown in Figure 8. 
 
--->
 
-![fit](../media/l03_vref2_tikz.pdf)
+<!-- ../media/l03_vref2_tikz.pdf -->
 
-
-<!--pan_doc:
-
-<sub>Figure 8: Another  bandgap voltage reference with a constant output voltage. </sub>
--->
+![](media/l03_vref2_tikz.pdf)
 
 
-<!--pan_doc:
 
--->
 
----
+<small><sub>_Figure 8: Another  bandgap voltage reference with a constant output voltage. _</sub></small>
 
-<!--pan_doc:
+
+
+
+
 
 ## Widlar reference
 
@@ -365,27 +311,24 @@ Figure 9 is the circuit. It is a two terminal shunt reference: you feed it a
 bias current down from the supply and it holds its own terminal at $V_{REF}$,
 the way a zener does, except that it does it at 1.2 V, where no zener will.
 
--->
 
-![left fit](../media/l3_widlar_tikz.pdf)
+<!-- ../media/l3_widlar_tikz.pdf -->
 
-<!--pan_doc:
+![](media/l3_widlar_tikz.pdf)
 
-<sub>Figure 9: Widlar's bandgap reference, the first one, from 1971 </sub>
--->
 
-<!--pan_doc:
+
+<small><sub>_Figure 9: Widlar's bandgap reference, the first one, from 1971 _</sub></small>
+
 
 $Q_1$ is diode connected, so its collector sits one $V_{BE}$ above ground.
 $Q_3$ holds its own base, which is the collector of $Q_2$, one $V_{BE}$ above
 ground as well. Both $R_1$ and $R_2$ therefore have very nearly the same
 voltage across them, and the current ratio falls out of the resistors alone.
 
--->
 
 $$ \frac{I_1}{I_2} = \frac{R_2}{R_1} $$
 
-<!--pan_doc:
 
 $Q_1$ and $Q_2$ are the same size and share a base, so that difference in
 current density lands across $R_3$
@@ -396,11 +339,9 @@ which is PTAT, and depends only on a resistor ratio, so it is as accurate as
 your matching. That current runs up through $R_2$, and the output is that drop
 stacked on top of the $V_{BE}$ of $Q_3$.
 
--->
 
 $$ V_{REF} = V_{BE3} + \frac{R_2}{R_3}\frac{kT}{q}\ln{\frac{R_2}{R_1}} $$
 
-<!--pan_doc:
 
 CTAT plus PTAT, and we are about to do it again with an amplifier. With
 $R_2/R_1 = 10$ the log term is about 60 mV at room temperature, $R_2/R_3 = 10$
@@ -421,11 +362,8 @@ cell it is an emitter area ratio instead. Both work, and both are asking a
 ratio of like things to be accurate, which is the only kind of accuracy an
 integrated circuit actually has.
 
--->
 
----
 
-<!--pan_doc:
 
 ## Brokaw reference 
 
@@ -435,27 +373,24 @@ Below is the Brokaw reference,
 which I think was first published in 
 A simple three-terminal IC bandgap reference [@brokaw74].
 
--->
 
-![left fit](../media/l3_brokaw_tikz.pdf)
+<!-- ../media/l3_brokaw_tikz.pdf -->
 
-<!--pan_doc:
+![](media/l3_brokaw_tikz.pdf)
 
-<sub>Figure 10: Brokaw bandgap voltage reference  </sub>
--->
 
-<!--pan_doc:
+
+<small><sub>_Figure 10: Brokaw bandgap voltage reference  _</sub></small>
+
 
 The opamp ensures the two bipolars have the same current. $Q_1$ is larger than $Q_2$. 
 The $\Delta V_{BE}$ is across the $R_2$, so we know the current $I$. We know that $R_1$ must then have $2I$. 
 
 The voltage at the output will then be.
 
--->
 
 $$ V_{BG} = V_{G0} + (m-1)\frac{kT}{q}\ln{\frac{T_0}{T}} +T\left[\frac{k}{q}\ln{\frac{J_2}{J_1}}\frac{2R_1}{R_2} - \frac{V_{G0}- V_{be0}}{T_0}\right] $$
 
-<!--pan_doc:
 
 where $V_{G0}$ is the bandgap extrapolated to zero Kelvin, $V_{be0}$ is the
 base emitter voltage measured at a temperature $T_0$, the $J$'s are the current
@@ -496,12 +431,9 @@ trimmed for zero temperature coefficient sits around 1.25 V, not at the
 1.20 V bandgap it is named after. The extra 50 mV is exactly the price of
 cancelling the slope of the $T\ln{T}$ term at one temperature.
 
--->
 
 
----
 
-<!--pan_doc:
 
 In typical simulations, the variation can be  
 low over the temperature range. The second order error is the remaining error from
@@ -519,13 +451,14 @@ $$ V_{BG} = V_{G0} + (m-1)\frac{kT}{q}\left[1 + \ln{\frac{T_0}{T}}\right] $$
 a curve with zero slope at $T_0$ and a maximum there. Everywhere else it falls
 away, and that bow is the second order error we are left with.
 
--->
 
-![original](../media/l3_bgsim.pdf)
+<!-- ../media/l3_bgsim.pdf -->
 
-<!--pan_doc:
+![](media/l3_bgsim.pdf)
 
-<sub>Figure 11: Simulation of a Brokaw reference in GF 130 nm</sub>
+
+
+<small><sub>_Figure 11: Simulation of a Brokaw reference in GF 130 nm_</sub></small>
 
 Read the axes before anything else. The whole vertical range is about 3 mV on
 an output of 1.207 V, so the curve you are looking at is flat to roughly
@@ -537,12 +470,9 @@ where we chose the slope to be zero, and the resistor ratio put it there. The
 bow either side of it is exactly the $T\left[1 + \ln{(T_0/T)}\right]$ term
 we could not cancel with a resistor ratio, and the curvature section later in
 this chapter is about getting rid of it.
--->
 
 
----
 
-<!--pan_doc: 
 
 Over corners, I do expect that there is variation, as we can see from Figure 12.
 
@@ -562,22 +492,19 @@ We could include trimming of PTAT to calibrate for the remaining error, however,
 wanted to remove the linear gradient, we would need a two point temperature test of every
 IC, which is too expensive for low-cost devices.
 
--->
 
-![original](../media/l3_bgsimtfs.pdf)
+<!-- ../media/l3_bgsimtfs.pdf -->
 
-<!--pan_doc:
-<sub>Figure 12: Typical, slow and fast corner simulation of the Brokaw bandgap. The legend's "notemp" corners hold temperature-dependent model parameters at their typical values, so the spread shown is process alone</sub>
--->
+![](media/l3_bgsimtfs.pdf)
 
 
----
+<small><sub>_Figure 12: Typical, slow and fast corner simulation of the Brokaw bandgap. The legend's "notemp" corners hold temperature-dependent model parameters at their typical values, so the spread shown is process alone_</sub></small>
 
-##[fit] Low voltage bandgap
 
----
 
-<!--pan_doc: 
+##  Low voltage bandgap
+
+
 
 The Brokaw reference, and others, have a 1.2 V output voltage, which is hard to make if your
 supply is below about 1.4 V. 
@@ -600,20 +527,18 @@ and we know the current increases with temperature, since $\Delta V_D$ increases
 
 
 
--->
 
-![left fit](../media/l3_ptat_tikz.pdf)
+<!-- ../media/l3_ptat_tikz.pdf -->
 
-<!--pan_doc:
-
-<sub>Figure 13: PTAT current generator </sub>
--->
-
----
+![](media/l3_ptat_tikz.pdf)
 
 
 
-<!--pan_doc: 
+<small><sub>_Figure 13: PTAT current generator _</sub></small>
+
+
+
+
 
 I use $\Delta V_{BE}$ and $\Delta V_D$ interchangeably, apologies. 
 
@@ -629,48 +554,42 @@ From before, we know the current in $R_1$ is proportional to temperature. As suc
 if we combine the two current with the correct proportions, 
 then we can get a current that does not change with temperature.
 
--->
 
 
-![right fit](../media/l3_ptat1_tikz.pdf)
+<!-- ../media/l3_ptat1_tikz.pdf -->
 
-<!--pan_doc:
-
-<sub>Figure 14: Extending the PTAT current generator </sub>
--->
+![](media/l3_ptat1_tikz.pdf)
 
 
----
 
-<!--pan_doc:
+<small><sub>_Figure 14: Extending the PTAT current generator _</sub></small>
+
+
+
 
 Let's remove the OTA, and connect $R_2$ directly to $V_D$ nodes, as shown in Figure 15. 
 
 You should convince yourself 
 of the fact that this does not change $I_1$. 
 
--->
 
-![right fit](../media/l3_ptat2_tikz.pdf)
+<!-- ../media/l3_ptat2_tikz.pdf -->
 
-<!--pan_doc:
+![](media/l3_ptat2_tikz.pdf)
 
-<sub>Figure 15: The Banba bandgap voltage reference core </sub>
--->
 
-<!--pan_doc:
+
+<small><sub>_Figure 15: The Banba bandgap voltage reference core _</sub></small>
+
 
 It does, however, change the current in the PMOS.
 Provided we scale $R_2$ correctly, then the PTAT $I_1$ can compensate for CTAT $I_2$, 
 and we have a current that is independent of temperature. 
 
--->
 
 $$ I_{PMOS} = \frac{V_D}{R_2} + \frac{\Delta V_D}{R_1}$$
 
----
 
-<!--pan_doc:
 
 Assuming we copy the current into another resistor $R_3$, as shown in Figure 16, we can get a voltage that is 
 
@@ -678,22 +597,19 @@ $$ V_{OUT} = R_3\left[\frac{V_D}{R_2} + \frac{\Delta V_D}{R_1}\right]$$
 
 We can choose the output voltage freely, and it can be lower than 1.2 V.
 
--->
 
-![original fit](../media/l3_ptat3_tikz.pdf)
+<!-- ../media/l3_ptat3_tikz.pdf -->
 
-<!--pan_doc:
-<sub>Figure 16: The Banba bandgap voltage reference </sub>
--->
+![](media/l3_ptat3_tikz.pdf)
 
 
----
+<small><sub>_Figure 16: The Banba bandgap voltage reference _</sub></small>
 
-##[fit] Curvature correction
 
----
 
-<!--pan_doc:
+##  Curvature correction
+
+
 
 Go back and look at Figure 12 again. Over corners the reference is not flat,
 and even the typical curve in Figure 11 has a bend in it. That bend is not
@@ -704,11 +620,9 @@ We picked the resistor ratio so the *slope* vanishes at one temperature. That
 flattens the curve where we chose to flatten it, and it does nothing at all to
 the shape of what is left,
 
--->
 
 $$ V_{BG} = V_{G0} + (m-1)\frac{kT}{q}\left[1 + \ln{\frac{T_0}{T}}\right] $$
 
-<!--pan_doc:
 
 and that is the bow you can see in Figure 11. It comes from the temperature
 dependence of $I_S$ - the $-3\ln{T}$ we carried through the $V_{BE}$ algebra
@@ -724,20 +638,15 @@ No choice of $R_1/R_2$ can remove it. A resistor ratio can only add something
 proportional to $T$, and what is left over is proportional to $T\ln{T}$. If we
 want to cancel it, we have to build a $T\ln{T}$ term.
 
--->
 
----
 
-<!--pan_doc:
 
 Here is where one comes from. Take two identical bipolars at the same
 temperature. The difference of their base-emitter voltages is
 
--->
 
 $$ V_{BE,A} - V_{BE,B} = \frac{kT}{q}\ln{\frac{I_A}{I_B}} $$
 
-<!--pan_doc:
 
 and this one is exact, not an approximation. $I_S$ cancels completely, because
 it is the same device at the same temperature.
@@ -748,58 +657,49 @@ made it PTAT. So make the ratio depend on temperature instead: bias $Q_A$ with
 a PTAT current, and $Q_B$ with the temperature compensated current the
 reference already produces. Then $I_A/I_B = K T/T_0$ and
 
--->
 
 $$ V_{BE,A} - V_{BE,B} = \frac{kT}{q}\ln{K} + \frac{kT}{q}\ln{\frac{T}{T_0}} $$
 
-<!--pan_doc:
 
 The first term is PTAT, and we know what to do with those. The second term is
 the $T\ln{T}$ we needed, and it comes with the right sign.
 
--->
 
----
 
-<!--pan_doc:
 
 Figure 17 turns that voltage into a current. The OTA holds the right hand end
 of $R_4$ at $V_{BE,A}$, the left hand end sits on $V_{BE,B}$, and $M_{PC}$
 supplies whatever current that requires. $M_{PD}$ copies it into the summing
 node from Figure 16, so the $V_{OUT}$ of that circuit becomes
 
--->
 
-![fit](../media/l3_curv_tikz.pdf)
+<!-- ../media/l3_curv_tikz.pdf -->
 
-<!--pan_doc:
+![](media/l3_curv_tikz.pdf)
 
-<sub>Figure 17: Curvature correction. $Q_A$ and $Q_B$ are the same device at
+
+
+<small><sub>_Figure 17: Curvature correction. $Q_A$ and $Q_B$ are the same device at
 different bias currents, so the voltage across $R_4$ carries a $T\ln{T}$ term.
-</sub>
--->
+_</sub></small>
 
 $$ I_{NL} = \frac{V_{BE,A} - V_{BE,B}}{R_4} = \frac{kT}{qR_4}\left[\ln{K} + \ln{\frac{T}{T_0}}\right] $$
 
 $$ V_{REF} = R_3\left[\frac{V_D}{R_2} + \frac{\Delta V_D}{R_1} + I_{NL}\right] $$
 
----
 
-<!--pan_doc:
 
 The curvature the $V_D$ term brings in is
 $\frac{R_3}{R_2}(m-1)\frac{kT}{q}\ln{\frac{T_0}{T}}$, the curvature the new
 branch adds is $\frac{R_3}{R_4}\frac{kT}{q}\ln{\frac{T}{T_0}}$, and they cancel
 when
 
--->
 
 $$ R_4 = \frac{R_2}{m-1} $$
 
 for which $R_2$ and $R_4$ must be the same kind of resistor: the ratio only
 holds over temperature if their temperature coefficients cancel.
 
-<!--pan_doc:
 
 which is a nice result. The correction is set by a resistor ratio, like
 everything else in this chapter, and with $m \approx 3$ it makes $R_4$ about
@@ -824,17 +724,13 @@ factor of a thousand, and what it buys is limited by how well you know $m$. It
 is worth the area when you need 10 ppm/$^\circ$C. It is a waste of area when
 50 ppm/$^\circ$C is fine, which it usually is.
 
--->
 
----
 
-##[fit] MOS references
+##  MOS references
 
-<sub><sub> Recognise this one. Do not build it. </sub></sub>
+<small><sub>_<small><sub>_ Recognise this one. Do not build it. _</sub></small>_</sub></small>
 
----
 
-<!--pan_doc:
 
 Everything so far has needed a bipolar. In a pure CMOS process that is
 irritating, and the temptation is obvious. The MOS transistor has a threshold
@@ -863,33 +759,29 @@ distinguishes them is which channel implant they were given.
 Both gates sit on the same node, so $V_{GS1} = V_{GS2} + I R$, and writing each
 gate-source voltage as a threshold plus an overdrive
 
--->
 
-![left fit](../media/l3_mosref_tikz.pdf)
+<!-- ../media/l3_mosref_tikz.pdf -->
 
-<!--pan_doc:
+![](media/l3_mosref_tikz.pdf)
 
-<sub>Figure 18: A reference built on the difference between two threshold
-voltages. Learn to recognise it. Do not build it. </sub>
--->
+
+
+<small><sub>_Figure 18: A reference built on the difference between two threshold
+voltages. Learn to recognise it. Do not build it. _</sub></small>
 
 $$ I R = (V_{t1} + V_{eff1}) - (V_{t2} + V_{eff2}) $$
 
-<!--pan_doc:
 
 Equal current in equal $W/L$ means equal overdrive, so the $V_{eff}$ terms
 cancel and what is left is the entire reference
 
--->
 
 $$ I = \frac{V_{t1} - V_{t2}}{R} = \frac{\Delta V_t}{R} $$
 
----
 
 **MOS based references that rely on the difference between two threshold
 voltages are very risky and should not be attempted.**
 
-<!--pan_doc:
 
 I want you to leave this section able to recognise that circuit, and unwilling to
 build it. Process control over the two threshold sources is poor, and their
@@ -911,13 +803,10 @@ $\pm 70$ %. If they happen to move in opposite directions it is worse than
 that, and nothing in the process says they will not. Subtracting two similar,
 poorly known numbers is the worst thing you can do to an error budget.
 
--->
 
----
 
 ## The native threshold is set when the ingot is grown
 
-<!--pan_doc:
 
 Reach for the native device to get a bigger difference and you have picked the
 least controlled transistor in the process. Its threshold is whatever is left
@@ -978,13 +867,10 @@ what you actually need is a bias current rather than a reference, use the GM
 cell from later in this chapter. Neither of those asks two implants to agree with
 each other.
 
--->
 
----
 
 ## FD-SOI moves the problem, it does not remove it
 
-<!--pan_doc:
 
 Everything so far has been a bulk story, and you should ask what happens
 in a fully depleted process. In FD-SOI the channel is undoped silicon a few
@@ -1010,13 +896,10 @@ film is a few nanometres of silicon bonded onto oxide by the wafer maker rather
 than grown by your fab. You have traded a resistivity specification you do not
 control for a thickness specification you do not control.
 
--->
 
----
 
 ## The back gate is a trimming knob, not a reference
 
-<!--pan_doc:
 
 The back gate is the genuinely interesting part of FD-SOI here. It moves $V_t$
 by tens of millivolts per volt, and it moves it electrically, after the wafer
@@ -1033,21 +916,17 @@ silicon again. Every FD-SOI process gives you those, because the I/O and the
 ESD need them too. The circuit is the same circuit. It just needs somewhere to
 live.
 
--->
-
----
 
 
 
-#[fit] Bias
 
-<sub><sub> Sometimes we just need a current </sub></sub>
+#  Bias
 
----
+<small><sub>_<small><sub>_ Sometimes we just need a current _</sub></small>_</sub></small>
+
 
 ## Voltage to current conversion
 
-<!--pan_doc: 
 
 With a known voltage, we can convert to a known current with the circuit in Figure 19. 
 
@@ -1061,16 +940,15 @@ second resistor on the other side of the IC.
 If we wanted to create an accurate current, then we'd trim the R in production test 
 until the current is what we want. 
 
--->
 
-![inline 200%](../media/l3_vi_tikz.pdf)
+<!-- ../media/l3_vi_tikz.pdf -->
+
+![](media/l3_vi_tikz.pdf)
 
 
-<!--pan_doc:
-<sub>Figure 19: Voltage to current converter</sub>
--->
 
----
+<small><sub>_Figure 19: Voltage to current converter_</sub></small>
+
 
 
 ## GM Cell
@@ -1078,29 +956,27 @@ until the current is what we want.
 
 
 
-<!--pan_doc: 
 
 Sometimes we don't need a full bandgap reference. In those cases, 
 we can use a GM cell, as shown in Figure 20. 
 
--->
 
-![left fit](../media/l3_gmcell_tikz.pdf)
+<!-- ../media/l3_gmcell_tikz.pdf -->
 
-<!--pan_doc:
+![](media/l3_gmcell_tikz.pdf)
 
-<sub>Figure 20: GM cell. </sub>
+
+
+<small><sub>_Figure 20: GM cell. _</sub></small>
 
 The top PMOS current mirror ensures that both branches have the same current. The middle NMOS current mirror copies
 the drain voltage on top of the diode connected bottom NMOS to the left NMOS.
 Consider the bottom transistors, those marked with "1" and "4".  The $V_o$ voltage is
 
--->
 
 
 $$ V_o = V_{GS1}  - V_{GS2}  = V_{eff1} + V_{tn} - V_{eff2} - V_{tn} = V_{eff1} - V_{eff2}$$
 
-<!--pan_doc:
 
 Assuming transistors in strong inversion, then 
 
@@ -1112,13 +988,11 @@ $$ I_{D2} = \frac{1}{2} \mu_n C_{ox} 4 \frac{W_1}{L_1} V_{eff2}^2 $$
 
 $$ I_{D1} = I_{D2} $$
 
--->
 
 $$ \frac{1}{2} \mu_n C_{ox} \frac{W_1}{L_1} V_{eff1}^2 = \frac{1}{2} \mu_n C_{ox} 4 \frac{W_1}{L_1} V_{eff2}^2 $$
 
 $$ V_{eff1} = 2 V_{eff2} $$
 
-<!--pan_doc:
 
 Inserted into above
 
@@ -1128,17 +1002,14 @@ $$V_o = V_{eff1} - \frac{1}{2} V_{eff1} = \frac{1}{2}V_{eff1}$$
 
 Still assuming transistors in strong inversion, such that
 
--->
 
 
 $$ g_{m} = \frac{2 I_d}{V_{eff}} $$
 
-<!--pan_doc:
 
 we find that
 
 
--->
 
 $$ I = \frac{ V_{eff1}}{2Z} $$
 
@@ -1148,7 +1019,6 @@ so the impedance sets the transconductance directly
 
 $$ g_{m1} = \frac{1}{Z} $$
 
-<!--pan_doc:
 
 If we use a resistor for $Z$, then the transconductance is set by, and
 *inversely* proportional to, that resistor: $g_{m1} = 1/R$. That is the whole
@@ -1172,23 +1042,19 @@ frequency can come from a crystal and a capacitor matches better than a
 resistor - at the price of the switching noise the switched capacitor chapter
 worries about.
 
--->
 
----
 
-![original fit](../media/l3_gmcap_tikz.pdf)
+<!-- ../media/l3_gmcap_tikz.pdf -->
 
-<!--pan_doc:
-<sub>Figure 21: A switched capacitor used as the impedance $Z$, giving $g_{m1} = f C_1$</sub>
--->
+![](media/l3_gmcap_tikz.pdf)
 
----
 
-##[fit] Every one of these loops can fail to start
+<small><sub>_Figure 21: A switched capacitor used as the impedance $Z$, giving $g_{m1} = f C_1$_</sub></small>
 
----
 
-<!--pan_doc:
+##  Every one of these loops can fail to start
+
+
 
 There is something missing from every self biased circuit in this chapter,
 and it is the thing most likely to make your first bias circuit fail in
@@ -1207,12 +1073,13 @@ entitled to find either one. Worse, a DC simulation often finds the one you
 wanted, because the solver started its guess somewhere helpful - and then the
 chip comes back and the reference never wakes up.
 
--->
 
-![fit](../media/l3_startup_tikz.pdf)
+<!-- ../media/l3_startup_tikz.pdf -->
 
-<!--pan_doc:
-<sub>Figure 22: A constant $g_m$ bias with a startup branch. $M_{SU}$ lifts the NMOS rail while it is stuck at ground, and $M_D$ is what makes it let go once the loop is running</sub>
+![](media/l3_startup_tikz.pdf)
+
+
+<small><sub>_Figure 22: A constant $g_m$ bias with a startup branch. $M_{SU}$ lifts the NMOS rail while it is stuck at ground, and $M_D$ is what makes it let go once the loop is running_</sub></small>
 
 The fix is a device that is *only* on in the dead state, and the first
 question is which of the two dead rails it should attack. Only one of them
@@ -1253,9 +1120,7 @@ Two rules follow from this, and they are worth more than the circuit:
   it becomes a leakage path that sets your reference, and the reference is
   then whatever the startup device felt like, not what the bandgap said.
 
--->
 
----
 
 
 
@@ -1273,9 +1138,7 @@ The Bandgap Reference [@razavi16]
 
 The Design of a Low-Voltage Bandgap Reference [@razavi21]
 
----
 
 
-#[fit] Thanks!
 
----
+
