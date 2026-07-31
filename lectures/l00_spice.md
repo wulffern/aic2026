@@ -126,13 +126,14 @@ The expensive tools have built graphical user interface around the SPICE simulat
 ![right fit](../media/assembler.png)
 
 <!--pan_doc:
+<sub>Figure 2: Cadence Virtuoso ADE Assembler, showing the corner definitions on the left and a pass/fail table of simulated specifications on the right</sub>
+-->
+
+
+<!--pan_doc:
 
 I'm a fan of launching multiple simulations from the command line. I don't like GUI's. As such, I wrote [cicsim](https://github.com/wulffern/cicsim/tree/main), and that's what I use in the video and demo.
 
--->
-
-<!--pan_doc:
-<sub>Figure 2: Cadence Virtuoso ADE Assembler, showing the corner definitions on the left and a pass/fail table of simulated specifications on the right</sub>
 -->
 
 ---

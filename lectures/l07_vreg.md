@@ -64,13 +64,14 @@ if you want to dive deep into primary (non-chargeable) or secondary (chargeable)
 ![left 70%](../media/lindens_handbook_of_batteries.png)
 
 <!--pan_doc:
+<sub>Figure 1: Linden's Handbook of Batteries, a reference work on battery chemistries and their voltages</sub>
+-->
+
+
+<!--pan_doc:
 
 Some common voltage sources are listed below.
 
--->
-
-<!--pan_doc:
-<sub>Figure 1: Linden's Handbook of Batteries, a reference work on battery chemistries and their voltages</sub>
 -->
 
 |  |Chemistry|  Voltage [V] |
@@ -99,6 +100,11 @@ Lanny explains how to design around some of the breakdown effects.
 
 ![](../media/advmos.pdf)
 
+<!--pan_doc:
+<sub>Figure 2: Cross section of a nanoscale NMOS transistor showing stress components, electric fields, and oxide trap densities</sub>
+-->
+
+
 
 <!--pan_doc:
 
@@ -116,14 +122,15 @@ Below is an example of ReRAM. In the Pristine state the conductance is low, resi
 
 -->
 
-<!--pan_doc:
-<sub>Figure 2: Cross section of a nanoscale NMOS transistor showing stress components, electric fields, and oxide trap densities</sub>
--->
-
 ---
 
 <!--![fit](https://sky130-fd-pr-reram.readthedocs.io/en/latest/_images/forming.png)-->
 ![fit](../media/forming.png)
+
+<!--pan_doc:
+<sub>Figure 3: ReRAM conductance distributions in the pristine, formed (LRS), and reset (HRS) states</sub>
+-->
+
 
 
 <!--pan_doc:
@@ -163,10 +170,6 @@ In quantum mechanics the time evolution, and the complex probability amplitude o
 Unfortunately, for any real scenario, like the gate oxide of a transistor, using Schrodinger to compute exactly what will happen is beyond the capability of the 
 largest supercomputers. 
 
--->
-
-<!--pan_doc:
-<sub>Figure 3: ReRAM conductance distributions in the pristine, formed (LRS), and reset (HRS) states</sub>
 -->
 
 ---
@@ -291,6 +294,11 @@ the PMOS to force the input voltages of the OTA to be equal.
 ![left fit](../media/l9_ldo_pmos_tikz.pdf)
 
 <!--pan_doc:
+<sub>Figure 6: Linear regulator with a PMOS pass-fet controlled by an OTA feedback loop</sub>
+-->
+
+
+<!--pan_doc:
 
 For digital loads, where $I_{load}$ is a digital current, with high current every rising edge of the clock, it's an option to place a large external decoupling capacitor 
 (a reservoir of charge) in parallel with the load. Accordingly, the OTA would supply the average current.
@@ -300,10 +308,6 @@ we only need a $V_{DSSAT}$ across the PMOS, which can be a few hundred mV.
 
 Key parameters of regulators are
 
--->
-
-<!--pan_doc:
-<sub>Figure 6: Linear regulator with a PMOS pass-fet controlled by an OTA feedback loop</sub>
 -->
 
 ---
@@ -405,16 +409,17 @@ Sometimes it's easier to split the range into multiple ranges.
 ![fit](../media/l7_loadreg.pdf)
 
 <!--pan_doc:
+<sub>Figure 8: Simulated pass-fet current (log scale) versus gate-source voltage for the LDO testbench</sub>
+-->
+
+
+<!--pan_doc:
 
 As such, there are multiple control options for the pass-fet. Below is a summary of a few methods.
 
 We can control the Vgs, or we can switch the number of instances, or we can turn the pass-fet on and off dynamically. What 
 we choose will depend on the application. 
 
--->
-
-<!--pan_doc:
-<sub>Figure 8: Simulated pass-fet current (log scale) versus gate-source voltage for the LDO testbench</sub>
 -->
 
 ---
@@ -595,16 +600,16 @@ Most DC/DCs are feedback systems, so the control will be adjusted to force the o
 ![left fit](../media/l7_buck_tikz.pdf)
 
 <!--pan_doc:
+<sub>Figure 14: Inductive switch-mode buck converter with control block, and waveforms of the inductor voltage Vx and current Ix</sub>
+-->
+
+
+<!--pan_doc:
 
 To see what happens I find the best path to understanding is to look at the integral equations. 
 
 The current in the inductor is given by
 -->
-
-<!--pan_doc:
-<sub>Figure 14: Inductive switch-mode buck converter with control block, and waveforms of the inductor voltage Vx and current Ix</sub>
--->
-
 
 $$I_x(t) = \frac{1}{L} \int{V_x(t) dt}$$
 
@@ -682,6 +687,11 @@ $$ V_o = V_{in} \times \text{ Duty-Cycle}$$
 
 ![fit](../media/l07_buck_pwm_fig_.pdf)
 
+<!--pan_doc:
+<sub>Figure 16: PWM buck model over a longer time: inductor and load currents (top), output voltage settling towards steady state (middle), and switch control A (bottom)</sub>
+-->
+
+
 
 <!--pan_doc:
 
@@ -693,13 +703,14 @@ If the DC/DC was 100% efficient, then the current from the 4 V input supply woul
 
 -->
 
-<!--pan_doc:
-<sub>Figure 16: PWM buck model over a longer time: inductor and load currents (top), output voltage settling towards steady state (middle), and switch control A (bottom)</sub>
--->
-
 ---
 
 ![fit](../media/l07_buck_pwm_fig_settled.pdf)
+
+<!--pan_doc:
+<sub>Figure 17: PWM buck model in steady state: sawtooth inductor current ripple around the load current, and a settled output voltage near 1 V</sub>
+-->
+
 
 
 
@@ -712,10 +723,6 @@ DC/DC converters are used when power efficiency is important. Below is a screens
 
 We can see 3 inductor/capacitor pairs. One for the "VDDH", and two for "DECRF" and "DECD", as such, we can make a good guess there are three DC/DC converters inside the nRF5340. 
 
--->
-
-<!--pan_doc:
-<sub>Figure 17: PWM buck model in steady state: sawtooth inductor current ripple around the load current, and a settled output voltage near 1 V</sub>
 -->
 
 ---

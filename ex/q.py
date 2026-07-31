@@ -26,9 +26,17 @@ nfs = 4
 x_sn = x_s[0::nfs]
 
 def adc(x,bits):
+    """A true B-bit mid-rise quantizer: 2**bits levels spanning -1 to 1.
+
+    np.round(x*2**bits)/2**bits looks like a quantizer but is not one:
+    at bits=1 it gives five output levels, not two. A B-bit converter
+    has exactly 2**B levels, spaced by Delta = 2/2**B, sitting half a
+    step off zero - so a 1-bit converter is a sign detector.
+    """
     levels = 2**bits
-    y = np.round(x*levels)/levels
-    return y
+    delta = 2/levels
+    y = np.floor(x/delta)*delta + delta/2
+    return np.clip(y, -1 + delta/2, 1 - delta/2)
 
 # To discrete value
 bits = 1

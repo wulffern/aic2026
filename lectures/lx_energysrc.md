@@ -201,13 +201,14 @@ Imagine we have Iron and copper wires, as shown below, and we heat one end. In t
 ![fit](../media/Thermoelectric_effect.png)
 
 <!--pan_doc:
+<sub>Figure 4: The thermoelectric effect - iron and copper wires joined at a heated end drive a current through a meter connected at the cold end</sub>
+-->
+
+
+<!--pan_doc:
 
 The voltage difference at the hot and cold end
 is described by the 
--->
-
-<!--pan_doc:
-<sub>Figure 4: The thermoelectric effect - iron and copper wires joined at a heated end drive a current through a meter connected at the cold end</sub>
 -->
 
 ---

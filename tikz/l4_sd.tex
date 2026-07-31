@@ -38,10 +38,12 @@
   \draw ({\xd-0.18},{\ym-0.85}) -- ({\xd+0.18},{\ym-0.55});
   \node[anchor=west] at ({\xd+0.22},{\ym-1.05}) {$D_{o}$};
 
-  % the DAC closes the loop in the analog domain
-  \draw (7.6,\ym) -- (7.95,{\ym+0.5}) -- (8.75,{\ym+0.5})
-     -- (8.75,{\ym-0.5}) -- (7.95,{\ym-0.5}) -- cycle;
-  \node at (8.28,\ym) {\small DAC};
+  % the DAC closes the loop in the analog domain. Its pentagon is
+  % mirrored: the wide side takes the digital word in, the point puts
+  % the analog value out, the opposite of the ADC beside it.
+  \draw (8.75,\ym) -- (8.40,{\ym+0.5}) -- (7.60,{\ym+0.5})
+     -- (7.60,{\ym-0.5}) -- (8.40,{\ym-0.5}) -- cycle;
+  \node at (8.07,\ym) {\small DAC};
   \draw (8.75,\ym) -- (9.7,\ym);
   \node[anchor=west] at (9.75,\ym) {$V_{o}$};
 

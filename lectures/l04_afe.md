@@ -712,12 +712,13 @@ exactly where they are.
 ![left fit](../media/l4_activebiquad_tikz.pdf)
 
 <!--pan_doc:
-
-
+<sub>Figure 12: General purpose active-RC biquad built from two OTAs</sub>
 -->
 
+
 <!--pan_doc:
-<sub>Figure 12: General purpose active-RC biquad built from two OTAs</sub>
+
+
 -->
 
 $$ H(s) = \frac{k_2 s^2 + k_1 s + k_0}{s^2 + \frac{\omega_0}{Q} s +

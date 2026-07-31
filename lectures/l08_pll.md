@@ -169,6 +169,11 @@ In the figure below you can see the following items.
 ![fit](../media/l08_nrf53.png)
 
 <!--pan_doc:
+<sub>Figure 1: nRF5 development kit PCB with (1) 32 MHz crystal, (2) 32 KiHz crystal, (3) PCB antenna, and (4) DC/DC inductor</sub>
+-->
+
+
+<!--pan_doc:
 
 ## 32 MHz crystal 
 
@@ -198,10 +203,6 @@ the [Product Specification](https://infocenter.nordicsemi.com/index.jsp?topic=%2
 
 Since we can see a large inductor, we can also make the assumption that the IC contains a switched regulator. That switched regulator, especially if it has a pulse-width-modulated control loop, will need a clock. 
 
--->
-
-<!--pan_doc:
-<sub>Figure 1: nRF5 development kit PCB with (1) 32 MHz crystal, (2) 32 KiHz crystal, (3) PCB antenna, and (4) DC/DC inductor</sub>
 -->
 
 ---
@@ -689,15 +690,16 @@ I power up the PLL and wait for the output clock to settle. I use [freq.py](http
 ![fit](../media/sun_pll_lay_typ.pdf)
 
 <!--pan_doc:
+<sub>Figure 18: Simulated PLL output frequency versus time from power-up; the average frequency (orange) settles to 256 MHz</sub>
+-->
+
+
+<!--pan_doc:
 
 You can find the schematics, layout, testbenches, python script etc at [SUN\_PLL\_SKY130NM](https://github.com/wulffern/sun_pll_sky130nm)
 
 Below are a couple layout images of the finished PLL
 
--->
-
-<!--pan_doc:
-<sub>Figure 18: Simulated PLL output frequency versus time from power-up; the average frequency (orange) settles to 256 MHz</sub>
 -->
 
 ---

@@ -520,17 +520,13 @@ A Bessel function of the first kind looks like this
 
 ![fit](../media/Bessel.svg)
 
-
 <!--pan_doc:
+<sub>Figure 18: Bessel functions of the first kind, J0(x), J1(x) and J2(x), showing the oscillatory behavior that shapes the quantization noise harmonics</sub>
 
 So I would expect the amplitude to show signs of oscillatory behavior for the harmonics. 
 That's the important thing to remember. The quantization noise is **odd harmonics of the input signal** 
 
 The mean value is zero 
--->
-
-<!--pan_doc:
-<sub>Figure 18: Bessel functions of the first kind, J0(x), J1(x) and J2(x), showing the oscillatory behavior that shapes the quantization noise harmonics</sub>
 -->
 
 ---
@@ -810,15 +806,11 @@ For an OSR of 4 we can notice how the noise floor has 4 zero's.
 
 ![fit](../media/l6_osr_4.svg)
 
-
 <!--pan_doc:
+<sub>Figure 23: The same FFTs with OSR=4 (right), where the noise floor shows four zeros and the noise power increases close to zero frequency</sub>
 
 The code for the plots is  [osr.py](https://github.com/wulffern/aic2026/blob/main/ex/osr.py). I would encourage you to play a bit with the code, and make sure you understand oversampling. If you would rather drag a slider than edit a file, the [interactive version](https://wulffern.github.io/aic2026/assets/examples/oversampling.html) plots the measured in-band SNR against OSR next to the ideal 3 dB per octave.
 
--->
-
-<!--pan_doc:
-<sub>Figure 23: The same FFTs with OSR=4 (right), where the noise floor shows four zeros and the noise power increases close to zero frequency</sub>
 -->
 
 
