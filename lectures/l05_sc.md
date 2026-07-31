@@ -209,10 +209,10 @@ The impedance, from [Ohm's law](https://en.wikipedia.org/wiki/Ohm%27s_law) is
  
 <!--pan_doc:
 
-And from [SI units](https://analogicus.com/aic2026/a_refresher#there-are-standard-units-of-measurement) units we can see current is 
+And from [SI units](https://analogicus.com/aic2026/a_refresher#there-are-standard-units-of-measurement) units we can see current is charge per unit time. Once per clock period the capacitor is charged and then discharged, so what flows in from the input is the *difference* between the charge held at the end of each phase, delivered $f_\phi$ times a second:
 -->
 
- $$ I_{I} = \frac{Q}{dt} = Q f_{\phi}$$
+ $$ I_{I} = \frac{\Delta Q}{\Delta t} = \left(Q_{\phi1\$} - Q_{\phi2\$}\right) f_{\phi}$$
  
  
 <!--pan_doc:
@@ -801,8 +801,16 @@ $$ h[n] = \begin{cases} k & \text{if } n < 1 \\ a^{n-1}b + a^n k & \text{if } n 
 <!--pan_doc:
 
 Here $k$ is the initial state $y[0]$. From the impulse response it can be seen
-that if $|a| \geq 1$ the response never dies out and the filter is unstable —
-the pole of $H(z) = b/(z-a)$ sits at $z = a$, and $b$ only scales the output.
+that the pole of $H(z) = b/(z-a)$ sits at $z = a$, and $b$ only scales the
+output, so everything depends on $|a|$.
+
+Three cases, matching the z-plane picture above. If $|a| < 1$ the response
+decays and the filter is stable. If $|a| > 1$ it grows without bound and the
+filter is unstable. Exactly on the unit circle, $|a| = 1$, it neither decays
+nor grows: the impulse rings for ever at constant amplitude, which is an
+oscillator. That last case is called *marginally* stable, and in a real
+circuit it does not exist — component tolerance will push the pole to one
+side or the other, and only one of those sides is survivable.
 
 -->
 
@@ -1121,20 +1129,46 @@ is feedback to control the voltage swing at the output of the OTA.
 Make sure you read and understand the equations below, it's good to realize that discrete time equations, Z-domain and transfer functions
 in the Z-domain are actually easy.
 
+Start from what the circuit does in one cycle. The charge already on
+$C_2$ stays there, because nothing discharges it now, and the charge
+$C_1V_i$ sampled during the previous phase is added to it. Divide by
+$C_2$ to turn charge into voltage and that sentence is the first line:
+this output equals the last output plus a scaled copy of the last input.
+
 -->
 
 
 $$ V_o[n] = V_o[n-1] + \frac{C_1}{C_2}V_i[n-1]$$
 
+<!--pan_doc:
+
+Take that to the Z-domain by the one rule you need: a delay of one
+sample is a multiplication by $z^{-1}$. So $V_o[n-1]$ becomes
+$z^{-1}V_o$, $V_i[n-1]$ becomes $z^{-1}V_i$, and collecting the output
+terms on the left gives
+
+-->
+
 $$V_o - z^{-1}V_o = \frac{C_1}{C_2}z^{-1}V_i $$
 
 <!--pan_doc:
 
-Maybe one confusing thing is that multiple transfer functions can mean the same thing, as below. 
+Divide through and the transfer function falls out. Maybe one confusing thing is that multiple transfer functions can mean the same thing, as below. They differ only by a factor of $z$ on top and bottom, which is legal algebra and changes nothing:
 -->
 
 $$ H(z) = \frac{C_1}{C_2}\frac{z^{-1}}{1-z^{-1} } =
 \frac{C_1}{C_2}\frac{1}{z-1} $$
+
+<!--pan_doc:
+
+Look at where the pole sits: $z = 1$, exactly on the unit circle. By the
+rule from the first order filter section that is an oscillator, a circuit
+whose impulse response never dies out — which for an integrator is not a
+defect but the entire specification. It is also why the previous figure
+grows without bound, and why an integrator is only ever used inside a
+loop that puts something else in charge of the output swing.
+
+-->
 
 ---
 
@@ -1333,9 +1367,9 @@ The resistance mid-rail might be too large.
 
 For switched-capacitor circuits we must settle the voltages to the required accuracy. In general
 
-$$t > -\log(\text{error} ) \tau$$
+$$t > -\ln(\text{error} ) \tau$$
 
-For example, for a 10-bit ADC we need $t > -\log(1/1024) \tau = 6.9\tau$. This means we need to wait at least 6.9 time constants for the voltage
+For example, for a 10-bit ADC we need $t > -\ln(1/1024) \tau = 6.9\tau$. This means we need to wait at least 6.9 time constants for the voltage
 to settle to 10-bit accuracy in the switched capacitor circuit.
 
 Assume the capacitors are large due to noise, then the switches must be low resistance for a reasonable time constant. Larger switches have 
@@ -1401,7 +1435,26 @@ looks like the one below.
 
 ### Non-overlapping clocks
 
-The non-overlap generator is standard. Use the one shown below. Make sure you simulate that the non-overlap is sufficient in all corners.
+Everything in this chapter has rested on charge going exactly where we
+said it goes. That holds only if the two phases are never on at the same
+time. Overlap them, even briefly, and a path opens from the input
+straight through to the summing node while the previous charge is still
+there: some charge escapes, some arrives early, and the gain is no
+longer $C_1/C_2$ but something that depends on how long the overlap
+lasted. It is a gain error that changes with temperature and corner,
+which is the worst kind.
+
+The generator below solves this the obvious way. Each phase is fed back
+to the gate of the other's driver, so neither can rise until the other
+has fallen, and the delay chain sets how much dead time sits between
+them. The cost is that dead time — clock period you are not using — so
+it wants to be sufficient and no more.
+
+Sufficient in *all corners*, though. The delay chain is made of
+inverters, and the ring oscillator plots earlier in the logic chapter
+show what happens to inverter delay across process and temperature: it
+moves by a factor of two or three. Simulate the non-overlap at the fast
+corner, where it is smallest, not at typical.
 
 -->
 
@@ -1425,6 +1478,35 @@ In the circuit below there is an example of a switched capacitor circuit used to
 set the gain, and thus the equation for the differential output will be 
 
 $$ V_O(z) = 10 \frac{kT}{q} \ln (N)z^{-1} $$
+
+-->
+
+<!--pan_doc:
+
+Every factor in that expression comes from somewhere earlier, and it is
+worth naming them, because this one circuit is most of the course so far
+in a single schematic.
+
+The $\frac{kT}{q}\ln(N)$ is the PTAT difference between two diode
+voltages at a current ratio $N$, from the references chapter. It is
+small, a few tens of millivolts, and it is proportional to absolute
+temperature, which is what makes it useful as a temperature signal.
+
+The $10$ is $C_1/C_2$, a capacitor ratio, from this chapter. That is the
+whole reason for doing the amplification this way: a capacitor ratio in
+one piece of silicon matches to a fraction of a percent, so the gain is
+accurate in a way a resistor ratio or a transistor parameter would not
+be, and it does not drift with temperature.
+
+The $z^{-1}$ is one clock period of delay, because the charge sampled in
+phase 1 does not reach the output until phase 2.
+
+So the circuit takes a signal defined by physical constants, multiplies
+it by a number defined by geometry, and delivers the result one clock
+later. Nothing in the answer depends on a transistor's threshold
+voltage, its mobility, or the supply. That is the point of switched
+capacitor circuits, and it is why they survived into processes where
+almost nothing else about analog design got easier.
 
 -->
 
