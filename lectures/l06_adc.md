@@ -531,6 +531,33 @@ The mean value is zero
 
 ---
 
+![fit](../media/quant_noise_tikz.pdf)
+
+<!--pan_doc:
+<sub>Figure 19: What the Bessel series actually says: a sine through a 3-bit quantizer, the error it leaves, and the odd harmonic amplitudes $A_p$ from the formula above, against the flat floor the $\Delta^2/12$ model would predict</sub>
+
+Here is the formula drawn out. On the left, a sine through a three bit
+quantizer, and underneath it the error it leaves behind. The error is
+not random: it repeats exactly once per signal period, which is the
+whole reason its spectrum can only contain harmonics of the signal.
+
+On the right, the amplitudes $A_p$ evaluated from the Bessel sum. They
+agree with a direct FFT of the quantized sine to about a tenth of a
+percent, so this is not an approximation of the noise, it *is* the
+noise. Compare the spikes with the dashed line, which is where the
+$\Delta^2/12$ white noise model would put a flat floor: the total power
+is the same, but the distribution is nothing like it.
+
+If you want to feel this rather than read it, the
+[interactive version](https://wulffern.github.io/aic2026/assets/examples/bessel-quantization.html)
+puts the bit count on a slider. Walk it up and watch the harmonics fall
+about 6 dB per bit and crowd together, until somewhere around eight
+bits calling them a noise floor finally becomes fair.
+
+-->
+
+---
+
 $$\overline{e_n(t)} = 0 $$
 
 <!--pan_doc:
@@ -599,7 +626,7 @@ Can you see how the noise (what is not the two spikes) is not white? White noise
 ![fit](../media/l6_q_1.svg)
 
 <!--pan_doc:
-<sub>Figure 19: FFT of a sinusoid with noise as continuous value (left), after sampling (middle), and after 1-bit quantization (right), where the quantization noise shows up as distinct harmonic spikes rather than a white noise floor</sub>
+<sub>Figure 20: FFT of a sinusoid with noise as continuous value (left), after sampling (middle), and after 1-bit quantization (right), where the quantization noise shows up as distinct harmonic spikes rather than a white noise floor</sub>
 
 If you run the python script you can zoom in and check the highest spikes. The fundamental is at 127, so odd harmonics would be 381, 635, 889, and from the function of the quantization noise we would expect those to be the highest harmonics (at least when we look at the Bessel function), however, we can see that it's close, but that bin 651 is the highest. Is the math's wrong? 
 
@@ -607,7 +634,7 @@ No, the math is correct. Never bet against mathematics. Bin 651 is the 11'th har
 
 ![fit](../media/l6_q_1_fharm.svg)
 
-<sub>Figure 20: The same 1-bit quantization with lower input frequency and a 16384-point FFT, where the 11th harmonic appears directly at bin 1397 instead of folding</sub>
+<sub>Figure 21: The same 1-bit quantization with lower input frequency and a 16384-point FFT, where the 11th harmonic appears directly at bin 1397 instead of folding</sub>
 
 All the other spikes are the odd harmonics above the sample rate that fold. The infinite sum of harmonics will fold, some in-phase, some out of phase, depending on the sign of the Bessel function. 
 
@@ -627,7 +654,7 @@ A consequence is that the quantization noise becomes more and more uniform, as c
 
 
 <!--pan_doc:
-<sub>Figure 21: FFT of the same signal with a 10-bit quantizer, where the quantization noise is closer to uniform and looks almost white</sub>
+<sub>Figure 22: FFT of the same signal with a 10-bit quantizer, where the quantization noise is closer to uniform and looks almost white</sub>
 
 ## Why you should care about quantization noise
 
@@ -791,7 +818,7 @@ The noise has all frequencies, and it's the high frequency components that start
 ![fit](../media/l6_osr_2.svg)
 
 <!--pan_doc:
-<sub>Figure 22: FFTs from continuous value to 10-bit quantized to oversampled with OSR=2 (right), where the averaging filter nulls the noise towards half the sample rate</sub>
+<sub>Figure 23: FFTs from continuous value to 10-bit quantized to oversampled with OSR=2 (right), where the averaging filter nulls the noise towards half the sample rate</sub>
 -->
 
 ---
@@ -807,7 +834,7 @@ For an OSR of 4 we can notice how the noise floor has 4 zero's.
 ![fit](../media/l6_osr_4.svg)
 
 <!--pan_doc:
-<sub>Figure 23: The same FFTs with OSR=4 (right), where the noise floor shows four zeros and the noise power increases close to zero frequency</sub>
+<sub>Figure 24: The same FFTs with OSR=4 (right), where the noise floor shows four zeros and the noise power increases close to zero frequency</sub>
 
 The code for the plots is  [osr.py](https://github.com/wulffern/aic2026/blob/main/ex/osr.py). I would encourage you to play a bit with the code, and make sure you understand oversampling. If you would rather drag a slider than edit a file, the [interactive version](https://wulffern.github.io/aic2026/assets/examples/oversampling.html) plots the measured in-band SNR against OSR next to the ideal 3 dB per octave.
 
@@ -849,7 +876,7 @@ Do you see now why a circuit like the one below is useful? If not, you should re
 ![inline fit](../media/l4_sdloop_tikz.pdf)
 
 <!--pan_doc:
-<sub>Figure 24: A generalized feedback system where the error between input and output is shaped by a filter H(s), and the output equals the input when H(s) is infinite</sub>
+<sub>Figure 25: A generalized feedback system where the error between input and output is shaped by a filter H(s), and the output equals the input when H(s) is infinite</sub>
 -->
 
 ---
@@ -874,7 +901,7 @@ But how can we now calculate the transfer function $\frac{D_o}{V_i}$? Both $adc$
 ![inline fit](../media/l4_sd_tikz.pdf)
 
 <!--pan_doc:
-<sub>Figure 25: The sigma-delta principle: a feedback loop with a filter H(s), an ADC (quantizer) and a DAC in the feedback path, with digital output Do</sub>
+<sub>Figure 26: The sigma-delta principle: a feedback loop with a filter H(s), an ADC (quantizer) and a DAC in the feedback path, with digital output Do</sub>
 -->
 
 ---
@@ -922,7 +949,7 @@ which could be drawn in a signal flow graph as below.
 
 ![left fit](../media/l6_sdadc_tikz.pdf)
 
-<sub>Figure 26: Signal flow graph of the noise-shaping loop: the difference between input u[n] and output y[n] is filtered by H(z) and the quantization noise e[n] is added at the quantizer</sub>
+<sub>Figure 27: Signal flow graph of the noise-shaping loop: the difference between input u[n] and output y[n] is filtered by H(z) and the quantization noise e[n] is added at the quantizer</sub>
 
 in the Z-domain the equation would turn into 
 
@@ -1208,7 +1235,7 @@ If we look at the noise we can also see the non-white quantization noise, which 
 ![fit](../media/l6_sd_d0_b1.svg)
 
 <!--pan_doc:
-<sub>Figure 27: First-order sigma-delta modulator with 1-bit quantizer and no dither, where the noise-shaped spectrum (right) tends towards zero at zero frequency but contains distinct tones</sub>
+<sub>Figure 28: First-order sigma-delta modulator with 1-bit quantizer and no dither, where the noise-shaped spectrum (right) tends towards zero at zero frequency but contains distinct tones</sub>
 -->
 
 ---
@@ -1222,7 +1249,7 @@ In the figure below I've turned on dither, and we can see how the noise looks "b
 ![fit](../media/l6_sd_d1_b1.svg)
 
 <!--pan_doc:
-<sub>Figure 28: The same first-order 1-bit sigma-delta modulator with dither enabled, where the noise-shaped spectrum (right) is smoother and more noise-like</sub>
+<sub>Figure 29: The same first-order 1-bit sigma-delta modulator with dither enabled, where the noise-shaped spectrum (right) is smoother and more noise-like</sub>
 -->
 
 ---
@@ -1237,7 +1264,7 @@ frequencies of the FFT. From the shape of the quantization noise we can also see
 ![fit](../media/l6_sdlog_d1_b5.svg)
 
 <!--pan_doc:
-<sub>Figure 29: Power spectral density of the sigma-delta modulator output on a logarithmic frequency axis, showing the first-order 20 dB/decade shaping of the quantization noise</sub>
+<sub>Figure 30: Power spectral density of the sigma-delta modulator output on a logarithmic frequency axis, showing the first-order 20 dB/decade shaping of the quantization noise</sub>
 -->
 
 ---
@@ -1270,7 +1297,7 @@ order filter one can use a lower OSR, and still achieve high ENOB.
 
 
 <!--pan_doc:
-<sub>Figure 30: Output spectrum of an open-loop sigma-delta modulator with a fifth-order NTF (two complex conjugate zero pairs and a zero at DC), reaching 13.8 bit ENOB and 84.9 dB SNDR</sub>
+<sub>Figure 31: Output spectrum of an open-loop sigma-delta modulator with a fifth-order NTF (two complex conjugate zero pairs and a zero at DC), reaching 13.8 bit ENOB and 84.9 dB SNDR</sub>
 
 ### Noise Shaped SAR
 
@@ -1296,7 +1323,7 @@ than the smallest capacitor.
 ![inline](../media/l6_harald_arch.gif)
 
 <!--pan_doc:
-<sub>Figure 31: Architecture of the noise-shaping SAR ADC: capacitive DAC with multiplexers, loop filter H(z), integrating comparator, SAR logic, calibration logic and code correction</sub>
+<sub>Figure 32: Architecture of the noise-shaping SAR ADC: capacitive DAC with multiplexers, loop filter H(z), integrating comparator, SAR logic, calibration logic and code correction</sub>
 -->
 
 ---
@@ -1310,7 +1337,7 @@ The loop filter was a switched cap loop filter, and we can see the NTF below. Th
 ![inline](../media/l6_fig_harald_circuit.gif)
 
 <!--pan_doc:
-<sub>Figure 32: The switched-capacitor loop filter with two OTAs (the first one chopped), the clock phases relative to the SAR activity, and the resulting NTF with -27.8 dB in-band suppression</sub>
+<sub>Figure 33: The switched-capacitor loop filter with two OTAs (the first one chopped), the clock phases relative to the SAR activity, and the resulting NTF with -27.8 dB in-band suppression</sub>
 -->
 
     
@@ -1340,7 +1367,7 @@ infer the state of the input $u(t)$ using a form of [Bayesian Statistics](https:
 ![inline](../media/l6_fredrik_arch.svg)
 
 <!--pan_doc:
-<sub>Figure 33: Block diagram of the Leapfrog control-bounded ADC: a chain of continuous-time integrators with local digital control loops s(t) that keep the analog states x(t) bounded</sub>
+<sub>Figure 34: Block diagram of the Leapfrog control-bounded ADC: a chain of continuous-time integrators with local digital control loops s(t) that keep the analog states x(t) bounded</sub>
 -->
 
 ---
@@ -1354,7 +1381,7 @@ a third order NTF with a zero at zero frequency and a complex conjugate pole at 
 ![inline](../media/l6_fredrik_psd.svg)
 
 <!--pan_doc:
-<sub>Figure 34: Power spectral density of the control-bounded ADC's estimated input together with the NTF, a third-order shaping with a notch around 8 MHz</sub>
+<sub>Figure 35: Power spectral density of the control-bounded ADC's estimated input together with the NTF, a third-order shaping with a notch around 8 MHz</sub>
 -->
 
 ---
@@ -1374,7 +1401,7 @@ and that may look like an exercise in "Let's make something complex", however, m
 ![inline](../media/qt_sd.png)
 
 <!--pan_doc:
-<sub>Figure 35: Continuous-time quadrature cascaded sigma-delta modulator for radio receivers: two cross-coupled I and Q integrator chains with 4-bit ADCs and feedback DACs</sub>
+<sub>Figure 36: Continuous-time quadrature cascaded sigma-delta modulator for radio receivers: two cross-coupled I and Q integrator chains with 4-bit ADCs and feedback DACs</sub>
 -->
 
 ---
@@ -1400,7 +1427,7 @@ For more information, ask me, or see the patent at
 ![inline](../media/l6_patent.pdf)
 
 <!--pan_doc:
-<sub>Figure 36: Incremental first-order sigma-delta ADC from the patent: input and reference resistors into an OTA integrating on C, a clocked comparator as quantizer, and a counter as output filter</sub>
+<sub>Figure 37: Incremental first-order sigma-delta ADC from the patent: input and reference resistors into an OTA integrating on C, a clocked comparator as quantizer, and a counter as output filter</sub>
 
 # Want to learn more?
 

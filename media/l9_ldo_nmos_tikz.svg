@@ -109,9 +109,9 @@
 <use xlink:href="#glyph-1-1" x="239.644" y="90.915"/>
 </g>
 <path fill="none" stroke-width="0.79701" stroke-linecap="butt" stroke-linejoin="miter" stroke="rgb(0%, 0%, 0%)" stroke-opacity="1" stroke-miterlimit="10" d="M 221.103969 90.70825 L 221.103969 83.907469 M 221.103969 52.157469 L 221.103969 45.356688 " transform="matrix(1, 0, 0, -1, 16.189, 188.177)"/>
-<path fill="none" stroke-width="1.59404" stroke-linecap="butt" stroke-linejoin="bevel" stroke="rgb(0%, 0%, 0%)" stroke-opacity="1" stroke-miterlimit="10" d="M 221.103969 84.704344 L 227.057094 81.192625 L 215.150844 75.77075 L 227.057094 70.344969 L 215.150844 64.923094 L 227.057094 59.497313 L 215.150844 54.071531 L 221.103969 51.360594 " transform="matrix(1, 0, 0, -1, 16.189, 188.177)"/>
-<path fill="none" stroke-width="1.59404" stroke-linecap="butt" stroke-linejoin="bevel" stroke="rgb(0%, 0%, 0%)" stroke-opacity="1" stroke-miterlimit="10" d="M 209.197719 74.380125 L 229.002406 63.821531 " transform="matrix(1, 0, 0, -1, 16.189, 188.177)"/>
-<path fill-rule="nonzero" fill="rgb(0%, 0%, 0%)" fill-opacity="1" d="M 249.199219 126.496094 C 247.707031 125.269531 245.058594 123 243.855469 120.425781 C 244.546875 123.152344 243.832031 124.488281 241.183594 125.4375 C 243.988281 125.003906 247.351562 125.9375 249.199219 126.496094 Z M 249.199219 126.496094 "/>
+<path fill="none" stroke-width="0.79701" stroke-linecap="butt" stroke-linejoin="bevel" stroke="rgb(0%, 0%, 0%)" stroke-opacity="1" stroke-miterlimit="10" d="M 221.103969 84.305906 L 227.057094 81.227781 L 215.150844 75.868406 L 227.057094 70.512938 L 215.150844 65.153563 L 227.057094 59.798094 L 215.150844 54.438719 L 221.103969 51.759031 " transform="matrix(1, 0, 0, -1, 16.189, 188.177)"/>
+<path fill="none" stroke-width="0.79701" stroke-linecap="butt" stroke-linejoin="bevel" stroke="rgb(0%, 0%, 0%)" stroke-opacity="1" stroke-miterlimit="10" d="M 209.197719 74.380125 L 230.268031 63.14575 " transform="matrix(1, 0, 0, -1, 16.189, 188.177)"/>
+<path fill-rule="nonzero" fill="rgb(0%, 0%, 0%)" fill-opacity="1" d="M 249.199219 126.496094 C 248.179688 125.65625 246.367188 124.101562 245.542969 122.34375 C 246.015625 124.207031 245.527344 125.121094 243.714844 125.769531 C 245.632812 125.472656 247.933594 126.113281 249.199219 126.496094 Z M 249.199219 126.496094 "/>
 <g fill="rgb(0%, 0%, 0%)" fill-opacity="1">
 <use xlink:href="#glyph-1-2" x="252.069" y="122.387"/>
 </g>

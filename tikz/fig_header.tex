@@ -149,6 +149,12 @@
 \usepackage{circuitikz}
 
 
+% circuitikz draws bipole outlines (resistors, diodes, capacitors) at
+% bipoles/thickness times the ambient line width, and the default is 2.
+% That makes a circuitikz resistor visibly heavier than the wire it sits
+% on, and heavier than the hand rolled zig-zag in ckt_lib.tex. One is the
+% house width: everything is drawn at the environment's own thickness.
+\ctikzset{bipoles/thickness=1}
 \ctikzset{tripoles/mos style/arrows}
 \ctikzset{tripoles/pmos style/emptycircle}
 %\PreviewEnvironment{circuitikz}

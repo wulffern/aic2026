@@ -1,0 +1,45 @@
+\input{tikz/fig_header.tex}
+\usetikzlibrary{arrows.meta}
+
+% Arrow tip options, all drawn at the house line width (thick) so the
+% comparison is fair. Left: a plain signal arrow. Middle: the same tip on
+% a feedback arrow into a summing node, which is where most of the book's
+% arrows actually live. Right: a double headed measure arrow.
+
+\begin{tikzpicture}[thick]
+
+  \def\row#1#2#3{%
+    \node[anchor=east] at (-0.2,#1) {\ttfamily #2};
+    \draw[#3] (0.4,#1) -- (3.4,#1);
+    % in context: a feedback arrow into a sum
+    \draw (5.0,#1) circle (0.22);
+    \draw (4.78,#1) -- (5.22,#1);
+    \draw ({5.0},{#1-0.22}) -- ({5.0},{#1+0.22});
+    \draw[#3] (7.2,#1) -- (5.25,#1);
+    \draw (7.2,#1) -- (7.6,#1);
+    % a measure arrow
+    \draw[#3, #3] (8.6,#1) -- (10.4,#1);
+  }
+
+  \node[anchor=east, font=\bfseries] at (-0.2,1.0) {option};
+  \node[anchor=west, font=\bfseries] at (0.4,1.0) {signal};
+  \node[anchor=west, font=\bfseries] at (4.6,1.0) {into a sum};
+  \node[anchor=west, font=\bfseries] at (8.6,1.0) {measure};
+
+  \row{0.0}{1  ->}{->}
+  \row{-1.0}{2  -latex}{-latex}
+  \row{-2.0}{3  -stealth}{-stealth}
+  \row{-3.0}{4  -triangle 45}{-triangle 45}
+  \row{-4.0}{5  -Latex}{-{Latex}}
+  \row{-5.0}{6  -Stealth}{-{Stealth}}
+  \row{-6.0}{7  -Triangle}{-{Triangle}}
+
+  \node[anchor=west, align=left, font=\small] at (-2.6,-7.4)
+    {1 is the tikz default and the one 103 draws in the repo use today.\\
+     2 is the classic filled triangle, used by the other 96.\\
+     3 has a concave back, 4 is a wider filled triangle.\\
+     5--7 are the modern arrows.meta tips: they scale with line width,\\
+     so they stay in proportion if a figure is drawn thicker or thinner.};
+
+\end{tikzpicture}
+\end{document}
