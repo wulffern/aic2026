@@ -49,7 +49,7 @@ How do we create something that is a _good enough_ voltage and current source on
 To give you an introduction to "voltage sources" and "current sources" that we can
 make on an integrated circuit. 
 
-But before we take a take a look at the voltage and current source, 
+But before we take a look at the voltage and current source, 
 I want you to think about how you would route a current, or a voltage on an IC.
 
 -->
@@ -128,7 +128,7 @@ Resistors have finite matching across die, let's say 2 % 3-sigma variation. A li
 reference across the IC with current method. 
 
 For most voltage regulators (think about the circuit that delivers the digital voltage for an MCU)
-2 % percent may be an acceptable portion of the error budget. 
+2 % may be an acceptable portion of the error budget. 
 For a battery charger, however, the termination voltage of Li-ion batteries need to be precise, more accurate than 1 %.
 
 For that application we cannot distribute current, we must distribute voltage, but we need to care deeply about ground. 
@@ -150,7 +150,7 @@ The reference must be right next to my block.
 
 I could use two references on my IC, one for the ADC and one for the battery charger.
 Ask yourself, “Why do we care if there is two references?” 
-And the answer is “Silicon area is expensive, to make things cheep, we must make things small”,  
+And the answer is “Silicon area is expensive, to make things cheap, we must make things small”,  
 in other words,  we should not duplicate features unless we absolutely have to.
 
 -->
@@ -194,8 +194,8 @@ $$ I_D = I_S \left(e^{\frac{V_{BE}}{V_T}} - 1\right)  + I_B \approx I_S e^{\frac
 
 <!--pan_doc:
 
-As $I_S$ is much smaller that $I_D$ we can ignore the -1, 
-and we assume that the base current is much smaller than the drain current.
+As $I_S$ is much smaller than $I_C$ we can ignore the -1, 
+and we assume that the base current is much smaller than the collector current.
 
 Re-arranging for $V_{BE}$ and inserting for 
 
@@ -216,7 +216,12 @@ temperature due to the temperature dependence of $I_S$.
 
 The $V_{BE}$ is almost linear with temperature with a property that 
 if you extrapolate the $V_{BE}$ line to zero Kelvin, then all diode voltages 
-seem to meet at the bandgap voltage of silicon (approx 1.12 eV). 
+seem to meet at one voltage, $V_{G0} \approx 1.2$ V. That number is close to,
+but not the same as, the silicon bandgap you look up in a table: the gap is
+1.12 eV at room temperature and 1.17 eV at zero Kelvin, while the intercept
+these lines extrapolate to is around 1.20 to 1.22 V, because the extrapolation
+also drags the temperature dependence of $I_S$ along with it. It is a voltage,
+not an energy, and the reference is named after it. 
 
 To see the temperature coefficient, I find it easier to re-arrange the equation above.
 
@@ -283,7 +288,7 @@ $$ V_{D1} - V_{D2} = V_T \ln{\frac{I_{D}}{I_{S1}}} - V_T \ln{\frac{I_{D}}{I_{S2}
 <!--pan_doc:
 
 This is a remarkable result. The difference between two voltages is only defined by Boltzmann's constant, 
-temperature, charge, and a know size difference.
+temperature, charge, and a known size difference.
 
 This differential voltage can be used to read out directly the temperature on an IC, 
 provided we can compare to a known voltage. 
@@ -399,7 +404,7 @@ $$ V_{REF} = V_{BE3} + \frac{R_2}{R_3}\frac{kT}{q}\ln{\frac{R_2}{R_1}} $$
 
 CTAT plus PTAT, and we are about to do it again with an amplifier. With
 $R_2/R_1 = 10$ the log term is about 60 mV at room temperature, $R_2/R_3 = 10$
-scales that to 600 mV, and stacked on a 600 mV $V_{BE}$ you land at the 1.22 V
+scales that to 600 mV, and stacked on a 600 mV $V_{BE}$ you land at the 1.2 V
 the LM113 was sold as.
 
 Notice what is doing the job of the OTA. $Q_3$ is the gain element. If the
@@ -448,15 +453,48 @@ The voltage at the output will then be.
 
 -->
 
-$$ V_{BG} = V_{G0} + (m-1)\frac{kT}{q}\ln{\frac{T_0}{T}} +T\left[\frac{k}{q}\ln{\frac{J_2}{J_1}}\frac{2R2}{R1} - \frac{V_{G0}- V_{be0}}{T_0}\right] $$
+$$ V_{BG} = V_{G0} + (m-1)\frac{kT}{q}\ln{\frac{T_0}{T}} +T\left[\frac{k}{q}\ln{\frac{J_2}{J_1}}\frac{2R_1}{R_2} - \frac{V_{G0}- V_{be0}}{T_0}\right] $$
 
 <!--pan_doc:
 
-where $V_{G0}$ is the bandgap, $V_{be0}$ is the base emitter measured at a temperature $T_0$ and the $J$'s are the current densities.
+where $V_{G0}$ is the bandgap extrapolated to zero Kelvin, $V_{be0}$ is the
+base emitter voltage measured at a temperature $T_0$, the $J$'s are the current
+densities, and $m$ is the exponent that collects the temperature dependence of
+the saturation current and of the bias current - about 3 for a diode run at
+constant current, and we will come back to it in the curvature section.
 
-To get a constant output voltage, the relationship between the resistors should be approximately
+Read the three terms. The first is a constant. The third is proportional to
+$T$, and the resistor ratio is the knob on it. The second is the awkward one:
+it is proportional to $T\ln{T}$, and no resistor ratio can touch it.
 
-$$ \frac{R2}{R1} = \frac{V_{G0} - V_{be0}}{2 T_0 \frac{k}{q}\ln(\frac{J_2}{J_1})} $$
+Now, what does "constant output" mean? The tempting answer is to make the
+bracket zero, which kills the term in bare $T$ and leaves
+
+$$ V_{BG} = V_{G0} + (m-1)\frac{kT}{q}\ln{\frac{T_0}{T}} $$
+
+That is **not** flat. Differentiate it: at $T = T_0$ the slope is
+$-(m-1)k/q \approx -170$ uV/K, or about $-140$ ppm/K, which is a hundred times
+worse than the reference you were trying to build. The $T\ln{T}$ term has a
+slope of its own, and setting the bracket to zero leaves it uncancelled.
+
+What we actually want is zero *slope* at the temperature we care about. Take
+the derivative of the whole expression, set it to zero at $T_0$, and the
+condition is that the bracket must equal $(m-1)k/q$ rather than zero:
+
+$$ \frac{k}{q}\ln{\frac{J_2}{J_1}}\frac{2R_1}{R_2} = \frac{V_{G0}-V_{be0}}{T_0} + (m-1)\frac{k}{q} $$
+
+so the resistor ratio is
+
+$$ \frac{R_1}{R_2} = \frac{V_{G0} - V_{be0} + (m-1)\frac{kT_0}{q}}{2 T_0 \frac{k}{q}\ln(\frac{J_2}{J_1})} $$
+
+and the output voltage at that point is not the bandgap, but a little above it
+
+$$ V_{BG}(T_0) = V_{G0} + (m-1)\frac{kT_0}{q} \approx 1.25 \text{ V} $$
+
+This is worth remembering, because it surprises people: a bandgap reference
+trimmed for zero temperature coefficient sits around 1.25 V, not at the
+1.20 V bandgap it is named after. The extra 50 mV is exactly the price of
+cancelling the slope of the $T\ln{T}$ term at one temperature.
 
 -->
 
@@ -468,11 +506,18 @@ $$ \frac{R2}{R1} = \frac{V_{G0} - V_{be0}}{2 T_0 \frac{k}{q}\ln(\frac{J_2}{J_1})
 In typical simulations, the variation can be  
 low over the temperature range. The second order error is the remaining error from
 
-$$ V_{BG} = V_{G0} + (m-1)\frac{kT}{q}\ln{\frac{T_0}{T}} +T\left[\frac{k}{q}\ln{\frac{J_2}{J_1}}\frac{2R2}{R1} - \frac{V_{G0}- V_{be0}}{T_0}\right] $$
+$$ V_{BG} = V_{G0} + (m-1)\frac{kT}{q}\ln{\frac{T_0}{T}} +T\left[\frac{k}{q}\ln{\frac{J_2}{J_1}}\frac{2R_1}{R_2} - \frac{V_{G0}- V_{be0}}{T_0}\right] $$
 
-Where the last term is zero, so 
+With the resistor ratio picked so that the slope vanishes at $T_0$, the bracket
+is $(m-1)k/q$, so the term in bare $T$ becomes $(m-1)\frac{k}{q}T$ and what
+remains is
 
-$$ V_{BG} = V_{G0} + (m-1)\frac{kT}{q}\ln{\frac{T_0}{T}} $$
+$$ V_{BG} = V_{G0} + (m-1)\frac{kT}{q}\ln{\frac{T_0}{T}} + (m-1)\frac{k}{q}T $$
+
+$$ V_{BG} = V_{G0} + (m-1)\frac{kT}{q}\left[1 + \ln{\frac{T_0}{T}}\right] $$
+
+a curve with zero slope at $T_0$ and a maximum there. Everywhere else it falls
+away, and that bow is the second order error we are left with.
 
 -->
 
@@ -480,7 +525,18 @@ $$ V_{BG} = V_{G0} + (m-1)\frac{kT}{q}\ln{\frac{T_0}{T}} $$
 
 <!--pan_doc:
 
-<sub>Figure 11: Simulation of a Brokaw reference in GF 130 nm.  </sub>
+<sub>Figure 11: Simulation of a Brokaw reference in GF 130 nm</sub>
+
+Read the axes before anything else. The whole vertical range is about 3 mV on
+an output of 1.207 V, so the curve you are looking at is flat to roughly
+15 ppm/K over the range - the plot is magnified enormously.
+
+Then look at the shape. It rises, peaks a little above room temperature, and
+falls away on both sides. That peak is not an accident: it is the temperature
+where we chose the slope to be zero, and the resistor ratio put it there. The
+bow either side of it is exactly the $T\left[1 + \ln{(T_0/T)}\right]$ term
+we could not cancel with a resistor ratio, and the curvature section later in
+this chapter is about getting rid of it.
 -->
 
 
@@ -488,19 +544,30 @@ $$ V_{BG} = V_{G0} + (m-1)\frac{kT}{q}\ln{\frac{T_0}{T}} $$
 
 <!--pan_doc: 
 
-Over corners, I do expect that there is variation, as we can see from Figure 12. It may be that the $V_D$ modeling is not perfect, 
-which means the cancellation of the last term is incomplete. 
+Over corners, I do expect that there is variation, as we can see from Figure 12.
+
+Two things move, and they are worth separating. The first is a vertical offset
+of roughly $\pm 10$ mV, about $\pm 0.8$ %: that is the absolute accuracy of the
+reference, and it comes from resistor and $V_{BE}$ spread. The second is more
+interesting: the *peak moves*. The slow corner is still climbing at 125 C while
+the fast corner has already turned over near 0 C.
+
+A moving peak means the linear balance has shifted, not that the curvature term
+misbehaved. The bracket we so carefully set to $(m-1)k/q$ is only zero at
+typical: when the resistors and $V_{BE}$ walk to a corner, the bracket picks up
+a residue, and a residue in the bracket is a term proportional to $T$, which
+tilts the whole curve and drags the maximum with it. 
 
 We could include trimming of PTAT to calibrate for the remaining error, however, if we 
 wanted to remove the linear gradient, we would need a two point temperature test of every
-IC, which too expensive for low-cost devices.
+IC, which is too expensive for low-cost devices.
 
 -->
 
 ![original](../media/l3_bgsimtfs.pdf)
 
 <!--pan_doc:
-<sub>Figure 12: Typical, Slow, Fast simulation of the Brokaw bandgap </sub>
+<sub>Figure 12: Typical, slow and fast corner simulation of the Brokaw bandgap. The legend's "notemp" corners hold temperature-dependent model parameters at their typical values, so the spread shown is process alone</sub>
 -->
 
 
@@ -548,7 +615,7 @@ and we know the current increases with temperature, since $\Delta V_D$ increases
 
 <!--pan_doc: 
 
-I use $\Delta V_{BE}$ and $\Delta V_D$ interchangeably, appologies. 
+I use $\Delta V_{BE}$ and $\Delta V_D$ interchangeably, apologies. 
 
 In Figure 14 we copy the $V_D$ to another node, and place it across a second resistor $R_2$.
 
@@ -609,7 +676,7 @@ Assuming we copy the current into another resistor $R_3$, as shown in Figure 16,
 
 $$ V_{OUT} = R_3\left[\frac{V_D}{R_2} + \frac{\Delta V_D}{R_1}\right]$$
 
-We can choose the output voltage freely, and it be lower than 1.2 V.
+We can choose the output voltage freely, and it can be lower than 1.2 V.
 
 -->
 
@@ -633,21 +700,27 @@ and even the typical curve in Figure 11 has a bend in it. That bend is not
 noise, and it is not a mistake in the design. It is a term we agreed to ignore,
 and it is time to stop ignoring it.
 
-We picked the resistor ratio so the bracket that multiplies $T$ is zero, which
-removes everything linear in temperature. It does nothing at all to what is
-left,
+We picked the resistor ratio so the *slope* vanishes at one temperature. That
+flattens the curve where we chose to flatten it, and it does nothing at all to
+the shape of what is left,
 
 -->
 
-$$ V_{BG} = V_{G0} + (m-1)\frac{kT}{q}\ln{\frac{T_0}{T}} $$
+$$ V_{BG} = V_{G0} + (m-1)\frac{kT}{q}\left[1 + \ln{\frac{T_0}{T}}\right] $$
 
 <!--pan_doc:
 
-and that is the bow you can see in Figure 12. It comes from the temperature
-dependence of $I_S$, the $-3\ln{T}$ we carried through the $V_{BE}$ algebra
-earlier, so $m \approx 3$ and the coefficient is about 2.
+and that is the bow you can see in Figure 11. It comes from the temperature
+dependence of $I_S$ - the $-3\ln{T}$ we carried through the $V_{BE}$ algebra
+earlier - together with the temperature dependence of the bias current itself.
+That is where the $-1$ comes from: if the diode current is PTAT, as it is in
+every circuit in this chapter, it contributes one power of $T$ and the
+coefficient becomes $m-1$ rather than $m$. With $m \approx 3$ the coefficient
+is about 2. Be careful with that number: the $3$ assumes temperature
+independent diffusion, and measured devices sit nearer 3.6 to 4, so a design
+that trims $R_4$ from theory alone will be off.
 
-No choice of $R_2/R_1$ can remove it. A resistor ratio can only add something
+No choice of $R_1/R_2$ can remove it. A resistor ratio can only add something
 proportional to $T$, and what is left over is proportional to $T\ln{T}$. If we
 want to cancel it, we have to build a $T\ln{T}$ term.
 
@@ -722,6 +795,9 @@ when
 -->
 
 $$ R_4 = \frac{R_2}{m-1} $$
+
+for which $R_2$ and $R_4$ must be the same kind of resistor: the ratio only
+holds over temperature if their temperature coefficients cancel.
 
 <!--pan_doc:
 
@@ -976,10 +1052,10 @@ live.
 With a known voltage, we can convert to a known current with the circuit in Figure 19. 
 
 On-chip we don't have accurate resistors, 
-but for bias currents, it's usually ok with $+- 20 %$ variation  (the variation of R). 
+but for bias currents, it's usually ok with $\pm 20$ % variation  (the variation of R). 
 
 Across a IC, we can expect the resistors to match within 2 % percent, as such, we can recreate a 
-voltage with a accuracy of about 2 %percent difference from the original if we have a 
+voltage with a accuracy of about 2 % difference from the original if we have a 
 second resistor on the other side of the IC.
 
 If we wanted to create an accurate current, then we'd trim the R in production test 
@@ -1017,7 +1093,7 @@ we can use a GM cell, as shown in Figure 20.
 
 The top PMOS current mirror ensures that both branches have the same current. The middle NMOS current mirror copies
 the drain voltage on top of the diode connected bottom NMOS to the left NMOS.
-Consider the bottom transitors, those marked with "1" and "4".  The $V_o$ voltage is
+Consider the bottom transistors, those marked with "1" and "4".  The $V_o$ voltage is
 
 -->
 
@@ -1068,19 +1144,95 @@ $$ I = \frac{ V_{eff1}}{2Z} $$
 
 
 
-$$ Z \Rightarrow \frac{1}{g_m} $$
+so the impedance sets the transconductance directly
+
+$$ g_{m1} = \frac{1}{Z} $$
 
 <!--pan_doc:
 
-If we use a resistor for Z, then we can get a transconductance that is proportional to a resistor, or a constant $g_{m}$ bias.
+If we use a resistor for $Z$, then the transconductance is set by, and
+*inversely* proportional to, that resistor: $g_{m1} = 1/R$. That is the whole
+point of the circuit, and it is why it is called a constant $g_m$ bias. The
+transconductance no longer depends on mobility, oxide thickness or threshold
+voltage - all the things that move with process and temperature - only on a
+resistor and a device ratio. With a general ratio $K$ between the two devices
+the result is $g_{m1} = \frac{2}{R}\left(1 - \frac{1}{\sqrt{K}}\right)$,
+which is $1/R$ at the $K = 4$ drawn here.
 
-We can use other things for Z, like  a switched capacitor
+We can use other things for $Z$, like a switched capacitor. A capacitor
+$C_1$ toggled between two nodes at a frequency $f$ moves a charge
+$C_1 \Delta V$ every cycle, which is an average current $f C_1 \Delta V$, so
+it behaves as a resistance
+
+$$ Z = \frac{1}{f C_1} $$
+
+and the transconductance becomes $g_{m1} = f C_1$: set by a clock frequency
+and a capacitor ratio rather than by a resistor. That is attractive, because a
+frequency can come from a crystal and a capacitor matches better than a
+resistor - at the price of the switching noise the switched capacitor chapter
+worries about.
 
 -->
 
 ---
 
 ![original fit](../media/l3_gmcap_tikz.pdf)
+
+<!--pan_doc:
+<sub>Figure 22: A switched capacitor used as the impedance $Z$, giving $g_{m1} = f C_1$</sub>
+-->
+
+---
+
+##[fit] Every one of these loops can fail to start
+
+---
+
+<!--pan_doc:
+
+There is something missing from every self biased circuit in this chapter,
+and it is the thing most likely to make your first bias circuit fail in
+silicon.
+
+Look at the GM cell again, or at any of the OTA based bandgaps. The PMOS
+mirror says the two branch currents must be equal. The NMOS pair says what
+that current has to be. Together they have a solution, the one we designed
+for. But read the statement again: *the two branches must agree*. Zero current
+in both branches agrees perfectly well. Every equation in the loop is
+satisfied, the PMOS rail sits at the supply, the NMOS rail sits at ground,
+every device is off, and nothing in the circuit has any reason to change.
+
+That is a second, perfectly stable operating point, and a DC simulation is
+entitled to find either one. Worse, a DC simulation often finds the one you
+wanted, because the solver started its guess somewhere helpful - and then the
+chip comes back and the reference never wakes up.
+
+-->
+
+![fit](../media/l3_startup_tikz.pdf)
+
+<!--pan_doc:
+<sub>Figure 23: A constant $g_m$ bias with a startup device. $M_{SU}$ conducts while the NMOS rail is low and turns itself off once the loop is running</sub>
+
+The fix is a device that is *only* on in the dead state. $M_{SU}$ is a PMOS
+whose gate hangs on the NMOS rail. While the loop is asleep that rail is at
+ground, so $M_{SU}$ conducts and drags the PMOS rail down, which turns the
+mirror on and injects current into the loop. As soon as current flows the
+NMOS rail rises, $M_{SU}$ turns itself off, and in steady state it costs
+nothing but leakage.
+
+Two rules follow from this, and they are worth more than the circuit:
+
+- **Always simulate startup as a transient from zero supply**, not from a DC
+  operating point. Ramp $V_{DD}$ over a realistic time, and check that the
+  reference comes up every corner, at every temperature, at the slowest supply
+  ramp you can imagine. A bias circuit that only starts in a fast ramp is a
+  bias circuit that will fail on a slow one.
+- **Check that the startup device really turns off.** If it keeps conducting
+  it becomes a leakage path that sets your reference, and the reference is
+  then whatever the startup device felt like, not what the bandgap said.
+
+-->
 
 ---
 

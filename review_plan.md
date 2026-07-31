@@ -26,7 +26,7 @@ Priority order: derivation-heavy lectures first.
 | lecture | status | notes |
 |---|---|---|
 | `lr0_mosfet` | **reviewed 2026-07-30** | findings 4–13 below, all fixed; second-half prose filled in; three figure-review rounds (physics, clarity, in-context) done |
-| `l03_refbias` | pending | bandgap curvature maths; Figure 11/12 prose |
+| `l03_refbias` | **reviewed 2026-07-31** | Brokaw R1/R2 inversion and the zero-TC condition fixed; startup section added; Figure 11/12 prose written; findings 4-14 below |
 | `l05_sc` | pending | findings 1, 2 below |
 | `l06_adc` | pending | finding 3 below |
 | `l08_pll` | pending | |
@@ -45,6 +45,45 @@ Found in passing during the 2026-07-30 build/figure work; not yet resolved.
    the two spectra), `ex/iir.py` and `examples/iir.html` updated to match.
 2. **`l05_sc` impulse response cases — resolved 2026-07-30.** $k$ is now
    defined in the prose as the initial state $y[0]$.
+### `l03_refbias` review, 2026-07-31 — all fixed in place
+
+4. **Brokaw coefficient was inverted.** The figure puts $\Delta V_{BE}$
+   across $R_2$ and $2I$ through $R_1$, so the PTAT term is $2R_1/R_2$;
+   the text printed $2R_2/R_1$, and the design condition with it. Sizing
+   from the old formula gave a reference around 1.85 V.
+5. **"Set the bracket to zero" was not the zero-TC condition.** It kills
+   the term in bare $T$ but leaves the slope of the $T\ln T$ term:
+   $-(m-1)k/q \approx -170$ uV/K, about $-140$ ppm/K, and ~30 mV of droop
+   over the range - contradicting the chapter's own Figure 11, which is
+   flat to 3 mV. The condition is bracket $= (m-1)k/q$, which puts the
+   maximum at $T_0$ and the output at $V_{G0} + (m-1)kT_0/q \approx 1.25$ V.
+   Checked numerically: peak at 26.9 C, 2.5 mV spread over -40..125 C,
+   which is what the simulation shows.
+6. **Constant $g_m$ was described as proportional to the resistor.** It is
+   inversely proportional: $g_{m1} = 1/Z$, and the general
+   $\frac{2}{R}(1-1/\sqrt{K})$ is now stated.
+7. **No startup anywhere in a bias chapter.** New section with
+   `l3_startup` figure: the zero-current state satisfies every loop
+   equation, $M_{SU}$ conducts only while the NMOS rail is low, and the
+   two rules (transient from zero supply, check the device turns off).
+8. **1.12 eV used as the 0 K intercept.** 1.12 eV is the 300 K gap, 1.17 eV
+   at 0 K, and the extrapolated intercept is 1.20-1.22 V - a voltage, not
+   an energy. Contradicted the chapter's own line 11 lines earlier.
+9. **$m$ used before definition**, and the $-1$ attributed to $I_S$ alone;
+   it comes from the bias current being PTAT. Also flagged that $m\approx3$
+   assumes temperature independent diffusion, measured is 3.6-4.
+10. **Figures 11 and 12 were unread.** Fig 11 now states the 3 mV / 15 ppm
+    scale, the peak as the design's zero-TC point, and the bow as the
+    residual term. Fig 12's spread is corner-driven linear tilt (the
+    maximum moves), not incomplete curvature cancellation as the text
+    claimed.
+11. `M_{PC}`/`M_{PD}` named in prose but unlabelled in the figure - labelled.
+12. Switched capacitor figure had no number, caption or prose - now
+    Figure 22 with $Z = 1/(fC_1)$ and $g_{m1} = fC_1$ stated.
+13. $R_4 = R_2/(m-1)$ requires the same resistor type - said.
+14. Minor: bipolar "drain" current, LM113 arithmetic, `%` eaten by LaTeX,
+    seven typos.
+
 ### `lr0_mosfet` review, 2026-07-30 — all fixed in place
 
 4. First weak-inversion equation lacked the slope factor $n$ that every

@@ -72,8 +72,10 @@
   \draw (\xn,\ynl) -- (\xn,\ytop);
   \draw (\xn,\ytop) \lvmpmos{MPC}{};
   \draw (\xn,\ysup) \vsupply;
+  \node[anchor=east, scale=0.9] at ({\xn-0.55},{\ytop+0.8}) {$M_{PC}$};
   \draw (\xd,\ytop) \lvpmos{MPD}{};
   \draw (\xd,\ysup) \vsupply;
+  \node[anchor=west, scale=0.9] at ({\xd+0.55},{\ytop+0.8}) {$M_{PD}$};
   \draw (MPC.gate) -- (MPD.gate);
 
   \draw (cicOtaS_out) -- (\xn+1.8,\yo-0.4);

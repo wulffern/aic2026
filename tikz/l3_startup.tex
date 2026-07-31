@@ -1,0 +1,87 @@
+\input{tikz/fig_header.tex}
+
+% Why a self biased loop needs a startup device.
+%
+% The PMOS mirror (diode on the left) forces the two branch currents
+% equal, and the NMOS pair (diode on the right, K times wider, with R in
+% its source) sets what that current has to be. Every equation in the
+% loop is satisfied at the intended operating point - and equally well at
+% zero current, where the PMOS rail sits at VDD and the NMOS rail at
+% ground, both devices off, nothing to wake them.
+%
+% M_SU is a PMOS whose gate hangs on the NMOS rail. Asleep, that rail is
+% low, so M_SU conducts and drags the PMOS rail down until current
+% starts. Awake, the rail rises and M_SU turns itself off, so it costs
+% nothing in steady state.
+
+\begin{circuitikz}[american, thick, transform shape, circuit ee IEC]
+
+  \input{tikz/ckt_lib.tex}
+
+  \def\xl{0}       % left branch
+  \def\xr{3.2}     % right branch
+  \def\xs{6.8}     % startup device
+  \def\yp{4.4}     % PMOS drain row (source one grid above)
+  \def\yn{1.2}     % NMOS source row (drain one grid above)
+
+  % ---- PMOS mirror, diode connected on the left ----
+  \draw (\xl,{\yp+\grid}) \vsupply;
+  \draw (\xr,{\yp+\grid}) \vsupply;
+  \draw (\xl,\yp) \lvmpmos{MP1}{};
+  \draw (\xr,\yp) \lvpmos{MP2}{};
+  \coordinate (gp1) at (MP1.G);
+  \coordinate (gp2) at (MP2.G);
+  \draw (gp1) -- (gp2);
+  \fill (gp1) circle (0.075);
+  \draw (gp1) |- (\xl,\yp);
+  \fill (\xl,\yp) circle (0.075);
+
+  % ---- NMOS pair, diode connected on the right, R in that source ----
+  \draw (\xl,\yn) \lvmnmos{MN1}{};
+  \draw (\xr,\yn) \lvnmos{MN2}{};
+  \draw (\xl,\yn) \vground;
+  \coordinate (gn1) at (MN1.G);
+  \coordinate (gn2) at (MN2.G);
+  \draw (gn1) -- (gn2);
+  \fill (gn2) circle (0.075);
+  \draw (gn2) |- (\xr,{\yn+\grid});
+  \fill (\xr,{\yn+\grid}) circle (0.075);
+  \node[anchor=west, scale=0.85] at ({\xr+0.4},{\yn+0.35}) {$K\times$};
+
+  \draw (\xr,\yn) -- (\xr,0.6);
+  \draw (\xr,-1.0) \vresistor{$R$};
+  \draw (\xr,-1.0) \vground;
+
+  % branch wiring, straight down each column
+  \draw (\xl,\yp) -- (\xl,{\yn+\grid});
+  \draw (\xr,\yp) -- (\xr,{\yn+\grid});
+  \node[anchor=east, scale=0.9] at ({\xl-0.15},2.9) {$I$};
+  \node[anchor=west, scale=0.9] at ({\xr+0.15},2.9) {$I$};
+
+  % rail names
+  \node[anchor=south, scale=0.85] at (1.35,{\yp+1.05}) {PMOS rail};
+  \node[anchor=north, scale=0.85] at (1.35,{\yn+0.55}) {NMOS rail};
+
+  % ---- the startup PMOS ----
+  \draw (\xs,{\yp+\grid}) \vsupply;
+  \draw (\xs,\yp) \lvpmos{MSU}{};
+  \coordinate (gsu) at (MSU.G);
+  \node[anchor=west, scale=0.9] at ({\xs+0.45},{\yp+0.8}) {$M_{SU}$};
+
+  % its gate hangs on the NMOS rail
+  \draw (gsu) -- (5.3,{\yp+0.8}) -- (5.3,{\yn+0.75}) -- (\xr,{\yn+0.75});
+  \fill (\xr,{\yn+0.75}) circle (0.0);
+  \draw (5.3,{\yn+0.75}) -- (2.05,{\yn+0.75});
+  \fill (2.05,{\yn+0.75}) circle (0.075);
+
+  % its drain pulls the PMOS rail down
+  \draw (\xs,\yp) -- (\xs,{\yp-0.75}) -- (1.6,{\yp-0.75}) -- (1.6,\yp);
+  \fill (1.6,\yp) circle (0.075);
+
+  \node[anchor=north, align=center, scale=0.9] at (3.0,-2.6)
+    {The loop only says the two branches must agree, and zero\\
+     current in both agrees just as well. A startup device is\\
+     not optional: without it the reference may never wake up.};
+
+\end{circuitikz}
+\end{document}
