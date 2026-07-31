@@ -200,7 +200,23 @@ Still open in this chapter:
    legends, shaded bands, reference rules and stacked shared-axis
    panels, so the library covers every case in the book.
 
-   **Where the data lives.** `~/pro/aicex/ip/jnw_atr_sky130a/sim` for
+   **Self-contained since 2026-07-31.** The simulation columns the
+   figures use are vendored into `ex/data/` as plain CSV (208 KB, no
+   cicsim needed to read them), so every plot regenerates from this
+   repository alone — verified by running all of them with `HOME`
+   pointed at a nonexistent directory. `make plots` regenerates
+   everything, `make plots-one FNAME=<script>` one of them, and
+   `make plots-data` re-vendors from aicex and dicex, which is the only
+   target that needs those repositories.
+
+   Two things had to be fixed before `make plots` actually reproduced
+   the committed figures: six scripts drew noise from an unseeded
+   `np.random` (now seeded), and `q.py`, `osr.py` and `sd_1st.py`
+   selected their variants through environment variables so a plain run
+   emitted one figure of three (each now emits all of them). Run twice,
+   `make plots` leaves the tree unchanged.
+
+   **Where the data came from.** `~/pro/aicex/ip/jnw_atr_sky130a/sim` for
    the gm/ID sweeps (cicsim raw files); `~/pro/dicex` for the flip-flop
    timing (`lectures/l14`), the ring oscillator sweeps (`ex4`) and the
    NMOS curves (`sim/spice/NCHIO`). The PLL loop model, the DAC
