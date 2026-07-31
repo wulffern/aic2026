@@ -384,7 +384,33 @@ Chapters that have never been read end to end, in the order I would take
 them:
 
 1. ~~`l07_vreg`~~ — done 2026-07-31
-2. `l09_osc` — oscillators, and the chapter most likely to have algebra
+2. ~~`l09_osc`~~ — done 2026-07-31
 3. `l04_dac` — its figures were reviewed but the prose was not
 4. `l10_lpradio`
 5. the project lectures
+
+
+## `l09_osc` — reviewed 2026-07-31
+
+Two errors, both in expressions a student would copy out.
+
+The current-starved ring oscillator's `K_vco` differentiated a square
+and kept none of it: the PMOS current goes as
+`(VDD - V_control - V_th)^2`, so the derivative carries that overdrive,
+and the chapter had the gain as a constant. Units alone catch it —
+`mu_p C_ox W/L` is A/V^2, and rad/s/V needs a volt on top. Now also
+signed, since `V_control` is a PMOS gate, and followed by the
+consequence: the PLL chapter's linear model treats `K_osc` as one
+number, which it only is over a small part of this oscillator's range.
+
+The crystal impedance approximation dropped a `1/s`, leaving ohms per
+farad. Restored as a factored form, because the `1/s` is precisely the
+part that does not vary near resonance, and used to write down the two
+resonant frequencies explicitly — they are a few hundred ppm apart, and
+that gap is where the whole chapter operates but it was never stated.
+
+Verified and left alone: the exact crystal impedance (derived
+independently), all the ring oscillator delay and frequency algebra
+including both capacitive-load limits, the relaxation oscillator through
+to `f_o = 1/2RC`, and the prime-number-of-stages advice, which is hedged
+as experience and is standard practice.
