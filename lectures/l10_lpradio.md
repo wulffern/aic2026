@@ -418,7 +418,7 @@ go back 180 degrees. In this example the dot would move around the unit circle, 
 
 -->
 
-![left fit](../media/l7_bpsk_real.pdf)
+![left fit](../media/l7_bpsk_real_tikz.pdf)
 
 <!--pan_doc:
 <sub>Figure 3: BPSK constellation: the two symbols sit on the real axis, 180 degrees apart</sub>
@@ -448,7 +448,7 @@ Standards like Zigbee used offset quadrature phase shift keying, with a constell
 
 -->
 
-![inline fit](../media/l7_qpsk.pdf)
+![inline fit](../media/l7_qpsk_tikz.pdf)
 
 <!--pan_doc:
 <sub>Figure 5: QPSK constellation: four symbols at $\pm 1 \pm j$, or $\sqrt{2}e^{\pm j\pi/4}$, so 2 bits per symbol</sub>
@@ -514,7 +514,7 @@ and it's harder and harder to distinguish the points from each other.
 
 --->
 
-![left fit](../media/l8_8psk.pdf)
+![left fit](../media/l8_8psk_tikz.pdf)
 
 <!--pan_doc:
 <sub>Figure 9: 8-PSK constellation: eight points on the unit circle, so 3 bits per symbol</sub>
@@ -571,7 +571,7 @@ If you wanted to research "new fancy modulation schemes" I'd think about [Sphere
 
 -->
 
-![original fit](../media/l8_16qam.pdf)
+![original fit](../media/l8_16qam_tikz.pdf)
 
 <!--pan_doc:
 <sub>Figure 11: 16-QAM constellation: a 4 by 4 grid of points in phase and amplitude, so 4 bits per symbol</sub>

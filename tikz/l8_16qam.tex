@@ -1,0 +1,19 @@
+\input{tikz/fig_header.tex}
+
+% 16-QAM: a four by four grid, so four bits per symbol.
+%
+% Unlike the PSK constellations the points do not share an amplitude,
+% which is the whole trade: twice the bits per symbol of QPSK, and a
+% power amplifier that now has to be linear because the envelope moves.
+
+\begin{tikzpicture}[thick]
+  \input{tikz/constellation_lib.tex}
+
+  \constframe{1.8}
+  \foreach \re in {-1.5,-0.5,0.5,1.5} {
+    \foreach \im in {-1.5,-0.5,0.5,1.5} {
+      \constsymbol{\re}{\im}
+    }
+  }
+\end{tikzpicture}
+\end{document}

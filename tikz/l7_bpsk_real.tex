@@ -1,0 +1,19 @@
+\input{tikz/fig_header.tex}
+
+% BPSK: two symbols, both on the real axis, 180 degrees apart.
+%
+% Drawn on the same frame as the other three constellations in this
+% chapter so they can be compared. The point of this one is how little
+% there is: one bit per symbol, and the two states differ only in sign.
+
+\begin{tikzpicture}[thick]
+  \input{tikz/constellation_lib.tex}
+
+  \constframe{1.4}
+  \constsymbol{-1}{0}
+  \constsymbol{1}{0}
+
+  \node[anchor=south, red, scale=0.85] at (-1,0.12) {$-1$};
+  \node[anchor=south, red, scale=0.85] at (1,0.12) {$+1$};
+\end{tikzpicture}
+\end{document}

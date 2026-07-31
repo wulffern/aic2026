@@ -1,0 +1,33 @@
+% Constellation diagrams for the modulation section of the radio
+% chapter.
+%
+% Every one of these is the same picture with different dots on it: a
+% real and an imaginary axis, tick marks at +/-1, and a symbol at each
+% point the modulator can produce. Keeping the frame in one macro means
+% the four diagrams are actually comparable, which is the whole reason
+% the chapter shows them one after another.
+%
+% \constframe{<half-width>}  draws the axes and their labels.
+% \constsymbol{re}{im}       marks one symbol.
+% \constcircle{r}            the unit circle, for the phase-only schemes.
+
+\newcommand{\constframe}[1]{
+  \draw[->] (-#1-0.35,0) -- (#1+0.45,0) node[anchor=north east] {$\Re$};
+  \draw[->] (0,-#1-0.35) -- (0,#1+0.45) node[anchor=north east] {$\Im$};
+  \foreach \t in {-1,1} {
+    \draw (\t,-0.08) -- (\t,0.08);
+    \draw (-0.08,\t) -- (0.08,\t);
+  }
+}
+
+% A symbol. Red, because in this book red is the thing the figure is
+% about, and here the symbols are the whole content.
+% The braces let the arguments be expressions such as cos(45), which
+% TikZ otherwise tries to read as a node name because of the brackets.
+\newcommand{\constsymbol}[2]{
+  \fill[red] ({#1},{#2}) circle (0.075);
+}
+
+\newcommand{\constcircle}[1]{
+  \draw[gray, dotted, thick] (0,0) circle (#1);
+}

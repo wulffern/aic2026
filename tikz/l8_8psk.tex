@@ -1,0 +1,19 @@
+\input{tikz/fig_header.tex}
+
+% 8-PSK: eight symbols spaced evenly around the unit circle.
+%
+% All eight have the same amplitude and differ only in phase, which is
+% what makes it constant envelope and lets the power amplifier be run in
+% compression. Three bits per symbol.
+
+\begin{tikzpicture}[thick]
+  \input{tikz/constellation_lib.tex}
+
+  \constframe{1.4}
+  \constcircle{1}
+
+  \foreach \k in {0,1,...,7} {
+    \constsymbol{cos(\k*45)}{sin(\k*45)}
+  }
+\end{tikzpicture}
+\end{document}

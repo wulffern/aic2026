@@ -1,0 +1,31 @@
+\input{tikz/fig_header.tex}
+
+% QPSK: four symbols, one per quadrant, at +/-1 +/-j.
+%
+% Each is labelled twice, in cartesian and in polar form, because the
+% chapter's point is that the same symbol is easier to think about in
+% whichever form suits the question: cartesian when you are building the
+% modulator out of an I and a Q branch, polar when you are asking what
+% the phase does. The letters A to D are the symbol names the text uses.
+
+\begin{tikzpicture}[thick]
+  \input{tikz/constellation_lib.tex}
+
+  \constframe{1.6}
+  \constcircle{1.414}
+
+  \constsymbol{1}{1}
+  \constsymbol{-1}{1}
+  \constsymbol{-1}{-1}
+  \constsymbol{1}{-1}
+
+  \node[anchor=south west, red, scale=0.8, align=left] at (1.15,1.05)
+    {$B = 1+j$\\ $= \sqrt{2}e^{j\pi/4}$};
+  \node[anchor=south east, red, scale=0.8, align=right] at (-1.15,1.05)
+    {$A = -1+j$\\ $= \sqrt{2}e^{j3\pi/4}$};
+  \node[anchor=north east, red, scale=0.8, align=right] at (-1.15,-1.05)
+    {$D = -1-j$\\ $= \sqrt{2}e^{-j3\pi/4}$};
+  \node[anchor=north west, red, scale=0.8, align=left] at (1.15,-1.05)
+    {$C = 1-j$\\ $= \sqrt{2}e^{-j\pi/4}$};
+\end{tikzpicture}
+\end{document}
