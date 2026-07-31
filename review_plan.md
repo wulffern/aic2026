@@ -270,18 +270,16 @@ derived, including the point that the switch resistance cancels, and the
 consequence that halving the noise costs four times the capacitor and
 four times the power.
 
-Still open in this chapter:
+All three open items closed 2026-07-31. The settling requirement said
+`\log` where the worked example's 6.9 time constants is `-ln(1/1024)`;
+the impedance step now uses the charge *difference* per cycle it always
+meant; and the `|a| >= 1` wording is split into three cases so the
+marginal one agrees with the z-domain section. Lead-ins written for the
+integrator's Z-domain derivation, the non-overlapping clock generator
+and the closing example, which is most of the course in one equation and
+now has each factor traced back to the chapter it came from.
 
-- The impedance derivation writes `I = Q/dt = Q f`, where the `Q` is
-  really the charge *difference* per cycle. The next line uses
-  `(Q_p1 - Q_p2)` correctly, so it is only the intermediate step that is
-  loose.
-- The first-order filter section says `|a| >= 1` is unstable, while the
-  z-domain section a page earlier calls a pole exactly on the unit circle
-  an oscillator. Both are defensible, but they should agree.
-- The second half (SC gain circuit, integrator, sub-circuits, switches)
-  still has slide-derived stretches that would benefit from lead-ins,
-  though less severely than `l06_adc` did.
+**This chapter is done.**
 
 ## `l08_pll` — reviewed 2026-07-31
 
