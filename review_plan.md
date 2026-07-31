@@ -219,3 +219,40 @@ Still open in this chapter:
 - The second half (SC gain circuit, integrator, sub-circuits, switches)
   still has slide-derived stretches that would benefit from lead-ins,
   though less severely than `l06_adc` did.
+
+## `l08_pll` — reviewed 2026-07-31
+
+The chapter's own admission — "I don't remember why, check in the book"
+— about `K_pd = I_cp / 2 pi` is answered and removed. A phase error
+`dphi` holds UP high for `dphi / 2 pi` of the reference period, so the
+average current is `I_cp dphi / 2 pi` and the gain per radian follows.
+Two consequences added: the gain is independent of reference frequency,
+and it is an *average*, valid only because the filter is slow compared
+with the reference.
+
+Figure 17 is now checked against the linear model's own precondition
+rather than merely described: 0 dB crossing near 500 kHz against an
+8 MHz reference is a sixteenth, clearing the one-tenth rule.
+
+Fixed: `t` used as both limit and integration variable in the phase
+definition; a stray `K_vco` in a chapter that says `K_osc` everywhere
+else; `VPLF` for `VLPF`, which is a net name and would send a reader
+looking for something that does not exist; three other spellings.
+
+Verified and left alone: both loop-filter expressions (the second-order
+one checked term by term against `(R + 1/sC1) || 1/sC2`), `L(s)`,
+`phi_d/phi_in = 1/(1+L)`, `K_osc = 2 pi df/dV`, `K_div = 1/N`, and
+Figures 17 and 18, which do show the 55 degree phase margin and the
+256 MHz settling their captions claim.
+
+Still open:
+
+- Figure 17's top panel has its x-axis label hidden behind the legend
+  box. It is one of the matplotlib figures covered by the plot-to-TikZ
+  item above.
+- The "why clocks" narrative at the start is long and slide-shaped, but
+  it is the author's voice and reads fine as prose. Left alone.
+
+**The review queue is now empty.** Every lecture with recorded findings
+has been through a pass. The remaining work is the plot-to-TikZ item and
+Phase 3 of the TikZ plan.
