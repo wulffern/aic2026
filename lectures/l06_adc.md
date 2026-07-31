@@ -58,10 +58,20 @@ impossible, according to Walden.
 
 -->
 
-![original 100%](../media/l6_walden.png)
-
 <!--pan_doc:
-<sub>Figure 1: Walden's ADC survey: SNR bits versus sample rate, with limits set by thermal noise, aperture uncertainty, comparator ambiguity, and the "Heisenberg" line</sub>
+
+The plot itself is Figure 4 of that paper, and it is worth looking up:
+effective bits against sample rate for every converter Walden could
+find, with four sloped lines drawn over the cloud for the limits set by
+thermal noise, aperture uncertainty, comparator ambiguity and, at the
+top, the "Heisenberg" bound. The shape of the cloud is the point. It
+runs down and to the right, so every decade of sample rate costs
+somewhere around a bit, and no converter sits above the lines.
+
+Murmann's survey, two figures further on, plots the same thing with
+twenty-five more years of data, so you can see both what has changed and
+what has not.
+
 -->
 
 ---
@@ -103,7 +113,7 @@ In the plot below you can see the ISSCC and VLSI ADCs.
 ![left fit](../media/l6_mwald.svg) 
 
 <!--pan_doc:
-<sub>Figure 2: Murmann ADC survey: Walden figure of merit versus Nyquist sample rate for ISSCC and VLSI Symposium ADCs, with the best-in-class envelope</sub>
+<sub>Figure 1: Murmann ADC survey: Walden figure of merit versus Nyquist sample rate for ISSCC and VLSI Symposium ADCs, with the best-in-class envelope</sub>
 -->
 
 ---
@@ -137,7 +147,7 @@ Calibration](https://ieeexplore.ieee.org/document/9056925)
 ![left fit](../media/our_work.png) 
 
 <!--pan_doc:
-<sub>Figure 3: Walden figure of merit versus Nyquist sample rate with the NTNU compiled SAR ADCs marked as "Our work" near the envelope</sub>
+<sub>Figure 2: Walden figure of merit versus Nyquist sample rate with the NTNU compiled SAR ADCs marked as "Our work" near the envelope</sub>
 -->
 
 ---
@@ -186,7 +196,7 @@ For further details see the paper.
 ![inline](../media/fig_sar_logic.svg)
 
 <!--pan_doc:
-<sub>Figure 4: SAR ADC schematic: (a) capacitor array with self-timed SAR logic chain and comparator, (b) enable flip-flop, (c) bottom-plate switching of the CDAC, (d) comparator clock generation</sub>
+<sub>Figure 3: SAR ADC schematic: (a) capacitor array with self-timed SAR logic chain and comparator, (b) enable flip-flop, (c) bottom-plate switching of the CDAC, (d) comparator clock generation</sub>
 -->
 
 ---
@@ -204,7 +214,7 @@ I was not sure what would actually be state of the art. As a result, I taped out
 ![200%](../media/l06_fig_layout.svg)
 
 <!--pan_doc:
-<sub>Figure 5: Layout of the test chip with nine ADC variants inside the pad ring</sub>
+<sub>Figure 4: Layout of the test chip with nine ADC variants inside the pad ring</sub>
 -->
 
 ---
@@ -219,7 +229,7 @@ was made with core-transistors. Notice that the layout of the two is quite simil
 ![inline](../media/l06_fig_toplevel.svg)
 
 <!--pan_doc:
-<sub>Figure 6: Layout of the two compiled SAR ADCs with comparator, logic, CDAC and switch: (a) 180 nm IO-transistor version (40 x 106 um), (b) core-transistor version (39 x 80 um)</sub>
+<sub>Figure 5: Layout of the two compiled SAR ADCs with comparator, logic, CDAC and switch: (a) 180 nm IO-transistor version (40 x 106 um), (b) core-transistor version (39 x 80 um)</sub>
 -->
 
 ---
@@ -234,7 +244,7 @@ for the best conference, and luckily the best journal.
 ![inline](../media/l06_fig_core_meas.svg)
 
 <!--pan_doc:
-<sub>Figure 7: Measured performance of the core-transistor ADC: (a, b) output spectra at 0.69 V and 0.47 V supply, (c) peak ENOB versus VDD, (d) SNDR and SFDR versus input frequency</sub>
+<sub>Figure 6: Measured performance of the core-transistor ADC: (a, b) output spectra at 0.69 V and 0.47 V supply, (c) peak ENOB versus VDD, (d) SNDR and SFDR versus input frequency</sub>
 -->
 
 ---
@@ -252,7 +262,7 @@ other "Compiled" mine was 300 times better, and on par with other state-of-the-a
 ![inline](../media/l06_jssc_table.pdf)
 
 <!--pan_doc:
-<sub>Figure 8: Comparison table against state-of-the-art SAR ADCs, where "This work" stands out as the only compiled ADC with competitive figure of merit</sub>
+<sub>Figure 7: Comparison table against state-of-the-art SAR ADCs, where "This work" stands out as the only compiled ADC with competitive figure of merit</sub>
 -->
 
 ---
@@ -266,7 +276,7 @@ The big thing was how I made the ADC. I started with a definition of a transisto
 ![inline](../media/l06_fig_dmos.svg)
 
 <!--pan_doc:
-<sub>Figure 9: Transistor definition used by the layout compiler: diffusion (OD), contacts (CO), poly (PO) and metal 1 (M1) placed on a vertical and horizontal grid</sub>
+<sub>Figure 8: Transistor definition used by the layout compiler: diffusion (OD), contacts (CO), poly (PO) and metal 1 (M1) placed on a vertical and horizontal grid</sub>
 -->
 
 ---
@@ -284,7 +294,7 @@ to the right in the routing creates the paths shown in (d).
 ![inline](../media/l06_fig_saremx.pdf)
 
 <!--pan_doc:
-<sub>Figure 10: Compiled SAR logic cell: (a) 3D view of the layout, (b) SPICE netlist, (c) object definition with routing rules, (d) the resulting routed layout</sub>
+<sub>Figure 9: Compiled SAR logic cell: (a) 3D view of the layout, (b) SPICE netlist, (c) object definition with routing rules, (d) the resulting routed layout</sub>
 -->
 
 ---
@@ -301,7 +311,7 @@ What I really like is the fact that the compilation could generate GDSII or SKIL
 ![inline](../media/l06_fig_process.svg)
 
 <!--pan_doc:
-<sub>Figure 11: Compiled ADC design flow: architecture, implementation files (SPICE netlist, object definition, technology file), compilation to GDSII or SKILL, and physical verification</sub>
+<sub>Figure 10: Compiled ADC design flow: architecture, implementation files (SPICE netlist, object definition, technology file), compilation to GDSII or SKILL, and physical verification</sub>
 -->
 
 ---
@@ -319,7 +329,7 @@ In the summer of 2022 I made an open source port to skywater 130nm.
 ![right fit](../media/l00_SAR9B_CV.png)
 
 <!--pan_doc:
-<sub>Figure 12: The SAR ADC ported to skywater 130 nm: Magic layout of the ADC core and ngspice transient simulation of a conversion</sub>
+<sub>Figure 11: The SAR ADC ported to skywater 130 nm: Magic layout of the ADC core and ngspice transient simulation of a conversion</sub>
 -->
 
 ---
@@ -334,7 +344,7 @@ One of my Ph.D students built on-top on my work, and made a noise-shaped compile
 ![inline fit](../media/harald_layout.svg)
 
 <!--pan_doc:
-<sub>Figure 13: Noise-shaping compiled SAR ADC: die photo of the two ADC instances and the 116 um x 202 um core layout with CDAC, SAR logic, loop filter, OTAs and code correction</sub>
+<sub>Figure 12: Noise-shaping compiled SAR ADC: die photo of the two ADC instances and the 116 um x 202 um core layout with CDAC, SAR logic, loop filter, OTAs and code correction</sub>
 -->
 
 ---
@@ -366,7 +376,7 @@ Above 180 dB is extreme
 ![right fit](../media/l6_msch.svg)
 
 <!--pan_doc:
-<sub>Figure 14: Murmann ADC survey: Schreier figure of merit versus Nyquist sample rate, where the envelope flattens around 185 dB for thermal-noise limited ADCs</sub>
+<sub>Figure 13: Murmann ADC survey: Schreier figure of merit versus Nyquist sample rate, where the envelope flattens around 185 dB for thermal-noise limited ADCs</sub>
 -->
 
 ---
@@ -391,7 +401,7 @@ and we add some "noise", or "quantization noise" $e[n]$, where $x[n] = y[n] - e[
 ![inline fit](../media/l6_adc_tikz.pdf)
 
 <!--pan_doc:
-<sub>Figure 15: Linear model of quantization: the quantization noise e[n] is added to the input x[n] to form the output y[n]</sub>
+<sub>Figure 14: Linear model of quantization: the quantization noise e[n] is added to the input x[n] to form the output y[n]</sub>
 -->
 
 ---
@@ -419,7 +429,7 @@ The figure below shows the input signal x and the quantized signal y.
 ![inline fit](../media/l6_ct_tikz.pdf)
 
 <!--pan_doc:
-<sub>Figure 16: A continuous time sinusoid input x (blue) and the quantized output y (red)</sub>
+<sub>Figure 15: A continuous time sinusoid input x (blue) and the quantized output y (red)</sub>
 -->
 
 ---
@@ -439,7 +449,7 @@ This noise does not look random to me, but I can't see what it is, and I'm prett
 ![inline fit](../media/l6_cten_tikz.pdf)
 
 <!--pan_doc:
-<sub>Figure 17: Sample-and-held input (green), quantized output (red), and the resulting quantization error e[n], bounded by plus/minus half an LSB</sub>
+<sub>Figure 16: Sample-and-held input (green), quantized output (red), and the resulting quantization error e[n], bounded by plus/minus half an LSB</sub>
 -->
 
 ---
@@ -531,7 +541,7 @@ A Bessel function of the first kind looks like this
 ![fit](../media/bessel_tikz.pdf)
 
 <!--pan_doc:
-<sub>Figure 18: Bessel functions of the first kind, J0(x), J1(x) and J2(x), showing the oscillatory behavior that shapes the quantization noise harmonics</sub>
+<sub>Figure 17: Bessel functions of the first kind, J0(x), J1(x) and J2(x), showing the oscillatory behavior that shapes the quantization noise harmonics</sub>
 
 So I would expect the amplitude to show signs of oscillatory behavior for the harmonics. 
 That's the important thing to remember. The quantization noise is **odd harmonics of the input signal** 
@@ -544,7 +554,7 @@ The mean value is zero
 ![fit](../media/quant_noise_tikz.pdf)
 
 <!--pan_doc:
-<sub>Figure 19: What the Bessel series actually says: a sine through a 3-bit quantizer, the error it leaves, and the odd harmonic amplitudes $A_p$ from the formula above, against the flat floor the $\Delta^2/12$ model would predict</sub>
+<sub>Figure 18: What the Bessel series actually says: a sine through a 3-bit quantizer, the error it leaves, and the odd harmonic amplitudes $A_p$ from the formula above, against the flat floor the $\Delta^2/12$ model would predict</sub>
 
 Here is the formula drawn out. On the left, a sine through a three bit
 quantizer, and underneath it the error it leaves behind. The error is
@@ -669,7 +679,7 @@ the band wherever a harmonic lands above $f_s/2$.
 ![fit](../media/l6_q_1_tikz.pdf)
 
 <!--pan_doc:
-<sub>Figure 20: FFT of a sinusoid with noise as continuous value (left), after sampling (middle), and after 1-bit quantization (right), where the quantization noise shows up as distinct harmonic spikes rather than a white noise floor</sub>
+<sub>Figure 19: FFT of a sinusoid with noise as continuous value (left), after sampling (middle), and after 1-bit quantization (right), where the quantization noise shows up as distinct harmonic spikes rather than a white noise floor</sub>
 
 If you run the python script you can zoom in and check the highest spikes. A 1-bit quantizer is a sign detector, so its output for a sine input is a square wave, and a square wave has only odd harmonics with amplitudes falling as $1/p$. That is exactly what the plot shows. The fundamental is at bin 127, and the measured spikes are
 
@@ -687,7 +697,7 @@ This is worth internalising, because in a real converter you do not get to compa
 
 ![fit](../media/l6_q_1_fharm_tikz.pdf)
 
-<sub>Figure 21: The same 1-bit quantization with lower input frequency and a 16384-point FFT, where the 11th harmonic appears directly at bin 1397 instead of folding</sub>
+<sub>Figure 20: The same 1-bit quantization with lower input frequency and a 16384-point FFT, where the 11th harmonic appears directly at bin 1397 instead of folding</sub>
 
 All the other spikes are the odd harmonics above the sample rate that fold. The infinite sum of harmonics will fold, some in-phase, some out of phase, depending on the sign of the Bessel function. 
 
@@ -707,7 +717,7 @@ A consequence is that the quantization noise becomes more and more uniform, as c
 
 
 <!--pan_doc:
-<sub>Figure 22: FFT of the same signal with a 10-bit quantizer, where the quantization noise is closer to uniform and looks almost white</sub>
+<sub>Figure 21: FFT of the same signal with a 10-bit quantizer, where the quantization noise is closer to uniform and looks almost white</sub>
 
 ## Why you should care about quantization noise
 
@@ -877,7 +887,7 @@ The noise has all frequencies, and it's the high frequency components that start
 ![fit](../media/l6_osr_2_tikz.pdf)
 
 <!--pan_doc:
-<sub>Figure 23: FFTs from continuous value to 10-bit quantized to oversampled with OSR=2 (right), where the averaging filter nulls the noise towards half the sample rate</sub>
+<sub>Figure 22: FFTs from continuous value to 10-bit quantized to oversampled with OSR=2 (right), where the averaging filter nulls the noise towards half the sample rate</sub>
 -->
 
 ---
@@ -893,7 +903,7 @@ For an OSR of 4 we can count four dips in the noise floor, although there are re
 ![fit](../media/l6_osr_4_tikz.pdf)
 
 <!--pan_doc:
-<sub>Figure 24: The same FFTs with OSR=4 (right), where the moving-average filter puts three nulls in the noise floor, seen as four dips on this two-sided plot, and the noise power increases close to zero frequency</sub>
+<sub>Figure 23: The same FFTs with OSR=4 (right), where the moving-average filter puts three nulls in the noise floor, seen as four dips on this two-sided plot, and the noise power increases close to zero frequency</sub>
 
 The code for the plots is  [osr.py](https://github.com/wulffern/aic2026/blob/main/ex/osr.py). I would encourage you to play a bit with the code, and make sure you understand oversampling. If you would rather drag a slider than edit a file, the [interactive version](https://wulffern.github.io/aic2026/assets/examples/oversampling.html) plots the measured in-band SNR against OSR next to the ideal 3 dB per octave.
 
@@ -939,7 +949,7 @@ Do you see now why a circuit like the one below is useful? If not, you should re
 ![inline fit](../media/l4_sdloop_tikz.pdf)
 
 <!--pan_doc:
-<sub>Figure 25: A generalized feedback system where the error between input and output is shaped by a filter H(s), and the output equals the input when H(s) is infinite</sub>
+<sub>Figure 24: A generalized feedback system where the error between input and output is shaped by a filter H(s), and the output equals the input when H(s) is infinite</sub>
 -->
 
 ---
@@ -964,7 +974,7 @@ But how can we now calculate the transfer function $\frac{D_o}{V_i}$? Both $adc$
 ![inline fit](../media/l4_sd_tikz.pdf)
 
 <!--pan_doc:
-<sub>Figure 26: The sigma-delta principle: a feedback loop with a filter H(s), an ADC (quantizer) and a DAC in the feedback path, with digital output Do</sub>
+<sub>Figure 25: The sigma-delta principle: a feedback loop with a filter H(s), an ADC (quantizer) and a DAC in the feedback path, with digital output Do</sub>
 -->
 
 ---
@@ -1012,7 +1022,7 @@ which could be drawn in a signal flow graph as below.
 
 ![left fit](../media/l6_sdadc_tikz.pdf)
 
-<sub>Figure 27: Signal flow graph of the noise-shaping loop: the difference between input u[n] and output y[n] is filtered by H(z) and the quantization noise e[n] is added at the quantizer</sub>
+<sub>Figure 26: Signal flow graph of the noise-shaping loop: the difference between input u[n] and output y[n] is filtered by H(z) and the quantization noise e[n] is added at the quantizer</sub>
 
 in the Z-domain the equation would turn into 
 
@@ -1309,7 +1319,7 @@ If we look at the noise we can also see the non-white quantization noise, which 
 ![fit](../media/l6_sd_d0_b1_tikz.pdf)
 
 <!--pan_doc:
-<sub>Figure 28: First-order sigma-delta modulator with 1-bit quantizer and no dither, where the noise-shaped spectrum (right) tends towards zero at zero frequency but contains distinct tones</sub>
+<sub>Figure 27: First-order sigma-delta modulator with 1-bit quantizer and no dither, where the noise-shaped spectrum (right) tends towards zero at zero frequency but contains distinct tones</sub>
 -->
 
 ---
@@ -1325,7 +1335,7 @@ Be clear about what has been bought and what has been paid, though, because the 
 ![fit](../media/l6_sd_d1_b1_tikz.pdf)
 
 <!--pan_doc:
-<sub>Figure 29: The same first-order 1-bit sigma-delta modulator with dither enabled, where the noise-shaped spectrum (right) is smoother and more noise-like</sub>
+<sub>Figure 28: The same first-order 1-bit sigma-delta modulator with dither enabled, where the noise-shaped spectrum (right) is smoother and more noise-like</sub>
 -->
 
 ---
@@ -1342,7 +1352,7 @@ Two things have changed from the previous two figures, and it is worth saying so
 ![fit](../media/l6_sdlog_d1_b5_tikz.pdf)
 
 <!--pan_doc:
-<sub>Figure 30: Magnitude spectrum of the output of a 5-bit first-order sigma-delta modulator on a logarithmic frequency axis, showing the 20 dB/decade shaping of the quantization noise</sub>
+<sub>Figure 29: Magnitude spectrum of the output of a 5-bit first-order sigma-delta modulator on a logarithmic frequency axis, showing the 20 dB/decade shaping of the quantization noise</sub>
 -->
 
 ---
@@ -1375,7 +1385,7 @@ order filter one can use a lower OSR, and still achieve high ENOB.
 
 
 <!--pan_doc:
-<sub>Figure 31: Output spectrum of an open-loop sigma-delta modulator with a fifth-order NTF (two complex conjugate zero pairs and a zero at DC), reaching 13.8 bit ENOB and 84.9 dB SNDR</sub>
+<sub>Figure 30: Output spectrum of an open-loop sigma-delta modulator with a fifth-order NTF (two complex conjugate zero pairs and a zero at DC), reaching 13.8 bit ENOB and 84.9 dB SNDR</sub>
 
 ### Noise Shaped SAR
 
@@ -1401,7 +1411,7 @@ than the smallest capacitor.
 ![inline](../media/l6_harald_arch.gif)
 
 <!--pan_doc:
-<sub>Figure 32: Architecture of the noise-shaping SAR ADC: capacitive DAC with multiplexers, loop filter H(z), integrating comparator, SAR logic, calibration logic and code correction</sub>
+<sub>Figure 31: Architecture of the noise-shaping SAR ADC: capacitive DAC with multiplexers, loop filter H(z), integrating comparator, SAR logic, calibration logic and code correction</sub>
 -->
 
 ---
@@ -1415,7 +1425,7 @@ The loop filter was a switched cap loop filter, and we can see the NTF below. Th
 ![inline](../media/l6_fig_harald_circuit.gif)
 
 <!--pan_doc:
-<sub>Figure 33: The switched-capacitor loop filter with two OTAs (the first one chopped), the clock phases relative to the SAR activity, and the resulting NTF with -27.8 dB in-band suppression</sub>
+<sub>Figure 32: The switched-capacitor loop filter with two OTAs (the first one chopped), the clock phases relative to the SAR activity, and the resulting NTF with -27.8 dB in-band suppression</sub>
 -->
 
     
@@ -1445,7 +1455,7 @@ infer the state of the input $u(t)$ using a form of [Bayesian Statistics](https:
 ![inline](../media/l6_fredrik_arch.svg)
 
 <!--pan_doc:
-<sub>Figure 34: Block diagram of the Leapfrog control-bounded ADC: a chain of continuous-time integrators with local digital control loops s(t) that keep the analog states x(t) bounded</sub>
+<sub>Figure 33: Block diagram of the Leapfrog control-bounded ADC: a chain of continuous-time integrators with local digital control loops s(t) that keep the analog states x(t) bounded</sub>
 -->
 
 ---
@@ -1459,7 +1469,7 @@ a third order NTF with a zero at zero frequency and a complex conjugate zero pai
 ![inline](../media/l6_fredrik_psd.svg)
 
 <!--pan_doc:
-<sub>Figure 35: Power spectral density of the control-bounded ADC's estimated input together with the NTF, a third-order shaping with a notch around 8 MHz</sub>
+<sub>Figure 34: Power spectral density of the control-bounded ADC's estimated input together with the NTF, a third-order shaping with a notch around 8 MHz</sub>
 -->
 
 ---
@@ -1479,7 +1489,7 @@ and that may look like an exercise in "Let's make something complex", however, m
 ![inline](../media/qt_sd.png)
 
 <!--pan_doc:
-<sub>Figure 36: Continuous-time quadrature cascaded sigma-delta modulator for radio receivers: two cross-coupled I and Q integrator chains with 4-bit ADCs and feedback DACs</sub>
+<sub>Figure 35: Continuous-time quadrature cascaded sigma-delta modulator for radio receivers: two cross-coupled I and Q integrator chains with 4-bit ADCs and feedback DACs</sub>
 -->
 
 ---
@@ -1505,7 +1515,7 @@ For more information, ask me, or see the patent at
 ![inline](../media/l6_patent.pdf)
 
 <!--pan_doc:
-<sub>Figure 37: Incremental first-order sigma-delta ADC from the patent: input and reference resistors into an OTA integrating on C, a clocked comparator as quantizer, and a counter as output filter</sub>
+<sub>Figure 36: Incremental first-order sigma-delta ADC from the patent: input and reference resistors into an OTA integrating on C, a clocked comparator as quantizer, and a counter as output filter</sub>
 
 # Want to learn more?
 

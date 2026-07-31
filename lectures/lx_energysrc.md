@@ -94,7 +94,7 @@ In the context of energy harvesting, there is energy in electromagnetic fields, 
 ![fit](../media/shirv5-2928523-large.gif)
 
 <!--pan_doc:
-<sub>Figure 1: The couplings between the electrical, mechanical and thermal energy domains, including the piezoelectric, pyroelectric and thermoelectric effects</sub>
+<sub>Figure 1: The couplings between the electrical, mechanical and thermal energy domains, including the piezoelectric, pyroelectric and thermoelectric effects. From Shirvanimoghaddam et al., *IEEE Access* 7 (2019) [@shirvanimoghaddam19], licensed CC BY 4.0</sub>
 -->
 
 ---
@@ -111,7 +111,7 @@ As devices approach average power consumption of $\mu W$ it becomes possible to 
 ![fit](../media/shirv6-2928523-large.gif)
 
 <!--pan_doc:
-<sub>Figure 2: Battery run-time and power consumption of devices from a 32 kHz quartz oscillator to a laptop, plotted against the energy available from mechanical, thermal and radiant sources in uW/cm2</sub>
+<sub>Figure 2: Battery run-time and power consumption of devices from a 32 kHz quartz oscillator to a laptop, plotted against the energy available from mechanical, thermal and radiant sources in uW/cm2. From Shirvanimoghaddam et al., *IEEE Access* 7 (2019) [@shirvanimoghaddam19], licensed CC BY 4.0</sub>
 -->
 
 ---
@@ -131,7 +131,7 @@ Technologies like Bluetooth LE, however, can approach < 10 $\mu$W for some appli
 ![inline fit](../media/shirv11-2928523-large.gif)
 
 <!--pan_doc:
-<sub>Figure 3: Power versus coverage for wireless standards, showing that NFC, RFID, Z-Wave and Zigbee can be battery-less while WiFi, Bluetooth and the cellular standards need a battery</sub>
+<sub>Figure 3: Power versus coverage for wireless standards, showing that NFC, RFID, Z-Wave and Zigbee can be battery-less while WiFi, Bluetooth and the cellular standards need a battery. From Shirvanimoghaddam et al., *IEEE Access* 7 (2019) [@shirvanimoghaddam19], licensed CC BY 4.0</sub>
 -->
 
 
@@ -723,69 +723,50 @@ for more details.
 
 ---
 
-<!--pan_doc: 
-
-Below is a custom triboelectric material that converts friction into a sparse electric field. 
-
--->
-
-<!--[fit](https://ieeexplore.ieee.org/mediastore_new/IEEE/content/media/4/9546917/9441315/yoo6ab-3080383-large.gif)-->
-![fit](../media/yoo6ab-3080383-large.gif)
-
-<!--pan_doc:
-<sub>Figure 17: A 1 cm by 1 cm triboelectric nanogenerator built from conductive Ni and Ni-PFA layers, with its electrical model of a current source, a capacitance and a shunt resistance</sub>
--->
-
----
-
-<!--pan_doc: 
-
-The key idea of the triboelectric circuit below is to rectify the sparse voltage pulses and store the charge on a capacitor. 
-Once the voltage is high enough, then a temperature sensor is started. 
-
--->
-
-<!--[fit](https://ieeexplore.ieee.org/mediastore_new/IEEE/content/media/4/9546917/9441315/yoo1ab-3080383-large.gif)-->
-
-![fit](../media/yoo1ab-3080383-large.gif)
-
-<!--pan_doc:
-<sub>Figure 18: A battery powered temperature SoC compared with the proposed triboelectric temperature-to-time converter harvesting from sub-1 Hz human motion</sub>
--->
-
----
-
 <!--pan_doc:
 
-Below is some more details on the operation of the harvesting circuit, and the temperature sensor. Notice how the temperature sensor part of the circuit (PTAT bandgap, capacitor and comparator)
-produce a pulse width modulated signal that depends on temperature. 
+Tan et al. [@tan21] built exactly this, and it is worth walking through
+because it is a complete system rather than a circuit.
 
-Also notice the "VDD_ext" in the figure. That means the system is not fully harvested. The paper is a prime example on how we in academia can ignore key portions of 
-a system. They've focused on the harvesting part, and making the temperature dependent pulse width modulated signal. Maybe they've completely ignored how the data
-is transmitted from the system to where it would be used, and that's OK. 
+Their transducer is a square centimetre of conductive nickel against
+nickel-PFA, and the energy source is human motion below 1 Hz. So the
+input is not a waveform in any useful sense: it is a few sparse pulses a
+second, each of them high voltage and almost no current, and between
+them nothing at all. The model in the figure above is the right picture
+for it, with one addition - a real transducer also has a shunt
+resistance across it, which is one more path for the little charge there
+is to leak away before it can be used.
 
-It's academia's job to prove that something could be possible. It's industry's job to make some that could be possible actually work.
+That shapes the whole design. The rectifier cannot be a diode bridge,
+because two diode drops of the little charge available leaves nothing,
+and it cannot leak, because the next pulse may be a second away. Their
+answer is a low leakage rectifier feeding a power management unit whose
+static consumption is measured in nanowatts, storing charge on a
+capacitor until there is enough to do something with. On their
+measurements a conventional rectifier never reaches the 600 mV the
+circuit needs to start; theirs does.
+
+What it then does is neat. Rather than digitise a temperature, it starts
+a PTAT bandgap, charges a capacitor and waits for a comparator to trip,
+so the output is a pulse whose *width* is the temperature. No clock, no
+converter, no reference to speak of - the temperature falls out of a
+single one-shot discharge. If all you have is a millijoule now and then,
+answering in the time domain is a great deal cheaper than answering in
+the voltage domain.
+
+One detail in their block diagram is worth more than the circuit though.
+There is a `VDD_ext` on it. The system is not fully harvested.
+
+That is not a criticism, and it is a good illustration of the division
+of labour. They set out to show that a triboelectric harvester can run a
+temperature sensor, and they showed it; how the reading gets from the
+chip to wherever anyone would read it is left alone, and getting a radio
+to run off sub-1 Hz human motion is a different paper. It is academia's
+job to prove that something could be possible, and industry's job to
+make something that could be possible actually work. Read papers with
+that in mind and look for the block that is still plugged into the wall.
 
 -->
-
-<!--
-[inline fit](https://ieeexplore.ieee.org/mediastore_new/IEEE/content/media/4/9546917/9441315/yoo2-3080383-large.gif)
-
-[inline fit](https://ieeexplore.ieee.org/mediastore_new/IEEE/content/media/4/9546917/9441315/yoo3-3080383-large.gif)
--->
-
-![inline fit](../media/yoo2-3080383-large.gif)
-
-<!--pan_doc:
-<sub>Figure 19: Block diagram of the energy autonomous temperature-to-time converter, with the DLS-FBR rectifier, the nW static power PMU and the one-shot PTAT bandgap converter</sub>
--->
-
-![inline fit](../media/yoo3-3080383-large.gif)
-
-<!--pan_doc:
-<sub>Figure 20: Operation over time, where the low leakage DLS-FBR reaches the 600 mV threshold that a conventional rectifier never does, and the converter emits a temperature dependent pulse</sub>
--->
-
 
 ---
 
@@ -815,11 +796,33 @@ a charge storage device, either a battery, or a capacitor.
 
 -->
 
-<!--[fit](https://ieeexplore.ieee.org/mediastore_new/IEEE/content/media/4/9546917/9441315/yoo4-3080383-large.gif)-->
-![fit](../media/yoo4-3080383-large.gif)
+| Energy source        | Power density                                     | Frequency    | Characteristics                            |
+|:---------------------|:--------------------------------------------------|:-------------|:-------------------------------------------|
+| Solar / PV           | 10 uW/cm$^2$ indoor, 15 mW/cm$^2$ outdoor          | DC           | Requires exposure to light                  |
+| RF                   | 0.1 uW/cm$^2$ GSM, 0.01 uW/cm$^2$ WiFi             | 380 MHz--5 GHz | Poor indoors and out of line of sight     |
+| Thermal, body heat   | 40 uW/cm$^2$                                       | DC           | Requires a high temperature difference      |
+| Piezoelectric        | 4 uW/cm$^2$                                        | > 30 Hz      | Not limited to indoors or outdoors          |
+| Triboelectric (TENG) | 1 uW/cm$^2$                                        | 1 Hz         | Not limited to indoors or outdoors          |
 
 <!--pan_doc:
-<sub>Figure 21: Comparison of power density, frequency and characteristics for solar, RF, thermal, piezoelectric and triboelectric energy sources</sub>
+
+Numbers from Tan et al. [@tan21].
+
+Read the first column against the last. Solar wins outdoors by three
+orders of magnitude and loses most of that the moment you go inside, RF
+is worse than either everywhere, and the two mechanical sources are the
+only ones that do not care where they are. That is the whole argument
+for bothering with piezoelectric and triboelectric harvesting despite
+their being at the bottom of the power column: a microwatt you can rely
+on beats a milliwatt that depends on someone opening the curtains.
+
+The frequency column matters as much as the power column and is easier
+to overlook. DC sources want a boost converter; the mechanical ones
+deliver at a few hertz or less and want a rectifier and a reservoir, and
+at 1 Hz the circuit spends almost all of its life waiting. That is why
+the leakage of the storage path, rather than the efficiency of the
+conversion, is what decides whether a triboelectric system works.
+
 -->
 
 
