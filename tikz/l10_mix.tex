@@ -15,22 +15,30 @@
     \draw (#3.D) -- (2.3,#1);
     \draw (2.42,#1) circle (0.12);
     % the AC coupling capacitor up to the clock port
-    \draw (#3.G) -- (0.85,{#1+0.75});
-    \draw (0.55,{#1+0.75}) -- (1.15,{#1+0.75});
+    \draw (#3.G) -- (0.85,{#1+0.95});
     \draw (0.55,{#1+0.95}) -- (1.15,{#1+0.95});
-    \draw (0.85,{#1+0.95}) -- (0.85,{#1+1.6});
-    \draw (0.85,{#1+1.72}) circle (0.12);
-    \node[anchor=south] at (0.85,{#1+1.92}) {#2};
-    % the bias resistor from V_n
-    \draw (0.85,{#1+0.85}) to [R] (2.0,{#1+1.45});
-    \draw (2.11,{#1+1.51}) circle (0.12);
-    \node[anchor=south west] at (2.1,{#1+1.6}) {$V_n$};
-    \fill (0.85,{#1+0.85}) circle (0.075);
+    \draw (0.55,{#1+1.15}) -- (1.15,{#1+1.15});
+    \draw (0.85,{#1+1.15}) -- (0.85,{#1+1.8});
+    \draw (0.85,{#1+1.92}) circle (0.12);
+    %- beside the port, not above it: stacked above, each label lands
+    %- under the device of the switch overhead and reads as its output
+    \node[anchor=west] at (1.06,{#1+1.92}) {#2};
+    % The bias resistor, tapping the gate side of the capacitor. It has to
+    % land below the bottom plate: the whole point of the capacitor is
+    % that the gate sits at V_n while the clock swings rail to rail, and
+    % a resistor landing between the plates would short that out. Drawn
+    % straight rather than diagonally, so it is visible which node it
+    % reaches.
+    \fill (0.85,{#1+0.72}) circle (0.075);
+    \draw (0.85,{#1+0.72}) -- (1.5,{#1+0.72});
+    \draw (1.5,{#1+0.72}) to [R] (2.5,{#1+0.72});
+    \draw (2.62,{#1+0.72}) circle (0.12);
+    \node[anchor=west] at (2.78,{#1+0.72}) {$V_n$};
   }
 
-  \def\yIone{6.9}
-  \def\yItwo{4.6}
-  \def\yQone{2.3}
+  \def\yIone{7.2}
+  \def\yItwo{4.8}
+  \def\yQone{2.4}
   \def\yQtwo{0.0}
 
   \mixsw{\yIone}{$I_1$}{swione}
@@ -40,33 +48,37 @@
 
   % the common node, driven by the LNA
   \draw (0,\yQtwo) -- (0,\yIone);
-  \draw (0,3.45) -- (-1.3,3.45);
-  \draw (-1.42,3.45) circle (0.12);
-  \node[anchor=east] at (-1.6,3.85) {LNA};
-  \node[anchor=east] at (-1.6,3.3) {Antenna};
-  \node[anchor=east] at (-1.6,2.85) {Match};
-  \fill (0,3.45) circle (0.075);
+  \draw (0,3.6) -- (-1.3,3.6);
+  \draw (-1.42,3.6) circle (0.12);
+  \node[anchor=east] at (-1.6,4.0) {LNA};
+  \node[anchor=east] at (-1.6,3.45) {Antenna};
+  \node[anchor=east] at (-1.6,3.0) {Match};
+  \fill (0,3.6) circle (0.075);
 
   % the I and Q pairs
-  \node[anchor=west] at (2.9,5.75) {\Large $I$};
-  \node[anchor=west] at (2.9,1.15) {\Large $Q$};
+  \node[anchor=west] at (3.9,6.0) {\Large $I$};
+  \node[anchor=west] at (3.9,1.2) {\Large $Q$};
 
   % the four phase non overlapping clock
   \def\wx{-6.2}      % the time axis origin
-  \def\wy{5.0}       % the baseline of the lowest trace
+  \def\wy{5.2}       % the baseline of the lowest trace
   \draw (\wx,\wy) -- (\wx,{\wy+3.3});
   \draw[->] (\wx,\wy) -- ({\wx+3.9},\wy);
 
-  % trace #1: baseline y, pulse from x0 to x0+0.8
+  % Trace #1: baseline y, pulse from x0, one quarter of the period wide.
+  % The phases abut rather than leaving a gap, and that is deliberate:
+  % four 25% phases fill the period exactly, which is what lets the four
+  % switches between them hand off the whole of the LNA current. A dead
+  % time here would be signal thrown away, not a safety margin.
   \newcommand{\clktrace}[3]{%
     \draw (\wx,#1) -- ({\wx+#2},#1) -- ({\wx+#2},{#1+0.5})
       -- ({\wx+#2+0.8},{#1+0.5}) -- ({\wx+#2+0.8},#1) -- ({\wx+3.4},#1);
     \node[anchor=east] at ({\wx-0.15},{#1+0.25}) {#3};
   }
-  \clktrace{7.7}{0.2}{$I_1$}
-  \clktrace{6.8}{1.0}{$Q_1$}
-  \clktrace{5.9}{1.8}{$I_2$}
-  \clktrace{5.0}{2.6}{$Q_2$}
+  \clktrace{7.9}{0.2}{$I_1$}
+  \clktrace{7.0}{1.0}{$Q_1$}
+  \clktrace{6.1}{1.8}{$I_2$}
+  \clktrace{5.2}{2.6}{$Q_2$}
 
 \end{circuitikz}
 \end{document}

@@ -493,7 +493,7 @@ the amplitude, but it does need to be linear.
 ![inline fit](../media/l8_cartesian_tikz.pdf)
 
 <!--pan_doc:
-<sub>Figure 7: Cartesian transmitter: I and Q digital-to-analog converters, complex mixers driven by the local oscillator, and a linear power amplifier</sub>
+<sub>Figure 7: Cartesian transmitter. Two converters produce $I$ and $Q$, two mixers multiply them by copies of the local oscillator ninety degrees apart, and the sum drives a linear power amplifier. The $90^\circ$ block is the whole difference between this and two copies of the same branch: without it both mixers would be multiplying by the same carrier, and the sum would carry no phase information.</sub>
 -->
 
 ---
@@ -939,7 +939,7 @@ A 370uW 5.5dB-NF BLE/BT5.0/IEEE 802.15.4-Compliant Receiver with >63dB Adjacent 
 ![left fit](../media/l10_mix_tikz.pdf)
 
 <!--pan_doc:
-<sub>Figure 19: Passive complex mixer: four MOS switches driven by 25% duty-cycle clocks $I_1$, $I_2$, $Q_1$ and $Q_2$ split the LNA current into the I and Q outputs</sub>
+<sub>Figure 19: Passive complex mixer: four MOS switches driven by 25% duty-cycle clocks $I_1$, $I_2$, $Q_1$ and $Q_2$ split the LNA current into the I and Q outputs. Each gate is AC coupled to its clock and biased to $V_n$ through a resistor, so the switch sees a rail-to-rail drive while its DC operating point is set independently. Note in the timing diagram that the four phases abut: four quarters fill the period exactly, so between them the switches carry the whole of the LNA current and none of it is thrown away.</sub>
 -->
 
 

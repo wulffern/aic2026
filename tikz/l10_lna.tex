@@ -8,17 +8,18 @@
 
   \input{tikz/ckt_lib.tex}
 
+  \def\xbias{3.15}
   \def\yout{2.9}
   \def\ygp{4.6}
   \def\ygn{1.2}
 
   % the two devices
-  \draw (4,0) \vground;
-  \draw (4,0) -- (4,0.4);
-  \draw (4,0.4) \lvnmos{MN}{};
-  \draw (4,2.0) -- (4,3.8);
-  \draw (4,3.8) \lvpmos{MP}{};
-  \draw (4,5.4) \vsupply;
+  \draw (4.5,0) \vground;
+  \draw (4.5,0) -- (4.5,0.4);
+  \draw (4.5,0.4) \lvnmos{MN}{};
+  \draw (4.5,2.0) -- (4.5,3.8);
+  \draw (4.5,3.8) \lvpmos{MP}{};
+  \draw (4.5,5.4) \vsupply;
 
   % the input, split to the two coupling capacitors
   \draw (0.45,\yout) -- (1.2,\yout);
@@ -28,25 +29,31 @@
   \draw (1.2,\ygn) -- (1.2,\ygp);
 
   \draw (1.4,\ygp) \hcapacitor{};
-  \draw (2.9,\ygp) -- (3.5,\ygp);
+  \draw (2.9,\ygp) -- (4.0,\ygp);
+  \fill (\xbias,\ygp) circle (0.075);
   \draw (1.4,\ygn) \hcapacitor{};
-  \draw (2.9,\ygn) -- (3.5,\ygn);
+  \draw (2.9,\ygn) -- (4.0,\ygn);
+  \fill (\xbias,\ygn) circle (0.075);
   \draw (1.2,\ygp) -- (1.4,\ygp);
   \draw (1.2,\ygn) -- (1.4,\ygn);
 
-  % the gate bias resistors
-  \draw (2.9,3.3) to [R] (3.5,\ygp);
-  \draw (2.8,3.3) circle (0.09);
-  \node[anchor=east] at (2.65,3.3) {$V_{gp}$};
-  \draw (2.9,2.5) to [R] (3.5,\ygn);
-  \draw (2.8,2.5) circle (0.09);
-  \node[anchor=east] at (2.65,2.5) {$V_{gn}$};
+  % The gate bias resistors. They run vertically, away from the device
+  % they bias, so that nothing has to cross the coupling capacitors and
+  % the two bias nodes end up at the same height as the rails they sit
+  % next to. Drawn diagonally, as in the original, they read as if they
+  % were shorting the two gates together.
+  \draw (\xbias,\ygp) to [R] (\xbias,5.8);
+  \draw (\xbias,5.89) circle (0.09);
+  \node[anchor=south] at (\xbias,6.05) {$V_{gp}$};
+  \draw (\xbias,\ygn) to [R] (\xbias,0.0);
+  \draw (\xbias,-0.09) circle (0.09);
+  \node[anchor=north] at (\xbias,-0.25) {$V_{gn}$};
 
   % the output to the mixer
-  \draw (4,\yout) -- (5.0,\yout);
-  \fill (4,\yout) circle (0.075);
-  \draw (5.09,\yout) circle (0.09);
-  \node[anchor=west] at (5.25,\yout) {Mixer};
+  \draw (4.5,\yout) -- (5.5,\yout);
+  \fill (4.5,\yout) circle (0.075);
+  \draw (5.59,\yout) circle (0.09);
+  \node[anchor=west] at (5.75,\yout) {Mixer};
 
 \end{circuitikz}
 \end{document}

@@ -14,44 +14,61 @@
 % plus instead. And the original did not show the ninety degree shift on
 % the oscillator, which is the one thing that makes this a Cartesian
 % modulator rather than two copies of the same branch.
+%
+% The oscillator sits between the two branches rather than below them.
+% Anywhere else and its wire to the far mixer has to cross a signal path,
+% which in a block diagram reads as a connection that is not there. From
+% the middle it fans out symmetrically and crosses nothing, and the
+% ninety degree block lands in the branch it belongs to.
 
 \begin{tikzpicture}[thick]
   \input{tikz/sfg_lib.tex}
 
   \def\yi{1.3}
   \def\yq{-1.3}
+  \def\xm{-1.0}          % the mixer column, and the oscillator trunk
+  \def\xs{1.7}           % the summing node
 
   % the two converters
-  \draw (-3.2,{\yi-0.5}) rectangle (-1.6,{\yi+0.5});
-  \node at (-2.4,\yi) {I};
-  \draw (-3.2,{\yq-0.5}) rectangle (-1.6,{\yq+0.5});
-  \node at (-2.4,\yq) {Q};
+  \draw (-4.6,{\yi-0.5}) rectangle (-3.0,{\yi+0.5});
+  \node at (-3.8,\yi) {DAC};
+  \draw (-4.6,{\yq-0.5}) rectangle (-3.0,{\yq+0.5});
+  \node at (-3.8,\yq) {DAC};
+  \node[anchor=east] at (-5.5,\yi) {$I$};
+  \node[anchor=east] at (-5.5,\yq) {$Q$};
+  \draw[->] (-5.4,\yi) -- (-4.6,\yi);
+  \draw[->] (-5.4,\yq) -- (-4.6,\yq);
 
-  % mixers
-  \sfgMix{0}{\yi}
-  \sfgMix{0}{\yq}
-  \draw (-1.6,\yi) -- ({-\sfgR},\yi);
-  \draw (-1.6,\yq) -- ({-\sfgR},\yq);
+  % mixers, fed from the converters
+  \sfgMix{\xm}{\yi}
+  \sfgMix{\xm}{\yq}
+  \draw (-3.0,\yi) -- ({\xm-\sfgR},\yi);
+  \draw (-3.0,\yq) -- ({\xm-\sfgR},\yq);
 
-  % oscillator, one copy to each mixer, ninety degrees apart
-  \sfgBox{0}{-3.4}{LO}
-  \draw (0,-2.75) -- (0,{\yq-0.75});
-  \draw (0,{\yq-0.75}) -- (-1.0,{\yq-0.75}) -- (-1.0,\yq) -- ({-\sfgR},\yq);
-  \draw (0,{\yq-0.75}) -- (1.0,{\yq-0.75}) -- (1.0,\yi) -- ({-\sfgR},\yi);
-  \sfgDot{0}{\yq-0.75}
+  % the oscillator, in the gap between the branches, feeding the I mixer
+  % from below and the Q mixer from above
+  %- same footprint as the two converters, so the three sources read as
+  %- one column
+  \draw (-4.6,-0.5) rectangle (-3.0,0.5);
+  \node at (-3.8,0) {LO};
+  \draw (-3.0,0) -- (\xm,0);
+  \sfgDot{\xm}{0}
+  \draw (\xm,0) -- (\xm,{\yi-\sfgR});
   %- the shift belongs on Q: s(t) = I cos(wt) - Q sin(wt), and sine is
   %- cosine ninety degrees late
-  \node[anchor=east, scale=0.85] at (-1.12,-0.55) {$90^\circ$};
-  \draw (-1.2,-0.35) -- (-0.8,-0.75);
+  \draw ({\xm-0.45},-0.42) rectangle ({\xm+0.45},-0.98);
+  \node[scale=0.8] at (\xm,-0.7) {$90^\circ$};
+  \draw (\xm,0) -- (\xm,-0.42);
+  \draw (\xm,-0.98) -- (\xm,{\yq+\sfgR});
 
   % sum the two branches
-  \sfgSum{2.6}{0}
-  \draw (\sfgR,\yi) -- (2.6,\yi) -- (2.6,\sfgR);
-  \draw (\sfgR,\yq) -- (2.6,\yq) -- (2.6,{-\sfgR});
+  \sfgSum{\xs}{0}
+  \draw ({\xm+\sfgR},\yi) -- (\xs,\yi) -- (\xs,\sfgR);
+  \draw ({\xm+\sfgR},\yq) -- (\xs,\yq) -- (\xs,{-\sfgR});
 
-  \draw (\sfgR+2.6,0) -- (4.5,0);
-  \sfgAmp{5.4}{0}{PA}
-  \sfgAntenna{6.4}{0}
-  \draw (5.4,0) -- (6.4,0);
+  \draw ({\xs+\sfgR},0) -- (2.9,0);
+  \sfgAmp{3.8}{0}{PA}
+  \sfgAntenna{4.8}{0}
+  \draw (3.8,0) -- (4.8,0);
 \end{tikzpicture}
 \end{document}
