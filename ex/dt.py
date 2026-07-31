@@ -1,7 +1,14 @@
 #!/usr/bin/env python3
 #
+import os
+import sys
+
 import numpy as np
 import matplotlib.pyplot as plt
+
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                                "..", "py"))
+from tikzplot import Figure
 
 Hann = True
 
@@ -57,6 +64,30 @@ fig = plt.gcf()
 fig.set_size_inches(12, 7)
 plt.tight_layout()
 plt.savefig(f"l5_dtfig.pdf")
-plt.show()
+
+#- The same four panels as TikZ, so the plot matches the schematics.
+tfig = Figure("""What sampling does, in time and in frequency.
+
+The left column is the emulated continuous-time signal, the right column
+the same signal after sampling. The bottom row is the point of the
+figure: sampling leaves the original spectrum alone and adds copies of
+it, one per multiple of the sample rate, and it is those copies that
+aliasing is about.""", columns=2)
+
+for col, (sig, spec, name) in enumerate((
+        (x_s, X_s, "Continuous time, continuous value"),
+        (x_sn, X_sn, "Discrete time, continuous value"))):
+    ax = tfig.axes(xlabel=name, ylabel="Time domain" if col == 0 else None,
+                   width=6.4, height=3.8)
+    ax.plot(t, sig, colour="black")
+
+for col, (spec, name) in enumerate((
+        (X_s, "$f/f_s$"), (X_sn, "$f/f_s$"))):
+    ax = tfig.axes(xlabel=name,
+                   ylabel="Frequency domain [dB20]" if col == 0 else None,
+                   width=6.4, height=3.8)
+    ax.plot(f, 20*np.log10(np.abs(spec)), colour="black")
+
+tfig.save("l5_dtfig")
 
 

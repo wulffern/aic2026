@@ -138,6 +138,11 @@
 
 
 \usepackage{tikz,pgfplots}
+% Pin the pgfplots behaviour, so a figure built next year looks like one
+% built this year. groupplots lays out the multi panel plots that
+% py/tikzplot.py generates from the scripts in ex/.
+\pgfplotsset{compat=1.16}
+\usepgfplotslibrary{groupplots}
 \usepackage{ifthen}
 \usepackage{calc}
 \usetikzlibrary{patterns}

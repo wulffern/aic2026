@@ -176,3 +176,10 @@ docs-book/.bundle/
 docs-book/index.md
 docs-book/pages/
 docs-book/404.html
+
+# Scripts in ex/ save their matplotlib output next to themselves. The
+# figures that reach the book come from tikz/ via py/tikzplot.py, so the
+# stray plots are just working files.
+ex/*.pdf
+ex/*.svg
+ex/*.png

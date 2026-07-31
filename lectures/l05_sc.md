@@ -584,7 +584,7 @@ The spectral copies can be seen bottom right. How many spectral copies, and the 
 Try to play around with the code and see what happens.
 -->
 
-![fit](../media/l5_dtfig.svg)
+![fit](../media/l5_dtfig_tikz.pdf)
 
 <!--pan_doc:
 <sub>Figure 7: Time domain and spectrum of the emulated continuous time signal (left) and the sampled signal with its spectral copies (right)</sub>
@@ -867,7 +867,7 @@ watch the pole move inside the unit circle and the corner frequency follow it.
 
 ---
 
-![ fit ](../media/l5_iir.svg)
+![ fit ](../media/l5_iir_tikz.pdf)
 
 <!--pan_doc:
 <sub>Figure 14: Time domain and spectrum of the sampled signal (left) and the second order IIR filtered output (right)</sub>

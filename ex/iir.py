@@ -1,7 +1,14 @@
 #!/usr/bin/env python3
 
+import os
+import sys
+
 import numpy as np
 import matplotlib.pyplot as plt
+
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                                "..", "py"))
+from tikzplot import Figure
 
 #- Create a time vector
 N = 2**13
@@ -74,4 +81,34 @@ fig = plt.gcf()
 fig.set_size_inches(10, 7)
 plt.tight_layout()
 plt.savefig("l5_iir.svg")
-plt.show()
+
+#- The same four panels as a TikZ figure, so the plot matches the
+#- schematics it sits next to. See py/tikzplot.py.
+tfig = Figure("""A second order IIR filter, in time and in frequency.
+
+The top row is 400 samples of the sampled input and of the filter
+output, so the shape of the ringing is visible. The bottom row is the
+spectrum of each, on the same dB axis, so the attenuation can be read
+off directly rather than inferred.
+
+The pole pair sits at z = a +/- jb with a = 0.85 and b = 0.25, well
+inside the unit circle, so the response decays.""", columns=2)
+
+nlo, nhi = 1000, 1400
+ax = tfig.axes(xlabel="Sample", ylabel="Sampled", xlim=(nlo, nhi),
+               ylim=(-1, 1), width=6.4, height=3.8)
+ax.plot(t[nlo:nhi], x_sn[nlo:nhi], colour="black")
+
+ax = tfig.axes(xlabel="Sample", ylabel="IIR filtered", xlim=(nlo, nhi),
+               ylim=(-1, 1), width=6.4, height=3.8)
+ax.plot(t[nlo:nhi], y[nlo:nhi], colour="black")
+
+ax = tfig.axes(xlabel="$f/f_s$", ylabel="Sampled [dB20]",
+               ylim=(-60, 60), width=6.4, height=3.8)
+ax.plot(f, 20*np.log10(np.abs(X_sn)), colour="black")
+
+ax = tfig.axes(xlabel="$f/f_s$", ylabel="IIR filtered [dB20]",
+               ylim=(-60, 60), width=6.4, height=3.8)
+ax.plot(f, 20*np.log10(np.abs(Y)), colour="black")
+
+tfig.save("l5_iir")

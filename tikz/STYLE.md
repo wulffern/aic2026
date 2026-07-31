@@ -94,6 +94,49 @@ node shape — use a rounded rectangle. `\usetikzlibrary` inside a figure
 works but prefer not to: a figure that needs a library the others do not
 have is a figure that will drift.
 
+## Plots that come out of a script
+
+Figures that plot data — spectra, sweeps, transients — should be drawn by
+`py/tikzplot.py` rather than saved from matplotlib. A matplotlib figure
+next to a circuitikz schematic reads as pasted in from somewhere else,
+because it is: different font, different line weights, different palette.
+`tikzplot` renders the same numbers through `fig_header.tex`, so the two
+match.
+
+The script in `ex/` keeps its matplotlib code (it is useful for looking
+at data interactively) and gains a few lines at the end:
+
+```python
+from tikzplot import Figure
+
+fig = Figure("""What the figure shows, and why it is drawn this way.""",
+             columns=2)
+ax = fig.axes(xlabel="$f/f_s$", ylabel="Magnitude [dB20]", ylim=(-60, 60))
+ax.plot(f, mag, colour="black")
+fig.save("l5_iir")            # writes tikz/l5_iir.tex
+```
+
+Then `make tikz-one FNAME=l5_iir` builds it like any other figure, and
+the lecture references `media/l5_iir_tikz.pdf`. The generated `.tex` is
+committed, so building the book never needs numpy or a simulator — only
+regenerating a figure does.
+
+Two things to know:
+
+- **Decimation.** An 8192-point FFT is 8192 coordinate pairs, which is a
+  megabyte of `.tex` that nobody can see. `plot()` reduces each trace to
+  600 columns, keeping the *minimum and maximum* within each column, so a
+  noise floor stays a band rather than collapsing to a thin line through
+  its average. Pass `decimate=False` for a smooth analytic curve you want
+  exactly.
+- **`groupplots`** lays out multi-panel figures. `fig_header.tex` loads it
+  and pins `compat=1.16`, so panel spacing does not shift when pgfplots
+  is upgraded.
+
+Figures whose data comes from a simulator rather than a script still need
+the raw data exported before they can move; until then they stay as they
+are.
+
 ## Redrawing a hand drawn figure
 
 1. **Render the original with its CropBox**:
