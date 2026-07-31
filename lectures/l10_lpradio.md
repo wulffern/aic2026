@@ -350,7 +350,19 @@ Any modulation can be described by the function below.
 
 -->
 
-$$ A_m(t) \times cos\left( 2 \pi f_{carrier}(t)t + \phi_{m}(t)\right)$$
+$$ A_m(t) \times \cos\left( 2 \pi \int_0^t f_{carrier}(\tau)d\tau + \phi_{m}(t)\right)$$
+
+<!--pan_doc:
+
+The integral matters as soon as the carrier frequency is one of the
+things being modulated, which for GFSK it is. Writing $2\pi f(t)t$
+instead is a tempting shorthand and it is wrong: differentiate it and
+the instantaneous frequency comes out as $f(t) + t\,f'(t)$, so the error
+grows without bound as $t$ does. Phase is the integral of frequency,
+always. For a fixed carrier the integral collapses to the familiar
+$2\pi f_c t$ and no harm is done, which is why the shorthand survives.
+
+-->
 
 ---
 
@@ -380,7 +392,7 @@ In binary phase shift keying the 1 and 0 is encoded in the phase change. Change 
 we're back to where we were. 
 
 It's common to show modulation schemes in a constellation diagram with the real axis and the complex axis. 
-For the real light we send the phase and amplitude is usually real. 
+For the real signal we send, the phase and amplitude are both real quantities. 
 
 I say usually, because in quantum mechanics, and the time evolution of a particle, the amplitude of the wave function is actually a complex variable. As such, nature 
 is actually complex at the most fundamental level. 
@@ -1127,12 +1139,32 @@ of the de-modulator.
 -->
 
 
-$$P_{RX_{sens}} = -174 dBm + 10 \times log10(DR)  + NF + Eb/N0$$
+$$P_{RX_{sens}} = -174 \text{ dBm} + 10 log_{10}(R_b)  + NF + E_b/N_0$$
 
-for example, for nRF5340 
+<!--pan_doc:
 
+Term by term: $-174$ dBm is the thermal noise in one hertz at room
+temperature, $R_b$ is the bit rate, which sets how much bandwidth that
+noise is collected over, $NF$ is what the receiver's own noise adds, and
+$E_b/N_0$ is what the demodulator needs to hit its error rate. Note that
+$R_b$ here is the data rate; earlier in this chapter $DR$ meant dynamic
+range, which is a different quantity entirely.
 
-$$ P_{RX_{sens}} + 174 - 60 =  NF + Eb/N0 = 17 dB$$
+The useful move is to run it backwards. The nRF5340 datasheet quotes
+$-97.5$ dBm sensitivity at 1 Mbps, and $10log_{10}(10^6) = 60$ dB, so
+
+-->
+
+$$ P_{RX_{sens}} + 174 - 60 =  NF + E_b/N_0 = 16.5 \text{ dB}$$
+
+<!--pan_doc:
+
+and that 16.5 dB is the entire budget shared between the analog front
+end and the demodulator. GFSK needs something like 12 dB of $E_b/N_0$,
+which leaves only a few decibels of noise figure for everything in front
+of it. That is the number the rest of this chapter is really about.
+
+-->
 
 
 
