@@ -469,3 +469,22 @@ frequencies and both path-loss exponents; and the SDR power estimate.
 
 Only the project lectures (`l01_project`, `lp_project_report`) are left
 unreviewed.
+
+## `l01_project` / `lp_project_report` — reviewed 2026-07-31
+
+The area budget read `< 15 km^2` against a block the same row describes
+as 161 x 111 um. The micro had gone missing: 15000 um^2, inside the
+17871 um^2 available. Sample *rate* of 100 ms is a period; relabelled.
+
+The figure of merit had no explanation, and its bracket is exactly
+`I_avg` from the table above — so the FOM is average current times
+error. Said so, and checked the specification against itself: 31 nA
+against the 50 nA allowed, so it hangs together. Also where the current
+goes, since it justifies specifying conversion time at all.
+
+Verified: the subthreshold leakage expression and the grade table
+(totals 108). `lp_project_report.md` is style guidance with no numbers.
+
+**The second-pass queue is now empty. Every lecture has been read end to
+end.** Ten chapters reviewed across both passes, twelve real errors, of
+which seven were in equations or specifications a student would copy.
