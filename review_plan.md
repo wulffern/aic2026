@@ -348,3 +348,43 @@ default.
 Not changed: that is a signoff-accuracy decision for the author. The
 `#ifdef` pattern already in `tran.spi` would take a third tier
 (Debug 1e-2, default 1e-3, Signoff 1e-4).
+
+## `l07_vreg` — reviewed 2026-07-31
+
+First of the chapters that had no recorded findings and had never been
+read end to end.
+
+The one that mattered: the chapter says a good switched converter
+reaches the low nineties and then shows a model at 67 %, with nothing
+reconciling them. Measured from the model, the entire 0.48 mW loss is
+`I_rms^2 R` in the switches — 0.477 mW, within half a percent — because
+the inductor carries 21.8 mA RMS of ripple to deliver 1 mA of DC. That
+is now the paragraph it should always have been, including why light
+loads are inefficient and what the fix costs.
+
+Also: the pass-fet range is five orders of magnitude, not "almost 6",
+and the paragraph now says why a five-decade range is a compensation
+problem rather than a boast. `V_{VDDH}` for `V_{DDH}`.
+
+Verified and left alone: the 400 W / 320 W / 6400 degree thermal
+example, the 93 % comparison, both capacitive converter ratios, the
+reverse common-gate argument for NMOS pass-fet PSRR (ripple on the
+output really is pushed back onto the input with gain), and the
+zero-cross comparator.
+
+Open, and it is figure work rather than prose: **Figure 8 has no axis
+labels at all**, only the raw filename in a legend. Its testbench is at
+`cnr_atr_sky130nm/sim/LDO_PFET/loadreg.spi` but the output directory is
+gone, so redrawing it means re-running the sweep. That is also what
+would move `l7_loadreg` off the last-three matplotlib list.
+
+## Review queue, second pass
+
+Chapters that have never been read end to end, in the order I would take
+them:
+
+1. ~~`l07_vreg`~~ — done 2026-07-31
+2. `l09_osc` — oscillators, and the chapter most likely to have algebra
+3. `l04_dac` — its figures were reviewed but the prose was not
+4. `l10_lpradio`
+5. the project lectures
