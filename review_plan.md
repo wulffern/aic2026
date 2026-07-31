@@ -183,7 +183,7 @@ Still open in this chapter:
 ## Queued from the author, 2026-07-31
 
 1. **Script-generated plots to TikZ** — infrastructure done
-   2026-07-31, 41 of 44 figures converted.
+   2026-07-31, 41 of 44 converted; the remaining 3 have no source.
 
    `py/tikzplot.py` renders plot data through `tikz/fig_header.tex`, so
    a plot and a schematic on the same page share a font, a line width
@@ -239,14 +239,17 @@ Still open in this chapter:
    produces figures that quietly stop agreeing with each other; one
    script over one pass of the data cannot.
 
-   **Still matplotlib.** Three of the original 44 remain, all
-   simulator output whose raw data has not been located:
-   `l7_loadreg`, `cpumax`, `SUN_PLL_ROSC_KVCO` and `sun_pll_lay_typ`.
-   The two SUN_PLL ones come from testbenches in the
-   `sun_pll_sky130nm` repository (sim/ROSC and sim/SUN_PLL), so they are
-   a matter of running those and exporting; `l5_velocity` turned out to
-   be a hand-drawn illustration rather than a plot, and `cpumax` has no
-   trace anywhere.
+   **Still matplotlib: three, all without a locatable source.**
+   `l5_velocity` (lr0_mosfet), `l7_loadreg` (l07_vreg) and
+   `cpumax` (lr0_logic). Searched aicex, dicex, aic2025 and the
+   notebooks; nothing generates them, so they would have to be
+   re-simulated or redrawn by hand rather than converted.
+
+   The two SUN_PLL figures were finished 2026-07-31 from a fresh corner
+   sweep and a fresh transient: `SUN_PLL_ROSC_KVCO` (ex/rosc_kvco.py)
+   and `sun_pll_lay_typ` (ex/pll_settling.py). The second was also
+   *stale* — it showed the loop settling by 8 us, from a netlist with the
+   faster schematic oscillator; the current extraction settles at 12.
 
    One figure that will improve when converted: `pll.pdf` has its
    x-axis label hidden behind the legend box, noted in the `l08_pll`
@@ -317,3 +320,31 @@ Still open:
 **The review queue is now empty.** Every lecture with recorded findings
 has been through a pass. The remaining work is the plot-to-TikZ item and
 Phase 3 of the TikZ plan.
+
+
+## Simulation runtime, measured 2026-07-31
+
+The SUN_PLL transient was suspected of being slow for want of
+`.option sparse`. It is already enabled and confirmed active in the log
+("Using SPARSE 1.3 as Direct Linear Solver"), so there is nothing there.
+Threading is not the constraint either: the runs draw 133-165 % CPU on a
+10 core machine despite `set num_threads=16`, so the serial sparse solve
+dominates.
+
+The cost is `reltol`. Measured on one netlist, one corner, 15 us, with
+only that option changed:
+
+| reltol | run | raw |
+|---|---|---|
+| 1e-3 | 339 s | 8.2 MB |
+| 1e-4 | 1452 s | 34.6 MB |
+
+**4.3x**, and the settled frequency agrees to 0.07-0.15 % (256.11 vs
+255.98 MHz). They differ by 4-7 % during the slewing transient, where
+the frequency is sweeping through hundreds of megahertz anyway. The
+production value of 1e-4 is ten times tighter than ngspice's own
+default.
+
+Not changed: that is a signoff-accuracy decision for the author. The
+`#ifdef` pattern already in `tran.spi` would take a third tier
+(Debug 1e-2, default 1e-3, Signoff 1e-4).
