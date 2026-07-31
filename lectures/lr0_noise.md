@@ -35,13 +35,13 @@ probably noise!
 
 The mean of a signal x(t) is defined as
 
-$$\overline{x(t)} = \lim_{T\to\infty} \frac{1}{T}\int^{+T/2}_{-T/2}{ x(t) dt}$$
+$$\overline{x(t)} = \lim_{T\to\infty} \frac{1}{T}\int^{+T/2}_{-T/2}{ x(t) dt} \tag{1}$$
 The mean square of x(t) defined as
 
-$$\overline{x^2(t)} =\lim_{T\to\infty} \frac{1}{T}\int^{+T/2}_{-T/2}{ x^2(t) dt}$$
+$$\overline{x^2(t)} =\lim_{T\to\infty} \frac{1}{T}\int^{+T/2}_{-T/2}{ x^2(t) dt} \tag{2}$$
 The variance of x(t) defined as
 
-$$\sigma^2 = \overline{x^2(t)} - \overline{x(t)}^2$$ 
+$$\sigma^2 = \overline{x^2(t)} - \overline{x(t)}^2 \tag{3}$$ 
 For a signals with
 a mean of zero the variance is equal to the mean square. The
 auto-correlation of x(t) is defined as
@@ -53,20 +53,20 @@ $$\begin{aligned}
 
 # Average Power
 
-Average power is defined for a continuous system, and for discrete
-samples, as the two definitions below. 
+Average power is defined for a continuous system by (4), and for
+discrete samples by (5). 
 
 $P_{av}$ usually has the
 unit $A^2$ or $V^2$, so we have to multiply/devide by the impedance to
 get the power in Watts. To get Volts and Amperes we use the
 root-mean-square (RMS) value which is defined as $\sqrt{P_{av}}$.
 
-$$P_{av} = \lim_{T\to\infty} \frac{1}{T} \int^{+T/2}_{-T/2} x^2(t) dt$$
+$$P_{av} = \lim_{T\to\infty} \frac{1}{T} \int^{+T/2}_{-T/2} x^2(t) dt \tag{4}$$
 
-$$P_{av} = \frac{1}{N}\sum_{i=0}^N x^2(i)$$
+$$P_{av} = \frac{1}{N}\sum_{i=0}^N x^2(i) \tag{5}$$
 
-If x(t) has a mean of zero then, according to the definition of
-variance above, $P_{av}$ is equal to the variance of x(t).
+If x(t) has a mean of zero then, according to (3), $P_{av}$ is equal
+to the variance of x(t).
 
 Many different notations are used to denote average power and RMS value
 of voltage or current, some of them are listed in the two tables below.
@@ -127,7 +127,7 @@ $\frac{I}{\sqrt{Hz}}$ for current.
 The power spectral density is defined as two times the Fourier transform
 of the auto-correlation function [@ziel]
 
-$$S_x(f) = 2\int_{-\infty}^{\infty}{R_x(\tau)e^{-j2\pi f \tau}d\tau}$$
+$$S_x(f) = 2\int_{-\infty}^{\infty}{R_x(\tau)e^{-j2\pi f \tau}d\tau} \tag{6}$$
 This can also be written as
 
 $$\begin{aligned}
@@ -151,7 +151,7 @@ $$R_x(\tau)  = \frac{1}{2}\int_{-\infty}^{\infty}{S_x(f)e^{j 2 \pi f \tau} df} =
 
 If we set $\tau=0$ we get
 
-$$\overline{x^2(t)} = \int_{0}^{\infty}{S_x(f)df}$$ which means we can
+$$\overline{x^2(t)} = \int_{0}^{\infty}{S_x(f)df} \tag{7}$$ which means we can
 easily calculate the average power if we know the power spectral
 density. As we will see later it is common to express noise sources in
 PSD form.
@@ -159,12 +159,11 @@ PSD form.
 Another very useful theorem when working with noise in the frequency
 domain is this
 
-$$S_y(f) = S_x(f)|H(f)|^2$$ , where $S_y(f)$ is the output power
+$$S_y(f) = S_x(f)|H(f)|^2 \tag{8}$$ , where $S_y(f)$ is the output power
 spectral density, $S_x(f)$ is the input power spectral density and
 $H(f)$ is the transfer function of a time-invariant linear system.
 
-If we insert the filter relation into the mean square relation above,
-with $S_x(f) = a\:constant = D_v$ we get
+If we insert (8) into (7), with $S_x(f) = a\:constant = D_v$ we get
 
 $$\overline{x^2(t)} = \int{S_y(f)df} = D_v\int{|H(f)|^2 df} = D_v f_x$$
 , where $f_x$ is what we call the noise bandwidth. For a single time
@@ -176,8 +175,8 @@ bandwidth and $f_0$ is the 3dB frequency.
 We haven’t told you this yet, but thermal noise is white and white means
 that the power spectral density is flat (constant over all frequencies).
 If $S_x(f)$ is our thermal noise source and $H(f)$ is a standard low
-pass filter, then the filter relation above tells us that the output
-spectral density will be shaped by $H(f)$. At frequencies above the
+pass filter, then (8) tells us that the output spectral density will
+be shaped by $H(f)$. At frequencies above the
 $f_x$ in $H(f)$ we expect the root power spectral density to fall by
 20dB per decade.
 
@@ -203,7 +202,7 @@ distribution, thus thermal noise is white.
 
 If we have a true random process with Gaussian distribution we know that
 the autocorrelation function only has a value for $\tau=0$. From the
-definition of auto-correlation above we have that
+definition of auto-correlation we have that
 
 $$\begin{aligned}
 R_x(\tau ) &={}  \lim_{T\to\infty} \frac{1}{T}\int^{+T/2}_{-T/2}{ x(t)x(t - \tau) dt} \\
@@ -212,8 +211,8 @@ R_x(\tau ) &={}  \lim_{T\to\infty} \frac{1}{T}\int^{+T/2}_{-T/2}{ x(t)x(t - \tau
 \end{aligned}$$
 
 The reason being that in a true random process $x(t)$ is uncorrelated
-with $x(t + \tau )$ where $\tau$ is an integer. If we use the
-definition of power spectral density above we see that
+with $x(t + \tau )$ where $\tau$ is an integer. If we use (6) we see
+that
 
 $$\begin{aligned}
   S_x(f) &=\: 2\int_{-\infty}^{\infty}{\overline{x^2(t)}\delta(\tau)e^{-j 2 \pi f \tau} d\tau} \\

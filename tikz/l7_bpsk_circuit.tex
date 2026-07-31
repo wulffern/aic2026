@@ -60,33 +60,40 @@
   \draw (\xr,0.4) -- (\xr,0.1);
   \draw (\xr,0.1) \vground;
 
-  % the LO, driving the two tails
-  \draw (-1.9,0.4) rectangle (-0.4,2.0);
-  \node[anchor=center] at (-1.15,1.2) {LO};
-  \draw (-0.4,1.5) -- (\xl-0.5,1.5) -- (\xl-0.5,1.2);
-  \draw (-0.4,0.9) -- (-0.1,0.9) -- (-0.1,-0.7) -- (\xr+0.5+0.8,-0.7)
-        -- (\xr+0.5+0.8,1.2) -- (\xr+0.5,1.2);
+  % the LO sits below the pair and drives one tail gate from each side,
+  % so neither wire has to cross a transistor
+  \draw (3.1,-1.9) rectangle (4.9,-0.7);
+  \node[anchor=center] at (4.0,-1.3) {LO};
+  \coordinate (gl) at (ML.G);
+  \coordinate (gr) at (MR.G);
+  \draw (3.1,-1.3) -- (0.5,-1.3) -- (0.5,1.2) -- (gl);
+  \draw (4.9,-1.3) -- (7.5,-1.3) -- (7.5,1.2) -- (gr);
 
-  % the symbols on the real axis
+  % The symbols, real part above and imaginary part below. Each panel
+  % gets a symmetric axis so a dot below the line reads as a negative
+  % value in that panel, not as a stray dot belonging to the other one.
   \def\px{9.4}
-  \draw[-latex] (\px,4.8) -- (\px+4.0,4.8);
-  \draw (\px,4.0) -- (\px,6.0);
-  \node[anchor=east] at (\px-0.15,5.9) {$R$};
-  \node[anchor=north] at (\px+3.95,4.7) {$t$};
+  \def\yr{5.6}   % the real axis
+  \def\yj{2.4}   % the imaginary axis
+  \def\ah{1.15}  % half height of a panel
 
-  % the symbols on the imaginary axis
-  \draw[-latex] (\px,2.2) -- (\px+4.0,2.2);
-  \draw (\px,2.2) -- (\px,3.4);
-  \node[anchor=east] at (\px-0.15,3.3) {$j$};
-  \node[anchor=north] at (\px+3.95,2.1) {$t$};
+  \draw[-latex] (\px,\yr) -- (\px+4.2,\yr);
+  \draw (\px,{\yr-\ah}) -- (\px,{\yr+\ah});
+  \node[anchor=east] at (\px-0.15,{\yr+\ah}) {$R$};
+  \node[anchor=north] at (\px+4.15,{\yr-0.1}) {$t$};
 
-  % the symbol instants
-  \foreach \k/\yr in {1/5.6,2/4.0,3/5.6,4/4.0} {
-    \draw[dotted] (\px+0.8*\k,5.8) -- (\px+0.8*\k,2.2);
-    \fill[red] (\px+0.8*\k,\yr) circle (0.09);
-    \fill[red] (\px+0.8*\k,2.2) circle (0.09);
+  \draw[-latex] (\px,\yj) -- (\px+4.2,\yj);
+  \draw (\px,{\yj-\ah}) -- (\px,{\yj+\ah});
+  \node[anchor=east] at (\px-0.15,{\yj+\ah}) {$j$};
+  \node[anchor=north] at (\px+4.15,{\yj-0.1}) {$t$};
+
+  % one symbol instant per bit: real part +-1, imaginary part always 0
+  \foreach \k/\s in {1/1,2/-1,3/1,4/-1} {
+    \draw[dotted] (\px+0.8*\k,{\yr+\ah}) -- (\px+0.8*\k,{\yj-\ah});
+    \fill[red] (\px+0.8*\k,{\yr+0.8*\s}) circle (0.09);
+    \fill[red] (\px+0.8*\k,\yj) circle (0.09);
   }
-  \node[anchor=west] at (\px+4.4,5.7) {\color{red}1 \; 0 \; 1 \; 0};
+  \node[anchor=west] at (\px+4.4,{\yr+0.8}) {\color{red}1 \; 0 \; 1 \; 0};
 
 \end{circuitikz}
 \end{document}
