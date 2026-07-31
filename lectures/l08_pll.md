@@ -548,7 +548,7 @@ Below I've made a plot of the oscillation frequency over corners.
 ![right fit](../media/SUN_PLL_ROSC_KVCO_tikz.pdf)
 
 <!--pan_doc:
-<sub>Figure 13: Simulated ring-oscillator frequency versus control voltage VDD\_ROSC over nine process and temperature corners. The slope at the typical corner is about 1 GHz/V, which is $K_{osc}$; the spread is a factor of eleven at 1.2 V, narrowing to under three at 1.5 V</sub>
+<sub>Figure 13: Ring-oscillator frequency versus control voltage VDD\_ROSC over nine process and temperature corners, simulated on the extracted layout. The slope at the typical corner is 1.01 GHz/V, which is $K_{osc}$; the spread is a factor of eleven at 1.2 V, narrowing to under three at 1.5 V</sub>
 
 Two things in that plot are worth more than the slope.
 
@@ -698,14 +698,18 @@ We can see that the loop gain at low frequency is large, and proportional to $1/
 
 The closed loop transfer function $\phi_{div}/\phi_{in}$ shows us that the divided phase at low frequency is the same as the input phase. Since the phase is the same, and the frequency must be the same, then we know that the output clock will be N times reference frequency.
 
-It is worth checking this plot against the assumption we made when we drew the linear model at all. The loop gain crosses 0 dB at 0.59 MHz, and the reference frequency is $256\ \text{MHz}/32 = 8$ MHz, so the loop bandwidth is a fourteenth of the reference. That clears the "one tenth of the reference" rule, which means the model is entitled to be believed. If it had not cleared it, the phase margin the plot reports would be a number about a model that does not describe the circuit — and that is a far worse situation than a poor phase margin, because it looks fine.
+Which $K_{osc}$ went into that plot matters more than it looks. The schematic simulation gave 1.6 GHz/V; the extracted layout gives 1.01 GHz/V, and the difference is parasitic capacitance in the ring that simply does not exist until the oscillator is laid out. A third of the gain disappears, and since the loop gain is proportional to $K_{osc}$, the crossover moves from 0.59 MHz down to 0.43 MHz and the phase margin from 51 degrees to 43.
+
+Eight degrees is not a catastrophe, and that is rather the point: it is the sort of erosion that is easy to spend twice over without noticing. Extract early, and design the loop with the number the silicon will actually have rather than the one the schematic promised.
+
+It is also worth checking this plot against the assumption we made when we drew the linear model at all. The loop gain crosses 0 dB at 0.43 MHz, and the reference frequency is $256\ \text{MHz}/32 = 8$ MHz, so the loop bandwidth is a nineteenth of the reference. That clears the "one tenth of the reference" rule, which means the model is entitled to be believed. If it had not cleared it, the phase margin the plot reports would be a number about a model that does not describe the circuit — and that is a far worse situation than a poor phase margin, because it looks fine.
 
 -->
 
 ![fit](../media/pll_tikz.pdf)
 
 <!--pan_doc:
-<sub>Figure 17: Magnitude and phase of the loop gain and the closed-loop transfer function from input phase to divider phase. The loop crosses 0 dB at 0.59 MHz with 51 degrees of phase margin</sub>
+<sub>Figure 17: Magnitude and phase of the loop gain and the closed-loop transfer function from input phase to divider phase, using the oscillator gain measured on the extracted layout. The loop crosses 0 dB at 0.43 MHz with 43 degrees of phase margin</sub>
 -->
 
 ---

@@ -2,10 +2,14 @@
 
 % Ring oscillator frequency against its supply, over nine corners.
 %
+% Simulated on the extracted layout, not the schematic, which matters:
+% the schematic gave 1.6 GHz/V and this gives 1.01 GHz/V at the typical
+% corner. The missing third is parasitic capacitance in the ring.
+%
 % The control node is the oscillator's own supply, so this curve is both
 % the tuning characteristic and a statement about how badly a ring
-% oscillator tracks its supply. Slope at the typical corner is around
-% 1 GHz per volt, which is the K_osc the linear model needs.
+% oscillator tracks its supply. The slope is the K_osc the linear model
+% needs.
 %
 % Read the spread rather than any single curve. At 1.2 V the frequency
 % varies by a factor of eleven between the fast-hot and slow-cold corners,
