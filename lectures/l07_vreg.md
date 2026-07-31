@@ -407,10 +407,10 @@ That range is the problem, not the achievement. The transconductance of the pass
 Sometimes it's easier to split the range into multiple ranges, which is what the next figure is about.
 -->
 
-![fit](../media/l7_loadreg.pdf)
+![fit](../media/l7_loadreg_tikz.pdf)
 
 <!--pan_doc:
-<sub>Figure 8: Simulated pass-fet current (log scale) versus gate-source voltage for the LDO testbench</sub>
+<sub>Figure 8: Simulated pass-fet drain current against gate-source voltage for the 500 mA LDO testbench, five decades of current over one volt of gate drive</sub>
 -->
 
 

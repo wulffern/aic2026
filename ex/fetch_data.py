@@ -35,6 +35,7 @@ HOME = os.path.expanduser("~")
 AICEX = os.environ.get("AICEX", f"{HOME}/pro/aicex")
 DICEX = os.environ.get("DICEX", f"{HOME}/pro/dicex")
 SUNPLL = os.environ.get("SUNPLL", f"{AICEX}/ip/sun_pll_sky130nm")
+CNRATR = os.environ.get("CNRATR", f"{AICEX}/ip/cnr_atr_sky130nm")
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 DATA = os.path.join(HERE, "data")
@@ -193,6 +194,41 @@ def fetch_pll_settling():
     return 1
 
 
+def fetch_loadreg():
+    """LDO pass-fet current against gate drive.
+
+    The testbench ramps a load current and lets a behavioural OTA hold
+    the output at 0.8 V, so sweeping time sweeps the operating point.
+    What the figure needs is the current against V_GS, which is
+    V(VDD) - V(G); neither is saved under that name, so both are
+    computed here.
+    """
+    try:
+        import cicsim as cs
+    except ImportError:
+        print("  skipped loadreg: cicsim not installed")
+        return 0
+    src = f"{CNRATR}/sim/LDO_PFET/output_loadreg/loadreg_SchGtKttTtVt.raw"
+    if not os.path.exists(src):
+        print(f"  missing {src}")
+        return 0
+    import numpy as np
+    df = cs.toDataFrames(cs.ngRawRead(src))[0]
+    vgs = np.asarray(df["v(vdd)"], float) - np.asarray(df["v(g)"], float)
+    il = np.asarray(df["v(il)"], float)
+    #- below a hundred nanoamps the behavioural OTA has not settled and
+    #- the current is not a transistor measurement
+    keep = il > 1e-7
+    out = os.path.join(DATA, "ldo_loadreg.csv")
+    with open(out, "w", newline="") as fo:
+        w = csv.writer(fo)
+        w.writerow(["vgs", "id"])
+        for a, b in zip(vgs[keep], il[keep]):
+            w.writerow([f"{a:.6g}", f"{b:.6g}"])
+    print(f"  ldo_loadreg.csv ({int(keep.sum())} points)")
+    return 1
+
+
 def main():
     os.makedirs(DATA, exist_ok=True)
     print(f"from {AICEX}:")
@@ -200,6 +236,8 @@ def main():
     print(f"from {SUNPLL}:")
     a += fetch_rosc_kvco()
     a += fetch_pll_settling()
+    print(f"from {CNRATR}:")
+    a += fetch_loadreg()
     print(f"from {DICEX}:")
     b = fetch_dicex()
     print(f"{a + b} files in {os.path.relpath(DATA, os.path.dirname(HERE))}")
