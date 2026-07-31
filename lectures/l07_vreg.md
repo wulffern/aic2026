@@ -400,10 +400,11 @@ ILOAD OUT 0 pwl 0 0 1u 0 50u 0.5
 
 <!--pan_doc:
 
-Below is a plot of the current on the y-axis as a function of the Vgs on the x-axis. Although it's possible to have almost 6 orders of magnitude change in current
-in the transistor it does become hard to make the loop stable over such a large range. 
+Below is a plot of the current on the y-axis as a function of the $V_{GS}$ on the x-axis. The current covers about five orders of magnitude, from a few microamps to half an amp, over one volt of gate drive.
 
-Sometimes it's easier to split the range into multiple ranges. 
+That range is the problem, not the achievement. The transconductance of the pass-fet is roughly proportional to its current, and the pass-fet's $g_m$ sets the loop gain, so a regulator that is stable at 500 mA has a hundred thousand times less loop gain at 5 uA — or, looked at the other way, a compensation network chosen for the light load leaves the loop far too fast at the heavy one. There is no single compensation that is right across five decades.
+
+Sometimes it's easier to split the range into multiple ranges, which is what the next figure is about.
 -->
 
 ![fit](../media/l7_loadreg.pdf)
@@ -642,7 +643,7 @@ There are many versions of the control block, let's look at two.
 
 <!--pan_doc:
 
-Assume $I_x=0$ and $I_{o} = 0$ at $t=0$. Assume the output voltage is $V_O=0$. Imagine we set $A=1$ for a fixed time duration.  The voltage at $V_1=V_{DDH}$, and $V_x = V_{VDDH}-V_O$. As $V_x$ is positive, and roughly constant, the current $I_x$ would increase linearly, as given by the equation of the current above. 
+Assume $I_x=0$ and $I_{o} = 0$ at $t=0$. Assume the output voltage is $V_O=0$. Imagine we set $A=1$ for a fixed time duration.  The voltage at $V_1=V_{DDH}$, and $V_x = V_{DDH}-V_O$. As $V_x$ is positive, and roughly constant, the current $I_x$ would increase linearly, as given by the equation of the current above. 
 
 Since the $I_x$ is linear, then the increase in $V_o$ would be a second order, as given by the equation of the output voltage above. 
 
@@ -699,7 +700,11 @@ Once the system has fully settled, see figure below, we can see the reason for w
 
 During $A=1$ the current $I_x$ increases fast, and it's only during $A=1$ we pull current from $V_{DDH}$. At the start of $A=0$ the current is still positive, which means we pull current from ground. The average current in the inductor is the same as the average current in the load, however, the current from $V_{DDH}$ is lower than the average inductor current, since some of the current comes from ground. 
 
-If the DC/DC was 100% efficient, then the current from the 4 V input supply would be 1/4'th of the 1 V output supply. 100% efficient DC/DC converters violate the laws of nature, as such, we can expect to get up to 9X% under optimal conditions. 
+If the DC/DC was 100% efficient, then the current from the 4 V input supply would be 1/4'th of the current delivered to the 1 V output. 100% efficient DC/DC converters violate the laws of nature, so a good one reaches the low nineties under favourable conditions.
+
+The model above manages 67 %, and it is worth understanding why, because the reason is not that the model is bad. Averaged over the settled part of the run it delivers 0.998 mW and draws 1.478 mW, so 0.48 mW is lost. The inductor carries 1 mA of useful DC and 76 mA peak to peak of ripple, which is 21.8 mA RMS, and all of it flows through the 1 $\Omega$ switch resistance. That is $I_{rms}^2R = 0.477$ mW — within half a percent of the entire loss.
+
+So the whole of the inefficiency here is ripple current heating the switches, and none of that current ever reaches the load. Two things follow. A converter is efficient at the load it was designed for and poor at a much lighter one, because the ripple does not shrink when the load does. And the way to fix it is a bigger inductor or a faster clock, both of which reduce the ripple, and both of which cost something else — area for the first, switching loss for the second. That trade is what the rest of this chapter is about.
 
 -->
 
