@@ -385,7 +385,7 @@ them:
 
 1. ~~`l07_vreg`~~ — done 2026-07-31
 2. ~~`l09_osc`~~ — done 2026-07-31
-3. `l04_dac` — its figures were reviewed but the prose was not
+3. ~~`l04_dac`~~ — done 2026-07-31
 4. `l10_lpradio`
 5. the project lectures
 
@@ -414,3 +414,32 @@ independently), all the ring oscillator delay and frequency algebra
 including both capacitive-load limits, the relaxation oscillator through
 to `f_o = 1/2RC`, and the prime-number-of-stages advice, which is hedged
 as experience and is standard practice.
+
+
+## `l04_dac` — reviewed 2026-07-31
+
+Fixed: Figure 5's caption described Figure 6 (it is the quantization
+error figure, not INL/DNL); the error polynomial had its superscripts on
+the coefficients rather than the input, `a_2^2 D^2` for `a_2 D^2`; and
+the 2-bit table's "What is correct?" now has an answer, linking it to
+the mid-rise/mid-tread choice in the ADC chapter and to the figure
+immediately below it, which is exactly that comparison. Also
+Simens -> Siemens.
+
+Verified and left alone: every resistor divider result, the tree switch
+count, the R-2R ladder algebra, DNL and INL, the twelve transitions
+between four states, and both binary glitch paths.
+
+**Open, needs the author.** The segmented switch count does not add up:
+
+    6b Matrix + 4b Tree: 2^(M+1) - 2 + 2^N + 2^(N/2) = 80
+
+With a 4-bit tree and a 6-bit matrix the printed formula gives
+`30 + 64 + 8 = 102`, not 80. I could not find a split of ten bits that
+yields 80 from that expression; `80 = 2^6 + 2^4` exactly, which suggests
+the intended term for the tree is `2^M` rather than `2^(M+1) - 2`, but
+that contradicts the tree formula three slides earlier. The tree number
+(2046) and the matrix number (1056) both check out against the drawn
+architectures, so it is only the segmented line that is wrong. Left
+alone rather than guessed at, because the answer depends on which
+architecture was meant.
