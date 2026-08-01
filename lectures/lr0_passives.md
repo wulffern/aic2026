@@ -448,7 +448,7 @@ oscillators, RF matching and power converters.
 ![right 200%](../media/nRF51822.jpg) 
 
 <!--pan_doc:
-<sub>Figure 7: nRF51822 die - the spirals are inductors. Source: die photograph by zeptobars.com (licence not confirmed)</sub>
+<sub>Figure 7: nRF51822 die - the spirals are inductors. Die photograph by [zeptobars.com](https://zeptobars.com/), [CC BY 3.0](https://creativecommons.org/licenses/by/3.0/)</sub>
 -->
 
 ---
