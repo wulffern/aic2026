@@ -595,7 +595,7 @@ to [Tnmos, n=mn1, l=$M_{1}$] ++(0,1.6)
      (cStart)    ++(0,-1.6) node [rground] {} to [short] ++(1,0) node [anchor=south] {$-$}
     (cStart) ++(2,0)
     to [cI, n=mn1, l=$gm_{1} \times v_i$] ++(0,-1.6)
-    to [short] ++(3,0) to [R,l=$r_o$] ++(0,1.6)
+    to [short] ++(3,0) \vresistor{$r_o$}
     node [anchor=south] {$v_o$}
     to [short] ++(-3.0,0)
 
@@ -608,16 +608,16 @@ to [Tnmos, n=mn1, l=$M_{1}$] ++(0,1.6)
 
 \newcommand{\esdGgnmos}{
 
-++(0,0) coordinate (cStart)
+++(0,0) coordinate (esdStart)
 node [ground,rotate=-90,anchor=west] {}     to [Tnmos,
   n=mn1, l=$M_{1}$] ++(0,3.2) to [short,-*] ++(0,0)
 coordinate (top) to
 [short,-o] ++(0.5,0)  node [anchor=west] {To pin}
 
 (top) to [short,-o] ++(-1,0) node [anchor=east] {To core}
-(mn1.gate) to [short,-] ++(-1,0) to [resistor] ++(0,-1.6) node
-[ground,rotate=-90,anchor=west] {}
-(cStart)
+(mn1.gate) to [short,-] ++(-1,0) ++(0,-1.6) coordinate (esdRbot)
+\vresistor{} (esdRbot) node [ground,rotate=-90,anchor=west] {}
+(esdStart)
 
 }
 
@@ -715,13 +715,13 @@ coordinate (top) to
 
 \newcommand{\cmRCascode}{
 
-    ++(0,0) coordinate (cStart)
+    ++(0,0) coordinate (cmRStart)
     node [ground,rotate=-90,anchor=west] {}     to [Tnmos,
       n=mn1, l=$M_{1}$,mirror] ++(0,1.6) to
     [Tnmos,n=mn3,l=$M_3$,mirror] ++(0,1.6)
-    to [resistor] ++(0,1)  coordinate (resCon) ++(0,0.5) to [short,-,i=$i_{i}$] ++(0,-0.5)
+    \vresistor{} coordinate (resCon) ++(0,0.5) to [short,-,i=$i_{i}$] ++(0,-0.5)
 
-    (cStart) ++(2.5,0)
+    (cmRStart) ++(2.5,0)
     node [ground,rotate=-90,anchor=west] {}     to [Tnmos,
       n=mn2, l=$M_{2}$] ++(0,1.6) to [Tnmos,n=mn4,l=$M_4$] ++(0,1.6) ++(0,0.5) to [short,i=$i_o$] ++(0,-0.5)
 
@@ -730,5 +730,5 @@ coordinate (top) to
     (mn3.gate) to [short,-] (mn4.gate) ++(-0.3,0) coordinate (cascCon)
     (resCon) to [short,*-] ++(1.2,0) to [short,-*] (cascCon)
     (mn1.gate) to [short,-] (mn2.gate)
-    (cStart)
+    (cmRStart)
   }
