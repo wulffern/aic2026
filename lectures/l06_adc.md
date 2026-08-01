@@ -241,7 +241,7 @@ for the best conference, and luckily the best journal.
 
 -->
 
-![inline](../media/l06_fig_core_meas.svg)
+![inline](../media/l06_core_meas_tikz.pdf)
 
 <!--pan_doc:
 <sub>Figure 6: Measured performance of the core-transistor ADC: (a, b) output spectra at 0.69 V and 0.47 V supply, (c) peak ENOB versus VDD, (d) SNDR and SFDR versus input frequency</sub>

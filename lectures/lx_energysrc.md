@@ -372,7 +372,7 @@ On the N-side the same minority carrier effect would further increase the voltag
 
 -->
 
-![fit](../media/l11_pv_pn.pdf)
+![fit](../media/l11_pv_pn_tikz.pdf)
 
 <!--pan_doc:
 <sub>Figure 11: Photon absorption in a PN junction, where electron/hole pairs generated in the depletion region (1), the P region (2) and the N region (3) all increase the diode voltage VD</sub>

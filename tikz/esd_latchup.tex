@@ -55,7 +55,10 @@
   %- drawn bottom up, because the diode conducts up: out of ground and
   %- into the pad, which is what a negative zap asks of it
   \draw (6.2,0.9) -- (6.2,1.45);
-  \draw (6.2,1.45) to [D] (6.2,2.35);
+  \draw (6.2,1.45) -- (6.2,1.65);
+  \draw (6.0,1.65) -- (6.4,1.65) -- (6.2,2.15) -- (6.0,1.65);
+  \draw (6.0,2.15) -- (6.4,2.15);
+  \draw (6.2,2.15) -- (6.2,2.35);
   \draw (6.2,2.35) -- (6.2,3.4);
   \draw (6.2,0.9) -- (7.6,0.9);
   \esdPadAt{6.9}{0.9}

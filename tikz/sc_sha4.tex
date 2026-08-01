@@ -22,10 +22,12 @@
   \def\ytop{2.6}
   \def\ybot{1.0}
 
-  \draw (\xota,\ytop) \cicOta;
+  % Relabelled so nothing crosses: IN+ enters the inverting input on
+  % top, and the non-inverted output leaves on top as OUT+.
+  \draw (\xota,\ytop) \cicOtaSWP{$-$}{$+$}{$-$}{$+$};
 
   % ---- input branches: sample on 4C during phi1 ----
-  \foreach \y/\lbl in {\ytop/$IN_-$, \ybot/$IN_+$} {
+  \foreach \y/\lbl in {\ytop/$IN_+$, \ybot/$IN_-$} {
     \draw (\xin,\y) node[ocirc]{} -- (\xsw,\y);
     \draw (\xsw,\y) to [switch] (\xsw+0.9,\y);
     \node[scale=0.8, anchor=south] at (\xsw+0.45,\y+0.18) {$\phi_1$};
@@ -78,9 +80,9 @@
   \draw (\xota-0.5,\yfbb) -- (\xota-0.5,\yfbb-0.85);
   \draw (\xout-0.6,\yfbb) -- (\xout-0.6,\yfbb-0.85);
 
-  % ---- outputs ----
-  \draw (cicOta_outp) -- (\xout,\ytop) node[ocirc]{};
-  \draw (cicOta_outn) -- (\xout,\ybot) node[ocirc]{};
+  % ---- outputs: straight through, no crossing ----
+  \draw (cicOta_outn) -- (\xout,\ytop) node[ocirc]{};
+  \draw (cicOta_outp) -- (\xout,\ybot) node[ocirc]{};
   \node[anchor=west, scale=0.9] at (\xout+0.15,\ytop) {$OUT_+$};
   \node[anchor=west, scale=0.9] at (\xout+0.15,\ybot) {$OUT_-$};
 

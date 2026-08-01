@@ -31,7 +31,7 @@
   \fill (6.4,3.2) circle (0.075);
   \draw (6.4,3.2) -- (7.8,3.2);
   \node[anchor=south] at (7.8,3.3) {$0.8 V$};
-  \draw (7.8,3.2) to [vR, l=$I_{load}$] (7.8,1.6);
+  \draw (7.8,1.6) \vresistor{$I_{load}$};
   \draw (7.8,1.6) \vground;
 
   % feedback to the negative input

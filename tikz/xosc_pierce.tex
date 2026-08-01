@@ -18,9 +18,9 @@
   \def\yc{-1.0}  % top of load capacitors
 
   % inverting transconductance
-  \node[not port] (inv) at ({\xl/2+\xr/2},\yinv) {};
-  \draw (\xl,\yinv) -- (inv.in);
-  \draw (inv.out) -- (\xr,\yinv);
+  \draw ({\xl/2+\xr/2-0.55},\yinv) \cicInv{inv};
+  \draw (\xl,\yinv) -- (inv_in);
+  \draw (inv_out) -- (\xr,\yinv);
   \node[anchor=north] at ({\xl/2+\xr/2},\yinv-0.65) {$-g_m$};
 
   % feedback resistor

@@ -42,12 +42,12 @@
   % the two bias nodes end up at the same height as the rails they sit
   % next to. Drawn diagonally, as in the original, they read as if they
   % were shorting the two gates together.
-  \draw (\xbias,\ygp) to [R] (\xbias,5.8);
-  \draw (\xbias,5.89) circle (0.09);
-  \node[anchor=south] at (\xbias,6.05) {$V_{gp}$};
-  \draw (\xbias,\ygn) to [R] (\xbias,0.0);
-  \draw (\xbias,-0.09) circle (0.09);
-  \node[anchor=north] at (\xbias,-0.25) {$V_{gn}$};
+  \draw (\xbias,\ygp) \vresistor{};
+  \draw (\xbias,6.2) to [short,-o] (\xbias,6.32);
+  \node[anchor=south] at (\xbias,6.45) {$V_{gp}$};
+  \draw (\xbias,-0.4) \vresistor{};
+  \draw (\xbias,-0.4) to [short,-o] (\xbias,-0.52);
+  \node[anchor=north] at (\xbias,-0.68) {$V_{gn}$};
 
   % the output to the mixer
   \draw (4.5,\yout) -- (5.5,\yout);

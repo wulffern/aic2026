@@ -64,18 +64,18 @@
   \draw (\xc,\ymir) -- (\xc,{\yctl+\grid});
 
   % ---- the ring ----
-  \draw ({\xa-0.9},\yinv) node[not port] (i1) {};
-  \draw ({\xb-0.9},\yinv) node[not port] (i2) {};
-  \draw ({\xc-0.9},\yinv) node[not port] (i3) {};
+  \draw ({\xa-0.9-0.55},\yinv) \cicInv{i1};
+  \draw ({\xb-0.9-0.55},\yinv) \cicInv{i2};
+  \draw ({\xc-0.9-0.55},\yinv) \cicInv{i3};
 
   % each inverter's supply comes from its starved branch
-  \draw (\xa,\yctl) -- (\xa,{\yinv+1.1}) -- ({\xa-0.9},{\yinv+1.1}) -- (i1.north);
-  \draw (\xb,\yctl) -- (\xb,{\yinv+1.1}) -- ({\xb-0.9},{\yinv+1.1}) -- (i2.north);
-  \draw (\xc,\yctl) -- (\xc,{\yinv+1.1}) -- ({\xc-0.9},{\yinv+1.1}) -- (i3.north);
+  \draw (\xa,\yctl) -- (\xa,{\yinv+1.1}) -- ({\xa-0.9},{\yinv+1.1}) -- ({\xa-0.9},{\yinv+0.21});
+  \draw (\xb,\yctl) -- (\xb,{\yinv+1.1}) -- ({\xb-0.9},{\yinv+1.1}) -- ({\xb-0.9},{\yinv+0.21});
+  \draw (\xc,\yctl) -- (\xc,{\yinv+1.1}) -- ({\xc-0.9},{\yinv+1.1}) -- ({\xc-0.9},{\yinv+0.21});
 
   % stage to stage, caps on each output
-  \draw (i1.out) -- (i2.in 1);
-  \draw (i2.out) -- (i3.in 1);
+  \draw (i1_out) -- (i2_in);
+  \draw (i2_out) -- (i3_in);
   \coordinate (o1) at ({\xa+0.75},\yinv);
   \coordinate (o2) at ({\xb+0.75},\yinv);
   \fill (o1) circle (0.075);
@@ -91,7 +91,7 @@
 
   % feedback
   \draw (o3) -- ({\xc+1.4},\yinv) -- ({\xc+1.4},{\ycap-1.7})
-        -- ({\xa-1.9},{\ycap-1.7}) -- ({\xa-1.9},\yinv) -- (i1.in 1);
+        -- ({\xa-1.9},{\ycap-1.7}) -- ({\xa-1.9},\yinv) -- (i1_in);
 
 \end{circuitikz}
 \end{document}

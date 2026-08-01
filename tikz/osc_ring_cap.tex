@@ -15,8 +15,8 @@
 
   % one stage of the ring
   \draw (-3.4,\yr) node[anchor=east] {from ring} to [short,o-] (-2.6,\yr);
-  \node[not port] (inv) at (-1.8,\yr) {};
-  \draw (inv.out) -- (8.2,\yr);
+  \draw (-2.35,\yr) \cicInv{inv};
+  \draw (inv_out) -- (8.2,\yr);
   \draw (8.2,\yr) to [short,-o] ++(0.5,0) node[anchor=west] {to ring};
 
   % binary weighted branches: NMOS switch over capacitor
