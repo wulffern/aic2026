@@ -93,6 +93,12 @@ Junction dots are `\fill (x,y) circle (0.075);`. Wires that cross
 without a dot are not connected — that convention is used throughout, so
 do not add a hop.
 
+A wire into a transistor gate ends at the anchor — `(M1.gate)` — never
+at a guessed coordinate. The gate lead ends 0.98 from the device
+centreline, and a hard-coded endpoint lands the wire below the oxide:
+inside the gap between gate bar and channel, which reads as a drawing
+error to anyone who has seen a MOSFET cross-section.
+
 Resistors are always the hand-rolled zig-zag (`\vresistor` /
 `\hresistor`). Never draw circuitikz's own `to [resistor]` or `to [R]`
 bipole: it is visibly larger than the house zig-zag and the two styles
