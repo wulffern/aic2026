@@ -53,6 +53,7 @@
 \begin{circuitikz}[american, thick, transform shape]
 
   \input{tikz/sc_lib.tex}
+  \input{tikz/ckt_lib.tex}
 
   % ================= PTAT core =================
 
@@ -126,13 +127,8 @@
   \draw[thick] (7.2,\exYm) to [C] (8.4,\exYm);
   \node at (8.2,2.8) {$C_{1} = 1\,\mathrm{pF}$};
 
-  % ---- The differential amplifier ----
-  \draw[thick] (9.9,1.2) -- (11.3,1.2) -- (11.6,1.6) -- (11.6,4.0)
-    -- (11.3,4.4) -- (9.9,4.4) -- (9.6,4.0) -- (9.6,1.6) -- cycle;
-  \node[anchor=west] at (9.75,\exYp) {$-$};
-  \node[anchor=east] at (11.45,\exYp) {$+$};
-  \node[anchor=west] at (9.75,\exYm) {$+$};
-  \node[anchor=east] at (11.45,\exYm) {$-$};
+  % ---- The differential amplifier: the house OTA outline ----
+  \draw (9.6,\exYp) \cicOtaSWP{$-$}{$+$}{$-$}{$+$};
   \draw[thick] (8.4,\exYp) -- (9.6,\exYp);
   \draw[thick] (8.4,\exYm) -- (9.6,\exYm);
 
@@ -160,10 +156,10 @@
   \node[anchor=north] at (10.8,-0.7) {$C_{2} = 100\,\mathrm{fF}$};
 
   % ---- Output ----
-  \draw[thick] (11.6,\exYp) -- (13.5,\exYp);
+  \draw[thick] (12.2,\exYp) -- (13.5,\exYp);
   \fill (12.4,\exYp) circle (0.07);
   \exPort{13.6,\exYp}{west}{\;$+$}
-  \draw[thick] (11.6,\exYm) -- (13.5,\exYm);
+  \draw[thick] (12.2,\exYm) -- (13.5,\exYm);
   \fill (12.4,\exYm) circle (0.07);
   \exPort{13.6,\exYm}{west}{\;$-$}
   \node[anchor=west] at (14.1,2.8) {$V_{O}$};
