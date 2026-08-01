@@ -294,7 +294,10 @@ class Lecture():
             self._replaceCites()
 
     def copyAssets(self, images_file="images.txt"):
-        with open(images_file,"a") as fo:
+        # "w", not "a": the per-lecture inc must reflect this run only,
+        # or an image deleted from the lecture haunts the file forever
+        # (a stale ../media/cjm.png broke the build this way).
+        with open(images_file,"w") as fo:
             for image in self.images:
                 if(not image.skip and not image.isUrl):
                     fo.write(image.orgsrc + "\n")
