@@ -73,6 +73,9 @@ jobs:
 
           git diff --cached --name-only
           git commit -m "Rebuild TikZ figures [skip ci]"
-          # Non-force: if the branch moved while this ran, fail rather than
-          # clobber it. Re-running the workflow is the fix.
+          # The branch may have moved while this ran - the Bibliography
+          # workflow pushes [skip ci] commits from the same trigger and has
+          # won that race before. Rebase onto the moved branch and push;
+          # a genuine conflict still fails rather than clobbering.
+          git pull --rebase origin "${BRANCH}"
           git push origin "HEAD:refs/heads/${BRANCH}"
