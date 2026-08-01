@@ -107,11 +107,6 @@
  \portmIn{#2} \fi (cicmos)
 }
 
-\newcommand{\hinv}[1]{
-  ++(0.7,0) node[not port] (#1) {} ++(0.7,0)
-
-}
-
 \newcommand{\lvpmos}[2]{
   to [Tpmos, n=#1] ++(0,\grid) coordinate (cicmos) (#1.gate)  \if \relax\detokenize{#2}\relax \else (#1.gate)
  \portIn{#2} \fi (cicmos)
