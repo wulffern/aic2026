@@ -30,8 +30,8 @@
     \draw[armygreen, very thick, ->] (-1.0,0) -- (0.1,0);
 
     % D through an inverter and a transmission gate
-    \node[not port] (gi1) at (2.5,0) {};
-    \draw (1.0,0) node[anchor=east] {$D$} to [short,o-] (gi1.in);
+    \draw (1.95,0) \cicInv{gi1};
+    \draw (1.0,0) node[anchor=east] {$D$} to [short,o-] (gi1_in);
 
     % TG1, transparent when C is high
     \draw (3.9,0.5) -- (3.9,-0.5) -- (4.6,0) -- cycle;
@@ -39,7 +39,7 @@
     \draw (4.6,0.55) circle (0.09);
     \node at (4.6,1.0)  {$\overline{C}$};
     \node at (4.6,-0.85) {$C$};
-    \draw (gi1.out) -- (3.9,0);
+    \draw (gi1_out) -- (3.9,0);
 
     % node X, with the QB tap
     \draw (5.3,0) -- (6.9,0);
@@ -48,16 +48,16 @@
       node[anchor=west] {$\overline{Q}$};
 
     % output inverter
-    \node[not port] (gi2) at (8.7,0) {};
-    \draw (6.9,0) -- (gi2.in);
-    \draw (gi2.out) -- (12.4,0) to [short,-o] ++(0.4,0)
+    \draw (8.15,0) \cicInv{gi2};
+    \draw (6.9,0) -- (gi2_in);
+    \draw (gi2_out) -- (12.4,0) to [short,-o] ++(0.4,0)
       node[anchor=west] {$Q$};
 
     % feedback: Q through an inverter and TG2, transparent when C is low
-    \node[not port, xscale=-1] (gi3) at (9.8,-2.0) {};
+    \draw (10.35,-2.0) \cicInvM{gi3};
     \fill (11.5,0) circle (0.075);
-    \draw (11.5,0) -- (11.5,-2.0) -- (gi3.in);
-    \draw (gi3.out) -- (8.3,-2.0);
+    \draw (11.5,0) -- (11.5,-2.0) -- (gi3_in);
+    \draw (gi3_out) -- (8.3,-2.0);
     \draw (8.3,-1.5) -- (8.3,-2.5) -- (7.6,-2.0) -- cycle;
     \draw (6.9,-1.5) -- (6.9,-2.5) -- (7.6,-2.0) -- cycle;
     \draw (7.6,-1.45) circle (0.09);

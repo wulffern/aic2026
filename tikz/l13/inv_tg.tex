@@ -13,9 +13,9 @@
   \begin{scope}[shift={(0,8.5)}]
 
     % symbol: inverter into a transmission gate
-    \node[not port] (ti1) at (1.4,0) {};
-    \draw (0.0,0) node[anchor=east] {$A$} to [short,o-] (ti1.in);
-    \draw (ti1.out) -- (3.4,0);
+    \draw (0.85,0) \cicInv{ti1};
+    \draw (0.0,0) node[anchor=east] {$A$} to [short,o-] (ti1_in);
+    \draw (ti1_out) -- (3.4,0);
     \draw (3.4,0.5) -- (3.4,-0.5) -- (4.1,0) -- cycle;
     \draw (4.8,0.5) -- (4.8,-0.5) -- (4.1,0) -- cycle;
     \draw (4.1,0.55) circle (0.09);
@@ -69,9 +69,9 @@
   \begin{scope}[shift={(2.0,0)}]
 
     % tristate inverter symbol, enable bubble on top
-    \node[not port] (tb) at (1.4,0) {};
-    \draw (0.2,0) -- (tb.in);
-    \draw (tb.out) -- (3.2,0);
+    \draw (0.85,0) \cicInv{tb};
+    \draw (0.2,0) -- (tb_in);
+    \draw (tb_out) -- (3.2,0);
     \draw (1.35,0.34) circle (0.09);
     \draw (1.35,0.43) -- (1.35,1.0);
 

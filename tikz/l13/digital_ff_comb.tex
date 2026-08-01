@@ -4,6 +4,7 @@
 % logic, and registers again. always_ff, always_comb, always_ff.
 
 \begin{circuitikz}[thick]
+  \input{tikz/ckt_lib.tex}
 
   \newcommand{\dffbox}{
     \draw (0,0) rectangle (1.8,2.4);
@@ -42,9 +43,11 @@
                  (7.8,6.4) (8.6,5.4) (8.9,3.4) (8.7,1.4) (8.0,-0.2)
                  (6.6,-0.9) (5.2,-0.6) (4.2,0.4) (3.7,1.6)};
 
-  \node[nor port, scale=0.8]  at (6.2,5.2) {};
-  \node[not port, scale=0.8]  at (6.1,3.1) {};
-  \node[nand port, scale=0.8] at (6.2,1.0) {};
+  \begin{scope}[scale=0.8]
+    \draw (6.9,6.5) \cicNor{cga};
+    \draw (7.08,3.88) \cicInv{cgb};
+    \draw (7.01,1.25) \cicNand{cgc};
+  \end{scope}
 
   % wires into and out of the cloud
   \draw (1.8,6.45) -- (4.4,6.45);

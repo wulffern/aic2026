@@ -4,6 +4,7 @@
 % transparent while the slave holds, and the clock inverter swaps them.
 
 \begin{circuitikz}[thick]
+  \input{tikz/ckt_lib.tex}
 
   % ----------------------------------------------------------------
   % Flip-flop symbol
@@ -51,9 +52,9 @@
   \draw (-1.3,-3.4) node[anchor=east] {$C$} to [short,o-] (0.9,-3.4);
   \fill (0.9,-3.4) circle (0.075);
   \draw (0.9,-3.4) -- (0.9,-1.4);
-  \node[not port] (cinv) at (2.9,-3.4) {};
-  \draw (0.9,-3.4) -- (cinv.in);
-  \draw (cinv.out) -- (5.5,-3.4) -- (5.5,-1.4);
+  \draw (2.35,-3.4) \cicInv{cinv};
+  \draw (0.9,-3.4) -- (cinv_in);
+  \draw (cinv_out) -- (5.5,-3.4) -- (5.5,-1.4);
 
 \end{circuitikz}
 \end{document}
