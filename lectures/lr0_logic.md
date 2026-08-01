@@ -1637,7 +1637,7 @@ endmodule // counter
 
 # Battery charger FSM
 
-![inline](../media/charge_graph.png)
+![inline](../media/charge_graph_tikz.pdf)
 
 <!--pan_doc:
 <sub>Figure 65: Li-Ion charging profile, charge current and battery voltage against time through trickle charge, fast charge, constant voltage charge and charging complete</sub>
@@ -1676,7 +1676,7 @@ If voltage close to $$V_{TERM}$$ and current is close to $$I_{TERM}$$, then char
 
 If charging complete, and voltage has dropped ($$V_{RECHARGE}$$), then start again
 
-![right 60%](../media/charge_graph.png)
+![right 60%](../media/charge_graph_tikz.pdf)
 
 <!--pan_doc:
 <sub>Figure 67: The charging profile marked with the thresholds the charger senses - the trickle to fast voltage, the termination voltage VTERM and the termination current ITERM</sub>
@@ -1695,7 +1695,7 @@ Constant voltage
 Charging complete
 
 
-![right 60%](../media/charge_graph.png)
+![right 60%](../media/charge_graph_tikz.pdf)
 
 <!--pan_doc:
 <sub>Figure 68: The charging profile divided into the four charger states - trickle charge at 0.1 C, fast charge at 1 C, constant voltage and charging complete</sub>

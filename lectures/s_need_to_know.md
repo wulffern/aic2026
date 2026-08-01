@@ -992,7 +992,7 @@ endmodule // counter
 ---
 ## Battery charger FSM
 
-![inline](../media/charge_graph.png)
+![inline](../media/charge_graph_tikz.pdf)
 
 ---
 
@@ -1023,7 +1023,7 @@ If voltage close to $$V_{TERM}$$ and current is close to $$I_{TERM}$$, then char
 
 If charging complete, and voltage has dropped ($$V_{RECHARGE}$$), then start again
 
-![right 60%](../media/charge_graph.png)
+![right 60%](../media/charge_graph_tikz.pdf)
 
 ---
 
@@ -1038,7 +1038,7 @@ Constant voltage
 Charging complete
 
 
-![right 60%](../media/charge_graph.png)
+![right 60%](../media/charge_graph_tikz.pdf)
 
 ---
 
