@@ -16,25 +16,25 @@
     \draw (2.3,#1) to [short,-o] (2.42,#1);
     % the AC coupling capacitor up to the clock port, with enough gate
     % lead that the plates clear the device instead of sitting on it
-    \draw (#3.G) -- (0.85,{#1+1.15});
-    \draw (0.55,{#1+1.15}) -- (1.15,{#1+1.15});
-    \draw (0.55,{#1+1.35}) -- (1.15,{#1+1.35});
-    \draw (0.85,{#1+1.35}) -- (0.85,{#1+1.9});
-    \draw (0.85,{#1+1.9}) to [short,-o] (0.85,{#1+2.02});
+    \draw (#3.G) -- (0.85,{#1+1.45});
+    \draw (0.55,{#1+1.45}) -- (1.15,{#1+1.45});
+    \draw (0.55,{#1+1.65}) -- (1.15,{#1+1.65});
+    \draw (0.85,{#1+1.65}) -- (0.85,{#1+2.1});
+    \draw (0.85,{#1+2.1}) to [short,-o] (0.85,{#1+2.22});
     %- beside the port, not above it: stacked above, each label lands
     %- under the device of the switch overhead and reads as its output
-    \node[anchor=west] at (1.06,{#1+2.02}) {#2};
+    \node[anchor=west] at (1.06,{#1+2.22}) {#2};
     % The bias resistor, tapping the gate side of the capacitor. It has to
     % land below the bottom plate: the whole point of the capacitor is
     % that the gate sits at V_n while the clock swings rail to rail, and
     % a resistor landing between the plates would short that out. Drawn
     % straight rather than diagonally, so it is visible which node it
     % reaches.
-    \fill (0.85,{#1+0.92}) circle (0.075);
-    \draw (0.85,{#1+0.92}) -- (1.5,{#1+0.92});
-    \draw (1.5,{#1+0.92}) \hresistor{};
-    \draw (3.1,{#1+0.92}) to [short,-o] (3.22,{#1+0.92});
-    \node[anchor=west] at (3.38,{#1+0.92}) {$V_n$};
+    \fill (0.85,{#1+1.2}) circle (0.075);
+    \draw (0.85,{#1+1.2}) -- (1.5,{#1+1.2});
+    \draw (1.5,{#1+1.2}) \hresistor{};
+    \draw (3.1,{#1+1.2}) to [short,-o] (3.22,{#1+1.2});
+    \node[anchor=west] at (3.38,{#1+1.2}) {$V_n$};
   }
 
   \def\yIone{7.2}
