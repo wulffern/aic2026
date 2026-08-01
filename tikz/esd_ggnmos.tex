@@ -1,0 +1,38 @@
+\input{tikz/fig_header.tex}
+
+% The grounded gate NMOS on its own, with the zap current forced into it.
+%
+% Gate, source and bulk on ground, and 2.6 A into the drain. The whole
+% point of the figure is that pair of facts side by side: every terminal
+% you can name is at zero, so the device is off by any model you have
+% been taught, and yet it is expected to sink an amp scale current. What
+% carries it is the parasitic lateral bipolar, which the BSIM model in
+% front of you does not have - that is the sentence the chapter spends
+% the next two pages on.
+%
+% 2.6 A is the HBM number from earlier in the chapter: 4 kV across the
+% 1.5 k body resistance.
+
+\begin{circuitikz}[american, thick, transform shape, circuit ee IEC]
+
+  \input{tikz/ckt_lib.tex}
+
+  %- transistor, source on ground
+  \draw (0,0) \vground;
+  \draw (0,0) \lvnmos{M1}{};
+
+  %- gate to its own ground, beside the source: drawn as a separate
+  %- symbol rather than a wire back to the source pin, because the
+  %- chapter's next figure is a cross section where the gate contact and
+  %- the source contact really are two different pieces of metal
+  \draw (M1.gate) -- (-1.1,0.8);
+  \draw (-1.1,0.8) -- (-1.1,0);
+  \draw (-1.1,0) \vground;
+
+  %- the zap, into the drain
+  \draw (0,{2*\grid}) to [I] (0,\grid);
+  \draw (0,{2*\grid}) -- (0,{2*\grid+0.6});
+  \node[red, anchor=west] at (0.55,{1.5*\grid}) {$2.6$ A};
+
+\end{circuitikz}
+\end{document}

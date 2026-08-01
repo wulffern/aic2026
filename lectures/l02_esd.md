@@ -363,7 +363,7 @@ The gate source of the PMOS in the second inverter will see approximately 1 kV a
 
 ---
 
-![fit](../media/cdm1.pdf)
+![fit](../media/esd_cdm_domains_tikz.pdf)
 
 <!--pan_doc:
 <sub>Figure 4: Cross domain voltage problem with CDM (or indeed HBM) events </sub>
@@ -496,7 +496,7 @@ We need to think about how electrons, holes PN-junctions and bipolars work. Let'
 
 -->
 
-![left fit](../media/l02_ggnmos.pdf)
+![left fit](../media/esd_ggnmos_tikz.pdf)
 
 <!--pan_doc:
 <sub>Figure 10: The grounded gate NMOS (GGNMOS) </sub>
@@ -532,7 +532,7 @@ Assume a transistor like the one in Figure 11. The gate, source and bulk is conn
 
 ---
 
-![fit](../media/ggnmos.pdf)
+![fit](../media/esd_ggnmos_xsec_tikz.pdf)
 
 <!--pan_doc:
 <sub>Figure 11: Cross section of the grounded gate NMOS </sub>
@@ -624,7 +624,7 @@ that the voltage across the transistor gate does not go to breakdown levels.
 
 ---
 
-![original fit](../media/l6/esd.pdf)
+![original fit](../media/esd_input_prot_tikz.pdf)
 
 <!--pan_doc:
 <sub>Figure 12: Full protection of an input including secondary protection </sub>
@@ -675,7 +675,7 @@ Assume we have the circuit in Figure 14. Under certain conditions we can get a s
 
 -->
 
-![left fit](../media/l02_latchup.pdf)
+![left fit](../media/esd_latchup_tikz.pdf)
 
 <!--pan_doc:
 <sub>Figure 14: Inverter that suddenly shorts from VDD to ground located close to a PAD</sub>

@@ -1,0 +1,88 @@
+\input{tikz/fig_header.tex}
+
+% The grounded gate NMOS in cross section, with the five places the
+% chapter names.
+%
+% Same device as the schematic before it, drawn so the parasitic bipolar
+% has somewhere to live: the source n+, the p- substrate and the drain
+% n+ are an npn whose base nobody drew and nobody can reach. The numbers
+% are the order the chapter walks through, and each one is a place, not
+% a step in a circuit:
+%
+%   1  avalanche at the drain junction, where the field is
+%   2  the hole current that avalanche sends into the substrate
+%   3  the source junction, forward biased once those holes raise the
+%      local substrate potential
+%   4  and then electrons straight from source to drain, which is the
+%      bipolar conducting
+%   5  the p+ contact, the only way the substrate current is meant to
+%      leave, and too far away to stop any of this
+%
+% Gate, source and bulk share one piece of metal, which is what makes
+% the device a grounded gate NMOS rather than a transistor. The two
+% black outlines are the depletion regions.
+%
+% Colours are the book's layout layers - active for the implants, poly
+% for the gate - rather than the original's saturated green and red. The
+% original circles its numbers in blue, which carries no meaning here.
+
+\begin{circuitikz}[american, thick, transform shape]
+
+  \input{tikz/ckt_lib.tex}
+
+  \def\dimp{-1.11}   % implant depth
+  \def\ddep{-1.39}   % depletion region depth
+
+  %- depletion regions, drawn first so the implants sit on top
+  \draw (1.75,0) rectangle (4.53,\ddep);
+  \draw (6.65,0) rectangle (9.50,\ddep);
+
+  %- implants
+  \fill[active] (0.54,0) rectangle (1.43,\dimp);
+  \draw (0.54,0) rectangle (1.43,\dimp);
+  \node[anchor=center] at (0.99,-0.42) {P+};
+
+  \fill[active] (2.18,0) rectangle (4.15,\dimp);
+  \draw (2.18,0) rectangle (4.15,\dimp);
+  \node[anchor=center] at (3.17,-0.5) {n+};
+
+  \fill[active] (7.18,0) rectangle (9.15,\dimp);
+  \draw (7.18,0) rectangle (9.15,\dimp);
+  \node[anchor=center] at (8.17,-0.5) {n+};
+
+  %- the surface, and the bulk it is the top of
+  \draw (-0.2,0) -- (9.95,0);
+  \node[anchor=center] at (5.30,-2.14) {P-};
+
+  %- gate stack: oxide strip, then poly, overlapping both junctions
+  \draw (3.98,0) rectangle (7.35,0.26);
+  \fill[poly] (3.98,0.26) rectangle (7.35,0.77);
+  \draw (3.98,0.26) rectangle (7.35,0.77);
+
+  %- one piece of metal over bulk contact, source and gate, and a
+  %- ground on the end of it: that is the whole trick
+  \draw (1.03,0) -- (1.03,0.45) -- (3.03,0.45);
+  \draw (0.60,0.45) -- (1.03,0.45);
+  \draw (0.60,0.45) \vground;
+  \draw (3.03,0) -- (3.03,1.32) -- (5.58,1.32) -- (5.58,0.77);
+  \fill (3.03,0.45) circle (0.075);
+
+  %- and the drain, on whatever the pin is doing
+  \draw (8.15,0) -- (8.15,0.89) -- (9.55,0.89);
+  \draw (9.55,0.89) \vsupply;
+
+  %- the five places
+  %- filled, because three of the five sit on a boundary: the whole
+  %- point of where they are put is which side of an edge they are on
+  \newcommand{\xstep}[3]{%
+    \draw[fill=white] (#1,#2) circle (0.20);
+    \node[anchor=center, scale=0.85] at (#1,#2) {#3};
+  }
+  \xstep{7.95}{-1.31}{1}
+  \xstep{6.58}{-1.86}{2}
+  \xstep{4.34}{-0.44}{3}
+  \xstep{5.53}{-0.44}{4}
+  \xstep{1.08}{-0.86}{5}
+
+\end{circuitikz}
+\end{document}

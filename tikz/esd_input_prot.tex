@@ -1,0 +1,117 @@
+\input{tikz/fig_header.tex}
+
+% Everything between a bond pad and the first gate of a digital input.
+%
+% Read it left to right, because that is the order the current sees it.
+% The pad's two diodes take a zap to whichever rail it belongs to. The
+% supply clamp - a grounded gate NMOS and a diode, the same pair as the
+% network figure earlier in the chapter - is what makes those diodes
+% useful, since a diode to VDD only helps if VDD itself has somewhere to
+% dump the charge. The series resistor then limits what is left, and the
+% secondary clamps hold the buffer's gate oxide at a rail while the
+% primary devices, which are large and slow, get around to turning on.
+%
+% Two resistors and two stages, and that is the point of the figure: the
+% primary devices are sized for amps and clamp late, the secondary ones
+% are small and clamp early, and the resistor between them is what lets
+% the two disagree.
+%
+% Both secondary devices are a transistor with its gate tied to the rail
+% its channel terminal sits on, so both are off in normal operation.
+%
+% Differences from the hand drawing this replaces: the original marks
+% the block boundaries with small open circles on the rails, which are
+% ports on the sheet it was copied from and would read as junctions
+% here; and it hops the signal line over the clamp column, where the
+% house convention is a plain crossing.
+
+\begin{circuitikz}[american, thick, transform shape, circuit ee IEC]
+
+  \input{tikz/ckt_lib.tex}
+  \input{tikz/esd_lib.tex}
+
+  \def\yvdd{4.6}
+  \def\ysig{2.6}
+  \def\yclamp{1.7}
+  \def\ygnd{0.2}
+
+  %%- the pad, and what it is connected to the world with
+  \draw (-0.45,{\ysig-0.45}) rectangle (0.45,{\ysig+0.45});
+  \draw (-0.45,{\ysig-0.45}) -- (0.45,{\ysig+0.45});
+  \draw (-0.45,{\ysig+0.45}) -- (0.45,{\ysig-0.45});
+  \node[anchor=north] at (0,{\ysig-0.65}) {Pad};
+  \draw[gray, dotted, very thick]
+    (-2.6,{\yvdd+0.5}) .. controls (-1.6,{\yvdd+0.2}) and (-0.5,4.0) .. (0,{\ysig+0.3});
+  \node[anchor=south] at (-1.9,{\yvdd+0.75}) {Bondwire};
+  \draw (0.45,\ysig) -- (2.6,\ysig);
+
+  %%- primary: a diode to each rail at the pad itself
+  \draw (2.6,\yvdd) -- (8.0,\yvdd);
+  \draw (2.6,\yvdd) \vsupply;
+  \esdDiode{2.6}{\ysig}{\yvdd}{3.6}{}
+  %- drawn out rather than through \esdDiode, which dots both of its
+  %- ends: the bottom end here is a ground symbol, not a junction
+  \draw (2.6,\ygnd) \vground;
+  \draw (2.6,\ygnd) -- (2.6,0.95);
+  \draw (2.6,0.95) to [D] (2.6,1.85);
+  \draw (2.6,1.85) -- (2.6,\ysig);
+  \fill (2.6,\ysig) circle (0.075);
+
+  %%- and the resistor that separates the two stages
+  \draw (2.6,\ysig) -- (3.0,\ysig);
+  \draw (3.0,\ysig) \hresistor{};
+  \draw (4.6,\ysig) -- (8.4,\ysig);
+
+  %%- the supply clamp: the pad diodes are only as good as this is
+  \draw (5.6,\yvdd) -- (5.6,\yclamp);
+  \draw (5.0,\yclamp) -- (7.0,\yclamp);
+  \fill (5.6,\yclamp) circle (0.075);
+  \fill (5.6,\yvdd) circle (0.075);
+
+  \node[nmos] (mclamp) at (5.0,1.0) {};
+  \draw (mclamp.D) -- (5.0,\yclamp);
+  \draw (mclamp.S) -- (5.0,\ygnd);
+  \draw (5.0,\ygnd) \vground;
+  \draw (mclamp.G) -- (4.2,1.0) -- (4.2,\ygnd);
+  \draw (4.2,\ygnd) \vground;
+
+  \draw (7.0,\ygnd) \vground;
+  \draw (7.0,\ygnd) -- (7.0,0.5);
+  \draw (7.0,0.5) to [D] (7.0,1.4);
+  \draw (7.0,1.4) -- (7.0,\yclamp);
+  \fill (7.0,\yclamp) circle (0.075);
+
+  %%- secondary: a smaller resistor, and a clamp to each rail
+  \draw (8.4,\ysig) \hresistor{};
+  \draw (10.0,\ysig) -- (11.6,\ysig);
+  \draw (8.0,\yvdd) -- (12.6,\yvdd);
+
+  \node[nmos, yscale=-1] (mtop) at (11.0,3.6) {};
+  \draw (mtop.S) -- (11.0,\yvdd);
+  \fill (11.0,\yvdd) circle (0.075);
+  \draw (mtop.D) -| (11.6,\ysig);
+  \draw (mtop.G) -- (10.2,3.6) -- (10.2,\yvdd);
+  \fill (10.2,\yvdd) circle (0.075);
+
+  \node[nmos] (mbot) at (11.0,1.0) {};
+  \draw (mbot.D) -| (11.6,\ysig);
+  \draw (mbot.S) -- (11.0,\ygnd);
+  \draw (11.0,\ygnd) \vground;
+  \draw (mbot.G) -- (10.2,1.0) -- (10.2,\ygnd);
+  \draw (10.2,\ygnd) \vground;
+
+  \fill (11.6,\ysig) circle (0.075);
+
+  %%- and what all of it is for
+  \draw[rounded corners=3pt] (12.6,0.6) rectangle (14.6,\yvdd+0.6);
+  \node[anchor=center, align=center] at (13.6,{\ysig+0.3}) {Input\\Buffer};
+  \draw (11.6,\ysig) -- (12.6,\ysig);
+
+  %%- the two stages, named
+  \draw[armygreen, dotted, very thick] (2.0,-0.7) rectangle (8.2,5.9);
+  \node[anchor=north] at (5.1,5.75) {Primary ESD};
+  \draw[armygreen, dotted, very thick] (8.6,-0.3) rectangle (12.2,5.9);
+  \node[anchor=north, align=center] at (10.4,5.75) {Secondary\\ESD};
+
+\end{circuitikz}
+\end{document}

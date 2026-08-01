@@ -1,0 +1,62 @@
+\input{tikz/fig_header.tex}
+
+% The cross domain problem, in the two instants that matter.
+%
+% Two inverters on two supplies. Before the tester's probe lands, the
+% whole part is charged to 1 kV and nothing is stressed, because nothing
+% is stressed by a potential everything shares. The probe grounds VDD1;
+% a nanosecond later VDD1 is at zero and VDD2 has not moved, and the
+% second inverter's PMOS has a kilovolt from its gate to its source.
+%
+% Both panels are drawn identically on purpose. The only thing that
+% changes between them is one number, and that is the argument: nothing
+% about the circuit is wrong, and it still breaks.
+%
+% The original hand drawing keeps 1 kV on both ground symbols in the
+% second panel, and so does this: what the tester grounds is the VDD1
+% pad, not the part.
+
+\begin{circuitikz}[american, thick, transform shape, circuit ee IEC]
+
+  \input{tikz/ckt_lib.tex}
+
+  % One inverter with its supply and ground brought out: #1 x, #2 node
+  % id, #3 supply net name, #4 supply value, #5 ground value.
+  %
+  % The triangle is drawn rather than taken from circuitikz, because a
+  % logic port has no supply pins and this figure is entirely about what
+  % is on them. Half height is 0.45 at the input edge and falls linearly
+  % to the tip, so the rails leave the body at 0.3 and land on the
+  % slope instead of crossing it.
+  \newcommand{\cdminv}[5]{%
+    \draw ({#1-0.45},-0.45) -- ({#1-0.45},0.45) -- ({#1+0.45},0) -- cycle;
+    \draw ({#1+0.55},0) circle (0.1);
+    \coordinate (#2in) at ({#1-0.45},0);
+    \coordinate (#2out) at ({#1+0.65},0);
+    \draw ({#1-0.15},0.3) -- ({#1-0.15},0.95);
+    \draw ({#1-0.15},0.95) \vsupply;
+    \node[armygreen, anchor=south, scale=0.9] at ({#1-0.15},1.75) {#3};
+    \node[red, anchor=west, scale=0.9] at ({#1+0.1},1.25) {#4};
+    \draw ({#1-0.15},-0.3) -- ({#1-0.15},-0.85);
+    \draw ({#1-0.15},-0.85) \vground;
+    \node[red, anchor=north, scale=0.9] at ({#1-0.15},-1.3) {#5};
+  }
+
+  % One panel: #1 x offset, #2 node prefix, #3 title, #4 VDD1, #5 VDD2.
+  \newcommand{\cdmpanel}[5]{%
+    \node[anchor=south] at ({#1+1.1},2.6) {#3};
+    \cdminv{#1}{#2a}{VDD1}{#4}{1 kV}
+    \cdminv{#1+2.2}{#2b}{VDD2}{#5}{1 kV}
+    \draw (#2aout) -- (#2bin);
+    \draw ({#1-1.1},0) -- (#2ain);
+    \draw (#2bout) -- ({#1+3.3},0);
+  }
+
+  \cdmpanel{0}{L}{$t = 0^-$}{1 kV}{1 kV}
+  \cdmpanel{6.4}{R}{$t = 0^+$}{0 V}{1 kV}
+
+  %- and the instant in between
+  \draw[armygreen, very thick, ->] (4.0,0) -- (4.9,0);
+
+\end{circuitikz}
+\end{document}
