@@ -36,15 +36,8 @@ def post_lecture_id(text):
 # top level pages from docs/, in sidebar order ahead of the chapters
 PAGES = ["plan", "syllabus", "downloads", "examples", "about"]
 
-# titles for decks that are not lectures (the s_* standalone decks)
+# titles for decks that are not lectures
 DECK_TITLES = {
-    "s_exam": "Exam notes",
-    "s_maxwell": "Maxwell",
-    "s_need_to_know": "Need to know",
-    "s_mac": "Analog neural networks (MAC)",
-    "s_chinf": "Channel information",
-    "s_tut2": "Tutorial 2",
-    "s_project_scratch": "Project scratch",
     "tex_intro": "LaTeX introduction",
 }
 

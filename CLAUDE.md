@@ -97,7 +97,7 @@ Markdown with special front-matter and pandoc-style comment blocks:
 - `<!--pan_doc: ... -->` — content included only in web/doc output (not slides)
 - `<!--pan_latex: ... -->` — LaTeX-only content
 
-Files prefixed `l` are main lectures; `lr` are reference/refresher lectures; `lx` are extra topics; `lp` are project-related; `g` are guest lectures; `s` are standalone decks — not part of the lecture series or the book, but rendered to HTML slides (`STANDALONE_DECKS` in the Makefile) and linked from the Downloads page. A lecture file must either be in the Makefile `FILES` list or in the `EXCLUDED` set in `py/check.py`, or `make check` fails.
+Files prefixed `l` are main lectures; `lr` are reference/refresher lectures; `lx` are extra topics; `lp` are project-related; `g` are guest lectures; `s` are scratch decks — not part of the lecture series, not in the book, and not built at all. They stay in `lectures/` and in `EXCLUDED` so `make check` still sees them. A lecture file must either be in the Makefile `FILES` list or in the `EXCLUDED` set in `py/check.py`, or `make check` fails.
 
 ### Python processor (`py/lecture.py`)
 Two CLI commands via Click:

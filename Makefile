@@ -48,7 +48,6 @@ FILES = l00_jayn \
 	lr0_logic \
 	l00_questions \
 	l14_equations
-	#s_mac\
 
 
 
@@ -329,10 +328,13 @@ slides-vendor:
 
 # tex_intro is not in FILES, but it is a chapter and downloads.md links a deck
 # for it, so it has to be rendered too or that link is dead.
-# s_* are standalone decks: not in the lecture series or the book, but used
-# as slides, so they render too (linked from the Downloads page).
-STANDALONE_DECKS = s_chinf s_exam s_mac s_maxwell s_need_to_know s_project_scratch s_teach s_tut2
-SLIDEFILES = ${FILES} tex_intro ${STANDALONE_DECKS}
+#
+# The s_* decks used to render here as well. They are scratch - notes,
+# exam jottings, a talk or two - and nothing links to them, so building
+# them only produced pages nobody reads. They stay in lectures/ and in
+# EXCLUDED in py/check.py, which is what keeps them from rotting
+# unnoticed; they are simply not built.
+SLIDEFILES = ${FILES} tex_intro
 
 slides: slides-vendor
 	${foreach f, ${SLIDEFILES}, ${PYTHON} py/slides.py lectures/${f}.md || exit; }

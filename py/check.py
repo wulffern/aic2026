@@ -26,8 +26,10 @@ import sys
 #- Lectures that exist but are deliberately not built. Anything new in
 #  lectures/ that is neither here nor in FILES fails check 4, so a lecture
 #  cannot silently rot outside the build.
-#  s_* are standalone decks: not part of the lecture series or the book,
-#  but rendered to HTML slides (see SLIDEFILES in the Makefile).
+#  s_* are scratch decks: not part of the lecture series, not in the book,
+#  and no longer rendered to slides either. They are listed here rather
+#  than deleted so that check 4 still sees them, which is the only thing
+#  stopping an unbuilt lecture from rotting unnoticed.
 EXCLUDED = {
     "g00_m1p1",         # guest lectures, slides live elsewhere
     "g01_m1p2",
