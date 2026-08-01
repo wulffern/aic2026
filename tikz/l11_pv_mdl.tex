@@ -29,7 +29,15 @@
   \draw (0,0) \vground;
 
   %- and the junction shunts it back down, which is the competition
-  \draw (2.2,2.6) to [pD, l_=$D$] (2.2,0);
+  %- compact house diode, apex down: anode at the output node. The two
+  %- photon arrows stay - they say where the photocurrent comes from.
+  \draw (2.2,2.6) -- (2.2,1.75);
+  \draw (2.0,1.75) -- (2.4,1.75) -- (2.2,1.25) -- (2.0,1.75);
+  \draw (2.0,1.25) -- (2.4,1.25);
+  \draw (2.2,1.25) -- (2.2,0);
+  \node[anchor=east] at (1.9,1.5) {$D$};
+  \draw[->] (3.0,2.05) -- (2.55,1.7);
+  \draw[->] (3.0,1.75) -- (2.55,1.4);
   \draw (2.2,0) \vground;
 
   \draw (0,2.6) -- (2.2,2.6) -- (3.6,2.6);

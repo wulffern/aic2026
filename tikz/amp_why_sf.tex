@@ -12,7 +12,11 @@
 
   % photodiode into the sense node
   \draw (0,0) \vground;
-  \draw (0,0) to [full diode] (0,\ysig);
+  %- compact filled diode, house weight
+  \draw (0,0) -- (0,{\ysig/2-0.25});
+  \fill (-0.2,{\ysig/2-0.25}) -- (0.2,{\ysig/2-0.25}) -- (0,{\ysig/2+0.25}) -- cycle;
+  \draw (-0.2,{\ysig/2+0.25}) -- (0.2,{\ysig/2+0.25});
+  \draw (0,{\ysig/2+0.25}) -- (0,\ysig);
   \draw (0,\ysig) to [nos] (1.6,\ysig);
 
   % the 1 fF sense capacitor
