@@ -1,0 +1,48 @@
+\input{tikz/fig_header.tex}
+% The feedback divider SUN_PLL_DIVN, drawn from the xschem netlist in
+% sun_pll_sky130nm: five DFFs (SUNTR_DFRNQNX1), each wired as a toggle
+% by feeding QN back to D, each clocking the next from Q. Five halvings
+% make the divide-by-32 that turns 512 MHz into the 16 MHz CK_FB the
+% phase detector compares. PWRUP_1V8 releases the reset.
+\begin{circuitikz}[american, thick, transform shape, circuit ee IEC]
+\input{tikz/ckt_lib.tex}
+
+% One toggle stage: box, pins, clock wedge, QN->D loopback.
+% #1 x of the lower-left corner (y is 0)
+\newcommand{\divStage}[1]{
+  \draw (#1,0) rectangle ++(1.6,2.0);
+  % clock wedge
+  \draw (#1,0.4) ++(0,0.15) -- ++(0.25,-0.15) -- ++(-0.25,-0.15);
+  \node [anchor=west] at (#1,1.5) {D};
+  \node [anchor=east] at (#1+1.6,1.5) {$\overline{Q}$};
+  \node [anchor=east] at (#1+1.6,0.4) {Q};
+  % toggle: QN back to D over the top
+  \draw (#1+1.6,1.5) -- ++(0.3,0) -- ++(0,0.9) -- ++(-2.2,0) -- ++(0,-0.9) -- ++(0.3,0);
+  % reset pin down to the shared PWRUP rail
+  \draw (#1+0.8,0) -- ++(0,-0.7);
+  \node [anchor=south] at (#1+0.8,0.05) {$\overline{R}$};
+}
+
+\divStage{0}
+\divStage{2.8}
+\divStage{5.6}
+\divStage{8.4}
+\divStage{11.2}
+
+% clock in, stage-to-stage Q -> CK, and CK_FB out
+\draw (-0.9,0.4) \portIn{CK} (-0.9,0.4) -- (0,0.4);
+\draw (1.6,0.4) -- (2.8,0.4);
+\draw (4.4,0.4) -- (5.6,0.4);
+\draw (7.2,0.4) -- (8.4,0.4);
+\draw (10.0,0.4) -- (11.2,0.4);
+\draw (12.8,0.4) -- ++(0.4,0) \portOut{$CK_{FB}$};
+
+% shared reset rail
+\draw (0.8,-0.7) -- (12.0,-0.7);
+\draw (0.8,-0.7) -- ++(-1.4,0) \portIn{$PWRUP_{1V8}$};
+\fill (3.6,-0.7) circle (0.075);
+\fill (6.4,-0.7) circle (0.075);
+\fill (9.2,-0.7) circle (0.075);
+
+\end{circuitikz}
+\end{document}

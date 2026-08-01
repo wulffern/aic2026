@@ -499,10 +499,10 @@ $$K_{osc} = 2 \pi\frac{ df}{dV_{cntl}}$$
 
 
 
-![right fit](../media/SUN_PLL_ROSC.pdf)
+![right fit](../media/l08/sunpll_rosc_tikz.pdf)
 
 <!--pan_doc:
-<sub>Figure 12: The ring oscillator block SUN\_PLL\_ROSC, whose supply VDD\_ROSC is the control voltage and whose output is CK</sub>
+<sub>Figure 12: The ring oscillator SUN\_PLL\_ROSC: a NAND and eight inverters make nine inversions, so the loop oscillates whenever PWRUP\_1V8 is high. The ring runs on VDD\_ROSC — the supply is the control node — and the level shifter LS brings taps N2/N1 back to the AVDD domain to make CK</sub>
 -->
 
 ---
@@ -597,10 +597,10 @@ Two things follow that are easy to miss. The gain does not depend on the referen
 
 
 
-![right fit](../media/SUN_PLL_CP.pdf)
+![right fit](../media/l08/sunpll_cp_tikz.pdf)
 
 <!--pan_doc:
-<sub>Figure 14: The phase-frequency detector SUN\_PLL\_PFD comparing CK\_REF with CK\_FB, driving the charge pump SUN\_PLL\_CP through CP\_UP\_N and CP\_DOWN</sub>
+<sub>Figure 14: The charge pump SUN\_PLL\_CP, driven by the phase-frequency detector through CP\_UP\_N and CP\_DOWN. V\_BN sets I\_cp, the switch pair steers it into or out of V\_LPF, M7 parks V\_LPF at AVDD in power-down, and the KICK switch grabs the filter's zero node to start the loop. The mirror devices are stacked pairs in silicon, drawn single here</sub>
 -->
 
 ---
@@ -627,10 +627,10 @@ $$ K_{lp}H_{lp}(s) = \frac{1}{s(C_1 + C_2)}\frac{1 + s R C_1}{1 +
 sR\frac{C_1C_2}{C_1 + C_2}}$$
 
 
-![right fit](../media/SUN_PLL_LP.pdf)
+![right fit](../media/l08/sunpll_lpf_tikz.pdf)
 
 <!--pan_doc:
-<sub>Figure 15: The loop filter SUN\_PLL\_LPF on VLPF, followed by the buffer SUN\_PLL\_BUF that drives the oscillator supply VDD\_ROSC</sub>
+<sub>Figure 15: The loop filter SUN\_PLL\_LPF on VLPF, followed by the buffer SUN\_PLL\_BUF that drives the oscillator supply VDD\_ROSC. C1 is 22 unit capacitors, C2 is 3, so the zero sits where the equations above put it</sub>
 -->
 
 ---
@@ -647,10 +647,10 @@ The divider is modelled as
 $$ K_{div} = \frac{1}{N}$$
 
 
-![right fit](../media/SUN_PLL_DIV.pdf)
+![right fit](../media/l08/sunpll_divn_tikz.pdf)
 
 <!--pan_doc:
-<sub>Figure 16: The feedback divider SUN\_PLL\_DIVN, dividing CK by 32 to make CK\_FB</sub>
+<sub>Figure 16: The feedback divider SUN\_PLL\_DIVN: five flip-flops wired as toggles, each clocking the next, dividing CK by 32 to make CK\_FB</sub>
 -->
 
 

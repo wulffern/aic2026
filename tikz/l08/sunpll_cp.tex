@@ -1,0 +1,45 @@
+\input{tikz/fig_header.tex}
+% The charge pump SUN_PLL_CP, drawn from the xschem netlist in
+% sun_pll_sky130nm. Left branch: the bias current set by V_BN is turned
+% into V_BP by the pmos diode M2. Main branch: M3 sources I_cp, the
+% switches M4 (on when CP_UP_N is low) and M5 (on when CP_DOWN is high)
+% steer it into or out of V_LPF, and M6 sinks I_cp. M7 parks V_LPF at
+% AVDD when the PLL is powered down; M8 lets the KICK pulse yank V_LPFZ
+% to start the loop. In silicon the mirror devices are stacked pairs
+% (SUNTR_*CM); they are drawn as single transistors here because the
+% stacking is a matching trick, not a different circuit.
+\begin{circuitikz}[american, thick, transform shape, circuit ee IEC]
+\input{tikz/ckt_lib.tex}
+
+% Bias branch: nmos mirror input, pmos diode makes V_BP
+\draw (0,0) \vground \lvnmos{M6}{$V_{BN}$};
+\draw (0,1.6) \vpmos{M2} \vsupply;
+\draw (M2.gate) |- (0,1.6);
+\fill (0,1.6) circle (0.075);
+\node [anchor=south] at (0.45,1.7) {$V_{BP}$};
+
+% Main branch: source, up switch, down switch, sink
+\draw (2.8,0) \vground \vnmos{M5};
+\draw (2.8,1.6) \vmnmos{M4};
+\draw (2.8,3.2) \vmpmos{M3};
+\draw (2.8,4.8) \vpmos{M1} \vsupply;
+
+% Gates: mirror rails and the switch inputs
+\draw (M6.gate) -- (M5.gate);
+\draw (0,1.6) -- ++(0.9,0) |- (M1.gate);
+\draw (M4.gate) \portmIn{$CP_{DOWN}$};
+\draw (M3.gate) \portmIn{$\overline{CP_{UP}}$};
+\node [anchor=east] at (2.7,4.9) {$V_{PS}$};
+\node [anchor=east] at (2.7,1.5) {$V_{NS}$};
+
+% Output node V_LPF, with the power-down pull-up M7
+\draw (2.8,3.2) to [short,*-] ++(2.4,0) coordinate (lpfNode) -- ++(1.2,0) \portOut{$V_{LPF}$};
+\draw (lpfNode) \lvmpmos{M7}{$\overline{PWRUP}$} \vsupply;
+\fill (lpfNode) circle (0.075);
+
+% Kick switch on the zero node of the filter
+\draw (7.6,0) \vground \lvmnmos{M8}{$KICK$};
+\draw (7.6,1.6) to [short,-o] ++(0,0.6) node [anchor=south] {$V_{LPFZ}$};
+
+\end{circuitikz}
+\end{document}

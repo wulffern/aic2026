@@ -1,0 +1,42 @@
+\input{tikz/fig_header.tex}
+% The ring oscillator SUN_PLL_ROSC, drawn from the xschem netlist in
+% sun_pll_sky130nm. A NAND and eight inverters make nine inversions, so
+% the loop oscillates whenever PWRUP_1V8 is high. The ring gates run on
+% VDD_ROSC - that supply IS the control node, which is why it is the one
+% thing drawn in red. The level shifter takes two adjacent taps (N2, N1)
+% back up to the AVDD domain, and an output inverter buffers CK.
+\begin{circuitikz}[american, thick, transform shape, circuit ee IEC]
+\input{tikz/ckt_lib.tex}
+
+% Enable NAND and the eight ring inverters
+\node[nand port] (nd) at (0.7,0) {};
+\draw (nd.out) \hinv{I0} \hinv{I1} \hinv{I2} \hinv{I3} \hinv{I4} \hinv{I5} \hinv{I6} \hinv{I7} coordinate (ringEnd);
+
+% Close the ring: last output back to the lower NAND input
+\draw (ringEnd) -- ++(0.4,0) -- ++(0,-1.5) -| (nd.in 2);
+
+% Enable port
+\draw (nd.in 1) -- ++(-0.6,0) \portIn{PWRUP\_1V8};
+
+% The control domain: everything inside the red box runs on VDD_ROSC
+\draw[red, dashed, rounded corners] (-0.9,-1.9) rectangle (13.1,0.9);
+\draw[red] (0.2,1.6) to [short,o-] ++(0.6,0) -- ++(0,-0.7)
+  node [anchor=south east, red] {VDD\_ROSC};
+
+% Level shifter on the AVDD domain, fed from taps N2 and N1
+\draw (11.6,2.2) rectangle ++(1.8,1.6);
+\node[anchor=center] at (12.5,3.0) {LS};
+\coordinate (lsInTop) at (11.6,3.4);
+\coordinate (lsInBot) at (11.6,2.6);
+\coordinate (lsOut) at (13.4,3.0);
+
+% Taps: N2 is the output of I5, N1 the output of I6
+\draw (I5.out) ++(0.2,0) to [short,*-] ++(0,3.4) node [anchor=south east] {N2} -| (lsInTop);
+\draw (I6.out) ++(0.2,0) to [short,*-] ++(0,2.6) node [anchor=south east] {N1} -| (lsInBot);
+
+% Output buffer
+\draw (lsOut) \hinv{I8};
+\draw (I8.out) \portOut{CK};
+
+\end{circuitikz}
+\end{document}

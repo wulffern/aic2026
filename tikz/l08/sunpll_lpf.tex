@@ -1,0 +1,35 @@
+\input{tikz/fig_header.tex}
+% The loop filter SUN_PLL_LPF and buffer SUN_PLL_BUF, drawn from the
+% xschem netlist in sun_pll_sky130nm. Classic second-order filter: the
+% series R-C1 branch makes the stabilising zero (V_LPFZ is the node the
+% KICK switch in the charge pump grabs), C2 straight on V_LPF kills the
+% ripple. The unit sizes are honest: C1 is 22 unit caps, C2 is 3, R is
+% two 8-segment poly resistors. The unity-gain buffer is why the filter
+% works at all - the oscillator draws supply current, and V_LPF cannot
+% deliver any without bending the transfer function.
+\begin{circuitikz}[american, thick, transform shape, circuit ee IEC]
+\input{tikz/ckt_lib.tex}
+
+% V_LPF rail from the charge pump
+\draw (0,0) \portIn{$V_{LPF}$};
+\draw (0,0) -- (4.6,0);
+
+% Ripple cap C2, straight to ground
+\draw (1.2,-1.6) \vground \vcapacitor{}
+  (1.3,-0.9) node [anchor=west] {$C_2 = 3 C_u$};
+\fill (1.2,0) circle (0.075);
+
+% Zero branch: R in series with C1; the midpoint is V_LPFZ
+\draw (3.0,-4.8) \vground \vcapacitor{}
+  (3.1,-4.1) node [anchor=west] {$C_1 = 22 C_u$};
+\draw (3.0,-3.2) \vresistor{$R$} -- (3.0,0);
+\draw (3.0,-3.2) to [short,*-o] ++(-0.7,0) node [anchor=east] {$V_{LPFZ}$};
+\fill (3.0,0) circle (0.075);
+
+% Unity-gain buffer to the oscillator supply
+\draw (4.6,0) \cicOtaSSWP{$+$}{$-$}
+  (cicOtaS_out) to [short,*-] ++(0,-1.5) -| (4.0,-0.8) -- (cicOtaS_inn);
+\draw (cicOtaS_out) \portOut{$VDD_{ROSC}$};
+
+\end{circuitikz}
+\end{document}
