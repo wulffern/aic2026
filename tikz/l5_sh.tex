@@ -10,7 +10,7 @@
 % The redraw makes the folding arithmetically right, which the hand-drawn
 % original only suggests. A tone at 1.1 fs lands on 0.1 fs and one at 0.6 fs
 % lands on -0.4 fs, so the colours let you trace which tone went where. The
-% relative order the original shows -- magenta ending up outside red -- is
+% relative order the original shows -- the second pair ending up outside the first -- is
 % preserved, because that is what the arithmetic gives.
 %
 % Those two input frequencies are chosen so the aliases land far enough apart
@@ -26,19 +26,19 @@
   % ---- Before sampling: two pairs of tones outside the Nyquist band ----
   \specAxis{\specYtop}
   \specBump{\specYtop}
-  \specTone{tonered}{-2.64}{\specYtop}     % -1.1 fs
-  \specTone{tonemag}{-1.44}{\specYtop}     % -0.6 fs
-  \specTone{tonemag}{1.44}{\specYtop}
-  \specTone{tonered}{2.64}{\specYtop}
+  \specTone{toneA}{-2.64}{\specYtop}     % -1.1 fs
+  \specTone{toneB}{-1.44}{\specYtop}     % -0.6 fs
+  \specTone{toneB}{1.44}{\specYtop}
+  \specTone{toneA}{2.64}{\specYtop}
   \node[anchor=west] at (1.45,\specYtop+1.62) {Before sampling};
 
   % ---- After sampling: nothing was filtered, so both pairs fold inside ----
   \specAxis{\specYbot}
   \specBump{\specYbot}
-  \specTone{tonered}{-0.24}{\specYbot}     % 1.1 fs - fs = 0.1 fs
-  \specTone{tonemag}{-0.96}{\specYbot}     % 0.6 fs - fs = -0.4 fs
-  \specTone{tonemag}{0.96}{\specYbot}
-  \specTone{tonered}{0.24}{\specYbot}
+  \specTone{toneA}{-0.24}{\specYbot}     % 1.1 fs - fs = 0.1 fs
+  \specTone{toneB}{-0.96}{\specYbot}     % 0.6 fs - fs = -0.4 fs
+  \specTone{toneB}{0.96}{\specYbot}
+  \specTone{toneA}{0.24}{\specYbot}
   \node[anchor=west] at (1.45,\specYbot+1.62) {After sampling};
 
   % ---- The sample and hold doing it ----

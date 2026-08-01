@@ -20,18 +20,18 @@
   \specBand{-2.64}{0.50}{1.25}{\specYtop}
   \specBand{2.64}{0.50}{1.25}{\specYtop}
   \specBump{\specYtop}
-  \specTone{tonered}{-2.64}{\specYtop}     % -1.1 fs, inside the passband
-  \specTone{tonemag}{-1.44}{\specYtop}     % -0.6 fs, rejected
-  \specTone{tonemag}{1.44}{\specYtop}
-  \specTone{tonered}{2.64}{\specYtop}
-  \node[bandorange, anchor=west] at (-2.05,\specYtop+1.55) {BP filter};
-  \draw[bandorange, thick, ->] (-2.1,\specYtop+1.50) -- (-2.45,\specYtop+1.32);
+  \specTone{toneA}{-2.64}{\specYtop}     % -1.1 fs, inside the passband
+  \specTone{toneB}{-1.44}{\specYtop}     % -0.6 fs, rejected
+  \specTone{toneB}{1.44}{\specYtop}
+  \specTone{toneA}{2.64}{\specYtop}
+  \node[specfilter, anchor=west] at (-2.05,\specYtop+1.55) {BP filter};
+  \draw[specfilter, thick, ->] (-2.1,\specYtop+1.50) -- (-2.45,\specYtop+1.32);
   \node[anchor=west] at (1.45,\specYtop+1.62) {Before sampling};
 
   % ---- After sampling: only the selected band folded down ----
   \specAxis{\specYbot}
-  \specTone{tonered}{-0.24}{\specYbot}     % 1.1 fs - fs = 0.1 fs
-  \specTone{tonered}{0.24}{\specYbot}
+  \specTone{toneA}{-0.24}{\specYbot}     % 1.1 fs - fs = 0.1 fs
+  \specTone{toneA}{0.24}{\specYbot}
   \node[anchor=west] at (1.45,\specYbot+1.62) {After sampling};
 
   % ---- Bandpass, then sample and hold ----

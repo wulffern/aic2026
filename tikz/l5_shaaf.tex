@@ -21,12 +21,12 @@
   % visibly outside the skirt rather than on it.
   \specBand{0}{1.05}{1.70}{\specYtop}
   \specBump{\specYtop}
-  \specTone{tonered}{-2.64}{\specYtop}     % -1.1 fs
-  \specTone{tonemag}{-1.44}{\specYtop}     % -0.6 fs
-  \specTone{tonemag}{1.44}{\specYtop}
-  \specTone{tonered}{2.64}{\specYtop}
-  \node[bandorange, anchor=east] at (-1.55,\specYtop+1.95) {LP filter};
-  \draw[bandorange, thick, ->] (-1.5,\specYtop+1.90) -- (-1.15,\specYtop+1.75);
+  \specTone{toneA}{-2.64}{\specYtop}     % -1.1 fs
+  \specTone{toneB}{-1.44}{\specYtop}     % -0.6 fs
+  \specTone{toneB}{1.44}{\specYtop}
+  \specTone{toneA}{2.64}{\specYtop}
+  \node[specfilter, anchor=east] at (-1.55,\specYtop+1.95) {LP filter};
+  \draw[specfilter, thick, ->] (-1.5,\specYtop+1.90) -- (-1.15,\specYtop+1.75);
   \node[anchor=west] at (1.45,\specYtop+1.62) {Before sampling};
 
   % ---- After sampling: the tones are gone, so nothing folds in ----
