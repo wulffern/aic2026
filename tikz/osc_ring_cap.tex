@@ -22,18 +22,18 @@
   % binary weighted branches: NMOS switch over capacitor
   \draw (\xa,{\yr-1.9}) \lvnmos{MS0}{$D_0$};
   \draw (\xa,\yr) to [short,*-] (\xa,{\yr-0.3});
-  \draw (\xa,{\yr-1.9}) to [C, l=$C$] (\xa,{\yr-3.3});
-  \draw (\xa,{\yr-3.3}) \vground;
+  \draw (\xa,{\yr-3.5}) \vcapacitor{$C$};
+  \draw (\xa,{\yr-3.5}) \vground;
 
   \draw (\xb,{\yr-1.9}) \lvnmos{MS1}{$D_1$};
   \draw (\xb,\yr) to [short,*-] (\xb,{\yr-0.3});
-  \draw (\xb,{\yr-1.9}) to [C, l=$2C$] (\xb,{\yr-3.3});
-  \draw (\xb,{\yr-3.3}) \vground;
+  \draw (\xb,{\yr-3.5}) \vcapacitor{$2C$};
+  \draw (\xb,{\yr-3.5}) \vground;
 
   \draw (\xc,{\yr-1.9}) \lvnmos{MS2}{$D_2$};
   \draw (\xc,\yr) to [short,*-] (\xc,{\yr-0.3});
-  \draw (\xc,{\yr-1.9}) to [C, l=$4C$] (\xc,{\yr-3.3});
-  \draw (\xc,{\yr-3.3}) \vground;
+  \draw (\xc,{\yr-3.5}) \vcapacitor{$4C$};
+  \draw (\xc,{\yr-3.5}) \vground;
 
 \end{circuitikz}
 \end{document}

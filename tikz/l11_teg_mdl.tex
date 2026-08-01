@@ -23,7 +23,7 @@
   \draw (0,0) to [V, l=$1$--$50$ mV/K, invert] (0,2.4);
   \draw (0,0) \vground;
 
-  \draw (0,2.4) to [R, l=$< 10\ \Omega$] (3.2,2.4);
+  \draw (0,2.4) -- (0.8,2.4) \hresistor{$< 10\ \Omega$} -- (3.2,2.4);
   \draw (3.2,2.4) node[ocirc]{};
 
 \end{circuitikz}

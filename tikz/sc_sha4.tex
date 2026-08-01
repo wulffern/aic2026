@@ -31,7 +31,7 @@
     \draw (\xin,\y) node[ocirc]{} -- (\xsw,\y);
     \draw (\xsw,\y) to [switch] (\xsw+0.9,\y);
     \node[scale=0.8, anchor=south] at (\xsw+0.45,\y+0.18) {$\phi_1$};
-    \draw (\xsw+0.9,\y) to [C, l=$4C$] (\xota-0.5,\y);
+    \draw (\xsw+0.9,\y) -- (\xsw+1.45,\y) \hcapacitor{$4C$} -- (\xota-0.5,\y);
     \node[anchor=east, scale=0.9] at (\xin-0.12,\y) {\lbl};
     %- phi2 grounds the left plate, and the charge moves to C
     \fill (\xsw+0.95,\y) circle (0.075);
@@ -62,7 +62,7 @@
 
   \draw (\xota-0.5,\ytop) -- (\xota-0.5,\yfbt);
   \fill (\xota-0.5,\ytop) circle (0.075);
-  \draw (\xota-0.5,\yfbt) to [C, l=$C$] (\xout-0.6,\yfbt);
+  \draw (4.7,\yfbt) -- (5.45,\yfbt) \hcapacitor{$C$} -- (7.8,\yfbt);
   \draw (\xout-0.6,\yfbt) -- (\xout-0.6,\ytop);
   \fill (\xout-0.6,\ytop) circle (0.075);
   \draw (\xota-0.5,\yfbt+0.85) to [switch] (\xout-0.6,\yfbt+0.85);
@@ -72,7 +72,7 @@
 
   \draw (\xota-0.5,\ybot) -- (\xota-0.5,\yfbb);
   \fill (\xota-0.5,\ybot) circle (0.075);
-  \draw (\xota-0.5,\yfbb) to [C, l_=$C$] (\xout-0.6,\yfbb);
+  \draw (4.7,\yfbb) -- (5.45,\yfbb) \hcapacitor{$C$} -- (7.8,\yfbb);
   \draw (\xout-0.6,\yfbb) -- (\xout-0.6,\ybot);
   \fill (\xout-0.6,\ybot) circle (0.075);
   \draw (\xota-0.5,\yfbb-0.85) to [switch] (\xout-0.6,\yfbb-0.85);

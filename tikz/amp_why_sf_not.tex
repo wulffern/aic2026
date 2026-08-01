@@ -16,7 +16,7 @@
   \draw (0,\ysig) to [nos] (1.6,\ysig);
 
   % the 1 fF sense capacitor
-  \draw (2.4,\ysig) to [C, l=1fF] (2.4,0);
+  \draw (2.4,0) -- (2.4,0.4) \vcapacitor{1fF} -- (2.4,2.4);
   \draw (2.4,0) \vground;
   \fill (2.4,\ysig) circle (0.075);
   \draw (1.6,\ysig) -- (3.6,\ysig);
@@ -30,7 +30,7 @@
 
   % straight into the big load - no buffer
   \draw (3.6,\ysig) -- (5.6,\ysig);
-  \draw (5.6,\ysig) to [C, l=1pF] (5.6,0);
+  \draw (5.6,0) -- (5.6,0.4) \vcapacitor{1pF} -- (5.6,2.4);
   \draw (5.6,0) \vground;
 
 \end{circuitikz}

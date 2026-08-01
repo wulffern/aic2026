@@ -40,8 +40,8 @@
   \draw (\xb,\ytk) -- (\xb,2.6);
 
   % ---- tank capacitors, grounded in the middle ----
-  \draw (\xa,\ycp) to [C, l=$C$] (\xc,\ycp);
-  \draw (\xc,\ycp) to [C, l=$C$] (\xb,\ycp);
+  \draw (0,\ycp) -- (0.45,\ycp) \hcapacitor{$C$} -- (2.5,\ycp);
+  \draw (2.5,\ycp) -- (2.95,\ycp) \hcapacitor{$C$} -- (5,\ycp);
   \fill (\xa,\ycp) circle (0.07);
   \fill (\xb,\ycp) circle (0.07);
   \draw (\xc,\ycp) -- ++(0,-0.3) \vground;

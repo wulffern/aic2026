@@ -10,8 +10,8 @@
 
   % ---- resistor divider ----
   \draw (-1.0,4.4) node[anchor=east] {$v_i$} to [short,o-] (0,4.4);
-  \draw (0,4.4) to [R, l=$R$] (0,2.6);
-  \draw (0,2.6) to [R, l=$R$] (0,0.8);
+  \draw (0,2.6) -- (0,2.7) \vresistor{$R$} -- (0,4.4);
+  \draw (0,0.8) -- (0,0.9) \vresistor{$R$} -- (0,2.6);
   \draw (0,0.8) \vground;
   \draw (0,2.6) to [short,*-o] (1.0,2.6);
   \node[anchor=west, color=blue] at (1.3,2.6)
@@ -19,10 +19,10 @@
 
   % ---- capacitor ratio ----
   \draw (0.0,-0.9) node[anchor=east] {$v_1$} to [short,o-] (0.6,-0.9);
-  \draw (0.6,-0.9) to [C, l_=$C$] (0.6,-2.5);
+  \draw (0.6,-2.5) -- (0.6,-2.5) \vcapacitor{$C$};
   \draw (0.6,-2.5) \vground;
   \draw (3.0,-0.9) node[anchor=east] {$v_2$} to [short,o-] (3.6,-0.9);
-  \draw (3.6,-0.9) to [C, l_=$C$] (3.6,-2.5);
+  \draw (3.6,-2.5) -- (3.6,-2.5) \vcapacitor{$C$};
   \draw (3.6,-2.5) \vground;
 
   \node[anchor=west, color=blue] at (4.6,-1.0) {$Q_1 = C v_1, \quad Q_2 = C v_2$};

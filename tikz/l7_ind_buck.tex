@@ -14,7 +14,7 @@
 
   % freewheel diode, cathode at the switch node
   \fill (2.6,3.2) circle (0.075);
-  \draw (2.6,1.6) to [D] (2.6,3.2);
+  \draw (2.6,1.6) -- (2.6,1.6) \vdiode{};
   \draw (2.6,1.6) \vground;
 
   % inductor to the output

@@ -16,7 +16,7 @@
   \draw (0,\ysig) to [nos] (1.6,\ysig);
 
   % the 1 fF sense capacitor
-  \draw (2.4,\ysig) to [C, l=1fF] (2.4,0);
+  \draw (2.4,0) -- (2.4,0.4) \vcapacitor{1fF} -- (2.4,2.4);
   \draw (2.4,0) \vground;
   \fill (2.4,\ysig) circle (0.075);
   \draw (1.6,\ysig) -- (3.6,\ysig);
@@ -38,7 +38,8 @@
   \draw (M1.S) -- ++(0,-0.4) coordinate (osrc);
   \draw (osrc) to [I, l_=5$\mu$A] ++(0,-1.8) \vground;
   \draw (osrc) to [short,*-] ++(1.6,0) coordinate (oc);
-  \draw (oc) to [C, l=1pF] ++(0,-1.8) \vground;
+  \draw (oc) ++(0,-1.8) coordinate (ocb) \vground;
+  \draw (ocb) \vcapacitor{1pF} -- (oc);
 
 \end{circuitikz}
 \end{document}

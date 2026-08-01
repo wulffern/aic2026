@@ -89,7 +89,7 @@
   % ---- Right branch: the resistor, then the xN device ----
   \draw[thick] (\exXr,5.9) -- (\exXr,\exYp);
   \fill (\exXr,\exYp) circle (0.07);
-  \draw[thick] (\exXr,\exYp) to [R] (\exXr,\exYm);
+  \draw[thick] (\exXr,2.0) -- (\exXr,2.0) \vresistor{};
   \node[anchor=east] at (\exXr-0.35,2.8) {$V_{I}$};
   % On the right of the resistor, not the left: on the left the + lands directly
   % under the amplifier's + and the two read as one mark, which is the last
@@ -123,14 +123,13 @@
   \draw[thick] (6.6,\exYp-1.3) -- (6.6,\exYm);
 
   % ---- C_1 ----
-  \draw[thick] (7.2,\exYp) to [C] (8.4,\exYp);
-  \draw[thick] (7.2,\exYm) to [C] (8.4,\exYm);
+  \draw[thick] (7.2,\exYp) -- (7.4,\exYp) \hcapacitor{} -- (9.6,\exYp);
+  \draw[thick] (7.2,\exYm) -- (7.4,\exYm) \hcapacitor{} -- (9.6,\exYm);
   \node at (8.2,2.8) {$C_{1} = 1\,\mathrm{pF}$};
 
   % ---- The differential amplifier: the house OTA outline ----
   \draw (9.6,\exYp) \cicOtaSWP{$-$}{$+$}{$-$}{$+$};
-  \draw[thick] (8.4,\exYp) -- (9.6,\exYp);
-  \draw[thick] (8.4,\exYm) -- (9.6,\exYm);
+
 
   % ---- Feedback: C_2, shorted out in phase 1 ----
   \fill (9.0,\exYp) circle (0.07);
@@ -139,9 +138,7 @@
   \scSwH{9.0}{5.0}{1}
   \draw[thick] (10.0,5.0) -- (12.4,5.0);
   \fill (12.4,5.0) circle (0.07);
-  \draw[thick] (9.0,5.9) -- (10.2,5.9);
-  \draw[thick] (10.2,5.9) to [C] (11.4,5.9);
-  \draw[thick] (11.4,5.9) -- (12.4,5.9) -- (12.4,\exYp);
+  \draw[thick] (9.0,5.9) -- (9.9,5.9) \hcapacitor{} -- (12.4,5.9) -- (12.4,\exYp);
   \node[anchor=south] at (10.8,6.3) {$C_{2} = 100\,\mathrm{fF}$};
 
   \fill (9.0,\exYm) circle (0.07);
@@ -150,9 +147,7 @@
   \scSwH{9.0}{0.6}{1}
   \draw[thick] (10.0,0.6) -- (12.4,0.6);
   \fill (12.4,0.6) circle (0.07);
-  \draw[thick] (9.0,-0.3) -- (10.2,-0.3);
-  \draw[thick] (10.2,-0.3) to [C] (11.4,-0.3);
-  \draw[thick] (11.4,-0.3) -- (12.4,-0.3) -- (12.4,\exYm);
+  \draw[thick] (9.0,-0.3) -- (9.9,-0.3) \hcapacitor{} -- (12.4,-0.3) -- (12.4,\exYm);
   \node[anchor=north] at (10.8,-0.7) {$C_{2} = 100\,\mathrm{fF}$};
 
   % ---- Output ----

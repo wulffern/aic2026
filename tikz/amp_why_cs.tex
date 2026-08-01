@@ -21,8 +21,7 @@
 
   % AC coupling into the gate
   \draw (0.8,{\ygate+0.6}) -- (1.4,{\ygate+0.6});
-  \draw (1.4,{\ygate+0.6}) to [C] (2.6,{\ygate+0.6});
-  \draw (2.6,{\ygate+0.6}) -- (3.4,{\ygate+0.6}) -- (3.4,\ygate);
+  \draw (1.4,{\ygate+0.6}) \hcapacitor{} -- (3.4,{\ygate+0.6}) -- (3.4,\ygate);
   \node[anchor=south, color=blue] at (2.0,{\ygate+0.9}) {$v_{gs}\sim 1 \mu V$};
 
   % common source stage with resistor load

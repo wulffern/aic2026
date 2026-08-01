@@ -36,8 +36,8 @@
 
   % C_1, the Miller capacitance seen from the gate
   \fill ($(gate)+(-1.2,0)$) circle (0.075);
-  \draw ($(gate)+(-1.2,0)$) to [C] ($(gate)+(-1.2,-1.2)$);
-  \draw ($(gate)+(-1.2,-1.2)$) \vground;
+  \draw ($(gate)+(-1.2,-1.6)$) \vcapacitor{};
+  \draw ($(gate)+(-1.2,-1.6)$) \vground;
   \node[anchor=west, color=red] at ($(gate)+(-0.9,-0.95)$) {$C_1$};
 
   % C_gd over the top of the transistor, gate to drain
@@ -45,7 +45,7 @@
   \coordinate (cgdT) at ($(gate)+(-0.6,1.65)$);
   \draw (cgdL) -- (cgdT);
   \fill (cgdL) circle (0.075);
-  \draw (cgdT) to [C, l=$C_{gd}$] (cgdT -| 2,0);
+  \draw (cgdT) \hcapacitor{$C_{gd}$} -- (cgdT -| 2,0);
   \draw (cgdT -| 2,0) -- (drain);
   \fill (drain) circle (0.075);
 

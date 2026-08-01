@@ -23,7 +23,7 @@
 
   % elements between drain rail (output, top) and source rail (input)
   \draw (\xgm,\ytop) to [cI, l_=$g_m v_{gs}$] (\xgm,0);
-  \draw (\xrds,\ytop) to [R, l_=$r_{ds}$] (\xrds,0);
+  \draw (\xrds,0) -- (\xrds,0.5) \vresistor{$r_{ds}$} -- (\xrds,2.6);
 
   % drain rail: open output
   \draw (\xgm,\ytop) -- (\xterm,\ytop);

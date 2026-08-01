@@ -80,14 +80,14 @@
   \coordinate (o2) at ({\xb+0.75},\yinv);
   \fill (o1) circle (0.075);
   \fill (o2) circle (0.075);
-  \draw (o1) to [C, l=$C$] ({\xa+0.75},{\ycap-0.9});
-  \draw ({\xa+0.75},{\ycap-0.9}) \vground;
-  \draw (o2) to [C, l=$C$] ({\xb+0.75},{\ycap-0.9});
-  \draw ({\xb+0.75},{\ycap-0.9}) \vground;
+  \draw ({\xa+0.75},{\yinv-1.6}) \vcapacitor{$C$};
+  \draw ({\xa+0.75},{\yinv-1.6}) \vground;
+  \draw ({\xb+0.75},{\yinv-1.6}) \vcapacitor{$C$};
+  \draw ({\xb+0.75},{\yinv-1.6}) \vground;
   \coordinate (o3) at ({\xc+0.65},\yinv);
   \fill (o3) circle (0.075);
-  \draw (o3) to [C, l_=$C$] ({\xc+0.65},{\ycap-0.9});
-  \draw ({\xc+0.65},{\ycap-0.9}) \vground;
+  \draw ({\xc+0.65},{\yinv-1.6}) \vcapacitor{$C$};
+  \draw ({\xc+0.65},{\yinv-1.6}) \vground;
 
   % feedback
   \draw (o3) -- ({\xc+1.4},\yinv) -- ({\xc+1.4},{\ycap-1.7})

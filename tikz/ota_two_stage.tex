@@ -54,8 +54,8 @@
 
   % compensation capacitor from output back to v_o1
   \fill (\xo,2.9) circle (0.075);
-  \draw (\xo,2.9) -- (6.0,2.9);
-  \draw (6.0,2.9) to [C, l_=$C_c$] (5.0,2.9);
+  \draw (\xo,2.9) -- (6.6,2.9);
+  \draw (5.0,2.9) \hcapacitor{$C_c$};
   \draw (5.0,2.9) -- (5.0,\ydr);
   \fill (5.0,\ydr) circle (0.075);
 

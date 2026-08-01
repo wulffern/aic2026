@@ -5,6 +5,7 @@
 % shift towards V_cm - V_B every phi_1.
 
 \begin{circuitikz}[american, thick, transform shape]
+  \input{tikz/ckt_lib.tex}
 
   \def\yr{0}        % sense rail
   \def\yc{2.2}      % switched cap row
@@ -12,9 +13,9 @@
 
   % sense rail: vop - C1 - vcmfb - C1 - von
   \draw (-5.6,\yr) node[anchor=east] {$v_{op}$} to [short,o-] (-4.6,\yr);
-  \draw (-4.6,\yr) to [C, l=$C_1$] (-2.4,\yr);
+  \draw (-4.6,\yr) -- (-4.3,\yr) \hcapacitor{$C_1$} -- (-2.4,\yr);
   \draw (-2.4,\yr) -- (2.4,\yr);
-  \draw (2.4,\yr) to [C, l=$C_1$] (4.6,\yr);
+  \draw (2.4,\yr) -- (2.7,\yr) \hcapacitor{$C_1$} -- (4.6,\yr);
   \draw (4.6,\yr) to [short,-o] (5.6,\yr) node[anchor=west] {$v_{on}$};
   \fill (0,\yr) circle (0.075);
   \draw (0,\yr) to [short,-o] (0,-1.0) node[anchor=north] {$v_{cmfb}$};
@@ -22,7 +23,7 @@
   % left switched capacitor
   \draw (-4.6,\yr) to [nos, l=$\phi_2$] (-4.6,\yc);
   \fill (-4.6,\yr) circle (0.075);
-  \draw (-4.6,\yc) to [C, l=$C_2$] (-2.4,\yc);
+  \draw (-4.6,\yc) -- (-4.3,\yc) \hcapacitor{$C_2$} -- (-2.4,\yc);
   \draw (-2.4,\yc) to [nos, l_=$\phi_2$] (-2.4,\yr);
   \fill (-2.4,\yr) circle (0.075);
   \draw (-4.6,\yc) to [nos, l=$\phi_1$] (-4.6,\yref);
@@ -35,7 +36,7 @@
   % right switched capacitor
   \draw (4.6,\yr) to [nos, l_=$\phi_2$] (4.6,\yc);
   \fill (4.6,\yr) circle (0.075);
-  \draw (4.6,\yc) to [C, l_=$C_2$] (2.4,\yc);
+  \draw (2.4,\yc) -- (2.7,\yc) \hcapacitor{$C_2$} -- (4.6,\yc);
   \draw (2.4,\yc) to [nos, l=$\phi_2$] (2.4,\yr);
   \fill (2.4,\yr) circle (0.075);
   \draw (4.6,\yc) to [nos, l_=$\phi_1$] (4.6,\yref);

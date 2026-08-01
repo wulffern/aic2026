@@ -26,7 +26,7 @@
   \draw (\xgs,0) to [cI, l=$g_s v_{sb}$] (\xgs,\ytop);
 
   % Output resistance
-  \draw (\xrds,\ytop) to [R, l=$r_{ds}$] (\xrds,0);
+  \draw (\xrds,0) -- (\xrds,0.5) \vresistor{$r_{ds}$} -- (\xrds,2.6);
 
   % Rails to the terminals
   \draw (\xgm,\ytop) -- (\xterm,\ytop);

@@ -15,12 +15,12 @@
   \def\yb{-5.4} % bottom rail
 
   % series branch: Rs, L, CF
-  \draw (\xs,\yt) to [R, l=$R_s$] (\xs,-1.8)
-                  to [L, l=$L$]   (\xs,-3.6)
-                  to [C, l=$C_F$] (\xs,\yb);
+  \draw (\xs,-1.7) \vresistor{$R_s$} -- (\xs,\yt);
+  \draw (\xs,-1.7) -- (\xs,-1.8) to [L, l=$L$] (\xs,-3.6) -- (\xs,-3.7);
+  \draw (\xs,\yb) -- (\xs,-5.3) \vcapacitor{$C_F$} -- (\xs,-3.6);
 
   % parallel capacitance
-  \draw (\xp,\yt) to [C, l=$C_p$] (\xp,\yb);
+  \draw (\xp,-5.4) -- (\xp,-3.5) \vcapacitor{$C_p$} -- (\xp,0);
 
   % rails and port
   \draw (\xs,\yt) to [short,-*] (\xp,\yt) to [short,-o] (\xo,\yt);

@@ -16,8 +16,8 @@
   \node[scale=0.8] at ([xshift=-3pt]a1.center) {1};
   \draw (0.2,0) to[short,o-] (a1.in);
   \draw (a1.out) -- (6.0,0);
-  \draw (6.0,0) to[C] (6.0,-1.3);
-  \draw (6.0,-1.3) \vground;
+  \draw (6.0,-1.6) \vcapacitor{};
+  \draw (6.0,-1.6) \vground;
   \node[armygreen, anchor=west] at (6.4,-0.65) {64};
 
   % three stage chain driving the same load
@@ -31,8 +31,8 @@
   \draw (b1.out) -- (b2.in);
   \draw (b2.out) -- (b3.in);
   \draw (b3.out) -- (6.0,-3.2);
-  \draw (6.0,-3.2) to[C] (6.0,-4.5);
-  \draw (6.0,-4.5) \vground;
+  \draw (6.0,-4.8) \vcapacitor{};
+  \draw (6.0,-4.8) \vground;
   \node[armygreen, anchor=west] at (6.4,-3.85) {64};
 
 \end{circuitikz}

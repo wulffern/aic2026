@@ -35,14 +35,14 @@
 
   % ----- PI wire model -----
   \fill (pi_left) circle (2pt);
-  \draw (pi_left) to [C, l=$\frac{C}{2}$] ($(pi_left)+(0,-\wy)$);
-  \draw ($(pi_left)+(0,-\wy)$) \vground;
+  \draw ($(pi_left)+(0,-1.6)$) \vcapacitor{$\frac{C}{2}$};
+  \draw ($(pi_left)+(0,-1.6)$) \vground;
 
   \draw (pi_left) \widehimpedance{$Z_w$} coordinate (pi_right);
 
   \fill (pi_right) circle (2pt);
-  \draw (pi_right) to [C, l=$\frac{C}{2}$] ($(pi_right)+(0,-\wy)$);
-  \draw ($(pi_right)+(0,-\wy)$) \vground;
+  \draw ($(pi_right)+(0,-1.6)$) \vcapacitor{$\frac{C}{2}$};
+  \draw ($(pi_right)+(0,-1.6)$) \vground;
 
   % ----- Destination side -----
   \draw (pi_right) \widehimpedance{$Z_{dst}$} coordinate (dst);

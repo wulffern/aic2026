@@ -15,8 +15,8 @@
   \def\xterm{6.8}
 
   % gate bias branch: quiet, so the gate sits at AC ground
-  \draw (0,\ytop) to [R, l_=$1/g_{m1}$] (0,0.6);
-  \draw (0,0.6) to [R, l_=$R_S$] (0,-1.4);
+  \draw (0,0.6) -- (0,0.8) \vresistor{$1/g_{m1}$} -- (0,2.6);
+  \draw (0,-1.4) -- (0,-1.2) \vresistor{$R_S$} -- (0,0.6);
   \draw (0,-1.4) \vground;
   \draw (0,\ytop) -- (1.3,\ytop);
   \node[anchor=south, color=blue] at (0.4,{\ytop+0.15}) {$v_g = 0$};
@@ -30,7 +30,7 @@
 
   % transistor elements between drain rail and source rail
   \draw (\xgm,\ytop) to [cI, l_=$g_{m2} v_{gs}$] (\xgm,0);
-  \draw (\xrds,\ytop) to [R, l_=$r_{ds2}$] (\xrds,0);
+  \draw (\xrds,0) -- (\xrds,0.5) \vresistor{$r_{ds2}$} -- (\xrds,2.6);
 
   % drain rail with the test source
   \draw (\xgm,\ytop) -- (\xterm,\ytop);
@@ -45,7 +45,9 @@
   \fill (\xrds,0) circle (0.075);
   \fill (4.7,0) circle (0.075);
   \draw (\xterm,0) to [short,-o] ++(0.4,0) node[anchor=west] {$v_s$};
-  \draw (4.7,0) to [R, l=$R_S$, i=$i_x$] (4.7,-2.0);
+  \draw (4.7,0) to [short, i=$i_x$] (4.7,-0.2);
+  \draw (4.7,-1.8) \vresistor{$R_S$};
+  \draw (4.7,-1.8) -- (4.7,-2.0);
   \draw (4.7,-2.0) \vground;
 
 \end{circuitikz}

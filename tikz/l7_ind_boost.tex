@@ -17,7 +17,7 @@
   \draw (3.2,1.6) \vground;
 
   % diode to the output, anode at the switch node
-  \draw (3.2,3.2) to [D] (5.4,3.2);
+  \draw (3.2,3.2) -- (3.5,3.2) \hdiode{} -- (5.4,3.2);
 
   % output capacitor
   \fill (5.4,3.2) circle (0.075);

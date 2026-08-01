@@ -9,7 +9,7 @@
   \input{tikz/ckt_lib.tex}
 
   \def\ytop{2.8}   % drain rail
-  \def\ymid{1.4}   % gate height
+  \def\ymid{1.8}   % gate height (1.8 so the house C_gs fits between the rails)
   \def\xg{1.2}     % gate column (C_gs)
   \def\xgm{3.0}
   \def\xgs{5.2}
@@ -23,28 +23,28 @@
   \fill (\xg,\ymid) circle (0.075);
 
   % C_gs down to the source rail
-  \draw (\xg,\ymid) to [C, l=$C_{gs}$] (\xg,0);
+  \draw (\xg,0) -- (\xg,0.1) \vcapacitor{$C_{gs}$} -- (\xg,\ymid);
 
   % C_gd along the top to the drain rail
   \draw (\xg,\ymid) -- (\xg,\ytop);
-  \draw (\xg,\ytop) to [C, l=$C_{gd}$] (\xgm,\ytop);
+  \draw (\xg,\ytop) -- (1.3,\ytop) \hcapacitor{$C_{gd}$} -- (\xgm,\ytop);
 
   % Low frequency core between the rails
   \draw (\xgm,\ytop) to [cI, l_=$g_m v_{gs}$] (\xgm,0);
   \draw (\xgs,0) to [cI, l=$g_s v_{sb}$] (\xgs,\ytop);
-  \draw (\xrds,\ytop) to [R, l=$r_{ds}$] (\xrds,0);
+  \draw (\xrds,0) -- (\xrds,0.6) \vresistor{$r_{ds}$} -- (\xrds,2.8);
 
   % Drain rail, C_db up to the AC grounded bulk
   \draw (\xgm,\ytop) -- (\xterm,\ytop);
   \fill (\xgm,\ytop) circle (0.075);
   \fill (\xgs,\ytop) circle (0.075);
   \fill (\xrds,\ytop) circle (0.075);
-  \draw (4.1,\ytop) to [C, l=$C_{db}$] (4.1,{\ytop+1.2});
+  \draw (4.1,\ytop) \vcapacitor{$C_{db}$};
   \fill (4.1,\ytop) circle (0.075);
   % ground pointing up: the bars shrink away from the wire
-  \draw (3.9,{\ytop+1.2}) -- (4.3,{\ytop+1.2});
-  \draw (3.975,{\ytop+1.3}) -- (4.225,{\ytop+1.3});
-  \draw (4.05,{\ytop+1.4}) -- (4.15,{\ytop+1.4});
+  \draw (3.9,{\ytop+1.6}) -- (4.3,{\ytop+1.6});
+  \draw (3.975,{\ytop+1.7}) -- (4.225,{\ytop+1.7});
+  \draw (4.05,{\ytop+1.8}) -- (4.15,{\ytop+1.8});
   \draw (\xterm+0.09,\ytop) circle (0.09);
   \node[anchor=west] at ({\xterm+0.3},\ytop) {$v_d$};
   \draw[->] ({\xterm-0.4},{\ytop+0.3}) -- ({\xterm-1.2},{\ytop+0.3});
@@ -56,9 +56,9 @@
   \fill (\xgm,0) circle (0.075);
   \fill (\xgs,0) circle (0.075);
   \fill (\xrds,0) circle (0.075);
-  \draw (2.1,0) to [C, l_=$C_{sb}$] (2.1,-1.2);
+  \draw (2.1,-1.6) \vcapacitor{$C_{sb}$};
   \fill (2.1,0) circle (0.075);
-  \draw (2.1,-1.2) \vground;
+  \draw (2.1,-1.6) \vground;
   \draw (\xterm+0.09,0) circle (0.09);
   \node[anchor=west] at ({\xterm+0.3},0) {$v_s$};
   \draw[->] ({\xterm-0.8},-0.25) -- ({\xterm-0.8},-0.85);
