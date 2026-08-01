@@ -320,6 +320,30 @@
   ++(0.1,0) coordinate (#1_out)
 }
 
+\newcommand{\cicTgate}[1]{
+  ++(0,0) coordinate (#1_in)
+  ++(0,-0.5) -- ++(0,1.0) -- ++(0.7,-0.5) -- ++(-0.7,-0.5)
+  ++(1.4,0) -- ++(0,1.0) -- ++(-0.7,-0.5) -- ++(0.7,-0.5)
+  ++(-0.7,1.05) circle (0.09)
+  ++(0,0.09) coordinate (#1_enb)
+  ++(0,-1.19) coordinate (#1_en)
+  ++(0.7,0.55) coordinate (#1_out)
+}
+
+\newcommand{\cicDff}[1]{
+  ++(0,0) coordinate (#1_ll)
+  rectangle ++(1.6,2.0)
+  ++(-1.6,-1.6) ++(0,0.15) -- ++(0.25,-0.15) -- ++(-0.25,-0.15)
+  ++(0,0.15) coordinate (#1_ck)
+  ++(0,1.1) coordinate (#1_d)
+  ++(1.6,0) coordinate (#1_qn)
+  ++(0,-1.1) coordinate (#1_q)
+  (#1_d) node [anchor=west] {D}
+  (#1_qn) node [anchor=east] {$\overline{Q}$}
+  (#1_q) node [anchor=east] {Q}
+  (#1_ll)
+}
+
 \newcommand{\cicInvM}[1]{
   ++(0,0) coordinate (#1_in)
   ++(0,-0.55) -- ++(0,1.1) -- ++(-0.9,-0.55) -- ++(0.9,-0.55)
