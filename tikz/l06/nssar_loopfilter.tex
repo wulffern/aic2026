@@ -1,0 +1,164 @@
+\input{tikz/fig_header.tex}
+
+% The switched-capacitor loop filter of the noise-shaping SAR, redrawn
+% from the figure in Garvik's JSSC paper (previously a GIF): two OTAs
+% (the first chopped, marked by the crossed input boxes), the phase-1
+% input sampling network, the phi_1a/phi_1b ping-pong network around
+% V_cm between the stages, and the phase-2 output caps that hand v_lf
+% to the comparator. Below, the clock phases against the SAR activity:
+% the filter only moves while the SAR is DONE. The boxed-minus marks
+% mean connection to the negative branch, as in the original.
+%
+% The original also carries the measured NTF magnitude plot; that data
+% is not in this repository, so the figure keeps the NTF expression and
+% the in-band number and leaves the curve to the paper.
+
+\begin{circuitikz}[american, thick, transform shape]
+  \input{tikz/ckt_lib.tex}
+  \input{tikz/sc_lib.tex}
+
+  \newcommand{\nsCap}[2]{% compact plate pair at #1,#2 (horizontal wire)
+    \draw (#1,#2) -- (#1+0.25,#2);
+    \draw (#1+0.25,#2-0.22) -- (#1+0.25,#2+0.22);
+    \draw (#1+0.37,#2-0.22) -- (#1+0.37,#2+0.22);
+    \draw (#1+0.37,#2) -- (#1+0.62,#2);
+  }
+  \newcommand{\nsNeg}[2]{% the boxed minus: connection to the negative branch
+    \draw[fill=gray!15] (#1-0.14,#2-0.14) rectangle (#1+0.14,#2+0.14);
+    \draw (#1-0.07,#2) -- (#1+0.07,#2);
+  }
+
+  \def\ymain{2.0}
+
+  % ---- input ----
+  \draw (-0.6,\ymain) \portIn{$v_{dac}$};
+  \draw (-0.6,\ymain) -- (0.0,\ymain);
+  \scSwH{0.0}{\ymain}{$\phi_1$}
+  \draw (1.0,\ymain) -- (1.6,\ymain);
+  \fill (1.6,\ymain) circle (0.075);
+
+  % ---- the phase-1 sampling cap above, reset by phi_2 ----
+  \draw (1.6,\ymain) -- (1.6,4.6);
+  \scSwH{1.6}{4.6}{$\phi_1$}
+  \nsCap{2.8}{4.6}
+  \scSwH{3.6}{4.6}{$\phi_1$}
+  \draw (4.6,4.6) -- (6.4,4.6) -- (6.4,3.4);
+  \fill (6.4,3.4) circle (0.075);
+  \draw (2.75,4.6) -- (2.75,4.0); \scSwV{2.75}{4.0}{$\phi_2$}
+  \draw (2.75,3.0) \vground;
+  \draw (3.45,4.6) -- (3.45,4.0); \scSwV{3.45}{4.0}{$\phi_2$}
+  \draw (3.45,3.0) \vground;
+
+  % ---- first OTA, chopped: crossed boxes on the input and output ----
+  \draw (1.6,\ymain) -- (2.2,\ymain);
+  \draw (2.2,{\ymain-0.3}) rectangle ++(0.5,0.6);
+  \draw (2.2,{\ymain-0.3}) -- (2.7,{\ymain+0.3});
+  \draw (2.2,{\ymain+0.3}) -- (2.7,{\ymain-0.3});
+  \draw (2.7,\ymain) \cicOtaSSWP{$+$}{$-$};
+  \draw (cicOtaS_out) -- ++(0.15,0) coordinate (o1r);
+  \draw (5.3,{\ymain-0.7}) rectangle ++(0.5,0.6);
+  \draw (5.3,{\ymain-0.7}) -- (5.8,{\ymain-0.1});
+  \draw (5.3,{\ymain-0.1}) -- (5.8,{\ymain-0.7});
+  \draw (o1r) -- (5.3,{\ymain-0.4});
+  \draw (5.8,{\ymain-0.4}) -- (6.4,{\ymain-0.4});
+  \fill (6.4,{\ymain-0.4}) circle (0.075);
+  % feedback cap over the first OTA
+  \draw (1.6,\ymain) -- (1.6,\ymain+1.1) -- (3.3,{\ymain+1.1});
+  \nsCap{3.3}{\ymain+1.1}
+  \draw (3.92,{\ymain+1.1}) -- (6.4,{\ymain+1.1}) -- (6.4,{\ymain-0.4});
+  % chopping clock note
+  \draw (2.45,{\ymain-0.3}) -- (2.45,{\ymain-0.71});
+  \nsNeg{2.45}{\ymain-0.85}
+  \node[anchor=north, scale=0.75] at (2.45,{\ymain-1.05}) {$\phi_{1a,b}$};
+  \draw (5.55,{\ymain-0.7}) -- (5.55,{\ymain-1.01});
+  \nsNeg{5.55}{\ymain-1.15}
+  \node[anchor=north, scale=0.75] at (5.55,{\ymain-1.35}) {$\phi_{1a,b}$};
+  \node[anchor=north, scale=0.75] at (3.6,{\ymain-1.0}) {$\phi_1$};
+
+  % ---- ping-pong network to the second stage ----
+  \draw (6.4,{\ymain-0.4}) -- (7.0,{\ymain-0.4});
+  \scSwH{7.0}{\ymain-0.4}{$\phi_{1a}$}
+  \nsCap{8.2}{\ymain-0.4}
+  \scSwH{9.0}{\ymain-0.4}{$\phi_{1b}$}
+  \draw (10.0,{\ymain-0.4}) -- (10.6,{\ymain-0.4});
+  % V_cm taps under the ping-pong cap
+  \draw (8.15,{\ymain-0.4}) -- (8.15,{\ymain-1.0}); \scSwV{8.15}{\ymain-1.0}{$\phi_{1b}$}
+  \draw (8.15,{\ymain-2.0}) to [short,-o] (8.15,{\ymain-2.15});
+  \node[anchor=north, scale=0.8] at (8.15,{\ymain-2.25}) {$V_{cm}$};
+  \draw (8.85,{\ymain-0.4}) -- (8.85,{\ymain-1.0}); \scSwV{8.85}{\ymain-1.0}{$\phi_{1a}$}
+  \draw (8.85,{\ymain-2.0}) to [short,-o] (8.85,{\ymain-2.15});
+  % the second ping-pong row above
+  \draw (6.4,{\ymain-0.4}) -- (6.4,3.4) ;
+  \scSwH{6.6}{3.4}{$\phi_{1b}$}
+  \draw (6.4,3.4) -- (6.6,3.4);
+  \nsCap{7.8}{3.4}
+  \scSwH{8.6}{3.4}{$\phi_{1a}$}
+  \draw (9.6,3.4) -- (10.6,3.4) -- (10.6,{\ymain-0.4});
+  \draw (7.75,3.4) -- (7.75,3.9); \scSwV{7.75}{4.9}{$\phi_{1a}$}
+  \draw (7.75,4.9) to [short,-o] (7.75,5.05);
+  \node[anchor=south, scale=0.8] at (7.75,5.15) {$V_{cm}$};
+  \draw (8.45,3.4) -- (8.45,3.9); \scSwV{8.45}{4.9}{$\phi_{1b}$}
+  \draw (8.45,4.9) to [short,-o] (8.45,5.05);
+
+  % ---- second OTA ----
+  \fill (10.6,{\ymain-0.4}) circle (0.075);
+  \draw (10.6,{\ymain-0.4}) \cicOtaSSWP{$+$}{$-$};
+  \coordinate (o2) at (13.2,{\ymain-0.8});
+  \draw (o2) -- ++(0.4,0) coordinate (o2r);
+  \fill (o2r) circle (0.075);
+  % feedback cap
+  \draw (10.6,{\ymain-0.4}) -- (10.6,{\ymain+0.9}) -- (11.5,{\ymain+0.9});
+  \nsCap{11.5}{\ymain+0.9}
+  \draw (12.12,{\ymain+0.9}) -- (13.6,{\ymain+0.9}) -- (o2r);
+  \draw (cicOtaS_inn) -- ++(0,-0.45);
+  \nsNeg{10.6}{\ymain-1.8}
+  \node[anchor=north, scale=0.75] at (10.6,{\ymain-2.0}) {$\phi_1$};
+
+  % ---- output network: phi_1 / phi_2 pairs with caps to ground ----
+  \draw (o2r) -- ++(0.3,0);
+  \scSwH{13.9}{\ymain-0.8}{$\phi_1$}
+  \draw (14.9,{\ymain-0.8}) -- (15.5,{\ymain-0.8});
+  \fill (15.5,{\ymain-0.8}) circle (0.075);
+  \draw (15.5,{\ymain-2.4}) \vcapacitor{};
+  \draw (15.5,{\ymain-2.4}) \vground;
+  \scSwH{15.5}{\ymain-0.8}{$\phi_2$}
+  \draw (16.5,{\ymain-0.8}) -- (17.1,{\ymain-0.8});
+  \draw (17.1,{\ymain-0.8}) to [short,-o] (17.35,{\ymain-0.8});
+  \node[anchor=west, scale=0.9] at (17.45,{\ymain-0.8}) {$v_{lf}$};
+  \nsNeg{16.9}{\ymain-1.6}
+  \node[anchor=north, scale=0.75] at (16.9,{\ymain-1.8}) {$\phi_1$};
+
+  % ---- legend ----
+  \nsNeg{14.6}{4.4}
+  \node[anchor=west, scale=0.85, align=left] at (14.85,4.3)
+    {means connection to\\the negative branch};
+
+  % ---- SAR activity and the four phases ----
+  \begin{scope}[yshift=-3.6cm, xshift=0.4cm]
+    \node[anchor=east, scale=0.9] at (-0.3,1.9) {SAR act.:};
+    \foreach \x/\w/\t in {0/1.5/SMP, 1.5/2.1/CONV, 3.6/2.4/DONE, 6.0/1.5/SMP, 7.5/2.1/CONV, 9.6/2.4/DONE} {
+      \draw[fill=gray!15] (\x,1.6) rectangle ++(\w,0.6);
+      \node[scale=0.8] at ({\x+\w/2},1.9) {\t};
+    }
+    \node[anchor=east, scale=0.9] at (-0.3,1.0) {$\phi_1$};
+    \draw (0,0.8) -- (3.6,0.8) -- (3.6,1.2) -- (6.0,1.2) -- (6.0,0.8)
+          -- (9.6,0.8) -- (9.6,1.2) -- (12.0,1.2);
+    \node[anchor=east, scale=0.9] at (-0.3,0.2) {$\phi_2$};
+    \draw (0,0.4) -- (3.5,0.4) -- (3.5,0.0) -- (6.0,0.0)
+          -- (6.0,0.4) -- (9.5,0.4) -- (9.5,0.0) -- (12.0,0.0);
+    \node[anchor=east, scale=0.9] at (-0.3,-0.6) {$\phi_{1a}$};
+    \draw (0,-0.8) -- (3.6,-0.8) -- (3.6,-0.4) -- (6.0,-0.4) -- (6.0,-0.8) -- (12.0,-0.8);
+    \node[anchor=east, scale=0.9] at (-0.3,-1.4) {$\phi_{1b}$};
+    \draw (0,-1.6) -- (9.6,-1.6) -- (9.6,-1.2) -- (12.0,-1.2);
+  \end{scope}
+
+  % ---- the NTF and its in-band magnitude; the measured curve stays in
+  % ---- the paper
+  \draw (12.6,-3.4) rectangle ++(6.0,2.2);
+  \node[scale=0.8] at (15.6,-1.95)
+    {$\mathrm{NTF}(z) = \dfrac{1+(g-2)z^{-1}+z^{-2}}{1+(g+a_1-2)z^{-1}+(a_2-a_1+1)z^{-2}}$};
+  \node[scale=0.85] at (15.6,-3.0)
+    {$\left|\mathrm{NTF}\right|_{0\rightarrow\mathrm{BW}} = -27.8\,\mathrm{dB}$};
+
+\end{circuitikz}
+\end{document}

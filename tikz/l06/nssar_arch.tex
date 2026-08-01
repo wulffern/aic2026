@@ -1,0 +1,120 @@
+\input{tikz/fig_header.tex}
+
+% Architecture of the noise-shaping SAR ADC, redrawn from the figure in
+% Garvik's JSSC paper (previously a GIF). The capacitive DAC splits in
+% two banks with MUXed references, the loop filter H(z) and the
+% integrating comparator close the noise-shaping loop, SAR logic makes
+% the 9-bit raw code and the code correction the 12-bit output. The
+% calibration path - C_4cal, the Cal logic, SW_CAL and D_SEQ - is blue,
+% as in the original: it is the signal being explained.
+
+\begin{circuitikz}[american, thick, transform shape]
+  \input{tikz/ckt_lib.tex}
+  \input{tikz/sc_lib.tex}   % scSwH, the sampling switch
+
+  % compact plate pair for the DAC banks: full \vcapacitor does not fit
+  % a cap-bank row. #1 x, #2 y of the top stub, #3 colour
+  \newcommand{\nsCap}[3]{
+    \draw[#3] (#1,#2) -- (#1,#2-0.25);
+    \draw[#3] (#1-0.22,#2-0.25) -- (#1+0.22,#2-0.25);
+    \draw[#3] (#1-0.22,#2-0.37) -- (#1+0.22,#2-0.37);
+    \draw[#3] (#1,#2-0.37) -- (#1,#2-0.62);
+  }
+
+  \def\ytop{3.0}   % top bank rail
+  \def\ybot{1.6}   % bottom bank rail
+
+  % ---- input ----
+  \draw (-0.2,\ybot) \portIn{$v_{in}$};
+  \draw (-0.2,\ybot) -- (0.3,\ybot);
+  \scSwH{0.3}{\ybot}{}
+  \draw (1.3,\ybot) -- (2.0,\ybot);
+
+  % ---- top bank: C_8b, C_4b ----
+  \draw (2.0,\ytop) -- (4.3,\ytop);
+  \draw (2.0,\ybot) -- (2.0,\ytop);
+  \nsCap{2.6}{\ytop}{black} \node[anchor=west, scale=0.8] at (2.7,{\ytop-0.31}) {$C_{8b}$};
+  \nsCap{3.9}{\ytop}{black} \node[anchor=west, scale=0.8] at (4.0,{\ytop-0.31}) {$C_{4b}$};
+  \node at (3.35,{\ytop-0.31}) {$\cdots$};
+  % top MUX
+  \draw (1.9,{\ytop+0.62}) -- (4.6,{\ytop+0.62}) -- (4.1,{\ytop+1.12}) -- (2.4,{\ytop+1.12}) -- cycle;
+  \node[scale=0.9] at (3.25,{\ytop+0.87}) {MUX};
+  \draw (2.6,\ytop) ++(0,0) -- (2.6,{\ytop+0.62});
+  \draw (3.9,\ytop) -- (3.9,{\ytop+0.62});
+  \draw (1.0,{\ytop+0.87}) \portIn{$V_{ref}$};
+  \draw (1.0,{\ytop+0.87}) -- (1.9,{\ytop+0.87});
+  \draw[<-] (4.75,{\ytop+0.95}) -- (5.35,{\ytop+0.95});
+  \node[anchor=west, scale=0.8] at (5.4,{\ytop+0.95}) {$\mathrm{EN}_{cal}$};
+
+  % ---- bottom bank: C_8a C_4a C_4cal C_3 ... C_0 ----
+  \draw (2.0,\ybot) -- (7.6,\ybot);
+  \nsCap{2.6}{\ybot}{black} \node[anchor=west, scale=0.8] at (2.66,{\ybot-0.31}) {$C_{8a}$};
+  \nsCap{3.7}{\ybot}{black} \node[anchor=west, scale=0.8] at (3.76,{\ybot-0.31}) {$C_{4a}$};
+  \nsCap{4.8}{\ybot}{blue}  \node[anchor=west, scale=0.8, blue] at (4.86,{\ybot-0.31}) {$C_{4cal}$};
+  \nsCap{6.0}{\ybot}{black} \node[anchor=west, scale=0.8] at (6.06,{\ybot-0.31}) {$C_{3}$};
+  \node at (6.9,{\ybot-0.31}) {$\cdots$};
+  \nsCap{7.3}{\ybot}{black} \node[anchor=west, scale=0.8] at (7.36,{\ybot-0.31}) {$C_{0}$};
+  % bottom MUX
+  \draw (1.9,{\ybot-1.12}) -- (7.8,{\ybot-1.12}) -- (7.3,{\ybot-1.62}) -- (2.4,{\ybot-1.62}) -- cycle;
+  \node[scale=0.9] at (4.85,{\ybot-1.37}) {MUX};
+  \foreach \x in {2.6,3.7,4.8,6.0,7.3} {
+    \draw (\x,{\ybot-0.62}) -- (\x,{\ybot-1.12});
+  }
+  \draw (1.0,{\ybot-1.37}) \portIn{$V_{ref}$};
+  \draw (1.0,{\ybot-1.37}) -- (1.9,{\ybot-1.37});
+  \draw[<-] (7.95,{\ybot-1.3}) -- (8.55,{\ybot-1.3});
+  \node[anchor=west, scale=0.8] at (8.6,{\ybot-1.3}) {$\mathrm{EN}_{cal}$};
+
+  % ---- loop filter and integrating comparator ----
+  \draw (7.6,\ybot) -- (8.2,\ybot);
+  \draw (8.2,{\ybot-0.4}) rectangle ++(1.3,0.8);
+  \node[scale=0.9] at (8.85,\ybot) {$H(z)$};
+  \draw (9.5,\ybot) -- (10.1,\ybot);
+  % comparator triangle with the integrator marking
+  \draw (10.1,{\ybot-0.75}) -- (10.1,{\ybot+0.75}) -- (11.4,\ybot) -- cycle;
+  \node[scale=0.8] at (10.35,{\ybot+0.33}) {$+$};
+  \node[scale=0.8] at (10.35,{\ybot-0.33}) {$+$};
+  \node[scale=0.9] at (10.62,\ybot) {$\int$};
+  % the top bank feeds the + input directly
+  \draw (4.3,\ytop) -- (10.1,\ytop) -- (10.1,{\ybot+0.42});
+  \draw (10.35,{\ybot-0.6}) -- (10.35,{\ybot-1.0}) \vground;
+
+  % ---- SAR logic, code correction ----
+  \draw (11.4,\ybot) -- (11.9,\ybot);
+  \draw (11.9,{\ybot-0.55}) rectangle ++(1.5,1.5);
+  \node[scale=0.9, align=center] at (12.65,{\ybot+0.2}) {SAR\\logic};
+  \draw (13.4,{\ybot+0.5}) -- (14.4,{\ybot+0.5});
+  \draw (13.75,{\ybot+0.35}) -- (13.95,{\ybot+0.65});
+  \node[anchor=south, scale=0.8] at (13.85,{\ybot+0.72}) {$\mathrm{D_{RAW}}$ 9};
+  \draw (14.4,{\ybot-0.1}) rectangle ++(1.4,1.2);
+  \node[scale=0.9, align=center] at (15.1,{\ybot+0.5}) {Code\\corr.};
+  \draw (15.8,{\ybot+0.5}) -- (16.6,{\ybot+0.5});
+  \draw (16.1,{\ybot+0.35}) -- (16.3,{\ybot+0.65});
+  \node[anchor=south, scale=0.8] at (16.2,{\ybot+0.72}) {12 $\mathrm{D_{CAL}}$};
+
+  % ---- calibration logic (blue) ----
+  \draw[blue] (11.9,{\ybot-2.2}) rectangle ++(1.5,1.2);
+  \node[blue, scale=0.9, align=center] at (12.65,{\ybot-1.6}) {Cal.\\logic};
+  \draw[blue] (12.65,{\ybot-0.55}) -- (12.65,{\ybot-1.0});
+  \draw[blue] (13.4,{\ybot-1.3}) -- (15.1,{\ybot-1.3}) -- (15.1,{\ybot-0.1});
+  \draw[blue] (14.1,{\ybot-1.45}) -- (14.3,{\ybot-1.15});
+  \node[blue, anchor=north, scale=0.8] at (14.2,{\ybot-1.5}) {5 $\mathrm{D_{SEQ}}$};
+  \draw[blue, <-] (12.65,{\ybot-2.2}) -- (12.65,{\ybot-2.7});
+  \node[blue, anchor=north, scale=0.8] at (12.65,{\ybot-2.75}) {$\mathrm{EN}_{cal}$};
+
+  % ---- feedback buses: SAR switches (black), CAL switches (blue) ----
+  \draw (12.65,{\ybot+0.95}) -- (12.65,{\ytop+2.0}) -- (0.6,{\ytop+2.0})
+        -- (0.6,{\ytop+1.5});
+  \node[anchor=south west, scale=0.8] at (0.7,{\ytop+2.0}) {$\mathrm{SW_{SAR}}$};
+  \draw (0.6,{\ytop+1.5}) -- (2.4,{\ytop+1.12});
+  \draw (0.6,{\ytop+1.5}) -- (0.6,{\ybot-2.0}) -- (2.4,{\ybot-1.62});
+  \node[anchor=north west, scale=0.8] at (0.7,{\ybot-2.0}) {$\mathrm{SW_{SAR}}$};
+
+  \draw[blue] (13.15,{\ybot-1.0}) -- (13.7,{\ybot-1.0}) -- (13.7,{\ytop+2.4})
+        -- (0.2,{\ytop+2.4}) -- (0.2,{\ybot-2.4}) -- (2.7,{\ybot-2.4})
+        -- (2.7,{\ybot-1.62});
+  \node[blue, anchor=south west, scale=0.8] at (0.7,{\ytop+2.4}) {$\mathrm{SW_{CAL}}$};
+  \node[blue, anchor=north west, scale=0.8] at (3.0,{\ybot-2.35}) {$\mathrm{SW_{CAL}}$};
+
+\end{circuitikz}
+\end{document}

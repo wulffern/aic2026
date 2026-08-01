@@ -1409,7 +1409,7 @@ than the smallest capacitor.
 
 -->
 
-![inline](../media/l6_harald_arch.gif)
+![inline](../media/l06/nssar_arch_tikz.pdf)
 
 <!--pan_doc:
 <sub>Figure 31: Architecture of the noise-shaping SAR ADC: capacitive DAC with multiplexers, loop filter H(z), integrating comparator, SAR logic, calibration logic and code correction</sub>
@@ -1423,10 +1423,10 @@ The loop filter was a switched cap loop filter, and we can see the NTF below. Th
 
 -->
 
-![inline](../media/l6_fig_harald_circuit.gif)
+![inline](../media/l06/nssar_loopfilter_tikz.pdf)
 
 <!--pan_doc:
-<sub>Figure 32: The switched-capacitor loop filter with two OTAs (the first one chopped), the clock phases relative to the SAR activity, and the resulting NTF with -27.8 dB in-band suppression</sub>
+<sub>Figure 32: The switched-capacitor loop filter with two OTAs (the first one chopped), the clock phases relative to the SAR activity, and the NTF whose in-band suppression is -27.8 dB; the measured magnitude curve is in the paper</sub>
 -->
 
     
