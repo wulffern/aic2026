@@ -34,20 +34,20 @@
 \node [anchor=north] at (2.1,0.5) {$\overline{DN}$};
 
 % Reset: the instant both flops are set, NOR fires and clears them
-\node[nor port] (rst) at (3.9,2.3) {};
-\draw (upN) to [short,*-] ++(0,-1.0) -| (rst.in 1);
-\draw (dwnN) to [short,*-] ++(0,1.0) -| (rst.in 2);
-\draw (rst.out) -- ++(0.25,0) coordinate (cfb);
+\draw (3.3,2.3) \cicNor{rst};
+\draw (upN) to [short,*-] ++(0,-1.0) -| (rst_in1);
+\draw (dwnN) to [short,*-] ++(0,1.0) -| (rst_in2);
+\draw (rst_out) -- ++(0.25,0) coordinate (cfb);
 \draw (cfb) |- (1.6,3.0);
 \draw (cfb) |- (1.6,-0.6);
 \fill (cfb) circle (0.075);
-\node [anchor=west] at (4.85,2.3) {CFB};
+\node [anchor=west] at (5.35,2.3) {CFB};
 
 % Output inverters: UP_N -> UP -> CP_UP_N, DOWN_N -> CP_DOWN
-\draw (upN) \hinv{U1} \hinv{U2};
-\draw (U2.out) \portOut{$\overline{CP_{UP}}$};
-\draw (dwnN) \hinv{D1};
-\draw (D1.out) \portOut{$CP_{DOWN}$};
+\draw (upN) -- ++(0.2,0) \cicInv{U1} -- ++(0.3,0) \cicInv{U2};
+\draw (U2_out) \portOut{$\overline{CP_{UP}}$};
+\draw (dwnN) -- ++(0.2,0) \cicInv{D1};
+\draw (D1_out) \portOut{$CP_{DOWN}$};
 
 \end{circuitikz}
 \end{document}

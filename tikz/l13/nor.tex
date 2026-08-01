@@ -1,8 +1,11 @@
 \input{tikz/fig_header.tex}
 
-% The NOR gate symbol.
+% The NOR gate symbol, hand-rolled (ckt_lib \cicNor) to match the
+% hand-drawn original's proportions.
 
 \begin{circuitikz}[thick]
-  \node[nor port] (g) at (0,0) {};
+  \input{tikz/ckt_lib.tex}
+  \draw (0,0) \cicNor{g};
+  \draw (-0.5,0.32) -- (g_in1) (-0.5,-0.32) -- (g_in2) (g_out) -- ++(0.5,0);
 \end{circuitikz}
 \end{document}

@@ -1,8 +1,11 @@
 \input{tikz/fig_header.tex}
 
-% The NAND gate symbol.
+% The NAND gate symbol, hand-rolled (ckt_lib \cicNand) to match the
+% hand-drawn original's proportions.
 
 \begin{circuitikz}[thick]
-  \node[nand port] (g) at (0,0) {};
+  \input{tikz/ckt_lib.tex}
+  \draw (0,0) \cicNand{g};
+  \draw (-0.5,0.32) -- (g_in1) (-0.5,-0.32) -- (g_in2) (g_out) -- ++(0.5,0);
 \end{circuitikz}
 \end{document}

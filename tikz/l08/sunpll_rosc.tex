@@ -8,15 +8,19 @@
 \begin{circuitikz}[american, thick, transform shape, circuit ee IEC]
 \input{tikz/ckt_lib.tex}
 
-% Enable NAND and the eight ring inverters
-\node[nand port] (nd) at (0.7,0) {};
-\draw (nd.out) \hinv{I0} \hinv{I1} \hinv{I2} \hinv{I3} \hinv{I4} \hinv{I5} \hinv{I6} \hinv{I7} coordinate (ringEnd);
+% Enable NAND and the eight ring inverters (hand-rolled gates)
+\draw (0,0) \cicNand{nd};
+\draw (nd_out)
+  -- ++(0.3,0) \cicInv{I0} -- ++(0.3,0) \cicInv{I1}
+  -- ++(0.3,0) \cicInv{I2} -- ++(0.3,0) \cicInv{I3}
+  -- ++(0.3,0) \cicInv{I4} -- ++(0.3,0) \cicInv{I5}
+  -- ++(0.3,0) \cicInv{I6} -- ++(0.3,0) \cicInv{I7} coordinate (ringEnd);
 
 % Close the ring: last output back to the lower NAND input
-\draw (ringEnd) -- ++(0.4,0) -- ++(0,-1.5) -| (nd.in 2);
+\draw (ringEnd) -- ++(0.4,0) -- ++(0,-1.5) -| (nd_in2);
 
 % Enable port
-\draw (nd.in 1) -- ++(-0.6,0) \portIn{PWRUP\_1V8};
+\draw (nd_in1) -- ++(-0.6,0) \portIn{PWRUP\_1V8};
 
 % The control domain: everything inside the red box runs on VDD_ROSC
 \draw[red, dashed, rounded corners] (-0.9,-1.9) rectangle (13.1,0.9);
@@ -31,12 +35,12 @@
 \coordinate (lsOut) at (13.4,3.0);
 
 % Taps: N2 is the output of I5, N1 the output of I6
-\draw (I5.out) ++(0.2,0) to [short,*-] ++(0,3.4) node [anchor=south east] {N2} -| (lsInTop);
-\draw (I6.out) ++(0.2,0) to [short,*-] ++(0,2.6) node [anchor=south east] {N1} -| (lsInBot);
+\draw (I5_out) ++(0.15,0) to [short,*-] ++(0,3.4) node [anchor=south east] {N2} -| (lsInTop);
+\draw (I6_out) ++(0.15,0) to [short,*-] ++(0,2.6) node [anchor=south east] {N1} -| (lsInBot);
 
 % Output buffer
-\draw (lsOut) \hinv{I8};
-\draw (I8.out) \portOut{CK};
+\draw (lsOut) \cicInv{I8};
+\draw (I8_out) \portOut{CK};
 
 \end{circuitikz}
 \end{document}

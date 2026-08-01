@@ -3,10 +3,13 @@
 % In inverting CMOS logic an OR is really a NOR followed by an inverter.
 
 \begin{circuitikz}[thick]
-  \node[or port] (g1) at (0,0) {};
-  \draw[red, very thick, ->] (2.2,0) -- (3.6,0);
-  \node[nor port] (g2) at (5.6,0) {};
-  \node[not port] (g3) at (7.8,0) {};
-  \draw (g2.out) -- (g3.in);
+  \input{tikz/ckt_lib.tex}
+  \draw (0,0) \cicOr{g1};
+  \draw (-0.5,0.32) -- (g1_in1) (-0.5,-0.32) -- (g1_in2) (g1_out) -- ++(0.5,0);
+  \draw[red, very thick, ->] (2.5,0) -- (3.7,0);
+  \draw (4.5,0) \cicNor{g2};
+  \draw (4.0,0.32) -- (g2_in1) (4.0,-0.32) -- (g2_in2);
+  \draw (g2_out) -- ++(0.3,0) \cicInv{g3};
+  \draw (g3_out) -- ++(0.5,0);
 \end{circuitikz}
 \end{document}

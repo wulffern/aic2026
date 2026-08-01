@@ -263,6 +263,74 @@
   rectangle ++(\grid/2,\grid/2) ++(0,-\grid/4)
 }
 
+
+%---------------------------------------------------------
+% Digital gates
+% ---------------------------------------------------------
+% Hand-rolled to match the hand-drawn originals: straight NAND
+% shoulders with a round cap, a swept full-bodied NOR, and generous
+% bubbles. The stock circuitikz ports are squat by comparison and are
+% not used. Path fragments: entry at the gate's centre-left on the
+% output axis; exit past the output. Exported coordinates:
+% (#1_in1) (#1_in2) (#1_out).
+
+\newcommand{\cicNand}[1]{
+  ++(0,0.32) coordinate (#1_in1)
+  ++(0,-0.64) coordinate (#1_in2)
+  ++(0,-0.28)
+  -- ++(0,1.2) -- ++(0.5,0)
+  .. controls +(0.45,-0.02) and +(0,0.3) .. ++(0.68,-0.6)
+  .. controls +(0,-0.3) and +(0.45,0.02) .. ++(-0.68,-0.6)
+  -- ++(-0.5,0)
+  ++(1.28,0.6) circle (0.1)
+  ++(0.1,0) coordinate (#1_out)
+}
+
+\newcommand{\cicAnd}[1]{
+  ++(0,0.32) coordinate (#1_in1)
+  ++(0,-0.64) coordinate (#1_in2)
+  ++(0,-0.28)
+  -- ++(0,1.2) -- ++(0.5,0)
+  .. controls +(0.45,-0.02) and +(0,0.3) .. ++(0.68,-0.6)
+  .. controls +(0,-0.3) and +(0.45,0.02) .. ++(-0.68,-0.6)
+  -- ++(-0.5,0)
+  ++(1.18,0.6) coordinate (#1_out)
+}
+
+\newcommand{\cicNor}[1]{
+  ++(0,0.32) coordinate (#1_in1) to [short,-] ++(0.2,0) ++(-0.2,0)
+  ++(0,-0.64) coordinate (#1_in2) to [short,-] ++(0.2,0) ++(-0.2,0)
+  ++(0,-0.28)
+  .. controls +(0.22,0.35) and +(0.22,-0.35) .. ++(0,1.2)
+  .. controls +(0.65,0.02) and +(-0.35,0.4) .. ++(1.5,-0.6)
+  .. controls +(-0.35,-0.4) and +(0.65,-0.02) .. ++(-1.5,-0.6)
+  ++(1.6,0.6) circle (0.1)
+  ++(0.1,0) coordinate (#1_out)
+}
+
+\newcommand{\cicOr}[1]{
+  ++(0,0.32) coordinate (#1_in1) to [short,-] ++(0.2,0) ++(-0.2,0)
+  ++(0,-0.64) coordinate (#1_in2) to [short,-] ++(0.2,0) ++(-0.2,0)
+  ++(0,-0.28)
+  .. controls +(0.22,0.35) and +(0.22,-0.35) .. ++(0,1.2)
+  .. controls +(0.65,0.02) and +(-0.35,0.4) .. ++(1.5,-0.6)
+  .. controls +(-0.35,-0.4) and +(0.65,-0.02) .. ++(-1.5,-0.6)
+  ++(1.5,0.6) coordinate (#1_out)
+}
+
+\newcommand{\cicInv}[1]{
+  ++(0,0) coordinate (#1_in)
+  ++(0,-0.55) -- ++(0,1.1) -- ++(0.9,-0.55) -- ++(-0.9,-0.55)
+  ++(1.0,0.55) circle (0.1)
+  ++(0.1,0) coordinate (#1_out)
+}
+
+\newcommand{\cicBuf}[1]{
+  ++(0,0) coordinate (#1_in)
+  ++(0,-0.55) -- ++(0,1.1) -- ++(0.9,-0.55) -- ++(-0.9,-0.55)
+  ++(0.9,0.55) coordinate (#1_out)
+}
+
 %---------------------------------------------------------
 % OTA
 % ---------------------------------------------------------

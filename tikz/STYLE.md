@@ -88,7 +88,13 @@ do not add a hop.
 Resistors are always the hand-rolled zig-zag (`\vresistor` /
 `\hresistor`). Never draw circuitikz's own `to [resistor]` or `to [R]`
 bipole: it is visibly larger than the house zig-zag and the two styles
-must not mix on a page.
+must not mix on a page. The same goes for every circuitikz bipole that
+has a house alternative — capacitors (`\vcapacitor`), impedances
+(`\vimpedance`), sources — reach for the `ckt_lib` macro first and use
+a raw bipole only when the library has nothing for it. Logic gates are
+the hand-rolled `\cicNand`, `\cicNor`, `\cicAnd`, `\cicOr`, `\cicInv`,
+`\cicBuf` (drawn to match the hand-drawn originals), not the squat
+circuitikz `nand port`/`nor port`/`not port` shapes.
 
 ## What the preamble does not have
 
