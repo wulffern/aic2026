@@ -1,0 +1,3 @@
+[submodule "cictikz"]
+	path = cictikz
+	url = https://github.com/wulffern/cictikz.git

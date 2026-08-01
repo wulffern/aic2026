@@ -32,6 +32,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v7
+        with:
+          submodules: true
 
       # pdflatex runs with -halt-on-error, so a figure that stops compiling
       # fails the job here.

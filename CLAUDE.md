@@ -65,6 +65,10 @@ SVG for the browser.
 ```sh
 make tikz   # Builds tikz/*.tex files → media/*_tikz.{pdf,svg}
 ```
+The shared figure libraries (`tikz/ckt_lib.tex`, `tikz/fig_header.tex`,
+`tikz/*_lib.tex`) are symlinks into the `cictikz` git submodule — edit
+them via `cictikz/`, commit there, then bump the submodule. Clone with
+`--recursive` or run `git submodule update --init` first.
 
 ### Data plots
 ```sh

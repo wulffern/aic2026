@@ -71,6 +71,14 @@ If a figure would read the same in black, draw it in black.
 
 ## Shared libraries
 
+The library `.tex` files under `tikz/` are symlinks into the `cictikz`
+git submodule (`cictikz/src/cictikz/data/tex/`), which is the canonical
+home — tested, documented and published at
+<https://analogicus.com/cictikz/>. To change a library, edit it through
+the submodule, commit in `cictikz`, push, and bump the submodule here.
+Fresh clones need `git clone --recursive` (or `git submodule update
+--init`).
+
 - `ckt_lib.tex` — the schematic vocabulary: `\lvnmos`, `\lvmnmos`,
   `\lvpmos`, `\lvmpmos` (each spans `\grid` = 1.6 vertically),
   `\vground`, `\vsupply`, `\portOut`, `\portIn`, `\vresistor`,

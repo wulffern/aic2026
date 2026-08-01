@@ -56,6 +56,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v7
+        with:
+          submodules: true
 
       - name: Setup Python
         uses: actions/setup-python@v7
@@ -109,6 +111,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v7
+        with:
+          submodules: true
 
       - name: Setup Python
         uses: actions/setup-python@v7
