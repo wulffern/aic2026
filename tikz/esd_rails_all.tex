@@ -26,17 +26,19 @@
 
   %- VDD down to VSS, the hard direction: that is the way current is
   %- supposed to flow, so it needs a device that stays asleep
-  \esdggn{1.4}{\esdVdd}{0}{1.2}{vdd}{$1\rightarrow0$\\$1\rightarrow2$}
+  \esdggn{2.0}{\esdVdd}{0}{\esdLow}{vdd}{$1\rightarrow0$\\$1\rightarrow2$}
 
-  %- VSS up to VDD, and VSS up to the pin
-  \esdDiode{3.2}{0}{\esdVdd}{3.9}{$0\rightarrow1$}
-  \esdDiode{4.6}{0}{\esdPin}{1.2}{$0\rightarrow2$}
+  %- VSS up to VDD, and VSS up to the pin. The second one carries the
+  %- return leg of a VDD to pin strike as well, which is why 1->2 is
+  %- written on it and on the clamp above
+  \esdDiode{3.6}{0}{\esdVdd}{\esdLow}{$0\rightarrow1$}
+  \esdDiode{5.2}{0}{\esdPin}{\esdLow}{$0\rightarrow2$\\$1\rightarrow2$}
 
   %- the pin up to VDD
-  \esdDiode{6.0}{\esdPin}{\esdVdd}{3.9}{$2\rightarrow1$}
+  \esdDiode{6.8}{\esdPin}{\esdVdd}{4.5}{$2\rightarrow1$}
 
   %- and the pin down to VSS, the other hard direction
-  \esdggn{7.4}{\esdPin}{0}{1.2}{pin}{$2\rightarrow0$}
+  \esdggn{8.4}{\esdPin}{0}{\esdLow}{pin}{$2\rightarrow0$}
 
 \end{circuitikz}
 \end{document}
