@@ -1,0 +1,53 @@
+\input{tikz/fig_header.tex}
+% The phase-frequency detector SUN_PLL_PFD, drawn from the xschem
+% netlist in sun_pll_sky130nm. Two flip-flops with D tied high: the
+% reference clock sets UP_N, the feedback clock sets DOWN_N, and the
+% moment both are set the NOR resets the pair - so the surviving pulse
+% width is the arrival-time difference, which is what makes phase error
+% become pulse width. Inverters restore the polarities the charge pump
+% wants (CP_UP_N for the pmos switch, CP_DOWN for the nmos).
+\begin{circuitikz}[american, thick, transform shape, circuit ee IEC]
+\input{tikz/ckt_lib.tex}
+
+% One DFF with D tied high, clock, active-low reset and inverted output
+% #1 x, #2 y of the lower-left corner
+\newcommand{\pfdFF}[2]{
+  \draw (#1,#2) rectangle ++(1.6,2.0);
+  \draw (#1,#2+0.5) ++(0,0.15) -- ++(0.25,-0.15) -- ++(-0.25,-0.15);
+  \node [anchor=west] at (#1,#2+1.5) {D};
+  \node [anchor=east] at (#1+1.6,#2+1.5) {$\overline{Q}$};
+  \node [anchor=east] at (#1+1.6,#2+0.4) {$\overline{R}$};
+  \draw (#1,#2+1.5) -- ++(-0.4,0) node [anchor=east] {1};
+}
+
+\pfdFF{0}{2.6}
+\pfdFF{0}{-1.0}
+
+% Clocks
+\draw (-1.5,3.1) \portIn{CK\_REF} (-1.5,3.1) -- (0,3.1);
+\draw (-1.5,-0.5) \portIn{CK\_FB} (-1.5,-0.5) -- (0,-0.5);
+
+% The two raw outputs
+\draw (1.6,4.1) -- ++(1.0,0) coordinate (upN);
+\draw (1.6,0.5) -- ++(1.0,0) coordinate (dwnN);
+\node [anchor=south] at (2.1,4.1) {$\overline{UP}$};
+\node [anchor=north] at (2.1,0.5) {$\overline{DN}$};
+
+% Reset: the instant both flops are set, NOR fires and clears them
+\node[nor port] (rst) at (3.9,2.3) {};
+\draw (upN) to [short,*-] ++(0,-1.0) -| (rst.in 1);
+\draw (dwnN) to [short,*-] ++(0,1.0) -| (rst.in 2);
+\draw (rst.out) -- ++(0.25,0) coordinate (cfb);
+\draw (cfb) |- (1.6,3.0);
+\draw (cfb) |- (1.6,-0.6);
+\fill (cfb) circle (0.075);
+\node [anchor=west] at (4.85,2.3) {CFB};
+
+% Output inverters: UP_N -> UP -> CP_UP_N, DOWN_N -> CP_DOWN
+\draw (upN) \hinv{U1} \hinv{U2};
+\draw (U2.out) \portOut{$\overline{CP_{UP}}$};
+\draw (dwnN) \hinv{D1};
+\draw (D1.out) \portOut{$CP_{DOWN}$};
+
+\end{circuitikz}
+\end{document}
