@@ -72,8 +72,8 @@
   \draw (10.4,2.5) -- (10.4,-0.4) -- (b1_in);
   \draw (b1_out) -- (b2_in);
   \node[anchor=north, scale=0.8] at (9.0,-1.05) {delay};
-  \coordinate (gsw) at (MSW.G);
-  \draw (b2_out) -- (7.3,-0.4) -- (7.3,1.2) -- (gsw);
+  \coordinate (gsw) at (MSW.gate);
+  \draw (b2_out) -- (b2_out -| gsw) -- (gsw);
 
   % ---- divide by two flip flop: QN back to D makes the toggle ----
   \draw (10.8,2.1) \cicDff{ff};
