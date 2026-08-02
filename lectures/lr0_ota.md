@@ -707,17 +707,14 @@ The one-page version of this chapter:
 
 <!--pan_doc:
 
-The OTA topologies here have long pedigrees: Wheatley and Wittlinger
-on the transconductance amplifier [@wheatley69], Geiger and
-Sanchez-Sinencio on OTA-based design [@geiger85], Nauta's
-inverter-based transconductor [@nauta92], Hosticka's dynamic CMOS
-amplifiers [@hosticka80] and Hershberg's ring amplifiers
-[@hershberg12] for where the dynamic branch went.
+The paper that named the transconductance amplifier and argued it would obsolete the op amp [@wheatley69]
+
+OTA-based filter design, the reason the OTA became a building block rather than a curiosity [@geiger85]
+
+Nauta's inverter transconductor, drawn in this chapter, with the analysis of why its common mode holds [@nauta92]
+
+Dynamic CMOS amplifiers, twenty years before the idea became mainstream [@hosticka80]
+
+Ring amplifiers, where the dynamic branch of the family went [@hershberg12]
 
 -->
-
-- Wheatley and Wittlinger, *OTA obsoletes op amp* [@wheatley69]
-- Geiger and Sanchez-Sinencio, *Active filter design using OTAs* [@geiger85]
-- Nauta, *A CMOS transconductance-C filter technique for very high frequencies* [@nauta92]
-- Hosticka, *Dynamic CMOS amplifiers* [@hosticka80]
-- Hershberg et al., *Ring amplifiers for switched capacitor circuits* [@hershberg12]

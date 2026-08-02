@@ -233,13 +233,10 @@ Keep transistors about 3 um away from the N-well edge if threshold voltage is im
 
 <!--pan_doc:
 
-Analog design is a craft learned from circuits, so the reading is
-mostly other people's circuits: Johns and Martin [@johns] for the
-textbook path, Razavi [@razavi] for a second voice, and the JSSC and
-ISSCC archives for what the field is doing now.
+Johns and Martin, the textbook path through analog design [@johns]
+
+Razavi, a second voice on the same material [@razavi]
+
+The JSSC and ISSCC archives, for how it is actually being done now
 
 -->
-
-- Johns and Martin, *Analog Integrated Circuit Design* [@johns]
-- Razavi, *Design of Analog CMOS Integrated Circuits* [@razavi]
-- IEEE Journal of Solid-State Circuits, for how it is done now

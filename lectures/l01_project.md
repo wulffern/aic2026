@@ -546,13 +546,8 @@ The one-page version of this chapter:
 
 <!--pan_doc:
 
-The temperature-sensor project has a literature: Pertijs and Huijsing
-on precision CMOS temperature sensors [@pertijs2005], and more recent
-work on the low-power end [@jeong2014] [@tang20] [@park2022]. Read one
-of them before you start; it will save you a month.
+Precision CMOS temperature sensors, the book chapter to read before starting [@pertijs2005]
+
+Recent low-power sensors, for what the state of the art costs in area and current [@jeong2014] [@tang20] [@park2022]
 
 -->
-
-- Pertijs and Huijsing, *Precision temperature sensors in CMOS technology* [@pertijs2005]
-- Jeong et al., *A fully-integrated temperature sensor* [@jeong2014]
-- Tang et al. [@tang20] and Park et al. [@park2022]

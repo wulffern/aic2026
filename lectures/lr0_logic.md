@@ -1903,12 +1903,8 @@ The one-page version of this chapter:
 
 <!--pan_doc:
 
-Weste and Harris is the standard reference for CMOS logic, timing and
-logical effort, and Sutherland, Sproull and Harris' *Logical Effort*
-is the short book that made the method usable. For the timing analysis
-side, any static-timing tutorial from your synthesis vendor will do.
+Weste and Harris, *CMOS VLSI Design* - the standard treatment of logic, timing and power
+
+Sutherland, Sproull and Harris, *Logical Effort* - the short book that made stage sizing a method rather than a habit
 
 -->
-
-- Weste and Harris, *CMOS VLSI Design*
-- Sutherland, Sproull and Harris, *Logical Effort: Designing Fast CMOS Circuits*

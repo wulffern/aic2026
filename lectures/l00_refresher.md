@@ -737,13 +737,8 @@ The one-page version of this chapter:
 
 <!--pan_doc:
 
-This chapter is a reminder, not a course. For the real thing, any
-solid first-year physics text will do - Young and Freedman, or
-Feynman's Lectures volume I for the pleasure of it. For the quantum
-mechanics behind the later chapters, Griffiths is the usual next
-step.
+Feynman's *Lectures on Physics*, volume I - the pleasure route through everything in this chapter
+
+Griffiths, *Introduction to Quantum Mechanics* - the usual next step for the quantum parts
 
 -->
-
-- Feynman, *Lectures on Physics*, volume I
-- Griffiths, *Introduction to Quantum Mechanics*

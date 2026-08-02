@@ -527,12 +527,8 @@ The one-page version of this chapter:
 
 <!--pan_doc:
 
-Passives are where the process shows through, so the best reading is
-your own PDK documentation: the SKY130 device documentation lists what
-each resistor, capacitor and inductor actually is. Johns and Martin
-[@johns] covers the circuit-level consequences.
+Your own PDK documentation is the real reading here: what each resistor, capacitor and inductor in SKY130 actually is, and what it costs in area and parasitics
+
+The circuit-level consequences, chapter by chapter [@johns]
 
 -->
-
-- The [SKY130 PDK documentation](https://skywater-pdk.readthedocs.io/) - what your passives really are
-- Johns and Martin, *Analog Integrated Circuit Design* [@johns]

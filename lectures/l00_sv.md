@@ -491,11 +491,8 @@ The one-page version of this chapter:
 
 <!--pan_doc:
 
-The IEEE 1800 standard is the reference, but Sutherland's tutorials
-are the readable way in. For the mixed-signal flow here, the ngspice
-and Verilator manuals cover the two halves.
+The IEEE 1800 standard is the authority; Sutherland's tutorials are the readable way in
+
+The Verilator and iverilog manuals, for the two simulators used here
 
 -->
-
-- IEEE 1800 SystemVerilog standard
-- [Verilator](https://verilator.org/guide/latest/) and [iverilog](https://steveicarus.github.io/iverilog/) documentation

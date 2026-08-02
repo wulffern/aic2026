@@ -147,11 +147,8 @@ The one-page version of this chapter:
 
 <!--pan_doc:
 
-Hastings' *The Art of Analog Layout* is the book on matching, and
-worth owning. For the open flow used here, the Magic and netgen
-documentation is the practical companion.
+Hastings, *The Art of Analog Layout* - the book on matching, and worth owning
+
+The Magic and netgen documentation, which is the practical companion for the flow used here
 
 -->
-
-- Hastings, *The Art of Analog Layout*
-- [Magic VLSI](http://opencircuitdesign.com/magic/) and [netgen](http://opencircuitdesign.com/netgen/) documentation

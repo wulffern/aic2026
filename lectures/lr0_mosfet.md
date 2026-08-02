@@ -2308,19 +2308,13 @@ The one-page version of this chapter:
 
 <!--pan_doc:
 
-The two matching papers this chapter leans on are worth reading in the
-original: Pelgrom's measurement of how mismatch scales with area
-[@pelgrom89], and Kinget's translation of that into what it costs a
-designer [@kinget05]. For the electrons themselves, Mark Lundstrom's
-lecture series on the essentials of MOSFETs is the most complete
-treatment I know, and the Carrier transport paper linked earlier in
-the chapter shows the inversion layer measured rather than drawn.
+Pelgrom's measurement of how mismatch scales with area, the paper the matching section rests on [@pelgrom89]
+
+Kinget's translation of that into what mismatch costs a designer [@kinget05]
+
+Mark Lundstrom's [Essentials of MOSFETs](https://www.youtube.com/watch?v=5eG6CvcEHJ8&list=PLtkeUZItwHK6F4a4OpCOaKXKmYBKGWcHi), the most complete treatment of electrons in a MOSFET I know
 
 -->
-
-- Pelgrom, Duinmaijer and Welbers, *Matching properties of MOS transistors* [@pelgrom89]
-- Kinget, *Device mismatch and tradeoffs in the design of analog circuits* [@kinget05]
-- Lundstrom, [Essentials of MOSFETs](https://www.youtube.com/watch?v=5eG6CvcEHJ8&list=PLtkeUZItwHK6F4a4OpCOaKXKmYBKGWcHi)
 
 ---
 

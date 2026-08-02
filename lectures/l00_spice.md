@@ -415,11 +415,8 @@ The one-page version of this chapter:
 
 <!--pan_doc:
 
-Nagel's 1975 thesis is where SPICE comes from and still reads well.
-The ngspice manual is the practical reference for everything in this
-chapter.
+Nagel's 1975 thesis, where SPICE comes from, and which still reads well
+
+The ngspice manual, the reference for everything this chapter does
 
 -->
-
-- Nagel, *SPICE2: A computer program to simulate semiconductor circuits* (1975)
-- [The ngspice manual](https://ngspice.sourceforge.io/docs.html)

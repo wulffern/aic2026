@@ -472,16 +472,12 @@ The one-page version of this chapter:
 
 <!--pan_doc:
 
-Van der Ziel [@ziel] is the classic on noise in solid-state devices,
-Razavi [@razavi] and Johns and Martin [@johns] both carry good
-chapters on noise in circuits, and Friis' original noise-figure paper
-[@friis] is short and still the clearest statement of why the first
-stage matters. Einstein's 1914 paper [@einstein14] is where the
-random walk behind thermal noise starts.
+The classic on noise in solid state devices, still the reference [@ziel]
+
+Friis' original, short and still the clearest statement of why the first stage decides the noise figure [@friis]
+
+Chapter-length treatments of circuit noise, either of which will do [@razavi] [@johns]
+
+The random walk that thermal noise is made of, from the source [@einstein14]
 
 -->
-
-- van der Ziel, *Noise in solid state devices and circuits* [@ziel]
-- Friis, *Noise figures of radio receivers* [@friis]
-- Razavi, *Design of Analog CMOS Integrated Circuits* [@razavi]
-- Johns and Martin, *Analog Integrated Circuit Design* [@johns]

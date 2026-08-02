@@ -291,11 +291,8 @@ The one-page version of this chapter:
 
 <!--pan_doc:
 
-Each tool has its own documentation, and all of it is good: xschem,
-ngspice, magic, netgen and the SKY130 PDK. The tools chapter later in
-this book covers the cic layer built on top of them.
+Each tool documents itself well: xschem, ngspice, magic, netgen and the SKY130 PDK
+
+The tools chapter later in this book covers the cic layer built on top of them
 
 -->
-
-- [xschem](https://xschem.sourceforge.io/stefan/index.html), [ngspice](https://ngspice.sourceforge.io/docs.html), [magic](http://opencircuitdesign.com/magic/), [netgen](http://opencircuitdesign.com/netgen/)
-- [SKY130 PDK](https://skywater-pdk.readthedocs.io/)

@@ -451,12 +451,8 @@ The one-page version of this chapter:
 
 <!--pan_doc:
 
-The compiled-design ideas here are documented in the tools chapter
-and in the ciccreator documentation. For where the field is going,
-the open-source EDA community around OpenLane and the SKY130 PDK is
-the liveliest place to look.
+The ciccreator documentation, for the compiler this chapter argues for
+
+OpenLane, the digital counterpart, for how far the same idea has gone on that side
 
 -->
-
-- [ciccreator](https://ciccreator.readthedocs.io/) - the compiler this chapter argues for
-- [OpenLane](https://openlane.readthedocs.io/) - the digital counterpart

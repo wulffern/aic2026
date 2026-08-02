@@ -374,11 +374,8 @@ $$ P_{RX_{sens}} = -174\text{ dBm} + 10\log_{10}(DR) + NF + E_b/N_0 $$
 
 <!--pan_doc:
 
-Every equation collected here is derived in its own chapter of this
-book; the chapter references above point at them. Johns and Martin
-[@johns] carries the same set with more algebra.
+Every equation here is derived in its own chapter of this book; the section titles above point at them
+
+Johns and Martin carry the same set with more algebra [@johns]
 
 -->
-
-- The chapters of this book, where each of these is derived
-- Johns and Martin, *Analog Integrated Circuit Design* [@johns]

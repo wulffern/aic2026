@@ -239,12 +239,10 @@ The one-page version of this chapter:
 
 <!--pan_doc:
 
-Strunk and White is still the shortest useful book on writing, and
-Zinsser's *On Writing Well* the friendliest. For technical writing
-specifically, read a few JSSC papers with an eye on structure rather
-than content.
+Strunk and White, *The Elements of Style* - still the shortest useful book on writing
+
+Zinsser, *On Writing Well* - the friendliest one
+
+A handful of JSSC papers, read for their structure rather than their content
 
 -->
-
-- Strunk and White, *The Elements of Style*
-- Zinsser, *On Writing Well*
