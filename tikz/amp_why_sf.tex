@@ -17,6 +17,18 @@
   \fill (-0.2,{\ysig/2-0.25}) -- (0.2,{\ysig/2-0.25}) -- (0,{\ysig/2+0.25}) -- cycle;
   \draw (-0.2,{\ysig/2+0.25}) -- (0.2,{\ysig/2+0.25});
   \draw (0,{\ysig/2+0.25}) -- (0,\ysig);
+  %- the two arrows that make it a photodiode rather than a diode
+  \draw[->] (1.15,0.55) -- (0.45,0.95);
+  \draw[->] (1.15,0.95) -- (0.45,1.35);
+  %- Polarity matters and is easy to get backwards. The reset switch
+  %- charges the sense node to 3.0 V, so the cathode has to sit on the
+  %- node: the junction is reverse biased, and light discharges it. Turn
+  %- the diode around and it is forward biased at 3 V, clamping the node
+  %- near 0.6 V, and there is no pixel left. The photocurrent therefore
+  %- runs the other way to the symbol's triangle, down and out of the
+  %- node, which is where the minus sign in dV comes from.
+  \draw[red, ->] (-0.65,1.55) -- (-0.65,0.85);
+  \node[red, anchor=east, scale=0.85] at (-0.7,1.2) {$i_{ph}$};
   \draw (0,\ysig) to [nos] (1.6,\ysig);
 
   % the 1 fF sense capacitor
