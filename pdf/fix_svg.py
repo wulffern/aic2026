@@ -48,7 +48,7 @@ def getPath(line):
 tmplt = r"""
 {
 \centering
-\includegraphics[width=\myfigwidth,height=\myfigheight,keepaspectratio]{#path#}
+\aicfig{#path#}
 }
 """
 

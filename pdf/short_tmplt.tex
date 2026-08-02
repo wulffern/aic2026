@@ -23,6 +23,21 @@
 \newcommand{\myfigwidth}{90mm}
 \newcommand{\myfigheight}{80mm}
 
+% Figures are capped, never inflated. \includegraphics[width=..] scales
+% a graphic TO that width, so a drawing whose natural size is 40 mm was
+% being blown up to fill the box. \aicfig measures the graphic first and
+% asks for the smaller of its natural width and the cap; keepaspectratio
+% with the height cap then bounds tall figures the same way.
+\newsavebox{\aicfigbox}
+\newlength{\aicfigw}
+\newcommand{\aicfig}[1]{%
+  \sbox{\aicfigbox}{\includegraphics{#1}}%
+  \setlength{\aicfigw}{\wd\aicfigbox}%
+  \ifdim\aicfigw>\myfigwidth\setlength{\aicfigw}{\myfigwidth}\fi
+  \includegraphics[width=\aicfigw,height=\myfigheight,keepaspectratio]{#1}%
+}
+
+
 
 
 %\usepackage{tabularray}
