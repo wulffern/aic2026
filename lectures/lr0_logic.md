@@ -1882,23 +1882,18 @@ clean
 
 #[fit] Thanks!
 
+---
 
+## Summary
 
+<!--pan_doc:
 
+The one-page version of this chapter:
 
+-->
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+- CMOS logic is a PMOS pull-up network against an NMOS pull-down: the inverter is the atom
+- Delay is RC: Elmore for a hand estimate, logical effort for sizing - stage long paths at an effort around four
+- Registers, combinational clouds and a clock make synchronous design; setup and hold are checked at every capture
+- Static timing analysis walks every path over PVT: positive slack, or it does not ship
+- Dynamic power is CV^2 f; leakage is what you pay even when nothing switches

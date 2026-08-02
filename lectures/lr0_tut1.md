@@ -855,6 +855,16 @@ use JNWATR_NCH_4C5F0  JNWATR_NCH_4C5F0_0 ../LELO_ATR_SKY130A
 
 It's the last `../LELO_ATR_SKY130A` that sometimes is missing.
 
+---
 
+## Summary
 
+<!--pan_doc:
 
+The one-page version of this chapter:
+
+-->
+
+- One cell end to end: schematic in xschem, a symbol, a testbench, and a cicsim run with a results table
+- The names are not cosmetic: instances, ports and directories follow the aicex conventions the tools expect
+- By the end you have run corners from one command - the pattern every later week repeats

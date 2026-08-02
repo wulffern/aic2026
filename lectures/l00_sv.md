@@ -472,6 +472,16 @@ make typical
 
 #[fit] Thanks!
 
+---
 
+## Summary
 
+<!--pan_doc:
 
+The one-page version of this chapter:
+
+-->
+
+- SystemVerilog describes hardware as events: always_ff becomes registers, combinational logic goes in always_comb
+- Event-driven simulation only computes when something changes, which is why digital simulation is fast
+- Mixed-signal co-simulation bridges the two worlds: the svinst flow connects SPICE and the digital testbench

@@ -431,4 +431,17 @@ The Data Conversion Handbook, Walt Kester
 
 #[fit] Thanks!
 
+---
 
+## Summary
+
+<!--pan_doc:
+
+The one-page version of this chapter:
+
+-->
+
+- Automation climbs the abstraction ladder: devices and cells are solved, blocks are the frontier, chips are stitching
+- Whatever is text - netlists, JSON, code - can be versioned, diffed, reviewed and compiled; keep everything as text
+- The practical tips are paid for in silicon: feed ring oscillators from current sources, check non-overlap in the slow corner, leave a known capacitance to measure
+- The goal is not to remove the designer; it is to stop the designer redrawing what a compiler can regenerate

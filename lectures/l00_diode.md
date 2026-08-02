@@ -1349,7 +1349,26 @@ agree with your equations.
 
 But most of the time, the behavior is similar.
 
-## Would you like to know more?
+#---
+
+## Summary
+
+<!--pan_doc:
+
+The one-page version of this chapter:
+
+-->
+
+- Silicon's bandgap makes it a semiconductor: few free carriers at room temperature, exponentially more when heated
+- Doping moves the Fermi level - towards the conduction band with donors, towards the valence band with acceptors
+- Join n to p and diffusion fights drift until the depletion field balances: the built-in voltage
+- Forward bias lowers the barrier exponentially: $I = I_S(e^{V/V_T} - 1)$
+- The diode voltage falls roughly 2 mV/K and extrapolates to the bandgap at 0 K - the seed of every bandgap reference
+- Reverse leakage grows exponentially with temperature: an antenna diode sized at etch temperature is a different diode at deposition
+
+---
+
+# Would you like to know more?
 
 -->
 

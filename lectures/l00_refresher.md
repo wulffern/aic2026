@@ -717,11 +717,17 @@ and store energy in the magnetic fields in a loop of a conductor.
 
 #[fit] Thanks!
 
+---
 
+## Summary
 
+<!--pan_doc:
 
+The one-page version of this chapter:
 
+-->
 
-
-
-
+- Seven SI base units; electronics interacts with the world through the second and the ampere
+- Electrons are fermions: two per state, which is what builds shells, bands, and all of chemistry
+- Energy lives in the fields: $E = -dV/dx$, and voltage is energy per charge
+- This refresher's job is vocabulary - enough physics to carry the diode and MOSFET chapters

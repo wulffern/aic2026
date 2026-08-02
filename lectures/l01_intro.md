@@ -559,4 +559,17 @@ Expect that you will spend at least $$2\pi$$ times more time than planned *(most
 
 #[fit] Thanks!
 
+---
 
+## Summary
+
+<!--pan_doc:
+
+The one-page version of this chapter:
+
+-->
+
+- The real world is analog, so every IC carries analog circuits at its edges - there is no purely digital chip
+- Making an IC splits into an analog and a digital flow, and it is rare to find one human who does both well
+- Digital designers reuse each other's work; analog designers redraw - closing that gap is a theme of this course
+- What you need from here: the refresher chapters, a working toolchain, and the habit of simulating everything

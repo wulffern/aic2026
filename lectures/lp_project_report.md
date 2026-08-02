@@ -219,3 +219,17 @@ link here.
 | Template                                                               | Use [IEEEtran.cls](https://www.ieee.org/conferences/publishing/templates.html). Example can be seen from an old version of this document at  <https://github.com/wulffern/dic2021/tree/main/2021-10-19_project_report>.  Write in LaTeX. You will need LaTeX for your project and master thesis. Use <http://overleaf.com> if you're uncomfortable with local text editors and LaTeX.                       |        |
 | Spellcheck                                                             | Always use a spellchecker. Misspelled words are annoying, and may change content and context (peaked versus piqued)                                                                                                                                                                       |        |
 
+---
+
+## Summary
+
+<!--pan_doc:
+
+The one-page version of this chapter:
+
+-->
+
+- The report is the product: a reader must be able to repeat what you did and believe what you claim
+- Abstract states the claim, introduction the why, method the how, results the evidence, conclusion the so-what
+- Figures carry the argument - every one referenced, every one earning its place
+- Cite what you used, and let the results speak for themselves

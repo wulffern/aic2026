@@ -127,12 +127,17 @@ The X and Y space is for the distance between groups. The unit is "Ångstrøm", 
 <sub>Figure 5: The same grouped placement with all layers drawn, DRC clean</sub>
 -->
 
+---
 
+## Summary
 
+<!--pan_doc:
 
+The one-page version of this chapter:
 
+-->
 
-
-
-
-
+- Layout is the final translation: from schematic to the polygons the fab will etch
+- Matching is geometry: symmetry, proximity, dummies, and common centroid where it counts
+- The parasitics are part of the circuit - extract and re-simulate before believing any layout
+- DRC and LVS are not suggestions: clean both, every time

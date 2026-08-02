@@ -396,4 +396,16 @@ Strong $$ \frac{g_m}{I_d} = \frac{2}{V_{eff}}$$
 
 #[fit] Thanks!
 
+---
 
+## Summary
+
+<!--pan_doc:
+
+The one-page version of this chapter:
+
+-->
+
+- SPICE has run the same way for fifty-odd years: a netlist in, operating points and waveforms out
+- The quartet to master: op, dc, ac and tran - everything else is decoration on those four
+- ngspice speaks the dialect this course uses, and the transistor models come from the PDK, not from the simulator

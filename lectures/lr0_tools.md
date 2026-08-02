@@ -271,3 +271,17 @@ xschem -b ../design/SUN_SAR9B_SKY130NM/SUNSAR_SAR9B_CV.sch &
 ```
 
 ---
+
+---
+
+## Summary
+
+<!--pan_doc:
+
+The one-page version of this chapter:
+
+-->
+
+- The whole flow is open source: xschem, ngspice, magic, netgen, and the cic tools on top
+- Everything installs from scripts, and the docs and video walk the setup end to end
+- If the tools do not run, nothing else in this course happens - do this first, and ask early when stuck

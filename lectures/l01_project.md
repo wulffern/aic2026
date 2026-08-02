@@ -526,9 +526,17 @@ Those students that follow the course at NTNU will be able to tapeout if the des
 
 #[fit] Thanks!
 
+---
 
+## Summary
 
+<!--pan_doc:
 
+The one-page version of this chapter:
 
+-->
 
-
+- The project is the course: design a block in an open PDK, simulate it over corners, and document the evidence
+- Start from the template repositories and the cic flow on day one - infrastructure debt compounds
+- Work like an engineer: git for everything, scripts over clicks, claims backed by simulation
+- The report is the deliverable; the next chapter's writing guide is not optional reading

@@ -1,0 +1,68 @@
+% Preface and conventions, book-only front matter. Input from aic.tex
+% between the table of contents and the chapters.
+
+\setchapterstyle{plain}
+\chapter*{Preface}
+\addcontentsline{toc}{chapter}{Preface}
+
+These are the lecture notes for \emph{TFE4188 Advanced Integrated
+Circuits} at the Norwegian University of Science and Technology, grown
+over years of teaching into something that behaves like a book. The
+intended reader is a student who has met circuits before and now wants
+to design integrated ones: analog on a modern CMOS process, with the
+digital world pressing in from every side.
+
+The book has two kinds of chapters. The \emph{refresher} chapters -
+physics, fields, diodes, MOSFETs, circuits, OTAs, passives, noise,
+logic, layout - rebuild the foundations the later chapters stand on;
+read them in order the first time, and raid them afterwards. The
+\emph{technical} chapters - ESD, references, filters, converters,
+regulators, clocks, oscillators, radio - each take one job an
+integrated circuit must do and follow it from principle to schematic.
+Every chapter ends with a one-page summary and a reading list.
+
+Everything here runs on an open source flow: xschem, ngspice, magic,
+and the cic tools, on the open SKY130 process. Every schematic figure
+can be simulated, every simulation rerun from a shell command, and the
+source of the book itself - text, figures, build - lives in a public
+git repository. If you find an error, the repository is where to say
+so.
+
+Parts of this book were written by Claude, Anthropic's AI, on my
+direction and under my review; the title page says so, AI-written
+chapters carry a byline, and the repository's commit history records
+precisely who wrote what.
+
+\bigskip
+\noindent Carsten Wulff, Trondheim, 2026
+
+\setchapterstyle{plain}
+\chapter*{Conventions}
+\addcontentsline{toc}{chapter}{Conventions}
+
+The figures in this book follow one visual language, so colour and
+line style carry meaning everywhere:
+
+\begin{itemize}
+\item \textbf{Black} is the circuit: wires, devices, and the house
+  symbols. One line width throughout, one arrow tip.
+\item \textcolor{red}{\textbf{Red}} marks the subject - the device or
+  path the figure is about. In the device cartoons red is also the
+  hole, and red regions are p-type.
+\item \textcolor{blue}{\textbf{Blue}} carries signals and fields. In
+  the device cartoons blue is the electron, and blue regions are
+  n-type.
+\item \textcolor{armygreen}{\textbf{Green}} marks equivalence - two
+  drawings of the same thing - and mechanical annotations.
+\item {\color[RGB]{60,140,160}\textbf{Teal}} is the gate oxide,
+  wherever it appears.
+\item \textbf{Dashed or arrowed strokes} are annotation, never wires.
+\item \textbf{Wires that cross without a dot are not connected};
+  every junction carries a dot.
+\end{itemize}
+
+Device sizes quoted as \texttt{24F4F} read as width 24 and length 4
+minimum gate lengths, so a schematic ports between processes by
+re-reading F. Some numerical estimates are deliberately rough -
+engineering hand-waving is a skill this book practices openly, and
+the text says so where it happens.

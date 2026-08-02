@@ -450,3 +450,19 @@ function is often referred to as the *Wiener-Khintchine* theorem.
 [^2]: Note that if you calculate the average power of $S_{th}(f)$ you’ll
     get infinity. You have to include the bandwidth of the circuit you
     are considering for average power to have a finite value.
+
+---
+
+## Summary
+
+<!--pan_doc:
+
+The one-page version of this chapter:
+
+-->
+
+- Noise is random: describe the amplitude by its distribution (usually Gaussian) and the power by its spectral density
+- Thermal noise is 4kTR in every resistor and kT/C on every sampled capacitor - no cleverness removes it
+- Flicker noise comes from traps: 1/f density, quieter with bigger devices
+- Integrate the density over the band you keep to get the power the signal must beat
+- Friis: with gain up front, only the first stage's noise matters - spend your current there
