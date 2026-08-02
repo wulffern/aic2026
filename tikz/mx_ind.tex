@@ -1,44 +1,91 @@
 \input{tikz/fig_header.tex}
 
-% The inductor falls out of Maxwell, drawn as the real thing: a round
-% wire loop with the flux threading it, and a solenoid - the same
-% loop taken N times, flux through the bore.
+% Why a loop of wire is an inductor, told as the three steps the
+% equations take. (a) push a changing current through a real loop of
+% wire: (1) the current wraps a magnetic field around the wire, so
+% flux threads the loop; (2) changing that flux drives a voltage
+% around the loop (Faraday); (3) that voltage opposes the change,
+% which at the terminals is v = L di/dt, and the ramp/step inset says
+% it concretely. (b) wind the same loop N times and both the flux
+% made and the flux felt scale with N, hence L grows as N squared.
 
 \begin{tikzpicture}[thick]
 
-  % ---------------- (a) one real loop of wire ----------------
-  % the loop, in perspective: a fat ellipse of wire with a feed gap
-  \draw[line width=2.8pt] (1.9,0.55) arc (-35:305:2.0 and 1.15);
-  \draw[line width=2.6pt] (1.9,0.55) -- (2.7,0.15);
-  \draw[line width=2.6pt] (2.02,0.95) -- (2.85,0.62);
-  \draw[blue, very thick, ->] (-0.6,2.6) arc (115:65:2.4);
-  \node[blue, anchor=south] at (0.45,2.7) {$i(t)$};
-  % flux threading the loop
-  \foreach \x in {-0.8,0.1,1.0} {
-    \draw[red, very thick, ->] (\x,0.35) -- (\x,2.6);
+  \newcommand{\stepnum}[3]{%
+    \draw[fill=white] (#1,#2) circle (0.21);
+    \node[anchor=center, scale=0.85] at (#1,#2) {#3};
   }
-  \node[red, anchor=west] at (1.15,2.4) {$\Phi = L\,i$};
-  \node[anchor=north, align=center] at (0.3,-1.0)
-    {(a) every loop encloses flux\\$v = L\,\dfrac{di}{dt}$};
 
-  % ---------------- (b) a solenoid: the same loop N times ----------------
-  \begin{scope}[shift={(7.2,0.6)}]
-    % flux bundle through the bore, drawn first (behind the wire)
-    \draw[red, line width=3pt, ->] (-1.0,0.45) -- (5.0,0.45);
-    \node[red, anchor=west] at (5.1,0.45) {$N\Phi$};
-    % the winding: repeated turns of one wire
-    \draw[line width=2.4pt] (0,-0.4) -- (-0.7,-0.4);
+  % ================= (a) one loop of wire =================
+  % a clean loop of wire: an ellipse with a gap at the bottom, its
+  % two ends brought out sideways as terminals
+  \draw[line width=2.6pt] (-0.62,-1.0) arc (250:-70:1.85 and 1.06);
+  \draw[line width=2.4pt] (-0.62,-1.0) -- (-0.62,-1.85) -- (1.5,-1.85);
+  \draw[line width=2.4pt] (0.62,-1.0) -- (0.62,-1.5) -- (1.5,-1.5);
+
+  %- (1) the current
+  \draw[blue, very thick, ->] (-1.55,1.05) arc (150:30:1.85 and 1.1);
+  \node[blue, anchor=south, scale=0.95] at (0,1.65) {$i(t)$, rising};
+  \stepnum{-2.35}{0.35}{1}
+  \node[anchor=east, align=right, scale=0.85] at (-2.65,0.35)
+    {a rising current\\wraps a field};
+
+  %- (2) the flux it makes, threading its own loop
+  \foreach \x in {-0.8,0.0,0.8} {
+    \draw[red, very thick, ->] (\x,-0.6) -- (\x,0.75);
+  }
+  \node[red, anchor=west, scale=0.95] at (2.15,0.55) {$\Phi = L\,i$};
+  \stepnum{2.35}{-0.2}{2}
+  \node[red!60!black, anchor=west, align=left, scale=0.85] at (2.65,-0.2)
+    {flux through\\its own loop};
+
+  %- (3) the voltage that changing flux drives, at the terminals
+  \draw[armygreen, very thick, ->] (1.5,-1.68) -- (2.4,-1.68);
+  \node[armygreen, anchor=west, scale=0.95] at (2.45,-1.68)
+    {$v = L\,\dfrac{di}{dt}$};
+  \stepnum{-1.3}{-1.85}{3}
+  \node[armygreen!60!black, anchor=east, align=right, scale=0.85] at (-1.6,-1.85)
+    {and it pushes\\back};
+
+  %- the inset that makes it concrete: ramp the current, get a step
+  \begin{scope}[shift={(-1.9,-4.6)}]
+    \draw[gray!60, ->] (0,-1.25) -- (3.5,-1.25);
+    \draw[blue, very thick] (0.15,0.15) -- (1.1,0.15) -- (2.3,1.15) -- (3.2,1.15);
+    \node[blue, anchor=west, scale=0.85] at (3.25,0.85) {$i$};
+    \draw[armygreen, very thick] (0.15,-0.95) -- (1.1,-0.95) -- (1.1,-0.35)
+      -- (2.3,-0.35) -- (2.3,-0.95) -- (3.2,-0.95);
+    \node[armygreen, anchor=west, scale=0.85] at (3.25,-0.55) {$v$};
+    \node[anchor=north, scale=0.85, align=center] at (1.7,-1.45)
+      {ramp the current, and the loop\\answers with a voltage};
+  \end{scope}
+
+  \node[anchor=north, align=center] at (0.4,-7.0)
+    {(a) any loop of wire is an inductor};
+
+  % ================= (b) the same loop, N times =================
+  \begin{scope}[shift={(9.4,-0.3)}]
+    % flux bundle through the bore, behind the winding
+    \draw[red, line width=3pt, ->] (-1.1,0.45) -- (5.1,0.45);
+    \node[red, anchor=south west] at (3.7,0.6) {$N\Phi$};
+    % the winding: one wire, N turns
+    \draw[line width=2.4pt] (0,-0.4) -- (-0.8,-0.4);
     \foreach \x in {0,0.8,1.6,2.4,3.2} {
       \draw[line width=2.4pt] (\x,-0.4)
         .. controls (\x-0.25,1.0) and (\x+1.05,1.0) .. (\x+0.8,-0.4);
-      \draw[line width=2.4pt, gray!60]
+      \draw[line width=2.4pt, gray!55]
         (\x+0.8,-0.4) .. controls (\x+0.72,-0.75) and (\x+0.1,-0.75) .. (\x+0.02,-0.42);
     }
-    \draw[line width=2.4pt] (4.0,-0.4) -- (4.7,-0.4);
-    \draw[blue, very thick, ->] (-0.65,-0.65) -- (-0.15,-0.65);
-    \node[blue, anchor=north, scale=0.9] at (-0.4,-0.75) {$i$};
-    \node[anchor=north, align=center] at (2.0,-1.6)
-      {(b) a coil: the same loop, $N$ times\\$L \propto N^2$};
+    \draw[line width=2.4pt] (4.0,-0.4) -- (4.8,-0.4);
+    \draw[blue, very thick, ->] (-0.75,-0.7) -- (-0.2,-0.7);
+    \node[blue, anchor=north, scale=0.9] at (-0.45,-0.8) {$i$};
+
+    %- why it squares
+    \node[anchor=north, align=left, scale=0.9] at (2.0,-1.5)
+      {$N$ turns make $N$ times the flux,\\
+       and every turn feels all of it:\\
+       $L \propto N^2$};
+    \node[anchor=north, align=center] at (2.0,-6.7)
+      {(b) a coil is the same loop, wound $N$ times};
   \end{scope}
 
 \end{tikzpicture}

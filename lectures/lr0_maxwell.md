@@ -161,18 +161,21 @@ chapter is the bill.
 
 <!--pan_doc:
 
-The loop in Figure 3(a) carries a current, and Ampere says that
-current wraps a magnetic field around the wire. Some of that field
-threads the loop itself: the flux $\Phi$ is proportional to the
-current, and the proportionality constant is decided purely by the
-geometry. We call it $L$.
+Figure 3(a) walks the three steps. **One:** push a rising current
+through a loop of wire, and Ampere says that current wraps a magnetic
+field around the wire. **Two:** some of that field threads the loop
+itself - the flux $\Phi$ is proportional to the current, with a
+constant decided purely by the geometry, and we call it $L$.
+**Three:** Faraday says a changing flux drives a voltage around the
+loop, and Lenz's rule says it drives it in the direction that opposes
+the change. The loop fights you, and at the terminals that reads
+$v = L\, di/dt$: ramp the current, and the loop answers with a
+voltage, exactly as the inset shows.
 
-Now change the current. Faraday says the changing flux drives a
-voltage around the loop - and by Lenz's rule it drives it in the
-direction that opposes the change. The loop fights you:
-$v = L\, di/dt$. An inductor is a deliberately good loop, and a coil,
-Figure 3(b), is the same loop taken $N$ times, so the flux links $N$
-turns and the inductance grows as $N^2$.
+An inductor is a deliberately good loop. Wind the same loop $N$ times,
+Figure 3(b), and the bargain improves twice over: $N$ turns make $N$
+times the flux, and every turn feels all of it - which is why the
+inductance grows as $N^2$.
 
 The converse of the capacitor's lesson holds here: every loop on your
 chip is an inductor whether you asked or not. Since every current
