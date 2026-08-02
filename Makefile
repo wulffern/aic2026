@@ -235,6 +235,8 @@ book-pdf:
 	-mkdir -p docs/assets
 	cd pdf; $(MAKE) one
 	cp pdf/aic.pdf docs/assets/
+	cd pdf; $(MAKE) book-ai
+	cp pdf/aic_ai.pdf docs/assets/
 
 book-epub:
 	-mkdir -p docs/assets
