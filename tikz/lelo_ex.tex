@@ -1,0 +1,71 @@
+\input{tikz/fig_header.tex}
+
+% The LELO_EX schematic the tutorial builds, drawn as a schematic rather
+% than screenshotted out of xschem.
+%
+% It is a current mirror with three instances of the same device. The
+% input branch xo1 is one device and is diode connected; the two output
+% instances are two devices each, because the bus notation xo0[1:0]
+% creates two. Four output devices to one input device is where the
+% 5 uA in and 20 uA out in the port names comes from - the picture and
+% the port names have to agree, and this is the figure that shows why.
+%
+% Gates run on a rail below the sources so the rail never crosses a
+% device body.
+
+\begin{circuitikz}[american, thick, transform shape, circuit ee IEC]
+
+  \input{tikz/ckt_lib.tex}
+
+  \def\xin{0}       % xo1, the diode connected input
+  \def\xoa{3.6}     % xo0[1:0]
+  \def\xob{7.6}     % xo2[1:0]
+  \def\ygr{-1.5}    % the gate rail
+  \def\yout{2.9}    % the output rail
+
+  % one instance: #1 x, #2 node name, #3 instance name, #4 device count
+  \newcommand{\instance}[4]{
+    \draw (#1,0) \lvnmos{#2}{};
+    \draw (#1,0) -- (#1,-0.3);
+    \draw (#1,-0.3) \vground;
+    \draw (#2.gate) -- ({#1-1.3},0.8);
+    \draw ({#1-1.3},0.8) -- ({#1-1.3},\ygr);
+    \node[anchor=west, scale=0.85] at ({#1+0.45},0.55) {#3};
+    \node[anchor=west, scale=0.8, gray!50!black] at ({#1+0.45},0.1) {#4};
+  }
+
+  \instance{\xin}{XO1}{xo1}{1 device}
+  \instance{\xoa}{XO0}{xo0[1:0]}{2 devices}
+  \instance{\xob}{XO2}{xo2[1:0]}{2 devices}
+
+  % ---- the gate rail ----
+  \draw ({\xin-1.3},\ygr) -- ({\xob-1.3},\ygr);
+  \fill ({\xoa-1.3},\ygr) circle (0.075);
+  \fill ({\xin-1.3},\ygr) circle (0.075);
+
+  % ---- the diode connection on the input instance ----
+  \draw (\xin,1.9) -- ({\xin-1.3},1.9);
+  \fill (\xin,1.9) circle (0.075);
+  \fill ({\xin-1.3},1.9) circle (0.075);
+
+  % ---- IBPS_5U comes in on the drain of the input instance ----
+  \draw (\xin,1.6) -- (\xin,2.9) -- (-2.6,2.9);
+  \draw (-2.6,2.9) node[ocirc]{};
+  \node[anchor=east, scale=0.9] at (-2.75,2.9) {IBPS\_5U};
+
+  % ---- both output drains leave together as IBNS_20U ----
+  \draw (\xoa,1.6) -- (\xoa,\yout) -- (\xob,\yout);
+  \draw (\xob,1.6) -- (\xob,\yout);
+  \fill (\xob,\yout) circle (0.075);
+  \draw (\xob,\yout) -- (10.0,\yout);
+  \draw (10.0,\yout) node[ocirc]{};
+  \node[anchor=west, scale=0.9] at (10.15,\yout) {IBNS\_20U};
+
+  % ---- what the picture is for ----
+  \node[anchor=north, align=center, scale=0.9, gray!50!black] at (3.4,{\ygr-0.5})
+    {One device in, four devices out, so the mirror multiplies by four:\\
+     5 $\mu$A into IBPS\_5U leaves as 20 $\mu$A out of IBNS\_20U.\\
+     The sources are the VSS port};
+
+\end{circuitikz}
+\end{document}

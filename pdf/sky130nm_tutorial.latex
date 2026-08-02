@@ -264,10 +264,12 @@ Use `f' to zoom full screen
 
 Remember to save the schematic
 
-\pandocbounded{\includesvg[keepaspectratio]{media/LELO_EX.svg}}
+\pandocbounded{\includegraphics[keepaspectratio]{media/lelo_ex_tikz.pdf}}
 
-\emph{Figure 1: Finished LELO\_EX schematic in Xschem - three NMOS
-current mirror devices between the IBPS\_5U, IBNS\_20U and VSS ports}
+\emph{Figure 1: The finished LELO\_EX schematic - one diode connected
+input instance and two output instances of two devices each, between the
+IBPS\_5U, IBNS\_20U and VSS ports. Four output devices to one input
+device is where the 5 uA in and 20 uA out of the port names comes from}
 
 \subsection{Netlist schematic}\label{netlist-schematic}
 
