@@ -18,6 +18,7 @@ FILES = l00_jayn \
 	l01_intro \
 	lr0_excellence \
 	l00_refresher \
+	lr0_maxwell \
 	l00_diode \
 	lr0_mosfet \
 	lr0_circuits \

@@ -1,0 +1,42 @@
+\input{tikz/fig_header.tex}
+
+% The inductor falls out of Maxwell: every loop encloses flux, and a
+% changing current fights its own flux (Faraday). An inductor is a
+% deliberately good loop - the coil is the same loop taken N times.
+
+\definecolor{hcharge}{RGB}{220,30,30}
+
+\begin{tikzpicture}[thick]
+
+  % ---------------- (a) any loop is an inductor ----------------
+  \draw (0,0) rectangle (3.4,2.6);
+  \draw[blue, very thick, ->] (0.5,2.85) -- (2.9,2.85);
+  \node[blue, anchor=south] at (1.7,2.9) {$i(t)$};
+  % flux through the loop: red circles-with-dot (out of the page)
+  \foreach \x/\y in {1.1/0.8, 2.3/0.8, 1.1/1.8, 2.3/1.8} {
+    \draw[hcharge] (\x,\y) circle (0.16);
+    \fill[hcharge] (\x,\y) circle (0.035);
+  }
+  \node[hcharge, anchor=center] at (1.7,1.3) {$\Phi = L\,i$};
+  \node[anchor=north, align=center] at (1.7,-0.35)
+    {(a) every loop encloses flux\\$v = L\,\dfrac{di}{dt}$};
+
+  % ---------------- (b) a coil is the same loop N times ----------------
+  \begin{scope}[shift={(6.6,0)}]
+    \draw (0,1.3) -- (0.7,1.3);
+    \draw (0.7,1.3)
+      .. controls (0.7,2.2) and (1.5,2.2) .. (1.5,1.3)
+      .. controls (1.5,2.2) and (2.3,2.2) .. (2.3,1.3)
+      .. controls (2.3,2.2) and (3.1,2.2) .. (3.1,1.3);
+    \draw (3.1,1.3) -- (3.8,1.3);
+    % flux through all turns
+    \foreach \x in {1.1,1.9,2.7} {
+      \draw[hcharge, very thick, ->] (\x,0.5) -- (\x,2.5);
+    }
+    \node[hcharge, anchor=west] at (3.0,2.45) {$N\Phi$};
+    \node[anchor=north, align=center] at (1.9,-0.35)
+      {(b) a coil: the same loop, $N$ times\\$L \propto N^2$};
+  \end{scope}
+
+\end{tikzpicture}
+\end{document}

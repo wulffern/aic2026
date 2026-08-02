@@ -1,0 +1,36 @@
+\input{tikz/fig_header.tex}
+
+% Where the return current actually flows: cross section of a signal
+% wire over a ground plane. At DC the return spreads over the whole
+% plane (lowest resistance); at high frequency it crowds under the
+% signal wire, because that is the path of least loop area - least
+% inductance. The shading is the current density.
+
+\definecolor{echarge}{RGB}{30,60,220}
+
+\begin{tikzpicture}[thick]
+
+  % ---------------- (a) low frequency ----------------
+  \draw[fill=echarge!15] (0,0) rectangle (5.4,0.5);
+  \draw[fill=echarge] (2.7,1.5) circle (0.22);
+  \node[echarge, anchor=west] at (3.0,1.5) {signal};
+  \node[anchor=east, scale=0.9] at (-0.15,0.25) {return};
+  \node[anchor=north, align=center] at (2.7,-0.3)
+    {(a) DC: the return spreads out\\(least resistance)};
+
+  % ---------------- (b) high frequency ----------------
+  \begin{scope}[shift={(8.0,0)}]
+    \fill[echarge!8] (0,0) rectangle (5.4,0.5);
+    \shade[left color=echarge!8, right color=echarge!75] (0.9,0) rectangle (2.7,0.5);
+    \shade[left color=echarge!75, right color=echarge!8] (2.7,0) rectangle (4.5,0.5);
+    \draw (0,0) rectangle (5.4,0.5);
+    \draw[fill=echarge] (2.7,1.5) circle (0.22);
+    % the loop the current minimizes
+    \draw[gray, dashed, thick] (2.7,1.5) ellipse (0.55 and 1.05);
+    \node[gray!60!black, anchor=west, scale=0.85] at (3.4,2.2) {smallest loop};
+    \node[anchor=north, align=center] at (2.7,-0.3)
+      {(b) high frequency: the return hugs the wire\\(least inductance)};
+  \end{scope}
+
+\end{tikzpicture}
+\end{document}

@@ -1,0 +1,41 @@
+\input{tikz/fig_header.tex}
+
+% The capacitor falls out of Maxwell: break the conductor and the loop
+% does not break - it continues through the gap as displacement current
+% dD/dt. A capacitor is a deliberately good gap.
+
+\definecolor{echarge}{RGB}{30,60,220}
+
+\begin{circuitikz}[american, thick, transform shape, circuit ee IEC]
+
+  \input{tikz/ckt_lib.tex}
+
+  \draw (0,0) to [V] (0,2.8);
+  \draw (0,2.8) -- (2.2,2.8);
+  \draw (5.0,2.8) -- (7.2,2.8);
+  \draw (7.2,1.0) \vresistor{$R$};
+  \draw (7.2,2.8) -- (7.2,2.6);
+  \draw (7.2,1.0) -- (7.2,0);
+  \draw (7.2,0) -- (0,0);
+
+  % the gap: two plates
+  \draw[line width=2pt] (2.2,2.1) -- (2.2,3.5);
+  \draw[line width=2pt] (5.0,2.1) -- (5.0,3.5);
+
+  % conduction current
+  \draw[blue, very thick, ->] (0.5,3.05) -- (1.8,3.05);
+  \node[blue, anchor=south] at (1.15,3.1) {$I$};
+  \draw[blue, very thick, ->] (5.4,3.05) -- (6.7,3.05);
+  \draw[blue, very thick, ->] (6.6,0.3) -- (0.6,0.3);
+
+  % displacement current through the gap: dashed field arrows
+  \foreach \y in {2.35,2.8,3.25} {
+    \draw[echarge, dashed, very thick, ->] (2.35,\y) -- (4.85,\y);
+  }
+  \node[echarge, anchor=south, align=center] at (3.6,3.65)
+    {$\displaystyle \frac{\partial D}{\partial t}$};
+  \node[echarge, anchor=north, scale=0.9, align=center] at (3.6,1.8)
+    {the loop continues\\through the gap};
+
+\end{circuitikz}
+\end{document}

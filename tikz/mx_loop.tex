@@ -1,0 +1,43 @@
+\input{tikz/fig_header.tex}
+
+% Currents always run in loops. Left: the loop you drew - a source, a
+% wire, a load, and the return. Right: the loop you get when you forget
+% the return - the current still closes, through whatever shared ground
+% is available, and everything on that path sees it.
+
+\begin{circuitikz}[american, thick, transform shape, circuit ee IEC]
+
+  \input{tikz/ckt_lib.tex}
+
+  % ---------------- (a) the loop you drew ----------------
+  \draw (0,0) to [V] (0,2.4);
+  \draw (0,2.4) -- (3.6,2.4);
+  \draw (3.6,0.6) \vresistor{$R$};
+  \draw (3.6,2.4) -- (3.6,2.2);
+  \draw (3.6,0.6) -- (3.6,0);
+  \draw (3.6,0) -- (0,0);
+  % the current, one loop
+  \draw[blue, very thick, ->] (0.7,2.05) -- (2.9,2.05);
+  \node[blue, anchor=south] at (1.8,2.1) {$I$};
+  \draw[blue, very thick, ->] (2.9,0.35) -- (0.7,0.35);
+  \node[anchor=north, align=center] at (1.8,-0.7) {(a) the loop you drew};
+
+  % ---------------- (b) the loop you got ----------------
+  \begin{scope}[shift={(7.2,0)}]
+    \draw (0,0) to [V] (0,2.4);
+    \draw (0,2.4) -- (3.6,2.4);
+    \draw (3.6,0.6) \vresistor{$R$};
+    \draw (3.6,2.4) -- (3.6,2.2);
+    \draw (3.6,0.6) -- (3.6,0);
+    % no tidy return: the current finds its own way home
+    \draw (3.6,0) -- (4.3,0) -- (4.3,-1.2) -- (-0.7,-1.2) -- (-0.7,0) -- (0,0);
+    \node[anchor=west, scale=0.8] at (4.4,-0.6) {shared ground};
+    \draw[blue, very thick, ->] (0.7,2.05) -- (2.9,2.05);
+    \node[blue, anchor=south] at (1.8,2.1) {$I$};
+    \draw[red, very thick, ->] (3.95,-0.85) -- (-0.35,-0.85);
+    \node[red, anchor=north] at (1.8,-1.35) {the return you forgot still exists};
+    \node[anchor=north, align=center] at (1.8,-2.15) {(b) the loop you got};
+  \end{scope}
+
+\end{circuitikz}
+\end{document}

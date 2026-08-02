@@ -1,0 +1,42 @@
+\input{tikz/fig_header.tex}
+
+% The quarter-wave monopole: an arm over a ground plane, its image in
+% the plane completing the dipole. The current standing wave is maximum
+% at the feed and zero at the tip, which is what makes l = lambda/4 the
+% natural length. At 2.4 GHz that is about 31 mm - the PCB trace
+% antenna from the radio chapter.
+
+\definecolor{echarge}{RGB}{30,60,220}
+
+\begin{tikzpicture}[thick]
+
+  % ground plane
+  \fill[gray!20] (-2.6,-0.18) rectangle (2.6,0);
+  \draw (-2.6,0) -- (2.6,0);
+  \foreach \x in {-2.4,-2.0,...,2.4} { \draw[gray] (\x,-0.18) -- ++(-0.18,-0.18); }
+
+  % the arm
+  \draw[line width=3pt] (0,0.15) -- (0,3.2);
+  \draw (0,0) -- (0,0.15);
+  \node[anchor=west, scale=0.9] at (0.75,3.2) {tip: $I=0$};
+  \node[anchor=west, scale=0.9] at (0.75,0.35) {feed: $I$ max};
+
+  % current standing wave along the arm: quarter cosine
+  \draw[echarge, very thick]
+    (0.55,0.15) .. controls (0.55,1.6) and (0.35,2.6) .. (0.02,3.2);
+  \node[echarge, anchor=west, scale=0.9] at (0.5,1.9) {$I(z)$};
+
+  % length annotation
+  \draw[<->] (-0.9,0.15) -- (-0.9,3.2);
+  \node[anchor=east, align=right] at (-1.05,1.7)
+    {$l = \dfrac{\lambda}{4}$\\[2pt] $\approx 31$ mm\\at 2.4 GHz};
+
+  % the image below the plane
+  \draw[line width=3pt, gray!55, dash pattern=on 6pt off 3pt] (0,-0.35) -- (0,-3.2);
+  \draw[echarge!40, very thick, dashed]
+    (0.55,-0.35) .. controls (0.55,-1.7) and (0.35,-2.7) .. (0.02,-3.2);
+  \node[gray!60!black, anchor=west, scale=0.9, align=left] at (0.75,-1.8)
+    {the image in the plane\\completes the dipole};
+
+\end{tikzpicture}
+\end{document}
