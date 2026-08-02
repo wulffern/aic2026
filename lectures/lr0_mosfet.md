@@ -814,10 +814,25 @@ before we do the same with the drain.
 
 What we're seeing here are the free charges - the mobile carriers, not the
 fixed dopant ions. Electrons (blue) are free to move around in the $n+$
-source and drain, holes (red) in the $p-$ bulk, and every region is still
-charge neutral: behind each free carrier sits an ionized donor or acceptor
-locked in the lattice. With a negative gate-source voltage the holes are
-attracted to the surface and accumulate underneath the gate.
+source and drain, holes (red) in the $p-$ bulk. Where the mobile carriers
+are present in their equilibrium numbers the material is quasi-neutral:
+behind each free carrier sits an ionized donor or acceptor locked in the
+lattice, and the two cancel.
+
+That is not true everywhere, and the exceptions are where the interesting
+physics lives. Sweep the mobile carriers out of a region - at the
+source/bulk and drain/bulk junctions, and under the gate once it starts to
+deplete - and the ionized dopants are left behind uncompensated. That
+leftover space charge is not neutral, and by Gauss it must produce a
+field: this is the depletion region, and its field is what holds the
+junction in equilibrium and what sweeps carriers across it. Keep the
+distinction in mind while reading the next few figures: they draw the
+mobile carriers, so a region drawn empty is not a region with no charge -
+it is a region whose charge is the fixed dopant ions, with a field across
+it.
+
+With a negative gate-source voltage the holes are attracted to the surface
+and accumulate underneath the gate.
 -->
 
 ---
