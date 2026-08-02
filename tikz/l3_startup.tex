@@ -72,7 +72,7 @@
   \draw (\xl,\yn) \vground;
   \coordinate (gn1) at (MN1.G);
   \coordinate (gn2) at (MN2.G);
-  \draw (gn1) -- node[above, pos=0.3, scale=0.85] {NMOS rail} (gn2);
+  \draw (gn1) -- (gn2);
   \fill (gn2) circle (0.075);
   \draw (gn2) |- (\xr,{\yn+\grid});
   \fill (\xr,{\yn+\grid}) circle (0.075);
@@ -88,8 +88,6 @@
   \node[anchor=east, scale=0.9] at ({\xl-0.15},3.3) {$I$};
   \node[anchor=west, scale=0.9] at ({\xr+0.15},3.3) {$I$};
 
-  % rail names
-  \node[anchor=south, yshift=2mm, scale=0.85] at (gpm) {PMOS rail};
 
   % ---- the startup branch ----
   % The node that is stuck when the cell is asleep is the NMOS rail, at
