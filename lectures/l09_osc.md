@@ -205,6 +205,15 @@ Oscillators](https://en.wikipedia.org/wiki/Crystal_oscillator)
 
 The vibrations in the crystal lattice can have many modes, as illustrated by figure below. 
 
+Which mode a blank prefers is decided when it is cut, by the angle of the
+cut and by the dimensions, and that decision is what sets the frequency
+range. A blank cut to shear through its thickness lands somewhere between
+one and a couple of hundred megahertz, which is the crystal you put next
+to a radio. A blank etched into two tines lands at 32.768 kHz, which is
+$2^{15}$ Hz, so fifteen flip-flops divide it down to one pulse a second -
+that is the crystal in every watch and every real-time clock. The other
+modes exist, and are used, but those two are the ones you will meet.
+
 All we need to do with a crystal is to inject sufficient energy to sustain the
 oscillation,
 and the resonance of the crystal will ensure we have
@@ -213,11 +222,10 @@ a correct enough frequency.
 -->
 
 
-<!--![fit](https://upload.wikimedia.org/wikipedia/commons/thumb/8/8b/Crystal_modes_multilingual.svg/300px-Crystal_modes_multilingual.svg.png)-->
-![fit](../media/Crystal_modes_multilingual.png)
+![fit](../media/xosc_modes_tikz.pdf)
 
 <!--pan_doc:
-<sub>Figure 5: Vibration modes of a quartz crystal: longitudinal, thickness shear, flexural, face shear, and tuning fork. Image: Wdwd after Jitka, CC BY-SA 3.0, via Wikimedia Commons</sub>
+<sub>Figure 5: The vibration modes of a quartz blank. Each panel shows the blank at rest, solid, with one extreme of its motion dashed on top and red arrows for the direction the material moves. The mode is not a curiosity: it is what puts a crystal in the tens of kilohertz or in the tens of megahertz</sub>
 -->
 
 ---

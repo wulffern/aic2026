@@ -708,7 +708,7 @@ $$ h[n] = \begin{cases} k & \text{if } n < 1 \\ a^{n-1}b + a^n k & \text{if } n 
 
 Here $k$ is the initial state $y[0]$. From the impulse response it can be seen
 that the pole of $H(z) = b/(z-a)$ sits at $z = a$, and $b$ only scales the
-output, so everything depends on $\vert a\vert $.
+output, so everything depends on $\vert a\vert$.
 
 Three cases, matching the z-plane picture above. If $\vert a\vert < 1$ the response
 decays and the filter is stable. If $\vert a\vert > 1$ it grows without bound and the
