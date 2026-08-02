@@ -1,22 +1,24 @@
 \input{tikz/fig_header.tex}
 
-% One path of the continuous-time quadrature sigma-delta modulator,
-% drawn with the components the prose walks through: R1 and C1 make
-% the first integrator, Cff1/R2/C2 the second-stage filter, ADC1i
-% samples and DAC1i closes the loop; R3 and DAC2i hand off to the
-% second MASH stage, and the red Rfb resistors are the cross-coupling
-% to the q twin. The paper's modulator is fully differential
-% (Vpi/Vmi); this is the single-ended reading the text asks for.
-% Inspired by Breems et al.
+% One stage of the continuous-time quadrature sigma-delta modulator,
+% both paths drawn. Each path is an ordinary real modulator - R1 and
+% C1 integrate, Cff1/R2/C2 filter, ADC1 samples, DAC1 feeds back, and
+% R3/DAC2 hand off to the second MASH stage. What makes the pair
+% complex is the red cross-coupling: each path's first integrator
+% output is fed through Rfb into the OTHER path's summing node. Set
+% those to infinity and this is two independent real modulators.
+% Drawn single-ended; the paper's modulator is fully differential.
 
 \begin{circuitikz}[american, thick, transform shape]
 
   \input{tikz/ckt_lib.tex}
 
-  \def\ym{3.0}    % main signal row
+  \def\ym{3.0}    % main signal row of a path
 
+  % one complete path: #1 is the path letter, #2 its input label
+  \newcommand{\qtpath}[2]{
   % ---- input through R1 into the summing node A ----
-  \node[anchor=east] at (0.2,\ym) {$V(V_{pi},V_{mi})$};
+  \node[anchor=east] at (0.2,\ym) {#2};
   \draw (0.3,\ym) to [short,o-] (0.9,\ym);
   \draw (0.9,\ym) \hresistor{$R_1$};
   \draw (resEnd) -- (3.2,\ym);
@@ -54,46 +56,63 @@
   \draw (cicOtaS_out) -- (13.6,{\ym-0.8});
   \fill (13.3,{\ym-0.8}) circle (0.075);
 
-  % ---- ADC1i, the output word, and DAC1i closing the loop ----
+  % ---- ADC1#1, the output word, and DAC1#1 closing the loop ----
   \draw (13.6,{\ym-1.4}) rectangle (15.2,{\ym-0.2});
-  \node[anchor=center] at (14.4,{\ym-0.8}) {ADC1i};
+  \node[anchor=center] at (14.4,{\ym-0.8}) {ADC1#1};
   \draw[->] (15.2,{\ym-0.8}) -- (16.6,{\ym-0.8});
-  \node[anchor=west] at (16.7,{\ym-0.8}) {$Y_{1i}$};
+  \node[anchor=west] at (16.7,{\ym-0.8}) {$Y_{1#1}$};
   \fill (15.8,{\ym-0.8}) circle (0.075);
   \draw (15.8,{\ym-0.8}) -- (15.8,0.2);
   \draw (13.0,-0.4) rectangle (14.6,0.8);
-  \node[anchor=center] at (13.8,0.2) {DAC1i};
+  \node[anchor=center] at (13.8,0.2) {DAC1#1};
   \draw (15.8,0.2) -- (14.6,0.2);
   \draw[->] (13.0,0.2) -- (3.2,0.2) -- (3.2,{\ym-0.35});
 
-  % ---- the handoff to the second MASH stage: R3 and DAC2i ----
+  % ---- the handoff to the second MASH stage: R3 and DAC2#1 ----
   \draw (13.3,{\ym-0.8}) -- (13.3,3.6) -- (13.7,3.6);
   \draw (13.7,3.6) \hresistor{$R_3$};
   \draw[->] (resEnd) -- (16.4,3.6);
   \node[anchor=west, scale=0.85, align=left] at (16.5,3.6) {to\\stage 2};
   \draw (15.8,0.2) -- (15.8,-0.9) -- (15.0,-0.9);
   \draw (13.4,-1.5) rectangle (15.0,-0.3);
-  \node[anchor=center] at (14.2,-0.9) {DAC2i};
+  \node[anchor=center] at (14.2,-0.9) {DAC2#1};
   \draw[->] (13.4,-0.9) -- (12.4,-0.9);
   \node[anchor=east, scale=0.85, align=right] at (12.3,-0.9) {to\\stage 2};
 
-  % ---- the cross-coupling to the q path, in red ----
-  \draw[red] (6.8,{\ym-0.4}) -- (6.8,1.6);
-  \draw[red] (6.8,1.6) -- (6.4,1.6);
-  \begin{scope}[color=red]
-    \draw (4.8,1.6) \hresistor{$R_{fb1}$};
-  \end{scope}
-  \draw[red, ->] (4.8,1.6) -- (4.0,1.6) -- (4.0,0.9);
-  \node[red, anchor=north, scale=0.85] at (4.0,0.8) {to q summing node};
-  \draw[red] (2.2,{\ym+2.4}) -- (2.2,{\ym+0.6}) -- (3.2,{\ym+0.6});
-  \draw[red, ->] (3.2,{\ym+0.6}) -- (3.2,{\ym+0.05});
-  \node[red, anchor=south, scale=0.85] at (2.2,{\ym+2.45}) {$R_{fb2}$ from q path};
+  }
 
-  \node[anchor=north, align=center, scale=0.9] at (8.6,-2.3)
-    {Set $R_{fb1}$ and $R_{fb2}$ to infinity and this is an ordinary real\\
-     modulator: $R_1 C_1$ integrate, $C_{ff1}$/$R_2$/$C_2$ filter, ADC1i\\
-     samples, DAC1i feeds back. The q twin and the cross-coupling make\\
-     the response asymmetric about zero frequency.};
+  % ---------------- the two paths ----------------
+  \begin{scope}
+    \qtpath{i}{$V(V_{pi},V_{mi})$}
+    \node[anchor=east, scale=1.1] at (-0.4,{\ym+2.2}) {$i$};
+  \end{scope}
+  \begin{scope}[shift={(0,-8.6)}]
+    \qtpath{q}{$V(V_{pq},V_{mq})$}
+    \node[anchor=east, scale=1.1] at (-0.4,{\ym+2.2}) {$q$};
+  \end{scope}
+
+  % ---------------- the cross-coupling that makes it complex --------
+  % i integrator output into the q summing node
+  \draw[red] (6.8,{\ym-0.4}) -- (6.8,1.2);
+  \draw[red] (6.8,1.2) -- (5.6,1.2);
+  \begin{scope}[color=red]
+    \draw (4.0,1.2) \hresistor{$R_{fb1}$};
+  \end{scope}
+  \draw[red] (4.0,1.2) -- (2.55,1.2) -- (2.55,{\ym-8.6});
+  \draw[red, ->] (2.55,{\ym-8.6}) -- (3.1,{\ym-8.6});
+
+  % q integrator output into the i summing node
+  \draw[red] (6.8,{\ym-0.4-8.6}) -- (6.8,{-8.6+1.2});
+  \draw[red] (6.8,{-8.6+1.2}) -- (5.6,{-8.6+1.2});
+  \begin{scope}[color=red, shift={(0,-8.6)}]
+    \draw (4.0,1.2) \hresistor{$R_{fb2}$};
+  \end{scope}
+  \draw[red] (4.0,{-8.6+1.2}) -- (1.85,{-8.6+1.2}) -- (1.85,\ym);
+  \draw[red, ->] (1.85,\ym) -- (3.1,\ym);
+
+  \node[red, anchor=north, scale=0.9, align=center] at (7.0,-12.4)
+    {$R_{fb}$: each path drives the other - which is what makes the pair complex.\\
+     Set them to infinity and this is two independent real modulators};
 
 \end{circuitikz}
 \end{document}

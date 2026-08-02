@@ -791,7 +791,35 @@ It's possible to show that if the gain from $V(Vpi,Vmi)$ to ADC1i input is large
 ![fit](../media/qt_sd_tikz.pdf)
 
 <!--pan_doc:
-<sub>Figure 14: One stage of a continuous-time quadrature sigma-delta modulator, drawn as the text suggests reading it: two real modulators joined by the cross-coupling that makes them complex. Inspired by Breems et al. [@breems07], which is fully differential, cascaded, and has a tuning resistor on everything</sub>
+<sub>Figure 14: One stage of a continuous-time quadrature sigma-delta modulator, both paths drawn: two ordinary real modulators - R1/C1 integrating, Cff1/R2/C2 filtering, ADC1 sampling, DAC1 feeding back, R3 and DAC2 handing off to the second stage - joined by the red cross-coupling that makes the pair complex. Inspired by Breems et al. [@breems07], which is fully differential, cascaded, and has a tuning resistor on everything</sub>
+-->
+
+---
+
+<!--pan_doc:
+
+What does the cross-coupling actually buy? Figure 15 answers it by
+simulation. The same first-order loop is run twice: once real, so its
+coefficients are real and its noise notch must sit symmetrically about
+zero, and once complex, with the integrator pole rotated to
+$e^{j\omega_0}$ so the noise transfer function has its zero at $+f_0$
+and nowhere else. The complex quantizer is just the two real
+quantizers, one per path - which is what the i and q ADCs are.
+
+Read the two spectra over the *whole* sample rate, not half of it.
+The real loop is quiet at DC and equally noisy at $\pm f_0$: a real
+signal's spectrum is conjugate symmetric and cannot tell $+f$ from
+$-f$. The complex loop is quiet at $+f_0$ and noisy at $-f_0$, so a
+wanted channel just above the local oscillator gets the quiet side
+while its image gets the noise. That asymmetry is the entire reason a
+near zero-IF receiver bothers with quadrature.
+
+-->
+
+![fit](../media/l04_complex_psd_tikz.pdf)
+
+<!--pan_doc:
+<sub>Figure 15: Simulated output spectra of a first-order sigma-delta loop over the full sample rate. (a) A real loop: the noise notch is symmetric about zero. (b) The same loop made complex: the notch moves to $+f_0$ alone, leaving $-f_0$ noisy - which is what lets a near zero-IF receiver keep the wanted side and throw the image away</sub>
 -->
 
 ---
@@ -813,7 +841,7 @@ Below is the differential current mirror OTA.
 ![fit](../media/l04_ota_diff_tikz.pdf)
 
 <!--pan_doc:
-<sub>Figure 15: Differential current mirror OTA</sub>
+<sub>Figure 16: Differential current mirror OTA</sub>
 -->
 
 <!--pan_doc:
@@ -831,7 +859,7 @@ The reference for the common mode can be from a bandgap, or in the case below, V
 ![fit](../media/l04_ota_vsens_tikz.pdf)
 
 <!--pan_doc:
-<sub>Figure 16: Common mode sense circuit with source followers and the resistor divider generating the reference $V_{CREF}$</sub>
+<sub>Figure 17: Common mode sense circuit with source followers and the resistor divider generating the reference $V_{CREF}$</sub>
 -->
 
 ---
@@ -847,7 +875,7 @@ The nice thing about the circuit below is that the common mode feedback loop has
 ![fit](../media/l04_ota_vcmfb_tikz.pdf)
 
 <!--pan_doc:
-<sub>Figure 17: Common mode feedback OTA comparing the sensed $V_{COUT}$ to the reference $V_{CREF}$</sub>
+<sub>Figure 18: Common mode feedback OTA comparing the sensed $V_{COUT}$ to the reference $V_{CREF}$</sub>
 -->
 
 ---
@@ -863,7 +891,7 @@ You can find the schematic for the OTA at
 ![fit inline](../media/l04_ota_sch.svg)
 
 <!--pan_doc:
-<sub>Figure 18: CNR_OTA schematic in SKY130: bias, differential OTA, common mode sense (VCM) and common mode feedback OTA</sub>
+<sub>Figure 19: CNR_OTA schematic in SKY130: bias, differential OTA, common mode sense (VCM) and common mode feedback OTA</sub>
 -->
 
 ---
