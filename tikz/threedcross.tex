@@ -1,51 +1,62 @@
 \input{tikz/fig_header.tex}
 
 % The MOSFET in 3D, redrawn from the hand sketch media/3dcross.pdf:
-% source and drain slabs in the p- substrate, the gate slab floating
-% above the channel, the channel length L between the inner edges and
-% the width W along the gate. Oblique projection, depth direction
-% (1.5,0.9).
+% source and drain slabs in the p- substrate, the gate slab on its
+% oxide above the channel, the channel length L between the inner
+% edges and the width W along the gate.
+%
+% One oblique projection for the whole drawing: depth runs along
+% (\dpx,\dpy). Every top and side face is built from that one vector,
+% so the solids agree with each other - drawing a face with its own
+% depth is what makes an oblique sketch look drunk.
 
 \begin{tikzpicture}[thick]
   \input{tikz/mos_lib.tex}
 
-  % ---- source slab: front face, top face, right face ----
-  \draw (0,0) rectangle (3,1.2);
-  \draw (0,1.2) -- (1.5,2.1) -- (4.5,2.1) -- (3,1.2);
-  \draw (3,0) -- (4.5,0.9) -- (4.5,2.1);
+  \def\dpx{1.5}      % the one depth vector
+  \def\dpy{0.9}
+
+  % a box: front-face corner (#1,#2), width #3, height #4
+  \newcommand{\slab}[5]{%
+    \draw[fill=#5] (#1,#2) rectangle ({#1+#3},{#2+#4});
+    \draw[fill=#5] (#1,{#2+#4}) -- ({#1+\dpx},{#2+#4+\dpy})
+      -- ({#1+#3+\dpx},{#2+#4+\dpy}) -- ({#1+#3},{#2+#4}) -- cycle;
+    \draw[fill=#5] ({#1+#3},#2) -- ({#1+#3+\dpx},{#2+\dpy})
+      -- ({#1+#3+\dpx},{#2+#4+\dpy}) -- ({#1+#3},{#2+#4}) -- cycle;
+  }
+
+  % ---- the substrate surface the slabs sit in ----
+  \fill[hcharge!8] (-0.6,0) -- (8.6,0) -- ({8.6+\dpx},\dpy) -- ({-0.6+\dpx},\dpy) -- cycle;
+  \draw[gray!55] (-0.6,0) -- (8.6,0) -- ({8.6+\dpx},\dpy) -- ({-0.6+\dpx},\dpy) -- cycle;
+
+  % ---- source and drain: n+ slabs standing in the substrate ----
+  \slab{0}{0}{3}{1.2}{white}
   \node[anchor=center] at (1.5,0.75) {SOURCE};
-  \node[anchor=center, scale=0.9, gray] at (2.5,0.3) {$n+$};
+  \node[anchor=center, scale=0.9, gray] at (0.5,0.3) {$n+$};
 
-  % ---- drain slab ----
-  \draw (5,0) rectangle (8,1.2);
-  \draw (5,1.2) -- (6.5,2.1) -- (9.5,2.1) -- (8,1.2);
-  \draw (8,0) -- (9.5,0.9) -- (9.5,2.1);
+  \slab{5}{0}{3}{1.2}{white}
   \node[anchor=center] at (6.5,0.75) {DRAIN};
-  \node[anchor=center, scale=0.9, gray] at (5.6,0.3) {$n+$};
+  \node[anchor=center, scale=0.9, gray] at (7.5,0.3) {$n+$};
 
-  % ---- thin gate oxide under the gate slab, teal like the cartoons ----
-  \fill[oxteal!60] (2.9,1.32) rectangle (6.1,1.5);
-  \draw (2.9,1.32) rectangle (6.1,1.5);
-  \fill[oxteal!60] (6.1,1.32) -- (8.2,2.58) -- (8.2,2.76) -- (6.1,1.5) -- cycle;
-  \draw (6.1,1.32) -- (8.2,2.58) -- (8.2,2.76) -- (6.1,1.5) -- cycle;
+  % ---- the gate oxide: a thin slab on the channel surface ----
+  \slab{2.9}{1.2}{3.2}{0.22}{oxteal!60}
 
-  % ---- gate slab floating over the channel, deeper than S/D ----
-  \draw[fill=white] (2.9,1.5) rectangle (6.1,2.1);
-  \draw[fill=white] (2.9,2.1) -- (5.0,3.36) -- (8.2,3.36) -- (6.1,2.1) -- cycle;
-  \draw[fill=white] (6.1,1.5) -- (8.2,2.76) -- (8.2,3.36) -- (6.1,2.1) -- cycle;
-  \node[anchor=center] at (5.9,2.75) {GATE};
+  % ---- the gate on top of it ----
+  \slab{2.9}{1.42}{3.2}{0.62}{white}
+  \node[anchor=center] at (4.5,1.73) {GATE};
 
-  % ---- hidden channel edge ----
-  \draw[dashed] (3,0) -- (4.5,0.9);
+  % ---- the channel edges hidden behind the slabs ----
+  \draw[dashed, gray!70] (3,0) -- ({3+\dpx},\dpy);
+  \draw[dashed, gray!70] (5,0) -- ({5+\dpx},\dpy);
 
-  % ---- dimensions in blue ----
-  \draw[blue, <->] (3,1.32) -- (5,1.32);
-  \node[blue, anchor=north, scale=1.1] at (4.0,1.25) {$L$};
-  \draw[blue, <->] (6.5,1.3) -- (8.6,2.56);
-  \node[blue, anchor=north west, scale=1.1] at (7.5,1.85) {$W$};
+  % ---- the two dimensions that name a transistor ----
+  \draw[blue, <->] (3,-0.42) -- (5,-0.42);
+  \node[blue, anchor=north, scale=1.1] at (4.0,-0.45) {$L$};
+  \draw[blue, <->] ({8.25},{0.05}) -- ({8.25+\dpx},{0.05+\dpy});
+  \node[blue, anchor=north west, scale=1.1] at ({8.25+\dpx*0.55},{0.05+\dpy*0.55}) {$W$};
 
-  % ---- substrate ----
-  \node[anchor=center, scale=1.1] at (4.75,-0.65) {$p-$};
+  % ---- the bulk ----
+  \node[hcharge!60!black, anchor=center, scale=1.1] at (-1.0,0.45) {$p-$};
 
 \end{tikzpicture}
 \end{document}
