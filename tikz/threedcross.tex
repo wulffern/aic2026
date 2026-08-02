@@ -1,9 +1,11 @@
 \input{tikz/fig_header.tex}
 
 % The MOSFET in 3D, redrawn from the hand sketch media/3dcross.pdf:
-% source and drain slabs in the p- substrate, the gate slab on its
-% oxide above the channel, the channel length L between the inner
-% edges and the width W along the gate.
+% source and drain slabs in the p- substrate, the gate over the
+% channel between them, the channel length L between the inner edges
+% and the width W along the gate. The gate oxide is not drawn: it is
+% a few nanometres thick, the text says as much, and at this scale
+% any thickness we drew would be a lie.
 %
 % One oblique projection for the whole drawing: depth runs along
 % (\dpx,\dpy). Every top and side face is built from that one vector,
@@ -38,12 +40,12 @@
   \node[anchor=center] at (6.5,0.75) {DRAIN};
   \node[anchor=center, scale=0.9, gray] at (7.5,0.3) {$n+$};
 
-  % ---- the gate oxide: a thin slab on the channel surface ----
-  \slab{2.9}{1.2}{3.2}{0.22}{oxteal!60}
-
-  % ---- the gate on top of it ----
-  \slab{2.9}{1.42}{3.2}{0.62}{white}
-  \node[anchor=center] at (4.5,1.73) {GATE};
+  % ---- the gate, overlapping both diffusions by the same amount.
+  % ---- The oxide under it is a few nanometres thick and the text
+  % ---- says so: at this scale it would be a drawn lie, so the gate
+  % ---- sits straight on the surface here.
+  \slab{2.8}{1.2}{2.4}{0.62}{white}
+  \node[anchor=center] at (4.0,1.51) {GATE};
 
   % ---- the channel edges hidden behind the slabs ----
   \draw[dashed, gray!70] (3,0) -- ({3+\dpx},\dpy);

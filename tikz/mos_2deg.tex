@@ -1,0 +1,84 @@
+\input{tikz/fig_header.tex}
+
+% Where the inversion electrons actually are, looking straight down
+% into the silicon from the oxide interface.
+%
+% The gate field bends the conduction band into a narrow, roughly
+% triangular well against the oxide. The well quantizes motion in the
+% depth direction, so the electrons occupy discrete subbands and the
+% lowest one carries almost all of them at room temperature. Its
+% probability density is zero at the interface - the oxide barrier
+% forbids them there - peaks a nanometre or two in, and dies away by
+% about five. That distribution is the "2d sheet": free to move along
+% the channel, pinned in depth.
+%
+% The curve is the Fang-Howard shape z^2 exp(-b z), the standard
+% variational solution for the lowest subband. Depths are the
+% familiar few nanometres; the vertical scales are arbitrary, and the
+% two panels share only the depth axis.
+
+\begin{tikzpicture}[thick]
+
+  \def\xox{-1.6}     % the oxide side
+  \def\xmax{8.4}     % into the bulk
+  \def\nm{1.55}      % one nanometre
+
+  % ================= the band diagram, upper panel =================
+  \begin{scope}[shift={(0,2.6)}]
+    \fill[oxteal!45] (\xox,0) rectangle (0,3.5);
+    \draw[gray!60] (\xox,0) rectangle (0,3.5);
+    \node[oxteal!45!black, anchor=center, rotate=90, scale=0.9] at (-0.8,1.75) {oxide};
+
+    % the conduction band edge: steep in the oxide, a well at the
+    % surface, flat in the bulk
+    \draw[blue, very thick] (0,3.3) -- (0,0.45)
+      .. controls (1.3,1.45) and (3.0,1.9) .. (\xmax,2.02);
+    \node[blue, anchor=south east, scale=0.95] at (\xmax,2.05) {$E_C$};
+    \node[blue!60!black, anchor=west, scale=0.85, align=left] at (2.1,2.85)
+      {the gate field bends the band\\into a well at the surface};
+    \draw[blue!50, thin] (2.0,2.8) -- (1.1,1.35);
+
+    % the lowest subband
+    \draw[armygreen, dashed, very thick] (0,1.12) -- (4.9,1.12);
+    \node[armygreen, anchor=west, scale=0.9] at (4.95,1.12) {$E_0$};
+    \node[armygreen!60!black, anchor=west, scale=0.85, align=left] at (4.95,0.62)
+      {the well quantizes\\the depth direction};
+  \end{scope}
+
+  % ================= the probability density, lower panel ==========
+  \fill[oxteal!45] (\xox,0) rectangle (0,2.3);
+  \draw[gray!60] (\xox,0) rectangle (0,2.3);
+  \draw[line width=1.4pt] (0,0) -- (0,2.3);
+
+  % |psi_0|^2, normalised so the peak fills the panel
+  \begin{scope}
+    \clip (0,0) rectangle (\xmax,2.3);
+    \fill[blue!22]
+      plot[domain=0:8.4, samples=100]
+        (\x, {2.55*(\x*\x)*exp(-0.871*\x)})
+      -- (\xmax,0) -- (0,0) -- cycle;
+    \draw[blue, very thick]
+      plot[domain=0:8.4, samples=100]
+        (\x, {2.55*(\x*\x)*exp(-0.871*\x)});
+  \end{scope}
+  \node[blue, anchor=south, scale=1.0] at (2.3,1.9) {$|\psi_0|^2$};
+  \node[blue!60!black, anchor=west, scale=0.85, align=left] at (5.0,1.55)
+    {the electrons live here:\\a sheet a couple of\\nanometres thick};
+  \draw[blue!50, thin] (4.95,1.5) -- (3.6,0.92);
+
+  % zero at the interface
+  \draw[gray!70, <-] (0.1,0.28) -- (1.0,0.28);
+  \node[gray!50!black, anchor=west, scale=0.8] at (1.05,0.28)
+    {zero at the interface: the oxide forbids them};
+
+  % ---- the shared depth axis ----
+  \draw[gray!60, ->] (\xox,0) -- (\xmax,0);
+  \foreach \k in {1,2,3,4,5} {
+    \draw[gray!60] ({\k*\nm},0) -- ({\k*\nm},-0.14);
+    \node[gray!50!black, anchor=north, scale=0.8] at ({\k*\nm},-0.16) {\k};
+  }
+  \node[gray!50!black, anchor=north west, scale=0.85] at (\xmax-2.4,-0.6)
+    {depth into the silicon [nm]};
+
+\end{tikzpicture}
+\end{document}

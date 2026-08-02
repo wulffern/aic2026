@@ -532,6 +532,34 @@ In Figure 2 of the paper
 
 you can see how the free electron density is located underneath the gate. 
 
+Figure 16 draws the same story from the equations. The gate field
+bends the conduction band into a narrow well against the oxide, and a
+well that narrow does what wells do in quantum mechanics: it
+quantizes the motion across it. The electrons can only occupy
+discrete subbands in the depth direction, and at room temperature
+almost all of them sit in the lowest one, $E_0$. What the wave
+function of that subband says is drawn below the band diagram: the
+probability of finding an electron is zero right at the interface -
+the oxide barrier forbids it - rises to a peak a nanometre or two
+into the silicon, and has died away by about five.
+
+That distribution is the "2d sheet". The electrons are free to move
+along the channel, which is the current we design with, and pinned in
+depth, which is why the sheet has a thickness at all. It also explains
+a number you meet later: the inversion charge does not sit exactly at
+the surface, so the effective oxide thickness is a little larger than
+the physical one.
+
+-->
+
+![inline](../media/mos_2deg_tikz.pdf)
+
+<!--pan_doc:
+<sub>Figure 16: The inversion layer in depth. Above: the gate field bends the conduction band into a well at the oxide interface, and the well quantizes motion in the depth direction into subbands. Below: the probability density of the lowest subband - zero at the interface, peaking a nanometre or two in, gone by about five. That is the "2d sheet"</sub>
+-->
+
+<!--pan_doc:
+
 I would really recommend that you have a look at Mark Lundstrom's lecture series on [Essentials of MOSFETs](https://www.youtube.com/watch?v=5eG6CvcEHJ8&list=PLtkeUZItwHK6F4a4OpCOaKXKmYBKGWcHi). It's the most complete description of electrons in MOSFET's I've seen 
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/PBgHQeGjJHg?si=zAF-aniC_DIBMcro" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
@@ -585,7 +613,7 @@ or symbolically
 ![right fit](../media/large_signal_tikz.pdf)
 
 <!--pan_doc:
-<sub>Figure 16: Large signal model</sub>
+<sub>Figure 17: Large signal model</sub>
 
 The drain current is a voltage controlled current source $f(V_{GS},V_{DS})$.
 -->
@@ -643,7 +671,7 @@ In the plot below we can see the sweep of the gate voltage.
 ![right fit](../media/vgate_tikz.pdf)
 
 <!--pan_doc:
-<sub>Figure 17: Simulated $I_{DS}$ versus $V_{GS}$ at $V_{DS}$ = 1 V</sub>
+<sub>Figure 18: Simulated $I_{DS}$ versus $V_{GS}$ at $V_{DS}$ = 1 V</sub>
 
 Notice the log y-axis. In weak inversion the current is exponential in
 $V_{GS}$ - a straight line on a log axis - and above the threshold voltage
@@ -782,7 +810,7 @@ before we do the same with the drain.
 ![inline 130%](../media/accumulated_tikz.pdf)
 
 <!--pan_doc:
-<sub>Figure 18: Accumulation, $V_{GS} < 0$</sub>
+<sub>Figure 19: Accumulation, $V_{GS} < 0$</sub>
 
 What we're seeing here are the free charges - the mobile carriers, not the
 fixed dopant ions. Electrons (blue) are free to move around in the $n+$
@@ -798,7 +826,7 @@ attracted to the surface and accumulate underneath the gate.
 ![inline 130%](../media/depleted_tikz.pdf)
 
 <!--pan_doc:
-<sub>Figure 19: Depletion</sub>
+<sub>Figure 20: Depletion</sub>
 
 Raising the gate voltage pushes the holes away from the surface. The region
 underneath the gate is depleted of mobile carriers - only the fixed,
@@ -810,7 +838,7 @@ negatively charged acceptor ions remain.
 ![inline 130%](../media/weakinv_tikz.pdf)
 
 <!--pan_doc:
-<sub>Figure 20: Weak inversion</sub>
+<sub>Figure 21: Weak inversion</sub>
 
 Positive charge on the gate mirrors negative charge in the silicon. The
 depletion region grows, the barrier between source and bulk shrinks, and the
@@ -849,7 +877,7 @@ the drain instead.
 <!--pan_doc:
 
 The table shows the bias: gate fixed a little above threshold, drain swept
-from 0 V to 1.8 V. Watch the current in Figure 21 as the drain rises - the
+from 0 V to 1.8 V. Watch the current in Figure 22 as the drain rises - the
 curve has two personalities, and the boundary between them is $V_{eff}$.
 
 -->
@@ -864,7 +892,7 @@ curve has two personalities, and the boundary between them is $V_{eff}$.
 ![right fit](../media/vdrain_tikz.pdf)
 
 <!--pan_doc:
-<sub>Figure 21: Simulated $I_{DS}$ versus $V_{DS}$ at $V_{GS}$ = 0.5 V</sub>
+<sub>Figure 22: Simulated $I_{DS}$ versus $V_{DS}$ at $V_{GS}$ = 0.5 V</sub>
 
 For small $V_{DS}$ the transistor behaves like a resistor - the current is
 proportional to the voltage. Beyond $V_{DS} \approx V_{eff}$ the current
@@ -904,7 +932,7 @@ $$
 ![inline 130%](../media/vds_l_veff_tikz.pdf)
 
 <!--pan_doc:
-<sub>Figure 22: Triode, $V_{DS} \ll V_{eff}$</sub>
+<sub>Figure 23: Triode, $V_{DS} \ll V_{eff}$</sub>
 
 The inversion layer reaches all the way from source to drain, and the transistor behaves like a gate-voltage controlled resistor.
 -->
@@ -914,7 +942,7 @@ The inversion layer reaches all the way from source to drain, and the transistor
 ![inline 130%](../media/vds_veff_tikz.pdf)
 
 <!--pan_doc:
-<sub>Figure 23: Pinch-off, $V_{DS} = V_{eff}$</sub>
+<sub>Figure 24: Pinch-off, $V_{DS} = V_{eff}$</sub>
 
 The local gate-to-channel voltage at the drain end is down to $V_{tn}$, so the inversion layer just barely disappears at the drain.
 -->
@@ -924,7 +952,7 @@ The local gate-to-channel voltage at the drain end is down to $V_{tn}$, so the i
 ![inline 130%](../media/vds_h_veff_tikz.pdf)
 
 <!--pan_doc:
-<sub>Figure 24: Saturation, $V_{DS} > V_{eff}$</sub>
+<sub>Figure 25: Saturation, $V_{DS} > V_{eff}$</sub>
 
 The pinch-off point, where the channel voltage equals $V_{DS,sat}$, moves slightly towards the source as $V_{DS}$ increases.
 -->
@@ -934,7 +962,7 @@ The pinch-off point, where the channel voltage equals $V_{DS,sat}$, moves slight
 ![original 80%](../media/drain_close_tikz.pdf)
 
 <!--pan_doc:
-<sub>Figure 25: Close-up of the drain end in saturation</sub>
+<sub>Figure 26: Close-up of the drain end in saturation</sub>
 
 Between the end of the inversion layer and the drain there is no channel,
 but there is a strong lateral field across the depleted gap. Electrons that
@@ -969,7 +997,7 @@ $$ g_{ds} = \frac{1}{r_{ds}}  = \frac{\partial I_{DS}}{\partial V_{DS}} $$
 ![right fit](../media/small_signal_tikz.pdf)
 
 <!--pan_doc:
-<sub>Figure 26: Low frequency small signal model</sub>
+<sub>Figure 27: Low frequency small signal model</sub>
 
 For small perturbations around an operating point the transistor is just two elements: a transconductance $g_m v_{gs}$ and an output resistance $r_{ds}$.
 -->
@@ -1032,7 +1060,7 @@ Define $$ \ell = \mu_n C_{ox} \frac{W}{L} $$ and $$ V_{eff} = V_{GS} - V_{tn} $$
 <!--pan_doc:
 
 $\lambda$ is the channel length modulation parameter: the pinch-off point
-in Figure 25 creeps towards the source as $V_{DS}$ grows, the effective
+in Figure 26 creeps towards the source as $V_{DS}$ grows, the effective
 channel shortens, and the current rises a little. The practical
 consequences: the output resistance is inversely proportional to the
 current you run, and since $\lambda$ shrinks with channel length, a longer
@@ -1060,7 +1088,7 @@ Define intrinsic gain as
 ![right fit](../media/vgaini_tikz.pdf)
 
 <!--pan_doc:
-<sub>Figure 27: Simulated intrinsic gain versus gate-source voltage (the x-axis, vgaini, is $V_{GS} = V_{eff} + V_{tn}$)</sub>
+<sub>Figure 28: Simulated intrinsic gain versus gate-source voltage (the x-axis, vgaini, is $V_{GS} = V_{eff} + V_{tn}$)</sub>
 
 The intrinsic gain falls as $V_{eff}$ increases, as the $2/(\lambda V_{eff})$
 expression predicts. If you need gain, don't burn all your headroom on
@@ -1072,7 +1100,7 @@ effective voltage.
 ![original fit](../media/small_signal_w_gs_tikz.pdf)
 
 <!--pan_doc:
-<sub>Figure 28: Small signal model with the bulk transconductance</sub>
+<sub>Figure 29: Small signal model with the bulk transconductance</sub>
 
 The bulk is a back-gate: if source and bulk move relative to each other, the threshold voltage - and hence the current - changes, which the $g_s v_{sb}$ source models.
 -->
@@ -1100,7 +1128,7 @@ gate oxide and the depletion region under the channel.
 Reverse bias the source-bulk junction and the depletion region under the
 channel widens. The extra depletion charge must be imaged on the gate, so
 the threshold voltage rises - that is the square root above. The small
-signal version is the $g_s$ source in Figure 28, roughly a fifth of
+signal version is the $g_s$ source in Figure 29, roughly a fifth of
 $g_m$. It is a parasitic in a source follower, and a free extra input if
 you drive the bulk on purpose - a trick the OTA chapter returns to.
 
@@ -1116,7 +1144,7 @@ you drive the bulk on purpose - a trick the OTA chapter returns to.
 ![inline fit](../media/hfmodel_tikz.pdf)
 
 <!--pan_doc:
-<sub>Figure 29: High frequency small signal model</sub>
+<sub>Figure 30: High frequency small signal model</sub>
 
 The four capacitances $C_{gs}$, $C_{gd}$, $C_{sb}$ and $C_{db}$ set the poles and zeros at high frequency.
 --> 
@@ -1126,7 +1154,7 @@ The four capacitances $C_{gs}$, $C_{gd}$, $C_{sb}$ and $C_{db}$ set the poles an
 ![inline fit](../media/caps_tikz.pdf)
 
 <!--pan_doc:
-<sub>Figure 30: Where the capacitances live in the device</sub>
+<sub>Figure 31: Where the capacitances live in the device</sub>
 
 $C_{gs}$ and $C_{gd}$ are oxide (and overlap) capacitances, while $C_{sb}$ and $C_{db}$ are depletion capacitances of the reverse biased source and drain junctions.
 -->
@@ -1238,7 +1266,7 @@ If $$ Y(s) = 1/sC $$ then
 ![inline fit](../media/miller_tikz.pdf)
 
 <!--pan_doc:
-<sub>Figure 31: Miller's theorem applied to $C_{gd}$</sub>
+<sub>Figure 32: Miller's theorem applied to $C_{gd}$</sub>
 
 For the capacitor this means the input sees $C_{in} = (1+A)C$, drawn as
 $C_1$ at the gate in the figure, while the output sees a nearly unchanged
@@ -1272,7 +1300,7 @@ $f_T$ is why we scale: halve the length and the transistor is four times
 faster, until velocity saturation takes one of the two factors back. In a
 nanoscale process $f_T$ reaches hundreds of gigahertz - but look at the
 trade: the $V_{eff}$ that buys speed is the same $V_{eff}$ that sells
-intrinsic gain in Figure 27. Fast and high gain is not on the menu, at
+intrinsic gain in Figure 28. Fast and high gain is not on the menu, at
 least not in one transistor.
 
 -->
@@ -1336,7 +1364,7 @@ Bang for the buck
 ![right fit](../media/gmid_tikz.pdf)
 
 <!--pan_doc:
-<sub>Figure 32: Simulated $g_m/I_D$ of a sky130 nfet_01v8 ([gmid.py](https://github.com/wulffern/aic2026/blob/main/ex/gmid.py))</sub>
+<sub>Figure 33: Simulated $g_m/I_D$ of a sky130 nfet_01v8 ([gmid.py](https://github.com/wulffern/aic2026/blob/main/ex/gmid.py))</sub>
 
 The transconductance per unit current is the "bang for the buck" of a
 transistor, and the figure shows both hand-calculation limits on top of the
@@ -1382,7 +1410,7 @@ every modern process lives with velocity saturation.
 ![right fit](../media/lr0_velocity_tikz.pdf)
 
 <!--pan_doc:
-<sub>Figure 33: Carrier velocity at 1 V across the channel: the mobility model, what the carriers actually do, and the physical speed limits</sub>
+<sub>Figure 34: Carrier velocity at 1 V across the channel: the mobility model, what the carriers actually do, and the physical speed limits</sub>
 
 Shrink the channel at a fixed voltage and the lateral field, and thus the
 mobility-model velocity (blue), grows without bound - it crosses the
@@ -1575,7 +1603,7 @@ Analog Circuit Design in Nanoscale CMOS Technologies [@lewyn09] --
 ![fit](../media/nanoscale_effects_tikz.pdf)
 
 <!--pan_doc:
-<sub>Figure 34: Four families of short-channel effect on one cross-section - mechanical stress from the isolation trenches, the transverse and lateral fields in the channel, traps at the oxide interface, and hot carriers where the lateral field peaks near the drain</sub>
+<sub>Figure 35: Four families of short-channel effect on one cross-section - mechanical stress from the isolation trenches, the transverse and lateral fields in the channel, traps at the oxide interface, and hot carriers where the lateral field peaks near the drain</sub>
 
 The annotations - stress components, fields, trap densities and proximity effects - are all things that measurably change the current of a modern transistor, and each has its own corner of the device model.
 -->
@@ -1589,7 +1617,7 @@ The annotations - stress components, fields, trap densities and proximity effect
 ![original fit](../media/dibl_tikz.pdf)
 
 <!--pan_doc:
-<sub>Figure 35: Drain induced barrier lowering</sub>
+<sub>Figure 36: Drain induced barrier lowering</sub>
 
 In a long channel (top) the source barrier $\Phi_B$ has a wide, flat top and the drain is far away. In a short channel (bottom left) the barrier is a narrow peak, and pulling the drain potential down (bottom right, dashed) also pulls the top of the barrier down. A lower barrier means more current at the same gate voltage: the threshold voltage effectively drops as $V_{DS}$ increases, which degrades the output resistance.
 -->
@@ -1604,7 +1632,7 @@ In a long channel (top) the source barrier $\Phi_B$ has a wide, flat top and the
 ![original fit](../media/wpe_tikz.pdf)
 
 <!--pan_doc:
-<sub>Figure 36: Well proximity effect</sub>
+<sub>Figure 37: Well proximity effect</sub>
 
 During the well implant, ions scatter off the edge of the photoresist and land in the silicon close to the well edge. Transistors within a micrometer or three of the well edge therefore see higher doping, and thus a higher threshold voltage, than identical transistors in the middle of the well.
 -->
@@ -1635,7 +1663,7 @@ What can change stress?
 ![right fit](../media/stress_tikz.pdf)
 
 <!--pan_doc:
-<sub>Figure 37: Mechanical stress components on the channel</sub>
+<sub>Figure 38: Mechanical stress components on the channel</sub>
 
 Stress changes mobility, so anything that changes the stress - shallow trench isolation, nearby devices, metal fill, even the package - changes the current. The table shows the direction dependence: $F_y$ is vertical, $F_x$ along the current, $F_z$ along the width.
 -->
@@ -1650,7 +1678,7 @@ Stress changes mobility, so anything that changes the stress - shallow trench is
 ![original fit](../media/gateleakage_tikz.pdf)
 
 <!--pan_doc:
-<sub>Figure 38: Gate tunneling current</sub>
+<sub>Figure 39: Gate tunneling current</sub>
 
 With an oxide only 1-2 nm thick, the electron wave function does not stop at the oxide: $\psi(x)$ is non-zero on the other side, so carriers tunnel between channel and gate. The gate is no longer a perfect insulator, which matters for sample-and-holds and anything with high impedance nodes.
 -->
@@ -1664,7 +1692,7 @@ With an oxide only 1-2 nm thick, the electron wave function does not stop at the
 ![original 80%](../media/hci_tikz.pdf)
 
 <!--pan_doc:
-<sub>Figure 39: Hot carrier injection</sub>
+<sub>Figure 40: Hot carrier injection</sub>
 
 In saturation the field across the pinched-off region near the drain is high. Carriers accelerated by it ($F = qE$) can gain enough energy to create electron-hole pairs by impact ionization, and some are injected into the oxide, where they damage the interface or get trapped and shift the threshold voltage over the product lifetime.
 -->
@@ -1678,7 +1706,7 @@ In saturation the field across the pinched-off region near the drain is high. Ca
 ![original 80%](../media/chisel_tikz.pdf)
 
 <!--pan_doc:
-<sub>Figure 40: Channel initiated secondary electrons</sub>
+<sub>Figure 41: Channel initiated secondary electrons</sub>
 
 With a reverse biased bulk ($V_{SB} > 0$), holes generated by impact ionization near the drain are accelerated into the bulk and can generate secondary electrons, which the vertical field can inject into the gate oxide - the same damage mechanism as hot carriers, opened up by the bulk bias.
 -->
@@ -1711,7 +1739,7 @@ Use $$ \frac{W_1}{L_1} = \frac{W_2}{L_2} $$
 ![right 200%](../media/fig_l8_cmsys.pdf)
 
 <!--pan_doc:
-<sub>Figure 41: Current mirror with an off-chip reference resistor</sub>
+<sub>Figure 42: Current mirror with an off-chip reference resistor</sub>
 
 The rest of this section asks a deceptively simple question about this circuit: what makes $I_2$ deviate from the ideal 1 uA?
 -->
@@ -1899,7 +1927,7 @@ Be careful with multimeters, they have finite input resistance (typically 10 M$$
 ![right 150%](../media/fig_l8_cmfixproc.pdf)
 
 <!--pan_doc:
-<sub>Figure 42: Trimming out process variation</sub>
+<sub>Figure 43: Trimming out process variation</sub>
 
 Measure the voltage across a known resistor $R_1$ and tune $R_{var}$ until the current is right - once per chip.
 -->
@@ -2151,7 +2179,7 @@ High $$\frac{gm}{I_D}$$ is better (best in weak inversion)
 ![right 200%](../media/fig_diff.pdf)
 
 <!--pan_doc:
-<sub>Figure 43: Differential pair</sub>
+<sub>Figure 44: Differential pair</sub>
 
 Threshold mismatch between the two input transistors appears directly as an input-referred offset voltage - the mismatch equation above divided by $g_m$.
 -->
@@ -2186,7 +2214,7 @@ $$ PSD_{flicker}(f) \propto \frac{1}{f} $$
 ![fit](../media/rts_noise_tikz.pdf)
 
 <!--pan_doc:
-<sub>Figure 44: A single trap gives a two-level random telegraph signal (top) whose spectrum is a Lorentzian, flat then falling as $1/f^2$ (middle). Forty traps with time constants spread over three decades sum to a straight $1/f$, measured slope $-1.02$ between 100 Hz and 10 kHz (bottom)</sub>
+<sub>Figure 45: A single trap gives a two-level random telegraph signal (top) whose spectrum is a Lorentzian, flat then falling as $1/f^2$ (middle). Forty traps with time constants spread over three decades sum to a straight $1/f$, measured slope $-1.02$ between 100 Hz and 10 kHz (bottom)</sub>
 
 The bottom panel is the argument of the last three paragraphs made
 visible, and it is worth noticing that nothing was fitted to make it
