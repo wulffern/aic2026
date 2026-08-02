@@ -63,8 +63,8 @@
   \fill (\xa,\ypcas) circle (0.075);
   \fill (g3) circle (0.075);
   \draw (g3) -- ++(-1.3,0) coordinate (g3a);
-  \draw (g3a) -- (g3a |- 0,3.6) coordinate (g3b);
-  \draw (g3b) -- (-2.9,3.6) -- (-2.9,\ypcas) -- (\xa,\ypcas);
+  \draw (g3a) -- (g3a |- 0,\ypcas) coordinate (g3b);
+  \draw (g3b) -- (\xa,\ypcas);
   % mirror gate wire routed underneath the ground row
   \draw (g3) -- ++(0,-1.5) coordinate (g3c);
   \draw (g4) -- ++(0,-1.5) coordinate (g4c);

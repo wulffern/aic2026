@@ -55,6 +55,10 @@
   \draw (\xcm-0.19,\ybot-1.62) -- (\xcm+0.19,\ybot-1.62);
   \draw (\xcm-0.08,\ybot-1.74) -- (\xcm+0.08,\ybot-1.74);
 
+  % ---- summing nodes into the OTA inputs ----
+  \draw (\xota-0.5,\ytop) -- (cicOta_inp);
+  \draw (\xota-0.5,\ybot) -- (cicOta_inn);
+
   % ---- feedback capacitor C with its reset switch, top and bottom ----
   % routed with right angles only: up from the summing node, across, down
   \def\yfbt{4.9}

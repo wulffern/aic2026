@@ -387,12 +387,34 @@ loads the outputs, and at 0.8 V any sensing follower costs headroom.
 
 ---
 
+## Sensing the common mode
+
+<!--pan_doc:
+
+Figure 9 shows where the two voltages the CMFB amplifier compares come
+from. Source followers tap $V_{on}$ and $V_{op}$ without loading the
+outputs resistively, and the resistor network averages the two into the
+sensed common mode $V_{COUT}$. The reference $V_{CREF}$ is generated
+the same way - a matching follower off a resistor divider - so the
+follower's level shift and its temperature drift cancel in the
+comparison, and the loop regulates the true output average.
+
+-->
+
+![fit](../media/l04_ota_vsens_tikz.pdf)
+
+<!--pan_doc:
+<sub>Figure 9: Common mode sense circuit with source followers, and the matching resistor divider generating the reference $V_{CREF}$</sub>
+-->
+
+---
+
 ## Switched capacitor CMFB
 
 <!--pan_doc:
 
 In a sampled system the standard answer is the switched capacitor CMFB
-in Figure 9. The two $C_1$ sense the average of the outputs and level
+in Figure 10. The two $C_1$ sense the average of the outputs and level
 shift it directly onto the tail bias node $v_{cmfb}$ - no amplifier, no
 headroom, and capacitors are perfectly linear. The switched $C_2$
 refresh the level shift towards $V_{cm} - V_B$ on every $\phi_1$, so
@@ -403,7 +425,7 @@ leakage and startup errors bleed away in a few clock cycles.
 ![fit](../media/ota_cmfb_sc_tikz.pdf)
 
 <!--pan_doc:
-<sub>Figure 9: Switched capacitor CMFB</sub>
+<sub>Figure 10: Switched capacitor CMFB</sub>
 
 The price is clocked operation: between the phases the common mode is
 held only by the capacitors, so the loop corrects at the clock rate
@@ -420,14 +442,14 @@ in a sampled system uses this network.
 
 Every $V_B$ in this chapter has quietly assumed a bias network. The
 reference chapter builds the reference current itself; here is how that
-current becomes the gate voltages the OTAs need, Figure 10.
+current becomes the gate voltages the OTAs need, Figure 11.
 
 -->
 
 ![fit](../media/ota_bias_tikz.pdf)
 
 <!--pan_doc:
-<sub>Figure 10: Mirror bias and wide swing cascode bias</sub>
+<sub>Figure 11: Mirror bias and wide swing cascode bias</sub>
 
 The left branch is the workhorse: the reference current into a diode
 connected device gives $V_B = V_t + V_{DSAT}$, which every tail and
@@ -457,14 +479,14 @@ ambitions.
 
 An OTA's output is a current source: high output resistance, happy with
 a capacitor, helpless into a resistor. The op amp is the same circuit
-plus an output stage that buys a low output resistance, Figure 11.
+plus an output stage that buys a low output resistance, Figure 12.
 
 -->
 
 ![fit](../media/ota_opamp_tikz.pdf)
 
 <!--pan_doc:
-<sub>Figure 11: An op amp is an OTA plus an output stage</sub>
+<sub>Figure 12: An op amp is an OTA plus an output stage</sub>
 
 The class AB block level shifts the two gate drives so both output
 devices idle at a small quiescent current, yet either can deliver many
