@@ -16,7 +16,10 @@
   \input{tikz/ckt_lib.tex}
 
   % ---- columns ----
-  \def\xz{-5.2}    % the diode-connected PMOS and its NMOS mirror output
+  % The mirror column sits well clear of the pair: the V_COUT port label
+  % hangs to the left of its gate, and a nearer column would be drawn
+  % straight through it.
+  \def\xz{-7.2}    % the diode-connected PMOS and its NMOS mirror output
   \def\xa{-3.2}    % V_COUT branch
   \def\xt{-1.8}    % tail
   \def\xb{-0.3}    % V_CREF branch
