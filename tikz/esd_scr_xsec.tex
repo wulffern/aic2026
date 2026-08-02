@@ -1,0 +1,20 @@
+\input{tikz/fig_header.tex}
+
+% Cross section of an inverter next to a pin driven below ground
+% (l02_esd figure 15): the pin diffusion injects electrons into the
+% substrate (1), collected by the n-well; the PMOS source injects
+% holes (2) into the substrate; the NMOS source injects electrons (3)
+% towards the well. The ingredients of latch-up, before naming the
+% parasitic bipolars.
+
+\definecolor{echarge}{RGB}{30,60,220}
+\definecolor{hcharge}{RGB}{220,30,30}
+\definecolor{oxteal}{RGB}{60,140,160}
+
+\begin{circuitikz}[american, thick, transform shape]
+  \input{tikz/ckt_lib.tex}
+  \input{tikz/esd_lib.tex}
+  \scrframe
+  \scrarrows
+\end{circuitikz}
+\end{document}

@@ -32,12 +32,12 @@
   % PMOS diode loads, drains joined: that node is the CMFB output
   \draw (1.0,4.8) to [Tpmos, n=cp1] ++(0,\grid);
   \draw (3.4,4.8) to [Tpmos, n=cp2, mirror] ++(0,\grid);
+  % only the LEFT device is the diode; the right one mirrors it, and
+  % its drain runs straight down to its own NMOS. The gate line
+  % crosses that drain without a dot.
   \draw (0.02,5.6) -- (0.02,4.5) -- (1.0,4.5) -- (1.0,4.8);
-  \draw (4.38,5.6) -- (4.38,4.5) -- (3.4,4.5) -- (3.4,4.8);
+  \draw (4.38,5.6) -- (4.38,4.5) -- (1.0,4.5);
   \fill (1.0,4.5) circle (0.075);
-  \fill (3.4,4.5) circle (0.075);
-  \draw (1.0,4.5) -- (3.4,4.5);
-  \fill (2.2,4.5) circle (0.075);
   \dsize{1.15}{5.9}{24F4F\\M=1}
   \dsize{2.1}{5.9}{24F4F\\M=1}
 
@@ -126,7 +126,8 @@
   \fill (14.8,4.6) circle (0.075);
   \draw (14.8,4.6) -- (14.8,4.8);
   % CMFB route over the top rail to the pcm gate
-  \draw (16.58,5.6) -- (16.58,7.2) -- (2.2,7.2) -- (2.2,4.5);
+  \draw (16.58,5.6) -- (16.58,7.2) -- (0.55,7.2) -- (0.55,4.5);
+  \fill (0.55,4.5) circle (0.075);
 
   % VCP cascode down to the first stage output X
   \draw (14.8,3.2) \lvpmos{lp2}{$VCP$};

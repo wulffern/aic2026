@@ -32,6 +32,8 @@
   %- the zap, into the drain
   \draw (0,{2*\grid}) to [I] (0,\grid);
   \draw (0,{2*\grid}) -- (0,{2*\grid+0.6});
+  \draw (0,{2*\grid+0.6}) \vsupply;
+  \node[anchor=west] at (0.3,{2*\grid+0.8}) {$VDD$};
   \node[red, anchor=west] at (0.55,{1.5*\grid}) {$2.6$ A};
 
 \end{circuitikz}

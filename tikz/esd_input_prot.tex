@@ -52,12 +52,7 @@
   %- drawn out rather than through \esdDiode, which dots both of its
   %- ends: the bottom end here is a ground symbol, not a junction
   \draw (2.6,\ygnd) \vground;
-  \draw (2.6,\ygnd) -- (2.6,0.95);
-  \draw (2.6,0.95) -- (2.6,1.15);
-  \draw (2.4,1.15) -- (2.8000000000000003,1.15) -- (2.6,1.65) -- (2.4,1.15);
-  \draw (2.4,1.65) -- (2.8000000000000003,1.65);
-  \draw (2.6,1.65) -- (2.6,1.85);
-  \draw (2.6,1.85) -- (2.6,\ysig);
+  \draw (2.6,\ygnd) -- (2.6,0.6) \vdiode{} -- (2.6,\ysig);
   \fill (2.6,\ysig) circle (0.075);
 
   %%- and the resistor that separates the two stages
@@ -79,12 +74,7 @@
   \draw (4.2,\ygnd) \vground;
 
   \draw (7.0,\ygnd) \vground;
-  \draw (7.0,\ygnd) -- (7.0,0.5);
-  \draw (7.0,0.5) -- (7.0,0.7);
-  \draw (6.8,0.7) -- (7.2,0.7) -- (7.0,1.2) -- (6.8,0.7);
-  \draw (6.8,1.2) -- (7.2,1.2);
-  \draw (7.0,1.2) -- (7.0,1.4);
-  \draw (7.0,1.4) -- (7.0,\yclamp);
+  \draw (7.0,\ygnd) -- (7.0,0.4) \vdiode{} -- (7.0,\yclamp);
   \fill (7.0,\yclamp) circle (0.075);
 
   %%- secondary: a smaller resistor, and a clamp to each rail

@@ -1339,7 +1339,7 @@ As bias circuit to make the voltages the below will work
 
 -->
 
-![fit](../media/l5_diffota_bias_tikz.pdf)
+![fit](../media/diff_ota_bias.png)
 
 <!--pan_doc:
 <sub>Figure 23: Bias circuit generating the OTA bias voltages from a 10 uA reference current</sub>

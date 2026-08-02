@@ -1,0 +1,45 @@
+\input{tikz/fig_header.tex}
+
+% The same cross section with the parasitic bipolars drawn in
+% (l02_esd figure 16): the lateral npn (NMOS source / substrate /
+% n-well) and the vertical pnp (PMOS source / n-well / substrate),
+% with the substrate and well resistances that close the thyristor
+% loop.
+
+\definecolor{echarge}{RGB}{30,60,220}
+\definecolor{hcharge}{RGB}{220,30,30}
+\definecolor{oxteal}{RGB}{60,140,160}
+
+\begin{circuitikz}[american, thick, transform shape]
+  \input{tikz/ckt_lib.tex}
+  \input{tikz/esd_lib.tex}
+  \scrframe
+  \scrarrows
+
+  \begin{scope}[color=black!65, thick]
+    % lateral npn: emitter at the NMOS source, base in the substrate,
+    % collector the n-well
+    \draw (3.55,-2.0) -- (3.55,-2.9);       % base bar
+    \draw (3.0,-0.8) -- (3.0,-2.1) -- (3.55,-2.35);
+    \draw[->] (3.55,-2.35) -- (3.05,-2.12); % emitter arrow (out of base)
+    \draw (3.55,-2.6) -- (4.6,-3.1) -- (6.4,-3.1);
+    % base resistance to the substrate contact
+    \draw (3.55,-2.45) -- (2.6,-2.45);
+    \draw (2.6,-2.45) -- (2.5,-2.25) -- (2.3,-2.65) -- (2.1,-2.25)
+      -- (1.9,-2.65) -- (1.8,-2.45) -- (1.05,-2.45);
+    \draw (1.05,-2.45) -- (1.05,-0.8);
+    % vertical pnp: emitter at the PMOS source, base the n-well,
+    % collector the substrate
+    \draw (9.9,-2.2) -- (9.9,-3.1);         % base bar
+    \draw (10.25,-0.8) -- (10.25,-2.2);
+    \draw[->] (10.25,-2.2) -- (9.92,-2.42); % emitter arrow (into base)
+    \draw (9.9,-2.9) -- (10.6,-3.5) -- (10.6,-4.4);
+    % base resistance to the well tap
+    \draw (9.9,-2.65) -- (10.9,-2.65);
+    \draw (10.9,-2.65) -- (11.0,-2.45) -- (11.2,-2.85) -- (11.4,-2.45)
+      -- (11.6,-2.85) -- (11.7,-2.65) -- (12.4,-2.65);
+    \draw (12.4,-2.65) -- (12.4,-1.3);
+  \end{scope}
+
+\end{circuitikz}
+\end{document}

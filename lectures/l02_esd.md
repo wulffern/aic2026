@@ -703,7 +703,7 @@ The latch-up process can start with electrons injected into the p-type substrate
 3. NMOS source pn-junction can be forward biased. Electrons injected into p-substrate. Diffuse around, but will be accelerated by n-well to p-substrate built in voltage.
 4. Go to 2 (latch-up)
 
-![right fit](../media/scr_eh.pdf)
+![right fit](../media/esd_scr_xsec_tikz.pdf)
    
 
 
@@ -718,7 +718,7 @@ with electron injection (1), then forward bias of PMOS source/drain junction (2)
 -->
 
 
-![fit](../media/scr_eh.pdf)
+![fit](../media/esd_scr_xsec_tikz.pdf)
 
 <!--pan_doc:
 <sub>Figure 15: Cross section of an inverter </sub>
@@ -788,7 +788,7 @@ path when you actually want to understand the physics of latch-up.
 ---
 
 
-![original fit](../media/l8/scr_model.pdf)
+![original fit](../media/esd_scr_model_tikz.pdf)
 
 <!--pan_doc:
 <sub>Figure 16: Cross section of an inverter including the parasitic bipolars </sub>

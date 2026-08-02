@@ -29,13 +29,20 @@
 \begin{circuitikz}[american, thick, transform shape]
 
   \input{tikz/ckt_lib.tex}
+  \input{tikz/mos_lib.tex}
 
   \def\dimp{-1.11}   % implant depth
   \def\ddep{-1.39}   % depletion region depth
 
-  %- depletion regions, drawn first so the implants sit on top
-  \draw (1.75,0) rectangle (4.53,\ddep);
-  \draw (6.65,0) rectangle (9.50,\ddep);
+  %- the substrate, tinted faintly with the hole colour
+  \fill[hcharge!8] (-0.2,0) rectangle (9.95,-2.5);
+
+  %- depletion regions: white, because they are emptied of carriers,
+  %- drawn first so the implants sit on top
+  \fill[white] (1.75,0) rectangle (4.53,\ddep);
+  \draw[gray!70, dashed] (1.75,0) rectangle (4.53,\ddep);
+  \fill[white] (6.65,0) rectangle (9.50,\ddep);
+  \draw[gray!70, dashed] (6.65,0) rectangle (9.50,\ddep);
 
   %- implants
   \fill[active] (0.54,0) rectangle (1.43,\dimp);
@@ -52,9 +59,11 @@
 
   %- the surface, and the bulk it is the top of
   \draw (-0.2,0) -- (9.95,0);
-  \node[anchor=center] at (5.30,-2.14) {P-};
+  \node[anchor=center] at (8.9,-2.2) {P-};
 
-  %- gate stack: oxide strip, then poly, overlapping both junctions
+  %- gate stack: teal oxide strip like every other oxide in the book,
+  %- then poly, overlapping both junctions
+  \fill[oxteal!60] (3.98,0) rectangle (7.35,0.26);
   \draw (3.98,0) rectangle (7.35,0.26);
   \fill[poly] (3.98,0.26) rectangle (7.35,0.77);
   \draw (3.98,0.26) rectangle (7.35,0.77);
@@ -78,6 +87,11 @@
     \draw[fill=white] (#1,#2) circle (0.20);
     \node[anchor=center, scale=0.85] at (#1,#2) {#3};
   }
+  %- what actually flows: electrons source to drain (the bipolar
+  %- conducting), holes from the avalanche down to the p+ contact
+  \draw[echarge, very thick, ->] (4.25,-0.72) -- (7.0,-0.72);
+  \draw[hcharge, very thick, ->] (7.6,-1.6) .. controls (5.5,-2.3) and (3.0,-2.2) .. (1.15,-1.35);
+
   \xstep{7.95}{-1.31}{1}
   \xstep{6.58}{-1.86}{2}
   \xstep{4.34}{-0.44}{3}
