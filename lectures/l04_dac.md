@@ -226,6 +226,17 @@ $$ INL[k] = \frac{V[k] - V_{ideal}[k]}{V_{LSB}} $$
 <sub>Figure 7: Binary switch tree for a resistor string DAC</sub>
 -->
 
+<!--pan_doc:
+
+The resistor string itself is the easy part - $2^N$ equal resistors
+give $2^N$ perfectly ordered taps, and the DAC is monotonic by
+construction. The cost hides in the selection: something must connect
+exactly one tap to the output. The obvious structure is a binary tree,
+where each bit steers a rank of switches, and the count below says why
+nobody stops there.
+
+-->
+
 
 As number of resistors grow, the switches grow as 
 
@@ -237,6 +248,16 @@ $$ \sum_{n=1}^{N} 2^n = 2^{N+1} - 2 $$
 
 <!--pan_doc:
 <sub>Figure 8: Row and column switch matrix for a resistor string DAC</sub>
+-->
+
+<!--pan_doc:
+
+The matrix halves the damage by decoding in two dimensions, the way a
+memory does: the row decoder picks a group of taps, the column
+switches pick one of them. The tap switches are still there - they
+must be, every tap has to be reachable - but the tree above them
+collapses into one switch per column.
+
 -->
 
 
@@ -309,6 +330,17 @@ Large number of bits, will be large number of resistors and switches.
 
 #[fit] Binary scaled DACs
 
+<!--pan_doc:
+
+A string DAC pays $2^N$ resistors for $N$ bits. The R-2R ladder pays
+$2N$: each section divides the remaining voltage by two, so the branch
+currents come out binary weighted with only two resistor values. The
+next four figures build the ladder one property at a time - the
+termination, the input resistance that stays 2R at every section, and
+the halving branch currents that make it a DAC.
+
+-->
+
 ---
 
 $$ R_{in} = 2R || 2R = R $$
@@ -360,6 +392,18 @@ $$ V_{O} = \left(\frac{V_{REF}}{2R}b_1 + \frac{V_{REF}}{4R}b_0\right)R_{F0}$$
 <sub>Figure 13: 2-bit R-2R DAC with switched branch currents summed by a transimpedance amplifier</sub>
 -->
 
+<!--pan_doc:
+
+The switches steer each branch current either into the virtual ground
+of the amplifier or to real ground, so the ladder's currents never
+change - only their destination does. That is what makes the R-2R fast
+for its size. What it gives up is the string's built-in monotonicity:
+at the major transition the MSB branch must match the sum of all the
+others to within an LSB, and that is now a matching requirement on the
+resistors rather than a property of the structure.
+
+-->
+
 
 ---
 
@@ -392,6 +436,18 @@ Both cause a non-monotonic glitch during transition.
 <sub>Figure 15: Binary code transitions with MSB first (left) and LSB first (right), both non-monotonic</sub>
 -->
 
+<!--pan_doc:
+
+The switches never move at exactly the same time. Between the old code
+and the new one the DAC output visits whatever code the half-switched
+bits happen to spell, and around the major transition - 0111 to 1000 -
+that intermediate code can be far away. The result is a glitch whose
+energy grows with the weight of the bits involved, and no amount of
+matching removes it: it is a property of the code, not of the
+elements.
+
+-->
+
 
 --- 
 
@@ -417,6 +473,18 @@ $$ 0 \rightarrow 1 \rightarrow 2  \rightarrow 3$$
 
 <!--pan_doc:
 <sub>Figure 17: Thermometer code transitions are monotonic regardless of bit order</sub>
+-->
+
+<!--pan_doc:
+
+Thermometer coding removes the glitch by construction: one more LSB
+always means one more element turned on, so the output can only move
+one step, whatever order the switches settle in. Monotonicity comes
+for free for the same reason. The price is $2^N - 1$ elements and the
+decoder that drives them, which is why real converters segment -
+thermometer for the MSBs where the glitch would be worst, binary for
+the LSBs where it cannot hurt.
+
 -->
 
 --- 
@@ -445,6 +513,17 @@ $$ 0 \rightarrow 1 \rightarrow 2  \rightarrow 3$$
 <sub>Figure 19: Current mode DAC: binary sized differential current cells switched into a transimpedance output stage</sub>
 -->
 
+<!--pan_doc:
+
+At high sample rates the resistor structures run out of settling time,
+and the current steering DAC takes over: every cell is a current
+source that is always on, and the data only chooses which side of a
+differential pair the current leaves through. Nothing charges or
+discharges except the switch nodes, so this is the architecture behind
+every GS/s transmitter DAC.
+
+-->
+
 
 
 --- 
@@ -453,6 +532,18 @@ $$ 0 \rightarrow 1 \rightarrow 2  \rightarrow 3$$
 
 <!--pan_doc:
 <sub>Figure 20: Current mode DAC where the switch drive swings around $V_{bias}$ instead of rail to rail</sub>
+-->
+
+<!--pan_doc:
+
+Driving the steering pair rail to rail briefly turns both switches off
+and slams the source node; the cell's current has to go somewhere, and
+it goes into the output as a spike. Limiting the switch drive to a
+small swing around $V_{bias}$ keeps the pair in its active region
+through the crossover, keeps the current source in saturation, and is
+the difference between a DAC that meets its SFDR and one that only
+meets its resolution.
+
 -->
 
 
