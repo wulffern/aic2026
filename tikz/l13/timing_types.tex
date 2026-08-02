@@ -1,0 +1,79 @@
+\input{tikz/fig_header.tex}
+
+% Types of paths considered for timing analysis, redrawn from the
+% Synopsys diagram in house style. Asynchronous path: RST through the
+% NOR to the preset pin. Data path: register through logic to the next
+% D. Clock path: CLK through its buffer to the capture flop. Clock
+% gating path: CLKB through the AND that gates the clock.
+
+\begin{circuitikz}[american, thick, transform shape, circuit ee IEC]
+
+  \input{tikz/ckt_lib.tex}
+
+  % launch flop with preset/clear stubs
+  \draw (3.4,2.0) \cicDff{ff1};
+  \draw (4.2,4.0) -- (4.2,4.6);
+  \node[anchor=south east, scale=0.8] at (4.2,3.55) {Pre};
+  \draw (4.2,2.0) -- (4.2,1.4);
+  \node[anchor=north east, scale=0.8] at (4.2,2.5) {Clr};
+  \draw (4.2,1.4) \vground;
+  % capture flop
+  \draw (9.6,2.0) \cicDff{ff2};
+
+  % ---- asynchronous path: RST through the NOR to Pre ----
+  \draw (-1.6,5.4) node[anchor=east] {RST} to [short,o-] (0.4,5.08);
+  \draw (0.4,5.4) \cicNor{g1};
+  \draw (0.4,5.72) -- (-0.3,5.72);
+  \draw (g1_out) -- (4.2,5.4) -- (4.2,4.6);
+
+  % ---- data path: A in, register, logic, next register ----
+  \draw (-1.6,3.6) node[anchor=east] {A} to [short,o-] (ff1_d);
+  \begin{scope}[shift={(6.6,3.6)}]
+    \draw[blue, thick, fill=blue!4]
+      (-0.75,0) .. controls (-0.85,0.45) and (-0.35,0.65) .. (-0.2,0.45)
+      .. controls (0.0,0.75) and (0.45,0.7) .. (0.5,0.4)
+      .. controls (0.9,0.4) and (0.9,-0.1) .. (0.55,-0.25)
+      .. controls (0.55,-0.55) and (0.0,-0.6) .. (-0.15,-0.4)
+      .. controls (-0.5,-0.6) and (-0.85,-0.35) .. (-0.75,0);
+    \node[blue, anchor=center, scale=0.8] at (-0.1,0.05) {Logic};
+  \end{scope}
+  \draw (ff1_qn) -- (5.85,3.6);
+  \draw (7.45,3.6) -- (ff2_d);
+  \draw (ff2_qn) -- (11.9,3.6);
+
+  % ---- clock path: CLK, buffered, to the capture flop ----
+  \draw (-1.6,0.6) node[anchor=east] {CLK} to [short,o-] (1.4,0.6);
+  \fill (1.4,0.6) circle (0.075);
+  \draw (1.4,0.6) -- (1.4,2.5) -- (ff1_ck);
+  \draw (1.4,0.6) -- (5.4,0.6) \cicBuf{b1};
+  \fill (5.4,0.6) circle (0);
+  \draw (b1_out) -- (8.9,0.6) -- (8.9,2.5) -- (ff2_ck);
+
+  % ---- clock gating path: CLKB through the AND ----
+  \draw (-1.6,-1.4) node[anchor=east] {CLKB} to [short,o-] (0.6,-1.4);
+  \draw (0.6,-1.4) \cicInv{i1};
+  \draw (i1_out) -- (4.6,-1.4) -- (4.6,-1.72);
+  \draw (5.4,-2.04) \cicAnd{a1};
+  \draw (4.6,-1.72) -- (a1_in1);
+  % the other AND input is the clock itself
+  \fill (2.6,0.6) circle (0.075);
+  \draw (2.6,0.6) -- (2.6,-2.36) -- (a1_in2);
+  \draw (a1_out) -- (12.2,-2.04);
+  \node[anchor=west, scale=0.85] at (12.3,-2.04) {gated clock};
+
+  % ---- the paths, dashed ----
+  \draw[armygreen, dashed, very thick, ->]
+    (-1.0,4.9) .. controls (1.0,4.2) and (3.0,4.2) .. (4.0,4.5);
+  \node[armygreen, anchor=north, scale=0.85] at (0.6,4.5) {Asynchronous path};
+  \draw[armygreen, dashed, very thick, ->]
+    (5.4,4.35) .. controls (7.0,5.0) .. (9.3,4.15);
+  \node[armygreen, anchor=south, scale=0.85] at (7.3,4.8) {Data path};
+  \draw[armygreen, dashed, very thick, ->]
+    (0.4,0.05) .. controls (4.0,-0.6) and (7.0,-0.2) .. (8.6,1.8);
+  \node[armygreen, anchor=north, scale=0.85] at (4.4,-0.35) {Clock path};
+  \draw[armygreen, dashed, very thick, ->]
+    (0.2,-2.6) .. controls (2.2,-3.1) .. (4.3,-2.5);
+  \node[armygreen, anchor=north, scale=0.85] at (2.2,-2.95) {Clock-gating path};
+
+\end{circuitikz}
+\end{document}

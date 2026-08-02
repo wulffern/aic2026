@@ -1,0 +1,78 @@
+\input{tikz/fig_header.tex}
+
+% Timing paths, redrawn from the Synopsys diagram in house style: every
+% path starts at a launch point (input port or clock pin), runs through
+% combinational logic (the clouds), and ends at a capture point (data
+% input or output port). Path 1: in to register. Path 2: register to
+% register. Path 3: register to out. Path 4 is register to register
+% the long way around.
+
+\begin{circuitikz}[american, thick, transform shape, circuit ee IEC]
+
+  \input{tikz/ckt_lib.tex}
+
+  % a small combinational cloud, centred at #1,#2
+  \newcommand{\cloud}[3]{
+    \begin{scope}[shift={(#1,#2)}]
+      \draw[blue, thick, fill=blue!4]
+        (-0.75,0) .. controls (-0.85,0.45) and (-0.35,0.65) .. (-0.2,0.45)
+        .. controls (0.0,0.75) and (0.45,0.7) .. (0.5,0.4)
+        .. controls (0.9,0.4) and (0.9,-0.1) .. (0.55,-0.25)
+        .. controls (0.55,-0.55) and (0.0,-0.6) .. (-0.15,-0.4)
+        .. controls (-0.5,-0.6) and (-0.85,-0.35) .. (-0.75,0);
+      \node[blue, anchor=center, scale=0.8] at (-0.1,0.05) {#3};
+    \end{scope}
+  }
+
+  \def\ym{2.0}   % data row (the D inputs)
+
+  % ---- ports ----
+  \draw (-1.6,\ym) node[anchor=east] {A} to [short,o-] (-0.9,\ym);
+  \draw (12.65,\ym) to [short,-o] (13.3,\ym);
+  \node[anchor=west] at (13.45,\ym) {Z};
+
+  % ---- clouds and registers ----
+  \cloud{0}{\ym}{L1}
+  \draw (2.4,0.4) \cicDff{ff1};
+  \cloud{5.6}{\ym}{L2}
+  \draw (8.0,0.4) \cicDff{ff2};
+  \cloud{11.8}{\ym}{L3}
+
+  % ---- data wiring ----
+  \draw (-0.9,\ym) -- (-0.85,\ym);
+  \draw (0.85,\ym) -- (ff1_d);
+  \draw (ff1_q) -- (4.45,0.9) -- (4.45,\ym) -- (4.75,\ym);
+  \draw (6.45,\ym) -- (ff2_d);
+  \draw (ff2_q) -- (10.1,0.9);
+  \fill (10.1,0.9) circle (0.075);
+  \draw (10.1,0.9) -- (10.1,\ym) -- (10.95,\ym);
+  \draw (12.6,\ym) -- (12.65,\ym);
+
+  % ---- clock ----
+  \draw (-1.6,-0.6) node[anchor=east] {CLK} to [short,o-] (7.5,-0.6);
+  \draw (1.9,-0.6) -- (1.9,0.9) -- (ff1_ck);
+  \fill (1.9,-0.6) circle (0.075);
+  \draw (7.5,-0.6) -- (7.5,0.9) -- (ff2_ck);
+
+  % ---- the long way around: register to register via the bottom ----
+  \cloud{6.2}{-1.9}{L4}
+  \draw (10.1,0.9) -- (10.1,-1.9) -- (7.05,-1.9);
+  \draw (5.35,-1.9) -- (1.6,-1.9) -- (1.6,\ym);
+  \fill (1.6,\ym) circle (0.075);
+
+  % ---- the paths, dashed ----
+  \draw[armygreen, dashed, very thick, ->]
+    (-1.2,{\ym+0.55}) .. controls (0.2,{\ym+1.3}) .. (2.1,{\ym+0.5});
+  \node[armygreen, anchor=south, scale=0.85] at (0.4,{\ym+1.0}) {Path 1};
+  \draw[armygreen, dashed, very thick, ->]
+    (4.2,{\ym+0.5}) .. controls (5.7,{\ym+1.3}) .. (7.7,{\ym+0.5});
+  \node[armygreen, anchor=south, scale=0.85] at (6.0,{\ym+1.0}) {Path 2};
+  \draw[armygreen, dashed, very thick, ->]
+    (9.8,{\ym+0.5}) .. controls (11.5,{\ym+1.3}) .. (13.1,{\ym+0.35});
+  \node[armygreen, anchor=south, scale=0.85] at (11.6,{\ym+1.0}) {Path 3};
+  \draw[armygreen, dashed, very thick, ->]
+    (10.6,-1.5) .. controls (6.2,-3.2) .. (1.2,-1.4);
+  \node[armygreen, anchor=north, scale=0.85] at (6.2,-2.85) {Path 4};
+
+\end{circuitikz}
+\end{document}

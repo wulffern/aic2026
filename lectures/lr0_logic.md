@@ -676,7 +676,7 @@ Negative slack (over PVT[^1]) => Timing is not OK
 ### [What is timing analysis](https://www.synopsys.com/glossary/what-is-static-timing-analysis.html)
 
 <!--![inline](https://www.synopsys.com/content/dam/synopsys/solutions/design/timing-paths-diagram.jpg.imgw.850.x.jpg)![inline](https://www.synopsys.com/content/dam/synopsys/solutions/design/multiple-paths-through-combined-logic.jpg.imgw.850.x.jpg)-->
-![inline](../media/timing-paths-diagram.jpg)
+![inline](../media/l13/timing_paths_tikz.pdf)
 
 <!--pan_doc:
 <sub>Figure 36: Timing paths through a circuit, each running from a launch point through combinational logic to a capture point, with a table of the four startpoint and endpoint combinations</sub>
@@ -684,7 +684,7 @@ Negative slack (over PVT[^1]) => Timing is not OK
 ---
 
 <!--![inline](https://www.synopsys.com/content/dam/synopsys/solutions/design/paths-timing-analysis.jpg.imgw.850.x.jpg)![inline](https://www.synopsys.com/content/dam/synopsys/solutions/design/setup-hold-checks.jpg.imgw.850.x.jpg)-->
-![inline](../media/paths-timing-analysis.jpg)
+![inline](../media/l13/timing_types_tikz.pdf)
 
 <!--pan_doc:
 <sub>Figure 37: The path types considered in timing analysis - data path, clock path, asynchronous reset path and clock-gating path</sub>
