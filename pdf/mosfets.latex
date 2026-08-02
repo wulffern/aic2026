@@ -1329,7 +1329,8 @@ foundry's model team already did - but that you recognize the names when
 they show up in a design review, and know which knob (length, layout,
 bias) each one responds to. The paper below is a fine map of the zoo.
 
-Analog Circuit Design in Nanoscale CMOS Technologies {[}1{]} --
+Analog Circuit Design in Nanoscale CMOS Technologies
+\citeproc{ref-lewyn09}{{[}1{]}} --
 \href{https://ieeexplore.ieee.org/document/5247174}{ieeexplore.ieee.org/document/5247174}
 
 \pandocbounded{\includegraphics[keepaspectratio]{media/nanoscale_effects_tikz.pdf}}
@@ -1661,7 +1662,8 @@ variation
 
 As a result \(I_1 \ne I_2\), but we can make them close.
 
-\subsection{Pelgrom's law {[}2{]}}\label{pelgroms-law-pelgrom89}
+\subsection{\texorpdfstring{Pelgrom's law
+\citeproc{ref-pelgrom89}{{[}2{]}}}{Pelgrom's law {[}2{]}}}\label{pelgroms-law-pelgrom89}
 
 Given a random gaussian process parameter \(\Delta P\) with zero mean,
 the variance is given by
@@ -1682,11 +1684,11 @@ micrometer - and the \(S_P D\) term says devices drift apart with
 distance, which is why matched pairs sit next to each other.
 
 Pelgrom gives the spread of the raw parameters; what a designer needs is
-the spread of the \emph{current}. Kinget's expression {[}3{]} connects
-the two:
+the spread of the \emph{current}. Kinget's expression
+\citeproc{ref-kinget05}{{[}3{]}} connects the two:
 
 \subsection{\texorpdfstring{Transistors with same \(V_{GS}\)
-{[}3{]}}{Transistors with same V\_\{GS\} {[}3{]}}}\label{transistors-with-same-v_gs-kinget05}
+\citeproc{ref-kinget05}{{[}3{]}}}{Transistors with same V\_\{GS\} {[}3{]}}}\label{transistors-with-same-v_gs-kinget05}
 
 \[\frac{\sigma_{I_D}^2}{I_D^2} = \frac{1}{WL}\left[\left(\frac{gm}{I_D}\right)^2 \sigma_{vt}^2 + \frac{\sigma_{\ell}^2}{\ell^2}\right] \]
 
@@ -1856,9 +1858,10 @@ The one-page version of this chapter:
 more?}\label{would-you-like-to-know-more}
 
 Pelgrom's measurement of how mismatch scales with area, the paper the
-matching section rests on {[}2{]}
+matching section rests on \citeproc{ref-pelgrom89}{{[}2{]}}
 
-Kinget's translation of that into what mismatch costs a designer {[}3{]}
+Kinget's translation of that into what mismatch costs a designer
+\citeproc{ref-kinget05}{{[}3{]}}
 
 Mark Lundstrom's
 \href{https://www.youtube.com/watch?v=5eG6CvcEHJ8&list=PLtkeUZItwHK6F4a4OpCOaKXKmYBKGWcHi}{Essentials

@@ -196,8 +196,8 @@ pulling is worked out for you.
 In the impedance plot below we can clearly see that there are two
 ``resonance'' points. Usually noted by series and parallel resonance.
 
-I would encourage you to read The Crystal Oscillator {[}1{]} for more
-details.
+I would encourage you to read The Crystal Oscillator
+\citeproc{ref-razavi17}{{[}1{]}} for more details.
 
 \pandocbounded{\includegraphics[keepaspectratio]{media/xosc_res.pdf}}
 
@@ -640,25 +640,28 @@ more?}\label{would-you-like-to-know-more}
 
 \subsection{Crystal oscillators}\label{crystal-oscillators-1}
 
-The Crystal Oscillator - A Circuit for All Seasons {[}1{]}
+The Crystal Oscillator - A Circuit for All Seasons
+\citeproc{ref-razavi17}{{[}1{]}}
 
 High-performance crystal oscillator circuits: theory and application
-{[}2{]}
+\citeproc{ref-vittoz88}{{[}2{]}}
 
 Ultra-low Power 32kHz Crystal Oscillators: Fundamentals and Design
-Techniques {[}3{]}
+Techniques \citeproc{ref-xu21}{{[}3{]}}
 
 A Sub-nW Single-Supply 32-kHz Sub-Harmonic Pulse Injection Crystal
-Oscillator {[}4{]}
+Oscillator \citeproc{ref-kim21}{{[}4{]}}
 
 \subsection{CMOS oscillators}\label{cmos-oscillators}
 
-The Ring Oscillator - A Circuit for All Seasons {[}5{]}
+The Ring Oscillator - A Circuit for All Seasons
+\citeproc{ref-razavi19}{{[}5{]}}
 
-A Study of Phase Noise in CMOS Oscillators {[}6{]}
+A Study of Phase Noise in CMOS Oscillators
+\citeproc{ref-razavi96}{{[}6{]}}
 
 An Ultra-Low-Noise Swing-Boosted Differential Relaxation Oscillator in
-0.18-um CMOS {[}7{]}
+0.18-um CMOS \citeproc{ref-lee20}{{[}7{]}}
 
 \href{https://hdl.handle.net/11250/2778127}{Ultra Low Power Frequency
 Synthesizer}

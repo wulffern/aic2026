@@ -15,7 +15,7 @@ One of the first commercial ADCs, the
 on page 24, was a 11-bit 50 kSps that consumed 500 W. That's Walden
 figure of merit of 4 \(\mu\)J/conv.step. Today's state-of-the-art ADCs
 in the same sampling range have a Walden figure of merit of 0.6
-fJ/conv.step {[}1{]}.
+fJ/conv.step \citeproc{ref-hsieh18}{{[}1{]}}.
 
 4 \(\mu\) / 0.6 f = 6.7e9, a difference in power consumption of almost
 10 billion times !!!
@@ -25,8 +25,9 @@ believe there is still far to go before we cannot reduce power
 consumption any more.
 
 Towards a Green and Self-Powered Internet of Things Using Piezoelectric
-Energy Harvesting {[}2{]} {[}1{]} has a nice overview of power
-consumption of technologies, seen in the next figures below.
+Energy Harvesting \citeproc{ref-shirvanimoghaddam19}{{[}2{]}} {[}1{]}
+has a nice overview of power consumption of technologies, seen in the
+next figures below.
 
 In the context of energy harvesting, there is energy in electromagnetic
 fields, temperature, and mechanical stress, and there are ways to
@@ -37,7 +38,8 @@ translate between them the energy forms.
 \emph{Figure 1: The couplings between the electrical, mechanical and
 thermal energy domains, including the piezoelectric, pyroelectric and
 thermoelectric effects. From Shirvanimoghaddam et al., \emph{IEEE
-Access} 7 (2019) {[}2{]}, licensed CC BY 4.0}
+Access} 7 (2019) \citeproc{ref-shirvanimoghaddam19}{{[}2{]}}, licensed
+CC BY 4.0}
 
 Below we can see a figure of the potential energy that can be harvested
 per volume, and the type power consumption of technologies {[}1{]}.
@@ -51,8 +53,8 @@ the battery.
 \emph{Figure 2: Battery run-time and power consumption of devices from a
 32 kHz quartz oscillator to a laptop, plotted against the energy
 available from mechanical, thermal and radiant sources in uW/cm2. From
-Shirvanimoghaddam et al., \emph{IEEE Access} 7 (2019) {[}2{]}, licensed
-CC BY 4.0}
+Shirvanimoghaddam et al., \emph{IEEE Access} 7 (2019)
+\citeproc{ref-shirvanimoghaddam19}{{[}2{]}}, licensed CC BY 4.0}
 
 For wireless standards, there are some that can be run on energy
 harvesting. Below is an overview from {[}1{]}. Many of us will have a
@@ -74,8 +76,8 @@ required (battery, super-capacitor, large capacitor).
 \emph{Figure 3: Power versus coverage for wireless standards, showing
 that NFC, RFID, Z-Wave and Zigbee can be battery-less while WiFi,
 Bluetooth and the cellular standards need a battery. From
-Shirvanimoghaddam et al., \emph{IEEE Access} 7 (2019) {[}2{]}, licensed
-CC BY 4.0}
+Shirvanimoghaddam et al., \emph{IEEE Access} 7 (2019)
+\citeproc{ref-shirvanimoghaddam19}{{[}2{]}}, licensed CC BY 4.0}
 
 I'd like to give you an introduction to the possible ways of harvesting
 energy. I know of five methods: - thermoelectric - photovoltaic -
@@ -245,8 +247,8 @@ have a clock, then we can boost with capacitors
 
 In A 3.5-mV Input Single-Inductor Self-Starting Boost Converter With
 Loss-Aware MPPT for Efficient Autonomous Body-Heat Energy Harvesting
-{[}3{]} they use a combination of both switched capacitor and switched
-inductor boost.
+\citeproc{ref-bose21}{{[}3{]}} they use a combination of both switched
+capacitor and switched inductor boost.
 
 \pandocbounded{\includegraphics[keepaspectratio]{media/l11_teg_mdl_tikz.pdf}}
 
@@ -356,8 +358,8 @@ power point tracker as the optimum changes with light conditions.
 
 In A Reconfigurable Capacitive Power Converter With Capacitance
 Redistribution for Indoor Light-Powered Batteryless Internet-of-Things
-Devices {[}4{]} they include a maximum power point tracker and a
-reconfigurable charge pump to optimize efficiency.
+Devices \citeproc{ref-cheng21}{{[}4{]}} they include a maximum power
+point tracker and a reconfigurable charge pump to optimize efficiency.
 
 \section{\texorpdfstring{\href{https://en.wikipedia.org/wiki/Piezoelectricity}{Piezoelectric}}{Piezoelectric}}\label{piezoelectric}
 
@@ -418,7 +420,7 @@ energy waste due to the rectifier.
 
 An example of piezoelectric energy harvester can be found in A Fully
 Integrated Split-Electrode SSHC Rectifier for Piezoelectric Energy
-Harvesting {[}5{]}
+Harvesting \citeproc{ref-du19}{{[}5{]}}
 
 \pandocbounded{\includegraphics[keepaspectratio]{media/lx_piezo_mdl_tikz.pdf}}
 
@@ -551,7 +553,7 @@ Although static electricity is an old phenomenon, it is only recently
 that triboelectric nanogenerators have been used to harvest energy.
 
 An overview can be seen in Current progress on power management systems
-for triboelectric nanogenerators {[}6{]}.
+for triboelectric nanogenerators \citeproc{ref-hu22}{{[}6{]}}.
 
 A model of a triboelectric generator can be seen in below. Although the
 current is low (nA) the voltage can be high, tens to hundreds of volts.
@@ -561,15 +563,16 @@ of the triboelectric generator.
 
 Take a look in A Fully Energy-Autonomous Temperature-to-Time Converter
 Powered by a Triboelectric Energy Harvester for Biomedical Applications
-{[}7{]} for more details.
+\citeproc{ref-tan21}{{[}7{]}} for more details.
 
 \pandocbounded{\includegraphics[keepaspectratio]{media/lx_trib_mdl_tikz.pdf}}
 
 \emph{Figure 16: Model of a triboelectric generator - an AC source in
 series with the transducer capacitance}
 
-Tan et al. {[}7{]} built exactly this, and it is worth walking through
-because it is a complete system rather than a circuit.
+Tan et al. \citeproc{ref-tan21}{{[}7{]}} built exactly this, and it is
+worth walking through because it is a complete system rather than a
+circuit.
 
 Their transducer is a square centimetre of conductive nickel against
 nickel-PFA, and the energy source is human motion below 1 Hz. So the
@@ -662,7 +665,7 @@ Triboelectric (TENG) & 1 uW/cm\(^2\) & 1 Hz & Not limited to indoors or
 outdoors \\
 \end{longtable}
 
-Numbers from Tan et al. {[}7{]}.
+Numbers from Tan et al. \citeproc{ref-tan21}{{[}7{]}}.
 
 Read the first column against the last. Solar wins outdoors by three
 orders of magnitude and loses most of that the moment you go inside, RF
@@ -710,24 +713,26 @@ The one-page version of this chapter:
 more?}\label{would-you-like-to-know-more}
 
 {[}1{]} Towards a Green and Self-Powered Internet of Things Using
-Piezoelectric Energy Harvesting {[}2{]}
+Piezoelectric Energy Harvesting
+\citeproc{ref-shirvanimoghaddam19}{{[}2{]}}
 
 A 3.5-mV Input Single-Inductor Self-Starting Boost Converter With
 Loss-Aware MPPT for Efficient Autonomous Body-Heat Energy Harvesting
-{[}3{]}
+\citeproc{ref-bose21}{{[}3{]}}
 
 A Reconfigurable Capacitive Power Converter With Capacitance
 Redistribution for Indoor Light-Powered Batteryless Internet- of-Things
-Devices {[}4{]}
+Devices \citeproc{ref-cheng21}{{[}4{]}}
 
 A Fully Integrated Split-Electrode SSHC Rectifier for Piezoelectric
-Energy Harvesting {[}5{]}
+Energy Harvesting \citeproc{ref-du19}{{[}5{]}}
 
 Current progress on power management systems for triboelectric
-nanogenerators {[}6{]}
+nanogenerators \citeproc{ref-hu22}{{[}6{]}}
 
 A Fully Energy-Autonomous Temperature-to-Time Converter Powered by a
-Triboelectric Energy Harvester for Biomedical Applications {[}7{]}
+Triboelectric Energy Harvester for Biomedical Applications
+\citeproc{ref-tan21}{{[}7{]}}
 
 \phantomsection\label{refs}
 \begin{CSLReferences}{0}{0}

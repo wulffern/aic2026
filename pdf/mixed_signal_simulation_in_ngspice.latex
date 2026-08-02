@@ -149,7 +149,7 @@ listed below.
 \item
   \href{https://en.wikipedia.org/wiki/Crank\%E2\%80\%93Nicolson_method}{Crank-Nicolson}
 \item
-  Gear {[}1{]}
+  Gear \citeproc{ref-gear71}{{[}1{]}}
 \end{itemize}
 
 If you wish to learn more, I would recommend starting with the original

@@ -325,8 +325,8 @@ understanding is wrong, then I'll happily discuss.
 \section{Syllabus}\label{syllabus}
 
 The syllabus will be from Analog Integrated Circuit Design by Carusone,
-Johns and Martin {[}1{]}, which everyone calls CJM, and Circuits for all
-seasons.
+Johns and Martin \citeproc{ref-cjm11}{{[}1{]}}, which everyone calls
+CJM, and Circuits for all seasons.
 
 These lecture notes are a supplement to the book. I try to give some
 background, and how to think about electronics. It's not my goal to

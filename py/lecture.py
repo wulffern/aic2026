@@ -739,7 +739,10 @@ def latex(filename,root,no_append):
                          .replace("__author__",author).replace("__pdfauthor__",pdfauthor))
 
     flatex = fname.replace(".md",".latex")
-    cmd = f"pandoc --citeproc --bibliography=pdf/aic.bib --csl=pdf/ieee-with-url.csl  -o {flatex} {fname}  "
+    # link-citations makes citeproc wrap the resolved number in \citeproc,
+    # which the preamble turns into a link to the reference entry. Without
+    # it the number is emitted as bare text and nothing is clickable.
+    cmd = f"pandoc --citeproc -M link-citations=true --bibliography=pdf/aic.bib --csl=pdf/ieee-with-url.csl  -o {flatex} {fname}  "
     os.system(cmd)
     with open(flatex) as fi:
         buff = fi.read()

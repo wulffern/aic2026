@@ -224,7 +224,8 @@ equations, I could see how it worked.
 
 An example use of an SC circuit is
 
-A pipelined 5-Msample/s 9-bit analog-to-digital converter {[}1{]}
+A pipelined 5-Msample/s 9-bit analog-to-digital converter
+\citeproc{ref-Lewis87}{{[}1{]}}
 
 Shown in the figure below. You should think of the switched capacitor
 circuit as similar to an amplifier with constant gain. We can use two
@@ -247,7 +248,8 @@ is four.
 with a gain of four, and the two-phase clock that runs it. On \(\phi_2\)
 the two input plates are shorted to each other rather than to ground,
 which discharges the common mode while leaving the differential charge
-alone. Inspired by Fig. 6 of Lewis and Gray {[}1{]}}
+alone. Inspired by Fig. 6 of Lewis and Gray
+\citeproc{ref-Lewis87}{{[}1{]}}}
 
 Follow the charge and the gain falls out. During \(\phi_1\) the input is
 sampled onto \(4C\) while the reset switch shorts \(C\), so the feedback
@@ -553,8 +555,8 @@ Nyquist-Shannon has been extended for sparse signals, compressed
 sensing, and non-uniform sampling to demonstrate that it's sufficient
 for the average sample rate to be twice the bandwidth. One 2009 paper
 Blind Multiband Signal Reconstruction: Compressed Sensing for Analog
-Signal {[}2{]} is a good place to start to delve into the latest on
-signal reconstruction.
+Signal \citeproc{ref-mishali09}{{[}2{]}} is a good place to start to
+delve into the latest on signal reconstruction.
 
 
 {
@@ -1097,7 +1099,7 @@ differential current mirror OTA with cascoded, gain boosted, output
 stage using a parallel common mode feedback}.
 
 Not all SC circuits use OTAs, there are also comparator based SC
-circuits {[}3{]}.
+circuits \citeproc{ref-wulff10}{{[}3{]}}.
 
 Below is a fully-differential two-stage OTA that will work with most SC
 circuits. The notation ``24F1F25'' means ``the width is 24 F'' and
@@ -1194,10 +1196,10 @@ bootstrapped switches as shown on the right.
 \emph{Figure 26: Transmission gate with switched bulks (left) and a
 bootstrapped switch (right)}
 
-The switch I used in my JSSC SAR {[}4{]} is a fully differential
-bootstrapped switch with cross coupled dummy transistors. The JSSC SAR
-I've also ported to GF130NM, as shown below. The switch is at the
-bottom.
+The switch I used in my JSSC SAR \citeproc{ref-wulff17}{{[}4{]}} is a
+fully differential bootstrapped switch with cross coupled dummy
+transistors. The JSSC SAR I've also ported to GF130NM, as shown below.
+The switch is at the bottom.
 
 \href{https://github.com/wulffern/sun_sar9b_sky130nm}{wulffern/sun\_sar9b\_sky130nm}
 
@@ -1327,26 +1329,27 @@ The one-page version of this chapter:
 more?}\label{would-you-like-to-know-more}
 
 Blind Multiband Signal Reconstruction: Compressed Sensing for Analog
-Signal {[}2{]}
+Signal \citeproc{ref-mishali09}{{[}2{]}}
 
 Comparator-based switched-capacitor pipelined analog-to-digital
 converter with comparator preset, and comparator delay compensation
-{[}3{]}
+\citeproc{ref-wulff10}{{[}3{]}}
 
 A Compiled 9-bit 20-MS/s 3.5-fJ/conv.step SAR ADC in 28-nm FDSOI for
-Bluetooth Low Energy Receivers {[}4{]}
+Bluetooth Low Energy Receivers \citeproc{ref-wulff17}{{[}4{]}}
 
 A 10-bit 50-MS/s SAR ADC With a Monotonic Capacitor Switching Procedure
-{[}5{]}
+\citeproc{ref-liu10}{{[}5{]}}
 
 Low Voltage, Low Power, Inverter-Based Switched-Capacitor Delta-Sigma
-Modulator {[}6{]}
+Modulator \citeproc{ref-chae09}{{[}6{]}}
 
-Ring Amplifiers for Switched Capacitor Circuits {[}7{]}
+Ring Amplifiers for Switched Capacitor Circuits
+\citeproc{ref-hershberg12}{{[}7{]}}
 
-A Switched-Capacitor RF Power Amplifier {[}8{]}
+A Switched-Capacitor RF Power Amplifier \citeproc{ref-yoo11}{{[}8{]}}
 
-Design of Active N-Path Filters {[}9{]}
+Design of Active N-Path Filters \citeproc{ref-darvishi13}{{[}9{]}}
 
 \phantomsection\label{refs}
 \begin{CSLReferences}{0}{0}

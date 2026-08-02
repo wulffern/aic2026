@@ -13,7 +13,8 @@ reconstruct in digital domain.
 Many years ago, Robert Walden did a study of ADCs, it is worth looking
 up the plots.
 
-1999, R. Walden: Analog-to-digital converter survey and analysis {[}1{]}
+1999, R. Walden: Analog-to-digital converter survey and analysis
+\citeproc{ref-walden99}{{[}1{]}}
 
 There are obvious trends, the faster an ADC is, the less precise the ADC
 is ( lower SNDR). There are also fundamental limits, Heisenberg tells us
@@ -84,7 +85,7 @@ That's pretty much the algorithm I, and others, have followed to make
 state-of-the-art ADCs. A few of the NTNU ADCs are:
 
 {[}1{]} A Compiled 9-bit 20-MS/s 3.5-fJ/conv.step SAR ADC in 28-nm FDSOI
-for Bluetooth Low Energy Receivers {[}2{]}
+for Bluetooth Low Energy Receivers \citeproc{ref-wulff17}{{[}2{]}}
 
 {[}2{]} \href{https://ieeexplore.ieee.org/document/9056925}{A 68 dB SNDR
 Compiled Noise-Shaping SAR ADC With On-Chip CDAC Calibration}
@@ -348,7 +349,7 @@ can delve into the details and figure out what \(e[n]\) is. A guy called
 Blachman wrote a paper back in 1985 on quantization noise.
 
 See The intermodulation and distortion due to quantization of sinusoids
-{[}3{]} for details
+\citeproc{ref-blachman85a}{{[}3{]}} for details
 
 In short, the quantizer \emph{output} for a sinusoidal input is an exact
 harmonic series,
@@ -1350,7 +1351,8 @@ modulators}\label{the-wonderful-world-of-sd-modulators}
 
 On my Ph.D I did some work on
 
-Resonators in Open-Loop Sigma-Delta Modulators {[}4{]}
+Resonators in Open-Loop Sigma-Delta Modulators
+\citeproc{ref-wulff09}{{[}4{]}}
 
 which was a pure theoretical work. The idea was to use modulo
 integrators (local control of integrator output swing) in front of large
@@ -1371,7 +1373,7 @@ DC), reaching 13.8 bit ENOB and 84.9 dB SNDR}
 One of my Ph.d students made a
 
 A 68 dB SNDR Compiled Noise-Shaping SAR ADC With On-Chip CDAC
-Calibration {[}5{]}
+Calibration \citeproc{ref-garvik19}{{[}5{]}}
 
 In a SAR ADC, once the bit-cycling is complete, the analog value on the
 capacitors is the actual quantization error. That error can be fed to a
@@ -1449,7 +1451,7 @@ dB DR in a Near Zero-IF 20 MHz Band}
 
 \emph{Figure 35: One stage of the quadrature modulator, with the second
 cascaded stage and the differential wiring left out. Inspired by Breems
-et al. {[}6{]}}
+et al. \citeproc{ref-breems07}{{[}6{]}}}
 
 The cross-coupling in red is the whole of what makes it quadrature. Take
 it away and there are two independent real modulators, each with a noise
@@ -1525,17 +1527,20 @@ The one-page version of this chapter:
 more?}\label{would-you-like-to-know-more}
 
 The design of sigma-delta modulation analog-to-digital converters
-{[}7{]}
+\citeproc{ref-boser88}{{[}7{]}}
 
-Delta-sigma modulation in fractional-N frequency synthesis {[}8{]}
+Delta-sigma modulation in fractional-N frequency synthesis
+\citeproc{ref-riley93}{{[}8{]}}
 
 A CMOS Temperature Sensor With a Voltage-Calibrated Inaccuracy of ± 0.15
-C (3sigma) From -55 Cto 125 C {[}9{]}
+C (3sigma) From -55 Cto 125 C \citeproc{ref-souri13}{{[}9{]}}
 
 A 20-mW 640-MHz CMOS Continuous-Time Sigma-Delta ADC With 20-MHz Signal
-Bandwidth, 80-dB Dynamic Range and 12-bit ENOB {[}10{]}
+Bandwidth, 80-dB Dynamic Range and 12-bit ENOB
+\citeproc{ref-mitteregger06a}{{[}10{]}}
 
-A Micro-Power Two-Step Incremental Analog-to-Digital Converter {[}11{]}
+A Micro-Power Two-Step Incremental Analog-to-Digital Converter
+\citeproc{ref-chen15}{{[}11{]}}
 
 \phantomsection\label{refs}
 \begin{CSLReferences}{0}{0}

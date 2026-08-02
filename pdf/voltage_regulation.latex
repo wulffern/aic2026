@@ -48,8 +48,9 @@ Today's transistor, as shown below, are a complicated three dimensional
 structure. Dimensions are measured in nano-meter, which makes the
 transistors fragile.
 
-In Analog Circuit Design in Nanoscale CMOS Technologies {[}1{]} Lanny
-explains how to design around some of the breakdown effects.
+In Analog Circuit Design in Nanoscale CMOS Technologies
+\citeproc{ref-lewyn09}{{[}1{]}} Lanny explains how to design around some
+of the breakdown effects.
 
 \pandocbounded{\includegraphics[keepaspectratio]{media/nanoscale_effects_tikz.pdf}}
 
@@ -77,8 +78,9 @@ can break down at approximately 5 MV/cm. The breakdown forms a
 conductive channel from the gate to the channel and is permanent. After
 breakdown there will be a resistor of kOhms between gate and channel.
 
-A similar breakdown phenomena is used in Metal-Oxide RRAM {[}2{]} and
-the \href{https://sky130-fd-pr-reram.readthedocs.io/en/latest/}{SkyWater
+A similar breakdown phenomena is used in Metal-Oxide RRAM
+\citeproc{ref-wong12}{{[}2{]}} and the
+\href{https://sky130-fd-pr-reram.readthedocs.io/en/latest/}{SkyWater
 ReRAM}
 
 Below is an example of ReRAM. In the Pristine state the conductance is
@@ -113,7 +115,7 @@ oxide. The bond break will change the forces (stress) in the amorphous
 silicon oxide which might not recover. As such, there might be more
 traps (states) than before. See Simultaneous Extraction of Recoverable
 and Permanent Components Contributing to Bias-Temperature Instability
-{[}3{]} for more details.
+\citeproc{ref-grasser07}{{[}3{]}} for more details.
 
 For a long time, I had trouble with ``traps in the oxide''. I had a hard
 time visualizing how electrons wandered down the channel and got caught
@@ -448,7 +450,7 @@ implementation. A real DC/DC implementation may seem overwhelming.
 
 Just look at figure 7 in A 10-MHz 2--800-mA 0.5--1.5-V 90\% Peak
 Efficiency Time-Based Buck Converter With Seamless Transition Between
-PWM/PFM Modes {[}4{]}
+PWM/PFM Modes \citeproc{ref-kim18}{{[}4{]}}
 
 So before we go into details, let's have a look at the principles.
 
@@ -811,43 +813,45 @@ converter
 \subsection{Linear regulators}\label{linear-regulators-1}
 
 A Scalable High-Current High-Accuracy Dual-Loop Four-Phase Switching LDO
-for Microprocessors {[}5{]} Overview of fancy LDO schemes, digital as
-well as analog
+for Microprocessors \citeproc{ref-mao22}{{[}5{]}} Overview of fancy LDO
+schemes, digital as well as analog
 
 Development of Single-Transistor-Control LDO Based on Flipped Voltage
-Follower for SoC {[}6{]} In capacitor less LDOs a flipped voltage
-follower is a common circuit, worth a read.
+Follower for SoC \citeproc{ref-man08}{{[}6{]}} In capacitor less LDOs a
+flipped voltage follower is a common circuit, worth a read.
 
 A 200-mA Digital Low Drop-Out Regulator With Coarse-Fine Dual Loop in
-Mobile Application Processor {[}7{]} Some insights into large power
-systems.
+Mobile Application Processor \citeproc{ref-lee17}{{[}7{]}} Some insights
+into large power systems.
 
 \subsection{DC-DC converters}\label{dc-dc-converters}
 
 Design Techniques for Fully Integrated Switched-Capacitor DC-DC
-Converters {[}8{]} Goes through design of SC DC-DC converters. Good
-place to start to learn the trade-offs, and the circuits.
+Converters \citeproc{ref-le11}{{[}8{]}} Goes through design of SC DC-DC
+converters. Good place to start to learn the trade-offs, and the
+circuits.
 
 High Frequency Buck Converter Design Using Time-Based Control Techniques
-{[}9{]} I love papers that challenge ``this is the way''. Why should we
-design analog feedback loops for our bucks, why not design digital
-feedback loops?
+\citeproc{ref-kim15}{{[}9{]}} I love papers that challenge ``this is the
+way''. Why should we design analog feedback loops for our bucks, why not
+design digital feedback loops?
 
 Single-Inductor Multi-Output (SIMO) DC-DC Converters With High
 Light-Load Efficiency and Minimized Cross-Regulation for Portable
-Devices {[}10{]} Maybe you have many supplies you want to drive, but you
-don't want to have many inductors. SIMO is then an option
+Devices \citeproc{ref-huang09}{{[}10{]}} Maybe you have many supplies
+you want to drive, but you don't want to have many inductors. SIMO is
+then an option
 
 A 10-MHz 2--800-mA 0.5--1.5-V 90\% Peak Efficiency Time-Based Buck
-Converter With Seamless Transition Between PWM/PFM Modes {[}4{]} Has
-some lovely illustrations of PFM and PWM and the trade-offs between
-those two modes.
+Converter With Seamless Transition Between PWM/PFM Modes
+\citeproc{ref-kim18}{{[}4{]}} Has some lovely illustrations of PFM and
+PWM and the trade-offs between those two modes.
 
 A monolithic current-mode CMOS DC-DC converter with on-chip
-current-sensing technique {[}11{]} In bucks converters there are two
-``religious'' camps. One hail to ``voltage mode'' control loop, another
-hail to ``current mode'' control loops. It's good to read about both and
-make up your own mind.
+current-sensing technique \citeproc{ref-lee04}{{[}11{]}} In bucks
+converters there are two ``religious'' camps. One hail to ``voltage
+mode'' control loop, another hail to ``current mode'' control loops.
+It's good to read about both and make up your own mind.
 
 \phantomsection\label{refs}
 \begin{CSLReferences}{0}{0}

@@ -434,7 +434,8 @@ Your own PDK documentation is the real reading here: what each resistor,
 capacitor and inductor in SKY130 actually is, and what it costs in area
 and parasitics
 
-The circuit-level consequences, chapter by chapter {[}1{]}
+The circuit-level consequences, chapter by chapter
+\citeproc{ref-johns}{{[}1{]}}
 
 \phantomsection\label{refs}
 \begin{CSLReferences}{0}{0}

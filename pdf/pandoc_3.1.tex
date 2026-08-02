@@ -88,8 +88,12 @@
 \providecommand{\tightlist}{%
   \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
 \NewDocumentCommand\citeproctext{}{}
-\NewDocumentCommand\citeproc{mm}{%
-  \begingroup\def\citeproctext{#2}\cite{#1}\endgroup}
+% Citeproc has already resolved the number, so there is nothing for
+% \cite to look up - the bibitems below are swallowed and never reach
+% the .aux. Link straight to the anchor the reference entry plants
+% instead, so the [1] in the text is clickable.
+\NewDocumentCommand\citeproc{mm}{\hyperlink{#1}{#2}}
+\newcommand{\cslcurrentref}{}
 \makeatletter
  % allow citations to break across lines
  \let\@cite@ofmt\@firstofone
@@ -120,7 +124,8 @@
  {\end{list}}
 \usepackage{calc}
 \newcommand{\CSLBlock}[1]{#1\hfill\break}
-\newcommand{\CSLLeftMargin}[1]{\item\parbox[t]{\csllabelwidth}{#1}}
+\newcommand{\CSLLeftMargin}[1]{%
+  \item\parbox[t]{\csllabelwidth}{\hypertarget{\cslcurrentref}{}#1}}
 \newcommand{\CSLRightInline}[1]{\parbox[t]{\linewidth - \csllabelwidth}{#1}\break}
 \newcommand{\CSLIndent}[1]{\hspace{\cslhangindent}#1}
 \ifLuaTeX
@@ -128,3 +133,12 @@
 \fi
 \IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+
+% hyperref, pulled in by bookmark above, installs its own \@lbibitem, so
+% the version that records the citation key has to go in last.
+\makeatletter
+\AtBeginDocument{%
+  \def\@bibitem#1{\gdef\cslcurrentref{#1}}%
+  \def\@lbibitem[#1]#2{\gdef\cslcurrentref{#2}}%
+}
+\makeatother

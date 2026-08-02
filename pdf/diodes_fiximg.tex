@@ -117,10 +117,12 @@ daily calculation.
 Through engineering simplification, however, physics understanding is
 lost.
 
-In {[}1{]} they claim the intrinsic carrier concentration is a constant,
-although they do mention \(n_i\) doubles every 11 degrees Kelvin.
+In \citeproc{ref-cjm11}{{[}1{]}} they claim the intrinsic carrier
+concentration is a constant, although they do mention \(n_i\) doubles
+every 11 degrees Kelvin.
 
-In BSIM 4.8 {[}2{]} the intrinsic carrier concentration is
+In BSIM 4.8 \citeproc{ref-bsim}{{[}2{]}} the intrinsic carrier
+concentration is
 
 \[ n_{i} = 1.45e10 \frac{TNOM}{300.15} \sqrt{\frac{T}{300.15} \exp^{21.5565981
 - \frac{E_g}{2kT}}} \]
@@ -398,9 +400,10 @@ changes the number of free electron/holes.
 
 These days, we usually dope with
 \href{https://en.wikipedia.org/wiki/Ion_implantation}{ion implantation},
-while in the olden days, most doping was done by diffusion {[}3{]}.
-You'd paint something containing Boron on the silicon, and then heat it
-in a furnace to ``diffuse'' the Boron atoms into the silicon.
+while in the olden days, most doping was done by diffusion
+\citeproc{ref-masuhara76}{{[}3{]}}. You'd paint something containing
+Boron on the silicon, and then heat it in a furnace to ``diffuse'' the
+Boron atoms into the silicon.
 
 If we have an element with more electrons we call it a donor, and the
 donor concentration \(N_{D}\).
@@ -860,11 +863,11 @@ experimentally: \(I_S\) saturates, \(I_{gen}\) grows with
 
 How much current does the diode actually have to sink? A reactive-ion
 plasma delivers ion and electron fluxes to the wafer surface, each
-typically in the \(1\)-\(10\, \mathrm{mA/cm^2}\) range {[}4{]}. If the
-two fluxes were perfectly balanced everywhere, no floating conductor
-would charge up and there would be nothing to drain. They never are, and
-two mechanisms produce a net DC current that the antenna diode must
-shunt:
+typically in the \(1\)-\(10\, \mathrm{mA/cm^2}\) range
+\citeproc{ref-cheung01}{{[}4{]}}. If the two fluxes were perfectly
+balanced everywhere, no floating conductor would charge up and there
+would be nothing to drain. They never are, and two mechanisms produce a
+net DC current that the antenna diode must shunt:
 
 \begin{itemize}
 \item
@@ -873,15 +876,16 @@ shunt:
   and edge effects. The local mismatch is typically a few percent of
   \(J_{plasma}\), giving a net DC charging current density on the order
   of \(10\, \mu\mathrm{A/cm^2}\) to \(0.1\, \mathrm{mA/cm^2}\) collected
-  by any conductor connected to that area {[}4{]}.
+  by any conductor connected to that area
+  \citeproc{ref-cheung01}{{[}4{]}}.
 \item
   \textbf{Electron shading.} In a high-aspect-ratio opening through
   photoresist, vertical ions reach the bottom of the feature while
   near-isotropic electrons are blocked by the sidewalls. The bottom
   charges positively regardless of plasma uniformity. Hashimoto
   identified this as the dominant damage mechanism for deep-submicron
-  processes {[}5{]}, and it is what makes high-density-plasma etch and
-  HDP-CVD particularly aggressive.
+  processes \citeproc{ref-hashimoto94}{{[}5{]}}, and it is what makes
+  high-density-plasma etch and HDP-CVD particularly aggressive.
 \end{itemize}
 
 A metal trace that the routing tool calls the \emph{antenna} collects
@@ -894,7 +898,7 @@ to a few thousand, but even within those limits a net plasma current of
 discharge path, that current would charge the gate node and force
 Fowler-Nordheim tunneling through the oxide (fields above
 \(\sim 10\, \mathrm{MV/cm}\)). Once tunneling starts, defects accumulate
-and the breakdown lifetime collapses {[}6{]}.
+and the breakdown lifetime collapses \citeproc{ref-krishnan98}{{[}6{]}}.
 
 The antenna diode bypasses this failure by giving the antenna a
 reverse-biased path to substrate that conducts at far lower voltage than

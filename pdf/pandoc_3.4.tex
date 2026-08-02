@@ -131,8 +131,12 @@
 %\patchcmd{\LT@array}{\@mkpream{#2}}{\StrGobbleLeft{#2}{2}[\pream]\StrGobbleRight{\pream}{2}[\pream]\StrSubstitute{\pream}{l}{|l}[\pream]\@mkpream{@{}\pream|@{}}}{}{}
 
 \NewDocumentCommand\citeproctext{}{}
-\NewDocumentCommand\citeproc{mm}{%
-  \begingroup\def\citeproctext{#2}\cite{#1}\endgroup}
+% Citeproc has already resolved the number, so there is nothing for
+% \cite to look up - the bibitems below are swallowed and never reach
+% the .aux. Link straight to the anchor the reference entry plants
+% instead, so the [1] in the text is clickable.
+\NewDocumentCommand\citeproc{mm}{\hyperlink{#1}{#2}}
+\newcommand{\cslcurrentref}{}
 \makeatletter
  % allow citations to break across lines
  \let\@cite@ofmt\@firstofone
@@ -163,7 +167,8 @@
   {\end{list}}
 \usepackage{calc}
 \newcommand{\CSLBlock}[1]{\hfill\break\parbox[t]{\linewidth}{\strut\ignorespaces#1\strut}}
-\newcommand{\CSLLeftMargin}[1]{\item\parbox[t]{\csllabelwidth}{\strut#1\strut}}
+\newcommand{\CSLLeftMargin}[1]{%
+  \item\parbox[t]{\csllabelwidth}{\strut\hypertarget{\cslcurrentref}{}#1\strut}}
 \newcommand{\CSLRightInline}[1]{\parbox[t]{\linewidth - \csllabelwidth}{\strut#1\strut}}
 \newcommand{\CSLIndent}[1]{\hspace{\cslhangindent}#1}
 
@@ -177,3 +182,12 @@
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
 
 \usepackage{amsmath}
+
+% hyperref, pulled in by bookmark above, installs its own \@lbibitem, so
+% the version that records the citation key has to go in last.
+\makeatletter
+\AtBeginDocument{%
+  \def\@bibitem#1{\gdef\cslcurrentref{#1}}%
+  \def\@lbibitem[#1]#2{\gdef\cslcurrentref{#2}}%
+}
+\makeatother

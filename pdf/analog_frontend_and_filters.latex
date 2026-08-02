@@ -332,10 +332,10 @@ I know of
 \href{https://scholar.google.nl/citations?user=nLhKSsMAAAAJ&hl=nl}{Pieter
 Harpe}, and his work is usually superb, so I would take a closer look at
 A 77.3-dB SNDR 62.5-kHz Bandwidth Continuous-Time Noise-Shaping SAR ADC
-With Duty-Cycled Gm-C Integrator {[}1{]}
+With Duty-Cycled Gm-C Integrator \citeproc{ref-li23}{{[}1{]}}
 
 And from Figure 10 a) we can see it's a similar Gm-C cell as chapter
-12.5.4 in {[}2{]}.
+12.5.4 in \citeproc{ref-cjm11}{{[}2{]}}.
 
 One of my Ph.d's used the transconductor below on his master thesis
 \href{https://ntnuopen.ntnu.no/ntnu-xmlui/handle/11250/2824253}{Design
@@ -507,7 +507,7 @@ unity-gain frequency.
 At frequencies above \(\frac{1}{A_0RC}\) and below \(w_{ta}\) the
 circuit above is a good approximation of an ideal integrator.
 
-See page 511 in {[}2{]} (chapter 5.8.1)
+See page 511 in \citeproc{ref-cjm11}{{[}2{]}} (chapter 5.8.1)
 
 \section{Example circuit}\label{example-circuit}
 
@@ -573,8 +573,8 @@ integrating, Cff1/R2/C2 filtering, ADC1 sampling, DAC1 feeding back, R3
 and DAC2 handing off to the second stage - joined by the red
 cross-coupling that makes the pair complex: each \(R_{fb}\) carries one
 path's first integrator output into the other path's summing node.
-Inspired by Breems et al. {[}3{]}, which is fully differential,
-cascaded, and has a tuning resistor on everything}
+Inspired by Breems et al. \citeproc{ref-breems07}{{[}3{]}}, which is
+fully differential, cascaded, and has a tuning resistor on everything}
 
 What does the cross-coupling actually buy? Figure 15 answers it by
 simulation. The same first-order loop is run twice: once real, so its
@@ -690,15 +690,16 @@ The one-page version of this chapter:
 more?}\label{would-you-like-to-know-more}
 
 A 77.3-dB SNDR 62.5-kHz Bandwidth Continuous-Time Noise-Shaping SAR ADC
-With Duty-Cycled Gm-C Integrator {[}1{]}
+With Duty-Cycled Gm-C Integrator \citeproc{ref-li23}{{[}1{]}}
 
 \href{https://ntnuopen.ntnu.no/ntnu-xmlui/handle/11250/2824253}{Design
 Considerations for a Low-Power Control-Bounded A/D Converter}
 
 A 56 mW Continuous-Time Quadrature Cascaded Sigma-Delta Modulator With
-77 dB DR in a Near Zero-IF 20 MHz Band {[}3{]}
+77 dB DR in a Near Zero-IF 20 MHz Band \citeproc{ref-breems07}{{[}3{]}}
 
-Complex signal processing is not - complex {[}4{]}
+Complex signal processing is not - complex
+\citeproc{ref-martin03}{{[}4{]}}
 
 \phantomsection\label{refs}
 \begin{CSLReferences}{0}{0}

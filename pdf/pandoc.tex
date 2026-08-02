@@ -107,8 +107,12 @@
 \usepackage{svg}
 % definitions for citeproc citations
 \NewDocumentCommand\citeproctext{}{}
-\NewDocumentCommand\citeproc{mm}{%
-  \begingroup\def\citeproctext{#2}\cite{#1}\endgroup}
+% Citeproc has already resolved the number, so there is nothing for
+% \cite to look up - the bibitems below are swallowed and never reach
+% the .aux. Link straight to the anchor the reference entry plants
+% instead, so the [1] in the text is clickable.
+\NewDocumentCommand\citeproc{mm}{\hyperlink{#1}{#2}}
+\newcommand{\cslcurrentref}{}
 \makeatletter
  % allow citations to break across lines
  \let\@cite@ofmt\@firstofone
@@ -116,9 +120,12 @@
  \def\@biblabel#1{}
  \def\@cite#1#2{{#1\if@tempswa , #2\fi}}
  % pandoc citeproc has emitted both \bibitem-based and bare CSL item formats.
- % Swallow \bibitem and let \CSLLeftMargin start the actual list item so both work.
- \def\@bibitem#1{}
- \def\@lbibitem[#1]#2{}
+ % Swallow \bibitem and let \CSLLeftMargin start the actual list item so both
+ % work. The key is kept so the entry can anchor itself once it is in
+ % horizontal mode, inside \CSLLeftMargin - planting it out here, between
+ % \item's, is what provokes "perhaps a missing \item".
+ \def\@bibitem#1{\gdef\cslcurrentref{#1}}
+ \def\@lbibitem[#1]#2{\gdef\cslcurrentref{#2}}
 \makeatother
 \newlength{\cslhangindent}
 \setlength{\cslhangindent}{1.5em}
@@ -139,7 +146,8 @@
  {\end{list}}
 \usepackage{calc}
 \newcommand{\CSLBlock}[1]{\hfill\break\parbox[t]{\linewidth}{\strut\ignorespaces#1\strut}}
-\newcommand{\CSLLeftMargin}[1]{\item\parbox[t]{\csllabelwidth}{\strut#1\strut}}
+\newcommand{\CSLLeftMargin}[1]{%
+  \item\parbox[t]{\csllabelwidth}{\strut\hypertarget{\cslcurrentref}{}#1\strut}}
 \newcommand{\CSLRightInline}[1]{\parbox[t]{\linewidth - \csllabelwidth}{\strut#1\strut}}
 \newcommand{\CSLIndent}[1]{\hspace{\cslhangindent}#1}
 \setlength{\emergencystretch}{3em} % prevent overfull lines
@@ -148,3 +156,12 @@
 \usepackage{bookmark}
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
 \urlstyle{same}
+
+% hyperref, pulled in by bookmark above, installs its own \@lbibitem, so
+% the version that records the citation key has to go in last.
+\makeatletter
+\AtBeginDocument{%
+  \def\@bibitem#1{\gdef\cslcurrentref{#1}}%
+  \def\@lbibitem[#1]#2{\gdef\cslcurrentref{#2}}%
+}
+\makeatother

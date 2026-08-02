@@ -11,7 +11,8 @@ voltage, the minimum would have to be
 \(\frac{5V}{2^{24}} \approx 298nV\). That level is roughly equivalent to
 the noise in a 50 Ohm resistor with a bandwidth of 96kHz. There exists
 an equation that relates number of bits to signal to noise ratio
-{[}1{]}, the equation specifies that \(SNR = 6.02*Bits +
+\citeproc{ref-johns}{{[}1{]}}, the equation specifies that
+\(SNR = 6.02*Bits +
 1.76 = 146.24dB\). Back in 2005 the best digital to analog converter
 (DAC) that Analog Devices (a very big semiconductor company) had was a
 DAC with 120dB SNR, that equals around \(Bits = (120-1.76)/6.02 =
@@ -107,7 +108,7 @@ average power, the unit of the PSD is \(\frac{V^2}{Hz}\) for voltage and
 \(\frac{A}{\sqrt{Hz}}\) for current.
 
 The power spectral density is defined as two times the Fourier transform
-of the auto-correlation function {[}2{]}
+of the auto-correlation function \citeproc{ref-ziel}{{[}2{]}}
 
 \[S_x(f) = 2\int_{-\infty}^{\infty}{R_x(\tau)e^{-j2\pi f \tau}d\tau} \tag{6}\]
 This can also be written as
@@ -277,9 +278,9 @@ in dB)
 
 This brings us right into what is known as Friis formula. The noise
 factor definition is only correct at room temperature, for more details,
-see {[}3{]}. If we have a multistage system, for example several
-amplifiers in cascade, the total noise figure of the system is defined
-as
+see \citeproc{ref-friis}{{[}3{]}}. If we have a multistage system, for
+example several amplifiers in cascade, the total noise figure of the
+system is defined as
 
 \[F = 1 + F_1 - 1 + \frac{F_2 -1}{G_{1}} +
   \frac{F_3-1}{G_{1}G_{2}} + ....\]
@@ -297,17 +298,19 @@ is important to amplify the noise as early as possible!
 
 Warning: This is not an introduction to spectral density. If the subject
 is completely unfamiliar I'd advise reading another source. For example
-chapter 4 in {[}1{]} or chapter 7 in {[}4{]}.
+chapter 4 in \citeproc{ref-johns}{{[}1{]}} or chapter 7 in
+\citeproc{ref-razavi}{{[}4{]}}.
 
 \subsection{Definition of Spectral
 Density}\label{definition-of-spectral-density}
 
 There are two different definitions of spectral density used in the
 literature. They differ by a factor of two. The one used in signal
-processing books, like {[}5{]}, is
+processing books, like \citeproc{ref-gray.r.m}{{[}5{]}}, is
 
 \[S_{x1}(f) = \int_{-\infty}^{\infty}{R_{x1}(\tau)e^{-j\omega\tau}d\tau}\]
-And the one often used in books about noise, like {[}2{]}, is
+And the one often used in books about noise, like
+\citeproc{ref-ziel}{{[}2{]}}, is
 
 \[S_{x2}(f) = 2\int_{-\infty}^{\infty}{R_{x2}(\tau)e^{-j\omega\tau}d\tau}\]
 In both cases \(R_{xi}(\tau)\) is the auto-correlation function defined
@@ -329,21 +332,23 @@ equal.
 \subsection{Sources of Confusion}\label{sources-of-confusion}
 
 The problem with spectral density arises when reading literature from
-different communities, for example {[}5{]} and {[}2{]} where \(S_x(f)\)
-is used for both \(S_{x1}(f)\) and \(S_{x2}(f)\). When I started
-investigating spectral densities this lead me to believe that different
-sources defined the same measure ``spectral density'' in two different
-ways. The more sources I investigated the more unsure I was about which
-of the two definitions that was correct. After months of searching (not
-actively, but sporadically) I eventually found the original source of
-the definition of spectral density {[}6{]}. Having the original source
-helped, but I still don't know when the original definition split into
-the \(S_{x1}\) and \(S_{x2}\) forms above. However, I'm pretty sure it's
-just a matter of convenience. To see why the \(S_{x2}\) form is the most
-common among sources concerning noise we look at the inverse Fourier
-Transform. By the way, if you had not noticed yet, both forms say that
-\emph{Spectral density is the Fourier Transform of the Auto-Correlation
-function}. The inverse Fourier Transform of \(S_{x1}\) is
+different communities, for example \citeproc{ref-gray.r.m}{{[}5{]}} and
+\citeproc{ref-ziel}{{[}2{]}} where \(S_x(f)\) is used for both
+\(S_{x1}(f)\) and \(S_{x2}(f)\). When I started investigating spectral
+densities this lead me to believe that different sources defined the
+same measure ``spectral density'' in two different ways. The more
+sources I investigated the more unsure I was about which of the two
+definitions that was correct. After months of searching (not actively,
+but sporadically) I eventually found the original source of the
+definition of spectral density \citeproc{ref-einstein14}{{[}6{]}}.
+Having the original source helped, but I still don't know when the
+original definition split into the \(S_{x1}\) and \(S_{x2}\) forms
+above. However, I'm pretty sure it's just a matter of convenience. To
+see why the \(S_{x2}\) form is the most common among sources concerning
+noise we look at the inverse Fourier Transform. By the way, if you had
+not noticed yet, both forms say that \emph{Spectral density is the
+Fourier Transform of the Auto-Correlation function}. The inverse Fourier
+Transform of \(S_{x1}\) is
 
 \[R_{x1}(\tau) = \frac{1}{2\pi}\int_{-\infty}^{\infty}{S_{x1}(f)e^{j\omega\tau}dw} = \int_{-\infty}^{\infty}{S_{x1}(f)e^{j\omega\tau}df}\]
 ,since \(dw = df dw/df = 2\pi df\). And for \(S_{x2}\)
@@ -413,9 +418,10 @@ matching definition.\footnote{Note that if you calculate the average
 
 \subsection{Einstein: The source}\label{einstein-the-source}
 
-In his 1914 paper {[}6{]} Albert Einstein described, supposedly for the
-first time, the auto-correlation function and what we have come to know
-as the spectral density. He defined the auto-correlation function as
+In his 1914 paper \citeproc{ref-einstein14}{{[}6{]}} Albert Einstein
+described, supposedly for the first time, the auto-correlation function
+and what we have come to know as the spectral density. He defined the
+auto-correlation function as
 
 \[\mathfrak{M} (\Delta) = \overline{F(t)F(t + \Delta)}\] and the
 intensity (spectral density) as
@@ -452,15 +458,17 @@ The one-page version of this chapter:
 \section{Would you like to know
 more?}\label{would-you-like-to-know-more}
 
-The classic on noise in solid state devices, still the reference {[}2{]}
+The classic on noise in solid state devices, still the reference
+\citeproc{ref-ziel}{{[}2{]}}
 
 Friis' original, short and still the clearest statement of why the first
-stage decides the noise figure {[}3{]}
+stage decides the noise figure \citeproc{ref-friis}{{[}3{]}}
 
 Chapter-length treatments of circuit noise, either of which will do
-{[}4{]} {[}1{]}
+\citeproc{ref-razavi}{{[}4{]}} \citeproc{ref-johns}{{[}1{]}}
 
-The random walk that thermal noise is made of, from the source {[}6{]}
+The random walk that thermal noise is made of, from the source
+\citeproc{ref-einstein14}{{[}6{]}}
 
 \phantomsection\label{refs}
 \begin{CSLReferences}{0}{0}

@@ -13,8 +13,9 @@ this book has an OTA somewhere inside it.
 
 The idea is old: the name and the first commercial part arrived in 1969,
 when Wheatley and Wittlinger argued that the OTA obsoletes the op amp
-{[}1{]}, and the OTA-based filter tradition that grew from it is
-summarized in Geiger and Sanchez-Sinencio's tutorial {[}2{]}.
+\citeproc{ref-wheatley69}{{[}1{]}}, and the OTA-based filter tradition
+that grew from it is summarized in Geiger and Sanchez-Sinencio's
+tutorial \citeproc{ref-geiger85}{{[}2{]}}.
 
 This chapter walks through the OTA topologies that still make sense in
 nanoscale CMOS, where the supply is around 0.8 V. That last constraint
@@ -215,11 +216,11 @@ are set by \(V_{DD}\) and the process. It rejects nothing - supply noise
 and corners go straight through.
 
 Nauta showed in 1992 how to make a real OTA out of nothing but
-inverters, Figure 6 {[}3{]}. Two inverters amplify differentially. On
-the outputs, a cross coupled pair fights common mode motion and a
-shorted inverter on each output loads it resistively - together they
-hold the output common mode without a single tail source or CMFB loop,
-and the differential gain survives.
+inverters, Figure 6 \citeproc{ref-nauta92}{{[}3{]}}. Two inverters
+amplify differentially. On the outputs, a cross coupled pair fights
+common mode motion and a shorted inverter on each output loads it
+resistively - together they hold the output common mode without a single
+tail source or CMFB loop, and the differential gain survives.
 
 
 {
@@ -473,13 +474,15 @@ far end of its own stack}
 \section{Dynamic amplifiers}\label{dynamic-amplifiers}\index{dynamic amplifiers@Dynamic amplifiers}
 
 The newest branch of the family tree is also, on inspection, one of the
-oldest: Hosticka showed dynamic CMOS amplifiers already in 1980 {[}4{]},
-and scaling has made the idea mainstream. A dynamic amplifier throws
-away the bias current entirely: it integrates its input onto a capacitor
-for a clocked instant and then stops. The ``gain'' is \(g_m T / C\), the
-power is \(C V^2 f\), and between samples the amplifier burns nothing.
-Ring amplifiers {[}5{]} do the same with an inverter chain that slams
-the output and then dead-bands itself into a precision settle.
+oldest: Hosticka showed dynamic CMOS amplifiers already in 1980
+\citeproc{ref-hosticka80}{{[}4{]}}, and scaling has made the idea
+mainstream. A dynamic amplifier throws away the bias current entirely:
+it integrates its input onto a capacitor for a clocked instant and then
+stops. The ``gain'' is \(g_m T / C\), the power is \(C V^2 f\), and
+between samples the amplifier burns nothing. Ring amplifiers
+\citeproc{ref-hershberg12}{{[}5{]}} do the same with an inverter chain
+that slams the output and then dead-bands itself into a precision
+settle.
 
 They only work in sampled systems - a SAR or pipeline ADC stage, a
 discrete time filter - but there they have taken over: an amplifier that
@@ -617,18 +620,19 @@ The one-page version of this chapter:
 more?}\label{would-you-like-to-know-more}
 
 The paper that named the transconductance amplifier and argued it would
-obsolete the op amp {[}1{]}
+obsolete the op amp \citeproc{ref-wheatley69}{{[}1{]}}
 
 OTA-based filter design, the reason the OTA became a building block
-rather than a curiosity {[}2{]}
+rather than a curiosity \citeproc{ref-geiger85}{{[}2{]}}
 
 Nauta's inverter transconductor, drawn in this chapter, with the
-analysis of why its common mode holds {[}3{]}
+analysis of why its common mode holds \citeproc{ref-nauta92}{{[}3{]}}
 
 Dynamic CMOS amplifiers, twenty years before the idea became mainstream
-{[}4{]}
+\citeproc{ref-hosticka80}{{[}4{]}}
 
-Ring amplifiers, where the dynamic branch of the family went {[}5{]}
+Ring amplifiers, where the dynamic branch of the family went
+\citeproc{ref-hershberg12}{{[}5{]}}
 
 \phantomsection\label{refs}
 \begin{CSLReferences}{0}{0}

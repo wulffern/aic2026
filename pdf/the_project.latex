@@ -126,10 +126,12 @@ It would be good if we could know temperature.
 \subsection{How to measure
 temperature?}\label{how-to-measure-temperature}
 
-There are a multitude of ways to make a temperature sensor. In {[}1{]}
-they used a leakage based digital ring oscillator, in {[}2{]} they used
-a two-transistor MOSFET sensing element, in {[}3{]} they had a more
-complicated sigma-delta ADC sensing bipolar transistors.
+There are a multitude of ways to make a temperature sensor. In
+\citeproc{ref-tang20}{{[}1{]}} they used a leakage based digital ring
+oscillator, in \citeproc{ref-jeong2014}{{[}2{]}} they used a
+two-transistor MOSFET sensing element, in
+\citeproc{ref-pertijs2005}{{[}3{]}} they had a more complicated
+sigma-delta ADC sensing bipolar transistors.
 
 The design of a temperature sensor is more difficult than you think. As
 such, I would suggest that you don't go too crazy in your choice of
@@ -137,8 +139,9 @@ sensor. So far, none has gotten close to the finish line with a
 sigma-delta ADC based sensor.
 
 In the previous years of Advanced Integrated Circuits most groups have
-chosen an architecture similar to {[}4{]} Fig. 2. I would recommend you
-do the same, and that's what I'll target in the milestones.
+chosen an architecture similar to \citeproc{ref-park2022}{{[}4{]}} Fig.
+2. I would recommend you do the same, and that's what I'll target in the
+milestones.
 
 The principle of the temperature sensor is: 1) Create a current that is
 proportional to temperature (Lecture 3), 2) Convert current to frequency
@@ -486,10 +489,11 @@ The one-page version of this chapter:
 more?}\label{would-you-like-to-know-more}
 
 Precision CMOS temperature sensors, the book chapter to read before
-starting {[}3{]}
+starting \citeproc{ref-pertijs2005}{{[}3{]}}
 
 Recent low-power sensors, for what the state of the art costs in area
-and current {[}2{]} {[}1{]} {[}4{]}
+and current \citeproc{ref-jeong2014}{{[}2{]}}
+\citeproc{ref-tang20}{{[}1{]}} \citeproc{ref-park2022}{{[}4{]}}
 
 \phantomsection\label{refs}
 \begin{CSLReferences}{0}{0}
