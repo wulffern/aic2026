@@ -40,20 +40,15 @@
   %- nowhere to go but onto C. A reference is not needed: the OTA holds
   %- its own input, so shorting the far plate is enough.
   \def\xcm{\xsw+0.95}
-  \draw (\xcm,\ytop) -- (\xcm,\ytop+0.55)
-        to [switch] (\xcm,\ytop+1.5);
-  \node[scale=0.8, anchor=west] at (\xcm+0.15,\ytop+1.02) {$\phi_2$};
-  \draw (\xcm,\ytop+1.5) node[rotate=180]{} ;
-  \draw (\xcm-0.3,\ytop+1.5) -- (\xcm+0.3,\ytop+1.5);
-  \draw (\xcm-0.19,\ytop+1.62) -- (\xcm+0.19,\ytop+1.62);
-  \draw (\xcm-0.08,\ytop+1.74) -- (\xcm+0.08,\ytop+1.74);
-
-  \draw (\xcm,\ybot) -- (\xcm,\ybot-0.55)
-        to [switch] (\xcm,\ybot-1.5);
-  \node[scale=0.8, anchor=west] at (\xcm+0.15,\ybot-1.02) {$\phi_2$};
-  \draw (\xcm-0.3,\ybot-1.5) -- (\xcm+0.3,\ybot-1.5);
-  \draw (\xcm-0.19,\ybot-1.62) -- (\xcm+0.19,\ybot-1.62);
-  \draw (\xcm-0.08,\ybot-1.74) -- (\xcm+0.08,\ybot-1.74);
+  %- On phi2 the two input plates are shorted to EACH OTHER, not to
+  %- ground: the differential charge is untouched while the common
+  %- mode is discharged through the pair, which is worth real CMRR.
+  \draw (\xcm,\ytop) -- (\xcm,{\ytop-0.75});
+  \draw (\xcm,{\ytop-0.75}) to [switch] (\xcm,{\ybot+0.75});
+  \draw (\xcm,{\ybot+0.75}) -- (\xcm,\ybot);
+  \fill (\xcm,\ytop) circle (0.075);
+  \fill (\xcm,\ybot) circle (0.075);
+  \node[scale=0.8, anchor=west] at ({\xcm+0.2},{(\ytop+\ybot)/2}) {$\phi_2$};
 
   % ---- summing nodes into the OTA inputs ----
   \draw (\xota-0.5,\ytop) -- (cicOta_inp);

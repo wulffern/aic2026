@@ -351,7 +351,7 @@ at least for the latter parts of $\phi_2$ the gain is four.
 ![fit](../media/sc_sha4_tikz.pdf)
 
 <!--pan_doc:
-<sub>Figure 6: A fully differential switched-capacitor sample-and-hold with a gain of four, and the two-phase clock that runs it. Inspired by Fig. 6 of Lewis and Gray [@Lewis87]</sub>
+<sub>Figure 6: A fully differential switched-capacitor sample-and-hold with a gain of four, and the two-phase clock that runs it. On $\phi_2$ the two input plates are shorted to each other rather than to ground, which discharges the common mode while leaving the differential charge alone. Inspired by Fig. 6 of Lewis and Gray [@Lewis87]</sub>
 
 Follow the charge and the gain falls out. During $\phi_1$ the input is
 sampled onto $4C$ while the reset switch shorts $C$, so the feedback
