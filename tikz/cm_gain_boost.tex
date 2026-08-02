@@ -3,6 +3,12 @@
 % Active cascode (gain boosted) current mirror: amplifiers regulate the
 % drains of the mirror devices by driving the cascode gates, multiplying
 % the output resistance by the amplifier gain A.
+%
+% Watch the polarity: the regulated node goes to the amplifier's
+% INVERTING input and the reference to the non-inverting one. That way
+% the node rising drives the cascode gate down, the cascode conducts
+% less, and the node comes back. Wire it the other way and the same
+% loop runs away instead of regulating.
 
 \begin{circuitikz}[american, thick, transform shape, circuit ee IEC]
 
@@ -44,27 +50,27 @@
 
   % ---- left boost amplifier: drives M3's gate ----
   \draw (2.55,2.9) -- (2.55,1.9) -- (1.65,2.4) -- cycle;
-  \node[anchor=east, scale=0.8] at (2.5,2.15) {$+$};
-  \node[anchor=east, scale=0.8] at (2.5,2.65) {$-$};
+  \node[anchor=east, scale=0.8] at (2.5,2.15) {$-$};
+  \node[anchor=east, scale=0.8] at (2.5,2.65) {$+$};
   \coordinate (g3) at (M3.G);
   \draw (1.65,2.4) -- (1.15,2.4);
   \draw (1.15,2.4) |- (g3);
-  % + input senses the drain of M1
+  % inverting input senses the drain of M1
   \draw (2.55,2.15) -- (2.95,2.15) -- (2.95,\ycas) -- (\xl,\ycas);
   \fill (\xl,\ycas) circle (0.075);
 
   % ---- right boost amplifier: drives M4's gate ----
   \draw (3.85,2.9) -- (3.85,1.9) -- (4.75,2.4) -- cycle;
-  \node[anchor=west, scale=0.8] at (3.9,2.15) {$+$};
-  \node[anchor=west, scale=0.8] at (3.9,2.65) {$-$};
+  \node[anchor=west, scale=0.8] at (3.9,2.15) {$-$};
+  \node[anchor=west, scale=0.8] at (3.9,2.65) {$+$};
   \coordinate (g4) at (M4.G);
   \draw (4.75,2.4) -- (5.15,2.4);
   \draw (5.15,2.4) |- (g4);
-  % + input senses the drain of M2
+  % inverting input senses the drain of M2
   \draw (3.85,2.15) -- (3.45,2.15) -- (3.45,\ycas) -- (\xr,\ycas);
   \fill (\xr,\ycas) circle (0.075);
 
-  % ---- shared reference for the two minus inputs ----
+  % ---- shared reference for the two non-inverting inputs ----
   \draw (2.55,2.65) -- (3.85,2.65);
   \fill (3.2,2.65) circle (0.075);
   \draw (3.2,2.65) -- (3.2,3.9);

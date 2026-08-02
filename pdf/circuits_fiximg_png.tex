@@ -412,6 +412,16 @@ mirrors, as a result, one can end up with active cascodes in the OTA
 that is used in the active cascode of the current mirror. All horribly
 complicated, but sometimes necessary.
 
+Watch the polarity, because it is easy to draw this circuit as an
+oscillator. The node being regulated is the drain of the mirror device,
+and it must go to the amplifier's \emph{inverting} input, with \(V_B\)
+on the non-inverting one. Then a rise on that node drives the cascode
+gate down, the cascode conducts less, and the node comes back down. Swap
+the two inputs and every part of that sentence reverses: the node rises,
+the gate rises, the cascode pulls harder, and the node rises further.
+Same devices, same \(A\), and the loop runs to a rail instead of
+regulating.
+
 \[
 r_{out} \approx  r_{ds2}(A r_{ds4} g_{m4})
 \]
