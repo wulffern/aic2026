@@ -552,15 +552,29 @@ back to the input DAC1i.
 It's possible to show that if the gain from \(V(Vpi,Vmi)\) to ADC1i
 input is large, then \(Y1i = V(Vpi,Vmi)\) at low frequencies.
 
+Then put \(R_{fb1}\) and \(R_{fb2}\) back. Each one takes the
+\emph{first integrator output} of one path and drives it into the
+\emph{summing node} of the other - the same virtual ground the input
+resistor \(R_1\) and the feedback DAC already inject into. That is the
+whole of the cross-coupling, and it is what turns two real modulators
+into one complex one.
+
+The figure draws the first stage of the cascade only. What leaves
+through \(R_3\) and \(DAC2\) is the quantization error of this stage,
+handed to a second modulator that digitizes it; the digital outputs are
+then recombined so the first stage's error cancels. That is what MASH
+means, and it is a separate story from the complex part.
+
 \pandocbounded{\includegraphics[keepaspectratio]{media/qt_sd_tikz.pdf}}
 
 \emph{Figure 14: One stage of a continuous-time quadrature sigma-delta
 modulator, both paths drawn: two ordinary real modulators - R1/C1
 integrating, Cff1/R2/C2 filtering, ADC1 sampling, DAC1 feeding back, R3
 and DAC2 handing off to the second stage - joined by the red
-cross-coupling that makes the pair complex. Inspired by Breems et al.
-{[}3{]}, which is fully differential, cascaded, and has a tuning
-resistor on everything}
+cross-coupling that makes the pair complex: each \(R_{fb}\) carries one
+path's first integrator output into the other path's summing node.
+Inspired by Breems et al. {[}3{]}, which is fully differential,
+cascaded, and has a tuning resistor on everything}
 
 What does the cross-coupling actually buy? Figure 15 answers it by
 simulation. The same first-order loop is run twice: once real, so its
@@ -578,13 +592,21 @@ a wanted channel just above the local oscillator gets the quiet side
 while its image gets the noise. That asymmetry is the entire reason a
 near zero-IF receiver bothers with quadrature.
 
+Both simulations are driven by the same input, a complex tone just above
+\(f_0\), and you can find it in both spectra as the tall spike. In the
+real loop it stands out in the middle of the noise, where the loop has
+done nothing for it. In the complex loop it stands in the notch. The
+signal did not move; the quiet part of the spectrum did.
+
 \pandocbounded{\includegraphics[keepaspectratio]{media/l04_complex_psd_tikz.pdf}}
 
 \emph{Figure 15: Simulated output spectra of a first-order sigma-delta
 loop over the full sample rate. (a) A real loop: the noise notch is
 symmetric about zero. (b) The same loop made complex: the notch moves to
 \(+f_0\) alone, leaving \(-f_0\) noisy - which is what lets a near
-zero-IF receiver keep the wanted side and throw the image away}
+zero-IF receiver keep the wanted side and throw the image away. The same
+input tone is present in both, and only in (b) does it land in the
+notch}
 
 \section{My favorite OTA}\label{my-favorite-ota}
 

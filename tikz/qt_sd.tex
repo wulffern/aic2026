@@ -21,11 +21,14 @@
   \node[anchor=east] at (0.2,\ym) {#2};
   \draw (0.3,\ym) to [short,o-] (0.9,\ym);
   \draw (0.9,\ym) \hresistor{$R_1$};
-  \draw (resEnd) -- (3.2,\ym);
+  \draw (resEnd) -- (3.9,\ym);
   \fill (3.2,\ym) circle (0.075);
 
   % ---- first integrator: OTA1 with C1 in feedback ----
-  \draw (3.2,\ym) \cicOtaSSWP{$-$}{$+$};
+  % The OTA sits a little to the right of the summing node so that the
+  % non-inverting input's ground stub does not land on the feedback
+  % wires coming up the bus at x = 3.2.
+  \draw (3.9,\ym) \cicOtaSSWP{$-$}{$+$};
   \draw (cicOtaS_inn) -- (cicOtaS_inn |- 0,1.5);
   \draw (cicOtaS_inn |- 0,1.5) \vground;
   \draw (2.9,\ym) -- (2.9,4.6);
@@ -66,7 +69,7 @@
   \draw (13.0,-0.4) rectangle (14.6,0.8);
   \node[anchor=center] at (13.8,0.2) {DAC1#1};
   \draw (15.8,0.2) -- (14.6,0.2);
-  \draw[->] (13.0,0.2) -- (3.2,0.2) -- (3.2,{\ym-0.35});
+  \draw[->] (13.0,0.2) -- (3.2,0.2) -- (3.2,{\ym-0.12});
 
   % ---- the handoff to the second MASH stage: R3 and DAC2#1 ----
   \draw (13.3,{\ym-0.8}) -- (13.3,3.6) -- (13.7,3.6);
@@ -92,25 +95,33 @@
   \end{scope}
 
   % ---------------- the cross-coupling that makes it complex --------
+  % Both couplings run in the empty corridor between the paths and
+  % enter the far path on its summing node stub, the same node the DAC
+  % feeds back into - which is where they belong: the Rfb current sums
+  % with the input current and the feedback current at the virtual
+  % ground. They cross each other in open space, because that is what
+  % a cross-coupling does.
+
   % i integrator output into the q summing node
-  \draw[red] (6.8,{\ym-0.4}) -- (6.8,1.2);
-  \draw[red] (6.8,1.2) -- (5.6,1.2);
+  \draw[red] (6.8,{\ym-0.4}) -- (6.8,-0.6) -- (5.6,-0.6);
   \begin{scope}[color=red]
-    \draw (4.0,1.2) \hresistor{$R_{fb1}$};
+    \draw (4.0,-0.6) \hresistor{$R_{fb1}$};
   \end{scope}
-  \draw[red] (4.0,1.2) -- (2.55,1.2) -- (2.55,{\ym-8.6});
-  \draw[red, ->] (2.55,{\ym-8.6}) -- (3.1,{\ym-8.6});
+  \draw[red] (4.0,-0.6) -- (0.6,-0.6) -- (0.6,-7.4);
+  \draw[red, ->] (0.6,-7.4) -- (3.2,-7.4);
+  \fill[red] (3.2,-7.4) circle (0.075);
 
   % q integrator output into the i summing node
-  \draw[red] (6.8,{\ym-0.4-8.6}) -- (6.8,{-8.6+1.2});
-  \draw[red] (6.8,{-8.6+1.2}) -- (5.6,{-8.6+1.2});
-  \begin{scope}[color=red, shift={(0,-8.6)}]
+  \fill[red] (6.8,{\ym+1.0-8.6}) circle (0.075);
+  \draw[red] (6.8,{\ym+1.0-8.6}) -- (6.8,-2.0) -- (5.6,-2.0);
+  \begin{scope}[color=red, shift={(0,-3.2)}]
     \draw (4.0,1.2) \hresistor{$R_{fb2}$};
   \end{scope}
-  \draw[red] (4.0,{-8.6+1.2}) -- (1.85,{-8.6+1.2}) -- (1.85,\ym);
-  \draw[red, ->] (1.85,\ym) -- (3.1,\ym);
+  \draw[red] (4.0,-2.0) -- (1.4,-2.0) -- (1.4,1.6);
+  \draw[red, ->] (1.4,1.6) -- (3.2,1.6);
+  \fill[red] (3.2,1.6) circle (0.075);
 
-  \node[red, anchor=north, scale=0.9, align=center] at (7.0,-12.4)
+  \node[red, anchor=north, scale=0.9, align=center] at (7.0,-11.0)
     {$R_{fb}$: each path drives the other - which is what makes the pair complex.\\
      Set them to infinity and this is two independent real modulators};
 

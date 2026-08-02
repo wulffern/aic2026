@@ -86,10 +86,17 @@ ax = fig.axes(xlabel="Frequency [$f_s$] (a) real loop",
               ylabel="Magnitude [dBFS]",
               xlim=(-0.5, 0.5), ylim=(-110, 5))
 ax.plot(f_r, P_r, colour="blue", style="thin")
+ax.vline(0.0, colour="black", style="dashed, thin")
+ax.annotate(0.0, -102, "notch at DC", anchor="south")
+ax.annotate(0.11, -14, "the signal sits\\\\out in the noise", anchor="south west")
 
 ax = fig.axes(xlabel="Frequency [$f_s$] (b) complex loop",
               ylabel="Magnitude [dBFS]",
               xlim=(-0.5, 0.5), ylim=(-110, 5))
 ax.plot(f_c, P_c, colour="red", style="thin")
+ax.vline(f0, colour="black", style="dashed, thin")
+ax.vline(-f0, colour="black", style="dashed, thin")
+ax.annotate(f0, -102, "notch at $+f_0$", anchor="south west")
+ax.annotate(-f0, -26, "$-f_0$ left noisy:\\\\that is the image", anchor="south east")
 
 fig.save("l04_complex_psd")
