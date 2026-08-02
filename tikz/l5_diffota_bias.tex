@@ -62,22 +62,22 @@
   \draw (6.0,6.2) -- (6.0,6.4);
   \fill (5.02,6.3) circle (0.075);
   \draw (5.02,7.2) -- (5.02,6.3);
-  % node A: cascode drain into the upper NMOS diode
+  % the wide-swing master: a VCN-gated cascode on top, the diode
+  % below it. Only the PMOS mirror sets the branch current; the
+  % cascode holds the diode's drain at a mirror-matched V_DS, and
+  % VBN is the diode's gate/drain.
   \draw (6.0,4.6) -- (6.0,4.0);
-  \draw (6.0,2.4) to [Tnmos, n=mnd1] ++(0,\grid);
-  \dsize{6.15}{2.8}{24F2F\\M=2}
-  \draw (5.02,3.2) -- (5.02,4.25) -- (6.0,4.25);
-  \fill (6.0,4.25) circle (0.075);
-  % below the diode sits a cascode, gated by VCN; VBN is the diode's
-  % own gate/drain node, routed out at y = 2.3. The VBN line crosses
-  % the stack and the other columns without dots.
-  \draw (6.0,1.6) -- (6.0,2.4);
-  \draw (6.0,0) to [Tnmos, n=mnd2, mirror] ++(0,\grid);
-  \dsize{6.15}{0.45}{24F4F\\M=1}
-  \draw (6.98,0.8) -- (6.98,3.95);
+  \draw (6.0,2.4) to [Tnmos, n=mnd1, mirror] ++(0,\grid);
+  \dsize{4.75}{2.8}{24F2F\\M=2}
+  \draw (6.98,3.2) -- (6.98,3.95);
   \fill (6.98,3.95) circle (0.075);
-  \fill (5.02,3.2) circle (0.075);
-  \draw (5.02,3.2) -- (4.55,3.2) -- (4.55,2.3) -- (15.4,2.3) to [short,-o] ++(0.5,0) node[anchor=west] {$VBN$};
+  \draw (6.0,1.6) -- (6.0,2.4);
+  \draw (6.0,0) to [Tnmos, n=mnd2] ++(0,\grid);
+  \dsize{6.15}{0.45}{24F4F\\M=1}
+  \draw (5.02,0.8) -- (5.02,2.3);
+  \fill (5.02,2.3) circle (0.075);
+  \fill (6.0,2.3) circle (0.075);
+  \draw (5.02,2.3) -- (15.4,2.3) to [short,-o] ++(0.5,0) node[anchor=west] {$VBN$};
 
   % ================= VCP: long-L PMOS diode off VDD =================
   \draw (8.4,4.6) to [Tpmos, n=mpd3] ++(0,\grid);

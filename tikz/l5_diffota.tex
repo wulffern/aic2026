@@ -31,12 +31,12 @@
   % ================= CMFB amplifier =================
   % PMOS diode loads, drains joined: that node is the CMFB output
   \draw (1.0,4.8) to [Tpmos, n=cp1] ++(0,\grid);
-  \draw (3.4,4.8) to [Tpmos, n=cp2, mirror] ++(0,\grid);
+  \draw (3.4,4.8) to [Tpmos, n=cp2] ++(0,\grid);
   % only the LEFT device is the diode; the right one mirrors it, and
   % its drain runs straight down to its own NMOS. The gate line
   % crosses that drain without a dot.
   \draw (0.02,5.6) -- (0.02,4.5) -- (1.0,4.5) -- (1.0,4.8);
-  \draw (4.38,5.6) -- (4.38,4.5) -- (1.0,4.5);
+  \draw (2.42,5.6) -- (2.42,4.5) -- (1.0,4.5);
   \fill (1.0,4.5) circle (0.075);
   \dsize{1.15}{5.9}{24F4F\\M=1}
   \dsize{2.1}{5.9}{24F4F\\M=1}
@@ -49,10 +49,9 @@
   \dsize{1.15}{2.0}{24F1F25\\M=2}
   \dsize{2.1}{2.0}{24F1F25\\M=2}
   % common source into the VBN tail
-  \draw (1.0,1.6) -- (1.0,1.3) -- (3.4,1.3) -- (3.4,1.6);
+  \draw (1.0,1.6) -- (3.4,1.6);
   \draw (2.2,0) to [Tnmos, n=ct] ++(0,\grid);
-  \draw (2.2,1.3) -- (2.2,1.6);
-  \fill (2.2,1.3) circle (0.075);
+  \fill (2.2,1.6) circle (0.075);
   \draw (1.22,0.8) \portIn{$VBN$};
   \dsize{2.35}{0.45}{24F4F\\M=2}
 
@@ -96,9 +95,8 @@
   \dsize{10.15}{4.3}{24F2F\\M=4}
 
   % PMOS input pair, sources at the cascode drain
-  \draw (10.0,3.2) -- (10.0,3.0);
-  \draw (8.8,3.2) -- (8.8,3.0) -- (11.2,3.0) -- (11.2,3.2);
-  \fill (10.0,3.0) circle (0.075);
+  \draw (8.8,3.2) -- (11.2,3.2);
+  \fill (10.0,3.2) circle (0.075);
   \draw (8.8,1.6) to [Tpmos, n=min] ++(0,1.6);
   \draw (min.gate) \portIn{$VIN$};
   \dsize{8.95}{2.0}{24F1F25\\M=10}
