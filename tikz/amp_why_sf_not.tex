@@ -29,7 +29,10 @@
   %- node, which is where the minus sign in dV comes from.
   \draw[red, ->] (-0.65,1.55) -- (-0.65,0.85);
   \node[red, anchor=east, scale=0.85] at (-0.7,1.2) {$i_{ph}$};
+  %- the transfer gate: the n region is fully depleted, so the electron
+  %- packet it collected moves across in one go
   \draw (0,\ysig) to [nos] (1.6,\ysig);
+  \node[anchor=south, scale=0.85] at (0.8,{\ysig+0.45}) {TX};
 
   % the 1 fF sense capacitor
   \draw (2.4,0) -- (2.4,0.4) \vcapacitor{1fF} -- (2.4,2.4);
@@ -39,6 +42,7 @@
 
   % reset switch to the supply
   \draw (3.6,\ysig) to [nos] (3.6,{\ysig+1.5});
+  \node[anchor=west, scale=0.85] at (3.75,{\ysig+0.75}) {RST};
   \draw (3.6,{\ysig+1.5}) \vsupply;
   \node[anchor=south] at (3.6,{\ysig+1.85}) {3.0V};
   \fill (3.6,\ysig) circle (0.075);

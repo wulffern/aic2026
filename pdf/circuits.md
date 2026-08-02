@@ -534,13 +534,23 @@ collects charge on a tiny sense node - say 1 fF. Assume the light gives us
 100 electrons.
 
 Look at which way round the diode sits, because it is the opposite of
-what the symbol suggests. The reset switch charges the sense node to
-3.0 V, so the cathode has to be the node and the junction is *reverse*
-biased. Turn the diode around and it is forward biased at 3 V, clamping
-the node near 0.6 V, and there is no pixel left. The photocurrent
-therefore runs against the triangle, down and out of the sense node, and
-that is where the minus sign in $\Delta V$ comes from: light does not
-charge the node, it discharges it.
+what the symbol suggests. RST charges the sense node to 3.0 V, so the
+cathode has to be the node and the junction is *reverse* biased. Turn
+the diode around and it is forward biased at 3 V, clamping the node near
+0.6 V, and there is no pixel left. The photocurrent therefore runs
+against the triangle, down and out of the sense node, and that is where
+the minus sign in $\Delta V$ comes from: light does not charge the node,
+it discharges it.
+
+What the diode symbol is standing in for is an n region in a p well,
+depleted from end to end, and the electrons the light frees collect in
+it. TX is the transfer gate. Because the n region is fully depleted
+there is no potential minimum left to strand carriers in, so opening TX
+moves the whole electron packet across in one go and leaves nothing
+behind for the next frame - which is the reason a modern pixel is built
+this way rather than reading the diode's own node directly. The 1 fF the
+packet lands on is the floating diffusion, and $\Delta V$ is measured
+there, not at the diode.
 
 In Figure 19 the sense node drives the gate of a source follower. The gate
 draws no charge, so all 100 electrons stay on the 1 fF, and the signal is
