@@ -225,7 +225,7 @@ jobs:
         shell: bash
         run: |
           mkdir -p artifact/docs/assets
-          cp docs/assets/aic.pdf docs/assets/aic.epub artifact/docs/assets/
+          cp docs/assets/aic.pdf docs/assets/aic.epub docs/assets/aic_ai.pdf artifact/docs/assets/
 
       - name: Upload book
         uses: actions/upload-artifact@v7
