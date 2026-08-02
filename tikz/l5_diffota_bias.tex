@@ -1,0 +1,130 @@
+\input{tikz/fig_header.tex}
+
+% Bias generator for the two-stage OTA, redrawn from
+% media/diff_ota_bias.png. A 10 uA reference into an NMOS diode sets
+% the mirror line R. One PMOS branch (diode on top, cascode below)
+% makes VBP; a long-L PMOS diode straight off VDD makes the cascode
+% bias VCP; a VBP/VCP branch into a long-L NMOS diode makes VCN; a
+% stack of two NMOS diodes fed from a second VBP/VCP branch makes VBN;
+% and a plain PMOS diode over a mirror NMOS makes VBP1 for the output
+% stage. Bias rails cross other columns without dots, as in the
+% original. Sizes in red: 24F4F is W = 24, L = 4 minimum gate lengths.
+
+\begin{circuitikz}[american, thick, transform shape, circuit ee IEC]
+
+  \input{tikz/ckt_lib.tex}
+
+  \def\ytop{8.0}
+  \newcommand{\dsize}[3]{\node[red, scale=0.62, anchor=west, align=left]
+    at (#1,#2) {#3};}
+
+  % ---- rails ----
+  \draw[line width=2pt] (-1.6,\ytop) -- (16.4,\ytop);
+  \draw[line width=2pt] (-1.6,0) -- (16.4,0);
+  \node[anchor=west, scale=0.8] at (16.45,\ytop) {$VDD$};
+  \node[anchor=west, scale=0.8] at (16.45,0) {$VSS$};
+
+  % ================= reference: 10uA into the MN1 diode =============
+  \draw (0.6,\ytop) to [I, l=10$\mu$A] (0.6,5.8);
+  \draw (0.6,5.8) -- (0.6,1.6);
+  \draw (0.6,0) to [Tnmos, n=mn1] ++(0,\grid);
+  \dsize{0.75}{0.45}{24F12F\\M=1}
+  % diode tie and the mirror line R at y = 1.75
+  \fill (0.6,1.75) circle (0.075);
+  \draw (-0.38,0.8) -- (-0.38,1.75) -- (0.6,1.75);
+  \draw (0.6,1.75) -- (12.42,1.75);
+  \fill (2.22,1.75) circle (0.075);
+  \fill (7.42,1.75) circle (0.075);
+  \fill (12.42,1.75) circle (0.075);
+
+  % ================= VBP branch: PMOS diode over cascode ============
+  \draw (3.2,6.4) to [Tpmos, n=mpd1] ++(0,\grid);
+  \dsize{3.35}{7.5}{24F4F\\M=1}
+  \draw (3.2,4.6) to [Tpmos, n=mpc1] ++(0,\grid);
+  \dsize{3.35}{5.7}{24F2F\\M=2}
+  \draw (3.2,6.2) -- (3.2,6.4);
+  \draw (3.2,4.6) -- (3.2,1.6);
+  \draw (3.2,0) to [Tnmos, n=mn2] ++(0,\grid);
+  \dsize{3.35}{0.45}{24F12F\\M=1}
+  \draw (2.22,0.8) -- (2.22,1.75);
+  % VBP: gate to drain of the top device, out along y = 6.3
+  \draw (2.22,7.2) -- (2.22,6.3);
+  \draw (2.22,6.3) -- (15.4,6.3) to [short,-o] ++(0.5,0) node[anchor=west] {$VBP$};
+  \fill (3.2,6.3) circle (0.075);
+  \fill (2.22,6.3) circle (0.075);
+
+  % ================= VBN branch: cascoded, two NMOS diodes ==========
+  \draw (6.0,6.4) to [Tpmos, n=mpd2] ++(0,\grid);
+  \dsize{6.15}{7.5}{24F4F\\M=1}
+  \draw (6.0,4.6) to [Tpmos, n=mpc2] ++(0,\grid);
+  \dsize{6.15}{5.7}{24F2F\\M=2}
+  \draw (6.0,6.2) -- (6.0,6.4);
+  \fill (5.02,6.3) circle (0.075);
+  \draw (5.02,7.2) -- (5.02,6.3);
+  % node A: cascode drain into the upper NMOS diode
+  \draw (6.0,4.6) -- (6.0,4.0);
+  \draw (6.0,2.4) to [Tnmos, n=mnd1] ++(0,\grid);
+  \dsize{6.15}{2.8}{24F2F\\M=2}
+  \draw (5.02,3.2) -- (5.02,4.25) -- (6.0,4.25);
+  \fill (6.0,4.25) circle (0.075);
+  % lower NMOS diode: its gate/drain is VBN
+  \draw (6.0,1.6) -- (6.0,2.4);
+  \draw (6.0,0) to [Tnmos, n=mnd2] ++(0,\grid);
+  \dsize{6.15}{0.45}{24F4F\\M=1}
+  \draw (5.02,0.8) -- (5.02,2.3);
+  \fill (5.02,2.3) circle (0.075);
+  \fill (6.0,2.3) circle (0.075);
+  \draw (5.02,2.3) -- (15.4,2.3) to [short,-o] ++(0.5,0) node[anchor=west] {$VBN$};
+
+  % ================= VCP: long-L PMOS diode off VDD =================
+  \draw (8.4,4.6) to [Tpmos, n=mpd3] ++(0,\grid);
+  \dsize{8.55}{5.7}{8F12F\\M=1}
+  \draw (8.4,6.2) -- (8.4,\ytop);
+  \draw (8.4,4.6) -- (8.4,1.6);
+  \draw (8.4,0) to [Tnmos, n=mn3] ++(0,\grid);
+  \dsize{8.55}{0.45}{24F12F\\M=1}
+  \draw (7.42,0.8) -- (7.42,1.75);
+  % diode tie and the VCP rail
+  \draw (7.42,5.4) -- (7.42,4.35);
+  \fill (7.42,4.35) circle (0.075);
+  \fill (8.4,4.35) circle (0.075);
+  \draw (2.22,4.35) -- (15.4,4.35) to [short,-o] ++(0.5,0) node[anchor=west] {$VCP$};
+  % the cascode gates hang on VCP
+  \draw (2.22,5.4) -- (2.22,4.35);
+  \fill (2.22,4.35) circle (0.075);
+  \draw (5.02,5.4) -- (5.02,4.35);
+  \fill (5.02,4.35) circle (0.075);
+
+  % ================= VCN branch =====================================
+  \draw (10.8,6.4) to [Tpmos, n=mp5] ++(0,\grid);
+  \dsize{10.95}{7.5}{24F4F\\M=1}
+  \draw (10.8,4.6) to [Tpmos, n=mpc5] ++(0,\grid);
+  \dsize{10.95}{5.7}{24F2F\\M=2}
+  \draw (10.8,6.2) -- (10.8,6.4);
+  \fill (9.82,6.3) circle (0.075);
+  \draw (9.82,7.2) -- (9.82,6.3);
+  \draw (9.82,5.4) -- (9.82,4.35);
+  \fill (9.82,4.35) circle (0.075);
+  % into the long-L NMOS diode: VCN
+  \draw (10.8,4.6) -- (10.8,1.6);
+  \draw (10.8,0) to [Tnmos, n=mnd3] ++(0,\grid);
+  \dsize{10.95}{0.45}{8F12F\\M=1}
+  \draw (9.82,0.8) -- (9.82,3.95);
+  \fill (9.82,3.95) circle (0.075);
+  \fill (10.8,3.95) circle (0.075);
+  \draw (9.82,3.95) -- (15.4,3.95) to [short,-o] ++(0.5,0) node[anchor=west] {$VCN$};
+
+  % ================= VBP1: plain PMOS diode over a mirror ===========
+  \draw (13.4,6.4) to [Tpmos, n=mp6] ++(0,\grid);
+  \dsize{13.55}{7.5}{24F4F\\M=1}
+  \draw (13.4,6.4) -- (13.4,1.6);
+  \draw (13.4,0) to [Tnmos, n=mn4] ++(0,\grid);
+  \dsize{13.55}{0.45}{24F12F\\M=1}
+  \draw (12.42,0.8) -- (12.42,1.75);
+  \draw (12.42,7.2) -- (12.42,5.9);
+  \fill (12.42,5.9) circle (0.075);
+  \fill (13.4,5.9) circle (0.075);
+  \draw (12.42,5.9) -- (15.4,5.9) to [short,-o] ++(0.5,0) node[anchor=west] {$VBP1$};
+
+\end{circuitikz}
+\end{document}

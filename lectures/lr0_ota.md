@@ -506,6 +506,58 @@ driving pass devices, anything that leaves the die.
 
 ---
 
+## A complete OTA, sized
+
+<!--pan_doc:
+
+To make all of this concrete, Figure 13 shows a fully differential
+two-stage OTA that will drive most switched capacitor circuits, with
+every device sized. The notation is "WFLF": 24F4F means the width is
+24 and the length 4 minimum gate lengths, so the same schematic ports
+between processes by re-reading F. Only one side is drawn - the other
+half mirrors it.
+
+All the pieces of this chapter appear at once: a cascoded PMOS tail
+into the input pair, a cascoded current mirror load making the first
+stage output, a common source second stage with its 500 fF
+compensation capacitor returned to the cascode source instead of the
+gate - the cascoded Miller trick that hides the RHP zero - and, on the
+left, the CMFB amplifier. The outputs are sensed with 60k||20f
+networks (the capacitor keeps the sense path fast where the resistor
+divider rolls off), compared against a 100k/100k mid-supply divider,
+and the correction is injected in parallel with the VBP bias of the
+first stage load.
+
+-->
+
+![fit](../media/l5_diffota_tikz.pdf)
+
+<!--pan_doc:
+<sub>Figure 13: Fully differential two-stage OTA with parallel common mode feedback, sized in multiples of the minimum gate length F</sub>
+-->
+
+---
+
+<!--pan_doc:
+
+The bias generator in Figure 14 turns a 10 uA reference into the five
+gate voltages the OTA asked for. A diode connected NMOS sets the
+mirror line; one PMOS branch with a diode on top makes VBP; a long
+channel PMOS diode straight off the supply drops enough V_GS to make
+the cascode bias VCP, and its NMOS twin makes VCN; a stack of two NMOS
+diodes makes VBN for the tails; and a separate PMOS diode makes VBP1
+so the second stage can be biased independently of the first.
+
+-->
+
+![fit](../media/l5_diffota_bias_tikz.pdf)
+
+<!--pan_doc:
+<sub>Figure 14: Bias circuit generating the OTA bias voltages from a 10 uA reference current</sub>
+-->
+
+---
+
 # Dynamic amplifiers
 
 <!--pan_doc:

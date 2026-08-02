@@ -1324,7 +1324,7 @@ is the minimum gate length in that technology.
 
 -->
 
-![fit](../media/diff_ota.png)
+![fit](../media/l5_diffota_tikz.pdf)
 
 <!--pan_doc:
 <sub>Figure 22: Fully differential two-stage OTA with common mode feedback, sized in multiples of the minimum gate length F</sub>
@@ -1339,7 +1339,7 @@ As bias circuit to make the voltages the below will work
 
 -->
 
-![fit](../media/diff_ota_bias.png)
+![fit](../media/l5_diffota_bias_tikz.pdf)
 
 <!--pan_doc:
 <sub>Figure 23: Bias circuit generating the OTA bias voltages from a 10 uA reference current</sub>
