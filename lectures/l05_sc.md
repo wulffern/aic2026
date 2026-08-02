@@ -1327,7 +1327,7 @@ is the minimum gate length in that technology.
 ![fit](../media/l5_diffota_cmfb_tikz.pdf)
 
 <!--pan_doc:
-<sub>Figure 22: The common mode feedback amplifier: VON and VOP sensed through 60k||20f networks, compared against a 100k/100k mid-supply reference. Only the left load is diode connected, so the output is the right drain - the high impedance node - which leaves as $V_{CMFB}$</sub>
+<sub>Figure 22: The common mode feedback amplifier. VON and VOP are sensed through 60k||20f networks and compared against a 100k/100k mid-supply reference. Each load PMOS is diode connected on its own - the gates are not tied together - so the gain is the modest, well defined $g_{mn}/g_{mp}$ that a common mode loop wants, and the correction leaves as $V_{CMFB}$</sub>
 -->
 
 ---
@@ -1335,7 +1335,7 @@ is the minimum gate length in that technology.
 ![fit](../media/l5_diffota_tikz.pdf)
 
 <!--pan_doc:
-<sub>Figure 23: Fully differential two-stage OTA with common mode feedback, sized in multiples of the minimum gate length F</sub>
+<sub>Figure 23: The OTA itself, one side drawn, sized in multiples of the minimum gate length F: a cascoded PMOS tail into the input pair, a cascoded mirror making the first stage output, and a common source second stage with 500 fF of cascode compensation. $V_{CMFB}$ arrives from the amplifier in Figure 13</sub>
 -->
 
 
@@ -1350,7 +1350,7 @@ As bias circuit to make the voltages the below will work
 ![fit](../media/l5_diffota_bias_tikz.pdf)
 
 <!--pan_doc:
-<sub>Figure 24: Bias circuit generating the OTA bias voltages from a 10 uA reference current</sub>
+<sub>Figure 24: The bias generator. The 10 uA reference is mirrored once in an ordinary current mirror - the line along the bottom - and everything above it is wide swing cascode: the narrow 8F12F devices set VCP and VCN, and in each master the mirror device's gate hangs on the far end of its own stack</sub>
 -->
 
 

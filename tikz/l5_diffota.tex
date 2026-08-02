@@ -17,10 +17,10 @@
     at (#1,#2) {#3};}
 
   % ---- rails ----
-  \draw[line width=2pt] (7.0,\ytop) -- (20.2,\ytop);
-  \draw[line width=2pt] (7.0,0) -- (20.2,0);
-  \node[anchor=west, scale=0.8] at (20.25,\ytop) {$VDD$};
-  \node[anchor=west, scale=0.8] at (20.25,0) {$VSS$};
+  \draw[line width=2pt] (7.0,\ytop) -- (21.8,\ytop);
+  \draw[line width=2pt] (7.0,0) -- (21.8,0);
+  \node[anchor=west, scale=0.8] at (21.85,\ytop) {$VDD$};
+  \node[anchor=west, scale=0.8] at (21.85,0) {$VSS$};
 
   % ================= first stage =================
   % cascoded tail: VBP on the rail, VCP below it
@@ -54,14 +54,15 @@
   \draw (14.0,4.8) \lvpmos{lp1}{$VBP$};
   \dsize{14.15}{5.9}{24F4F\\M=1}
   \draw (15.6,4.8) to [Tpmos, n=pcm, mirror] ++(0,\grid);
-  \dsize{15.75}{5.15}{24F4F\\M=1}
+  \dsize{15.75}{6.55}{24F4F\\M=1}
   \draw (14.0,4.8) -- (14.0,4.6) -- (15.6,4.6) -- (15.6,4.8);
   \fill (14.8,4.6) circle (0.075);
   \draw (14.8,4.6) -- (14.8,4.8);
   % the CMFB correction arrives as a net, not a wire over the rail
-  \draw (16.58,5.6) -- (17.1,5.6) to [short,-o] ++(0.35,0);
-  \node[anchor=west, scale=0.85] at (17.55,5.6) {$V_{CMFB}$};
-  \fill (0.55,4.5) circle (0.075);
+  %- down into the clear space between the mirror and the output
+  %- branch, so it does not fight the VBP1 label
+  \draw (16.58,5.6) -- (17.4,5.6) -- (17.4,4.3) to [short,-o] ++(0.35,0);
+  \node[anchor=west, scale=0.85] at (17.85,4.3) {$V_{CMFB}$};
 
   % VCP cascode down to the first stage output X
   \draw (14.8,3.2) \lvpmos{lp2}{$VCP$};
@@ -81,19 +82,19 @@
   % ================= second stage =================
   % X drives the output NMOS gate; the vertical crosses the 500f
   % wire without connecting, as in the original
-  \draw (14.8,3.05) -- (16.4,3.05) -- (16.4,0.8) -- (18.02,0.8);
+  \draw (14.8,3.05) -- (16.4,3.05) -- (16.4,0.8) -- (19.62,0.8);
   % output branch: VBP1 source, VON, output NMOS
-  \draw (19.0,4.8) \lvpmos{op1}{$VBP1$};
-  \dsize{19.15}{5.9}{24F4F\\M=4}
-  \draw (19.0,4.8) -- (19.0,3.6);
-  \draw (19.0,3.6) to [short,-o] ++(0.5,0) node[anchor=west] {$VON$};
-  \fill (19.0,3.6) circle (0.075);
-  \draw (19.0,3.6) -- (19.0,1.6);
-  \draw (19.0,0) to [Tnmos, n=no] ++(0,\grid);
-  \dsize{17.9}{0.45}{24F2F\\M=2}
+  \draw (20.6,4.8) \lvpmos{op1}{$VBP1$};
+  \dsize{20.75}{5.9}{24F4F\\M=4}
+  \draw (20.6,4.8) -- (20.6,3.6);
+  \draw (20.6,3.6) to [short,-o] ++(0.5,0) node[anchor=west] {$VON$};
+  \fill (20.6,3.6) circle (0.075);
+  \draw (20.6,3.6) -- (20.6,1.6);
+  \draw (20.6,0) to [Tnmos, n=no] ++(0,\grid);
+  \dsize{19.5}{0.45}{24F2F\\M=2}
   % 500f cascode compensation from the internal node to VON
-  \fill (19.0,1.45) circle (0.075);
-  \draw (14.8,1.45) -- (17.5,1.45) \hcapacitor{500f} -- (19.0,1.45);
+  \fill (20.6,1.45) circle (0.075);
+  \draw (14.8,1.45) -- (19.1,1.45) \hcapacitor{500f} -- (20.6,1.45);
 
 
 \end{circuitikz}

@@ -17,27 +17,31 @@
     at (#1,#2) {#3};}
 
   % ---- rails ----
-  \draw[line width=2pt] (-4.0,\ytop) -- (8.0,\ytop);
-  \draw[line width=2pt] (-4.0,0) -- (8.0,0);
-  \node[anchor=west, scale=0.8] at (8.05,\ytop) {$VDD$};
-  \node[anchor=west, scale=0.8] at (8.05,0) {$VSS$};
+  \draw[line width=2pt] (-4.0,\ytop) -- (9.6,\ytop);
+  \draw[line width=2pt] (-4.0,0) -- (9.6,0);
+  \node[anchor=west, scale=0.8] at (9.65,\ytop) {$VDD$};
+  \node[anchor=west, scale=0.8] at (9.65,0) {$VSS$};
 
   % ================= CMFB amplifier =================
-  % PMOS diode loads, drains joined: that node is the CMFB output
+  % Each load PMOS is diode connected on its own - the two gates are
+  % NOT tied together, so this is a pair of diode loads and not a
+  % mirror. The gain is gm_n/gm_p, modest and well defined, which is
+  % what a common mode loop wants. V_CMFB leaves from the right drain.
   \draw (1.0,4.8) to [Tpmos, n=cp1] ++(0,\grid);
-  \draw (3.4,4.8) to [Tpmos, n=cp2] ++(0,\grid);
-  % Only the LEFT device is diode connected; the right one mirrors it.
-  % The amplifier's output is therefore the RIGHT drain - the high
-  % impedance node - not the diode node, and it leaves as a named net
-  % rather than a wire across the supply rail.
-  \draw (0.02,5.6) -- (0.02,4.5) -- (1.0,4.5) -- (1.0,4.8);
-  \draw (2.42,5.6) -- (2.42,4.5) -- (1.0,4.5);
-  \fill (1.0,4.5) circle (0.075);
-  \fill (3.4,4.4) circle (0.075);
-  \draw (3.4,4.4) -- (4.3,4.4) to [short,-o] ++(0.35,0);
-  \node[anchor=west, scale=0.85] at (4.75,4.4) {$V_{CMFB}$};
+  \draw (3.4,4.8) to [Tpmos, n=cp2, mirror] ++(0,\grid);
   \dsize{1.15}{5.9}{24F4F\\M=1}
-  \dsize{2.1}{5.9}{24F4F\\M=1}
+  \dsize{2.35}{5.9}{24F4F\\M=1}
+
+  %- left device: gate out, down, and back to its own drain
+  \draw (0.02,5.6) -- (-0.55,5.6) -- (-0.55,4.4) -- (1.0,4.4);
+  \fill (1.0,4.4) circle (0.075);
+  %- right device: the same, opening the other way
+  \draw (4.38,5.6) -- (4.95,5.6) -- (4.95,4.4) -- (3.4,4.4);
+  \fill (3.4,4.4) circle (0.075);
+
+  %- the correction leaves from the right drain
+  \draw (3.4,4.4) -- (3.4,4.05) -- (5.6,4.05) to [short,-o] ++(0.35,0);
+  \node[anchor=west, scale=0.85] at (6.05,4.05) {$V_{CMFB}$};
 
   % NMOS pair under the loads
   \draw (1.0,1.6) to [Tnmos, n=cn1] ++(0,\grid);
@@ -71,15 +75,15 @@
   \draw (-1.4,2.9) -- (-1.4,2.4) -- (0.02,2.4);
 
   % 100k/100k mid-supply reference with 500f, into the right gate
-  \draw (5.8,3.0) -- (5.8,3.2) \vresistor{100k} -- (5.8,\ytop);
-  \fill (5.8,3.0) circle (0.075);
-  \draw (5.8,0) -- (5.8,0.7) \vresistor{100k} -- (5.8,3.0);
-  \draw (5.8,3.0) -- (6.5,3.0) -- (6.5,2.9);
-  \draw (6.5,1.3) \vcapacitor{};
+  \draw (7.4,3.0) -- (7.4,3.2) \vresistor{100k} -- (7.4,\ytop);
+  \fill (7.4,3.0) circle (0.075);
+  \draw (7.4,0) -- (7.4,0.7) \vresistor{100k} -- (7.4,3.0);
+  \draw (7.4,3.0) -- (8.1,3.0) -- (8.1,2.9);
+  \draw (8.1,1.3) \vcapacitor{};
   \node[scale=0.75, anchor=east, fill=white, inner sep=1pt] at (6.35,2.1) {500f};
-  \draw (6.5,1.3) -- (6.5,0);
-  \draw (4.38,2.4) -- (5.8,2.4);
-  \fill (5.8,2.4) circle (0.075);
+  \draw (8.1,1.3) -- (8.1,0);
+  \draw (4.95,2.4) -- (7.4,2.4);
+  \fill (7.4,2.4) circle (0.075);
 
 
 \end{circuitikz}
