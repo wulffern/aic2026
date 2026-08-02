@@ -4,8 +4,9 @@
 % media/diff_ota_bias.png. A 10 uA reference into an NMOS diode sets
 % the mirror line R. One PMOS branch (diode on top, cascode below)
 % makes VBP; a long-L PMOS diode straight off VDD makes the cascode
-% bias VCP; a VBP/VCP branch into a long-L NMOS diode makes VCN; a
-% stack of two NMOS diodes fed from a second VBP/VCP branch makes VBN;
+% bias VCP; a VBP/VCP branch into a long-L NMOS diode makes VCN; the
+% VBN branch is one NMOS diode over a VCN-gated cascode, VBN taken at
+% the diode's gate/drain;
 % and a plain PMOS diode over a mirror NMOS makes VBP1 for the output
 % stage. Bias rails cross other columns without dots, as in the
 % original. Sizes in red: 24F4F is W = 24, L = 4 minimum gate lengths.
@@ -67,14 +68,16 @@
   \dsize{6.15}{2.8}{24F2F\\M=2}
   \draw (5.02,3.2) -- (5.02,4.25) -- (6.0,4.25);
   \fill (6.0,4.25) circle (0.075);
-  % lower NMOS diode: its gate/drain is VBN
+  % below the diode sits a cascode, gated by VCN; VBN is the diode's
+  % own gate/drain node, routed out at y = 2.3. The VBN line crosses
+  % the stack and the other columns without dots.
   \draw (6.0,1.6) -- (6.0,2.4);
-  \draw (6.0,0) to [Tnmos, n=mnd2] ++(0,\grid);
+  \draw (6.0,0) to [Tnmos, n=mnd2, mirror] ++(0,\grid);
   \dsize{6.15}{0.45}{24F4F\\M=1}
-  \draw (5.02,0.8) -- (5.02,2.3);
-  \fill (5.02,2.3) circle (0.075);
-  \fill (6.0,2.3) circle (0.075);
-  \draw (5.02,2.3) -- (15.4,2.3) to [short,-o] ++(0.5,0) node[anchor=west] {$VBN$};
+  \draw (6.98,0.8) -- (6.98,3.95);
+  \fill (6.98,3.95) circle (0.075);
+  \fill (5.02,3.2) circle (0.075);
+  \draw (5.02,3.2) -- (4.55,3.2) -- (4.55,2.3) -- (15.4,2.3) to [short,-o] ++(0.5,0) node[anchor=west] {$VBN$};
 
   % ================= VCP: long-L PMOS diode off VDD =================
   \draw (8.4,4.6) to [Tpmos, n=mpd3] ++(0,\grid);
@@ -112,7 +115,7 @@
   \draw (9.82,0.8) -- (9.82,3.95);
   \fill (9.82,3.95) circle (0.075);
   \fill (10.8,3.95) circle (0.075);
-  \draw (9.82,3.95) -- (15.4,3.95) to [short,-o] ++(0.5,0) node[anchor=west] {$VCN$};
+  \draw (6.98,3.95) -- (15.4,3.95) to [short,-o] ++(0.5,0) node[anchor=west] {$VCN$};
 
   % ================= VBP1: plain PMOS diode over a mirror ===========
   \draw (13.4,6.4) to [Tpmos, n=mp6] ++(0,\grid);

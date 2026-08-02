@@ -550,7 +550,7 @@ so the second stage can be biased independently of the first.
 
 -->
 
-![fit](../media/diff_ota_bias.png)
+![fit](../media/l5_diffota_bias_tikz.pdf)
 
 <!--pan_doc:
 <sub>Figure 14: Bias circuit generating the OTA bias voltages from a 10 uA reference current</sub>
