@@ -694,7 +694,7 @@ inverted the channel is.
 
 -->
 
-Define $$ V_{eff} \equiv V_{GS} - V_{tn} $$ , where $$ V_{tn} $$ is the "threshold voltage" 
+Define $V_{eff} \equiv V_{GS} - V_{tn}$ , where $V_{tn}$ is the "threshold voltage" 
 
 
 | Veff             | Inversion level                |
@@ -876,7 +876,7 @@ line in the sand, and every equation in this chapter leans on it.
 
 <!--pan_skip: -->
 
-# The threshold voltage ($$ V_{tn} $$) is defined as $$ p_p = n_{ch} $$ 
+# The threshold voltage ($V_{tn}$) is defined as $p_p = n_{ch}$ 
 
 ---
 
@@ -1031,9 +1031,9 @@ currencies:
 
 [.column]
 
-Define $$ \ell = \mu_n C_{ox} \frac{W}{L} $$ and $$ V_{eff} = V_{GS} - V_{tn} $$ 
+Define $\ell = \mu_n C_{ox} \frac{W}{L}$ and $V_{eff} = V_{GS} - V_{tn}$ 
 
- $$ I_{D} = \frac{1}{2} \ell (V_{eff})^2$$ and $$ V_{eff} = \sqrt{\frac{2I_{D}}{\ell}} $$ and $$ \ell = \frac{2I_D}{V_{eff}^2} $$
+ $I_{D} = \frac{1}{2} \ell (V_{eff})^2$ and $V_{eff} = \sqrt{\frac{2I_{D}}{\ell}}$ and $\ell = \frac{2I_D}{V_{eff}^2}$
 
  $$ g_m = \frac{ \partial I_{DS}} {\partial V_{GS}} = \ell V_{eff} = \sqrt{2 \ell I_{D}} $$
  
@@ -1062,7 +1062,7 @@ modulation term $\lambda$, and differentiate.
 
 -->
 
-Define $$ \ell = \mu_n C_{ox} \frac{W}{L} $$ and $$ V_{eff} = V_{GS} - V_{tn} $$ 
+Define $\ell = \mu_n C_{ox} \frac{W}{L}$ and $V_{eff} = V_{GS} - V_{tn}$ 
 
  $$ I_D = \frac{1}{2} \ell V_{eff}^2\left[1 + \lambda (V_{DS} - V_{eff})\right] $$ 
 
@@ -1070,7 +1070,7 @@ Define $$ \ell = \mu_n C_{ox} \frac{W}{L} $$ and $$ V_{eff} = V_{GS} - V_{tn} $$
  
  Assume channel length modulation is not there, then 
  
- $$I_D = \frac{1}{2} \ell V_{eff}^2 $$ which means $$\frac{1}{r_{ds}} = g_{ds} \approx \lambda I_D $$
+ $I_D = \frac{1}{2} \ell V_{eff}^2$ which means $\frac{1}{r_{ds}} = g_{ds} \approx \lambda I_D$
 
 <!--pan_doc:
 
@@ -1183,7 +1183,7 @@ drain depends on the region of operation:
 
 -->
 
-$$C_{gs} $$ and $$C_{gd}$$
+$C_{gs}$ and $C_{gd}$
 
 [.column]
 
@@ -1213,7 +1213,7 @@ gate. Small, but as the Miller section shows, not harmless.
 
 ---
 
- $$C_{sb}$$ and $$C_{db}$$
+ $C_{sb}$ and $C_{db}$
 
 Both are depletion capacitances
 
@@ -1265,13 +1265,13 @@ therefore be replaced by two grounded ones,
 
 [.column]
 
-If $$ Y(s) = 1/sC $$ then 
- $$Y_1(s) = 1/sC_{in} $$ and $$Y_2(s) = 1/sC_{out}$$ where
- $$ C_{in} = (1 + A) C $$, $$ C_{out} = (1 + \frac{1}{A})C $$
+If $Y(s) = 1/sC$ then 
+ $Y_1(s) = 1/sC_{in}$ and $Y_2(s) = 1/sC_{out}$ where
+ $C_{in} = (1 + A) C$, $C_{out} = (1 + \frac{1}{A})C$
  
  $$ C_{in} \approx C_{gd}\, g_{m} r_{ds} $$
 
-**$$C_{gd}$$ can appear to be 10 to 100 times larger!**
+**$C_{gd}$ can appear to be 10 to 100 times larger!**
 
  if gain from input to output is large 
 
@@ -1305,7 +1305,7 @@ the gate with a current and ask when the gate capacitance eats all of it:
 
  $$ f_T = \frac{g_m}{2 \pi (C_{gs} + C_{gd})} $$
 
-In strong inversion, with $$ C_{gs} \approx \frac{2}{3} W L C_{ox} $$:
+In strong inversion, with $C_{gs} \approx \frac{2}{3} W L C_{ox}$:
 
  $$ f_T \approx \frac{3 \mu_n V_{eff}}{4 \pi L^2} \propto \frac{V_{eff}}{L^2} $$
 
@@ -1326,7 +1326,7 @@ least not in one transistor.
 
 ---
 
-If $$ V_{eff} < 0 $$ diffusion currents dominate.
+If $V_{eff} < 0$ diffusion currents dominate.
 
 <!--pan_doc:
 
@@ -1339,7 +1339,7 @@ capacitive division, and $I_{D0}$ collects the rest.
 
  $$ I_{D} = I_{D0} \frac{W}{L} e^{V_{eff} / n V_T} $$, where
  
- $$ V_T = kT/q $$, $$n = (C_{ox} + C_{j0})/C_{ox}$$
+ $V_T = kT/q$, $n = (C_{ox} + C_{j0})/C_{ox}$
  
  $$ I_{D0} = (n - 1) \mu_n C_{ox} V_T^2 $$
 
@@ -1571,7 +1571,7 @@ Saturation velocity (same as the electron speed limit above):
 
  <!--pan_skip: -->
 
- **Doping ($$N_A \text{ or } N_D$$) reduces $$\mu$$**
+ **Doping ($N_A \text{ or } N_D$) reduces $\mu$**
 
 ---
 
@@ -1747,13 +1747,13 @@ algebra in the way.
 
 -->
 
-Provide $$I_2 = 1 \mu A $$ 
+Provide $I_2 = 1 \mu A$ 
 
-Let's use off-chip resistor $$R$$, and pick $$R$$ such that $$I_1 = 1 \mu A $$
+Let's use off-chip resistor $R$, and pick $R$ such that $I_1 = 1 \mu A$
 
-Use $$ \frac{W_1}{L_1} = \frac{W_2}{L_2} $$ 
+Use $\frac{W_1}{L_1} = \frac{W_2}{L_2}$ 
 
-**What makes $$ I_2 \ne 1 \mu A $$?**
+**What makes $I_2 \ne 1 \mu A$?**
 
 ![right 200%](../media/fig_l8_cmsys.pdf)
 
@@ -1790,9 +1790,9 @@ sets the reference current.
  $$I_1 = \frac{V_{DD} - V_{GS1}}{R}$$
 
 
-If $$V_{DD}$$ changes, then current changes.
+If $V_{DD}$ changes, then current changes.
 
-**Fix**: Keep $$V_{DD}$$ constant
+**Fix**: Keep $V_{DD}$ constant
 
 <!--pan_doc:
 
@@ -1821,19 +1821,19 @@ line on it is avoidable.
 
 -->
 
-If $$ V_{DS1} \ne V_{DS2} \rightarrow I_1 \ne I_2 $$
+If $V_{DS1} \ne V_{DS2} \rightarrow I_1 \ne I_2$
 
-If layout direction of $$ M_1 \ne M_2 \rightarrow I_1 \ne I_2 $$ 
+If layout direction of $M_1 \ne M_2 \rightarrow I_1 \ne I_2$ 
 
-If current direction of $$ M_1 \ne M_2 \rightarrow I_1 \ne I_2 $$
+If current direction of $M_1 \ne M_2 \rightarrow I_1 \ne I_2$
 
-If $$ V_{S1} \ne V_{S2} \rightarrow I_1 \ne I_2 $$
+If $V_{S1} \ne V_{S2} \rightarrow I_1 \ne I_2$
 
-If $$ V_{B1} \ne V_{B2} \rightarrow I_1 \ne I_2 $$
+If $V_{B1} \ne V_{B2} \rightarrow I_1 \ne I_2$
 
-If $$ WPE_{1} \ne WPE_{2} \rightarrow I_1 \ne I_2 $$
+If $WPE_{1} \ne WPE_{2} \rightarrow I_1 \ne I_2$
 
-If $$ Stress_{1} \ne Stress_{2} \rightarrow I_1 \ne I_2 $$
+If $Stress_{1} \ne Stress_{2} \rightarrow I_1 \ne I_2$
 ...
 
 <!--pan_doc:
@@ -1865,11 +1865,11 @@ Write out the current and look at what is inside it:
 
 -->
 
-Assume strong inversion and active **$$ V_{eff} = \sqrt{\frac{2}{\mu_p C_{ox} \frac{W}{L}} I_1} $$**, $$V_{GS} = V_{eff} + V_{tp}$$
+Assume strong inversion and active **$V_{eff} = \sqrt{\frac{2}{\mu_p C_{ox} \frac{W}{L}} I_1}$**, $V_{GS} = V_{eff} + V_{tp}$
 
  $$ I_1 = \frac{V_{DD} - V_{GS}}{R} =  \frac{V_{DD} - \sqrt{\frac{2}{\mu_p C_{ox} \frac{W}{L}} I_1}  - V_{tp}}{R} $$ 
 
- $$\mu_p$$, $$C_{ox}$$, $$V_{tp}$$ will all vary from die to die, and wafer lot to wafer lot.
+ $\mu_p$, $C_{ox}$, $V_{tp}$ will all vary from die to die, and wafer lot to wafer lot.
 
 <!--pan_doc:
 
@@ -1937,9 +1937,9 @@ corrected. Figure 43 shows the standard trick.
 
 Use calibration: measure error, tune circuit to fix error
 
-For every single chip, measure voltage across known resistor $$R_1$$ and tune $$R_{var}$$ such that we get $$I_1 = 1 \mu A$$
+For every single chip, measure voltage across known resistor $R_1$ and tune $R_{var}$ such that we get $I_1 = 1 \mu A$
 
-Be careful with multimeters, they have finite input resistance (typically 10 M$$\Omega$$)
+Be careful with multimeters, they have finite input resistance (typically 10 M$\Omega$)
 
 <!--pan_skip: -->
 
@@ -1970,9 +1970,9 @@ $$ I_D = \frac{1}{2}\mu_n C_{ox} \frac{W}{L} (V_{GS} - V_{tn})^2$$
 
 <!--pan_skip: -->
 
-High $$I_D = $$ fast digital circuits
+High $I_D =$ fast digital circuits
 
-Low $$I_D = $$ slow digital circuits 
+Low $I_D =$ slow digital circuits 
 
 ---
 
@@ -2005,17 +2005,17 @@ one-line answer.
 
 ---
 
-## It depends on $$V_{DD}$$
+## It depends on $V_{DD}$
 
 **Fast corner**
 - Mff (high mobility, low threshold voltage) 
-- High $$V_{DD}$$ 
+- High $V_{DD}$ 
 - High or low temperature
 
 
 **Slow corner**
 - Mss (low mobility, high threshold voltage)
-- Low $$V_{DD}$$ 
+- Low $V_{DD}$ 
 - High or low temperature
 
 <!--pan_skip:-->
@@ -2062,25 +2062,25 @@ laid out away - only averaged away with area.
  
  $$ I_D = \frac{1}{2} \ell (V_{GS} - V_{tp})^2$$
  
- Due to doping , length, width, $$C_{ox}$$, $$V_{tp}$$, ... random variation
+ Due to doping , length, width, $C_{ox}$, $V_{tp}$, ... random variation
  
  $$\ell_1 \ne \ell_2$$
  
  $$V_{tp1} \ne V_{tp2} $$
 
-As a result $$ I_1 \ne I_2 $$, but we can make them close.
+As a result $I_1 \ne I_2$, but we can make them close.
 
 ---
 
-## Pelgrom's[^1] law
+## Pelgrom's law [@pelgrom89]
 
-Given a random gaussian process parameter $$\Delta P$$ with zero mean, the variance is given by 
+Given a random gaussian process parameter $\Delta P$ with zero mean, the variance is given by 
 
 $$\sigma^2 (\Delta P) = \frac{A^2_P}{WL} + S_{P}^2 D^2$$
 
-where $$A_P$$ and $$S_P$$ are measured, and $$D$$ is the distance between devices
+where $A_P$ and $S_P$ are measured, and $D$ is the distance between devices
 
-Assume closely spaced devices ($$ D \approx 0$$) $$ \Rightarrow \sigma^2 (\Delta P) = \frac{A^2_P}{WL} $$
+Assume closely spaced devices ($D \approx 0$) $\Rightarrow \sigma^2 (\Delta P) = \frac{A^2_P}{WL}$
 
 <!--pan_doc:
 
@@ -2094,25 +2094,23 @@ matched pairs sit next to each other.
 -->
 
 
-[^1]: M. J. M. Pelgrom, C. J. Duinmaijer, and A. P. G. Welbers, “Matching properties of MOS transistors,” IEEE J. Solid-State Cir- cuits, vol. 24, no. 5, pp. 1433–1440, Oct. 1989.
  
 ---
 
 <!--pan_doc:
 
 Pelgrom gives the spread of the raw parameters; what a designer needs is
-the spread of the *current*. Kinget's expression connects the two:
+the spread of the *current*. Kinget's expression [@kinget05] connects the two:
 
 -->
 
-## Transistors with same $$V_{GS}$$[^2]
+## Transistors with same $V_{GS}$[^2]
 
 $$\frac{\sigma_{I_D}^2}{I_D^2} = \frac{1}{WL}\left[\left(\frac{gm}{I_D}\right)^2 \sigma_{vt}^2 + \frac{\sigma_{\ell}^2}{\ell^2}\right] $$
 
 Valid in  weak, moderate and strong inversion
 
 
-[^2]: Peter Kinget, see CJM
 
 <!--pan_doc:
 
@@ -2136,7 +2134,7 @@ The $1/\sqrt{WL}$ scaling has a brutal price tag attached:
 $$\frac{\sigma_{I_D}^2}{I_D^2} = \frac{1}{WL}\left[\left(\frac{gm}{I_D}\right)^2 \sigma_{vt}^2 + \frac{\sigma_{\ell}^2}{\ell^2}\right] $$
 $$\frac{\sigma_{I_D}}{I_D} \propto \frac{1}{\sqrt{WL}}$$
 
-Assume $$\frac{\sigma_{I_D}}{I_D} = 10\%$$, We want $$5\%$$, how much do we need to change WL?
+Assume $\frac{\sigma_{I_D}}{I_D} = 10\%$, We want $5\%$, how much do we need to change WL?
 
 
 $$\frac{\frac{\sigma_{I_D}}{I_D}}{2} \propto \frac{1}{2\sqrt{WL}} =  \frac{1}{\sqrt{4WL}}$$
@@ -2163,9 +2161,9 @@ region matters too, and it cuts both ways:
 
 $$\frac{\sigma_{I_D}^2}{I_D^2} = \frac{1}{WL}\left[\left(\frac{gm}{I_D}\right)^2 \sigma_{vt}^2 + \frac{\sigma_{\ell}^2}{\ell^2}\right] $$
 
-Strong inversion $$\Rightarrow \frac{gm}{I_D} = \frac{2}{V_{eff}} = low$$
+Strong inversion $\Rightarrow \frac{gm}{I_D} = \frac{2}{V_{eff}} = low$
 
-Weak inversion $$\Rightarrow \frac{gm}{I_D} = \frac{q}{n k T} \approx 25$$
+Weak inversion $\Rightarrow \frac{gm}{I_D} = \frac{q}{n k T} \approx 25$
 
 **Current mirrors achieve best matching in strong inversion**
 
@@ -2193,7 +2191,7 @@ $$ i_o = i_{o+} - i_{o-} =  g_m v_i = g_m (v_{i+} - v_{i-})$$
 
 $$ \sigma_{v_i}^2 = \frac{\sigma_{I_D}^2}{gm^2} = \frac{1}{WL}\left[\sigma_{vt}^2 + \frac{I_D^2}{gm^2}\frac{\sigma_{\ell}^2}{\ell^2}\right]  $$
 
-High $$\frac{gm}{I_D}$$ is better (best in weak inversion)
+High $\frac{gm}{I_D}$ is better (best in weak inversion)
 
 ![right 200%](../media/fig_diff.pdf)
 
@@ -2304,6 +2302,26 @@ The one-page version of this chapter:
 - Four capacitances set the speed: Cgs usually dominates the poles (it is the largest, think current mirrors), and Cgd gets multiplied by Miller
 - Match with area (Pelgrom), buy speed with overdrive and short length, buy gain with long length
 - Nothing is constant: supply, process, temperature, mismatch and noise all move - design for the box, not the point
+
+---
+
+# Would you like to know more?
+
+<!--pan_doc:
+
+The two matching papers this chapter leans on are worth reading in the
+original: Pelgrom's measurement of how mismatch scales with area
+[@pelgrom89], and Kinget's translation of that into what it costs a
+designer [@kinget05]. For the electrons themselves, Mark Lundstrom's
+lecture series on the essentials of MOSFETs is the most complete
+treatment I know, and the Carrier transport paper linked earlier in
+the chapter shows the inversion layer measured rather than drawn.
+
+-->
+
+- Pelgrom, Duinmaijer and Welbers, *Matching properties of MOS transistors* [@pelgrom89]
+- Kinget, *Device mismatch and tradeoffs in the design of analog circuits* [@kinget05]
+- Lundstrom, [Essentials of MOSFETs](https://www.youtube.com/watch?v=5eG6CvcEHJ8&list=PLtkeUZItwHK6F4a4OpCOaKXKmYBKGWcHi)
 
 ---
 
