@@ -34,27 +34,32 @@
   \draw (\xc,{\ymir+\grid}) \vsupply;
   \draw (\xc,\ymir) \lvpmos{M3}{};
 
-  % common gate rail
+  % common gate rail, routed over the top so it does not cut
+  % through the device bodies
   \coordinate (g1) at (M1.G);
   \coordinate (g2) at (M2.G);
   \coordinate (g3) at (M3.G);
-  \draw (gmd) -- (g1);
-  \draw (g1) -- (g2);
-  \draw (g2) -- (g3);
-  \fill (g1) circle (0.075);
-  \fill (g2) circle (0.075);
+  \draw (gmd) -- (gmd |- 0,7.8) -- (g3 |- 0,7.8) -- (g3);
+  \draw (g1) -- (g1 |- 0,7.8);
+  \draw (g2) -- (g2 |- 0,7.8);
+  \fill (g1 |- 0,7.8) circle (0.075);
+  \fill (g2 |- 0,7.8) circle (0.075);
 
   % ---- V_control PMOS in series with each branch ----
   \draw (\xa,\yctl) \lvmpmos{M4}{};
   \draw (\xb,\yctl) \lvmpmos{M5}{};
   \draw (\xc,\yctl) \lvmpmos{M6}{};
+  % V_control rail runs under the row; it crosses the branch drops
+  % without dots
   \coordinate (g4) at (M4.G);
   \coordinate (g5) at (M5.G);
   \coordinate (g6) at (M6.G);
-  \draw (g4) -- (g5);
-  \draw (g5) -- (g6);
-  \fill (g5) circle (0.075);
-  \fill (g6) circle (0.075);
+  \draw (g4) -- (g4 |- 0,3.45);
+  \draw (g5) -- (g5 |- 0,3.45);
+  \draw (g6) -- (g6 |- 0,3.45);
+  \draw (g4 |- 0,3.45) -- (g6 |- 0,3.45);
+  \fill (g5 |- 0,3.45) circle (0.075);
+  \fill (g6 |- 0,3.45) circle (0.075);
   \draw (g6) -- ++(0.9,0) coordinate (vctap);
   \draw (vctap) to [short,-o] ++(0.4,0) node[anchor=west] {$V_{control}$};
 

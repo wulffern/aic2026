@@ -34,14 +34,14 @@
 \node [anchor=north] at (2.1,0.5) {$\overline{DN}$};
 
 % Reset: the instant both flops are set, NOR fires and clears them
-\draw (3.3,2.3) \cicNor{rst};
-\draw (upN) to [short,*-] ++(0,-1.0) -| (rst_in1);
-\draw (dwnN) to [short,*-] ++(0,1.0) -| (rst_in2);
+\draw (3.9,2.3) \cicNor{rst};
+\draw (upN) to [short,*-] (upN |- 0,2.62) -- (rst_in1);
+\draw (dwnN) to [short,*-] (dwnN |- 0,1.98) -- (rst_in2);
 \draw (rst_out) -- ++(0.25,0) coordinate (cfb);
 \draw (cfb) |- (1.6,3.0);
 \draw (cfb) |- (1.6,-0.6);
 \fill (cfb) circle (0.075);
-\node [anchor=west] at (5.35,2.3) {CFB};
+\node [anchor=south] at (5.6,2.5) {CFB};
 
 % Output inverters: UP_N -> UP -> CP_UP_N, DOWN_N -> CP_DOWN
 \draw (upN) -- ++(0.2,0) \cicInv{U1} -- ++(0.3,0) \cicInv{U2};

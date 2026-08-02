@@ -61,9 +61,13 @@
     .. controls (8.657,-0.125) and (9.086,0.728) .. (8.767,1.414)
     .. controls (9.410,1.506) and (9.561,2.537) .. (9.000,3.000) -- cycle;
 
-  \node[nor port, scale=0.8]  at (6.2,5.2) {};
-  \node[not port, scale=0.8]  at (6.1,3.1) {};
-  \node[nand port, scale=0.8] at (6.2,1.0) {};
+  %- house gates in the cloud, matching the rest of the book
+  \input{tikz/ckt_lib.tex}
+  \begin{scope}[scale=0.8]
+    \draw (6.9,6.5) \cicNor{clnor};
+    \draw (6.8,3.9) \cicInv{clinv};
+    \draw (6.9,1.25) \cicNand{clnand};
+  \end{scope}
 
   % wires into and out of the cloud
   \draw (1.8,6.45) -- (5.0,6.45);

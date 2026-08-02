@@ -4,12 +4,14 @@
 % original (media/l11_pv_pn.pdf). Three photons generate electron/hole
 % pairs: (1) in the depletion region, where the field sweeps both
 % carriers out immediately; (2) in the P region and (3) in the N
-% region, where the minority carrier first diffuses (the wiggly leg)
-% and only contributes if it reaches the depletion edge. All three
+% region, where the minority carrier must diffuse to the depletion
+% edge to contribute. Feynman conventions: the photon is the wavy
+% line up to the vertex, the carriers are straight arrowed lines. All three
 % events push the diode voltage V_D up. Carriers wear the house
 % device-cartoon colours: echarge electrons, hcharge holes. The
 % original labels the diode terminals A and (illegibly) B; the cathode
-% is written K here, since the N side is the cathode.
+% is written K here, since the N side is the cathode. The photons stay
+% wavy - Feynman style - until the vertex where the pair is created.
 
 \begin{circuitikz}[american, thick, transform shape]
   \input{tikz/ckt_lib.tex}
@@ -53,25 +55,25 @@
   \node[echarge, anchor=center, scale=0.8] at (1.2,2.62) {$\ominus$};
   \draw[echarge, ->] (1.05,2.62) -- (0.5,2.62);
   \node[hcharge, anchor=center, scale=0.8] at (1.2,2.18) {$\oplus$};
-  \pvSquig{1.35}{2.18}{0.5}
-  \draw[hcharge, ->] (2.48,2.18) -- (4.3,2.18);
+  \draw[hcharge, ->] (1.35,2.18) -- (4.3,2.18);
   \node[anchor=west] at (6.05,2.4) {\small (3)};
 
   % ---- (2): pair generated in the P region; the electron diffuses ----
   \pvSquig{-0.9}{1.5}{0.75}
-  \draw[->] (0.79,1.5) -- (1.05,1.5);
-  \draw (1.05,1.5) -- (4.7,1.5);
+  \pvSquig{0.7875}{1.5}{0.75}
+  \pvSquig{2.475}{1.5}{0.75}
+  \draw[->] (4.16,1.5) -- (4.7,1.5);
   \node[hcharge, anchor=center, scale=0.8] at (4.85,1.28) {$\oplus$};
   \draw[hcharge, ->] (5.0,1.28) -- (5.5,1.28);
   \node[echarge, anchor=center, scale=0.8] at (4.85,1.72) {$\ominus$};
-  \pvSquig{4.2}{1.72}{-0.2}
-  \draw[echarge, ->] (3.75,1.72) -- (2.7,1.72);
+  \draw[echarge, ->] (4.6,1.72) -- (2.7,1.72);
   \node[anchor=west] at (6.05,1.5) {\small (2)};
 
   % ---- (1): pair generated in the depletion region; both drift ----
   \pvSquig{-0.9}{0.7}{0.75}
-  \draw[->] (0.79,0.7) -- (1.05,0.7);
-  \draw (1.05,0.7) -- (3.25,0.7);
+  \pvSquig{0.7875}{0.7}{0.75}
+  \pvSquig{2.475}{0.7}{0.34}
+  \draw[->] (3.24,0.7) -- (3.34,0.7);
   \node[echarge, anchor=center, scale=0.8] at (3.4,0.92) {$\ominus$};
   \draw[echarge, ->] (3.25,0.92) -- (2.4,0.92);
   \node[hcharge, anchor=center, scale=0.8] at (3.4,0.48) {$\oplus$};

@@ -44,27 +44,25 @@
   \draw (2.5,\ycp) -- (2.95,\ycp) \hcapacitor{$C$} -- (5,\ycp);
   \fill (\xa,\ycp) circle (0.07);
   \fill (\xb,\ycp) circle (0.07);
-  \draw (\xc,\ycp) -- ++(0,-0.3) \vground;
+  \draw (2.72,\ycp) -- (2.72,4.9);
+  \draw (2.72,4.9) \vground;
 
-  % ---- MOS varactors, tuned by Vcnt ----
-  % left device, gate towards the left rail, source and drain tied
-  \draw (\xa,3.9) -- (1.3,3.9);
-  \fill (\xa,3.9) circle (0.07);
-  \draw (1.3,\yvb) -- (1.3,\yvt);
-  \draw (1.45,\yvb) -- (1.45,\yvt);
-  \draw (1.45,\yvt) -- (1.8,\yvt) -- (1.8,\yvb) -- (1.45,\yvb);
-  \draw (1.8,3.9) -- (\xc,3.9);
-  % right device, gate towards the right rail, source and drain tied
-  \draw (\xb,3.9) -- (3.7,3.9);
-  \fill (\xb,3.9) circle (0.07);
-  \draw (3.7,\yvb) -- (3.7,\yvt);
-  \draw (3.55,\yvb) -- (3.55,\yvt);
-  \draw (3.55,\yvt) -- (3.2,\yvt) -- (3.2,\yvb) -- (3.55,\yvb);
-  \draw (3.2,3.9) -- (\xc,3.9);
-  % common node up to the tuning port
-  \fill (\xc,3.9) circle (0.07);
-  \draw (\xc,3.9) -- (\xc,4.55) -- (-0.7,4.55) to [short,-o] (-0.9,4.55);
-  \node[anchor=north] at (-0.85,4.35) {$V_{cnt}$};
+  % ---- MOS varactors: NMOS devices with source and drain tied,
+  % ---- gate towards the tank rail, tuned by Vcnt ----
+  \draw (1.7,3.2) to [Tnmos, n=VR1] ++(0,1.6);
+  \draw (\xa,4.0) -- (VR1.G);
+  \fill (\xa,4.0) circle (0.07);
+  \draw (1.7,4.8) -- (2.05,4.8) -- (2.05,3.2) -- (1.7,3.2);
+  \draw (2.05,4.0) -- (\xc,4.0);
+  \draw (3.3,3.2) to [Tnmos, n=VR2, mirror] ++(0,1.6);
+  \draw (\xb,4.0) -- (VR2.G);
+  \fill (\xb,4.0) circle (0.07);
+  \draw (3.3,4.8) -- (2.95,4.8) -- (2.95,3.2) -- (3.3,3.2);
+  \draw (2.95,4.0) -- (\xc,4.0);
+  % common node up to the tuning port; the crossings carry no dots
+  \fill (2.35,4.0) circle (0.07);
+  \draw (2.35,4.0) -- (2.35,4.95) -- (-0.7,4.95) to [short,-o] (-0.9,4.95);
+  \node[anchor=north] at (-0.85,4.75) {$V_{cnt}$};
 
   % ---- cross coupled NMOS pair ----
   \draw (\xa,1.0) to [Tnmos, n=MN1, mirror] (\xa,2.6);
