@@ -38,7 +38,10 @@
   \fill (7.42,1.75) circle (0.075);
   \fill (12.42,1.75) circle (0.075);
 
-  % ================= VBP branch: PMOS diode over cascode ============
+  % ================= VBP branch: the PMOS wide-swing master ========
+  % Same trick as the NMOS master, upside down: the mirror device on
+  % top has its gate on the BOTTOM of the stack - the cascode's drain -
+  % and that node is VBP. The cascode between them is gated by VCP.
   \draw (3.2,6.4) to [Tpmos, n=mpd1] ++(0,\grid);
   \dsize{3.35}{7.5}{24F4F\\M=1}
   \draw (3.2,4.6) to [Tpmos, n=mpc1] ++(0,\grid);
@@ -48,11 +51,13 @@
   \draw (3.2,0) to [Tnmos, n=mn2] ++(0,\grid);
   \dsize{3.35}{0.45}{24F12F\\M=1}
   \draw (2.22,0.8) -- (2.22,1.75);
-  % VBP: gate to drain of the top device, out along y = 6.3
-  \draw (2.22,7.2) -- (2.22,6.3);
-  \draw (2.22,6.3) -- (15.4,6.3) to [short,-o] ++(0.5,0) node[anchor=west] {$VBP$};
-  \fill (3.2,6.3) circle (0.075);
-  \fill (2.22,6.3) circle (0.075);
+
+  %- the mirror gate hangs on the bottom of the stack, and VBP is that
+  %- node. The rail crosses the branch's own column without a dot.
+  \fill (3.2,3.6) circle (0.075);
+  \draw (3.2,3.6) -- (1.7,3.6) -- (1.7,7.2) -- (2.22,7.2);
+  \fill (1.7,6.3) circle (0.075);
+  \draw (1.7,6.3) -- (15.4,6.3) to [short,-o] ++(0.5,0) node[anchor=west] {$VBP$};
 
   % ================= VBN branch: cascoded, two NMOS diodes ==========
   \draw (6.0,6.4) to [Tpmos, n=mpd2] ++(0,\grid);
