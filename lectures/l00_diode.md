@@ -1349,7 +1349,9 @@ agree with your equations.
 
 But most of the time, the behavior is similar.
 
-#---
+-->
+
+---
 
 ## Summary
 
@@ -1368,9 +1370,7 @@ The one-page version of this chapter:
 
 ---
 
-# Would you like to know more?
-
--->
+## Would you like to know more?
 
 [^1]: It doesn't stop being magic just because you know how it works. Terry Pratchett, The Wee Free Men
 
