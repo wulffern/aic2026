@@ -2,8 +2,9 @@
 
 % Sensing the output common mode, and making a reference to compare it with.
 %
-% Left: a resistor divider off the supply, decoupled, driving a PMOS source
-% follower -- V_CREF is VDD/2 shifted by the follower's V_GS.
+% Left: a resistor divider off the supply, decoupled, driving an NMOS source
+% follower - drain on the supply, output at the source - so V_CREF is
+% VDD/2 shifted down by the follower's V_GS.
 % Right: the same follower on each output, and an R and a C divider between
 % the two follower outputs.  Their midpoint is the average, V_COUT, and it
 % carries the same V_GS shift as V_CREF, so the two cancel.
@@ -42,9 +43,9 @@
   \draw (capEnd) -- (\xdec,4.7);
   \fill (\xdec,4.7) circle (0.075);
 
-  \draw (\xref,\ypd) \lvpmos{MPref}{};
+  \draw (\xref,\ypd) \lvnmos{MNref}{};
   \draw (\xref,\yps) \vsupply;
-  \draw (\xdec,4.7) -- (2.7,6.47) -- (MPref.gate);
+  \draw (\xdec,4.7) -- (2.7,6.47) -- (MNref.gate);
 
   \draw (\xref,\ypd) -- (\xref,{\yis+0.42});
   \draw (\xref,\yis) circle (0.42);
@@ -62,9 +63,9 @@
   \def\xmid{9.17}
   \def\xop{11.54}
 
-  \draw (\xon,\ypd) \lvpmos{MPon}{$V_{on}$};
+  \draw (\xon,\ypd) \lvnmos{MNon}{$V_{on}$};
   \draw (\xon,\yps) \vsupply;
-  \draw (\xop,\ypd) \lvpmos{MPop}{$V_{op}$};
+  \draw (\xop,\ypd) \lvnmos{MNop}{$V_{op}$};
   \draw (\xop,\yps) \vsupply;
 
   \draw (\xon,\ypd) -- (\xon,{\yis+0.42});
