@@ -1,49 +1,61 @@
 \input{tikz/fig_header.tex}
 
-% The quarter-wave monopole as it actually ships: a copper trace on a
-% PCB, fed by the radio chip, with the ground pour as the other half
-% of the antenna. The current standing wave is maximum at the feed and
-% zero at the tip, which is what makes l = lambda/4 the natural
-% length - about 31 mm at 2.4 GHz, which is why the antenna region of
-% a Bluetooth board is the size it is.
+% The quarter-wave monopole as it actually ships, drawn the way you
+% see it on a board: plan view, looking straight down. Solder mask,
+% ground pour, the radio, the antenna trace on a keep-out with the
+% copper cut away beneath it. Above the board, on the same horizontal
+% scale, the current standing wave the trace carries - maximum at the
+% feed, zero at the tip, which is what makes l = lambda/4 the natural
+% length. About 31 mm at 2.4 GHz, which is why the antenna end of a
+% Bluetooth board is the size it is.
 
 \begin{tikzpicture}[thick]
 
-  % ---- the board, oblique ----
-  \def\dx{2.2}
-  \def\dy{1.05}
-  \fill[armygreen!12] (0,0) -- (8.6,0) -- (8.6+\dx,\dy) -- (\dx,\dy) -- cycle;
-  \draw[gray!60] (0,0) -- (8.6,0) -- (8.6+\dx,\dy) -- (\dx,\dy) -- cycle;
-  \fill[armygreen!25] (0,-0.35) rectangle (8.6,0);
-  \draw[gray!60] (0,-0.35) rectangle (8.6,0);
+  \def\xfeed{4.6}
+  \def\xtip{9.2}
 
-  % ---- the ground pour: copper under most of the board ----
-  \fill[orange!30] (0.25,0.1) -- (5.1,0.1) -- (5.1+0.82*\dx,0.1+0.82*\dy)
-     -- (0.25+0.82*\dx,0.1+0.82*\dy) -- cycle;
-  \node[orange!60!black, scale=0.8, anchor=west] at (1.3,0.55) {ground pour};
+  % ---- the current standing wave, on the trace's own scale ----
+  \begin{scope}[shift={(0,2.5)}]
+    \draw[gray!60, ->] (\xfeed-0.4,0) -- (\xtip+0.7,0);
+    \node[gray!60!black, anchor=west, scale=0.85] at (\xtip+0.75,0) {$z$};
+    \draw[blue, very thick]
+      (\xfeed,1.35) .. controls (\xfeed+2.2,1.3) and (\xtip-1.3,0.85) .. (\xtip,0);
+    \node[blue, anchor=south west, scale=0.9] at (\xfeed+1.5,1.1) {$I(z)$};
+    \draw[gray!60, dashed] (\xfeed,0) -- (\xfeed,1.35);
+    \node[anchor=north east, scale=0.8] at (\xfeed-0.05,-0.05) {feed: $I$ max};
+    \node[anchor=north west, scale=0.8] at (\xtip+0.05,-0.05) {tip: $I=0$};
+  \end{scope}
 
-  % ---- the radio chip on the pour edge ----
-  \draw[fill=black!80, rounded corners=1pt] (5.0,0.55) rectangle (6.1,1.35);
-  \node[white, scale=0.7] at (5.55,0.93) {radio};
+  % ---- the board, seen from above ----
+  \fill[armygreen!18, rounded corners=3pt] (0,-2.6) rectangle (10.2,1.0);
+  \draw[armygreen!45, rounded corners=3pt] (0,-2.6) rectangle (10.2,1.0);
 
-  % ---- the antenna: a bare copper trace on the keep-out ----
-  \fill[orange!85] (6.35,0.62) -- (8.35,0.62) -- (8.35+0.25*\dx,0.62+0.25*\dy)
-     -- (6.35+0.25*\dx,0.62+0.25*\dy) -- cycle;
-  \draw (6.1,0.85) -- (6.35,0.85);
-  \node[anchor=west, scale=0.75, align=left] at (9.15,0.42)
-    {keep-out:\\no copper\\under the trace};
+  % ground pour: copper everywhere except the antenna keep-out
+  \fill[orange!35] (0.3,-2.3) rectangle (\xfeed-0.3,0.7);
+  \node[orange!55!black, anchor=center, scale=0.85] at (2.1,-1.4) {ground pour};
 
-  % ---- the standing wave riding the trace ----
-  \draw[blue, very thick]
-    (6.45,1.15) .. controls (7.3,1.95) and (8.1,1.75) .. (8.6,1.25);
-  \node[blue, anchor=south, scale=0.9] at (7.6,1.95) {$I(z)$};
-  \node[blue, anchor=east, scale=0.8] at (6.3,1.75) {feed: $I$ max};
-  \node[blue, anchor=south west, scale=0.8] at (8.62,1.42) {tip: $I=0$};
+  % the keep-out: no copper under or beside the trace
+  \draw[gray!70, dashed] (\xfeed-0.3,-2.3) rectangle (10.0,0.7);
+  \node[gray!60!black, anchor=north, scale=0.8] at (7.4,0.62)
+    {keep-out: no copper here};
 
-  % ---- the length is the point ----
-  \draw[<->] (6.35,0.28) -- (8.35,0.28);
-  \node[anchor=north, align=center] at (7.35,0.14)
+  % the radio, sitting on the pour edge
+  \fill[black!80, rounded corners=1pt] (3.3,-0.85) rectangle (\xfeed,0.15);
+  \node[white, anchor=center, scale=0.75] at (3.95,-0.35) {radio};
+
+  % the antenna trace: a copper strip from the feed to the tip
+  \fill[orange!85] (\xfeed,-0.55) rectangle (\xtip,-0.15);
+  \fill[orange!85] (\xfeed-0.15,-0.5) rectangle (\xfeed,-0.2);
+
+  % the length that matters
+  \draw[<->] (\xfeed,-1.35) -- (\xtip,-1.35);
+  \node[anchor=north, scale=0.9] at ({(\xfeed+\xtip)/2},-1.45)
     {$l = \lambda/4 \approx 31$ mm at 2.4 GHz};
+
+  % the pour is the other half of the antenna
+  \draw[gray, thin] (2.1,0.7) -- (2.1,1.35);
+  \node[anchor=south, scale=0.85, align=center] at (2.1,1.35)
+    {the pour is the other\\half of the antenna};
 
 \end{tikzpicture}
 \end{document}

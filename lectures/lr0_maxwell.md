@@ -284,7 +284,7 @@ present.
 ![inline](../media/mx_monopole_tikz.pdf)
 
 <!--pan_doc:
-<sub>Figure 6: The quarter-wave monopole as it ships: a copper trace on the PCB keep-out, fed by the radio, with the ground pour as the other half. The standing wave sets l = lambda/4, about 31 mm at 2.4 GHz</sub>
+<sub>Figure 6: The quarter-wave monopole as it ships, seen from above: the antenna trace on its keep-out, fed by the radio, with the ground pour as the other half of the antenna. Above, on the same scale, the current standing wave that sets l = lambda/4 - about 31 mm at 2.4 GHz</sub>
 -->
 
 # What this buys you on-chip
