@@ -23,6 +23,21 @@
 \newcommand{\myfigwidth}{90mm}
 \newcommand{\myfigheight}{80mm}
 
+% Figures are capped, never inflated. \includegraphics[width=..] scales
+% a graphic TO that width, so a drawing whose natural size is 40 mm was
+% being blown up to fill the box. \aicfig measures the graphic first and
+% asks for the smaller of its natural width and the cap; keepaspectratio
+% with the height cap then bounds tall figures the same way.
+\newsavebox{\aicfigbox}
+\newlength{\aicfigw}
+\newcommand{\aicfig}[1]{%
+  \sbox{\aicfigbox}{\includegraphics{#1}}%
+  \setlength{\aicfigw}{\wd\aicfigbox}%
+  \ifdim\aicfigw>\myfigwidth\setlength{\aicfigw}{\myfigwidth}\fi
+  \includegraphics[width=\aicfigw,height=\myfigheight,keepaspectratio]{#1}%
+}
+
+
 
 
 %\usepackage{tabularray}
@@ -90,7 +105,7 @@
 \title{The cic tools}
 \author{Written by Claude (Anthropic) -- ideas and review by Carsten~Wulff, carsten@wulff.no}
 
-\markboth{Advanced Integrated Circuits -  Built on Sun Aug  2 07:47:43 CEST 2026 from 062451d4999bce2dbfd4fe6e56dff6c5dc10e3b2
+\markboth{Advanced Integrated Circuits -  Built on Sun Aug  2 22:49:19 CEST 2026 from 5e4359b19d88671b6e595055505e5af017c8cf46
 }{Carsten Wulff}
 
 \begin{document}

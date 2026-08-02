@@ -58,10 +58,10 @@ $$ \frac{1}{2 m} \frac{\hbar}{j^2} \frac{\partial^2}{\partial^2 x}\psi(x,t) + V(
 
 To determine the moment or energy of multiple particles, you cannot consider them discrete entities. For example, the probabilty of finding a free electron in a particular location is given by
 
-$$P_1(x) = \int_{x_1}^{x_2}  |\psi_1(x,0)|^2$$, where $$P_1 = \int_{-\infty}^{\infty} |\psi_1(x,0)| = 1$$
+$$P_1(x) = \int_{x_1}^{x_2}  \vert \psi_1(x,0)\vert ^2$$, where $$P_1 = \int_{-\infty}^{\infty} \vert \psi_1(x,0)\vert = 1$$
 
 
-However, if we have two electrons, described by $$\psi_1(x,0)$$ and $$\psi_2(x,0)$$, then  $$P_{12}(x) \ne P_1(x) + P_2(x)$$, but rather $$P_{12}(x) = \int_{x_1}^{x_2} |\psi_1(x,0) + \psi_2(x,0)|^2$$
+However, if we have two electrons, described by $$\psi_1(x,0)$$ and $$\psi_2(x,0)$$, then  $$P_{12}(x) \ne P_1(x) + P_2(x)$$, but rather $$P_{12}(x) = \int_{x_1}^{x_2} \vert \psi_1(x,0) + \psi_2(x,0)\vert ^2$$
 
 It is the probability amplitudes that add, not the probabilities. And to make things more interesting, one solution to the Schrodinger equation is $$\psi(x,t) = Ae^{j(kx - \omega t)}$$, where $$k$$ is the wave number, and the $$\omega$$ is the angular frequency. This is a complex function of position and time!
 

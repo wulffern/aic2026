@@ -1,0 +1,1 @@
+- [References and bias](/aic2026/assets/l03_refbias.pdf) [[slides]](/aic2026/assets/html/l03_refbias.html)

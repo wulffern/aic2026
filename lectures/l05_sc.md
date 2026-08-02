@@ -79,7 +79,7 @@ The pole or zero frequency of an Active-RC filter is proportional to the inverse
 product between R and C
 -->
 
-$$\omega_{p|z} \propto \frac{G}{C} = \frac{1}{RC}$$
+$$\omega_{p\vert z} \propto \frac{G}{C} = \frac{1}{RC}$$
 
 <!--pan_doc:
 
@@ -149,7 +149,7 @@ The pole and zero frequency of a Gm-C filter is
 -->
 
 
-$$\omega_{p|z} \propto \frac{G_m}{C}$$
+$$\omega_{p\vert z} \propto \frac{G_m}{C}$$
 
 <!--pan_doc:
 
@@ -420,7 +420,7 @@ In general, we can sum up with the following equation.
 
 -->
 
-$$\omega_{p|z} \propto f_{clk}\frac{C_1}{C_2}$$
+$$\omega_{p\vert z} \propto f_{clk}\frac{C_1}{C_2}$$
 
 <!--pan_doc:
 
@@ -825,11 +825,11 @@ $$ h[n] = \begin{cases} k & \text{if } n < 1 \\ a^{n-1}b + a^n k & \text{if } n 
 
 Here $k$ is the initial state $y[0]$. From the impulse response it can be seen
 that the pole of $H(z) = b/(z-a)$ sits at $z = a$, and $b$ only scales the
-output, so everything depends on $|a|$.
+output, so everything depends on $\vert a\vert $.
 
-Three cases, matching the z-plane picture above. If $|a| < 1$ the response
-decays and the filter is stable. If $|a| > 1$ it grows without bound and the
-filter is unstable. Exactly on the unit circle, $|a| = 1$, it neither decays
+Three cases, matching the z-plane picture above. If $\vert a\vert < 1$ the response
+decays and the filter is stable. If $\vert a\vert > 1$ it grows without bound and the
+filter is unstable. Exactly on the unit circle, $\vert a\vert = 1$, it neither decays
 nor grows: the impulse rings for ever at constant amplitude, which is an
 oscillator. That last case is called *marginally* stable, and in a real
 circuit it does not exist — component tolerance will push the pole to one
@@ -869,7 +869,7 @@ $$ z_p = a + jb $$
 <!--pan_doc:
 
 which is exactly the complex frequency from the Z-domain plot earlier. As
-long as $|a + jb| < 1$ the poles are inside the unit circle and the filter is
+long as $\vert a + jb\vert < 1$ the poles are inside the unit circle and the filter is
 stable. Complex poles also mean the magnitude response peaks near the pole
 angle — the filter resonates.
 
@@ -885,7 +885,7 @@ There are smarter, and faster ways to do IIR filters (and FIR) in python, see [s
 
 From the plot below we can see the sampled time domain and spectra on the left, and the filtered time domain and spectra on the right.
 The two spectra share the same y-axis, so the attenuation can be read directly. The poles sit at $0.85 \pm j0.25$
-($|z| = 0.89$, pole angle $\approx 0.046\,f_s$): the image near the pole angle is picked out and even amplified a little by the
+($\vert z\vert = 0.89$, pole angle $\approx 0.046\,f_s$): the image near the pole angle is picked out and even amplified a little by the
 resonance, while the spectral copies further out drop with 40 dB/decade.
 
 The [interactive version of this example](https://wulffern.github.io/aic2026/assets/examples/iir.html) adds the pole

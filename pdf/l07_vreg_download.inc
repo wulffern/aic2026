@@ -1,0 +1,1 @@
+- [Voltage regulation](/aic2026/assets/l07_vreg.pdf) [[slides]](/aic2026/assets/html/l07_vreg.html)

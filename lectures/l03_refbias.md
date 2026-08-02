@@ -1229,7 +1229,7 @@ $M_{SU}$'s own drive falls, so it backs off without being told to.
 
 It does not back off far enough, and this is the part that bites in a
 low-power design. Awake, the NMOS rail only climbs to a gate-source drop,
-call it 400 mV, which leaves $M_{SU}$ with $|V_{GS}| = V_{DD} - 400$ mV. In a
+call it 400 mV, which leaves $M_{SU}$ with $\vert V_{GS}\vert = V_{DD} - 400$ mV. In a
 low-threshold process that is still an on transistor, quietly injecting
 current into the rail it was supposed to have released. If the loop's own
 branch current is a few hundred nanoamps, that injection is not a rounding

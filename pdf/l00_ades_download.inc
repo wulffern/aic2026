@@ -1,0 +1,1 @@
+- [Analog Design](/aic2026/assets/l00_ades.pdf) [[slides]](/aic2026/assets/html/l00_ades.html)

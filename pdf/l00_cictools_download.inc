@@ -1,0 +1,1 @@
+- [The cic tools](/aic2026/assets/l00_cictools.pdf) [[slides]](/aic2026/assets/html/l00_cictools.html)

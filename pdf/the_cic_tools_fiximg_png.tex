@@ -1,0 +1,179 @@
+\emph{This chapter was written by Claude, Anthropic's AI, from an
+outline and direction by Carsten Wulff, who reviewed and edited the
+result. The commit history of the book's repository records precisely
+who wrote what.}
+
+Analog design that cannot be reproduced from a shell command is not
+done. That is the thesis of this chapter, and the reason the tools in it
+exist. Every schematic in this course simulates from a script, every
+testbench sweeps its corners from a one-line command, and one of the
+ADCs in the converter chapter compiles its own layout. None of that
+needs a licence server.
+
+The tools share a prefix - cic, for Custom IC Creator - and a
+philosophy: plain text in, plain text out, and git in between. Each one
+is small. Together they are a design flow.
+
+\section{cicsim - simulations you can
+rerun}\label{cicsim---simulations-you-can-rerun}
+
+\texttt{cicsim} is the workhorse: a script package that controls
+ngspice. You met it in the tutorial when \texttt{cicsim\ simcell} built
+the simulation directory for the current mirror. What it buys you over
+running ngspice by hand:
+
+\texttt{cicsim\ run} takes a testbench and a corner specification -
+typical, slow, fast, high and low temperature, supply corners - and runs
+the cross product, in parallel if you ask (\texttt{-\/-threads}), with a
+progress bar and a timeout to kill the simulation that wedged. Add
+\texttt{-\/-count\ N} and each corner runs N times with mismatch - Monte
+Carlo from the same command line.
+
+The measurements come back as a results table, one row per corner, which
+is the artifact that matters: the OTA chapter's advice to verify gain,
+noise, slew and start-up \emph{over PVT} is one \texttt{cicsim\ run} per
+testbench, and the table is the evidence.
+
+The yaml files that define a simulation live next to the schematic and
+go into git. Six months later, \texttt{cicsim\ run} again and you get
+the same table - or a diff that tells you exactly what the PDK update
+broke.
+
+\begin{itemize}
+\tightlist
+\item
+  \texttt{cicsim\ run} : corners, in parallel, with a results table
+\item
+  \texttt{-\/-count\ N} : Monte Carlo from the same command
+\item
+  yaml + git : the simulation is reproducible, or it is not done
+\end{itemize}
+
+\section{ciccreator - the layout
+compiler}\label{ciccreator---the-layout-compiler}
+
+\texttt{ciccreator} is the tool behind the compiled SAR ADC in the
+converter chapter. The idea dates to 2013: describe the circuit as a
+SPICE netlist, describe the layout intent as a JSON object definition,
+add a technology rule file, and let a compiler place the polygons. The
+prototype was 16 thousand lines of Perl; the current tool is a C++
+rewrite of the same input language, fast enough to recompile an ADC
+while you watch.
+
+The point is portability. The netlist and the object file do not mention
+a technology; the rule file does. Porting the ADC to a new process - and
+it has been ported to 22, 28, 55, 65, 130 and 180 nm - means writing a
+new rule file, not redrawing a layout. That is why the comparison table
+in the converter chapter has a ``compiled'' line with a competitive
+figure of merit, and why the same ADC exists as an open source SKY130
+implementation you can read.
+
+\begin{itemize}
+\tightlist
+\item
+  SPICE netlist + JSON object definition + technology rules = layout
+\item
+  Port to a new process: new rule file, not new polygons
+\item
+  The compiled SAR ADC of the converter chapter is the proof
+\end{itemize}
+
+\section{cicpy and cicconf - the
+glue}\label{cicpy-and-cicconf---the-glue}
+
+\texttt{cicpy} translates. It takes ciccreator output and transpiles it
+to whatever the rest of your flow speaks: SKILL for Cadence, SPICE,
+Verilog, Xschem schematics, Magic layout, or SVG when you just want to
+look at a cell. It also carries two small workhorses - \texttt{sch2mag}
+and \texttt{spi2mag} - that netlist a schematic and place-and-route it
+to Magic, which is how the standard-cell-like blocks in the aicex IPs
+appear.
+
+\texttt{cicconf} manages the projects themselves. An aicex IP is a git
+repository, and a chip is many of them; \texttt{cicconf} keeps the
+dependency list in one \texttt{config.yaml} and clones, updates and
+templates the collection. When the tutorial told you to run
+\texttt{cicconf\ clone}, this is what stitched your project together.
+
+\begin{itemize}
+\tightlist
+\item
+  cicpy: transpile the compiled IC to SKILL, SPICE, Verilog, Xschem,
+  Magic or SVG
+\item
+  cicconf: one config.yaml for a project of many git repositories
+\end{itemize}
+
+\section{cicwave - looking at the
+waves}\label{cicwave---looking-at-the-waves}
+
+\texttt{cicwave} is the waveform viewer: it reads ngspice raw files and
+draws them with a PyQtGraph/Qt6 backend fast enough for long transients.
+It is the third viewer of its line - the first was written during a
+summer internship in 2001 - and it exists for the same reason as the
+rest of the family: the open source flow deserves a viewer that starts
+instantly, works on every OS, and is scriptable.
+
+\section{cictikz - the figures of this
+book}\label{cictikz---the-figures-of-this-book}
+
+The newest member drew the book you are reading. \texttt{cictikz}
+packages the TikZ symbol library behind every schematic figure in these
+chapters, gives an AI assistant a render-and-look loop so figures can be
+drawn and reviewed programmatically, and converts between the book's
+TikZ dialect and Xschem schematics - so a figure can start life as a
+real, simulated schematic and end as a book drawing, or the other way
+around.
+
+\begin{itemize}
+\tightlist
+\item
+  One symbol library for every schematic in the book
+\item
+  TikZ to Xschem and back: figures that are also schematics
+\end{itemize}
+
+\section{Summary}\label{summary}
+
+The one-page version of this chapter:
+
+\begin{itemize}
+\tightlist
+\item
+  If it does not rerun from a shell command, it is not done
+\item
+  cicsim: corners and Monte Carlo as one command, results as a table,
+  all of it in git
+\item
+  ciccreator: netlist + object definition + rules compile to layout;
+  porting is a rule file
+\item
+  cicpy transpiles to the flow you have; cicconf holds multi-repo
+  projects together
+\item
+  cicwave views the waves; cictikz draws the book
+\item
+  None of it needs a licence server
+\end{itemize}
+
+\section{Would you like to know
+more?}\label{would-you-like-to-know-more}
+
+Every tool lives on GitHub with its own documentation:
+\href{https://github.com/wulffern/cicsim}{cicsim},
+\href{https://github.com/wulffern/ciccreator}{ciccreator}
+(\href{https://ciccreator.readthedocs.io/en/latest/index.html}{docs}),
+\href{https://github.com/wulffern/cicpy}{cicpy},
+\href{https://github.com/wulffern/cicconf}{cicconf},
+\href{https://github.com/wulffern/cicwave}{cicwave}
+(\href{https://wulffern.github.io/cicwave/}{docs}) and
+\href{https://github.com/wulffern/cictikz}{cictikz}
+(\href{https://analogicus.com/cictikz/}{docs}). The IPs built with them
+are collected in \href{https://github.com/wulffern/aicex}{aicex}.
+
+\begin{itemize}
+\tightlist
+\item
+  \href{https://github.com/wulffern/aicex}{github.com/wulffern/aicex} -
+  the IPs built with these tools
+\end{itemize}

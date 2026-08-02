@@ -1,0 +1,1 @@
+- [Analog SystemVerilog](/aic2026/assets/l11_aver.pdf) [[slides]](/aic2026/assets/html/l11_aver.html)

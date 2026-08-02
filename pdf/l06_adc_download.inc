@@ -1,0 +1,1 @@
+- [Oversampling and Sigma-Delta ADCs](/aic2026/assets/l06_adc.pdf) [[slides]](/aic2026/assets/html/l06_adc.html)

@@ -1,0 +1,1 @@
+- [Integrated Passives](/aic2026/assets/lr0_passives.pdf) [[slides]](/aic2026/assets/html/lr0_passives.html)

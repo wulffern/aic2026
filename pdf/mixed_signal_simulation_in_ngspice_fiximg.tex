@@ -1,0 +1,413 @@
+\section{Mixed Signal Simulation in
+ngspice}\label{mixed-signal-simulation-in-ngspice}
+
+\textbf{Keywords:} Mixed Signal, ngspice, Verilog, RTL, d\_cosim,
+Testbench
+
+\section{Digital simulation}\label{digital-simulation}\index{digital simulation@Digital simulation}
+
+\begin{itemize}
+\item
+  The order of execution of events at the same time-step does not matter
+\item
+  The system is causal. Changes in the future do not affect signals in
+  the past or the now
+\end{itemize}
+
+There are both commercial and open source tools for digital simulation.
+If you've never used a digital simulator, then I'd recommend you start
+with iverilog. I've made some examples at
+\href{https://github.com/wulffern/dicex/tree/main/project/verilog}{dicex}.
+
+\textbf{Commercial}
+
+\begin{itemize}
+\tightlist
+\item
+  \href{https://www.cadence.com/ko_KR/home/tools/system-design-and-verification/simulation-and-testbench-verification/xcelium-simulator.html}{Cadence
+  Excelium}
+\item
+  \href{https://eda.sw.siemens.com/en-US/ic/questa/simulation/advanced-simulator/}{Siemens
+  Questa}
+\item
+  \href{https://www.synopsys.com/verification/simulation/vcs.html}{Synopsys
+  VCS}
+\end{itemize}
+
+\textbf{Open Source}
+
+\begin{itemize}
+\tightlist
+\item
+  \href{https://github.com/steveicarus/iverilog}{iverilog/vpp}
+\item
+  \href{https://www.veripool.org/verilator/}{Verilator}
+\item
+  \href{https://sourceforge.net/projects/systemdotnet/}{SystemDotNet}
+\end{itemize}
+
+Below is an example of a counter in SystemVerilog. The code can be found
+at
+\href{https://github.com/wulffern/dicex/tree/main/sim/verilog/counter_sv}{counter\_sv}.
+
+In the always\_ff sections we code what will become our registers;
+combinatorial logic would go in an always\_comb section.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{module}\NormalTok{ dig}\OperatorTok{(}
+           \DataTypeTok{input} \DataTypeTok{wire}\NormalTok{         clk}\OperatorTok{,}
+           \DataTypeTok{input} \DataTypeTok{wire}\NormalTok{         reset}\OperatorTok{,}
+           \DataTypeTok{output}\NormalTok{ logic }\OperatorTok{[}\DecValTok{4}\OperatorTok{:}\DecValTok{0}\OperatorTok{]}\NormalTok{ b}
+           \OperatorTok{);}
+
+\NormalTok{   logic                      rst }\OperatorTok{=} \DecValTok{0}\OperatorTok{;}
+
+\NormalTok{   always\_ff }\OperatorTok{@(}\KeywordTok{posedge}\NormalTok{ clk}\OperatorTok{)} \KeywordTok{begin}
+      \KeywordTok{if}\OperatorTok{(}\NormalTok{reset}\OperatorTok{)}
+\NormalTok{        rst }\OperatorTok{\textless{}=} \DecValTok{1}\OperatorTok{;}
+      \KeywordTok{else}
+\NormalTok{        rst }\OperatorTok{\textless{}=} \DecValTok{0}\OperatorTok{;}
+   \KeywordTok{end}
+
+\NormalTok{   always\_ff }\OperatorTok{@(}\KeywordTok{posedge}\NormalTok{ clk}\OperatorTok{)} \KeywordTok{begin}
+      \KeywordTok{if}\OperatorTok{(}\NormalTok{rst}\OperatorTok{)}
+\NormalTok{        b }\OperatorTok{\textless{}=} \DecValTok{0}\OperatorTok{;}
+      \KeywordTok{else}
+\NormalTok{        b }\OperatorTok{\textless{}=}\NormalTok{ b }\OperatorTok{+} \DecValTok{1}\OperatorTok{;}
+   \KeywordTok{end} \CommentTok{// dig}
+
+\KeywordTok{endmodule}
+\end{Highlighting}
+\end{Shaded}
+
+\section{Transient analog simulation}\label{transient-analog-simulation}\index{transient analog simulation@Transient analog simulation}
+
+Analog simulation is different. There is no quantized time step. How
+fast ``things'' happen in the circuit is entirely determined by the time
+constants, change in voltage, and change in current in the system.
+
+It is possible to have a fixed time-step in analog simulation, for
+example, we say that nothing is faster than 1 fs, so we pick that as our
+time step. If we wanted to simulate 1 s, however, that's at least 1e15
+events, and with 1 event per microsecond on a computer it's still a
+simulation time of 31 years. Not a viable solution for all analog
+circuits.
+
+Analog circuits are also non-linear, properties of resistors,
+capacitors, inductors, diodes may depend on the voltage or current
+across, or in, the device. Solving for all the non-linear differential
+equations is tricky.
+
+An analog simulation engine must parse spice netlist, and setup
+partial/ordinary differential equations for node matrix
+
+The nodal matrix could look like the matrix below, \(i\) are the
+currents, \(v\) the voltages, and \(G\) the conductances between nodes.
+
+\[
+\begin{pmatrix}
+G_{11} &G_{12}  &\cdots  &G_{1N} \\ 
+G_{21} &G_{22}  &\cdots  &G_{2N} \\ 
+\vdots &\vdots  &\ddots  & \vdots\\ 
+G_{N1} &G_{N2}  &\cdots  &G_{NN} 
+\end{pmatrix}
+\begin{pmatrix}
+v_1\\ 
+v_2\\ 
+\vdots\\ 
+v_N
+\end{pmatrix}=
+\begin{pmatrix}
+i_1\\ 
+i_2\\ 
+\vdots\\ 
+i_N
+\end{pmatrix}
+\]
+
+The simulator, and devices model the non-linear current/voltage behavior
+between all nodes
+
+as such, the \(G\)'s may be non-linear functions, and include the
+\(v\)'s and \(i\)'s.
+
+Transient analysis use numerical methods to compute time evolution
+
+The time step is adjusted automatically, often by proprietary
+algorithms, to trade accuracy and simulation speed.
+
+The numerical methods can be forward/backward Euler, or the others
+listed below.
+
+\begin{itemize}
+\tightlist
+\item
+  \href{https://aquaulb.github.io/book_solving_pde_mooc/solving_pde_mooc/notebooks/02_TimeIntegration/02_01_EulerMethod.html}{Euler}
+\item
+  \href{https://aquaulb.github.io/book_solving_pde_mooc/solving_pde_mooc/notebooks/02_TimeIntegration/02_02_RungeKutta.html}{Runge-Kutta}
+\item
+  \href{https://en.wikipedia.org/wiki/Crank\%E2\%80\%93Nicolson_method}{Crank-Nicolson}
+\item
+  Gear {[}1{]}
+\end{itemize}
+
+If you wish to learn more, I would recommend starting with the original
+paper on analog transient analysis.
+
+\href{https://www2.eecs.berkeley.edu/Pubs/TechRpts/1973/ERL-m-382.pdf}{SPICE
+(Simulation Program with Integrated Circuit Emphasis)} published in 1973
+by Nagel and Pederson
+
+The original paper has spawned a multitude of commercial, free and open
+source simulators, some are listed below.
+
+If you have money, then buy Cadence Spectre. If you have no money, then
+start with ngspice.
+
+\textbf{Commercial} -
+\href{https://www.cadence.com/ko_KR/home/tools/custom-ic-analog-rf-design/circuit-simulation/spectre-simulation-platform.html}{Cadence
+Spectre} - \href{https://eda.sw.siemens.com/en-US/ic/eldo/}{Siemens
+Eldo} -
+\href{https://www.synopsys.com/implementation-and-signoff/ams-simulation/primesim-hspice.html}{Synopsys
+HSPICE}
+
+\textbf{Free} - \href{http://aimspice.com}{Aimspice} -
+\href{https://www.analog.com/en/design-center/design-tools-and-calculators/ltspice-simulator.html}{Analog
+Devices LTspice} - \href{https://xyce.sandia.gov}{xyce}
+
+\textbf{Open Source} - \href{http://ngspice.sourceforge.net}{ngspice}
+
+
+{
+\centering
+\aicfig{media/mixed_simulator.pdf}
+}
+
+\emph{Figure 1: Mixed signal simulator, where a digital and an analog
+simulator exchange values through DAC and ADC connect modules under a
+shared event and timestep control}
+
+\section{Demo}\label{demo}
+
+Tutorial at \url{http://analogicus.com/jnw_sv_sky130a/}
+
+Repository at \url{https://github.com/wulffern/jnw_sv_sky130a}
+
+Assumes knowledge of
+\href{https://analogicus.com/aic2026/sky130nm_tutorial}{Tutorial}
+
+\section{The circuit}\label{the-circuit}\index{the circuit@The circuit}
+
+In \texttt{design/JNW\_SV\_SKY130A/JNWSW\_CM.sch} you'll find a current
+mirror, and a 5-bit current DAC.
+
+What we want from the digital is to control the binary value of the
+current DAC.
+
+
+{
+\centering
+\aicfig{media/JNWSW_CM.pdf}
+}
+
+\emph{Figure 2: The JNWSW\_CM schematic - a current mirror from ibp plus
+a 5-bit binary weighted current DAC controlled by b{[}4:0{]}}
+
+\section{The digital code}\label{the-digital-code}\index{the digital code@The digital code}
+
+The digital code is shown below. The \texttt{clk} controls the stepping,
+while the \texttt{reset} sets the output \texttt{b=0}. When
+\texttt{reset} is off, then the \texttt{b} increments.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{module}\NormalTok{ dig}\OperatorTok{(}
+           \DataTypeTok{input} \DataTypeTok{wire}\NormalTok{         clk}\OperatorTok{,}
+           \DataTypeTok{input} \DataTypeTok{wire}\NormalTok{         reset}\OperatorTok{,}
+           \DataTypeTok{output}\NormalTok{ logic }\OperatorTok{[}\DecValTok{4}\OperatorTok{:}\DecValTok{0}\OperatorTok{]}\NormalTok{ b}
+           \OperatorTok{);}
+
+\NormalTok{   logic                      rst }\OperatorTok{=} \DecValTok{0}\OperatorTok{;}
+
+\NormalTok{   always\_ff }\OperatorTok{@(}\KeywordTok{posedge}\NormalTok{ clk}\OperatorTok{)} \KeywordTok{begin}
+      \KeywordTok{if}\OperatorTok{(}\NormalTok{reset}\OperatorTok{)}
+\NormalTok{        rst }\OperatorTok{\textless{}=} \DecValTok{1}\OperatorTok{;}
+      \KeywordTok{else}
+\NormalTok{        rst }\OperatorTok{\textless{}=} \DecValTok{0}\OperatorTok{;}
+   \KeywordTok{end}
+
+\NormalTok{   always\_ff }\OperatorTok{@(}\KeywordTok{posedge}\NormalTok{ clk}\OperatorTok{)} \KeywordTok{begin}
+      \KeywordTok{if}\OperatorTok{(}\NormalTok{rst}\OperatorTok{)}
+\NormalTok{        b }\OperatorTok{\textless{}=} \DecValTok{0}\OperatorTok{;}
+      \KeywordTok{else}
+\NormalTok{        b }\OperatorTok{\textless{}=}\NormalTok{ b }\OperatorTok{+} \DecValTok{1}\OperatorTok{;}
+   \KeywordTok{end} \CommentTok{// dig}
+\KeywordTok{endmodule}
+\end{Highlighting}
+\end{Shaded}
+
+\section{Compile RTL}\label{compile-rtl}\index{compile rtl@Compile RTL}
+
+The first thing we need to do is to translate the verilog into a
+compiled object that can be used in ngspice.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\BuiltInTok{cd}\NormalTok{ sim/JNWSW\_CM}
+\ExtensionTok{ngspice}\NormalTok{ vlnggen ../../rtl/dig.v}
+\end{Highlighting}
+\end{Shaded}
+
+\section{Import object into SPICE
+file}\label{import-object-into-spice-file}
+
+I'm lazy. So I don't want to do the same thing multiple times. As such,
+I've written a small script to help me instanciate the verilog
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{perl}\NormalTok{ ../../tech/script/gensvinst ../../rtl/dig.v dig}
+\end{Highlighting}
+\end{Shaded}
+
+The script generates an \texttt{svinst.spi} file. The first section
+imports the digital compiled library
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{adut}\NormalTok{ [clk}
+\ExtensionTok{+}\NormalTok{ reset}
+\ExtensionTok{+}\NormalTok{ ]}
+\ExtensionTok{+}\NormalTok{ [b.4}
+\ExtensionTok{+}\NormalTok{ b.3}
+\ExtensionTok{+}\NormalTok{ b.2}
+\ExtensionTok{+}\NormalTok{ b.1}
+\ExtensionTok{+}\NormalTok{ b.0}
+\ExtensionTok{+}\NormalTok{ ] null dut}
+\ExtensionTok{.model}\NormalTok{ dut d\_cosim }
+\ExtensionTok{+}\NormalTok{ simulation=}\StringTok{"../dig.so"}\NormalTok{ delay=10p}
+\end{Highlighting}
+\end{Shaded}
+
+Turns out that ngspice needs the digital inputs and outputs to be
+connected to something to calculate them (I think), so connect some
+resistors
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{*}\NormalTok{ Inputs}
+\ExtensionTok{Rsvi0}\NormalTok{ clk 0 1G}
+\ExtensionTok{Rsvi1}\NormalTok{ reset 0 1G}
+
+\ExtensionTok{*}\NormalTok{ Outputs}
+\ExtensionTok{Rsvi2}\NormalTok{ b.4 0 1G}
+\ExtensionTok{Rsvi3}\NormalTok{ b.3 0 1G}
+\ExtensionTok{Rsvi4}\NormalTok{ b.2 0 1G}
+\ExtensionTok{Rsvi5}\NormalTok{ b.1 0 1G}
+\ExtensionTok{Rsvi6}\NormalTok{ b.0 0 1G}
+\end{Highlighting}
+\end{Shaded}
+
+For the busses I find it easier to read the value as a real, so
+translate the buses from digital \texttt{b{[}4:0{]}} to a real value
+\texttt{dec\_b}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{E\_STATE\_b}\NormalTok{ dec\_b 0 value=\{}\ErrorTok{(} \ExtensionTok{0} 
+\ExtensionTok{+}\NormalTok{ + 16}\PreprocessorTok{*}\NormalTok{v}\ErrorTok{(}\ExtensionTok{b.4}\KeywordTok{)}\ExtensionTok{/AVDD}
+\ExtensionTok{+}\NormalTok{ + 8}\PreprocessorTok{*}\NormalTok{v}\ErrorTok{(}\ExtensionTok{b.3}\KeywordTok{)}\ExtensionTok{/AVDD}
+\ExtensionTok{+}\NormalTok{ + 4}\PreprocessorTok{*}\NormalTok{v}\ErrorTok{(}\ExtensionTok{b.2}\KeywordTok{)}\ExtensionTok{/AVDD}
+\ExtensionTok{+}\NormalTok{ + 2}\PreprocessorTok{*}\NormalTok{v}\ErrorTok{(}\ExtensionTok{b.1}\KeywordTok{)}\ExtensionTok{/AVDD}
+\ExtensionTok{+}\NormalTok{ + 1}\PreprocessorTok{*}\NormalTok{v}\ErrorTok{(}\ExtensionTok{b.0}\KeywordTok{)}\ExtensionTok{/AVDD}
+\ExtensionTok{+}\KeywordTok{)}\ExtensionTok{/1000\}}
+\ExtensionTok{.save}\NormalTok{ v}\ErrorTok{(}\ExtensionTok{dec\_b}\KeywordTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\section{Import in testbench}\label{import-in-testbench}\index{import in testbench@Import in testbench}
+
+An example testbench can be seen below (\texttt{sim/JNWSW\_CM/tran.spi})
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{...}
+
+\ExtensionTok{.include}\NormalTok{ ../xdut.spi}
+\ExtensionTok{.include}\NormalTok{ ../svinst.spi}
+
+\ExtensionTok{*}\NormalTok{ Translate names}
+\ExtensionTok{VB0}\NormalTok{ b.0 b}\OperatorTok{\textless{}}\NormalTok{0}\OperatorTok{\textgreater{}}\NormalTok{ dc 0}
+\ExtensionTok{VB1}\NormalTok{ b.1 b}\OperatorTok{\textless{}}\NormalTok{1}\OperatorTok{\textgreater{}}\NormalTok{ dc 0}
+\ExtensionTok{VB2}\NormalTok{ b.2 b}\OperatorTok{\textless{}}\NormalTok{2}\OperatorTok{\textgreater{}}\NormalTok{ dc 0}
+\ExtensionTok{VB3}\NormalTok{ b.3 b}\OperatorTok{\textless{}}\NormalTok{3}\OperatorTok{\textgreater{}}\NormalTok{ dc 0}
+\ExtensionTok{VB4}\NormalTok{ b.4 b}\OperatorTok{\textless{}}\NormalTok{4}\OperatorTok{\textgreater{}}\NormalTok{ dc 0}
+
+\ExtensionTok{...}
+\end{Highlighting}
+\end{Shaded}
+
+\section{Override default digital output
+voltage}\label{override-default-digital-output-voltage}
+
+We can override the output dac from digital to analog to ensure that the
+digital signals have the right levels
+
+\begin{Shaded}
+\begin{Highlighting}[]
+
+\ExtensionTok{*{-}}\NormalTok{ Override the default digital output bridge.}
+\ExtensionTok{pre\_set}\NormalTok{ auto\_bridge\_d\_out =}
+     \ExtensionTok{+} \ErrorTok{(} \StringTok{".model auto\_dac dac\_bridge(out\_low = 0.0 out\_high = 1.8)"}
+     \ExtensionTok{+}   \StringTok{"auto\_bridge\%d [ \%s ] [ \%s ] auto\_dac"} \KeywordTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\section{Running}\label{running}\index{running@Running}
+
+You can run the whole thing with
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\BuiltInTok{cd}\NormalTok{ sim/JNWSW\_CM/}
+\FunctionTok{make}\NormalTok{ typical }
+\end{Highlighting}
+\end{Shaded}
+
+\section{Summary}\label{summary}
+
+The one-page version of this chapter:
+
+\begin{itemize}
+\tightlist
+\item
+  SystemVerilog describes hardware as events: always\_ff becomes
+  registers, combinational logic goes in always\_comb
+\item
+  Event-driven simulation only computes when something changes, which is
+  why digital simulation is fast
+\item
+  Mixed-signal co-simulation bridges the two worlds: the svinst flow
+  connects SPICE and the digital testbench
+\end{itemize}
+
+\section{Would you like to know
+more?}\label{would-you-like-to-know-more}
+
+The IEEE 1800 standard is the authority; Sutherland's tutorials are the
+readable way in
+
+The Verilator and iverilog manuals, for the two simulators used here
+
+\phantomsection\label{refs}
+\begin{CSLReferences}{0}{0}
+\bibitem[\citeproctext]{ref-gear71}
+\CSLLeftMargin{{[}1{]} }%
+\CSLRightInline{C. Gear, {``Simultaneous numerical solution of
+differential-algebraic equations,''} \emph{IEEE Transactions on Circuit
+Theory}, vol. 18, no. 1, pp. 89--95, 1971, doi:
+\href{https://doi.org/10.1109/TCT.1971.1083221}{10.1109/TCT.1971.1083221}.
+}
+
+\end{CSLReferences}

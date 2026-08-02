@@ -1,0 +1,1 @@
+- [Oscillators](/aic2026/assets/l09_osc.pdf) [[slides]](/aic2026/assets/html/l09_osc.html)

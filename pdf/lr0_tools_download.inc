@@ -1,0 +1,1 @@
+- [The Tools](/aic2026/assets/lr0_tools.pdf) [[slides]](/aic2026/assets/html/lr0_tools.html)

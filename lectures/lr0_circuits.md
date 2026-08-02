@@ -758,7 +758,7 @@ The full expression, with nothing ignored, is uglier:
 
 We've ignored bulk effect ($$g_s$$), source resistance ($$R_S$$) and load resistance ($$R_L$$)
 
-$$ A = \frac{(g_{m} + g_s + g_{ds})(R_L||r_{ds})}{1 + R_S\left(\frac{g_m + g_s +
+$$ A = \frac{(g_{m} + g_s + g_{ds})(R_L \parallel r_{ds})}{1 + R_S\left(\frac{g_m + g_s +
 g_{ds}}{1 + R_L/r_{ds}}\right)}$$
 
 If $$R_L >> r_{ds} $$, $$R_S  = 0$$ and $$g_s = 0$$

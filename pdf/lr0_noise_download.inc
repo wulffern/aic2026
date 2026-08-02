@@ -1,0 +1,1 @@
+- [Noise](/aic2026/assets/lr0_noise.pdf) [[slides]](/aic2026/assets/html/lr0_noise.html)

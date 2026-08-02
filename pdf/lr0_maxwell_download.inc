@@ -1,0 +1,1 @@
+- [Fields](/aic2026/assets/lr0_maxwell.pdf) [[slides]](/aic2026/assets/html/lr0_maxwell.html)

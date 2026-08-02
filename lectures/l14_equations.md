@@ -37,7 +37,7 @@ $$ i\hbar \frac{d}{dt} \psi(r,t) = \widehat{H} \psi(r,t) $$
 
 **Probability density of a particle**
 
-$$ P = |\psi(r,t)|^2 \text{ , } \psi(r,t) = A e^{i(kr - \omega t)} $$
+$$ P = \vert \psi(r,t)\vert ^2 \text{ , } \psi(r,t) = A e^{i(kr - \omega t)} $$
 
 **Heisenberg uncertainty**
 
@@ -190,7 +190,7 @@ $$ \frac{\sigma_{I_D}^2}{I_D^2} = \frac{1}{WL}\left[\left(\frac{g_m}{I_D}\right)
 
 **Mean square and power spectral density**
 
-$$ \overline{x^2(t)} = \int_{0}^{\infty}{S_x(f)df} \text{ , } S_y(f) = S_x(f)|H(f)|^2 $$
+$$ \overline{x^2(t)} = \int_{0}^{\infty}{S_x(f)df} \text{ , } S_y(f) = S_x(f)\vert H(f)\vert ^2 $$
 
 **Thermal noise of a resistor**
 
@@ -258,7 +258,7 @@ $$ V_{BG} = V_{G0} + (m-1)\frac{kT}{q}\ln{\frac{T_0}{T}} + T\left[\frac{k}{q}\ln
 
 **Pole/zero frequency**
 
-$$ \omega_{p|z} \propto \frac{1}{RC} \text{ (Active-RC)} \text{ , } \omega_{p|z} \propto \frac{G_m}{C} \text{ (Gm-C)} $$
+$$ \omega_{p\vert z} \propto \frac{1}{RC} \text{ (Active-RC)} \text{ , } \omega_{p\vert z} \propto \frac{G_m}{C} \text{ (Gm-C)} $$
 
 **General biquad**
 

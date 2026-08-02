@@ -1,0 +1,1 @@
+- [SPICE](/aic2026/assets/l00_spice.pdf) [[slides]](/aic2026/assets/html/l00_spice.html)

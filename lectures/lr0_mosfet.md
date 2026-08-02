@@ -1096,7 +1096,7 @@ single transistor: the largest voltage gain it can possibly give you.
 
 Define intrinsic gain as  
 
- $$ A = \left|\frac{v_{out}}{v_{in}}\right| =  g_m r_{ds} = \frac{g_m}{g_{ds}}  $$
+ $$ A = \left\vert \frac{v_{out}}{v_{in}}\right\vert =  g_m r_{ds} = \frac{g_m}{g_{ds}}  $$
 
  $$ A  =  \frac{2 I_D}{V_{eff}} \times \frac{1}{ \lambda I_D } = \frac{2}{\lambda V_{eff}}  $$
 

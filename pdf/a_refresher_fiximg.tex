@@ -1,0 +1,665 @@
+\textbf{Keywords:} SI Units, Silicon, Band Structure, Fermi Level,
+Metals, Insulators, Semiconductors, Band Diagrams, Fields
+
+\section{There are standard units of
+measurement}\label{there-are-standard-units-of-measurement}
+
+All known physical quantities are derived from 7 base units
+(\href{https://en.wikipedia.org/wiki/International_System_of_Units}{SI
+units})
+
+\begin{itemize}
+\tightlist
+\item
+  second (s) : time
+\item
+  meter (m) : space
+\item
+  kg (kilogram) : weight
+\item
+  ampere (A) : current
+\item
+  kelvin (K) : temperature
+\item
+  mole (mol) : amount of substance
+\item
+  candela (cd) : luminous intensity
+\end{itemize}
+
+All other units (for example volts), are derived from the base units.
+
+I don't go around remembering all of them, they are easily available
+online. When you forget the equation for charge (Q), voltage (V) and
+capacitance (C), look at the units below, and you can see it's \(Q=CV\)
+\footnote{Although you do have to keep your symbols straight. We use
+  ``C'' for Capacitance, but C can also mean Columbs. Context matters.}
+
+
+{
+\centering
+\aicfig{media/NIST.SP_.1247.png}
+}
+
+\emph{Figure 1: Si base units, from
+\url{https://www.nist.gov/pml/owm/metric-si/si-units}. Image: NIST, US
+Department of Commerce (US federal work)}
+
+\section{Electrons}\label{electrons}\index{electrons@Electrons}
+
+Electrons are fundamental, they cannot (as far as we know), be divided
+into smaller parts. Explained further in the
+\href{https://en.wikipedia.org/wiki/Standard_Model}{standard model of
+particle physics}
+
+
+{
+\centering
+\aicfig{media/standard_model.pdf}
+}
+
+\emph{Figure 2: Standard model of particle physics, Wikipedia. Image:
+Cush after MissMJ, public domain, via Wikimedia Commons}
+
+Electrons have a negative charge of \(q \approx 1.602 \times 10^{-19}\).
+The proton a positive charge. The two charges balance exactly! If you
+have a trillion electrons and a trillion protons inside a volume, the
+net external charge will be \(0\) (assuming we measure from some
+distance away). I find this fact absolutely incredible. There must be a
+fundamental connection between the charge of the proton and electron.
+It's insane that the charges balance out so exactly.
+
+All electrons are the same, although the quantum state can be different.
+
+An electron cannot occupy the same quantum state as another. This rule
+applies to all fermions (particles with spin of 1/2)
+
+The quantum state of an electron is fully described by its spin,
+momentum (p) and position in space (r).
+
+\section{Probability}\label{probability}\index{probability@Probability}
+
+The probability of finding an electron in a state as a function of space
+and time is
+
+\[ P = \vert \psi(r,t)\vert ^2 \]
+
+, where \(\psi\) is named the probability amplitude, and is a complex
+function of space and time. In some special cases, it's
+
+\[ \psi(r,t) = A e^{i( kr - \omega t)}\]
+
+, where A is complex number, k is the wave number, r is the position
+vector from some origin, \(\omega\) is the frequency and \(t\) is time.
+
+The energy is \(E = \hbar \omega\) , where \(\hbar = h/2\pi\) and \(h\)
+is \href{https://en.wikipedia.org/wiki/Planck_constant}{Planck Constant}
+and the momentum is \(p = \hbar k\)
+
+The probability amplitude is also called the wave function. Type of wave
+function depends on the scenario, and does not have to take on the
+solution above. The possible wave functions are those equations that
+fits with the time evolution of quantum states given by the Schrodinger
+equation.
+
+\section{Uncertainty principle}\label{uncertainty-principle}\index{uncertainty principle@Uncertainty principle}
+
+We cannot, with ultimate precision, determine both the position and the
+momentum of a particle, the precision is
+
+\[\sigma_x \sigma_p \ge \frac{\hbar}{2}\]
+
+From the
+\href{https://en.wikipedia.org/wiki/Uncertainty_principle}{uncertainty
+(Unschärfe) principle} we can actually
+\href{https://wulffern.github.io/aic2023/atom}{estimate the size of the
+atom}
+
+\section{States as a function of time and
+space}\label{states-as-a-function-of-time-and-space}
+
+The time-evolution of the probability amplitude is
+
+\[ i\hbar \frac{d}{dt} \psi(r,t) = H \psi(r,t)\]
+
+, where H is named the Hamiltonian matrix, or the energy matrix or (if I
+understand correctly) the amplitude matrix of the probability amplitude
+to change from one state to another.
+
+For example, if we have a system with two states, a simplified version
+of two electrons shared between two atoms, as in \(H_2\), or hydrogen
+gas, or co-valent bonds, then the Hamiltonian is a 2 x 2 matrix. And the
+\(\psi\) is a vector of \([\psi_1,\psi_2]\)
+
+Computing the solution to the
+\href{https://en.wikipedia.org/wiki/Schrödinger_equation}{Schrodinger
+Equation} can be tricky, because you must know the number of relevant
+states to know the vector size of \(\psi\) and the matrix size of \(H\).
+In addition, the \(H\) can be a function of time and space (I think).
+
+Compared to the equations of electric fields, however, Schrodinger is
+easy, it's a set of linear differential equations.
+
+\section{Allowed energy levels in
+atoms}\label{allowed-energy-levels-in-atoms}
+
+Solutions to Schrodinger result in quantized energy levels for an
+electron bound to an atom.
+
+Take hydrogen, the electron bound to the proton can only exists in
+quantized energy levels. The lowest energy state can have two electrons,
+one with spin up, and one with spin down.
+
+From Schrodinger you can compute the energy levels, which most of us did
+at some-point, although now, I can't remember how it was done. That's
+not important. The important is to internalize that the energy levels in
+bound electrons are discrete.
+
+Electrons can transition from one energy level to another by external
+influence, i.e temperature, light, or other.
+
+The probability of a state transition (change in energy) can be
+determined from the probability amplitude and Schrodinger.
+
+\section{Allowed energy levels in
+solids}\label{allowed-energy-levels-in-solids}
+
+If I have two silicon atoms spaced far apart, then the electrons can
+have the same spin and same momentum around their respective nuclei. As
+I bring the atoms closer, however, the probability amplitudes start to
+interact (or the dimensions of the Hamiltonian matrix grow), and there
+can be state transitions between the two electrons.
+
+The allowed energy levels will split. If I only had two states
+interacting, the Hamiltonian could be
+
+\[ H = 
+\begin{bmatrix}
+A & 0 \\
+0 & -A
+\end{bmatrix}
+\]
+
+and the new energy levels could be
+
+\[ E_1 = E_0 + A\]
+
+and
+
+\[ E_2 = E_0 - A\]
+
+In a silicon crystal we can have trillions of atoms, and those that are
+close, have states that interact. \textbf{That's why crystals stay
+solids}. All chemical bonds are states of electrons interacting! Some
+are strong (co-valent bonds), some are weaker (ionic bonds), but it's
+all quantum states interacting.
+
+The discrete energy levels of the electron transition into bands of
+allowed energy states.
+
+
+{
+\centering
+\aicfig{media/Solid_state_electronic_band_structure.png}
+}
+
+\emph{Figure 3:
+\href{https://en.wikipedia.org/wiki/Electronic_band_structure}{Electronic
+band structure, Wikipedia}. Image: Chetvorno, CC0, via Wikimedia
+Commons}
+
+For a crystal, the allowed energy bands is captured in the
+\href{https://en.wikipedia.org/wiki/Electronic_band_structure}{band
+structure}
+
+\section{Silicon Unit Cell}\label{silicon-unit-cell}\index{silicon unit cell@Silicon unit cell}
+
+A \href{https://en.wikipedia.org/wiki/Silicon}{silicon} crystal unit
+cell is a diamond faced cubic with 8 atoms in the corners spaced at
+0.543 nm, 6 at the center of the faces, and 4 atoms inside the unit cell
+at a nearest neighbor distance of 0.235 nm.
+
+
+{
+\centering
+\aicfig{media/503px-Silicon-unit-cell-3D-balls.png}
+}
+
+\emph{Figure 4: \href{https://en.wikipedia.org/wiki/Silicon}{Silicon,
+Wikipedia}. Image: Ben Mills, public domain, via Wikimedia Commons}
+
+\section{Band structure}\label{band-structure}\index{band structure@Band structure}
+
+The full band structure of a silicon unit cell is complicated, it's a
+\href{http://lampx.tugraz.at/~hadley/ss1/semiconductors/silicon_bandstructure.php}{3
+dimensional concept}
+
+Peter Hadley's course notes at TU Graz have the full plot, and it is
+worth looking at once: energy against wavevector along the symmetry
+directions of the crystal, with the conduction band minimum sitting off
+to one side rather than above the valence band maximum. That offset is
+what makes silicon an \emph{indirect} bandgap semiconductor, and it is
+the reason silicon is used for transistors and not for light emitting
+diodes: an electron dropping across the gap has to shed momentum as well
+as energy, which needs a phonon to turn up at the same moment, and that
+is a far less likely event than simply emitting a photon.
+
+\section{Valence band and Conduction
+band}\label{valence-band-and-conduction-band}
+
+For bulk silicon we simplify, and we think of two bands, the conduction
+band, and valence band
+
+In the conduction band (\(E_C\)) is the lowest energy where electrons
+are free (not bound to atoms). The valence band (\(E_V\)) is the highest
+band where electrons are bound to silicon atoms.
+
+The difference between \(E_C\) and \(E_V\) is a property of the material
+we've named the band gap.
+
+\[ E_G = E_C - E_V\]
+
+\section{Fermi level}\label{fermi-level}\index{fermi level@Fermi level}
+
+From Wikipedia's \href{https://en.wikipedia.org/wiki/Fermi_level}{Fermi
+level}
+
+\begin{quote}
+In band structure theory, used in solid state physics to analyze the
+energy levels in a solid, the Fermi level can be considered to be a
+hypothetical energy level of an electron, such that at thermodynamic
+equilibrium this energy level would have a 50\% probability of being
+occupied at any given time
+\end{quote}
+
+The Fermi level is closely linked to the
+\href{https://en.wikipedia.org/wiki/Fermi\%E2\%80\%93Dirac_statistics}{Fermi-Dirac
+distribution}
+
+\[
+f(E) = \frac{1}{e^{(E - E_F)/kT} + 1}
+\]
+
+If the energy of the state is more than a few kT away from the
+Fermi-level, then
+
+\[
+f(E) \approx e^{(E_F - E)/kT}
+\]
+
+The equation above is one of the reasons the structure \(e^{E/kT}\) or
+\(e^{qV/kT}\) shows up all over the place. You'll see it in the
+equations for current in a diode, \(I_D = I_s (e^{q V_D/nkT} -1)\), the
+subthreshold conduction of a mosfet \(I_D \propto e^{q V_{gs}/nkT}\) and
+even the
+\href{https://en.wikipedia.org/wiki/Arrhenius_equation}{Arrhenius
+Equation} \(k = A e^{-E_a/kT}\).
+
+It seems like any time you have something related to chemical reactions
+(state transitions of electrons, breaking bonds, forming bonds), or
+current in solids, there is a relation to the equation above. To me,
+that makes sense.
+
+The Fermi-Dirac function also explains why there are more free carriers,
+and reaction rates increase, at high temperature. The part of the
+equation that is \(e^{-E/kT}\) will approach one at high temperatures.
+
+\section{Metals}\label{metals}\index{metals@Metals}
+
+In metals, the band splitting of the energy levels causes the valence
+band and conduction band to overlap.
+
+
+{
+\centering
+\aicfig{media/Band_filling_diagram.png}
+}
+
+\emph{Figure 5: Band splitting in materials.
+\href{https://en.wikipedia.org/wiki/Electronic_band_structure}{Electronic
+Band Structure, Wikipedia}. Image: Nanite, CC0, via Wikimedia Commons}
+
+Electrons can easily transition between bound state and free state. As
+such, electrons in metals are shared over large distances, and there are
+many electrons readily available to move under an applied field, or
+difference in electron density. That's why metals conduct well.
+
+\section{Insulators}\label{insulators}\index{insulators@Insulators}
+
+In insulating materials the difference between the conduction band and
+the valence band is large. As a result, it takes a large energy to
+excite electrons to a state where they can freely move.
+
+That's why glass is transparent to optical frequencies. Visible light
+does not have sufficient energy to excite electrons from a bound state.
+
+That's also why glass is opaque to ultra-violet, which has enough energy
+to excite electrons out of a bound state.
+
+Based on these two pieces of information you could estimate the bandgap
+of glass.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ImportTok{from}\NormalTok{ scipy }\ImportTok{import}\NormalTok{ constants}
+\CommentTok{\#{-} We must use the "correct" units for planck\textquotesingle{}s constant to get energy in eV}
+\NormalTok{h }\OperatorTok{=}\NormalTok{ constants.physical\_constants[}\StringTok{"Planck constant in eV/Hz"}\NormalTok{][}\DecValTok{0}\NormalTok{]}
+\NormalTok{c }\OperatorTok{=}\NormalTok{ constants.physical\_constants[}\StringTok{"speed of light in vacuum"}\NormalTok{][}\DecValTok{0}\NormalTok{]}
+
+\NormalTok{lambda\_optical }\OperatorTok{=} \FloatTok{450e{-}9}
+\NormalTok{e\_optical }\OperatorTok{=}\NormalTok{ h }\OperatorTok{*}\NormalTok{ c}\OperatorTok{/}\NormalTok{lambda\_optical}
+
+\NormalTok{lambda\_ultra }\OperatorTok{=} \FloatTok{380e{-}9}
+\NormalTok{e\_ultra }\OperatorTok{=}\NormalTok{ h }\OperatorTok{*}\NormalTok{ c}\OperatorTok{/}\NormalTok{lambda\_ultra}
+
+\BuiltInTok{print}\NormalTok{(}\StringTok{"Bandgap of glass is above }\SpecialCharTok{\%.2f}\StringTok{ eV, maybe around }\SpecialCharTok{\%.2f}\StringTok{ eV "} \OperatorTok{\%}\NormalTok{(e\_optical,e\_ultra))}
+\end{Highlighting}
+\end{Shaded}
+
+\section{Semiconductors}\label{semiconductors}\index{semiconductors@Semiconductors}
+
+In silicon the bandgap is lower than an insulator, approximately
+
+\[E_G = 1.12\text{ } eV\]
+
+At room temperature, that allows a small number of electrons to be
+excited into the conduction band, leaving behind a ``hole'' in the
+valence band.
+
+\section{Band diagrams}\label{band-diagrams}\index{band diagrams@Band diagrams}
+
+A \href{https://en.wikipedia.org/wiki/Band_diagram}{band diagram} or
+energy level diagrams shows the conduction band energy and valence band
+energy as a function of distance in the material.
+
+
+{
+\centering
+\aicfig{media/Pn-junction_zero_bias.png}
+}
+
+\emph{Figure 6: \href{https://en.wikipedia.org/wiki/Band_diagram}{Band
+diagram of a PN junction, Wikipedia}. Image: Brews ohare, CC BY-SA 3.0,
+via Wikimedia Commons}
+
+The horizontal axis is the distance in the material, the vertical axis
+is the energy.
+
+\section{Density of electrons/holes}\label{density-of-electronsholes}\index{density of electrons/holes@Density of electrons/holes}
+
+There are two components needed to determine how many electrons are in
+the conduction band. The density of available states, and the
+probability of an electron to be in that quantum state.
+
+The probability is the Fermi-Dirac distribution. The density of
+available states is a complicated calculation from the band-structure of
+silicon.
+
+For details see the Diodes chapter.
+
+\[ n_e = \int_{E_C}^{\infty} N(E)f(E) dE\]
+
+The Fermi level is assumed to be independent of energy level, so we can
+write
+
+\[ n_e = e^{E_F/kT}  \int_{E_C}^{\infty} N(E) e^{-E/kT}dE\]
+
+for the density of electrons in the conduction band.
+
+\section{Fields}\label{fields}\index{fields@Fields}
+
+There are equations that relate electric field, magnetic field, charge
+density and current density to each-other.
+
+Electric flux is the total electric field through a surface. Magnetic
+flux is the total magnetic field through a surface.
+
+Think of flux as the ``current'', and the field as the ``current
+density''. You have to multiply the current density by an area to get
+current. You have to multiply the magnetic field by an area to get
+magnetic flux
+
+\[ \oint_{\partial \Omega} \mathbf{E} \cdot d\mathbf{S} = \frac{1}{\epsilon_0} \iiint_{V} \rho
+\cdot dV\]
+
+,relates net electric flux to net enclosed electric charge
+
+\[ \oint_{\partial \Omega} \mathbf{B} \cdot d\mathbf{S} = 0\]
+
+,relates net magnetic flux to net enclosed magnetic charge
+
+\[ \oint_{\partial \Sigma} \mathbf{E} \cdot d\mathbf{\ell} = - \frac{d}{dt}\iint_\Sigma \mathbf{B}
+\cdot d\mathbf{S}\]
+
+,relates induced electric field to changing magnetic flux
+
+\[ \oint_{\partial \Sigma} \mathbf{B} \cdot d\mathbf{\ell} = \mu_0\left(
+\iint_\Sigma \mathbf{J} \cdot d\mathbf{S} + \epsilon_0 \frac{d}{dt}\iint_\Sigma
+\mathbf{E} \cdot d\mathbf{S} \right)\]
+
+,relates induced magnetic field to changing electric flux and to current
+
+These are the
+\href{https://en.wikipedia.org/wiki/Maxwell\%27s_equations}{Maxwell
+Equations}, and are non-linear time dependent differential equations.
+
+Under the best of circumstances they are fantastically hard to solve!
+But it's how the real world works.
+
+\section{Permittivity and
+Permeability}\label{permittivity-and-permeability}
+
+The permittivity of free space is defined as
+
+\[\epsilon_0 = \frac{1}{\mu_0 c^2}\]
+
+, where \(c\) is the
+\href{https://en.wikipedia.org/wiki/Speed_of_light}{speed of light}, and
+\(\mu_0\) is the
+\href{https://en.wikipedia.org/wiki/Vacuum_permeability}{vacuum
+permeability}, which, in
+\href{https://en.wikipedia.org/wiki/International_System_of_Units}{SI
+units}, is now
+
+\[\mu_0 = \frac{2 \alpha}{q^2}\frac{h}{c}\]
+
+, where \(\alpha\) is the
+\href{https://en.wikipedia.org/wiki/Fine-structure_constant}{fine
+structure constant}.
+
+\section{Quantum electrodynamics}\label{quantum-electrodynamics}\index{quantum electrodynamics@Quantum electrodynamics}
+
+The quantum electrodynamics (QED) is a full description of interactions
+between light and matter. The equations describe both quantum mechanical
+effects, electromagnetism and is in agreement with special relativity.
+
+The equations are rather complicated, but it's based on
+\href{https://en.wikipedia.org/wiki/Lagrangian_(field_theory)}{Lagrangian}
+physics. Maxwell's equations actually fall out of the QED Lagrangian
+when one assumes local phase symmetry.
+
+The QED Lagrangian is
+
+\[ \mathcal{L} = \bar{\psi}[i \hbar c \gamma^\mu\partial_\mu - mc^2]\psi - q[\bar{\psi} \gamma^\mu \psi] A_\mu - \frac{1}{16 \pi}F_{\mu\nu}F^{\mu\nu} \]
+
+For more information, have a look at
+\href{https://www.youtube.com/watch?v=Sj_GSBaUE1o}{Electromagnetism as a
+Gauge Theory}
+
+\section{Voltage}\label{voltage}\index{voltage@Voltage}
+
+The electric field has units voltage per meter, so the electric field is
+the negative derivative of the voltage as a function of space.
+
+\[ E = -\frac{dV}{dx}\]
+
+\section{Current}\label{current}\index{current@Current}
+
+Current has unit \(A\) and charge \(C\) has unit \(As\), so the current
+is the number of charges passing through a volume per second.
+
+The current density \(J\) has units \(A/m^2\) and is often used, since
+we can multiply by the surface area of a conductor, if the current
+density is uniform.
+
+\[ I  = \text{Area} \times J \]
+
+\section{Drift current}\label{drift-current}\index{drift current@Drift current}
+
+Charge carriers (electrons, holes, ions) in an electric field will give
+rise to a drift current.
+
+We know from Newtons laws that force equals mass times acceleration
+
+\[ \vec{F} = m \vec{a}\]
+
+If we assume a zero, or constant magnetic field, the force on a particle
+is
+
+\[\vec{F} = q\vec{E}\]
+
+The current density is then
+
+\[ \vec{J} = q\vec{E} \times n \times \mu \]
+
+where \(n\) is the charge density, and \(\mu\) is the mobility (how
+easily the charges move) and has units \(m^2/Vs\)
+
+Assuming
+
+\[ E = V/m\]
+
+, we could write
+
+\[ J = \frac{C}{m^3}\frac{V}{m}\frac{m^2}{Vs} = \frac{C}{s}m^{-2}\]
+
+So multiplying by an area A with unit meters squared
+
+\[ I = q n \mu A V\]
+
+and we can see that the conductance
+
+\[G = q n \mu A\]
+
+, and since
+
+\[G = 1/R\]
+
+, where R is the resistance, we have
+
+\[ I = G V \Rightarrow V = RI\]
+
+Or \href{https://en.wikipedia.org/wiki/Ohm\%27s_law}{Ohms law}
+
+\section{Diffusion current}\label{diffusion-current}\index{diffusion current@Diffusion current}
+
+A difference in charge density will give rise to a diffusion current.
+The current density is
+
+\[ J = -q D_n \frac{d \rho}{dx}\]
+
+,where \(D_n\) is a diffusion constant, and \(\rho\) is the charge
+density.
+
+\section{Why are there two currents?}\label{why-are-there-two-currents}\index{why are there two currents?@Why are there two currents?}
+
+I struggled with the concepts diffusion current and drift current for a
+long time. Why are there two types of current? It was when I read
+\href{https://www.feynmanlectures.caltech.edu/III_21.html}{The
+Schrödinger Equation in a Classical Context: A Seminar on
+Superconductivity} I realized that the two types of current come
+directly from the Schrodinger equation, there is one component related
+to the electric field (potential energy) and a component related to the
+momentum (kinetic energy).
+
+In the absence of an electric field electrons will still jump from state
+to state set by the probabilities of the Hamiltonian. If there are more
+electrons in an area, then it will seem like there is an average
+movement of charges away from that area. That's how I think about drift
+and diffusion currents. We can kinda see it from the Schrödinger
+equation below.
+
+\[-\frac{\hbar^2}{2 m} \frac{\partial^2}{\partial^2 x}\psi(x,t) +
+V(x)\psi(x,t) = i\hbar\frac{\partial}{\partial t} \psi(x,t) \]
+
+\section{Currents in a semiconductor}\label{currents-in-a-semiconductor}\index{currents in a semiconductor@Currents in a semiconductor}
+
+Both electrons, and holes will contribute to current.
+
+Electrons move in the conduction band, and holes move in the valence
+band.
+
+Both holes and electrons can only move if there are available quantum
+states.
+
+For example, if the valence band is completely filled (all states
+filled), then there can be no current.
+
+To compute the total current in a semiconductor one must compute
+
+\[ I  = I_{n_{drift}} +I_{n_{diffusion}} + I_{p_{drift}}  + I_{p_{diffusion}}\]
+
+where \(n\) denotes electrons, and \(p\) denote holes.
+
+\section{Resistors}\label{resistors}\index{resistors@Resistors}
+
+We can make resistors with many materials. The behavior of the charge
+carrier may be different between materials.
+
+In metal the dominant carrier depends on the metal, but it's usually
+electrons. As such, one can often ignore the hole current.
+
+In a semiconductor the dominant carrier depends on the Fermi level in
+relation to the conduction band and valence band.
+
+If the Fermi level is close to the valence band the dominant carrier
+will be holes. If the Fermi level is close to the conduction band, the
+dominant carrier will be electrons.
+
+That's why we often talk about ``majority carriers'' and ``minority
+carriers'', both are important in semiconductors.
+
+\section{Capacitors}\label{capacitors}\index{capacitors@Capacitors}
+
+A capacitor resists a change in voltage
+
+\[ I = C \frac{dV}{dt}\]
+
+and store energy in an electric field between two conductors with an
+insulator between.
+
+\section{Inductors}\label{inductors}\index{inductors@Inductors}
+
+An inductor resist a change in current
+
+\[ V = L \frac{dI}{dt}\]
+
+and store energy in the magnetic fields in a loop of a conductor.
+
+\section{Summary}\label{summary}
+
+The one-page version of this chapter:
+
+\begin{itemize}
+\tightlist
+\item
+  Seven SI base units; electronics interacts with the world through the
+  second and the ampere
+\item
+  Electrons are fermions: two per state, which is what builds shells,
+  bands, and all of chemistry
+\item
+  Energy lives in the fields: \(E = -dV/dx\), and voltage is energy per
+  charge
+\item
+  This refresher's job is vocabulary - enough physics to carry the diode
+  and MOSFET chapters
+\end{itemize}
+
+\section{Would you like to know
+more?}\label{would-you-like-to-know-more}
+
+Feynman's \emph{Lectures on Physics}, volume I - the pleasure route
+through everything in this chapter
+
+Griffiths, \emph{Introduction to Quantum Mechanics} - the usual next
+step for the quantum parts

@@ -97,7 +97,7 @@ branch, so the full differential current reaches the single ended output.
 <sub>Figure 1: Five transistor OTA</sub>
 -->
 
-$$ A = g_{m1} (r_{ds2} || r_{ds4}) $$
+$$ A = g_{m1} (r_{ds2} \parallel r_{ds4}) $$
 
 $$ \omega_{ugf} = \frac{g_{m1}}{C_L} $$
 
@@ -136,7 +136,7 @@ source and sink $K$ times the tail current.
 <sub>Figure 2: Current mirror OTA with mirror ratio $K$</sub>
 -->
 
-$$ A = K g_{m1} (r_{ds6} || r_{ds8}) $$
+$$ A = K g_{m1} (r_{ds6} \parallel r_{ds8}) $$
 
 $$ \omega_{ugf} = \frac{K g_{m1}}{C_L} $$
 
@@ -173,7 +173,7 @@ rail - the best swing any OTA can offer, which matters when the supply is
 <sub>Figure 3: Two stage OTA with Miller compensation</sub>
 -->
 
-$$ A = g_{m1}(r_{ds2}||r_{ds4}) \times g_{m6}(r_{ds6}||r_{ds7}) $$
+$$ A = g_{m1}(r_{ds2} \parallel r_{ds4}) \times g_{m6}(r_{ds6} \parallel r_{ds7}) $$
 
 $$ \omega_{ugf} = \frac{g_{m1}}{C_c} $$
 
@@ -227,7 +227,7 @@ stack on top of each other in the same headroom.
 <sub>Figure 4: Folded cascode OTA</sub>
 -->
 
-$$ A \approx g_{m1} \left( g_{m8} r_{ds8} (r_{ds10}||r_{ds2}) \, || \, g_{m6} r_{ds6} r_{ds4} \right) $$
+$$ A \approx g_{m1} \left( g_{m8} r_{ds8} (r_{ds10} \parallel r_{ds2}) \, \parallel \, g_{m6} r_{ds6} r_{ds4} \right) $$
 
 $$ \omega_{ugf} = \frac{g_{m1}}{C_L} $$
 

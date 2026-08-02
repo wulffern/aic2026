@@ -1,0 +1,374 @@
+
+
+
+
+
+
+
+    
+
+
+
+**Keywords:** Course Goals, Roles, Skills, Zen of IC Design, Design Process, Tapeout
+
+
+
+<!-- 
+
+00:00 Introduction
+00:30 Who am I
+04:20 My role 
+07:30 What you'll learn
+10:15 Analog design flow
+23:58 Full chip flow 
+28:26 Will you tapeout?
+32:30 Lecture Notes
+39:40 Philosophy
+45:00 Analog design process
+48:40 My goal
+49:30 Plan 
+56:00 The Exercise
+59:38 The Project 
+1:00:00 The Tools
+-->
+
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/CekM_kFgMas?si=vb5L-XivOrUgLw0A" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+
+
+
+#  Who
+
+
+My name is 
+
+Carsten Wulff [carstenw@ntnu.no](mailto:carstenw@ntnu.no)
+
+
+I finished my Masters in 2002, and did a Ph.D on analog-to-digital converters finished in 2008. 
+
+Since that time, I've had a three axis in my work/hobby life.
+
+I work at  [Nordic Semiconductor](https://www.nordicsemi.com) where I've been since 2008. The first 7 years I did analog design
+  (ADCs, DC/DCs, GPIO). The next 7 years I was the Wireless Group Manager. The Wireless group made most
+  of the analog and RF designs for Nordic's short-range products. Now I'm the IC
+  Scientist, and focus on technical issues with our integrated circuits that
+  occur before we go into volume production. 
+
+I work at [NTNU](https://ntnu.no) where I did a part time postdoc from 2014 - 2017. From 2020 I've been working on and teaching [Advanced Integrated
+  Circuits](https://www.ntnu.edu/studies/courses/TFE4188#tab=omEmnet)
+
+I have a hobby trying to figure out how to make a new analog circuit design
+  paradigm. The one we have today with
+  schematic/simulation/layout/verification/simulation is too slow
+
+
+<!-- ../media/timeline_tikz.pdf -->
+
+![](media/timeline_tikz.pdf)
+
+
+<small><sub>_Figure 1: My life _</sub></small>
+
+
+
+
+# How I see our roles 
+
+
+In Figure 2 you can see how I think about the research universe. There are things we know 
+to be possible, things that actually are impossible (travel back in time, breaking thermodynamics, travel with a speed beyond light).
+
+Between the impossible, and the possible, lies the unknown. I consider our roles as follows:
+
+
+**Professors:** Guide students on what is impossible, possible, and hints on what
+might be possible 
+
+**Ph.D students:** Venture into the unknown and make something (more) possible
+
+**Master students:** Learn all that is currently possible
+
+**Bachelor students:** Learn how to make complicated into easy
+
+**Industry:** Take what is possible, and/or complicated, and make it easy
+
+
+Everyone in the figure pushes a border: teaching moves knowledge from
+complicated towards easy, research moves the border of the unknown,
+and industry earns its living on the innermost rings. This course
+lives one ring out from the centre - what is known and complicated,
+made learnable.
+
+
+<!-- ../media/l01_universe_tikz.pdf -->
+
+![](media/l01_universe_tikz.pdf)
+
+
+<small><sub>_Figure 2: The research universe: Easy at the centre, then Complicated, Possible and Unknown, with the Impossible beyond the last border_</sub></small>
+
+
+
+
+#  I want you to learn the skills necessary to make your own ICs
+
+
+In 2020 the global integrated circuit market was [437.7 billion dollars](https://www.fortunebusinessinsights.com/integrated-circuit-market-106522)! 
+The market is expected to grow to 1136 billion in 2028. Integrated circuits enable all technologies.
+
+I will be dead in approximately 50 years, and will retire in approximately 20 years. 
+Everything I know will be gone (except for the small pieces I've left behind in videos or written word)
+
+Someone must take over, and to do that, they need to know most of what I know, and hopefully a bit more. 
+
+That's where some of you come in. Some of you will find integrated circuits interesting to make, and in addition, you have 
+the stamina, patience, and brain necessary to learn some of the hardest topics in the world.
+
+
+
+
+
+
+
+
+# There will always be analog circuits, because the real world is analog
+
+
+In this course, we'll focus on analog ICs, because the real world is analog, and all ICs must have some 
+analog components, otherwise they won't work.
+
+The steps to make integrated circuits are split in two. We have an analog flow, and a digital flow, as shown in Figure 3. 
+
+It's rare to find a single human that does both flows well. Usually people choose, and I think it's based on what they like and their personality.
+
+If you like the world to be ordered, with definite answers, then it's likely that you'll find the digital flow interesting.
+
+If you're comfortable with not knowing, and have an insatiable desire to understand how the world *really* works at a fundamental level, then 
+it's likely that you'll find the analog flow interesting. 
+
+
+<!-- ../media/dig_des_tikz.pdf -->
+
+![](media/dig_des_tikz.pdf)
+
+
+<small><sub>_Figure 3: Analog and Digital design process  _</sub></small>
+
+
+
+
+
+
+
+
+
+
+#  Will you tape-out an IC?
+
+
+Something that would make me really happy is if someone is able to tapeout an IC in this course. 
+
+It's now possible without signing an NDA or buying expensive software licenses. 
+
+In 2020 Google and Skywater joined forces to release a 130 nm process design kit to the public. In addition, they 
+have fueled a renaissance of open source software tools.
+
+[tinytapeout](https://tinytapeout.com) runs cheap shuttles
+which makes it possible for a private citizen to tape-out their own integrated circuit.
+
+
+
+
+
+
+## What the team needs to know to design ICs 
+
+There are a multitude of tools and skills needed to design professional ICs. 
+It's not likely that you'll find all the skills in one human, and even if you
+could, one human does not have sufficient bandwidth to design ICs with all its aspects in a 
+reasonable timeline 
+
+That is, unless we can find a way to make ICs easier.
+
+The skills needed are
+
+
+- _Project flow support_: **Confluence**, JIRA, risk management (DFMEA), failure analysis (8D)
+- _Language_: **English**, **Writing English (Latex, Word, Email)**
+- _Psychology_: Personalities, convincing people, presentations (Powerpoint, Deckset), **stress management (what makes your brain turn off?)**
+- _DevOps_: **Linux**, build systems (CMake, make, ninja), continuous integration (bamboo, jenkins), **version control (git)**, containers (docker), container orchestration (swarm, kubernetes)
+- _Programming_: Python, C, C++, Matlab <small><sub>_Since 1999 I’ve programmed in Python, Go, Visual BASIC, PHP, Ruby, Perl, C#, SKILL, Ocean, Verilog-A, C++, BASH, AWK, VHDL, SPICE, MATLAB, ASP, Java, C, SystemC, Verilog, Assembler, and probably a few I’ve forgotten._</sub></small>
+- _Firmware_: signal processing, algorithms, software architecture, security
+- _Infrastructure_: **Power management**, **reset**, **bias**, **clocks**
+- _Domains_: CPUs, peripherals, memories, bus systems
+- _Sub-systems_: **Radio’s**, **analog-to-digital converters**, **comparators**
+- _Blocks_: **Analog Radio**, Digital radio baseband
+- _Modules_: Transmitter, **receiver**, de-modulator, timing recovery, state machines
+- _Designs_: **Opamps**, **amplifiers**,  **current-mirrors**, adders, random access memory blocks, standard cells
+- _Tools_: **schematic**, **layout**, **parasitic extraction**, synthesis, place-and-route, **simulation**,  (System)Verilog, **netlist** 
+- _Physics_: transistor, pn junctions, quantum mechanics
+
+
+## Zen of IC design (stolen from Zen of Python)
+
+
+When you learn something new, it's good to listen to someone that has done whatever it is before. 
+
+Here are some guiding principles that you'll likely forget. 
+
+
+
+- Beautiful is better than ugly.
+- Explicit is better than implicit.
+- Simple is better than complex.
+- Complex is better than complicated.
+- Readability counts (especially schematics).
+- Special cases aren't special enough to break the rules.
+- Although practicality beats purity.
+
+
+
+- In the face of ambiguity, refuse the temptation to guess.
+- There should be one __and preferably only one__ obvious way to do it.
+- Now is better than never.
+- Although never is often better than *right* now.
+- If the implementation is hard to explain, it's a bad idea.
+- If the implementation is easy to explain, it may be a good idea.
+
+
+
+
+## IC design mantra 
+
+To copy an old mantra I have on learning programming (run it in a bash/zsh/cshrc terminal, or in your brain) 
+
+
+``` perl
+echo "Find a problem that you really want to solve,"\
+     "and learn programming to solve it."\
+     "There is no point in saying 'I want to learn programming',"\
+     "then sit down with a book to read about programming,"\
+     "and expect that you will learn programming that way."\
+     "It will not happen. The only way to learn programming"\
+     "is to do it, a lot." \
+     |perl -pe 's/programming/analog design/ig'
+```
+
+
+## Analog Design Process
+
+
+- Define the problem, what are you trying to solve?
+- Find a circuit that can solve the problem (papers, books)
+- Find right transistor sizes. What transistors should be weak inversion, strong inversion, or don't care?
+- Write a verification plan (ask chat). Plan to simulate everything that could go wrong. 
+- Check operating region of transistors (.op)
+- Check key parameters (.dc, .ac, .tran)
+- Check function. Exercise all inputs. Check all control signals
+
+
+
+
+- Check key parameters in all corners. Check mismatch (Monte-Carlo simulation)
+- Do layout, and check it's error free. Run design rule checks (DRC). Check layout versus schematic (LVS)
+- Extract parasitics from layout. Resistance, capacitance, and inductance if necessary.
+- On extracted parasitic netlist, check key parameters in all corners and mismatch (if possible).
+- If everything works, then you're done.
+
+*On failure, go back as far as necessary*
+
+
+
+
+# My Goal
+
+
+Don't expect that I'll magically take information and put it inside your head, and you'll suddenly understand everything about making ICs.
+
+
+**You are the one that must teach yourself everything.**
+
+
+I consider my role as a guide, similar to a mountain guide. I can't carry you up the mountain, you need to walk up the mountain
+, but I know the safe path to take and increase the likelihood that you'll come back alive. 
+
+
+My guide role:
+
+- Enable you to read the books on integrated circuits
+- Enable you to read papers (latest research)
+- Correct misunderstandings on the topic 
+- Answer any questions you have on the chapters
+
+
+I'm not a mind reader, I can't see inside your head. That means, you must ask questions. Only by your questions can I start to understand
+what pieces of information is missing from your head, or maybe somehow  correct your understanding. 
+
+At the same time, and similar to a mountain guide, you should not assume I'm always right. I'm human, and I will make mistakes. 
+And maybe you can correct my understanding of something. All I care about is to *really* understand how the world works, so if you think 
+my understanding is wrong, then I'll happily discuss. 
+
+
+
+
+
+
+# Syllabus
+
+The syllabus will be from Analog Integrated Circuit Design by Carusone,
+Johns and Martin [@cjm11], which everyone calls CJM, and Circuits for
+all seasons. 
+
+These lecture notes are a supplement to the book. I try to give some background, and how to think about electronics. 
+It's not my goal to repeat information that you can find in the book.
+
+Buy a hard-copy of the book if you don't have that. Don't expect to understand the book by reading the PDF. 
+
+
+
+
+
+
+
+
+
+#  Software
+
+
+We'll use professional-grade open source software for everything:
+xschem for schematics, ngspice for simulation, the SKY130A PDK, Magic
+VLSI and netgen for layout and verification, and surfer, iverilog and
+verilator on the digital side. No licence server stands between you
+and your design.
+
+
+Open source software (xschem, ngspice, sky130A PDK, Magic VLSI, netgen, surfer, iverilog, verilator)
+
+
+I've made a rather detailed (at least I think so myself) tutorial on how to make a current mirror with the open source tools.
+You have to do that tutorial. It's Milestone 0 of the project and does count towards your final grade.
+
+ [Skywater 130 nm Tutorial](https://analogicus.com/aic2026/sky130nm_tutorial)
+ 
+ 
+ 
+ I've also made some more complex examples, that can be found at the link below. There are digital logic cells, standard transistors, and few other blocks. 
+ 
+ 
+ [aicex](https://wulffern.github.io/aicex)
+
+
+
+
+
+# Summary
+
+The one-page version of this chapter:
+
+
+- The real world is analog, so every IC carries analog circuits at its edges - there is no purely digital chip
+- Making an IC splits into an analog and a digital flow, and it is rare to find one human who does both well
+- Digital designers reuse each other's work; analog designers redraw - closing that gap is a theme of this course
+- What you need from here: the refresher chapters, a working toolchain, and the habit of simulating everything

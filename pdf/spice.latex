@@ -1,0 +1,397 @@
+\section{SPICE}\label{spice}
+
+\textbf{Keywords:} SPICE, Sources, Passives, Transistor Models, BSIM,
+Foundries, Unit Transistors, gm/ID
+
+\section{Simulation Program with Integrated Circuit
+Emphasis}\label{simulation-program-with-integrated-circuit-emphasis}
+
+To manufacture an integrated circuit we have to be able to predict how
+it's going to work. The only way to predict is to rely on our knowledge
+of physics, and build models of the real world in our computers.
+
+One simulation strategy for a model of the real world, which absolutely
+every single integrated circuit in the world has used to come into
+existence, is SPICE.
+
+Published in 1973 by Nagel and Pederson
+
+\href{https://www2.eecs.berkeley.edu/Pubs/TechRpts/1973/ERL-m-382.pdf}{SPICE
+(Simulation Program with Integrated Circuit Emphasis)}
+
+\pandocbounded{\includegraphics[keepaspectratio]{media/nagel.png}}
+
+\emph{Figure 1: Title page of Nagel and Pederson's 1973 SPICE paper from
+the 16th Midwest Symposium on Circuit Theory. Source: L. W. Nagel,
+SPICE2 memorandum ERL-M520, UC Berkeley, 1975}
+
+\subsection{Today}\label{today}
+
+There are multiple SPICE programs that has been written, but they all
+work in a similar fashion. There are expensive ones, closed source, and
+open source.
+
+Some are better at dealing with complex circuits, some are faster, and
+some are more accurate. If you don't have money, then start with
+ngspice.
+
+\textbf{Commercial}
+\href{https://www.cadence.com/ko_KR/home/tools/custom-ic-analog-rf-design/circuit-simulation/spectre-simulation-platform.html}{Cadence
+Spectre} \href{https://eda.sw.siemens.com/en-US/ic/eldo/}{Siemens Eldo}
+\href{https://www.synopsys.com/implementation-and-signoff/ams-simulation/primesim-hspice.html}{Synopsys
+HSPICE}
+
+\textbf{Free} \href{http://aimspice.com}{Aimspice}
+\href{https://www.analog.com/en/design-center/design-tools-and-calculators/ltspice-simulator.html}{Analog
+Devices LTspice}
+
+\textbf{Open Source} \href{http://ngspice.sourceforge.net}{ngspice}
+
+\subsection{But}\label{but}
+
+All SPICE simulators understand the same language (yes, even spectre can
+speak SPICE). We write our testbenches in a text file, and give it to
+the SPICE program. That's the same for all programs. Some may have built
+fancy GUI's to hide the fact that we're really writing text files, but
+text files is what is under the hood.
+
+Pretty much the same usage model as 50-odd years ago
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\OperatorTok{\textless{}}\NormalTok{spice }\ExtensionTok{program}\OperatorTok{\textgreater{}}\NormalTok{ testbench.cir}
+\end{Highlighting}
+\end{Shaded}
+
+for example
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{ngspice}\NormalTok{ testbench.cir}
+\end{Highlighting}
+\end{Shaded}
+
+Or in the most expensive analog tool (Cadence Spectre)
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{spectre}\NormalTok{  input.scs  +escchars +log ../psf/spectre.out }
+\ExtensionTok{{-}format}\NormalTok{ psfxl }\AttributeTok{{-}raw}\NormalTok{ ../psf   +aps +lqtimeout 900 }\AttributeTok{{-}maxw}\NormalTok{ 5 }
+\ExtensionTok{{-}maxn}\NormalTok{ 5 }\AttributeTok{{-}env}\NormalTok{ ade  }\AttributeTok{{-}ahdllibdir} 
+\ExtensionTok{/tmp/wulff/virtuoso/TB\_SUN\_BIAS\_GF130N/TB\_SUN\_BIAS/maestro/}
+\ExtensionTok{results/maestro/Interactive.15/sharedData/CDS/ahdl/input.ahdlSimDB} 
+\ExtensionTok{+logstatus} 
+\end{Highlighting}
+\end{Shaded}
+
+The expensive tools have built graphical user interface around the SPICE
+simulator to make it easier to run multiple scenarios.
+
+\begin{longtable}[]{@{}lllll@{}}
+\toprule\noalign{}
+Corner & Typical & Fast & Slow & All \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Mosfet & Mtt & Mff & Mss & Mff,Mfs,Msf,Mss \\
+Resistor & Rt & Rl & Rh & Rl,Rh \\
+Capacitors & Ct & Cl & Ch & Cl,Ch \\
+Diode & Dt & Df & Ds & Df,Ds \\
+Bipolar & Bt & Bf & Bs & Bf,Bs \\
+Temperature & Tt & Th,Tl & Th,Tl & Th,Tl \\
+Voltage & Vt & Vh,Vl & Vh,Vl & Vh,Vl \\
+\end{longtable}
+
+\pandocbounded{\includegraphics[keepaspectratio]{media/assembler.png}}
+
+\emph{Figure 2: Cadence Virtuoso ADE Assembler, showing the corner
+definitions on the left and a pass/fail table of simulated
+specifications on the right}
+
+I'm a fan of launching multiple simulations from the command line. I
+don't like GUI's. As such, I wrote
+\href{https://github.com/wulffern/cicsim/tree/main}{cicsim}, and that's
+what I use in the video and demo.
+
+\subsection{Sources}\label{sources}
+
+The SPICE language is a set of conventions for how to write the text
+files. In general, it's one line, one command (although, lines can be
+continued with a +).
+
+I'm not going to go through an extensive tutorial in this document, and
+there are dialects with different SPICE programs. You'll find more info
+at \href{http://ngspice.sourceforge.net/docs.html}{ngspice}
+
+\subsubsection{Independent current
+sources}\label{independent-current-sources}
+
+\emph{Infinite output impedance, changing voltage does not change
+current}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{I}\OperatorTok{\textless{}}\NormalTok{name}\OperatorTok{\textgreater{}} \OperatorTok{\textless{}}\NormalTok{from}\OperatorTok{\textgreater{}} \OperatorTok{\textless{}}\NormalTok{to}\OperatorTok{\textgreater{}}\NormalTok{ dc }\OperatorTok{\textless{}}\NormalTok{number}\OperatorTok{\textgreater{}}\NormalTok{ ac }\OperatorTok{\textless{}}\NormalTok{number}\OperatorTok{\textgreater{}}
+
+\ExtensionTok{I1}\NormalTok{ 0 VDN dc In}
+\ExtensionTok{I2}\NormalTok{ VDP 0 dc Ip}
+\end{Highlighting}
+\end{Shaded}
+
+\subsubsection{Independent voltage
+source}\label{independent-voltage-source}
+
+\emph{Zero output impedance, changing current does not change voltage}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{V}\OperatorTok{\textless{}}\NormalTok{name}\OperatorTok{\textgreater{}} \OperatorTok{\textless{}}\NormalTok{+}\OperatorTok{\textgreater{}} \OperatorTok{\textless{}}\NormalTok{{-}}\OperatorTok{\textgreater{}}\NormalTok{ dc }\OperatorTok{\textless{}}\NormalTok{number}\OperatorTok{\textgreater{}}\NormalTok{ ac }\OperatorTok{\textless{}}\NormalTok{number}\OperatorTok{\textgreater{}}
+
+\ExtensionTok{V2}\NormalTok{ VSS 0 dc 0}
+\ExtensionTok{V1}\NormalTok{ VDD 0 dc 1.5}
+\end{Highlighting}
+\end{Shaded}
+
+\subsection{Passives}\label{passives}
+
+Resistors
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{R}\OperatorTok{\textless{}}\NormalTok{name}\OperatorTok{\textgreater{}} \OperatorTok{\textless{}}\NormalTok{node }\DecValTok{1}\OperatorTok{\textgreater{}} \OperatorTok{\textless{}}\NormalTok{node }\DecValTok{2}\OperatorTok{\textgreater{}} \OperatorTok{\textless{}}\NormalTok{value}\OperatorTok{\textgreater{}}
+
+\ExtensionTok{R1}\NormalTok{ N1 N2 10k}
+\ExtensionTok{R2}\NormalTok{ N2 N3 1Meg}
+\ExtensionTok{R3}\NormalTok{ N3 N4 1G}
+\ExtensionTok{R4}\NormalTok{ N4 N5 1T}
+\end{Highlighting}
+\end{Shaded}
+
+Capacitors
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{C}\OperatorTok{\textless{}}\NormalTok{name}\OperatorTok{\textgreater{}} \OperatorTok{\textless{}}\NormalTok{node }\DecValTok{1}\OperatorTok{\textgreater{}} \OperatorTok{\textless{}}\NormalTok{node }\DecValTok{2}\OperatorTok{\textgreater{}} \OperatorTok{\textless{}}\NormalTok{value}\OperatorTok{\textgreater{}}
+
+\ExtensionTok{C1}\NormalTok{ N1 N2 1a}
+\ExtensionTok{C2}\NormalTok{ N1 N2 1f}
+\ExtensionTok{C4}\NormalTok{ N1 N2 1p}
+\ExtensionTok{C3}\NormalTok{ N1 N2 1n}
+\ExtensionTok{C5}\NormalTok{ N1 N2 1u}
+\end{Highlighting}
+\end{Shaded}
+
+\subsection{Transistor Models}\label{transistor-models}
+
+Needs a model file describing the transistor model
+
+BSIM (Berkeley Short-channel IGFET Model)
+\url{http://bsim.berkeley.edu/models/bsim4/}
+
+\pandocbounded{\includegraphics[keepaspectratio]{media/fig_transistor.pdf}}
+
+\emph{Figure 3: Circuit symbol for an NMOS transistor with its gate,
+drain and source terminals}
+
+284 parameters in
+\href{http://www-device.eecs.berkeley.edu/~bsim/Files/BSIM4/BSIM480/BSIM480_Manual.pdf}{BSIM
+4.5}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\AttributeTok{.}\ConstantTok{MODEL} \ConstantTok{N1} \ConstantTok{NMOS} \ConstantTok{LEVEL}\OperatorTok{=}\DecValTok{14} \ConstantTok{VERSION}\OperatorTok{=}\FloatTok{4.5}\AttributeTok{.}\DecValTok{0} \ConstantTok{BINUNIT}\OperatorTok{=}\DecValTok{1} 
+\ConstantTok{PARAMCHK}\OperatorTok{=}\DecValTok{1} \ConstantTok{MOBMOD}\OperatorTok{=}\DecValTok{0} \ConstantTok{CAPMOD}\OperatorTok{=}\DecValTok{2} \ConstantTok{IGCMOD}\OperatorTok{=}\DecValTok{1} \ConstantTok{IGBMOD}\OperatorTok{=}\DecValTok{1} 
+\ConstantTok{GEOMOD}\OperatorTok{=}\DecValTok{1}  \ConstantTok{DIOMOD}\OperatorTok{=}\DecValTok{1} \ConstantTok{RDSMOD}\OperatorTok{=}\DecValTok{0} \ConstantTok{RBODYMOD}\OperatorTok{=}\DecValTok{0} \ConstantTok{RGATEMOD}\OperatorTok{=}\DecValTok{3}
+\ConstantTok{PERMOD}\OperatorTok{=}\DecValTok{1} \ConstantTok{ACNQSMOD}\OperatorTok{=}\DecValTok{0} \ConstantTok{TRNQSMOD}\OperatorTok{=}\DecValTok{0} \ConstantTok{TEMPMOD}\OperatorTok{=}\DecValTok{0}  \ConstantTok{TNOM}\OperatorTok{=}\DecValTok{27} 
+\ConstantTok{TOXE}\OperatorTok{=}\FloatTok{1.8E{-}009} \ConstantTok{TOXP}\OperatorTok{=}\FloatTok{10E{-}010} \ConstantTok{TOXM}\OperatorTok{=}\FloatTok{1.8E{-}009}  \ConstantTok{DTOX}\OperatorTok{=}\FloatTok{8E{-}10} 
+\ConstantTok{EPSROX}\OperatorTok{=}\FloatTok{3.9} \ConstantTok{WINT}\OperatorTok{=}\FloatTok{5E{-}009} \ConstantTok{LINT}\OperatorTok{=}\FloatTok{1E{-}009} \ConstantTok{LL}\OperatorTok{=}\DecValTok{0} \ConstantTok{WL}\OperatorTok{=}\DecValTok{0} \ConstantTok{LLN}\OperatorTok{=}\DecValTok{1} 
+\ConstantTok{WLN}\OperatorTok{=}\DecValTok{1}  \ConstantTok{LW}\OperatorTok{=}\DecValTok{0} \ConstantTok{WW}\OperatorTok{=}\DecValTok{0} \ConstantTok{LWN}\OperatorTok{=}\DecValTok{1} \ConstantTok{WWN}\OperatorTok{=}\DecValTok{1}  \ConstantTok{LWL}\OperatorTok{=}\DecValTok{0} \ConstantTok{WWL}\OperatorTok{=}\DecValTok{0} \ConstantTok{XPART}\OperatorTok{=}\DecValTok{0}
+\ConstantTok{TOXREF}\OperatorTok{=}\FloatTok{1.4E{-}009}  \ConstantTok{SAREF}\OperatorTok{=}\FloatTok{5E{-}6} \ConstantTok{SBREF}\OperatorTok{=}\FloatTok{5E{-}6} \ConstantTok{WLOD}\OperatorTok{=}\FloatTok{2E{-}6} 
+\ConstantTok{KU0}\OperatorTok{={-}}\FloatTok{4E{-}6}  \ConstantTok{KVSAT}\OperatorTok{=}\FloatTok{0.2} \ConstantTok{KVTH0}\OperatorTok{={-}}\FloatTok{2E{-}8} \ConstantTok{TKU0}\OperatorTok{=}\FloatTok{0.0} \ConstantTok{LLODKU0}\OperatorTok{=}\FloatTok{1.1}  
+\ConstantTok{WLODKU0}\OperatorTok{=}\FloatTok{1.1} \ConstantTok{LLODVTH}\OperatorTok{=}\FloatTok{1.0} \ConstantTok{WLODVTH}\OperatorTok{=}\FloatTok{1.0} \ConstantTok{LKU0}\OperatorTok{=}\FloatTok{1E{-}6}  
+\ConstantTok{WKU0}\OperatorTok{=}\FloatTok{1E{-}6} \ConstantTok{PKU0}\OperatorTok{=}\FloatTok{0.0} \ConstantTok{LKVTH0}\OperatorTok{=}\FloatTok{1.1E{-}6} \ConstantTok{WKVTH0}\OperatorTok{=}\FloatTok{1.1E{-}6}  
+\ConstantTok{PKVTH0}\OperatorTok{=}\FloatTok{0.0} \ConstantTok{STK2}\OperatorTok{=}\FloatTok{0.0} \ConstantTok{LODK2}\OperatorTok{=}\FloatTok{1.0} \ConstantTok{STETA0}\OperatorTok{=}\FloatTok{0.0}  \ConstantTok{LODETA0}\OperatorTok{=}\FloatTok{1.0}  
+\ConstantTok{LAMBDA}\OperatorTok{=}\FloatTok{4E{-}10}  \ConstantTok{VSAT}\OperatorTok{=}\FloatTok{1.1}\ErrorTok{E} \BaseNTok{005} \ConstantTok{VTL}\OperatorTok{=}\FloatTok{2.0E5} \ConstantTok{XN}\OperatorTok{=}\FloatTok{6.0} \ConstantTok{LC}\OperatorTok{=}\FloatTok{5E{-}9} 
+\ConstantTok{RNOIA}\OperatorTok{=}\FloatTok{0.577} \ConstantTok{RNOIB}\OperatorTok{=}\FloatTok{0.37} \ConstantTok{LINTNOI}\OperatorTok{=}\FloatTok{1E{-}009}  \ConstantTok{WPEMOD}\OperatorTok{=}\DecValTok{0} 
+\ConstantTok{WEB}\OperatorTok{=}\FloatTok{0.0} \ConstantTok{WEC}\OperatorTok{=}\FloatTok{0.0} \ConstantTok{KVTH0WE}\OperatorTok{=}\FloatTok{1.0}  \ConstantTok{K2WE}\OperatorTok{=}\FloatTok{1.0} \ConstantTok{KU0WE}\OperatorTok{=}\FloatTok{1.0} \ConstantTok{SCREF}\OperatorTok{=}\FloatTok{5.0E{-}6}
+\ConstantTok{TVOFF}\OperatorTok{=}\FloatTok{0.0} \ConstantTok{TVFBSDOFF}\OperatorTok{=}\FloatTok{0.0}  \ConstantTok{VTH0}\OperatorTok{=}\FloatTok{0.25}  \ConstantTok{K1}\OperatorTok{=}\FloatTok{0.35} \ConstantTok{K2}\OperatorTok{=}\FloatTok{0.05}
+\ConstantTok{K3}\OperatorTok{=}\DecValTok{0}  \ConstantTok{K3B}\OperatorTok{=}\DecValTok{0} \ConstantTok{W0}\OperatorTok{=}\FloatTok{2.5E{-}006} \ConstantTok{DVT0}\OperatorTok{=}\FloatTok{1.8} \ConstantTok{DVT1}\OperatorTok{=}\FloatTok{0.52}  \ConstantTok{DVT2}\OperatorTok{={-}}\FloatTok{0.032} 
+\ConstantTok{DVT0W}\OperatorTok{=}\DecValTok{0} \ConstantTok{DVT1W}\OperatorTok{=}\DecValTok{0} \ConstantTok{DVT2W}\OperatorTok{=}\DecValTok{0}  \ConstantTok{DSUB}\OperatorTok{=}\DecValTok{2} \ConstantTok{MINV}\OperatorTok{=}\FloatTok{0.05} \ConstantTok{VOFFL}\OperatorTok{=}\DecValTok{0} 
+\ConstantTok{DVTP0}\OperatorTok{=}\FloatTok{1E{-}007}  \ConstantTok{DVTP1}\OperatorTok{=}\FloatTok{0.05} \ConstantTok{LPE0}\OperatorTok{=}\FloatTok{5.75E{-}008} \ConstantTok{LPEB}\OperatorTok{=}\FloatTok{2.3E{-}010} 
+\ConstantTok{XJ}\OperatorTok{=}\FloatTok{2E{-}008}  \ConstantTok{NGATE}\OperatorTok{=}\ErrorTok{5E} \BaseNTok{020} \ConstantTok{NDEP}\OperatorTok{=}\FloatTok{2.8}\ErrorTok{E} \BaseNTok{01}\ErrorTok{8} \ConstantTok{NSD}\OperatorTok{=}\ErrorTok{1E} \BaseNTok{020} \ConstantTok{PHIN}\OperatorTok{=}\DecValTok{0} 
+\ConstantTok{CDSC}\OperatorTok{=}\FloatTok{0.0002} \ConstantTok{CDSCB}\OperatorTok{=}\DecValTok{0} \ConstantTok{CDSCD}\OperatorTok{=}\DecValTok{0} \ConstantTok{CIT}\OperatorTok{=}\DecValTok{0}  \ConstantTok{VOFF}\OperatorTok{={-}}\FloatTok{0.15} \ConstantTok{NFACTOR}\OperatorTok{=}\FloatTok{1.2} 
+\ConstantTok{ETA0}\OperatorTok{=}\FloatTok{0.05} \ConstantTok{ETAB}\OperatorTok{=}\DecValTok{0}  \ConstantTok{UC}\OperatorTok{={-}}\FloatTok{3E{-}011}  \ConstantTok{VFB}\OperatorTok{={-}}\FloatTok{0.55} \ConstantTok{U0}\OperatorTok{=}\FloatTok{0.032} 
+\ConstantTok{UA}\OperatorTok{=}\FloatTok{5.0E{-}011} \ConstantTok{UB}\OperatorTok{=}\FloatTok{3.5E{-}018}  \ConstantTok{A0}\OperatorTok{=}\DecValTok{2} \ConstantTok{AGS}\OperatorTok{=}\FloatTok{1E{-}020} \ConstantTok{A1}\OperatorTok{=}\DecValTok{0} \ConstantTok{A2}\OperatorTok{=}\DecValTok{1} 
+\ConstantTok{B0}\OperatorTok{={-}}\FloatTok{1E{-}020} \ConstantTok{B1}\OperatorTok{=}\DecValTok{0}  \ConstantTok{KETA}\OperatorTok{=}\FloatTok{0.04} \ConstantTok{DWG}\OperatorTok{=}\DecValTok{0} \ConstantTok{DWB}\OperatorTok{=}\DecValTok{0} \ConstantTok{PCLM}\OperatorTok{=}\FloatTok{0.08}
+\ConstantTok{PDIBLC1}\OperatorTok{=}\FloatTok{0.028} \ConstantTok{PDIBLC2}\OperatorTok{=}\FloatTok{0.022} \ConstantTok{PDIBLCB}\OperatorTok{={-}}\FloatTok{0.005} \ConstantTok{DROUT}\OperatorTok{=}\FloatTok{0.45}  
+\ConstantTok{PVAG}\OperatorTok{=}\FloatTok{1E{-}020} \ConstantTok{DELTA}\OperatorTok{=}\FloatTok{0.01} \ConstantTok{PSCBE1}\OperatorTok{=}\FloatTok{8.14}\ErrorTok{E} \BaseNTok{00}\ErrorTok{8} \ConstantTok{PSCBE2}\OperatorTok{=}\FloatTok{5E{-}008}  
+\ConstantTok{RSH}\OperatorTok{=}\DecValTok{0} \ConstantTok{RDSW}\OperatorTok{=}\DecValTok{0} \ConstantTok{RSW}\OperatorTok{=}\DecValTok{0} \ConstantTok{RDW}\OperatorTok{=}\DecValTok{0} \ConstantTok{FPROUT}\OperatorTok{=}\FloatTok{0.2} \ConstantTok{PDITS}\OperatorTok{=}\FloatTok{0.2} \ConstantTok{PDITSD}\OperatorTok{=}\FloatTok{0.23} 
+\ConstantTok{PDITSL}\OperatorTok{=}\FloatTok{2.3}\ErrorTok{E} \BaseNTok{006}  \ConstantTok{RSH}\OperatorTok{=}\DecValTok{0} \ConstantTok{RDSW}\OperatorTok{=}\DecValTok{50} \ConstantTok{RSW}\OperatorTok{=}\DecValTok{150}
+\ConstantTok{RDW}\OperatorTok{=}\DecValTok{150}  \ConstantTok{RDSWMIN}\OperatorTok{=}\DecValTok{0} \ConstantTok{RDWMIN}\OperatorTok{=}\DecValTok{0} \ConstantTok{RSWMIN}\OperatorTok{=}\DecValTok{0} \ConstantTok{PRWG}\OperatorTok{=}\DecValTok{0}  \ConstantTok{PRWB}\OperatorTok{=}\FloatTok{6.8E{-}011} 
+\ConstantTok{WR}\OperatorTok{=}\DecValTok{1} \ConstantTok{ALPHA0}\OperatorTok{=}\FloatTok{0.074} \ConstantTok{ALPHA1}\OperatorTok{=}\FloatTok{0.005}  \ConstantTok{BETA0}\OperatorTok{=}\DecValTok{30} \ConstantTok{AGIDL}\OperatorTok{=}\FloatTok{0.0002} 
+\ConstantTok{BGIDL}\OperatorTok{=}\FloatTok{2.1}\ErrorTok{E} \BaseNTok{00}\ErrorTok{9} \ConstantTok{CGIDL}\OperatorTok{=}\FloatTok{0.0002} \ConstantTok{EGIDL}\OperatorTok{=}\FloatTok{0.8}  \ConstantTok{AIGBACC}\OperatorTok{=}\FloatTok{0.012} 
+\ConstantTok{BIGBACC}\OperatorTok{=}\FloatTok{0.0028} \ConstantTok{CIGBACC}\OperatorTok{=}\FloatTok{0.002}  \ConstantTok{NIGBACC}\OperatorTok{=}\DecValTok{1} \ConstantTok{AIGBINV}\OperatorTok{=}\FloatTok{0.014} 
+\ConstantTok{BIGBINV}\OperatorTok{=}\FloatTok{0.004} \ConstantTok{CIGBINV}\OperatorTok{=}\FloatTok{0.004}  \ConstantTok{EIGBINV}\OperatorTok{=}\FloatTok{1.1} \ConstantTok{NIGBINV}\OperatorTok{=}\DecValTok{3} \ConstantTok{AIGC}\OperatorTok{=}\FloatTok{0.012}
+\ConstantTok{BIGC}\OperatorTok{=}\FloatTok{0.0028}  \ConstantTok{CIGC}\OperatorTok{=}\FloatTok{0.002} \ConstantTok{AIGSD}\OperatorTok{=}\FloatTok{0.012} \ConstantTok{BIGSD}\OperatorTok{=}\FloatTok{0.0028} \ConstantTok{CIGSD}\OperatorTok{=}\FloatTok{0.002}  \ConstantTok{NIGC}\OperatorTok{=}\DecValTok{1}
+\ConstantTok{POXEDGE}\OperatorTok{=}\DecValTok{1} \ConstantTok{PIGCD}\OperatorTok{=}\DecValTok{1} \ConstantTok{NTOX}\OperatorTok{=}\DecValTok{1}  \ConstantTok{VFBSDOFF}\OperatorTok{=}\FloatTok{0.0}  \ConstantTok{XRCRG1}\OperatorTok{=}\DecValTok{12} \ConstantTok{XRCRG2}\OperatorTok{=}\DecValTok{5}  
+\ConstantTok{CGSO}\OperatorTok{=}\FloatTok{6.238E{-}010} \ConstantTok{CGDO}\OperatorTok{=}\FloatTok{6.238E{-}010} \ConstantTok{CGBO}\OperatorTok{=}\FloatTok{2.56E{-}011} \ConstantTok{CGDL}\OperatorTok{=}\FloatTok{2.495E{-}10}  
+\ConstantTok{CGSL}\OperatorTok{=}\FloatTok{2.495E{-}10} \ConstantTok{CKAPPAS}\OperatorTok{=}\FloatTok{0.03} \ConstantTok{CKAPPAD}\OperatorTok{=}\FloatTok{0.03} \ConstantTok{ACDE}\OperatorTok{=}\DecValTok{1}  \ConstantTok{MOIN}\OperatorTok{=}\DecValTok{15} 
+\ConstantTok{NOFF}\OperatorTok{=}\FloatTok{0.9} \ConstantTok{VOFFCV}\OperatorTok{=}\FloatTok{0.02}  \ConstantTok{KT1}\OperatorTok{={-}}\FloatTok{0.37} \ConstantTok{KT1L}\OperatorTok{=}\FloatTok{0.0} \ConstantTok{KT2}\OperatorTok{={-}}\FloatTok{0.042} \ConstantTok{UTE}\OperatorTok{={-}}\FloatTok{1.5}  
+\ConstantTok{UA1}\OperatorTok{=}\FloatTok{1E{-}009} \ConstantTok{UB1}\OperatorTok{={-}}\FloatTok{3.5E{-}019} \ConstantTok{UC1}\OperatorTok{=}\DecValTok{0} \ConstantTok{PRT}\OperatorTok{=}\DecValTok{0} \ConstantTok{AT}\OperatorTok{=}\DecValTok{53000}  \ConstantTok{FNOIMOD}\OperatorTok{=}\DecValTok{1} 
+\ConstantTok{TNOIMOD}\OperatorTok{=}\DecValTok{0}  \ConstantTok{JSS}\OperatorTok{=}\FloatTok{0.0001} \ConstantTok{JSWS}\OperatorTok{=}\FloatTok{1E{-}011} \ConstantTok{JSWGS}\OperatorTok{=}\FloatTok{1E{-}010} \ConstantTok{NJS}\OperatorTok{=}\DecValTok{1}
+\ConstantTok{IJTHSFWD}\OperatorTok{=}\FloatTok{0.01} \ConstantTok{IJTHSREV}\OperatorTok{=}\FloatTok{0.001} \ConstantTok{BVS}\OperatorTok{=}\DecValTok{10} \ConstantTok{XJBVS}\OperatorTok{=}\DecValTok{1}  \ConstantTok{JSD}\OperatorTok{=}\FloatTok{0.0001} 
+\ConstantTok{JSWD}\OperatorTok{=}\FloatTok{1E{-}011} \ConstantTok{JSWGD}\OperatorTok{=}\FloatTok{1E{-}010} \ConstantTok{NJD}\OperatorTok{=}\DecValTok{1}  \ConstantTok{IJTHDFWD}\OperatorTok{=}\FloatTok{0.01} \ConstantTok{IJTHDREV}\OperatorTok{=}\FloatTok{0.001} 
+\ConstantTok{BVD}\OperatorTok{=}\DecValTok{10} \ConstantTok{XJBVD}\OperatorTok{=}\DecValTok{1}  \ConstantTok{PBS}\OperatorTok{=}\DecValTok{1} \ConstantTok{CJS}\OperatorTok{=}\FloatTok{0.0005} \ConstantTok{MJS}\OperatorTok{=}\FloatTok{0.5} \ConstantTok{PBSWS}\OperatorTok{=}\DecValTok{1}  \ConstantTok{CJSWS}\OperatorTok{=}\FloatTok{5E{-}010} 
+\ConstantTok{MJSWS}\OperatorTok{=}\FloatTok{0.33} \ConstantTok{PBSWGS}\OperatorTok{=}\DecValTok{1} \ConstantTok{CJSWGS}\OperatorTok{=}\FloatTok{3E{-}010}  \ConstantTok{MJSWGS}\OperatorTok{=}\FloatTok{0.33} \ConstantTok{PBD}\OperatorTok{=}\DecValTok{1} \ConstantTok{CJD}\OperatorTok{=}\FloatTok{0.0005} 
+\ConstantTok{MJD}\OperatorTok{=}\FloatTok{0.5}  \ConstantTok{PBSWD}\OperatorTok{=}\DecValTok{1} \ConstantTok{CJSWD}\OperatorTok{=}\FloatTok{5E{-}010} \ConstantTok{MJSWD}\OperatorTok{=}\FloatTok{0.33} \ConstantTok{PBSWGD}\OperatorTok{=}\DecValTok{1}
+\ConstantTok{CJSWGD}\OperatorTok{=}\FloatTok{5E{-}010}\ErrorTok{MJSWGD}\OperatorTok{=}\FloatTok{0.33} \ConstantTok{TPB}\OperatorTok{=}\FloatTok{0.005} \ConstantTok{TCJ}\OperatorTok{=}\FloatTok{0.001} \ConstantTok{TPBSW}\OperatorTok{=}\FloatTok{0.005} 
+\ConstantTok{TCJSW}\OperatorTok{=}\FloatTok{0.001} \ConstantTok{TPBSWG}\OperatorTok{=}\FloatTok{0.005} \ConstantTok{TCJSWG}\OperatorTok{=}\FloatTok{0.001}  \ConstantTok{XTIS}\OperatorTok{=}\DecValTok{3} \ConstantTok{XTID}\OperatorTok{=}\DecValTok{3}  \ConstantTok{DMCG}\OperatorTok{=}\FloatTok{0E{-}006} 
+\ConstantTok{DMCI}\OperatorTok{=}\FloatTok{0E{-}006} \ConstantTok{DMDG}\OperatorTok{=}\FloatTok{0E{-}006} \ConstantTok{DMCGT}\OperatorTok{=}\FloatTok{0E{-}007}  \ConstantTok{DWJ}\OperatorTok{=}\FloatTok{0.0E{-}008} \ConstantTok{XGW}\OperatorTok{=}\FloatTok{0E{-}007}
+\ConstantTok{XGL}\OperatorTok{=}\FloatTok{0E{-}008}  \ConstantTok{RSHG}\OperatorTok{=}\FloatTok{0.4} \ConstantTok{GBMIN}\OperatorTok{=}\FloatTok{1E{-}010} \ConstantTok{RBPB}\OperatorTok{=}\DecValTok{5} \ConstantTok{RBPD}\OperatorTok{=}\DecValTok{15}  \ConstantTok{RBPS}\OperatorTok{=}\DecValTok{15} \ConstantTok{RBDB}\OperatorTok{=}\DecValTok{15} 
+\ConstantTok{RBSB}\OperatorTok{=}\DecValTok{15} \ConstantTok{NGCON}\OperatorTok{=}\DecValTok{1} \ConstantTok{JTSS}\OperatorTok{=}\FloatTok{1E{-}4} \ConstantTok{JTSD}\OperatorTok{=}\FloatTok{1E{-}4} \ConstantTok{JTSSWS}\OperatorTok{=}\FloatTok{1E{-}10} \ConstantTok{JTSSWD}\OperatorTok{=}\FloatTok{1E{-}10} 
+\ConstantTok{JTSSWGS}\OperatorTok{=}\FloatTok{1E{-}7} \ConstantTok{JTSSWGD}\OperatorTok{=}\FloatTok{1E{-}7}  \ConstantTok{NJTS}\OperatorTok{=}\FloatTok{20.0} \ConstantTok{NJTSSW}\OperatorTok{=}\DecValTok{20} \ConstantTok{NJTSSWG}\OperatorTok{=}\DecValTok{6} 
+\ConstantTok{VTSS}\OperatorTok{=}\DecValTok{10} \ConstantTok{VTSD}\OperatorTok{=}\DecValTok{10} \ConstantTok{VTSSWS}\OperatorTok{=}\DecValTok{10} \ConstantTok{VTSSWD}\OperatorTok{=}\DecValTok{10}  \ConstantTok{VTSSWGS}\OperatorTok{=}\DecValTok{2} \ConstantTok{VTSSWGD}\OperatorTok{=}\DecValTok{2}
+\ConstantTok{XTSS}\OperatorTok{=}\FloatTok{0.02} \ConstantTok{XTSD}\OperatorTok{=}\FloatTok{0.02} \ConstantTok{XTSSWS}\OperatorTok{=}\FloatTok{0.02} \ConstantTok{XTSSWD}\OperatorTok{=}\FloatTok{0.02} \ConstantTok{XTSSWGS}\OperatorTok{=}\FloatTok{0.02} 
+\ConstantTok{XTSSWGD}\OperatorTok{=}\FloatTok{0.02}
+\end{Highlighting}
+\end{Shaded}
+
+\subsection{Transistors}\label{transistors}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+
+\ExtensionTok{M}\OperatorTok{\textless{}}\NormalTok{name}\OperatorTok{\textgreater{}} \OperatorTok{\textless{}}\NormalTok{drain}\OperatorTok{\textgreater{}} \OperatorTok{\textless{}}\NormalTok{gate}\OperatorTok{\textgreater{}} \OperatorTok{\textless{}}\NormalTok{source}\OperatorTok{\textgreater{}} \OperatorTok{\textless{}}\NormalTok{bulk}\OperatorTok{\textgreater{}} \OperatorTok{\textless{}}\NormalTok{modelname}\OperatorTok{\textgreater{}} \PreprocessorTok{[}\SpecialStringTok{parameters}\PreprocessorTok{]}
+
+
+\ExtensionTok{M1}\NormalTok{ VDN VDN VSS VSS nmos W=0.6u L=0.15u}
+\ExtensionTok{M2}\NormalTok{ VDP VDP VDD VDD pmos W=0.6u L=0.15u}
+
+\end{Highlighting}
+\end{Shaded}
+
+\subsection{Foundries}\label{foundries}
+
+Each foundry has their own SPICE models bacause the transistor
+parameters depend on the exact physics of the technology!
+
+\url{https://skywater-pdk.readthedocs.io/en/main/}
+
+\section{Find right transistor sizes}\label{find-right-transistor-sizes}
+
+Assume active (\[V_{ds} > V_{eff}\] in strong inversion, or
+\[V_{ds} > 3 V_T\] in weak inversion). For diode connected transistors,
+that is always true.
+
+Weak inversion: \[ I_{D} = I_{D0} \frac{W}{L} e^{V_eff / n V_T} \],
+\[V_{eff} \propto \ln{I_D} \]
+
+Strong inversion:
+\[ I_{D} = \frac{1}{2} \mu_n C_{ox} \frac{W}{L} V_{eff}^2\],
+\[V_{eff} \propto \sqrt{I_D} \]
+
+\textbf{Operating region for a diode connected transistor only depends
+on the current}
+
+\pandocbounded{\includegraphics[keepaspectratio]{media/trop.png}}
+
+\emph{Figure 4: Diode connected NMOS biased by a current source, where
+the current alone sets the operating region}
+
+\subsection{Use unit size transistors for analog
+design}\label{use-unit-size-transistors-for-analog-design}
+
+\[ W/L \approx \in[4, 6, 10] \], but should have space for two contacts
+
+Use parallel transistors for larger W/L
+
+Amplifiers \[\Rightarrow L \approx 1.2 \times L_{min} \]
+
+Current mirrors \[\Rightarrow L \approx 4 \times L_{min} \]
+
+Choose sizes that have been used by foundry for measurement to match
+SPICE model
+
+\subsection{What about gm/Id ?}\label{what-about-gmid}
+
+Weak \[ \frac{g_m}{I_d} = \frac{1}{nV_T}\]
+
+Strong \[ \frac{g_m}{I_d} = \frac{2}{V_{eff}}\]
+
+\subsection{Characterize the
+transistors}\label{characterize-the-transistors}
+
+\url{http://analogicus.com/cnr_atr_sky130nm/mos/CNRATR_NCH_2C1F2.html}
+
+\section{More information}\label{more-information}
+
+\href{http://ngspice.sourceforge.net/docs/ngspice-43-manual.pdf}{Ngspice
+Manual}
+
+\href{https://analogicus.com/aicex/started/}{Installing tools}
+
+\section{Analog Design}\label{analog-design}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \textbf{Define the problem, what are you trying to solve?}
+\item
+  \textbf{Find a circuit that can solve the problem (papers, books)}
+\item
+  \textbf{Find right transistor sizes. What transistors should be weak
+  inversion, strong inversion, or don't care?}
+\item
+  \textbf{Check operating region of transistors (.op)}
+\item
+  \textbf{Check key parameters (.dc, .ac, .tran)}
+\item
+  \textbf{Check function. Exercise all inputs. Check all control
+  signals}
+\item
+  Check key parameters in all corners. Check mismatch (Monte-Carlo
+  simulation)
+\item
+  Do layout, and check it's error free. Run design rule checks (DRC).
+  Check layout versus schematic (LVS)
+\item
+  Extract parasitics from layout. Resistance, capacitance, and
+  inductance if necessary.
+\item
+  On extracted parasitic netlist, check key parameters in all corners
+  and mismatch (if possible).
+\item
+  If everything works, then you're done.
+\end{enumerate}
+
+\emph{On failure, go back}
+
+\section{Demo}\label{demo}
+
+\url{https://github.com/analogicus/jnw_spice_sky130A/tree/main}
+
+\section{Summary}\label{summary}
+
+The one-page version of this chapter:
+
+\begin{itemize}
+\tightlist
+\item
+  SPICE has run the same way for fifty-odd years: a netlist in,
+  operating points and waveforms out
+\item
+  The quartet to master: op, dc, ac and tran - everything else is
+  decoration on those four
+\item
+  ngspice speaks the dialect this course uses, and the transistor models
+  come from the PDK, not from the simulator
+\end{itemize}
+
+\section{Would you like to know
+more?}\label{would-you-like-to-know-more}
+
+Nagel's 1975 thesis, where SPICE comes from, and which still reads well
+
+The ngspice manual, the reference for everything this chapter does

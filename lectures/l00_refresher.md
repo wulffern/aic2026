@@ -87,7 +87,7 @@ The quantum state of an electron is fully described by its spin, momentum (p) an
 
 The probability of finding an electron in a state as a function of space and time is 
 
-$$ P = |\psi(r,t)|^2 $$
+$$ P = \vert \psi(r,t)\vert ^2 $$
 
 , where $\psi$ is named the probability amplitude, and is a complex function of space and time. In some special cases, it's
 

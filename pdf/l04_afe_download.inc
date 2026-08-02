@@ -1,0 +1,1 @@
+- [Analog frontend and filters](/aic2026/assets/l04_afe.pdf) [[slides]](/aic2026/assets/html/l04_afe.html)

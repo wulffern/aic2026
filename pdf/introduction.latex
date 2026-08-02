@@ -1,0 +1,391 @@
+\textbf{Keywords:} Course Goals, Roles, Skills, Zen of IC Design, Design
+Process, Tapeout
+
+\section{Who}\label{who}
+
+My name is
+
+Carsten Wulff
+\href{mailto:carstenw@ntnu.no}{\nolinkurl{carstenw@ntnu.no}}
+
+I finished my Masters in 2002, and did a Ph.D on analog-to-digital
+converters finished in 2008.
+
+Since that time, I've had a three axis in my work/hobby life.
+
+I work at \href{https://www.nordicsemi.com}{Nordic Semiconductor} where
+I've been since 2008. The first 7 years I did analog design (ADCs,
+DC/DCs, GPIO). The next 7 years I was the Wireless Group Manager. The
+Wireless group made most of the analog and RF designs for Nordic's
+short-range products. Now I'm the IC Scientist, and focus on technical
+issues with our integrated circuits that occur before we go into volume
+production.
+
+I work at \href{https://ntnu.no}{NTNU} where I did a part time postdoc
+from 2014 - 2017. From 2020 I've been working on and teaching
+\href{https://www.ntnu.edu/studies/courses/TFE4188\#tab=omEmnet}{Advanced
+Integrated Circuits}
+
+I have a hobby trying to figure out how to make a new analog circuit
+design paradigm. The one we have today with
+schematic/simulation/layout/verification/simulation is too slow
+
+\pandocbounded{\includegraphics[keepaspectratio]{media/timeline_tikz.pdf}}
+
+\emph{Figure 1: My life }
+
+\section{How I see our roles}\label{how-i-see-our-roles}
+
+In Figure 2 you can see how I think about the research universe. There
+are things we know to be possible, things that actually are impossible
+(travel back in time, breaking thermodynamics, travel with a speed
+beyond light).
+
+Between the impossible, and the possible, lies the unknown. I consider
+our roles as follows:
+
+\textbf{Professors:} Guide students on what is impossible, possible, and
+hints on what might be possible
+
+\textbf{Ph.D students:} Venture into the unknown and make something
+(more) possible
+
+\textbf{Master students:} Learn all that is currently possible
+
+\textbf{Bachelor students:} Learn how to make complicated into easy
+
+\textbf{Industry:} Take what is possible, and/or complicated, and make
+it easy
+
+Everyone in the figure pushes a border: teaching moves knowledge from
+complicated towards easy, research moves the border of the unknown, and
+industry earns its living on the innermost rings. This course lives one
+ring out from the centre - what is known and complicated, made
+learnable.
+
+\pandocbounded{\includegraphics[keepaspectratio]{media/l01_universe_tikz.pdf}}
+
+\emph{Figure 2: The research universe: Easy at the centre, then
+Complicated, Possible and Unknown, with the Impossible beyond the last
+border}
+
+\section{I want you to learn the skills necessary to make your own
+ICs}\label{i-want-you-to-learn-the-skills-necessary-to-make-your-own-ics}
+
+In 2020 the global integrated circuit market was
+\href{https://www.fortunebusinessinsights.com/integrated-circuit-market-106522}{437.7
+billion dollars}! The market is expected to grow to 1136 billion in
+2028. Integrated circuits enable all technologies.
+
+I will be dead in approximately 50 years, and will retire in
+approximately 20 years. Everything I know will be gone (except for the
+small pieces I've left behind in videos or written word)
+
+Someone must take over, and to do that, they need to know most of what I
+know, and hopefully a bit more.
+
+That's where some of you come in. Some of you will find integrated
+circuits interesting to make, and in addition, you have the stamina,
+patience, and brain necessary to learn some of the hardest topics in the
+world.
+
+\section{There will always be analog circuits, because the real world is
+analog}\label{there-will-always-be-analog-circuits-because-the-real-world-is-analog}
+
+In this course, we'll focus on analog ICs, because the real world is
+analog, and all ICs must have some analog components, otherwise they
+won't work.
+
+The steps to make integrated circuits are split in two. We have an
+analog flow, and a digital flow, as shown in Figure 3.
+
+It's rare to find a single human that does both flows well. Usually
+people choose, and I think it's based on what they like and their
+personality.
+
+If you like the world to be ordered, with definite answers, then it's
+likely that you'll find the digital flow interesting.
+
+If you're comfortable with not knowing, and have an insatiable desire to
+understand how the world \emph{really} works at a fundamental level,
+then it's likely that you'll find the analog flow interesting.
+
+\pandocbounded{\includegraphics[keepaspectratio]{media/dig_des_tikz.pdf}}
+
+\emph{Figure 3: Analog and Digital design process }
+
+\section{Will you tape-out an IC?}\label{will-you-tape-out-an-ic}
+
+Something that would make me really happy is if someone is able to
+tapeout an IC in this course.
+
+It's now possible without signing an NDA or buying expensive software
+licenses.
+
+In 2020 Google and Skywater joined forces to release a 130 nm process
+design kit to the public. In addition, they have fueled a renaissance of
+open source software tools.
+
+\href{https://tinytapeout.com}{tinytapeout} runs cheap shuttles which
+makes it possible for a private citizen to tape-out their own integrated
+circuit.
+
+\subsection{What the team needs to know to design
+ICs}\label{what-the-team-needs-to-know-to-design-ics}
+
+There are a multitude of tools and skills needed to design professional
+ICs. It's not likely that you'll find all the skills in one human, and
+even if you could, one human does not have sufficient bandwidth to
+design ICs with all its aspects in a reasonable timeline
+
+That is, unless we can find a way to make ICs easier.
+
+The skills needed are
+
+\begin{itemize}
+\tightlist
+\item
+  \emph{Project flow support}: \textbf{Confluence}, JIRA, risk
+  management (DFMEA), failure analysis (8D)
+\item
+  \emph{Language}: \textbf{English}, \textbf{Writing English (Latex,
+  Word, Email)}
+\item
+  \emph{Psychology}: Personalities, convincing people, presentations
+  (Powerpoint, Deckset), \textbf{stress management (what makes your
+  brain turn off?)}
+\item
+  \emph{DevOps}: \textbf{Linux}, build systems (CMake, make, ninja),
+  continuous integration (bamboo, jenkins), \textbf{version control
+  (git)}, containers (docker), container orchestration (swarm,
+  kubernetes)
+\item
+  \emph{Programming}: Python, C, C++, Matlab \emph{Since 1999 I've
+  programmed in Python, Go, Visual BASIC, PHP, Ruby, Perl, C\#, SKILL,
+  Ocean, Verilog-A, C++, BASH, AWK, VHDL, SPICE, MATLAB, ASP, Java, C,
+  SystemC, Verilog, Assembler, and probably a few I've forgotten.}
+\item
+  \emph{Firmware}: signal processing, algorithms, software architecture,
+  security
+\item
+  \emph{Infrastructure}: \textbf{Power management}, \textbf{reset},
+  \textbf{bias}, \textbf{clocks}
+\item
+  \emph{Domains}: CPUs, peripherals, memories, bus systems
+\item
+  \emph{Sub-systems}: \textbf{Radio's}, \textbf{analog-to-digital
+  converters}, \textbf{comparators}
+\item
+  \emph{Blocks}: \textbf{Analog Radio}, Digital radio baseband
+\item
+  \emph{Modules}: Transmitter, \textbf{receiver}, de-modulator, timing
+  recovery, state machines
+\item
+  \emph{Designs}: \textbf{Opamps}, \textbf{amplifiers},
+  \textbf{current-mirrors}, adders, random access memory blocks,
+  standard cells
+\item
+  \emph{Tools}: \textbf{schematic}, \textbf{layout}, \textbf{parasitic
+  extraction}, synthesis, place-and-route, \textbf{simulation},
+  (System)Verilog, \textbf{netlist}
+\item
+  \emph{Physics}: transistor, pn junctions, quantum mechanics
+\end{itemize}
+
+\subsection{Zen of IC design (stolen from Zen of
+Python)}\label{zen-of-ic-design-stolen-from-zen-of-python}
+
+When you learn something new, it's good to listen to someone that has
+done whatever it is before.
+
+Here are some guiding principles that you'll likely forget.
+
+\begin{itemize}
+\item
+  Beautiful is better than ugly.
+\item
+  Explicit is better than implicit.
+\item
+  Simple is better than complex.
+\item
+  Complex is better than complicated.
+\item
+  Readability counts (especially schematics).
+\item
+  Special cases aren't special enough to break the rules.
+\item
+  Although practicality beats purity.
+\item
+  In the face of ambiguity, refuse the temptation to guess.
+\item
+  There should be one \textbf{and preferably only one} obvious way to do
+  it.
+\item
+  Now is better than never.
+\item
+  Although never is often better than \emph{right} now.
+\item
+  If the implementation is hard to explain, it's a bad idea.
+\item
+  If the implementation is easy to explain, it may be a good idea.
+\end{itemize}
+
+\subsection{IC design mantra}\label{ic-design-mantra}
+
+To copy an old mantra I have on learning programming (run it in a
+bash/zsh/cshrc terminal, or in your brain)
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{echo }\OtherTok{"}\StringTok{Find a problem that you really want to solve,}\OtherTok{"}\NormalTok{\textbackslash{}}
+     \OtherTok{"}\StringTok{and learn programming to solve it.}\OtherTok{"}\NormalTok{\textbackslash{}}
+     \OtherTok{"}\StringTok{There is no point in saying \textquotesingle{}I want to learn programming\textquotesingle{},}\OtherTok{"}\NormalTok{\textbackslash{}}
+     \OtherTok{"}\StringTok{then sit down with a book to read about programming,}\OtherTok{"}\NormalTok{\textbackslash{}}
+     \OtherTok{"}\StringTok{and expect that you will learn programming that way.}\OtherTok{"}\NormalTok{\textbackslash{}}
+     \OtherTok{"}\StringTok{It will not happen. The only way to learn programming}\OtherTok{"}\NormalTok{\textbackslash{}}
+     \OtherTok{"}\StringTok{is to do it, a lot.}\OtherTok{"}\NormalTok{ \textbackslash{}}
+\NormalTok{     |perl {-}pe }\OtherTok{\textquotesingle{}}\SpecialStringTok{s/programming/analog design/ig}\OtherTok{\textquotesingle{}}
+\end{Highlighting}
+\end{Shaded}
+
+\subsection{Analog Design Process}\label{analog-design-process}
+
+\begin{itemize}
+\item
+  Define the problem, what are you trying to solve?
+\item
+  Find a circuit that can solve the problem (papers, books)
+\item
+  Find right transistor sizes. What transistors should be weak
+  inversion, strong inversion, or don't care?
+\item
+  Write a verification plan (ask chat). Plan to simulate everything that
+  could go wrong.
+\item
+  Check operating region of transistors (.op)
+\item
+  Check key parameters (.dc, .ac, .tran)
+\item
+  Check function. Exercise all inputs. Check all control signals
+\item
+  Check key parameters in all corners. Check mismatch (Monte-Carlo
+  simulation)
+\item
+  Do layout, and check it's error free. Run design rule checks (DRC).
+  Check layout versus schematic (LVS)
+\item
+  Extract parasitics from layout. Resistance, capacitance, and
+  inductance if necessary.
+\item
+  On extracted parasitic netlist, check key parameters in all corners
+  and mismatch (if possible).
+\item
+  If everything works, then you're done.
+\end{itemize}
+
+\emph{On failure, go back as far as necessary}
+
+\section{My Goal}\label{my-goal}
+
+Don't expect that I'll magically take information and put it inside your
+head, and you'll suddenly understand everything about making ICs.
+
+\textbf{You are the one that must teach yourself everything.}
+
+I consider my role as a guide, similar to a mountain guide. I can't
+carry you up the mountain, you need to walk up the mountain , but I know
+the safe path to take and increase the likelihood that you'll come back
+alive.
+
+My guide role:
+
+\begin{itemize}
+\tightlist
+\item
+  Enable you to read the books on integrated circuits
+\item
+  Enable you to read papers (latest research)
+\item
+  Correct misunderstandings on the topic
+\item
+  Answer any questions you have on the chapters
+\end{itemize}
+
+I'm not a mind reader, I can't see inside your head. That means, you
+must ask questions. Only by your questions can I start to understand
+what pieces of information is missing from your head, or maybe somehow
+correct your understanding.
+
+At the same time, and similar to a mountain guide, you should not assume
+I'm always right. I'm human, and I will make mistakes. And maybe you can
+correct my understanding of something. All I care about is to
+\emph{really} understand how the world works, so if you think my
+understanding is wrong, then I'll happily discuss.
+
+\section{Syllabus}\label{syllabus}
+
+The syllabus will be from Analog Integrated Circuit Design by Carusone,
+Johns and Martin {[}1{]}, which everyone calls CJM, and Circuits for all
+seasons.
+
+These lecture notes are a supplement to the book. I try to give some
+background, and how to think about electronics. It's not my goal to
+repeat information that you can find in the book.
+
+Buy a hard-copy of the book if you don't have that. Don't expect to
+understand the book by reading the PDF.
+
+\section{Software}\label{software}
+
+We'll use professional-grade open source software for everything: xschem
+for schematics, ngspice for simulation, the SKY130A PDK, Magic VLSI and
+netgen for layout and verification, and surfer, iverilog and verilator
+on the digital side. No licence server stands between you and your
+design.
+
+Open source software (xschem, ngspice, sky130A PDK, Magic VLSI, netgen,
+surfer, iverilog, verilator)
+
+I've made a rather detailed (at least I think so myself) tutorial on how
+to make a current mirror with the open source tools. You have to do that
+tutorial. It's Milestone 0 of the project and does count towards your
+final grade.
+
+\href{https://analogicus.com/aic2026/sky130nm_tutorial}{Skywater 130 nm
+Tutorial}
+
+I've also made some more complex examples, that can be found at the link
+below. There are digital logic cells, standard transistors, and few
+other blocks.
+
+\href{https://wulffern.github.io/aicex}{aicex}
+
+\section{Summary}\label{summary}
+
+The one-page version of this chapter:
+
+\begin{itemize}
+\tightlist
+\item
+  The real world is analog, so every IC carries analog circuits at its
+  edges - there is no purely digital chip
+\item
+  Making an IC splits into an analog and a digital flow, and it is rare
+  to find one human who does both well
+\item
+  Digital designers reuse each other's work; analog designers redraw -
+  closing that gap is a theme of this course
+\item
+  What you need from here: the refresher chapters, a working toolchain,
+  and the habit of simulating everything
+\end{itemize}
+
+\phantomsection\label{refs}
+\begin{CSLReferences}{0}{0}
+\bibitem[\citeproctext]{ref-cjm11}
+\CSLLeftMargin{{[}1{]} }%
+\CSLRightInline{T. C. Carusone, D. Johns, and K. Martin, \emph{Analog
+integrated circuit design}. Wiley, 2011 {[}Online{]}. Available:
+\url{https://books.google.no/books?id=1OIJZzLvVhcC}}
+
+\end{CSLReferences}

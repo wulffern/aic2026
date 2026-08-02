@@ -1,0 +1,1 @@
+- [Sky130nm tutorial](/aic2026/assets/lr0_tut1.pdf) [[slides]](/aic2026/assets/html/lr0_tut1.html)

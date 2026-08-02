@@ -159,13 +159,13 @@ PSD form.
 Another very useful theorem when working with noise in the frequency
 domain is this
 
-$$S_y(f) = S_x(f)|H(f)|^2 \tag{8}$$ , where $S_y(f)$ is the output power
+$$S_y(f) = S_x(f)\vert H(f)\vert ^2 \tag{8}$$ , where $S_y(f)$ is the output power
 spectral density, $S_x(f)$ is the input power spectral density and
 $H(f)$ is the transfer function of a time-invariant linear system.
 
 If we insert (8) into (7), with $S_x(f) = a\:constant = D_v$ we get
 
-$$\overline{x^2(t)} = \int{S_y(f)df} = D_v\int{|H(f)|^2 df} = D_v f_x$$
+$$\overline{x^2(t)} = \int{S_y(f)df} = D_v\int{\vert H(f)\vert ^2 df} = D_v f_x$$
 , where $f_x$ is what we call the noise bandwidth. For a single time
 constant RC network the noise bandwidth is equal to
 

@@ -1,0 +1,619 @@
+Design of integrated circuits is split in two, analog design, and
+digital design.
+
+Digital design is highly automated. The digital functions are coded in
+SystemVerilog (yes, I know there are others, but don't use those),
+translated into a gate level netlist, and automatically generated
+layout. Not everything is push-button automation, but most is.
+
+Analog design, however, is manual work. We draw schematic, simulation
+with a mathematical model of the real world, draw the analog layout
+needed for the foundries to make the circuit, verify that we drew the
+schematic and layout the same, extract parasitics, simulate again, and
+in the end get a GDSII file.
+
+When we mix analog and digital designs, we have two choices, analog on
+top, or digital on top.
+
+In analog on top we take the digital IP, and do the top level layout by
+hand in analog tools.
+
+In digital on top we include the analog IPs in the SystemVerilog, and
+allow the digital tools to do the layout. The digital layout is still
+orchestrated by people.
+
+Which strategy is chosen depends on the complexity of the integrated
+circuit. For medium to low level of complexity, analog on top is fine.
+For high complexity ICs, then digital on top is the way to go.
+
+Below is a description of the open source digital-on-top flow. The
+analog is included into GDSII at the OpenRoad stage of the flow.
+
+The GDSII is not sufficient to integrate the analog IP. The digital
+needs to know how the analog works, what capacitance is on every digital
+input, the propagation delay for digital input to digital outputs , the
+relation between digital outputs and clock inputs, and the possible load
+on digital outputs.
+
+The details on timing and capacitance is covered in a Liberty file. The
+behavior, or function of the analog circuit must be described in a
+SystemVerilog file.
+
+But how do we describe an analog function in SystemVerilog?
+SystemVerilog is simulated in an digital simulator.
+
+
+{
+\centering
+\aicfig{media/dig_des_tikz.png}
+}
+
+\emph{Figure 1: Mixed signal design flow, where the analog design is
+captured both as a schematic for ngspice and as a SystemVerilog model
+for the digital simulation}
+
+\section{Digital simulation}\label{digital-simulation}\index{digital simulation@Digital simulation}
+
+Conceptually, the digital simulator is easy.
+
+\begin{itemize}
+\item
+  The order of execution of events at the same time-step does not matter
+\item
+  The system is causal. Changes in the future do not affect signals in
+  the past or the now
+\end{itemize}
+
+In a digital simulator there will be an event queue, see below. From
+start, set the current time step equals to the next time step. Check if
+there are any events scheduled for the time step. Assume that execution
+of events will add new time steps. Check if there is another time step,
+and repeat.
+
+Since the digital simulator only acts when something is supposed to be
+done, they are inherently fast, and can handle complex systems.
+
+
+{
+\centering
+\aicfig{media/eventqueue.png}
+}
+
+\emph{Figure 2: Flow chart of a digital simulator - advance to the next
+time step, execute the events scheduled there, and repeat until the
+queue is empty}
+
+It's a fun exercise to make a digital simulator. On my Ph.D I wanted to
+model ADCs, and first I had a look at SystemC, however, I disliked C++,
+so I made
+\href{https://sourceforge.net/projects/systemdotnet/}{SystemDotNet}
+
+In SystemDotNet I implemented the event queue as a hash table, so it ran
+a bit faster. See below.
+
+
+{
+\centering
+\aicfig{media/systemdotnet.png}
+}
+
+\emph{Figure 3: Event queue implemented as a hash table in SystemDotNet,
+where events at 10, 20, 21 and 30 ns are looked up by time step before
+being run. Source: the SystemDotNet project on SourceForge}
+
+\subsection{Digital Simulators}\label{digital-simulators}\index{digital simulators@Digital simulators}
+
+There are both commercial and open source tools for digital simulation.
+If you've never used a digital simulator, then I'd recommend you start
+with iverilog. I've made some examples at
+\href{https://github.com/wulffern/dicex/tree/main/project/verilog}{dicex}.
+
+\textbf{Commercial}
+
+\begin{itemize}
+\tightlist
+\item
+  \href{https://www.cadence.com/ko_KR/home/tools/system-design-and-verification/simulation-and-testbench-verification/xcelium-simulator.html}{Cadence
+  Excelium}
+\item
+  \href{https://eda.sw.siemens.com/en-US/ic/questa/simulation/advanced-simulator/}{Siemens
+  Questa}
+\item
+  \href{https://www.synopsys.com/verification/simulation/vcs.html}{Synopsys
+  VCS}
+\end{itemize}
+
+\textbf{Open Source} -
+\href{https://github.com/steveicarus/iverilog}{iverilog/vpp} -
+\href{https://www.veripool.org/verilator/}{Verilator} -
+\href{https://sourceforge.net/projects/systemdotnet/}{SystemDotNet}
+
+\subsubsection{Counter}\label{counter}
+
+Below is an example of a counter in SystemVerilog. The code can be found
+at
+\href{https://github.com/wulffern/dicex/tree/main/sim/verilog/counter_sv}{counter\_sv}.
+
+In the always\_comb section we code what will become the combinatorial
+logic. In the always\_ff section we code what will become our registers.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{module}\NormalTok{ counter}\OperatorTok{(}
+               \DataTypeTok{output}\NormalTok{ logic }\OperatorTok{[}\NormalTok{WIDTH}\DecValTok{{-}1}\OperatorTok{:}\DecValTok{0}\OperatorTok{]}\NormalTok{ out}\OperatorTok{,}
+               \DataTypeTok{input}\NormalTok{ logic              clk}\OperatorTok{,}
+               \DataTypeTok{input}\NormalTok{ logic              reset}
+               \OperatorTok{);}
+
+   \DataTypeTok{parameter}\NormalTok{ WIDTH }\OperatorTok{=} \DecValTok{8}\OperatorTok{;}
+
+\NormalTok{   logic }\OperatorTok{[}\NormalTok{WIDTH}\DecValTok{{-}1}\OperatorTok{:}\DecValTok{0}\OperatorTok{]}\NormalTok{                    count}\OperatorTok{;}
+\NormalTok{   always\_comb }\KeywordTok{begin}
+\NormalTok{      count }\OperatorTok{=}\NormalTok{ out }\OperatorTok{+} \DecValTok{1}\OperatorTok{;}
+   \KeywordTok{end}
+
+\NormalTok{   always\_ff }\OperatorTok{@(}\KeywordTok{posedge}\NormalTok{ clk }\DataTypeTok{or} \KeywordTok{posedge}\NormalTok{ reset}\OperatorTok{)} \KeywordTok{begin}
+      \KeywordTok{if} \OperatorTok{(}\NormalTok{reset}\OperatorTok{)}
+\NormalTok{        out }\OperatorTok{\textless{}=} \DecValTok{0}\OperatorTok{;}
+      \KeywordTok{else}
+\NormalTok{        out }\OperatorTok{\textless{}=}\NormalTok{ count}\OperatorTok{;}
+   \KeywordTok{end}
+
+\KeywordTok{endmodule} \CommentTok{// counter}
+\end{Highlighting}
+\end{Shaded}
+
+In the context of a digital simulator, we can think through how the
+event queue will look.
+
+When the clk or reset changes from zero to 1, then schedule an event
+where if the reset is 1, then out will be zero in the next time step. If
+reset is 0, then out will be \texttt{count} in the next time step.
+
+In a time-step where \texttt{out} changes, then schedule an event to set
+\texttt{count} to \texttt{out} plus one. As such, each positive edge of
+the clock at least 2 events must be scheduled in the register transfer
+level (RTL) simulation.
+
+For example:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{Assume} \KeywordTok{\textasciigrave{}}\ExtensionTok{clk,}\NormalTok{ reset, out = 0}\KeywordTok{\textasciigrave{}}
+
+\ExtensionTok{Assume}\NormalTok{ event with }\KeywordTok{\textasciigrave{}}\ExtensionTok{clk}\NormalTok{ = 1}\KeywordTok{\textasciigrave{}}
+
+\ExtensionTok{0:}\NormalTok{ Set }\KeywordTok{\textasciigrave{}}\ExtensionTok{out}\NormalTok{ = count}\KeywordTok{\textasciigrave{}}\NormalTok{ in next event }\ErrorTok{(}\ExtensionTok{1}\KeywordTok{)}
+
+\ExtensionTok{1:}\NormalTok{ Set }\KeywordTok{\textasciigrave{}}\ExtensionTok{count}\NormalTok{ = out + 1}\KeywordTok{\textasciigrave{}}\NormalTok{ using }
+   \ExtensionTok{logic} \ErrorTok{(}\ExtensionTok{may}\NormalTok{ consume multiple events}\KeywordTok{)} 
+
+\ExtensionTok{X:}\NormalTok{ no further events}
+\end{Highlighting}
+\end{Shaded}
+
+When we synthesis the code below into a
+\href{https://github.com/wulffern/dicex/blob/main/sim/verilog/counter_sv/counter_netlist.v}{netlist}
+it's a bit harder to see how the events will be scheduled, but we can
+notice that clk and reset are still inputs, and for example the clock is
+connected to d-flip-flops. The image below is the synthesized netlist
+
+It should feel intuitive that a gate-level netlist will take longer to
+simulate than an RTL, there are more events.
+
+
+{
+\centering
+\aicfig{media/sv_counter.png}
+}
+
+\emph{Figure 4: Gate level netlist of the counter after synthesis, with
+clk and reset driving eight D flip-flops and the adder logic}
+
+\section{Transient analog simulation}\label{transient-analog-simulation}\index{transient analog simulation@Transient analog simulation}
+
+Analog simulation is different. There is no quantized time step. How
+fast ``things'' happen in the circuit is entirely determined by the time
+constants, change in voltage, and change in current in the system.
+
+It is possible to have a fixed time-step in analog simulation, for
+example, we say that nothing is faster than 1 fs, so we pick that as our
+time step. If we wanted to simulate 1 s, however, that's at least 1e15
+events, and with 1 event per microsecond on a computer it's still a
+simulation time of 31 years. Not a viable solution for all analog
+circuits.
+
+Analog circuits are also non-linear, properties of resistors,
+capacitors, inductors, diodes may depend on the voltage or current
+across, or in, the device. Solving for all the non-linear differential
+equations is tricky.
+
+An analog simulation engine must parse spice netlist, and setup
+partial/ordinary differential equations for node matrix
+
+The nodal matrix could look like the matrix below, \(i\) are the
+currents, \(v\) the voltages, and \(G\) the conductances between nodes.
+
+\[
+\begin{pmatrix}
+G_{11} &G_{12}  &\cdots  &G_{1N} \\ 
+G_{21} &G_{22}  &\cdots  &G_{2N} \\ 
+\vdots &\vdots  &\ddots  & \vdots\\ 
+G_{N1} &G_{N2}  &\cdots  &G_{NN} 
+\end{pmatrix}
+\begin{pmatrix}
+v_1\\ 
+v_2\\ 
+\vdots\\ 
+v_N
+\end{pmatrix}=
+\begin{pmatrix}
+i_1\\ 
+i_2\\ 
+\vdots\\ 
+i_N
+\end{pmatrix}
+\]
+
+The simulator, and devices model the non-linear current/voltage behavior
+between all nodes
+
+as such, the \(G\)'s may be non-linear functions, and include the
+\(v\)'s and \(i\)'s.
+
+Transient analysis use numerical methods to compute time evolution
+
+The time step is adjusted automatically, often by proprietary
+algorithms, to trade accuracy and simulation speed.
+
+The numerical methods can be forward/backward Euler, or the others
+listed below.
+
+\begin{itemize}
+\tightlist
+\item
+  \href{https://aquaulb.github.io/book_solving_pde_mooc/solving_pde_mooc/notebooks/02_TimeIntegration/02_01_EulerMethod.html}{Euler}
+\item
+  \href{https://aquaulb.github.io/book_solving_pde_mooc/solving_pde_mooc/notebooks/02_TimeIntegration/02_02_RungeKutta.html}{Runge-Kutta}
+\item
+  \href{https://en.wikipedia.org/wiki/Crank\%E2\%80\%93Nicolson_method}{Crank-Nicolson}
+\item
+  Gear {[}1{]}
+\end{itemize}
+
+If you wish to learn more, I would recommend starting with the original
+paper on analog transient analysis.
+
+\href{https://www2.eecs.berkeley.edu/Pubs/TechRpts/1973/ERL-m-382.pdf}{SPICE
+(Simulation Program with Integrated Circuit Emphasis)} published in 1973
+by Nagel and Pederson
+
+The original paper has spawned a multitude of commercial, free and open
+source simulators, some are listed below.
+
+If you have money, then buy Cadence Spectre. If you have no money, then
+start with ngspice.
+
+\textbf{Commercial} -
+\href{https://www.cadence.com/ko_KR/home/tools/custom-ic-analog-rf-design/circuit-simulation/spectre-simulation-platform.html}{Cadence
+Spectre} - \href{https://eda.sw.siemens.com/en-US/ic/eldo/}{Siemens
+Eldo} -
+\href{https://www.synopsys.com/implementation-and-signoff/ams-simulation/primesim-hspice.html}{Synopsys
+HSPICE}
+
+\textbf{Free} - \href{http://aimspice.com}{Aimspice} -
+\href{https://www.analog.com/en/design-center/design-tools-and-calculators/ltspice-simulator.html}{Analog
+Devices LTspice} - \href{https://xyce.sandia.gov}{xyce}
+
+\textbf{Open Source} - \href{http://ngspice.sourceforge.net}{ngspice}
+
+\section{Mixed signal simulation}\label{mixed-signal-simulation}\index{mixed signal simulation@Mixed signal simulation}
+
+It is possible to co-simulate both analog and digital functions. An
+illustration is shown below.
+
+The system will have two simulators, one analog, with transient
+simulation and differential equation solver, and a digital, with event
+queue.
+
+Between the two simulators there would be analog-to-digital, and
+digital-to-analog converters.
+
+To orchestrate the time between simulators there must be a global event
+and time-step control. Most often, the digital simulator will end up
+waiting for the analog simulator.
+
+The challenge with mixed-mode simulation is that if the digital circuit
+becomes to large, and the digital simulation must wait for analog
+solver, then the simulation would take too long.
+
+Most of the time, it's stupid to try and simulate complex system-on-chip
+with mixed-signal , full detail, simulation.
+
+For IPs, like an ADC, co-simulation works well, and is the best way to
+verify the digital and analog.
+
+But if we can't run mixed simulation, how do we verify analog with
+digital?
+
+
+{
+\centering
+\aicfig{media/mixed_simulator.png}
+}
+
+\emph{Figure 5: Mixed signal simulator, where a digital and an analog
+simulator exchange values through DAC and ADC connect modules under a
+shared event and timestep control}
+
+\section{Analog SystemVerilog
+Example}\label{analog-systemverilog-example}
+
+\subsection{TinyTapeout TT06\_SAR}\label{tinytapeout-tt06_sar}
+
+
+{
+\centering
+\aicfig{media/tt_um_TT06_SAR_wulffern.png}
+}
+
+\emph{Figure 6: Top level schematic of the TinyTapeout
+tt\_um\_TT06\_SAR\_wulffern 8-bit SAR ADC, with the SAR core, the output
+capture block and the power decoupling}
+
+
+{
+\centering
+\aicfig{media/tt06_sar_anawave.png}
+}
+
+\emph{Figure 7: ngspice transient waveforms of the SAR, showing the
+sampled analog input, the clock and uio\_out{[}0{]}, and the sarp/sarn
+comparator inputs settling through the bit cycling}
+
+\subsection{SAR operation}\label{sar-operation}\index{sar operation@SAR operation}
+
+The key idea is to model the analog behavior to sufficient detail such
+that we can verify the digital code. I think it's best to have a look at
+a concrete example.
+
+\begin{itemize}
+\tightlist
+\item
+  Analog input is sampled when clock goes low (sarp/sarn)
+\item
+  uio\_out{[}0{]} goes high when bit-cycling is done
+\item
+  Digital output (ro) changes when uio\_out{[}0{]} goes high
+\end{itemize}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{//tt06{-}sar/src/project.v}
+\KeywordTok{module}\NormalTok{ tt\_um\_TT06\_SAR\_wulffern }\OperatorTok{(}
+                                \DataTypeTok{input} \DataTypeTok{wire}\NormalTok{        VGND}\OperatorTok{,}
+                                \DataTypeTok{input} \DataTypeTok{wire}\NormalTok{        VPWR}\OperatorTok{,}
+                                \DataTypeTok{input} \DataTypeTok{wire} \OperatorTok{[}\DecValTok{7}\OperatorTok{:}\DecValTok{0}\OperatorTok{]}\NormalTok{  ui\_in}\OperatorTok{,}
+                                \DataTypeTok{output} \DataTypeTok{wire} \OperatorTok{[}\DecValTok{7}\OperatorTok{:}\DecValTok{0}\OperatorTok{]}\NormalTok{ uo\_out}\OperatorTok{,}
+                                \DataTypeTok{input} \DataTypeTok{wire} \OperatorTok{[}\DecValTok{7}\OperatorTok{:}\DecValTok{0}\OperatorTok{]}\NormalTok{  uio\_in}\OperatorTok{,}
+                                \DataTypeTok{output} \DataTypeTok{wire} \OperatorTok{[}\DecValTok{7}\OperatorTok{:}\DecValTok{0}\OperatorTok{]}\NormalTok{ uio\_out}\OperatorTok{,}
+                                \DataTypeTok{output} \DataTypeTok{wire} \OperatorTok{[}\DecValTok{7}\OperatorTok{:}\DecValTok{0}\OperatorTok{]}\NormalTok{ uio\_oe}\OperatorTok{,}
+\OtherTok{\textasciigrave{}ifdef ANA\_TYPE\_REAL}
+                                \DataTypeTok{input} \DataTypeTok{real}\NormalTok{        ua\_0}\OperatorTok{,}
+                                \DataTypeTok{input} \DataTypeTok{real}\NormalTok{        ua\_1}\OperatorTok{,}
+\OtherTok{\textasciigrave{}else}
+                                \CommentTok{// analog pins}
+                                \DataTypeTok{inout} \DataTypeTok{wire} \OperatorTok{[}\DecValTok{7}\OperatorTok{:}\DecValTok{0}\OperatorTok{]}\NormalTok{  ua}\OperatorTok{,} 
+\OtherTok{\textasciigrave{}endif}
+                                \DataTypeTok{input} \DataTypeTok{wire}\NormalTok{        ena}\OperatorTok{,}
+                                \DataTypeTok{input} \DataTypeTok{wire}\NormalTok{        clk}\OperatorTok{,}
+                                \DataTypeTok{input} \DataTypeTok{wire}\NormalTok{        rst\_n}
+                                \OperatorTok{);}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{//tt06{-}sar/src/tb\_ana.v}
+\OtherTok{\textasciigrave{}ifdef ANA\_TYPE\_REAL}
+   \DataTypeTok{real}\NormalTok{        ua\_0  }\OperatorTok{=} \DecValTok{0}\OperatorTok{;}
+   \DataTypeTok{real}\NormalTok{        ua\_1 }\OperatorTok{=} \DecValTok{0}\OperatorTok{;}
+
+\OtherTok{\textasciigrave{}else}
+   \DataTypeTok{tri} \OperatorTok{[}\DecValTok{7}\OperatorTok{:}\DecValTok{0}\OperatorTok{]}\NormalTok{   ua}\OperatorTok{;}
+\NormalTok{   logic       uain }\OperatorTok{=} \DecValTok{0}\OperatorTok{;}
+   \KeywordTok{assign}\NormalTok{ ua }\OperatorTok{=}\NormalTok{ uain}\OperatorTok{;}
+\OtherTok{\textasciigrave{}endif}
+
+\OtherTok{\textasciigrave{}ifdef ANA\_TYPE\_REAL}
+   \KeywordTok{always} \BaseNTok{\#100} \KeywordTok{begin}
+\NormalTok{      ua\_0 }\OperatorTok{=} \DataTypeTok{$sin}\OperatorTok{(}\DecValTok{2}\NormalTok{*}\FloatTok{3.14}\NormalTok{*}\DecValTok{1}\OperatorTok{/}\DecValTok{7750}\NormalTok{*}\DataTypeTok{$time}\OperatorTok{);}
+\NormalTok{      ua\_1 }\OperatorTok{=} \OperatorTok{{-}}\DataTypeTok{$sin}\OperatorTok{(}\DecValTok{2}\NormalTok{*}\FloatTok{3.14}\NormalTok{*}\DecValTok{1}\OperatorTok{/}\DecValTok{7750}\NormalTok{*}\DataTypeTok{$time}\OperatorTok{);}
+   \KeywordTok{end}
+\OtherTok{\textasciigrave{}endif}
+
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{//tt06{-}sar/src/tb\_ana.v}
+\NormalTok{   tt\_um\_TT06\_SAR\_wulffern dut }\OperatorTok{(}
+\NormalTok{                                .VGND}\OperatorTok{(}\NormalTok{VGND}\OperatorTok{),}
+\NormalTok{                                .VPWR}\OperatorTok{(}\NormalTok{VPWR}\OperatorTok{),}
+\NormalTok{                                .ui\_in}\OperatorTok{(}\NormalTok{ui\_in}\OperatorTok{),}
+\NormalTok{                                .uo\_out}\OperatorTok{(}\NormalTok{uo\_out}\OperatorTok{),}
+\NormalTok{                                .uio\_in}\OperatorTok{(}\NormalTok{uio\_in}\OperatorTok{),}
+\NormalTok{                                .uio\_out}\OperatorTok{(}\NormalTok{uio\_out}\OperatorTok{),}
+\NormalTok{                                .uio\_oe}\OperatorTok{(}\NormalTok{uio\_oe}\OperatorTok{),}
+\OtherTok{\textasciigrave{}ifdef ANA\_TYPE\_REAL}
+\NormalTok{                                .ua\_0}\OperatorTok{(}\NormalTok{ua\_0}\OperatorTok{),}
+\NormalTok{                                .ua\_1}\OperatorTok{(}\NormalTok{ua\_1}\OperatorTok{),}
+\OtherTok{\textasciigrave{}else}
+\NormalTok{                                .ua}\OperatorTok{(}\NormalTok{ua}\OperatorTok{),}
+\OtherTok{\textasciigrave{}endif}
+\NormalTok{                                .ena}\OperatorTok{(}\NormalTok{ena}\OperatorTok{),}
+\NormalTok{                                .clk}\OperatorTok{(}\NormalTok{clk}\OperatorTok{),}
+\NormalTok{                                .rst\_n}\OperatorTok{(}\NormalTok{rst\_n}\OperatorTok{)}
+                                \OperatorTok{);}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#tt06{-}sar/src/Makefile}
+\DecValTok{runa:}
+\ErrorTok{    }\NormalTok{iverilog  {-}g2012 {-}o my\_design {-}c tb\_ana.fl {-}DANA\_TYPE\_REAL}
+\NormalTok{    vvp {-}n my\_design}
+
+\DecValTok{rund:}
+\ErrorTok{    }\NormalTok{iverilog  {-}g2012 {-}o my\_design {-}c tb\_ana.fl}
+\NormalTok{    vvp {-}n my\_design}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+   \CommentTok{//tt06{-}sar/src/project.v}
+   \CommentTok{//Main SAR loop}
+\NormalTok{   always\_ff }\OperatorTok{@(}\KeywordTok{posedge}\NormalTok{ clk }\DataTypeTok{or} \KeywordTok{negedge}\NormalTok{ clk}\OperatorTok{)} \KeywordTok{begin}
+      \KeywordTok{if}\OperatorTok{(\textasciitilde{}}\NormalTok{ui\_in}\OperatorTok{[}\DecValTok{0}\OperatorTok{])} \KeywordTok{begin}
+\NormalTok{         state }\OperatorTok{\textless{}=}\NormalTok{ OFF}\OperatorTok{;}
+\NormalTok{         tmp }\OperatorTok{=} \DecValTok{0}\OperatorTok{;}
+\NormalTok{         dout }\OperatorTok{=} \DecValTok{0}\OperatorTok{;}
+      \KeywordTok{end}
+      \KeywordTok{else} \KeywordTok{begin}
+         \KeywordTok{if}\OperatorTok{(}\NormalTok{OFF}\OperatorTok{)} \KeywordTok{begin}
+
+         \KeywordTok{end}
+         \KeywordTok{else} \KeywordTok{if}\OperatorTok{(}\NormalTok{clk }\OperatorTok{==} \DecValTok{1}\OperatorTok{)} \KeywordTok{begin}
+\NormalTok{            state }\OperatorTok{=}\NormalTok{ SAMPLE}\OperatorTok{;}
+         \KeywordTok{end}
+         \KeywordTok{else} \KeywordTok{if}\OperatorTok{(}\NormalTok{clk }\OperatorTok{==} \DecValTok{0}\OperatorTok{)} \KeywordTok{begin}
+\NormalTok{            state }\OperatorTok{=}\NormalTok{ CONVERT}\OperatorTok{;}
+      \OtherTok{\textasciigrave{}ifdef}\NormalTok{ ANA\_TYPE\_REAL}
+\NormalTok{            smpl }\OperatorTok{=}\NormalTok{ ua\_0 }\OperatorTok{{-}}\NormalTok{ ua\_1}\OperatorTok{;}
+\NormalTok{            tmp }\OperatorTok{=}\NormalTok{ smpl}\OperatorTok{;}
+
+            \KeywordTok{for}\OperatorTok{(}\NormalTok{int i}\OperatorTok{=}\DecValTok{7}\OperatorTok{;}\NormalTok{i}\OperatorTok{\textgreater{}=}\DecValTok{0}\OperatorTok{;}\NormalTok{i}\OperatorTok{{-}{-})} \KeywordTok{begin}
+               \KeywordTok{if}\OperatorTok{(}\NormalTok{tmp }\OperatorTok{\textgreater{}=} \DecValTok{0}\OperatorTok{)} \KeywordTok{begin}
+\NormalTok{                  tmp }\OperatorTok{=}\NormalTok{ tmp }\OperatorTok{{-}}\NormalTok{ lsb*}\DecValTok{2}\NormalTok{**}\OperatorTok{(}\NormalTok{i}\DecValTok{{-}1}\OperatorTok{);}
+                  \KeywordTok{if}\OperatorTok{(}\NormalTok{i}\OperatorTok{==}\DecValTok{7}\OperatorTok{)}
+\NormalTok{                    dout}\OperatorTok{[}\NormalTok{i}\OperatorTok{]} \OperatorTok{\textless{}=} \DecValTok{0}\OperatorTok{;}
+                  \KeywordTok{else}
+\NormalTok{                    dout}\OperatorTok{[}\NormalTok{i}\OperatorTok{]} \OperatorTok{\textless{}=} \DecValTok{1}\OperatorTok{;}
+               \KeywordTok{end}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+
+               \KeywordTok{else} \KeywordTok{begin}
+\NormalTok{                  tmp }\OperatorTok{=}\NormalTok{ tmp }\OperatorTok{+}\NormalTok{ lsb*}\DecValTok{2}\NormalTok{**}\OperatorTok{(}\NormalTok{i}\DecValTok{{-}1}\OperatorTok{);}
+                  \KeywordTok{if}\OperatorTok{(}\NormalTok{i}\OperatorTok{==}\DecValTok{7}\OperatorTok{)}
+\NormalTok{                    dout}\OperatorTok{[}\NormalTok{i}\OperatorTok{]} \OperatorTok{=} \DecValTok{1}\OperatorTok{;}
+                  \KeywordTok{else}
+\NormalTok{                    dout}\OperatorTok{[}\NormalTok{i}\OperatorTok{]} \OperatorTok{=} \DecValTok{0}\OperatorTok{;}
+               \KeywordTok{end}
+            \KeywordTok{end}
+\OtherTok{\textasciigrave{}else}
+            \KeywordTok{if}\OperatorTok{(}\NormalTok{tmp }\OperatorTok{==} \DecValTok{0}\OperatorTok{)} \KeywordTok{begin}
+\NormalTok{               dout}\OperatorTok{[}\DecValTok{7}\OperatorTok{]} \OperatorTok{\textless{}=} \DecValTok{1}\OperatorTok{;}
+\NormalTok{               tmp }\OperatorTok{\textless{}=} \DecValTok{1}\OperatorTok{;}
+
+            \KeywordTok{end}
+            \KeywordTok{else} \KeywordTok{begin}
+\NormalTok{               dout}\OperatorTok{[}\DecValTok{7}\OperatorTok{]} \OperatorTok{\textless{}=} \DecValTok{0}\OperatorTok{;}
+\NormalTok{               tmp  }\OperatorTok{=} \DecValTok{0}\OperatorTok{;}
+            \KeywordTok{end}
+\OtherTok{\textasciigrave{}endif}
+
+         \KeywordTok{end}
+\NormalTok{         state }\OperatorTok{=}\NormalTok{ next\_state}\OperatorTok{;}
+      \KeywordTok{end} \CommentTok{// else: !if(\textasciitilde{}ui\_in[0])}
+   \KeywordTok{end} \CommentTok{// always\_ff @ (posedge clk)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+   \CommentTok{//tt06{-}sar/src/project.v}
+   \KeywordTok{always} \OperatorTok{@(}\KeywordTok{posedge}\NormalTok{ done}\OperatorTok{)} \KeywordTok{begin}
+\NormalTok{      state }\OperatorTok{=}\NormalTok{ DONE}\OperatorTok{;}
+\NormalTok{      sampled\_dout }\OperatorTok{=}\NormalTok{ dout}\OperatorTok{;}
+   \KeywordTok{end}
+
+   \KeywordTok{always} \OperatorTok{@(}\NormalTok{state}\OperatorTok{)} \KeywordTok{begin}
+      \KeywordTok{if}\OperatorTok{(}\NormalTok{state }\OperatorTok{==}\NormalTok{ OFF}\OperatorTok{)}
+        \BaseNTok{\#2}\NormalTok{ done }\OperatorTok{=} \DecValTok{0}\OperatorTok{;}
+      \KeywordTok{else} \KeywordTok{if}\OperatorTok{(}\NormalTok{state }\OperatorTok{==}\NormalTok{ SAMPLE}\OperatorTok{)}
+        \BaseNTok{\#1}\FloatTok{.6}\NormalTok{ done }\OperatorTok{=} \DecValTok{0}\OperatorTok{;}
+      \KeywordTok{else} \KeywordTok{if}\OperatorTok{(}\NormalTok{state }\OperatorTok{==}\NormalTok{ CONVERT}\OperatorTok{)}
+        \BaseNTok{\#115}\NormalTok{ done }\OperatorTok{=} \DecValTok{1}\OperatorTok{;}
+   \KeywordTok{end}
+\end{Highlighting}
+\end{Shaded}
+
+
+{
+\centering
+\aicfig{media/tt06_sar_anawave2.png}
+}
+
+\emph{Figure 8: ngspice transient of the SAR at layout corner, with the
+ramping analog input, the digital output code, the clock and the
+uio\_out{[}0{]} done pulses}
+
+
+{
+\centering
+\aicfig{media/tt06_sar_digwave.png}
+}
+
+\emph{Figure 9: The same behaviour in gtkwave from the SystemVerilog
+real-number model, where uo\_out{[}7:0{]} steps as ua\_0 ramps}
+
+\section{Summary}\label{summary}
+
+The one-page version of this chapter:
+
+\begin{itemize}
+\tightlist
+\item
+  Digital simulators are fast because they only compute at events;
+  analog simulators are slow because they solve the whole matrix at
+  every timestep
+\item
+  Analog SystemVerilog models the analog blocks with real-valued signals
+  inside the digital simulator - the mixed-signal chip simulates at
+  digital speed
+\item
+  The model is a contract: it must match the schematic's behavior at the
+  pins, and drift between them is found in co-simulation
+\item
+  A SAR ADC in TinyTapeout shows the whole flow: the same testbench
+  drives the Verilog model and the transistor netlist
+\item
+  Verification from zero supply, every time - models make that cheap
+  enough to actually do
+\end{itemize}
+
+\section{Would you like to know
+more?}\label{would-you-like-to-know-more}
+
+For more information on real-number modeling I would recommend
+\href{https://youtu.be/gNpPslQZT-Y}{The Evolution of Real Number
+Modeling}
+
+\phantomsection\label{refs}
+\begin{CSLReferences}{0}{0}
+\bibitem[\citeproctext]{ref-gear71}
+\CSLLeftMargin{{[}1{]} }%
+\CSLRightInline{C. Gear, {``Simultaneous numerical solution of
+differential-algebraic equations,''} \emph{IEEE Transactions on Circuit
+Theory}, vol. 18, no. 1, pp. 89--95, 1971, doi:
+\href{https://doi.org/10.1109/TCT.1971.1083221}{10.1109/TCT.1971.1083221}.
+}
+
+\end{CSLReferences}

@@ -1,0 +1,1031 @@
+\textbf{Keywords:} IP, xschem, ngspice, Corners, Layout, DRC, LVS, LPE,
+Documentation
+
+Before you start the tutorial you need to have the tools installed.
+
+If you're a student of mine, then you must install the tools locally on
+your PC. Read check \href{https://analogicus.com/aic2026/the_tools}{The
+Tools} chapter first.
+
+If you're the impatient kind, then check
+\url{https://analogicus.com/aicex/} which shows how to start the docker
+image.
+
+\section{Create the IP}\label{create-the-ip}
+
+I've made some scripts to automatically generate the IP.
+
+To see what files are generated, see
+\texttt{tech\_sky130A/cicconf/lelo.yaml}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\BuiltInTok{cd}\NormalTok{ aicex/ip}
+\ExtensionTok{cicconf}\NormalTok{ newip ex }\AttributeTok{{-}{-}project}\NormalTok{ lelo }\AttributeTok{{-}{-}technology}\NormalTok{ sky130A }\AttributeTok{{-}{-}ip}\NormalTok{  tech\_sky130A/cicconf/lelo.yaml}
+\end{Highlighting}
+\end{Shaded}
+
+\section{The file structure}\label{the-file-structure}
+
+It matters how you name files, and store files. I would be surprised if
+you had a good method already, as such, I won't allow you to make your
+own folder structure and names for things. I also control the filenames
+and folder structure because there are many scripts to make your life
+easier (yes, really) that rely on an exact structure. Don't mess with
+it.
+
+\subsection{Github workflows}\label{github-workflows}
+
+On github it's possible use something called workflows to run things
+every time you push a new version. It's really nice, since it can then
+check that your design is valid.
+
+The workflows are defined below.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{.github}
+   \ExtensionTok{workflows}  
+   \ExtensionTok{docs.yaml} \CommentTok{\# Generate a github page }
+   \ExtensionTok{drc.yaml}  \CommentTok{\# Run Design Rule Checks }
+   \ExtensionTok{gds.yaml}  \CommentTok{\# Generate a GDS file from layout }
+   \ExtensionTok{lvs.yaml}  \CommentTok{\# Run Layout Versus Schematic }
+             \CommentTok{\# and Layout Parasitic Extraction}
+\end{Highlighting}
+\end{Shaded}
+
+\subsection{Configuration files}\label{configuration-files}
+
+Each IP has a few files that define the setup, you'll need to modify at
+least the \texttt{README.md} and the \texttt{info.yaml}.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+ \ExtensionTok{.gitignore}  \CommentTok{\# files that are ignored by git}
+ \ExtensionTok{README.md}   \CommentTok{\# Frontpage documentation }
+ \ExtensionTok{config.yaml} \CommentTok{\# What libraries are used. Used by  cicconf}
+ \ExtensionTok{info.yaml}   \CommentTok{\# Setup names, authors etc }
+ \ExtensionTok{media}       \CommentTok{\# Where you should store images for documentation}
+ \ExtensionTok{tech} \AttributeTok{{-}}\OperatorTok{\textgreater{}}\NormalTok{ ../tech\_sky130A  }\CommentTok{\# The technology library}
+\end{Highlighting}
+\end{Shaded}
+
+\subsection{Design files}\label{design-files}
+
+A ``cell'' in the open source EDA world should consist of the following
+files
+
+\begin{itemize}
+\tightlist
+\item
+  Schematic (.sch)
+\item
+  Layout (.mag)
+\item
+  Documentation (.md)
+\end{itemize}
+
+The files must have the same name, and must be stored in
+\texttt{design/\textless{}LIB\textgreater{}/} as shown below.
+
+Note there are also two symbolic links to other libraries. These two
+libraries contain standard cells and standard analog transistors (ATR)
+that you should be using.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{design}
+  \ExtensionTok{LELO\_EX\_SKY130A}
+  \ExtensionTok{LELO\_EX.sch}
+  \ExtensionTok{JNW\_ATR\_SKY130A} \AttributeTok{{-}}\OperatorTok{\textgreater{}}\NormalTok{ ../../jnw\_atr\_sky130a/design/JNW\_ATR\_SKY130A}
+  \ExtensionTok{JNW\_TR\_SKY130A} \AttributeTok{{-}}\OperatorTok{\textgreater{}}\NormalTok{ ../../jnw\_tr\_sky130a/design/JNW\_TR\_SKY130A}
+\end{Highlighting}
+\end{Shaded}
+
+For example, if the cell name was \texttt{LELO\_EX}, then you would have
+
+\begin{itemize}
+\tightlist
+\item
+  \texttt{design/LELO\_EX\_SKY130A/LELO\_EX.sch}: Schematic (xschem)
+\item
+  \texttt{design/LELO\_EX\_SKY130A/LELO\_EX.sym}: Symbol (xschem)
+\item
+  \texttt{design/LELO\_EX\_SKY130A/LELO\_EX.mag}: Layout (Magic)
+\item
+  \texttt{design/LELO\_EX\_SKY130A/LELO\_EX.md} : Markdown documentation
+  (any text editor)
+\end{itemize}
+
+All these files are text files, so you can edit them in a text editor,
+but mostly you shouldn't (except for the Markdown)
+
+\subsection{Simulations}\label{simulations}
+
+All simulations shall be stored in \texttt{sim}. Once you have a
+Schematic ready for simulation, then
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\BuiltInTok{cd}\NormalTok{ sim }
+\FunctionTok{make}\NormalTok{ cell CELL=LELO\_EX}
+\end{Highlighting}
+\end{Shaded}
+
+This will make a simulation folder for you. Repeat for all your cells.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{sim}
+  \ExtensionTok{Makefile}
+  \ExtensionTok{cicsim.yaml} \AttributeTok{{-}}\OperatorTok{\textgreater{}}\NormalTok{ ../tech/cicsim/cicsim.yaml}
+\end{Highlighting}
+\end{Shaded}
+
+\subsection{The work}\label{the-work}
+
+All commands (except for simulation), shall be run in the \texttt{work}
+folder.
+
+In the \texttt{work/} folder there are startup files for Xschem
+(xschemrc) and Magic (.magicrc). They tell the tools where to find the
+process design kit, symbols, etc. At some point you probably need to
+learn those also, but I'd wait until you feel a bit more comfortable.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{work}
+ \ExtensionTok{.magicrc}
+ \ExtensionTok{Makefile}
+ \ExtensionTok{mos.24bit.dstyle} \AttributeTok{{-}}\OperatorTok{\textgreater{}}\NormalTok{ ../tech/magic/mos.24bit.dstyle}
+ \ExtensionTok{mos.24bit.std.cmap} \AttributeTok{{-}}\OperatorTok{\textgreater{}}\NormalTok{ ../tech/magic/mos.24bit.std.cmap}
+ \ExtensionTok{xschemrc}
+\end{Highlighting}
+\end{Shaded}
+
+\section{Github setup}\label{github-setup}
+
+Create a repository on \href{https://github.com}{github}. The name of
+the repository that you make on GitHub has to be the same as what is
+written after \texttt{\textless{}your\ username\textgreater{}} in the
+last command below. In this example, that is \texttt{lelo\_ex\_sky130a}.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\BuiltInTok{cd}\NormalTok{ lelo\_ex\_sky130a}
+\FunctionTok{git}\NormalTok{ remote add origin }\DataTypeTok{\textbackslash{}}
+\NormalTok{ git@github.com:}\OperatorTok{\textless{}}\NormalTok{your username}\OperatorTok{\textgreater{}}\NormalTok{/lelo\_ex\_sky130a.git}
+\end{Highlighting}
+\end{Shaded}
+
+\section{Start working}\label{start-working}
+
+\subsection{Edit README.md}\label{edit-readme.md}
+
+Open README.md in your favorite text editor and make necessary changes.
+
+\subsection{Familiarize yourself with the Makefile and
+make}\label{familiarize-yourself-with-the-makefile-and-make}
+
+I write all commands I do into a Makefile. There is nothing special with
+a Makefile, it's just what I choose to use 20 years ago. I'm not sure
+I'd choose something different now.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\BuiltInTok{cd}\NormalTok{ work}
+\FunctionTok{make}
+\end{Highlighting}
+\end{Shaded}
+
+Take a look inside the file called Makefile.
+
+\section{\texorpdfstring{Draw Schematic
+}{Draw Schematic }}\label{draw-schematic}
+
+The block we'll make is a current mirror with a 1 to 4 scaling.
+
+A schematic is how we describe the connectivity, and the types of
+devices in an analog circuit. The open source schematic editor we will
+use is XSchem.
+
+Open the schematic:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{xschem} \AttributeTok{{-}b}\NormalTok{ ../design/LELO\_EX\_SKY130A/LELO\_EX.sch }\KeywordTok{\&}
+\end{Highlighting}
+\end{Shaded}
+
+\subsection{Add Ports}\label{add-ports}
+
+Add IBPS\_5U and IBNS\_20U ports, the P and N in the name signifies what
+transistor the current comes from. So IBPS must go into a diode
+connected NMOS, and N will be our output, and go into a diode connected
+PMOS somewhere else.
+
+\subsection{Add transistors}\label{add-transistors}
+
+Use `I' or `Shift+i' (note the letter case) to open the library manager.
+Click the \texttt{lelo\_ex\_sky130A/design} path, then
+\texttt{JNW\_ATR\_SKY130A} and select \texttt{JNWATR\_NCH\_4C5F0.sym}
+
+The naming convention for these transistors is
+\texttt{\textless{}number\ of\ contacts\ on\ drain/source\textgreater{}C\textless{}times\ minimum\ gate\ length\textgreater{}F},
+so the number before the C is the width, and the number before/after the
+F is the length. The absolute size does not matter for now. Just think
+``4C5F0 is a 4 contact wide long transistor'', while a ``4C1F2 is a 4
+contact wide, short transistor''.
+
+Select the transistor and press `c' to copy it, while dragging, press
+`shift-f' to flip the transistor so our current mirror looks nice.
+`shift-r' rotates the transistor, but we don't want that now.
+
+Place two transistors for the output transistor, as shown in the figure
+below.
+
+Press ESC to deselect everything
+
+Select the input transistor, and change the name to `xo1'
+
+Select the first output transistor, and change the name to
+`xo0{[}1:0{]}'. Using bus notation on the name will create 2
+transistors.
+
+Select the second output transistor and give it the name `xo2{[}1:0{]}'.
+
+Select ports, and use `m' to move the ports close to the transistors.
+
+Press `w' to route wires.
+
+Use `shift-z' and z, to zoom in and out
+
+Use `f' to zoom full screen
+
+Remember to save the schematic
+
+\pandocbounded{\includesvg[keepaspectratio]{media/LELO_EX.svg}}
+
+\emph{Figure 1: Finished LELO\_EX schematic in Xschem - three NMOS
+current mirror devices between the IBPS\_5U, IBNS\_20U and VSS ports}
+
+\subsection{Netlist schematic}\label{netlist-schematic}
+
+Check that the netlist looks OK
+
+In work/
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{make}\NormalTok{ xsch CELL=LELO\_EX}
+\FunctionTok{cat}\NormalTok{ xsch/LELO\_EX.spice}
+\end{Highlighting}
+\end{Shaded}
+
+\section{\texorpdfstring{Typical corner SPICE simulation
+}{Typical corner SPICE simulation }}\label{typical-corner-spice-simulation}
+
+I've made \href{https://github.com/wulffern/cicsim}{cicsim} that I use
+to run simulations (ngspice) and extract results
+
+\subsection{Setup simulation
+environment}\label{setup-simulation-environment}
+
+Navigate to the \texttt{lelo\_ex\_sky130a/sim/} directory.
+
+Make a new simulation folder
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{cicsim}\NormalTok{ simcell  LELO\_EX\_SKY130A LELO\_EX }\DataTypeTok{\textbackslash{}}
+\NormalTok{    ../tech/cicsim/cell\_spice/template.yaml}
+\end{Highlighting}
+\end{Shaded}
+
+I would recommend you have a look at the template.yaml file to
+understand what happens.
+
+\subsection{Familiarize yourself with the simulation
+folder}\label{familiarize-yourself-with-the-simulation-folder}
+
+I've added quite a few options to cicsim, and it might be confusing. For
+reference, these are what the files are used for
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.2154}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.7846}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+File
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Description
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Makefile & Simulation commands \\
+cicsim.yaml & Setup for cicsim \\
+summary.yaml & Generate a README with simulation results \\
+tran.meas & Measurement to be done after simulation \\
+tran.py & Optional python script to run for each simulation \\
+tran.spi & Transient testbench \\
+tran.yaml & What measurements to summarize \\
+\end{longtable}
+
+The default setup should run, so
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\BuiltInTok{cd}\NormalTok{ LELO\_EX}
+\FunctionTok{make}\NormalTok{ typical}
+\end{Highlighting}
+\end{Shaded}
+
+\subsection{Modify default testbench
+(tran.spi)}\label{modify-default-testbench-tran.spi}
+
+Delete the VDD source
+
+Add a current source of 5uA, and a voltage source of 1V to IBNS\_20U
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{IBP 0 IBPS\_5U dc 5u}
+\NormalTok{V0  IBNS\_20U 0 dc 1}
+\end{Highlighting}
+\end{Shaded}
+
+Save the current in V0 by adding i(V0) to the save statement in the
+testbench
+
+Save the voltage by adding v(IBPS\_5U) to the save statement
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{.save i(V0) v(IBPS\_5U)}
+\end{Highlighting}
+\end{Shaded}
+
+\subsection{Modify measurements
+(tran.meas)}\label{modify-measurements-tran.meas}
+
+Add measurement of the current and VGS. It must be added between the
+``MEAS\_START'' and ``MEAS\_END'' lines.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{let ibn = {-}i(v0)}
+\NormalTok{meas tran ibns\_20u find ibn at=5n}
+\NormalTok{meas tran vgs\_m1 find v(ibps\_5u) at=5n}
+\end{Highlighting}
+\end{Shaded}
+
+Run simulation
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{make}\NormalTok{ typical}
+\end{Highlighting}
+\end{Shaded}
+
+and check that the output looks okish.
+
+Try to run the simulation again
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{make}\NormalTok{ typical}
+\end{Highlighting}
+\end{Shaded}
+
+If everything works, then the simulation now should \textbf{not} be run.
+Every time cicsim runs (provided the \texttt{sha:\ True} option is set
+in \texttt{cicsim.yaml}) cicsim will compute a SHA hash of all files
+(stored in output\_tran/\emph{.sha}) that is referenced in the
+\texttt{tran.spi}. Next time cicsim is run, it checks the hash's and
+does not re-run if there is no need (no files changed).
+
+Sometimes you want to force running, and you can do that by
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{make}\NormalTok{ typical OPT=}\StringTok{"{-}{-}no{-}sha"}
+\end{Highlighting}
+\end{Shaded}
+
+Often, it's the measurement that I get wrong, so instead of rerunning
+simulation every time I've added a ``--no-run'' option to cicsim. For
+example
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{make}\NormalTok{ typical OPT=}\StringTok{"{-}{-}no{-}run"}
+\end{Highlighting}
+\end{Shaded}
+
+will skip the simulation, and rerun only the measurement. This is why
+you should split the testbench and the measurement. Simulations can run
+for days, but measurement takes seconds.
+
+\subsection{Modify result specification
+(tran.yaml)}\label{modify-result-specification-tran.yaml}
+
+Add the result specifications, for example
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{ibn}\KeywordTok{:}
+\AttributeTok{  }\FunctionTok{src}\KeywordTok{:}
+\AttributeTok{    }\KeywordTok{{-}}\AttributeTok{ ibns\_20u}
+\AttributeTok{  }\FunctionTok{name}\KeywordTok{:}\AttributeTok{ Output current}
+\AttributeTok{  }\FunctionTok{min}\KeywordTok{:}\AttributeTok{ {-}5\%}
+\AttributeTok{  }\FunctionTok{typ}\KeywordTok{:}\AttributeTok{ }\DecValTok{20}
+\AttributeTok{  }\FunctionTok{max}\KeywordTok{:}\AttributeTok{ 5\%}
+\AttributeTok{  }\FunctionTok{scale}\KeywordTok{:}\AttributeTok{ }\FloatTok{1e6}
+\AttributeTok{  }\FunctionTok{digits}\KeywordTok{:}\AttributeTok{ }\DecValTok{3}
+\AttributeTok{  }\FunctionTok{unit}\KeywordTok{:}\AttributeTok{ uA}
+
+\FunctionTok{vgs}\KeywordTok{:}
+\AttributeTok{  }\FunctionTok{src}\KeywordTok{:}
+\AttributeTok{    }\KeywordTok{{-}}\AttributeTok{ vgs\_m1}
+\AttributeTok{  }\FunctionTok{name}\KeywordTok{:}\AttributeTok{ Gate{-}Source voltage}
+\AttributeTok{  }\FunctionTok{typ}\KeywordTok{:}\AttributeTok{ }\FloatTok{0.6}
+\AttributeTok{  }\FunctionTok{min}\KeywordTok{:}\AttributeTok{ }\FloatTok{0.3}
+\AttributeTok{  }\FunctionTok{max}\KeywordTok{:}\AttributeTok{ }\FloatTok{0.8}
+\AttributeTok{  }\FunctionTok{scale}\KeywordTok{:}\AttributeTok{ }\DecValTok{1}
+\AttributeTok{  }\FunctionTok{digits}\KeywordTok{:}\AttributeTok{ }\DecValTok{3}
+\AttributeTok{  }\FunctionTok{unit}\KeywordTok{:}\AttributeTok{ V}
+\end{Highlighting}
+\end{Shaded}
+
+Re-run the measurement and result generation
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{make}\NormalTok{ typical OPT=}\StringTok{"{-}{-}no{-}run"}
+\end{Highlighting}
+\end{Shaded}
+
+Open \texttt{results/tran\_Sch\_typical.html}
+
+\subsection{Check waveforms}\label{check-waveforms}
+
+You can either use ngspice, or you can use cicsim, or you can use
+something I don't know about
+
+Open the raw file with
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{cicsim}\NormalTok{ wave output\_tran/tran\_SchGtKttTtVt.raw }
+\end{Highlighting}
+\end{Shaded}
+
+Load the results, and try to look at the plots. There might not be that
+much interesting happening
+
+\subsubsection{Searching waveforms}\label{searching-waveforms}
+
+On the left side of the window you'll see a text box in the middle
+between the filename, and the wave names. This is a regex search field,
+and you can easily search for waveforms (like \texttt{i(v0)}) that you
+want to find.
+
+Note that the search field uses
+\href{https://en.wikipedia.org/wiki/Regular_expression}{regular
+expressions}. If you don't know regex, then it's time to learn. I always
+use the perl regular expression variants.
+
+For example, searching for ``i(v0)'' won't actually show anything,
+because the \texttt{()} are special characters. ``i(v0)'' will find it
+though.
+
+I could search for both ibps and v0 at the same time with
+\texttt{ibps\textbar{}i\textbackslash{}(}, so it's well worth learning.
+
+A great resource is \href{https://regex.info/book.html}{Mastering
+Regular Expressions}
+
+\section{\texorpdfstring{All corners SPICE simulations
+}{All corners SPICE simulations }}\label{all-corners-spice-simulations}
+
+Analog circuits must be simulated for all physical conditions, we call
+them corners. We must check high and low temperature, high and low
+voltage, all process corners, and device-to-device mismatch.
+
+\subsection{Remove Vh and Vl corners
+(Makefile)}\label{remove-vh-and-vl-corners-makefile}
+
+For the current mirror we don't need to vary voltage, since we don't
+have a VDD.
+
+Open Makefile in your favorite text editor.
+
+Change all instances of ``Vt,Vl,Vh'' and ``Vl,Vh'' to Vt
+
+\subsection{Run all corners}\label{run-all-corners}
+
+To simulate all corners do
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{make}\NormalTok{ typical etc mc}
+\end{Highlighting}
+\end{Shaded}
+
+where etc is extreme test condition and mc is monte-carlo.
+
+Wait for simulations to complete.
+
+\subsection{Get creative with python}\label{get-creative-with-python}
+
+Open \texttt{tran.py} in your favorite editor, try to read and
+understand it.
+
+The \texttt{name} parameter is the corner currently running, for example
+\texttt{tran\_SchGtAmcttTtVt}.
+
+The measured outputs from ngspice will be added to
+\texttt{tran\_SchGtAmcttTtVt.yaml}
+
+Delete the ``return'' line.
+
+Add the following lines (they automatically plot the current and gate
+voltage)
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ImportTok{import}\NormalTok{ cicsim }\ImportTok{as}\NormalTok{ cs}
+\NormalTok{fname }\OperatorTok{=}\NormalTok{ name }\OperatorTok{+}\StringTok{".png"}
+\BuiltInTok{print}\NormalTok{(}\SpecialStringTok{f"Saving }\SpecialCharTok{\{}\NormalTok{fname}\SpecialCharTok{\}}\SpecialStringTok{"}\NormalTok{)}
+\NormalTok{cs.rawplot(name }\OperatorTok{+} \StringTok{".raw"}\NormalTok{,}\StringTok{"time"}\NormalTok{,}\StringTok{"v(ibps\_5u),i(v0)"} \OperatorTok{\textbackslash{}}
+\NormalTok{  ,ptype}\OperatorTok{=}\StringTok{""}\NormalTok{,fname}\OperatorTok{=}\NormalTok{fname)}
+\end{Highlighting}
+\end{Shaded}
+
+Re-run measurements to check the python code
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{make}\NormalTok{ typical etc mc OPT=}\StringTok{"{-}{-}no{-}run"}
+\end{Highlighting}
+\end{Shaded}
+
+You'll see that cicsim writes all the png's. Check with
+\texttt{ls\ -l\ output\_tran/*.png}.
+
+You'll also notice it will slow down the simulation, so maybe remove the
+lines from \texttt{tran.py} again ;-)
+
+\subsection{Generate simulation
+summary}\label{generate-simulation-summary}
+
+Run
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{make}\NormalTok{ summary}
+\end{Highlighting}
+\end{Shaded}
+
+Install \href{https://pandoc.org}{pandoc} if you don't have it
+
+Run
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{pandoc} \AttributeTok{{-}s}\NormalTok{   README.md }\AttributeTok{{-}o}\NormalTok{ README.html}
+\end{Highlighting}
+\end{Shaded}
+
+to generate a HTML slideshow that you can open in browser. Open the HTML
+file.
+
+\subsection{Viewing results without GUI
+browser}\label{viewing-results-without-gui-browser}
+
+If you're on a system without a browser, or indeed a GUI, then it's
+possible to view the results in the terminal.
+
+Check if \texttt{lynx} is installed, if it's not installed, then
+
+On linux
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{sudo}\NormalTok{ apt{-}get install lynx}
+\end{Highlighting}
+\end{Shaded}
+
+On Mac
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{brew}\NormalTok{ install lynx}
+\end{Highlighting}
+\end{Shaded}
+
+Then
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{lynx}\NormalTok{ README.html}
+\end{Highlighting}
+\end{Shaded}
+
+\subsection{Think about the results}\label{think-about-the-results}
+
+From the corner and mismatch simulation, we can observe a few things.
+
+\begin{itemize}
+\tightlist
+\item
+  The typical value is not 20 uA. This is likely because we have a M2
+  VDS of 1 V, which is not the same as the VDS of M1. As such, the
+  current will not be the same.
+\item
+  The statistics from 30 corners show that when we add or subtract 3
+  standard deviation from the mean, the resulting current is outside our
+  specification of +- 5 \%.
+\end{itemize}
+
+\section{\texorpdfstring{Draw Layout }{Draw Layout }}\label{draw-layout}
+
+A foundry (the factory that makes integrated circuits) needs to know how
+we want them to create our circuit. So we need to provide them with a
+``layout'', the recipe, or instruction, for how to make the circuit.
+Although the layout contains the same components as the schematic, the
+layout contains the physical locations, and how to actually instruct the
+foundry on how to make the transistors we want.
+
+Open Magic VLSI
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\BuiltInTok{cd}\NormalTok{ work}
+\ExtensionTok{magic}\NormalTok{ ../design/LELO\_EX\_SKY130A/LELO\_EX.mag}
+\end{Highlighting}
+\end{Shaded}
+
+Now brace yourself, Magic VLSI was created in the 1980's. For its time
+it was extremely modern, however, today it seems dated. However, it is
+free, so we use it.
+
+\subsection{Magic VLSI}\label{magic-vlsi}
+
+Try google for most questions, and there are youtube videos that give an
+intro.
+
+\begin{itemize}
+\tightlist
+\item
+  \href{https://www.youtube.com/watch?v=ORw5OaY33A4&t=9s}{Magic Tutorial
+  1}
+\item
+  \href{https://www.youtube.com/watch?v=NUahmUtY814}{Magic Tutorial 2}
+\item
+  \href{https://www.youtube.com/watch?v=OKWM1D0_fPI}{Magic Tutorial 3}
+\item
+  \href{http://opencircuitdesign.com/magic/commandref/commands.html}{Magic
+  command reference}
+\item
+  \href{https://analogicus.com/magic/}{Magic Documentation}
+\end{itemize}
+
+Default magic start with the BOX tool. Mouse left-click to select bottom
+corner, left-click to select top corner.
+
+Press ``space'' to select another tool (WIRING, NETLIST, PICK).
+
+Type ``macro help'' in the command window to see all shortcuts
+
+\begin{longtable}[]{@{}ll@{}}
+\toprule\noalign{}
+Hotkey & Function \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+v & View all \\
+shift-z & zoom out \\
+z & zoom in \\
+x & look inside box (expand) \\
+shift-x & don't look inside box (unexpand) \\
+u & undo \\
+d & delete \\
+s & select \\
+Shift-Up & Move cell up \\
+Shift-Down & Move cell down \\
+Shift-Left & Move cell left \\
+Shift-Right & Move cell right \\
+\end{longtable}
+
+\subsection{Add transistors}\label{add-transistors-1}
+
+Open Cell -\textgreater{} Place Instance. Navigate to the right
+transistor.
+
+Place it. Hover over the transistor and select it with `s'. Now comes a
+bit of tedious thing. Select again, and copy. It's possible to align the
+transistors on-top of eachother, but it's a bit finicky.
+
+Place all transistors on top of each other as shown below in the
+picture.
+
+\pandocbounded{\includegraphics[keepaspectratio]{media/LELO_EX_place.png}}
+
+\emph{Figure 2: Magic with the transistor instances stacked on top of
+each other, shown as boxes on the left and with layers drawn on the
+right}
+
+\subsection{Place devices}\label{place-devices}
+
+You will find that one of the more time consuming things with analog
+layout is to place the devices, and to follow the design rules from
+foundry. I detest tedious work. As such, I've tried for the past 25
+years to simplify analog layout. I've not finished yet, but maybe you'll
+find some of the scripts useful.
+
+Note that the command below will override all your hard work ;-)
+
+\begin{verbatim}
+cd work
+make xsch
+cicpy sch2mag LELO_EX_SKY130A LELO_EX
+\end{verbatim}
+
+\subsection{Add Ground}\label{add-ground}
+
+In the command window, type
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\OtherTok{see}\NormalTok{ no *}
+\OtherTok{see}\NormalTok{ viali}
+\OtherTok{see}\NormalTok{ locali}
+\OtherTok{see}\NormalTok{ m1}
+\OtherTok{see}\NormalTok{ via1}
+\OtherTok{see}\NormalTok{ m2}
+\end{Highlighting}
+\end{Shaded}
+
+Make a box around the layout by left clicking bottom left, and right
+clicking top right. Press `x' to expand.
+
+Change grid to 1 um. Set ``Window-\textgreater Snap to grid on''
+
+Select a 1 um box below the transistors and paint the rectangle with
+locali (middle click on locali)
+
+Change to the `wire tool' with spacebar. Set ``Window-\textgreater{}
+Snap to grid off''
+
+Connect guard rings to ground.
+
+Press the top transistor `S' and draw all the way down to connect all of
+the transistors' source terminals. Use `shift-right click' to change
+layer down
+
+\pandocbounded{\includegraphics[keepaspectratio]{media/ground.png}}
+
+\emph{Figure 3: The source terminals of all transistors connected down
+to the ground rail, DRC clean}
+
+\subsection{Route Gates}\label{route-gates}
+
+Press ``space'' to enter wire mode. Left click on the top gate to start
+a wire, and right click to end the wire.
+
+The drain of M1 transistor needs a connection from gate to drain. We do
+that for the middle transistor. Change to the box tool (spacebar a few
+times). Create a box that matches the locali. Connect the drain to the
+gate in locali.
+
+\pandocbounded{\includegraphics[keepaspectratio]{media/gates.png}}
+
+\emph{Figure 4: The gates routed together, with the gate to drain
+connection of M1 made in locali}
+
+\subsection{Drain of M2}\label{drain-of-m2}
+
+Use the wire tool to draw connections for the drains.
+
+To add vias you can do ``shift-left click'' to move up a metal, and
+``shift-right click'' to go down.
+
+It's a very good idea to have direction rules for metal layers. I would
+recommend that you route metal1 vertical, metal2 horizontal, metal3
+vertical etc. For locali it's usually all over the place.
+
+\pandocbounded{\includegraphics[keepaspectratio]{media/drains.png}}
+
+\emph{Figure 5: The drain connections routed with the wire tool, using
+vias to change metal layer}
+
+\subsection{Add labels}\label{add-labels}
+
+All ports must be named (IBPS\_5U, IBNS\_20U, VSS). The cicpy script may
+add ports, but not necessarily where you want them.
+
+Select a box on a metal, and use ``Edit-\textgreater Text'' to add
+labels for the ports. Select the port button.
+
+\section{\texorpdfstring{Layout verification
+}{Layout verification }}\label{layout-verification}
+
+The DRC can be seen directly in Magic VLSI as you draw.
+
+To check layout versus schematic navigate to work/ and do
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{make cdl lvs}
+\end{Highlighting}
+\end{Shaded}
+
+Remember to save the layout first.
+
+If you've routed correctly, then the LVS should be correct.
+
+\pandocbounded{\includegraphics[keepaspectratio]{media/layout.png}}
+
+\emph{Figure 6: The completed LELO\_EX layout with labelled ports, ready
+for the LVS check against the schematic}
+
+\section{\texorpdfstring{Extract layout parasitics
+}{Extract layout parasitics }}\label{extract-layout-parasitics}
+
+With the layout complete, we can extract parasitic capacitance.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{make}\NormalTok{ lpe}
+\end{Highlighting}
+\end{Shaded}
+
+Check the generated netlist
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{ lpe/LELO\_EX\_lpe.spi}
+\end{Highlighting}
+\end{Shaded}
+
+\section{\texorpdfstring{Simulate with layout parasitics
+}{Simulate with layout parasitics }}\label{simulate-with-layout-parasitics}
+
+Navigate to sim/LELO\_EX. We now want to simulate the layout.
+
+The default \texttt{tran.spi} should already have support for that.
+
+Open the Makefile, and change
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\VariableTok{VIEW}\OperatorTok{=}\NormalTok{Sch}
+\end{Highlighting}
+\end{Shaded}
+
+to
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\VariableTok{VIEW}\OperatorTok{=}\NormalTok{Lay}
+\end{Highlighting}
+\end{Shaded}
+
+\subsection{Typical simuation}\label{typical-simuation}
+
+Run
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{make}\NormalTok{ typical}
+\end{Highlighting}
+\end{Shaded}
+
+\subsection{Corners}\label{corners}
+
+Navigate to sim/LELO\_EX. Run all corners again
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{make}\NormalTok{ all}
+\end{Highlighting}
+\end{Shaded}
+
+\subsection{Simulation summary}\label{simulation-summary}
+
+Open \texttt{summary.yaml} and add the layout files.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\AttributeTok{      }\KeywordTok{{-}}\AttributeTok{ }\FunctionTok{name}\KeywordTok{:}\AttributeTok{ Lay\_typ}
+\AttributeTok{        }\FunctionTok{src}\KeywordTok{:}\AttributeTok{ results/tran\_Lay\_typical}
+\AttributeTok{        }\FunctionTok{method}\KeywordTok{:}\AttributeTok{ typical}
+\AttributeTok{      }\KeywordTok{{-}}\AttributeTok{ }\FunctionTok{name}\KeywordTok{:}\AttributeTok{ Lay\_etc}
+\AttributeTok{        }\FunctionTok{src}\KeywordTok{:}\AttributeTok{ results/tran\_Lay\_etc}
+\AttributeTok{        }\FunctionTok{method}\KeywordTok{:}\AttributeTok{ minmax}
+\AttributeTok{      }\KeywordTok{{-}}\AttributeTok{ }\FunctionTok{name}\KeywordTok{:}\AttributeTok{ Lay\_3std}
+\AttributeTok{        }\FunctionTok{src}\KeywordTok{:}\AttributeTok{ results/tran\_Lay\_mc}
+\AttributeTok{        }\FunctionTok{method}\KeywordTok{:}\AttributeTok{ 3std}
+\end{Highlighting}
+\end{Shaded}
+
+Run summary again
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{make}\NormalTok{ summary}
+\ExtensionTok{pandoc} \AttributeTok{{-}s}\NormalTok{  README.md }\AttributeTok{{-}o}\NormalTok{ README.html}
+\end{Highlighting}
+\end{Shaded}
+
+Open the README.html and have a look a the results. The layout should be
+close to the schematic simulation.
+
+\section{Make documentation}\label{make-documentation}
+
+Make a file (or it may exists)
+\texttt{design/LELO\_EX\_SKY130A/LELO\_EX.md} and add some documentation
+of what you've made.
+
+Add the simulation results to your git repository to keep track
+
+\begin{verbatim}
+git add sim/LELO_EX/results/*.html
+git add sim/LELO_EX/README.md 
+\end{verbatim}
+
+\section{Edit info.yaml}\label{edit-info.yaml}
+
+Finally, let's setup the \texttt{info.yaml} so that all the github
+workflows run correctly.
+
+Mine will look like this.
+
+You need to setup the url (probably something like
+\texttt{\textless{}your\ username\textgreater{}.github.io}) to what is
+correct for you.
+
+I've added the doc section such that the workflows will generate the
+docs.
+
+The sim is to run a typical simulation.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\KeywordTok{:}\AttributeTok{ LELO\_EX\_SKY130A}
+\FunctionTok{cell}\KeywordTok{:}\AttributeTok{ LELO\_EX}
+\FunctionTok{author}\KeywordTok{:}\AttributeTok{ Carsten Wulff}
+\FunctionTok{github}\KeywordTok{:}\AttributeTok{ wulffern}
+\FunctionTok{tagline}\KeywordTok{:}\AttributeTok{ The answer is 42}
+\FunctionTok{email}\KeywordTok{:}\AttributeTok{ carsten@wulff.no}
+\FunctionTok{url}\KeywordTok{:}\AttributeTok{ wulffern.github.io}
+\FunctionTok{doc}\KeywordTok{:}
+\AttributeTok{  }\FunctionTok{libraries}\KeywordTok{:}
+\AttributeTok{    }\FunctionTok{LELO\_EX\_SKY130A}\KeywordTok{:}
+\AttributeTok{      }\KeywordTok{{-}}\AttributeTok{ LELO\_EX}
+\end{Highlighting}
+\end{Shaded}
+
+\section{Setup github pages}\label{setup-github-pages}
+
+Go to your GitHub repository (repo). Press Settings. Press Pages. Choose
+source under Build and Deployment -\textgreater{} GitHub Actions
+
+Wait for the workflows to build. And check your github pages. Mine is
+\url{https://wulffern.github.io/lelo_ex0_sky130a/}.
+
+\section{Frequently asked questions}\label{frequently-asked-questions}
+
+\emph{Q:} My GDS/LVS/DRC action fails, even though it works locally.
+
+Sometimes the reference to the transistors in the magic file might be
+wrong. Open the .mag file in a text editor and check. The correct way is
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{use}\NormalTok{ JNWATR\_NCH\_4C5F0  JNWATR\_NCH\_4C5F0\_0 ../LELO\_ATR\_SKY130A}
+\end{Highlighting}
+\end{Shaded}
+
+It's the last \texttt{../LELO\_ATR\_SKY130A} that sometimes is missing.
+
+\section{Summary}\label{summary}
+
+The one-page version of this chapter:
+
+\begin{itemize}
+\tightlist
+\item
+  One cell end to end: schematic in xschem, a symbol, a testbench, and a
+  cicsim run with a results table
+\item
+  The names are not cosmetic: instances, ports and directories follow
+  the aicex conventions the tools expect
+\item
+  By the end you have run corners from one command - the pattern every
+  later week repeats
+\end{itemize}

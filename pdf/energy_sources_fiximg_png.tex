@@ -1,0 +1,861 @@
+Integrated circuits are wasteful of energy. Digital circuits charge
+transistor gates to change states, and when discharged, the charges are
+dumped to ground. In analog circuits the transconductance requires a DC
+current, a continuous flow of charges from positive supply to ground.
+
+Integrated circuits are incredibly useful though. Life without would be
+different.
+
+A continuous effort from engineers like me have reduced the power
+consumption of both digital and analog circuits by order of magnitudes
+since the invention of the transistor 75 years ago.
+
+One of the first commercial ADCs, the
+\href{https://www.analog.com/media/en/training-seminars/design-handbooks/Data-Conversion-Handbook/Chapter1.pdf}{DATRAC}
+on page 24, was a 11-bit 50 kSps that consumed 500 W. That's Walden
+figure of merit of 4 \(\mu\)J/conv.step. Today's state-of-the-art ADCs
+in the same sampling range have a Walden figure of merit of 0.6
+fJ/conv.step {[}1{]}.
+
+4 \(\mu\) / 0.6 f = 6.7e9, a difference in power consumption of almost
+10 billion times !!!
+
+Improvements to power consumption have become harder and harder, but I
+believe there is still far to go before we cannot reduce power
+consumption any more.
+
+Towards a Green and Self-Powered Internet of Things Using Piezoelectric
+Energy Harvesting {[}2{]} {[}1{]} has a nice overview of power
+consumption of technologies, seen in the next figures below.
+
+In the context of energy harvesting, there is energy in electromagnetic
+fields, temperature, and mechanical stress, and there are ways to
+translate between them the energy forms.
+
+
+{
+\centering
+\aicfig{media/shirv5-2928523-large.png}
+}
+
+\emph{Figure 1: The couplings between the electrical, mechanical and
+thermal energy domains, including the piezoelectric, pyroelectric and
+thermoelectric effects. From Shirvanimoghaddam et al., \emph{IEEE
+Access} 7 (2019) {[}2{]}, licensed CC BY 4.0}
+
+Below we can see a figure of the potential energy that can be harvested
+per volume, and the type power consumption of technologies {[}1{]}.
+
+As devices approach average power consumption of \(\mu W\) it becomes
+possible to harvest the energy from the environment, and do away with
+the battery.
+
+
+{
+\centering
+\aicfig{media/shirv6-2928523-large.png}
+}
+
+\emph{Figure 2: Battery run-time and power consumption of devices from a
+32 kHz quartz oscillator to a laptop, plotted against the energy
+available from mechanical, thermal and radiant sources in uW/cm2. From
+Shirvanimoghaddam et al., \emph{IEEE Access} 7 (2019) {[}2{]}, licensed
+CC BY 4.0}
+
+For wireless standards, there are some that can be run on energy
+harvesting. Below is an overview from {[}1{]}. Many of us will have a
+NFC card in our pocket for payment, or entry to buildings. NFC card has
+a integrated circuit that is powered from the electromagnetic field from
+the NFC reader.
+
+Other standards, like Bluetooth, WiFi, LTE are harder to run battery
+less, because the energy requirement above 1 mW.
+
+Technologies like Bluetooth LE, however, can approach \textless{} 10
+\(\mu\)W for some applications, although the burst power may still be 10
+mW to 100 mW. As such, although the average power is low, the energy
+harvesting cannot support peak loads and a charge storage device is
+required (battery, super-capacitor, large capacitor).
+
+
+{
+\centering
+\aicfig{media/shirv11-2928523-large.png}
+}
+
+\emph{Figure 3: Power versus coverage for wireless standards, showing
+that NFC, RFID, Z-Wave and Zigbee can be battery-less while WiFi,
+Bluetooth and the cellular standards need a battery. From
+Shirvanimoghaddam et al., \emph{IEEE Access} 7 (2019) {[}2{]}, licensed
+CC BY 4.0}
+
+I'd like to give you an introduction to the possible ways of harvesting
+energy. I know of five methods: - thermoelectric - photovoltaic -
+piezoelectric - electromagnetic - triboelectric
+
+\section{\texorpdfstring{\href{https://en.wikipedia.org/wiki/Thermoelectric_effect}{Thermoelectric}}{Thermoelectric}}\label{thermoelectric}
+
+Apply heat to one end of a metal wire, what happens to the free
+electrons? As we heat the material we must increase the energy of the
+free electrons at the hot end of the wire. The atoms wiggle more, and
+when the free electrons scatter off the atomic structure there should be
+an exchange of energy. Think of the electrons at the hot side as high
+energy electrons, while on the cold side there are low energy electrons,
+I think.
+
+There will be diffusion current of electrons in both directions in the
+material, however, if the mobility of electrons in the material is
+dependent on the energy, then we would get a difference in current of
+low energy electrons and high energy electrons. A difference in current
+would lead to a charge difference at the hot end and cold end, which
+would give a difference in voltage.
+
+Take a copper wire, bend it in half, heat the end with the loop, and
+measure the voltage at the cold end. Would we measure a voltage
+difference?
+
+\textbf{NO}, there would not be a voltage difference between the two
+ends of the wire. The voltage on the loop side would be different, but
+on the cold side, where we have the ends, there would be no voltage
+difference.
+
+Gauss law tell us that inside a conductor there cannot be a static field
+without a current. As such, if there was a voltage difference between
+the cold ends, it would quickly be dissipated, and no DC current would
+flow.
+
+The voltage difference in the material between the hot and cold end will
+create currents, but we can't use them if we only have one type of
+material.
+
+Imagine we have Iron and copper wires, as shown below, and we heat one
+end. In that case, we can draw current between the cold ends.
+
+
+{
+\centering
+\aicfig{media/Thermoelectric_effect.png}
+}
+
+\emph{Figure 4: The thermoelectric effect - iron and copper wires joined
+at a heated end drive a current through a meter connected at the cold
+end. Image: Cmglee, CC BY-SA 4.0, via Wikimedia Commons}
+
+The voltage difference at the hot and cold end is described by the
+
+\href{https://en.wikipedia.org/wiki/Seebeck_coefficient}{Seebeck
+coefficient}
+
+Imagine two parallel wires with different Seebeck coefficients, one of
+copper (\(6.5\text{ } \mu V/K\)) and one of iron
+(\(19\text{ } \mu V/K\)). We connect them at the hot end. The voltage
+difference between hot and cold would be higher in the iron, than in the
+copper. At the cold end, we would now measure a difference in voltage
+between the wires!
+
+In silicon, the Seebeck coefficient can be modified through doping. A
+model of Seebeck coefficient is shown below. The value of the Seebeck
+coefficient depends on the location of the Fermi level in relation to
+the Conduction band or the valence band.
+
+
+{
+\centering
+\aicfig{media/Absolute_Seebeck_coefficients_of_various_metals_up_to_high_temperatures.png}
+}
+
+\emph{Figure 5: Absolute Seebeck coefficient versus temperature for a
+range of metals, spanning roughly +20 uV/K for tungsten to -60 uV/K for
+palladium. Image: Nanite, CC0, via Wikimedia Commons}
+
+
+{
+\centering
+\aicfig{media/Mott_Seebeck_silicon.png}
+}
+
+\emph{Figure 6: Seebeck coefficient and conductivity of silicon as a
+function of Fermi level, with the sign flipping between the valence and
+conduction band edges. Image: Nanite, CC0, via Wikimedia Commons}
+
+In the picture below we have a silicon (the cyan and yellow colors).
+
+Assume we dope with acceptors (yellow, p-type), that shifts the Fermi
+level closer to the Valence band (\(E_V\)), and the dominant current
+transport will be by holes, maybe we get 1 mV/K from the picture above.
+
+For the material doped with donors (cyan, n-type) the Fermi level is
+shifted towards the Conduction band (\(E_C\)), and the dominant charge
+transport is by electrons, maybe we get -1 mV/K from the picture above.
+
+Assume we have a temperature difference of 50 degrees, then maybe we
+could get a voltage difference at the cold end of 100 mV. That's a low
+voltage, but is possible to use.
+
+
+{
+\centering
+\aicfig{media/Thermoelectric_Generator_Diagram.png}
+}
+
+\emph{Figure 7: Thermoelectric generator, where n-type and p-type legs
+between a heat source and a cool side drive a current through the load
+resistor. Image: Ken Brazier, CC BY-SA 4.0, via Wikimedia Commons}
+
+The process can be run in reverse. In the picture below we force a
+current through the material, we heat one end, and cool the other. Maybe
+you've heard of
+\href{https://en.wikipedia.org/wiki/Thermoelectric_cooling}{Peltier
+elements}.
+
+
+{
+\centering
+\aicfig{media/Thermoelectric_Cooler_Diagram.png}
+}
+
+\emph{Figure 8: The same structure run in reverse as a Peltier cooler,
+where a forced current cools the top surface and dissipates heat at the
+bottom. Image: Ken Brazier, CC BY-SA 4.0, via Wikimedia Commons}
+
+\subsection{\texorpdfstring{\href{https://en.wikipedia.org/wiki/Radioisotope_thermoelectric_generator}{Radioisotope
+Thermoelectric
+generator}}{Radioisotope Thermoelectric generator}}\label{radioisotope-thermoelectric-generator}
+
+Maybe you've heard of a nuclear battery. Sounds fancy, right? Must be
+complicated, right?
+
+Not really, take some radioactive material, which generates heat, stick
+a thermoelectric generator to the hot side, make sure you can cool the
+cold side, and we have a nuclear battery.
+
+Nuclear batteries are ``simple'', and ultra reliable. There's not really
+a chemical reaction. The nucleus of the radioactive material degrades,
+but not fast. In the thermoelectric generator, there are no moving
+parts.
+
+In a normal battery there is a chemical reaction that happens when we
+pull a current. Atoms move around. Eventually the chemical battery will
+change and degrade.
+
+Nuclear batteries were used in Voyager, and they still work to this day.
+The nuclear battery is the round thing underneath Voyager in the picture
+below. The radioisotopes provide the heat, space provides the cold, and
+voila, \href{https://en.wikipedia.org/wiki/Voyager_1}{470 W} to run the
+electronics.
+
+
+{
+\centering
+\aicfig{media/1280px-Voyager_spacecraft_model.png}
+}
+
+\emph{Figure 9: The Voyager spacecraft, whose radioisotope
+thermoelectric generator is the finned cylinder below the dish. Image:
+NASA, public domain, via Wikimedia Commons}
+
+\subsection{\texorpdfstring{\href{https://en.wikipedia.org/wiki/Thermoelectric_generator}{Thermoelectric
+generators}}{Thermoelectric generators}}\label{thermoelectric-generators}
+
+Assume we wanted to drive a watch from a thermoelectric generator (TEG).
+The skin temperature is maybe 33 degrees Celsius, while the ambient
+temperature is maybe 23 degrees Celsius on average.
+
+From the model of a thermoelectric generator below we'd get a voltage of
+10 mV to 500 mV, too low for most integrated circuits.
+
+In order to drive an integrated circuit we'd need to boost the voltage
+to maybe 1.8 V.
+
+The main challenge with thermoelectric generators is to provide a
+cold-boot function where the energy harvester starts up at a low
+voltage.
+
+In silicon, it is tricky to make anything work below some thermal
+voltages (kT/q). We at least need about 3 -- 4 thermal voltages to make
+anything function.
+
+The key enabler for an efficient, low temperature differential, energy
+harvester is an oscillator that works at low voltage (i.e 75 mV). If we
+have a clock, then we can boost with capacitors
+
+In A 3.5-mV Input Single-Inductor Self-Starting Boost Converter With
+Loss-Aware MPPT for Efficient Autonomous Body-Heat Energy Harvesting
+{[}3{]} they use a combination of both switched capacitor and switched
+inductor boost.
+
+
+{
+\centering
+\aicfig{media/l11_teg_mdl_tikz.png}
+}
+
+\emph{Figure 10: Model of a thermoelectric generator - a 1 to 50 mV/K
+source in series with a source resistance below 10 ohm - together with
+the self-starting boost converter architecture from Bose et al.}
+
+\section{\texorpdfstring{\href{https://en.wikipedia.org/wiki/Photovoltaic_effect}{Photovoltaic}}{Photovoltaic}}\label{photovoltaic}
+
+In silicon, photons can knock out electron/hole pairs. If we have a PN
+junction, then it's possible to separate the electron/holes before they
+recombine as shown in figure below.
+
+An electron/hole pair knocked out in the depletion region (1) will
+separate due to the built-in field. The hole will go to P and the
+electron to N. This increases the voltage VD across the diode.
+
+A similar effect will occur if the electron/hole pair is knocked out in
+the P region (2). Although the P region has an abundance of holes, the
+electron will not recombine immediately. If the electron diffuses close
+to the depletion region, then it will be swept across to the N side, and
+further increase VD.
+
+On the N-side the same minority carrier effect would further increase
+the voltage (3).
+
+
+{
+\centering
+\aicfig{media/l11_pv_pn_tikz.png}
+}
+
+\emph{Figure 11: Photon absorption in a PN junction, where electron/hole
+pairs generated in the depletion region (1), the P region (2) and the N
+region (3) all increase the diode voltage VD}
+
+A circuit model of a Photodiode can be seen in figure below, where it is
+assumed that a single photodiode is used. It is possible to stack
+photodiodes to get a higher output voltage.
+
+
+{
+\centering
+\aicfig{media/l11_pv_mdl_tikz.png}
+}
+
+\emph{Figure 12: Circuit model of a photodiode - a photo current source
+in parallel with a diode, delivering a load current IL}
+
+As the load current is increased, the voltage VD will drop. As the photo
+current is increased, the voltage VD will increase. As such, there is an
+optimum current load where there is a balance between the photocurrent,
+the voltage VD and the load current.
+
+\[ I_D = I_S\left(e^\frac{V_D}{V_T} - 1\right)\]
+
+\[ I_D = I_{Photo} - I_{Load}\]
+
+\[ V_D = V_T ln{\left(\frac{I_{Photo} - I_{Load}}{I_S} + 1 \right)} \]
+
+\[ P_{Load} = V_D I_{Load}\]
+
+Below is a model of the power in the load as a function of diode voltage
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#!/usr/bin/env python3}
+\ImportTok{import}\NormalTok{ numpy }\ImportTok{as}\NormalTok{ np}
+\ImportTok{import}\NormalTok{ matplotlib.pyplot }\ImportTok{as}\NormalTok{ plt}
+
+\NormalTok{m }\OperatorTok{=} \FloatTok{1e{-}3}  
+\NormalTok{i\_load }\OperatorTok{=}\NormalTok{ np.linspace(}\FloatTok{1e{-}5}\NormalTok{,}\FloatTok{1e{-}3}\NormalTok{,}\DecValTok{200}\NormalTok{)}
+
+\NormalTok{i\_s }\OperatorTok{=} \FloatTok{1e{-}12}  \CommentTok{\# saturation current }
+\NormalTok{i\_ph }\OperatorTok{=} \FloatTok{1e{-}3}  \CommentTok{\# Photocurrent}
+
+\NormalTok{V\_T }\OperatorTok{=} \FloatTok{1.38e{-}23}\OperatorTok{*}\DecValTok{300}\OperatorTok{/}\FloatTok{1.6e{-}19}  \CommentTok{\#Thermal voltage}
+
+\NormalTok{V\_D }\OperatorTok{=}\NormalTok{ V\_T}\OperatorTok{*}\NormalTok{np.log((i\_ph }\OperatorTok{{-}}\NormalTok{ i\_load)}\OperatorTok{/}\NormalTok{(i\_s) }\OperatorTok{+} \DecValTok{1}\NormalTok{)}
+
+\NormalTok{P\_load }\OperatorTok{=}\NormalTok{ V\_D}\OperatorTok{*}\NormalTok{i\_load}
+
+\NormalTok{plt.subplot(}\DecValTok{2}\NormalTok{,}\DecValTok{1}\NormalTok{,}\DecValTok{1}\NormalTok{)}
+\NormalTok{plt.plot(i\_load}\OperatorTok{/}\NormalTok{m,V\_D)}
+\NormalTok{plt.ylabel(}\StringTok{"Diode voltage [mA]"}\NormalTok{)}
+\NormalTok{plt.grid()}
+\NormalTok{plt.subplot(}\DecValTok{2}\NormalTok{,}\DecValTok{1}\NormalTok{,}\DecValTok{2}\NormalTok{)}
+\NormalTok{plt.plot(i\_load}\OperatorTok{/}\NormalTok{m,P\_load}\OperatorTok{/}\NormalTok{m)}
+\NormalTok{plt.xlabel(}\StringTok{"Current load [mA]"}\NormalTok{)}
+\NormalTok{plt.ylabel(}\StringTok{"Power Load [mW]"}\NormalTok{)}
+\NormalTok{plt.grid()}
+\NormalTok{plt.savefig(}\StringTok{"pv.pdf"}\NormalTok{)}
+\NormalTok{plt.show()}
+\end{Highlighting}
+\end{Shaded}
+
+From the plot below we can see that to optimize the power we could
+extract from the photovoltaic cell we'd want to have a current of 0.9 mA
+in the model above.
+
+The
+\href{https://wulffern.github.io/aic2026/assets/examples/pv.html}{interactive
+version of this example} plots the same equation both ways round, marks
+the maximum power point and reports the fill factor. Sweeping the
+photocurrent over six decades shows why harvesting in a dim room is a
+current problem rather than a voltage one.
+
+
+{
+\centering
+\aicfig{media/pv_tikz.png}
+}
+
+\emph{Figure 13: Diode voltage and delivered power versus load current
+for the photodiode model, with the maximum power point near 0.9 mA}
+
+Most photovoltaic energy harvesting circuits will include a maximum
+power point tracker as the optimum changes with light conditions.
+
+In A Reconfigurable Capacitive Power Converter With Capacitance
+Redistribution for Indoor Light-Powered Batteryless Internet-of-Things
+Devices {[}4{]} they include a maximum power point tracker and a
+reconfigurable charge pump to optimize efficiency.
+
+\section{\texorpdfstring{\href{https://en.wikipedia.org/wiki/Piezoelectricity}{Piezoelectric}}{Piezoelectric}}\label{piezoelectric}
+
+I'm not sure I understand the piezoelectric effect, but I think it goes
+something like this.
+
+Consider a crystal made of a combination of elements, for example
+\href{http://lampx.tugraz.at/~hadley/ss1/crystalstructure/structures/semiconductors/GaN.html}{Gallium
+Nitride}. In GaN it's possible to get a polarization of the unit cell,
+with a more negative charge on one side, and a positive charge on the
+other side. The polarization comes from an asymmetry in the electron and
+nucleus distribution within the material.
+
+In a polycrystaline substance the polarization domains will usually be
+random, and no electric field will observable. The polarization domains
+can be aligned by heating the material and applying a electric field.
+Now all the small electric fields point in the same direction.
+
+From Gausses law we know that the electric field through a surface is
+determined by the volume integral of the charges inside.
+
+\[ \oint_{\partial \Omega} \mathbf{E} \cdot d\mathbf{S} = \frac{1}{\epsilon_0} \iiint_{V} \rho
+\cdot dV\]
+
+Although there is a net zero charge inside the material, there is an
+uneven distribution of charges, as such, some of the field lines will
+cross through the surface.
+
+Assume we have a polycrystaline GaN material with polarized domains. If
+we measure the voltage across the material we will read 0 V. Even though
+the domains are polarized, and we should observe an external electric
+field, the free charges in the material will redistribute if there is a
+field inside, such that there is no current flowing, and thus no
+external field.
+
+If we apply stress, however, all the domains inside the material will
+shift. Now the free charges do not exactly cancel the electric field in
+the material, the free charges are in the wrong place. If we have a
+material with low conductivity, then it will take time for the free
+charges to redistribute. As such, for a while, we can measure an voltage
+across the material.
+
+Assuming the above explanation is true, then there should not be
+piezoelectric materials with high conductivity, and indeed, most
+piezoelectric materials have resistance of
+\href{https://www.f3lix-tutorial.com/piezo-materials}{\(10^{12}\) to
+\(10^{14}\) Ohm}.
+
+Vibrations on a piezoelectric material will result in a AC voltage
+across the surface, which we can harvest.
+
+A model of a piezoelectric transducer can be seen below.
+
+The voltage on the transducer can be on the order of a few volts, but
+the current is usually low (nA -- µA). The key challenge is to rectify
+the AC signal into a DC signal. It is common to use tricks to reduce the
+energy waste due to the rectifier.
+
+An example of piezoelectric energy harvester can be found in A Fully
+Integrated Split-Electrode SSHC Rectifier for Piezoelectric Energy
+Harvesting {[}5{]}
+
+
+{
+\centering
+\aicfig{media/lx_piezo_mdl_tikz.png}
+}
+
+\emph{Figure 14: Model of a piezoelectric transducer - an AC current
+source in parallel with the transducer capacitance}
+
+\section{Electromagnetic}\label{electromagnetic}\index{electromagnetic@Electromagnetic}
+
+\subsection{``Near field'' harvesting}\label{near-field-harvesting}
+
+Near Field Communication (NFC) operates at close physical distances
+
+
+{
+\centering
+\aicfig{media/FarNearFields-USP-4998112-1.png}
+}
+
+\emph{Figure 15: The reactive near field, radiative (Fresnel) near field
+and far field regions around an antenna. Image: Goran M Djuknic, public
+domain (US patent), via Wikimedia Commons}
+
+Reactive near field or inductive near field
+
+\[ \text{Inductive} < \frac{\lambda}{2 \pi}\]
+
+Within the inductive near field the antenna's can ``feel'' each other.
+The NFC reader inside the card reader can ``feel'' the antenna of the
+NFC tag. When the tag get's close it will load down the NFC reader by
+presenting a load impedance. As the circuit inside the tag is powered,
+it can change the impedance of it's antenna, which is sensed by the
+reader, and thus the reader can get data from the tag. The tag could
+lock in on the 13.56 MHz frequency and decode both amplitude and phase
+modulation from the reader.
+
+Since the NFC or Qi system operates at close distances, then the
+coupling factor between antenna's, or really, inductors, can be decent,
+and it's possible to achieve efficiencies of maybe 70 \%.
+
+At Bluetooth frequencies, as can be seen below, it does not really make
+sense to couple inductors, as they need to be within 2 cm to be in the
+inductive near field. The inductive near field is a significant problem
+for the coupling between inductors on chip, but I don't think I would
+use it to transfer power.
+
+\begin{longtable}[]{@{}lcc@{}}
+\toprule\noalign{}
+Standard & Frequency {[}MHz{]} & Inductive {[}m{]} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+AirFuel Resonant & 6.78 & 7.03 \\
+NFC & 13.56 & 3.52 \\
+Qi & 0.205 & 232 \\
+Bluetooth & 2400 & 0.02 \\
+\end{longtable}
+
+\subsection{Ambient RF Harvesting}\label{ambient-rf-harvesting}\index{ambient rf harvesting@Ambient RF Harvesting}
+
+Extremely inefficient idea, but may find special use-cases at
+short-distance.
+
+Will get better with beam-forming and directive antennas
+
+There are companies that think RF harvesting is a good idea.
+
+\href{https://airfuel.org/airfuel-rf/}{AirFuel RF}
+
+I think that ambient RF harvesting should tingle your science spidy
+senses.
+
+Let's consider the power transmitted in wireless standards. Your
+cellphone may transmit 30 dBm, your WiFi router maybe 20 dBm, and your
+Bluetooth LE device 10 dBm.
+
+In case those numbers don't mean anything to you, below is a conversion
+to watts.
+
+\begin{longtable}[]{@{}cc@{}}
+\toprule\noalign{}
+dBm & W \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+30 & 1 \\
+0 & 1 m \\
+-30 & 1 u \\
+-60 & 1 n \\
+-90 & 1 p \\
+\end{longtable}
+
+Now ask your self the question ``What's the power at a certain
+distance?''. It's easier to flip the question, and use Friis to
+calculate the distance.
+
+Assume \[P_{TX}\] = 1 W (30 dBm) and \[P_{RX}\] = 10 uW (-20 dBm)
+
+then
+
+\[ D = 10^\frac{P_{TX} - P_{RX} + 20 log_{10}\left(\frac{c}{4 \pi f}\right)}{20} \]
+
+In the table below we can see the distance is not that far!
+
+\begin{longtable}[]{@{}lcr@{}}
+\toprule\noalign{}
+Freq & \textbf{\(20 log_{10}\left(c/4 \pi f\right)\)} {[}dB{]} & D
+{[}m{]} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+915M & -31.7 & 8.2 \\
+2.45G & -40.2 & 3.1 \\
+5.80G & -47.7 & 1.3 \\
+\end{longtable}
+
+I believe ambient RF is a stupid idea.
+
+Assuming an antenna that transmits equally in all direction, then the
+loss on the first meter is 40 dB at 2.4 GHz. If I transmitted 1 W, there
+would only be 100 µW available at 1 meter. That's an efficiency of 0.01
+\%.
+
+Just fundamentally stupid. \textbf{Stupid, I tell you!!!}
+
+\emph{Stupidity in engineering really annoys me, especially when people
+don't understand how stupid ideas are.}
+
+\section{Triboelectric generator}\label{triboelectric-generator}\index{triboelectric generator@Triboelectric generator}
+
+Although static electricity is an old phenomenon, it is only recently
+that triboelectric nanogenerators have been used to harvest energy.
+
+An overview can be seen in Current progress on power management systems
+for triboelectric nanogenerators {[}6{]}.
+
+A model of a triboelectric generator can be seen in below. Although the
+current is low (nA) the voltage can be high, tens to hundreds of volts.
+
+The key circuit challenge is the rectifier, and the high voltage output
+of the triboelectric generator.
+
+Take a look in A Fully Energy-Autonomous Temperature-to-Time Converter
+Powered by a Triboelectric Energy Harvester for Biomedical Applications
+{[}7{]} for more details.
+
+
+{
+\centering
+\aicfig{media/lx_trib_mdl_tikz.png}
+}
+
+\emph{Figure 16: Model of a triboelectric generator - an AC source in
+series with the transducer capacitance}
+
+Tan et al. {[}7{]} built exactly this, and it is worth walking through
+because it is a complete system rather than a circuit.
+
+Their transducer is a square centimetre of conductive nickel against
+nickel-PFA, and the energy source is human motion below 1 Hz. So the
+input is not a waveform in any useful sense: it is a few sparse pulses a
+second, each of them high voltage and almost no current, and between
+them nothing at all. The model in the figure above is the right picture
+for it, with one addition - a real transducer also has a shunt
+resistance across it, which is one more path for the little charge there
+is to leak away before it can be used.
+
+That shapes the whole design. The rectifier cannot be a diode bridge,
+because two diode drops of the little charge available leaves nothing,
+and it cannot leak, because the next pulse may be a second away. Their
+answer is a low leakage rectifier feeding a power management unit whose
+static consumption is measured in nanowatts, storing charge on a
+capacitor until there is enough to do something with. On their
+measurements a conventional rectifier never reaches the 600 mV the
+circuit needs to start; theirs does.
+
+What it then does is neat. Rather than digitise a temperature, it starts
+a PTAT bandgap, charges a capacitor and waits for a comparator to trip,
+so the output is a pulse whose \emph{width} is the temperature. No
+clock, no converter, no reference to speak of - the temperature falls
+out of a single one-shot discharge. If all you have is a millijoule now
+and then, answering in the time domain is a great deal cheaper than
+answering in the voltage domain.
+
+One detail in their block diagram is worth more than the circuit though.
+There is a \texttt{VDD\_ext} on it. The system is not fully harvested.
+
+That is not a criticism, and it is a good illustration of the division
+of labour. They set out to show that a triboelectric harvester can run a
+temperature sensor, and they showed it; how the reading gets from the
+chip to wherever anyone would read it is left alone, and getting a radio
+to run off sub-1 Hz human motion is a different paper. It is academia's
+job to prove that something could be possible, and industry's job to
+make something that could be possible actually work. Read papers with
+that in mind and look for the block that is still plugged into the wall.
+
+\section{Comparison}\label{comparison}
+
+Imagine you're a engineer in a company that makes integrated circuits.
+Your CEO comes to you and says ``You need to make a power management IC
+that harvest energy and works with everything''.
+
+Hopefully, your response would now be ``That's a stupid idea, any energy
+harvester circuit must be made specifically for the energy source''.
+
+Thermoelectric and photovoltaic provide low DC voltage. Piezoelectric
+and Triboelectric provide an AC voltage. Ambient RF is stupid.
+
+For a ``energy harvesting circuit'' you must also know the application
+(wrist watch, or wall switch) to know what energy source is available.
+
+Below is a table that show's a comparison in the power that can be
+extracted.
+
+The power levels below are too low for the peak power consumption of
+integrated circuits, so most applications must include a charge storage
+device, either a battery, or a capacitor.
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.1679}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.3893}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.1069}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.3359}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Energy source
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Power density
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Frequency
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Characteristics
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Solar / PV & 10 uW/cm\(^2\) indoor, 15 mW/cm\(^2\) outdoor & DC &
+Requires exposure to light \\
+RF & 0.1 uW/cm\(^2\) GSM, 0.01 uW/cm\(^2\) WiFi & 380 MHz--5 GHz & Poor
+indoors and out of line of sight \\
+Thermal, body heat & 40 uW/cm\(^2\) & DC & Requires a high temperature
+difference \\
+Piezoelectric & 4 uW/cm\(^2\) & \textgreater{} 30 Hz & Not limited to
+indoors or outdoors \\
+Triboelectric (TENG) & 1 uW/cm\(^2\) & 1 Hz & Not limited to indoors or
+outdoors \\
+\end{longtable}
+
+Numbers from Tan et al. {[}7{]}.
+
+Read the first column against the last. Solar wins outdoors by three
+orders of magnitude and loses most of that the moment you go inside, RF
+is worse than either everywhere, and the two mechanical sources are the
+only ones that do not care where they are. That is the whole argument
+for bothering with piezoelectric and triboelectric harvesting despite
+their being at the bottom of the power column: a microwatt you can rely
+on beats a milliwatt that depends on someone opening the curtains.
+
+The frequency column matters as much as the power column and is easier
+to overlook. DC sources want a boost converter; the mechanical ones
+deliver at a few hertz or less and want a rectifier and a reservoir, and
+at 1 Hz the circuit spends almost all of its life waiting. That is why
+the leakage of the storage path, rather than the efficiency of the
+conversion, is what decides whether a triboelectric system works.
+
+\section{Summary}\label{summary}
+
+The one-page version of this chapter:
+
+\begin{itemize}
+\tightlist
+\item
+  Harvesters deliver power, batteries deliver energy: a harvester design
+  starts from the average load current, not the peak
+\item
+  Thermoelectric generators give millivolts per kelvin of gradient -
+  real designs start below 100 mV and need a boost converter that can
+  cold-start from that little
+\item
+  A photovoltaic cell is the photodiode from this chapter run in the
+  fourth quadrant: half a volt a cell, current proportional to light
+\item
+  Piezo and electromagnetic harvesters turn vibration into AC that must
+  be rectified; triboelectric is the same story with contact charging
+\item
+  Ambient RF sounds free until Friis has spoken: microwatts at best, and
+  only near the transmitter
+\item
+  Every source needs power management sized to its impedance - maximum
+  power transfer is the whole game
+\end{itemize}
+
+\section{Would you like to know
+more?}\label{would-you-like-to-know-more}
+
+{[}1{]} Towards a Green and Self-Powered Internet of Things Using
+Piezoelectric Energy Harvesting {[}2{]}
+
+A 3.5-mV Input Single-Inductor Self-Starting Boost Converter With
+Loss-Aware MPPT for Efficient Autonomous Body-Heat Energy Harvesting
+{[}3{]}
+
+A Reconfigurable Capacitive Power Converter With Capacitance
+Redistribution for Indoor Light-Powered Batteryless Internet- of-Things
+Devices {[}4{]}
+
+A Fully Integrated Split-Electrode SSHC Rectifier for Piezoelectric
+Energy Harvesting {[}5{]}
+
+Current progress on power management systems for triboelectric
+nanogenerators {[}6{]}
+
+A Fully Energy-Autonomous Temperature-to-Time Converter Powered by a
+Triboelectric Energy Harvester for Biomedical Applications {[}7{]}
+
+\phantomsection\label{refs}
+\begin{CSLReferences}{0}{0}
+\bibitem[\citeproctext]{ref-hsieh18}
+\CSLLeftMargin{{[}1{]} }%
+\CSLRightInline{S.-E. Hsieh and C.-C. Hsieh, {``A 0.4V 13b 270kS/s
+SAR-ISDM ADC with an opamp-less time-domain integrator,''} in \emph{2018
+IEEE international solid-state circuits conference - (ISSCC)}, 2018, pp.
+240--242, doi:
+\href{https://doi.org/10.1109/ISSCC.2018.8310273}{10.1109/ISSCC.2018.8310273}.
+}
+
+\bibitem[\citeproctext]{ref-shirvanimoghaddam19}
+\CSLLeftMargin{{[}2{]} }%
+\CSLRightInline{M. Shirvanimoghaddam \emph{et al.}, {``Towards a green
+and self-powered internet of things using piezoelectric energy
+harvesting,''} \emph{IEEE Access}, vol. 7, pp. 94533--94556, 2019, doi:
+\href{https://doi.org/10.1109/ACCESS.2019.2928523}{10.1109/ACCESS.2019.2928523}.
+}
+
+\bibitem[\citeproctext]{ref-bose21}
+\CSLLeftMargin{{[}3{]} }%
+\CSLRightInline{S. Bose, T. Anand, and M. L. Johnston, {``A 3.5-mV input
+single-inductor self-starting boost converter with loss-aware MPPT for
+efficient autonomous body-heat energy harvesting,''} \emph{IEEE Journal
+of Solid-State Circuits}, vol. 56, no. 6, pp. 1837--1848, 2021, doi:
+\href{https://doi.org/10.1109/JSSC.2020.3042962}{10.1109/JSSC.2020.3042962}.
+}
+
+\bibitem[\citeproctext]{ref-cheng21}
+\CSLLeftMargin{{[}4{]} }%
+\CSLRightInline{H.-C. Cheng, P.-H. Chen, Y.-T. Su, and P.-H. Chen, {``A
+reconfigurable capacitive power converter with capacitance
+redistribution for indoor light-powered batteryless internet-of-things
+devices,''} \emph{IEEE Journal of Solid-State Circuits}, vol. 56, no.
+10, pp. 2934--2942, 2021, doi:
+\href{https://doi.org/10.1109/JSSC.2021.3075217}{10.1109/JSSC.2021.3075217}.
+}
+
+\bibitem[\citeproctext]{ref-du19}
+\CSLLeftMargin{{[}5{]} }%
+\CSLRightInline{S. Du, Y. Jia, C. Zhao, G. A. J. Amaratunga, and A. A.
+Seshia, {``A fully integrated split-electrode SSHC rectifier for
+piezoelectric energy harvesting,''} \emph{IEEE Journal of Solid-State
+Circuits}, vol. 54, no. 6, pp. 1733--1743, 2019, doi:
+\href{https://doi.org/10.1109/JSSC.2019.2893525}{10.1109/JSSC.2019.2893525}.
+}
+
+\bibitem[\citeproctext]{ref-hu22}
+\CSLLeftMargin{{[}6{]} }%
+\CSLRightInline{T. Hu, H. Wang, W. Harmon, D. Bamgboje, and Z.-L. Wang,
+{``Current progress on power management systems for triboelectric
+nanogenerators,''} \emph{IEEE Transactions on Power Electronics}, vol.
+37, no. 8, pp. 9850--9864, 2022, doi:
+\href{https://doi.org/10.1109/TPEL.2022.3156871}{10.1109/TPEL.2022.3156871}.
+}
+
+\bibitem[\citeproctext]{ref-tan21}
+\CSLLeftMargin{{[}7{]} }%
+\CSLRightInline{J. S. Y. Tan \emph{et al.}, {``A fully energy-autonomous
+temperature-to-time converter powered by a triboelectric energy
+harvester for biomedical applications,''} \emph{IEEE Journal of
+Solid-State Circuits}, vol. 56, no. 10, pp. 2913--2923, 2021, doi:
+\href{https://doi.org/10.1109/JSSC.2021.3080383}{10.1109/JSSC.2021.3080383}.
+}
+
+\end{CSLReferences}

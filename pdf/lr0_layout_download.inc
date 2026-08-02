@@ -1,0 +1,1 @@
+- [Layout Generation](/aic2026/assets/lr0_layout.pdf) [[slides]](/aic2026/assets/html/lr0_layout.html)

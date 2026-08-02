@@ -343,7 +343,7 @@ the halving branch currents that make it a DAC.
 
 ---
 
-$$ R_{in} = 2R || 2R = R $$
+$$ R_{in} = 2R \parallel 2R = R $$
 
 ![left fit](../media/dac_2r_0_tikz.pdf)
 
@@ -367,7 +367,7 @@ $$ I_{0} = \frac{V_0}{2R} = \frac{V_1}{4R} $$
 
 ---
 
-$$ R_{in} = 2R || 2R = R $$
+$$ R_{in} = 2R \parallel 2R = R $$
 
 $$ I_{0} = \frac{V_0}{2R} = \frac{V_1}{4R} $$
 

@@ -1,0 +1,126 @@
+
+\documentclass[final,a4paper,journal]{IEEEtran}
+%\documentclass[final,a4paper,journal]{report}
+
+\input{pandoc.tex}
+
+\usepackage{wrapfig}
+
+
+\urlstyle{same} % disable monospaced font for URLs
+\hypersetup{
+  pdftitle={Energy Sources},
+  pdfauthor={Carsten~Wulff},
+  colorlinks=true,
+  linkcolor={Maroon},
+  filecolor={Maroon},
+  citecolor={Blue},
+  urlcolor={Blue},
+  pdfcreator={}}
+\usepackage{flafter}
+\usepackage{longtable,booktabs,array}
+
+\newcommand{\myfigwidth}{90mm}
+\newcommand{\myfigheight}{80mm}
+
+% Figures are capped, never inflated. \includegraphics[width=..] scales
+% a graphic TO that width, so a drawing whose natural size is 40 mm was
+% being blown up to fill the box. \aicfig measures the graphic first and
+% asks for the smaller of its natural width and the cap; keepaspectratio
+% with the height cap then bounds tall figures the same way.
+\newsavebox{\aicfigbox}
+\newlength{\aicfigw}
+\newcommand{\aicfig}[1]{%
+  \sbox{\aicfigbox}{\includegraphics{#1}}%
+  \setlength{\aicfigw}{\wd\aicfigbox}%
+  \ifdim\aicfigw>\myfigwidth\setlength{\aicfigw}{\myfigwidth}\fi
+  \includegraphics[width=\aicfigw,height=\myfigheight,keepaspectratio]{#1}%
+}
+
+
+
+
+%\usepackage{tabularray}
+%\let\longtable\longtblr
+%\let\endlongtable\endlongtblr
+%\NewTblrTheme{headless}{
+%    \DefTblrTemplate{contfoot-text}{default}{}
+%    \DefTblrTemplate{conthead-text}{default}{}
+%    \DefTblrTemplate{caption}{default}{}
+%    \DefTblrTemplate{conthead}{default}{}
+%    \DefTblrTemplate{capcont}{default}{}
+%}
+%\SetTblrOuter[longtblr]{
+%    entry=none,
+%    label=none,
+%    theme=headless,
+%}
+%toprule|bottomrule|midrule|endhead|endlastfoot)
+%\let\noalign\empty
+\def\endlastfoot{\hspace{0mm}} % compensate whitespace produced by left over \empty tokens
+%\let\endhead\empty
+%\def\toprule{\hspace{-1mm}} % compensate whitespace produced by left over \empty tokens
+%\let\midrule\empty
+%\let\bottomrule\empty
+% add some optional styling
+%\UseTblrLibrary{varwidth}
+%\SetTblrInner[longtblr]{
+%  row{1}     = {gray!20,valign=h},
+%  hline{1,Z} = {0.3mm},
+%  hline{2}   = {0.1mm},
+%  row{Z}     = {valign=f},
+%  row{odd}   = {gray!5},
+%  hspan      = minimal,
+%  columns    = {co=1,valign=t},
+%}
+%
+\renewenvironment{longtable}{\begin{center}\scriptsize\begin{tabular}}{\end{tabular}\end{center}}
+\renewcommand{\endhead}{}
+\renewcommand{\toprule}[2]{\hline}
+\renewcommand{\midrule}[2]{\hline}
+\renewcommand{\bottomrule}[2]{\hline}
+
+%\makeatletter
+%\let\oldlt\longtable
+%\let\endoldlt\endlongtable
+%\def\longtable[#1]{
+%\begin{}[htb]
+%\onecolumn
+%\begin{minipage}{0.45\textwidth}
+%\scriptsize
+%\oldlt[#1]
+%}
+%\def\endlongtable{\endoldlt
+%\end{minipage}
+%\end
+%\twocolumn{table}
+%}
+%\makeatother
+
+
+
+
+
+
+\title{Energy Sources}
+\author{Carsten~Wulff, carsten@wulff.no }
+
+\markboth{Advanced Integrated Circuits -  Built on Sun Aug  2 22:49:19 CEST 2026 from 5e4359b19d88671b6e595055505e5af017c8cf46
+}{Carsten Wulff}
+
+\begin{document}
+
+\bibliographystyle{IEEEtran}
+
+\maketitle
+
+
+\input{energy_sources_fiximg.tex}
+
+\bibliographystyle{IEEEtran}
+\bibliography{aic.bib}
+
+\input{authors.tex}
+
+
+\end{document}
