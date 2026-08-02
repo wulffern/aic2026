@@ -8,6 +8,7 @@
 \definecolor{eblue}{RGB}{40,40,180}
 
 \begin{tikzpicture}[scale=0.85]
+  \input{tikz/mos_lib.tex}
 
   % ---------------- top: long channel ----------------
   \begin{scope}[shift={(0,5.2)}]
@@ -20,7 +21,9 @@
     \node[anchor=east] at (1.0,2.13) {$|\Phi_B|$};
     \draw[eblue, ->, thick] (0.6,1.1) -- (1.4,1.1);
     % device sketch below
-    \draw[line width=1.1pt, rounded corners=5pt] (2.6,-1.0) rectangle (7.4,-0.5);
+    \fill[oxteal!60] (2.6,-1.0) rectangle (7.4,-0.88);
+    \draw[line width=0.8pt] (2.6,-1.0) rectangle (7.4,-0.88);
+    \draw[line width=1.1pt, rounded corners=5pt] (2.6,-0.88) rectangle (7.4,-0.42);
     \draw[line width=1.1pt] (0.1,-1.0) -- (2.5,-1.0) -- (2.6,-2.0);
     \draw[line width=1.1pt] (9.9,-1.0) -- (7.5,-1.0) -- (7.4,-2.0);
     \draw[line width=1.1pt] (2.6,-2.0) .. controls (5.0,-2.3) .. (7.4,-2.0);
@@ -44,6 +47,8 @@
     \draw[black, <->, thin] (2.4,1.8) -- (2.4,2.1);
     \draw[eblue, ->, thick] (0.5,1.0) -- (1.2,1.0);
     % small device
+    \fill[oxteal!60] (1.9,-1.0) rectangle (2.9,-0.9);
+    \draw[line width=0.8pt] (1.9,-1.0) rectangle (2.9,-0.9);
     \draw[line width=1.1pt, rounded corners=4pt] (1.9,-0.9) rectangle (2.9,-0.45);
     \draw[line width=1.1pt] (0.1,-1.0) -- (1.8,-1.0) -- (1.9,-1.6);
     \draw[line width=1.1pt] (4.7,-1.0) -- (3.0,-1.0) -- (2.9,-1.6);

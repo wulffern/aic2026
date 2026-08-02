@@ -52,9 +52,12 @@
 
   % green capacitors, labels pulled outside the device
   \newcommand{\gcap}[3]{% x ytop bottomlead, plates centred on the crossing
+    % white backdrop so the symbol reads on any background
+    \fill[white, opacity=0.85, rounded corners=2pt]
+      (#1-0.48,#2-0.16) rectangle (#1+0.48,#2-0.62);
     \draw[capgreen, thick] (#1,#2) -- (#1,#2-0.3);
-    \draw[capgreen, line width=1.7pt] (#1-0.3,#2-0.3) -- (#1+0.3,#2-0.3);
-    \draw[capgreen, line width=1.7pt] (#1-0.3,#2-0.48) -- (#1+0.3,#2-0.48);
+    \draw[capgreen, line width=2pt] (#1-0.38,#2-0.3) -- (#1+0.38,#2-0.3);
+    \draw[capgreen, line width=2pt] (#1-0.38,#2-0.48) -- (#1+0.38,#2-0.48);
     \draw[capgreen, thick] (#1,#2-0.48) -- (#1,#2-0.48-#3);
     \fill[capgreen] (#1,#2) circle (0.06);
     \fill[capgreen] (#1,#2-0.48-#3) circle (0.06);

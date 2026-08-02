@@ -16,9 +16,13 @@
   \node[anchor=center, scale=1.1] at (1.1,4.2) {$SiO_2$};
   \node[anchor=center, scale=1.1] at (8.9,4.2) {$SiO_2$};
 
-  % silicon with the implanted well
+  % silicon with the implanted well. The shading is the doping: the
+  % scattered ions pile up against both resist edges, so the well is
+  % darkest there and fades to the nominal N_D in the middle.
   \fill[implant!25] (0.0,2.6) rectangle (10.0,-0.6);
-  \fill[implant!45, rounded corners=8pt] (2.5,2.55) rectangle (7.5,-0.4);
+  \fill[implant!35, rounded corners=8pt] (2.5,2.55) rectangle (7.5,-0.4);
+  \shade[left color=implant!80, right color=implant!35] (2.55,2.5) rectangle (4.7,-0.35);
+  \shade[left color=implant!35, right color=implant!80] (5.3,2.5) rectangle (7.45,-0.35);
   \draw[line width=1.2pt] (0.0,2.6) -- (10.0,2.6);
 
   % the implant rain

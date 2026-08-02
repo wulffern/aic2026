@@ -7,6 +7,7 @@
 \definecolor{echarge}{RGB}{30,60,220}
 \definecolor{hcharge}{RGB}{220,30,30}
 \definecolor{sdgreen}{RGB}{40,140,60}
+\definecolor{oxteal}{RGB}{60,140,160}
 
 \begin{tikzpicture}[scale=0.9]
   % depth vector for the oblique projection
@@ -28,6 +29,11 @@
   \fill[sdgreen!55] (6.7,0.9) -- (8.2,0.9) -- (8.2+\dx,0.9+\dy) -- (6.7+\dx,0.9+\dy) -- cycle;
   \fill[sdgreen!40] (8.2,0) -- (8.2,0.9) -- (8.2+\dx,0.9+\dy) -- (8.2+\dx,\dy) -- cycle;
   \node[white, scale=1.3] at (7.45,0.45) {D};
+
+  % thin gate oxide between the channel and the gate slab
+  \fill[oxteal!60] (2.3,1.75) rectangle (6.1,1.95);
+  \fill[oxteal!45] (2.3,1.95) -- (6.1,1.95) -- (6.1+\dx,1.95+\dy) -- (2.3+\dx,1.95+\dy) -- cycle;
+  \fill[oxteal!35] (6.1,1.75) -- (6.1,1.95) -- (6.1+\dx,1.95+\dy) -- (6.1+\dx,1.75+\dy) -- cycle;
 
   % gate slab floating above the channel
   \fill[hcharge!65] (2.3,2.2) rectangle (6.1,3.1);

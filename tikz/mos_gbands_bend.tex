@@ -9,8 +9,9 @@
 
 \begin{tikzpicture}[scale=0.85]
 
-  % oxide, tilted by the field across it
-  \draw[eblue, thick] (3.9,-0.7) -- (4.15,2.5) -- (4.75,2.7) -- (4.5,-0.5) -- cycle;
+  % oxide: the interfaces stay vertical, only the band edges tilt
+  % with the field across the oxide
+  \draw[eblue, thick] (4.05,-0.7) -- (4.05,2.45) -- (4.65,2.75) -- (4.65,-0.4) -- cycle;
 
   % gate level, pulled down by qV
   \draw[eblue, thick] (0.3,0.65) -- (3.95,0.65);

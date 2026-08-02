@@ -16,6 +16,12 @@
   \foreach \x in {7.4,8.2,9.0}{
     \draw[fieldy, thick, ->] (\x,2.05) -- (\x,1.65);
   }
+  % the lateral field in the pinched-off gap, pointing from the
+  % positive drain towards the channel tip - this is the field that
+  % accelerates the carriers
+  \draw[fieldy, thick, ->] (6.8,2.95) -- (5.7,3.35);
+  \draw[fieldy, thick, ->] (6.5,2.55) -- (5.4,2.95);
+  \draw[fieldy, thick, ->] (6.2,2.15) -- (5.1,2.55);
 
   % one primary electron, accelerated across the gap
   \node[echarge, anchor=center, scale=1.15] at (3.6,4.35) {$\ominus$};

@@ -21,10 +21,17 @@
   \draw[fieldy, line width=2pt, ->] (6.9,3.4) -- (6.9,2.7);
   \node[fieldy!80!black, anchor=west] at (7.05,3.05) {$F_{OB}$};
 
+  % field from the gate down through the oxide, left of the action
+  \foreach \x in {1.3,2.0,2.7}{
+    \draw[fieldy, thick, ->] (\x,5.1) -- (\x,4.7);
+  }
   % field at the drain junction
   \foreach \x in {7.4,8.2,9.0}{
     \draw[fieldy, thick, ->] (\x,2.05) -- (\x,1.65);
   }
+  % vertical field in the bulk that drives the secondaries upward
+  \draw[fieldy, thick, ->] (7.6,2.95) -- (7.6,2.35);
+  \draw[fieldy, thick, ->] (8.3,3.0) -- (8.3,2.4);
 
   % the chain: a hole from impact ionization near the corner is driven
   % into the bulk, generates a secondary electron at depth, and the

@@ -8,37 +8,33 @@
 
   \input{tikz/ckt_lib.tex}
 
-  \def\ytop{2.8}   % drain rail
-  \def\ymid{1.8}   % gate height (1.8 so the house C_gs fits between the rails)
+  \def\ytop{2.8}   % drain rail, and the gate wire: v_g, C_gd and the
+                   % rail sit on one line, as in the hand drawing
   \def\xg{1.2}     % gate column (C_gs)
   \def\xgm{3.0}
   \def\xgs{5.2}
-  \def\xrds{6.6}
-  \def\xterm{7.8}
+  \def\xrds{7.3}
+  \def\xterm{8.5}
 
-  % Gate terminal and column
-  \draw (0.09,\ymid) circle (0.09);
-  \node[anchor=east] at (-0.1,\ymid) {$v_g$};
-  \draw (0.18,\ymid) -- (\xg,\ymid);
-  \fill (\xg,\ymid) circle (0.075);
-
-  % C_gs down to the source rail
-  \draw (\xg,0) -- (\xg,0.1) \vcapacitor{$C_{gs}$} -- (\xg,\ymid);
-
-  % C_gd along the top to the drain rail
-  \draw (\xg,\ymid) -- (\xg,\ytop);
+  % Gate terminal, C_gd in line with it on the drain-rail level
+  \draw (0.09,\ytop) circle (0.09);
+  \node[anchor=east] at (-0.1,\ytop) {$v_g$};
+  \draw (0.18,\ytop) -- (\xg,\ytop);
+  \fill (\xg,\ytop) circle (0.075);
   \draw (\xg,\ytop) -- (1.3,\ytop) \hcapacitor{$C_{gd}$} -- (\xgm,\ytop);
 
+  % C_gs from the gate node down to the source rail
+  \draw (\xg,0) -- (\xg,0.8) \vcapacitor{$C_{gs}$} -- (\xg,\ytop);
+
   % Low frequency core between the rails
-  \draw (\xgm,\ytop) to [cI, l_=$g_m v_{gs}$] (\xgm,0);
-  \draw (\xgs,0) to [cI, l=$g_s v_{sb}$] (\xgs,\ytop);
+  \draw (\xgm,\ytop) to [cI, l=$g_m v_{gs}$] (\xgm,0);
+  \draw (\xgs,0) to [cI, l_=$g_s v_{sb}$] (\xgs,\ytop);
   \draw (\xrds,0) -- (\xrds,0.6) \vresistor{$r_{ds}$} -- (\xrds,2.8);
 
   % Drain rail, C_db up to the AC grounded bulk
   \draw (\xgm,\ytop) -- (\xterm,\ytop);
   \fill (\xgm,\ytop) circle (0.075);
   \fill (\xgs,\ytop) circle (0.075);
-  \fill (\xrds,\ytop) circle (0.075);
   \draw (4.1,\ytop) \vcapacitor{$C_{db}$};
   \fill (4.1,\ytop) circle (0.075);
   % ground pointing up: the bars shrink away from the wire
@@ -51,18 +47,19 @@
   \node[anchor=south] at ({\xterm-0.8},{\ytop+0.35}) {$i_d$};
 
   % Source rail, C_sb down to the AC grounded bulk
-  \draw (\xg,0) -- (\xterm,0);
-  \fill (\xg,0) circle (0.075);
+  \draw (\xg,0) -- (\xrds,0);
   \fill (\xgm,0) circle (0.075);
   \fill (\xgs,0) circle (0.075);
-  \fill (\xrds,0) circle (0.075);
   \draw (2.1,-1.6) \vcapacitor{$C_{sb}$};
   \fill (2.1,0) circle (0.075);
   \draw (2.1,-1.6) \vground;
-  \draw (\xterm+0.09,0) circle (0.09);
-  \node[anchor=west] at ({\xterm+0.3},0) {$v_s$};
-  \draw[->] ({\xterm-0.8},-0.25) -- ({\xterm-0.8},-0.85);
-  \node[anchor=east] at ({\xterm-0.9},-0.55) {$i_s$};
+  % v_s hangs below the middle of the source rail
+  \fill (4.4,0) circle (0.075);
+  \draw (4.4,0) -- (4.4,-0.45);
+  \draw (4.4,-0.54) circle (0.09);
+  \node[anchor=west] at (4.6,-0.55) {$v_s$};
+  \draw[->] (3.95,-0.15) -- (3.95,-0.8);
+  \node[anchor=east] at (3.85,-0.5) {$i_s$};
 
 \end{circuitikz}
 \end{document}

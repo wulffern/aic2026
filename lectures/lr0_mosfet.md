@@ -224,7 +224,7 @@ transistors work.
 
 <!--![fit](https://upload.wikimedia.org/wikipedia/commons/thumb/5/52/Red_and_blue_pill.jpg/1024px-Red_and_blue_pill.jpg) -->
 
-![fit](../media/Red_and_blue_pill.jpg)
+![fit](../media/pills_tikz.pdf)
 
 ---
 
@@ -784,10 +784,12 @@ before we do the same with the drain.
 <!--pan_doc:
 <sub>Figure 18: Accumulation, $V_{GS} < 0$</sub>
 
-The cross-sections here show the majority carriers: electrons (blue) in the
-$n+$ source and drain, holes (red) in the $p-$ bulk. With a negative
-gate-source voltage the holes are attracted to the surface and accumulate
-underneath the gate.
+What we're seeing here are the free charges - the mobile carriers, not the
+fixed dopant ions. Electrons (blue) are free to move around in the $n+$
+source and drain, holes (red) in the $p-$ bulk, and every region is still
+charge neutral: behind each free carrier sits an ionized donor or acceptor
+locked in the lattice. With a negative gate-source voltage the holes are
+attracted to the surface and accumulate underneath the gate.
 -->
 
 ---
@@ -1369,24 +1371,25 @@ Electron speed limit in silicon
 The mobility model says velocity is proportional to field. But carriers in
 silicon scatter off the lattice, and above roughly $10^7$ cm/s more field
 just means more scattering, not more speed. Shrink $L$ at constant voltage
-and the lateral field $V/L$ grows without bound - the estimate below
-crosses the speed limit somewhere around a micrometer, which is why every
-modern process lives with velocity saturation.
+and the lateral field $V/L$ grows without bound - at 1 V the mobility
+model crosses the speed limit just below half a micrometer, which is why
+every modern process lives with velocity saturation.
 
 -->
  
 [.column]
  
-![right fit](../media/l5_velocity.pdf)
+![right fit](../media/lr0_velocity_tikz.pdf)
 
 <!--pan_doc:
-<sub>Figure 33: Carrier velocity $v = \mu E$ versus the physical speed limits</sub>
+<sub>Figure 33: Carrier velocity at 1 V across the channel: the mobility model, what the carriers actually do, and the physical speed limits</sub>
 
 Shrink the channel at a fixed voltage and the lateral field, and thus the
-mobility-model velocity, grows without bound - the estimate crosses the
+mobility-model velocity (blue), grows without bound - it crosses the
 silicon speed limit long before it crosses anything relativistic. Real
-carriers cannot do that, so in short channels the velocity saturates and the
-current becomes closer to linear, rather than quadratic, in $V_{eff}$.
+carriers cannot do that: the red curve saturates at $v_{sat}$, so in short
+channels the current becomes closer to linear, rather than quadratic, in
+$V_{eff}$.
 -->
 
 ---
@@ -2251,7 +2254,7 @@ The one-page version of this chapter:
 - The gate controls a barrier: weak inversion is exponential, strong inversion is quadratic
 - Transconductance is two times current over overdrive, or current over nVT - whichever is smaller
 - Intrinsic gain falls with overdrive and with shorter length
-- Four capacitances set the speed, and the smallest one (Cgd, Miller) often sets the pole
+- Four capacitances set the speed: Cgs usually dominates the poles (it is the largest, think current mirrors), and Cgd gets multiplied by Miller
 - Match with area (Pelgrom), buy speed with overdrive and short length, buy gain with long length
 - Nothing is constant: supply, process, temperature, mismatch and noise all move - design for the box, not the point
 
