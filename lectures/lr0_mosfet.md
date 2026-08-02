@@ -2104,7 +2104,7 @@ the spread of the *current*. Kinget's expression [@kinget05] connects the two:
 
 -->
 
-## Transistors with same $V_{GS}$[^2]
+## Transistors with same $V_{GS}$ [@kinget05]
 
 $$\frac{\sigma_{I_D}^2}{I_D^2} = \frac{1}{WL}\left[\left(\frac{gm}{I_D}\right)^2 \sigma_{vt}^2 + \frac{\sigma_{\ell}^2}{\ell^2}\right] $$
 

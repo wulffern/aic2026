@@ -141,3 +141,18 @@ The one-page version of this chapter:
 - Matching is geometry: symmetry, proximity, dummies, and common centroid where it counts
 - The parasitics are part of the circuit - extract and re-simulate before believing any layout
 - DRC and LVS are not suggestions: clean both, every time
+
+---
+
+# Would you like to know more?
+
+<!--pan_doc:
+
+Hastings' *The Art of Analog Layout* is the book on matching, and
+worth owning. For the open flow used here, the Magic and netgen
+documentation is the practical companion.
+
+-->
+
+- Hastings, *The Art of Analog Layout*
+- [Magic VLSI](http://opencircuitdesign.com/magic/) and [netgen](http://opencircuitdesign.com/netgen/) documentation

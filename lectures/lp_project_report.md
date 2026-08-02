@@ -233,3 +233,19 @@ The one-page version of this chapter:
 - Abstract states the claim, introduction the why, method the how, results the evidence, conclusion the so-what
 - Figures carry the argument - every one referenced, every one earning its place
 - Cite what you used, and let the results speak for themselves
+
+---
+
+# Would you like to know more?
+
+<!--pan_doc:
+
+Strunk and White is still the shortest useful book on writing, and
+Zinsser's *On Writing Well* the friendliest. For technical writing
+specifically, read a few JSSC papers with an eye on structure rather
+than content.
+
+-->
+
+- Strunk and White, *The Elements of Style*
+- Zinsser, *On Writing Well*

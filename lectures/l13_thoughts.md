@@ -445,3 +445,19 @@ The one-page version of this chapter:
 - Whatever is text - netlists, JSON, code - can be versioned, diffed, reviewed and compiled; keep everything as text
 - The practical tips are paid for in silicon: feed ring oscillators from current sources, check non-overlap in the slow corner, leave a known capacitance to measure
 - The goal is not to remove the designer; it is to stop the designer redrawing what a compiler can regenerate
+
+---
+
+# Would you like to know more?
+
+<!--pan_doc:
+
+The compiled-design ideas here are documented in the tools chapter
+and in the ciccreator documentation. For where the field is going,
+the open-source EDA community around OpenLane and the SKY130 PDK is
+the liveliest place to look.
+
+-->
+
+- [ciccreator](https://ciccreator.readthedocs.io/) - the compiler this chapter argues for
+- [OpenLane](https://openlane.readthedocs.io/) - the digital counterpart

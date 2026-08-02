@@ -540,3 +540,20 @@ The one-page version of this chapter:
 - Start from the template repositories and the cic flow on day one - infrastructure debt compounds
 - Work like an engineer: git for everything, scripts over clicks, claims backed by simulation
 - The report is the deliverable; the next chapter's writing guide is not optional reading
+
+---
+
+# Would you like to know more?
+
+<!--pan_doc:
+
+The temperature-sensor project has a literature: Pertijs and Huijsing
+on precision CMOS temperature sensors [@pertijs2005], and more recent
+work on the low-power end [@jeong2014] [@tang20] [@park2022]. Read one
+of them before you start; it will save you a month.
+
+-->
+
+- Pertijs and Huijsing, *Precision temperature sensors in CMOS technology* [@pertijs2005]
+- Jeong et al., *A fully-integrated temperature sensor* [@jeong2014]
+- Tang et al. [@tang20] and Park et al. [@park2022]

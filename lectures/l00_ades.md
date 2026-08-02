@@ -225,4 +225,21 @@ Close to the N-well edge the donor consentration will be higher. Ion implantatio
 the oxide wall, and increase the doping concentration close to the edge. As such, the transistor threshold voltage will increase close to 
 a well edge.
 
-Keep transistors about 3 um away from the N-well edge if threshold voltage is important. 
+Keep transistors about 3 um away from the N-well edge if threshold voltage is important.
+
+---
+
+# Would you like to know more?
+
+<!--pan_doc:
+
+Analog design is a craft learned from circuits, so the reading is
+mostly other people's circuits: Johns and Martin [@johns] for the
+textbook path, Razavi [@razavi] for a second voice, and the JSSC and
+ISSCC archives for what the field is doing now.
+
+-->
+
+- Johns and Martin, *Analog Integrated Circuit Design* [@johns]
+- Razavi, *Design of Analog CMOS Integrated Circuits* [@razavi]
+- IEEE Journal of Solid-State Circuits, for how it is done now

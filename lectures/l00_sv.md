@@ -485,3 +485,18 @@ The one-page version of this chapter:
 - SystemVerilog describes hardware as events: always_ff becomes registers, combinational logic goes in always_comb
 - Event-driven simulation only computes when something changes, which is why digital simulation is fast
 - Mixed-signal co-simulation bridges the two worlds: the svinst flow connects SPICE and the digital testbench
+
+---
+
+# Would you like to know more?
+
+<!--pan_doc:
+
+The IEEE 1800 standard is the reference, but Sutherland's tutorials
+are the readable way in. For the mixed-signal flow here, the ngspice
+and Verilator manuals cover the two halves.
+
+-->
+
+- IEEE 1800 SystemVerilog standard
+- [Verilator](https://verilator.org/guide/latest/) and [iverilog](https://steveicarus.github.io/iverilog/) documentation

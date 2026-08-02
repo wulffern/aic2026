@@ -693,3 +693,24 @@ The one-page version of this chapter:
 - In sampled systems, dynamic amplifiers win the power argument
 
 ---
+
+---
+
+# Would you like to know more?
+
+<!--pan_doc:
+
+The OTA topologies here have long pedigrees: Wheatley and Wittlinger
+on the transconductance amplifier [@wheatley69], Geiger and
+Sanchez-Sinencio on OTA-based design [@geiger85], Nauta's
+inverter-based transconductor [@nauta92], Hosticka's dynamic CMOS
+amplifiers [@hosticka80] and Hershberg's ring amplifiers
+[@hershberg12] for where the dynamic branch went.
+
+-->
+
+- Wheatley and Wittlinger, *OTA obsoletes op amp* [@wheatley69]
+- Geiger and Sanchez-Sinencio, *Active filter design using OTAs* [@geiger85]
+- Nauta, *A CMOS transconductance-C filter technique for very high frequencies* [@nauta92]
+- Hosticka, *Dynamic CMOS amplifiers* [@hosticka80]
+- Hershberg et al., *Ring amplifiers for switched capacitor circuits* [@hershberg12]

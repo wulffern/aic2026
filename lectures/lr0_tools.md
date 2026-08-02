@@ -285,3 +285,18 @@ The one-page version of this chapter:
 - The whole flow is open source: xschem, ngspice, magic, netgen, and the cic tools on top
 - Everything installs from scripts, and the docs and video walk the setup end to end
 - If the tools do not run, nothing else in this course happens - do this first, and ask early when stuck
+
+---
+
+# Would you like to know more?
+
+<!--pan_doc:
+
+Each tool has its own documentation, and all of it is good: xschem,
+ngspice, magic, netgen and the SKY130 PDK. The tools chapter later in
+this book covers the cic layer built on top of them.
+
+-->
+
+- [xschem](https://xschem.sourceforge.io/stefan/index.html), [ngspice](https://ngspice.sourceforge.io/docs.html), [magic](http://opencircuitdesign.com/magic/), [netgen](http://opencircuitdesign.com/netgen/)
+- [SKY130 PDK](https://skywater-pdk.readthedocs.io/)

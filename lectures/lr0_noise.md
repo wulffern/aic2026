@@ -466,3 +466,23 @@ The one-page version of this chapter:
 - Flicker noise comes from traps: 1/f density, quieter with bigger devices
 - Integrate the density over the band you keep to get the power the signal must beat
 - Friis: with gain up front, only the first stage's noise matters - spend your current there
+
+---
+
+# Would you like to know more?
+
+<!--pan_doc:
+
+Van der Ziel [@ziel] is the classic on noise in solid-state devices,
+Razavi [@razavi] and Johns and Martin [@johns] both carry good
+chapters on noise in circuits, and Friis' original noise-figure paper
+[@friis] is short and still the clearest statement of why the first
+stage matters. Einstein's 1914 paper [@einstein14] is where the
+random walk behind thermal noise starts.
+
+-->
+
+- van der Ziel, *Noise in solid state devices and circuits* [@ziel]
+- Friis, *Noise figures of radio receivers* [@friis]
+- Razavi, *Design of Analog CMOS Integrated Circuits* [@razavi]
+- Johns and Martin, *Analog Integrated Circuit Design* [@johns]

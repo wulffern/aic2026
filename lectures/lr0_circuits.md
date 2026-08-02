@@ -946,9 +946,21 @@ picks up.
 
 ---
 
+---
 
+# Would you like to know more?
 
+<!--pan_doc:
 
+The EKV framework behind the gm/ID way of thinking is worth reading
+in the original [@enz17] [@enz17a]; Hernes and Saether's work on
+settling and slewing [@hernes07a] is where the transient budget in
+this chapter comes from; and Pretl and Jahn's open-source analog
+design course [@pretl21] covers much of the same ground with a
+different voice.
 
+-->
 
-
+- Enz, Chicco and Pezzotta, *Nanoscale MOSFET modeling* [@enz17], [@enz17a]
+- Hernes and Saether, *Design criteria for low distortion in feedback opamp circuits* [@hernes07a]
+- Pretl and Jahn, [Analog Circuit Design in a Nutshell](https://iic-jku.github.io/analog-circuit-design/) [@pretl21]

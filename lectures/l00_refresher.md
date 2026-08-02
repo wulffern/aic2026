@@ -731,3 +731,20 @@ The one-page version of this chapter:
 - Electrons are fermions: two per state, which is what builds shells, bands, and all of chemistry
 - Energy lives in the fields: $E = -dV/dx$, and voltage is energy per charge
 - This refresher's job is vocabulary - enough physics to carry the diode and MOSFET chapters
+
+---
+
+# Would you like to know more?
+
+<!--pan_doc:
+
+This chapter is a reminder, not a course. For the real thing, any
+solid first-year physics text will do - Young and Freedman, or
+Feynman's Lectures volume I for the pleasure of it. For the quantum
+mechanics behind the later chapters, Griffiths is the usual next
+step.
+
+-->
+
+- Feynman, *Lectures on Physics*, volume I
+- Griffiths, *Introduction to Quantum Mechanics*

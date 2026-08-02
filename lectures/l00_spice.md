@@ -409,3 +409,18 @@ The one-page version of this chapter:
 - SPICE has run the same way for fifty-odd years: a netlist in, operating points and waveforms out
 - The quartet to master: op, dc, ac and tran - everything else is decoration on those four
 - ngspice speaks the dialect this course uses, and the transistor models come from the PDK, not from the simulator
+
+---
+
+# Would you like to know more?
+
+<!--pan_doc:
+
+Nagel's 1975 thesis is where SPICE comes from and still reads well.
+The ngspice manual is the practical reference for everything in this
+chapter.
+
+-->
+
+- Nagel, *SPICE2: A computer program to simulate semiconductor circuits* (1975)
+- [The ngspice manual](https://ngspice.sourceforge.io/docs.html)

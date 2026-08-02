@@ -522,6 +522,18 @@ The one-page version of this chapter:
 - Inductors are area-hungry and non-portable: foundry model or EM simulation
 - Absolute values drift by tens of percent; ratios of matched units hold a tenth of a percent - design with ratios
 
+---
 
+# Would you like to know more?
 
+<!--pan_doc:
 
+Passives are where the process shows through, so the best reading is
+your own PDK documentation: the SKY130 device documentation lists what
+each resistor, capacitor and inductor actually is. Johns and Martin
+[@johns] covers the circuit-level consequences.
+
+-->
+
+- The [SKY130 PDK documentation](https://skywater-pdk.readthedocs.io/) - what your passives really are
+- Johns and Martin, *Analog Integrated Circuit Design* [@johns]

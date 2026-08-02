@@ -1897,3 +1897,19 @@ The one-page version of this chapter:
 - Registers, combinational clouds and a clock make synchronous design; setup and hold are checked at every capture
 - Static timing analysis walks every path over PVT: positive slack, or it does not ship
 - Dynamic power is CV^2 f; leakage is what you pay even when nothing switches
+
+---
+
+# Would you like to know more?
+
+<!--pan_doc:
+
+Weste and Harris is the standard reference for CMOS logic, timing and
+logical effort, and Sutherland, Sproull and Harris' *Logical Effort*
+is the short book that made the method usable. For the timing analysis
+side, any static-timing tutorial from your synthesis vendor will do.
+
+-->
+
+- Weste and Harris, *CMOS VLSI Design*
+- Sutherland, Sproull and Harris, *Logical Effort: Designing Fast CMOS Circuits*
