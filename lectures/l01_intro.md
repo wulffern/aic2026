@@ -80,7 +80,7 @@ I have a hobby trying to figure out how to make a new analog circuit design
 
 -->
 
-![inline](../media/timeline.pdf)
+![inline](../media/timeline_tikz.pdf)
 
 <!--pan_doc:
 <sub>Figure 1: My life </sub>
@@ -112,12 +112,20 @@ might be possible
 
 **Industry:** Take what is possible, and/or complicated, and make it easy
 
+<!--pan_doc:
 
+Everyone in the figure pushes a border: teaching moves knowledge from
+complicated towards easy, research moves the border of the unknown,
+and industry earns its living on the innermost rings. This course
+lives one ring out from the centre - what is known and complicated,
+made learnable.
 
-![left](../media/education.pdf)
+-->
+
+![left](../media/l01_universe_tikz.pdf)
 
 <!--pan_doc:
-<sub>Figure 2: Research Universe  </sub>
+<sub>Figure 2: The research universe: Easy at the centre, then Complicated, Possible and Unknown, with the Impossible beyond the last border</sub>
 -->
 
 
@@ -517,8 +525,14 @@ Strict deadline 1'st of May. If you hand in 2'nd of May at 00:00:01, then you fa
 
 <!--pan_doc:
 
-We'll use professional 
+We'll use professional-grade open source software for everything:
+xschem for schematics, ngspice for simulation, the SKY130A PDK, Magic
+VLSI and netgen for layout and verification, and surfer, iverilog and
+verilator on the digital side. No licence server stands between you
+and your design.
+
 -->
+
 Open source software (xschem, ngspice, sky130A PDK, Magic VLSI, netgen, surfer, iverilog, verilator)
 
 <!--pan_doc:
