@@ -113,6 +113,7 @@ print-files:
 # Deckset directives and footnote sanity in the generated posts.
 check:
 	${PYTHON} py/check.py
+	${PYTHON} py/lint_lectures.py
 
 
 # ---------------------------------------------------------------------------
