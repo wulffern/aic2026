@@ -17,16 +17,16 @@ date: 2025-01-02
 
 **Keywords:** Maxwell, Current Loops, Displacement Current, Capacitance, Inductance, Faraday, Return Path, Near Field, Far Field, Antenna, Radiation
 
-*This chapter was written by Claude, Anthropic's AI, from an outline
-and direction by Carsten Wulff, who reviewed and edited the result.
-The figures are Claude's, in the book's style. The commit history of
-the book's repository records precisely who wrote what.*
-
 -->
 
 ---
 
 <!--pan_doc:
+
+*This chapter was written by Claude, Anthropic's AI, from an outline
+and direction by Carsten Wulff, who reviewed and edited the result.
+The figures are Claude's, in the book's style. The commit history of
+the book's repository records precisely who wrote what.*
 
 Circuit theory is Maxwell's equations with the fine print deleted. The
 deletion is a good deal - we get Kirchhoff, nodes and branches, and we

@@ -46,6 +46,7 @@ FILES = l00_jayn \
 	l00_spice \
 	l00_sv \
 	l00_ades \
+	l00_cictools \
 	lr0_logic \
 	l00_questions \
 	l14_equations
