@@ -1,42 +1,49 @@
 \input{tikz/fig_header.tex}
 
-% The quarter-wave monopole: an arm over a ground plane, its image in
-% the plane completing the dipole. The current standing wave is maximum
-% at the feed and zero at the tip, which is what makes l = lambda/4 the
-% natural length. At 2.4 GHz that is about 31 mm - the PCB trace
-% antenna from the radio chapter.
-
-\definecolor{echarge}{RGB}{85,155,235}
+% The quarter-wave monopole as it actually ships: a copper trace on a
+% PCB, fed by the radio chip, with the ground pour as the other half
+% of the antenna. The current standing wave is maximum at the feed and
+% zero at the tip, which is what makes l = lambda/4 the natural
+% length - about 31 mm at 2.4 GHz, which is why the antenna region of
+% a Bluetooth board is the size it is.
 
 \begin{tikzpicture}[thick]
 
-  % ground plane
-  \fill[gray!20] (-2.6,-0.18) rectangle (2.6,0);
-  \draw (-2.6,0) -- (2.6,0);
-  \foreach \x in {-2.4,-2.0,...,2.4} { \draw[gray] (\x,-0.18) -- ++(-0.18,-0.18); }
+  % ---- the board, oblique ----
+  \def\dx{2.2}
+  \def\dy{1.05}
+  \fill[armygreen!12] (0,0) -- (8.6,0) -- (8.6+\dx,\dy) -- (\dx,\dy) -- cycle;
+  \draw[gray!60] (0,0) -- (8.6,0) -- (8.6+\dx,\dy) -- (\dx,\dy) -- cycle;
+  \fill[armygreen!25] (0,-0.35) rectangle (8.6,0);
+  \draw[gray!60] (0,-0.35) rectangle (8.6,0);
 
-  % the arm
-  \draw[line width=3pt] (0,0.15) -- (0,3.2);
-  \draw (0,0) -- (0,0.15);
-  \node[anchor=west, scale=0.9] at (0.75,3.2) {tip: $I=0$};
-  \node[anchor=west, scale=0.9] at (0.75,0.35) {feed: $I$ max};
+  % ---- the ground pour: copper under most of the board ----
+  \fill[orange!30] (0.25,0.1) -- (5.1,0.1) -- (5.1+0.82*\dx,0.1+0.82*\dy)
+     -- (0.25+0.82*\dx,0.1+0.82*\dy) -- cycle;
+  \node[orange!60!black, scale=0.8, anchor=west] at (1.3,0.55) {ground pour};
 
-  % current standing wave along the arm: quarter cosine
-  \draw[echarge, very thick]
-    (0.55,0.15) .. controls (0.55,1.6) and (0.35,2.6) .. (0.02,3.2);
-  \node[echarge, anchor=west, scale=0.9] at (0.5,1.9) {$I(z)$};
+  % ---- the radio chip on the pour edge ----
+  \draw[fill=black!80, rounded corners=1pt] (5.0,0.55) rectangle (6.1,1.35);
+  \node[white, scale=0.7] at (5.55,0.93) {radio};
 
-  % length annotation
-  \draw[<->] (-0.9,0.15) -- (-0.9,3.2);
-  \node[anchor=east, align=right] at (-1.05,1.7)
-    {$l = \dfrac{\lambda}{4}$\\[2pt] $\approx 31$ mm\\at 2.4 GHz};
+  % ---- the antenna: a bare copper trace on the keep-out ----
+  \fill[orange!85] (6.35,0.62) -- (8.35,0.62) -- (8.35+0.25*\dx,0.62+0.25*\dy)
+     -- (6.35+0.25*\dx,0.62+0.25*\dy) -- cycle;
+  \draw (6.1,0.85) -- (6.35,0.85);
+  \node[anchor=west, scale=0.75, align=left] at (9.15,0.42)
+    {keep-out:\\no copper\\under the trace};
 
-  % the image below the plane
-  \draw[line width=3pt, gray!55, dash pattern=on 6pt off 3pt] (0,-0.35) -- (0,-3.2);
-  \draw[echarge!40, very thick, dashed]
-    (0.55,-0.35) .. controls (0.55,-1.7) and (0.35,-2.7) .. (0.02,-3.2);
-  \node[gray!60!black, anchor=west, scale=0.9, align=left] at (0.75,-1.8)
-    {the image in the plane\\completes the dipole};
+  % ---- the standing wave riding the trace ----
+  \draw[blue, very thick]
+    (6.45,1.15) .. controls (7.3,1.95) and (8.1,1.75) .. (8.6,1.25);
+  \node[blue, anchor=south, scale=0.9] at (7.6,1.95) {$I(z)$};
+  \node[blue, anchor=east, scale=0.8] at (6.3,1.75) {feed: $I$ max};
+  \node[blue, anchor=south west, scale=0.8] at (8.62,1.42) {tip: $I=0$};
+
+  % ---- the length is the point ----
+  \draw[<->] (6.35,0.28) -- (8.35,0.28);
+  \node[anchor=north, align=center] at (7.35,0.14)
+    {$l = \lambda/4 \approx 31$ mm at 2.4 GHz};
 
 \end{tikzpicture}
 \end{document}

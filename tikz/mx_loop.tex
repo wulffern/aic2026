@@ -1,43 +1,62 @@
 \input{tikz/fig_header.tex}
 
-% Currents always run in loops. Left: the loop you drew - a source, a
-% wire, a load, and the return. Right: the loop you get when you forget
-% the return - the current still closes, through whatever shared ground
-% is available, and everything on that path sees it.
+% Currents always run in loops - drawn as a cartoon of the real thing:
+% a battery cell, fat copper wires, and a chip. Left: the loop you
+% drew. Right: the return wire is gone, so the current dives into the
+% shared ground slab and wanders home through it - and everything on
+% that slab feels it.
 
-\begin{circuitikz}[american, thick, transform shape, circuit ee IEC]
-
-  \input{tikz/ckt_lib.tex}
+\begin{tikzpicture}[thick]
 
   % ---------------- (a) the loop you drew ----------------
-  \draw (0,0) to [V] (0,2.4);
-  \draw (0,2.4) -- (3.6,2.4);
-  \draw (3.6,0.6) \vresistor{$R$};
-  \draw (3.6,2.4) -- (3.6,2.2);
-  \draw (3.6,0.6) -- (3.6,0);
-  \draw (3.6,0) -- (0,0);
-  % the current, one loop
-  \draw[blue, very thick, ->] (0.7,2.05) -- (2.9,2.05);
-  \node[blue, anchor=south] at (1.8,2.1) {$I$};
-  \draw[blue, very thick, ->] (2.9,0.35) -- (0.7,0.35);
-  \node[anchor=north, align=center] at (1.8,-0.7) {(a) the loop you drew};
+  % battery cell
+  \draw[fill=gray!15, rounded corners=2pt] (-0.35,0.3) rectangle (0.35,2.1);
+  \fill[gray!40] (-0.12,2.1) rectangle (0.12,2.28);
+  \node[scale=0.8] at (0,1.6) {$+$};
+  \node[scale=0.8] at (0,0.8) {$-$};
+  % chip
+  \draw[fill=black!80, rounded corners=1pt] (3.4,0.8) rectangle (4.6,1.7);
+  \fill[gray!60] (3.25,1.0) rectangle (3.4,1.15);
+  \fill[gray!60] (3.25,1.35) rectangle (3.4,1.5);
+  \fill[gray!60] (4.6,1.0) rectangle (4.75,1.15);
+  \fill[gray!60] (4.6,1.35) rectangle (4.75,1.5);
+  \node[white, scale=0.7] at (4.0,1.25) {chip};
+  % fat wires, one loop
+  \draw[line width=2.6pt, rounded corners=6pt] (0,2.28) -- (0,2.9) -- (4.0,2.9) -- (4.0,1.7);
+  \draw[line width=2.6pt, rounded corners=6pt] (4.0,0.8) -- (4.0,0) -- (0,0) -- (0,0.3);
+  % the current riding the wire
+  \draw[blue, very thick, ->] (0.9,3.15) -- (3.1,3.15);
+  \node[blue, anchor=south] at (2.0,3.2) {$I$};
+  \draw[blue, very thick, ->] (3.1,-0.28) -- (0.9,-0.28);
+  \node[anchor=north, align=center] at (2.1,-0.85) {(a) the loop you drew};
 
   % ---------------- (b) the loop you got ----------------
-  \begin{scope}[shift={(7.2,0)}]
-    \draw (0,0) to [V] (0,2.4);
-    \draw (0,2.4) -- (3.6,2.4);
-    \draw (3.6,0.6) \vresistor{$R$};
-    \draw (3.6,2.4) -- (3.6,2.2);
-    \draw (3.6,0.6) -- (3.6,0);
-    % no tidy return: the current finds its own way home
-    \draw (3.6,0) -- (4.3,0) -- (4.3,-1.2) -- (-0.7,-1.2) -- (-0.7,0) -- (0,0);
-    \node[anchor=west, scale=0.8] at (4.4,-0.6) {shared ground};
-    \draw[blue, very thick, ->] (0.7,2.05) -- (2.9,2.05);
-    \node[blue, anchor=south] at (1.8,2.1) {$I$};
-    \draw[red, very thick, ->] (3.95,-0.85) -- (-0.35,-0.85);
-    \node[red, anchor=north] at (1.8,-1.35) {the return you forgot still exists};
-    \node[anchor=north, align=center] at (1.8,-2.15) {(b) the loop you got};
+  \begin{scope}[shift={(7.6,0)}]
+    % the shared ground slab, oblique
+    \fill[gray!25] (-1.2,-0.5) -- (5.6,-0.5) -- (6.6,0.35) -- (-0.2,0.35) -- cycle;
+    \draw[gray!60] (-1.2,-0.5) -- (5.6,-0.5) -- (6.6,0.35) -- (-0.2,0.35) -- cycle;
+    \fill[gray!35] (-1.2,-0.8) -- (5.6,-0.8) -- (5.6,-0.5) -- (-1.2,-0.5) -- cycle;
+    \node[gray!60!black, anchor=west, scale=0.8] at (4.6,-0.05) {shared ground};
+    % battery standing on the slab
+    \draw[fill=gray!15, rounded corners=2pt] (-0.05,0.3) rectangle (0.65,2.1);
+    \fill[gray!40] (0.18,2.1) rectangle (0.42,2.28);
+    \node[scale=0.8] at (0.3,1.6) {$+$};
+    % chip standing on the slab
+    \draw[fill=black!80, rounded corners=1pt] (3.4,0.5) rectangle (4.6,1.4);
+    \node[white, scale=0.7] at (4.0,0.95) {chip};
+    % only the top wire was drawn
+    \draw[line width=2.6pt, rounded corners=6pt] (0.3,2.28) -- (0.3,2.9) -- (4.0,2.9) -- (4.0,1.4);
+    \draw[blue, very thick, ->] (1.1,3.15) -- (3.2,3.15);
+    \node[blue, anchor=south] at (2.15,3.2) {$I$};
+    % the return finds its own way home, through the slab
+    \draw[red, very thick, dashed, rounded corners=4pt, ->]
+      (4.1,0.5) .. controls (4.6,-0.05) and (3.4,0.2) .. (2.8,-0.1)
+      .. controls (2.1,-0.35) and (1.5,0.15) .. (0.9,-0.05)
+      .. controls (0.55,-0.15) .. (0.35,0.3);
+    \node[red, anchor=north, scale=0.9] at (2.5,-0.55)
+      {the return you forgot still exists};
+    \node[anchor=north, align=center] at (2.5,-1.25) {(b) the loop you got};
   \end{scope}
 
-\end{circuitikz}
+\end{tikzpicture}
 \end{document}

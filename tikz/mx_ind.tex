@@ -1,40 +1,43 @@
 \input{tikz/fig_header.tex}
 
-% The inductor falls out of Maxwell: every loop encloses flux, and a
-% changing current fights its own flux (Faraday). An inductor is a
-% deliberately good loop - the coil is the same loop taken N times.
-
-\definecolor{hcharge}{RGB}{160,25,35}
+% The inductor falls out of Maxwell, drawn as the real thing: a round
+% wire loop with the flux threading it, and a solenoid - the same
+% loop taken N times, flux through the bore.
 
 \begin{tikzpicture}[thick]
 
-  % ---------------- (a) any loop is an inductor ----------------
-  \draw (0,0) rectangle (3.4,2.6);
-  \draw[blue, very thick, ->] (0.5,2.85) -- (2.9,2.85);
-  \node[blue, anchor=south] at (1.7,2.9) {$i(t)$};
-  % flux through the loop: red circles-with-dot (out of the page)
-  \foreach \x/\y in {1.1/0.8, 2.3/0.8, 1.1/1.8, 2.3/1.8} {
-    \draw[hcharge] (\x,\y) circle (0.16);
-    \fill[hcharge] (\x,\y) circle (0.035);
+  % ---------------- (a) one real loop of wire ----------------
+  % the loop, in perspective: a fat ellipse of wire with a feed gap
+  \draw[line width=2.8pt] (1.9,0.55) arc (-35:305:2.0 and 1.15);
+  \draw[line width=2.6pt] (1.9,0.55) -- (2.7,0.15);
+  \draw[line width=2.6pt] (2.02,0.95) -- (2.85,0.62);
+  \draw[blue, very thick, ->] (-0.6,2.6) arc (115:65:2.4);
+  \node[blue, anchor=south] at (0.45,2.7) {$i(t)$};
+  % flux threading the loop
+  \foreach \x in {-0.8,0.1,1.0} {
+    \draw[red, very thick, ->] (\x,0.35) -- (\x,2.6);
   }
-  \node[hcharge, anchor=center] at (1.7,1.3) {$\Phi = L\,i$};
-  \node[anchor=north, align=center] at (1.7,-0.35)
+  \node[red, anchor=west] at (1.15,2.4) {$\Phi = L\,i$};
+  \node[anchor=north, align=center] at (0.3,-1.0)
     {(a) every loop encloses flux\\$v = L\,\dfrac{di}{dt}$};
 
-  % ---------------- (b) a coil is the same loop N times ----------------
-  \begin{scope}[shift={(6.6,0)}]
-    \draw (0,1.3) -- (0.7,1.3);
-    \draw (0.7,1.3)
-      .. controls (0.7,2.2) and (1.5,2.2) .. (1.5,1.3)
-      .. controls (1.5,2.2) and (2.3,2.2) .. (2.3,1.3)
-      .. controls (2.3,2.2) and (3.1,2.2) .. (3.1,1.3);
-    \draw (3.1,1.3) -- (3.8,1.3);
-    % flux through all turns
-    \foreach \x in {1.1,1.9,2.7} {
-      \draw[hcharge, very thick, ->] (\x,0.5) -- (\x,2.5);
+  % ---------------- (b) a solenoid: the same loop N times ----------------
+  \begin{scope}[shift={(7.2,0.6)}]
+    % flux bundle through the bore, drawn first (behind the wire)
+    \draw[red, line width=3pt, ->] (-1.0,0.45) -- (5.0,0.45);
+    \node[red, anchor=west] at (5.1,0.45) {$N\Phi$};
+    % the winding: repeated turns of one wire
+    \draw[line width=2.4pt] (0,-0.4) -- (-0.7,-0.4);
+    \foreach \x in {0,0.8,1.6,2.4,3.2} {
+      \draw[line width=2.4pt] (\x,-0.4)
+        .. controls (\x-0.25,1.0) and (\x+1.05,1.0) .. (\x+0.8,-0.4);
+      \draw[line width=2.4pt, gray!60]
+        (\x+0.8,-0.4) .. controls (\x+0.72,-0.75) and (\x+0.1,-0.75) .. (\x+0.02,-0.42);
     }
-    \node[hcharge, anchor=west] at (3.0,2.45) {$N\Phi$};
-    \node[anchor=north, align=center] at (1.9,-0.35)
+    \draw[line width=2.4pt] (4.0,-0.4) -- (4.7,-0.4);
+    \draw[blue, very thick, ->] (-0.65,-0.65) -- (-0.15,-0.65);
+    \node[blue, anchor=north, scale=0.9] at (-0.4,-0.75) {$i$};
+    \node[anchor=north, align=center] at (2.0,-1.6)
       {(b) a coil: the same loop, $N$ times\\$L \propto N^2$};
   \end{scope}
 

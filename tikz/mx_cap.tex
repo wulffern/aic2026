@@ -1,41 +1,51 @@
 \input{tikz/fig_header.tex}
 
-% The capacitor falls out of Maxwell: break the conductor and the loop
-% does not break - it continues through the gap as displacement current
-% dD/dt. A capacitor is a deliberately good gap.
+% The capacitor falls out of Maxwell, drawn as the real thing: two
+% metal plates facing each other across a gap. Charge crowds the
+% faces, the field between them changes, and the changing field IS
+% the current - the loop never broke.
 
-\definecolor{echarge}{RGB}{85,155,235}
+\input{tikz/ckt_lib.tex}
 
-\begin{circuitikz}[american, thick, transform shape, circuit ee IEC]
+\begin{tikzpicture}[thick]
+  \input{tikz/mos_lib.tex}   % eminus / hplus carrier glyphs
 
-  \input{tikz/ckt_lib.tex}
+  % battery cell
+  \draw[fill=gray!15, rounded corners=2pt] (-0.35,0.3) rectangle (0.35,2.1);
+  \fill[gray!40] (-0.12,2.1) rectangle (0.12,2.28);
+  \node[scale=0.8] at (0,1.6) {$+$};
+  \node[scale=0.8] at (0,0.8) {$-$};
 
-  \draw (0,0) to [V] (0,2.8);
-  \draw (0,2.8) -- (2.2,2.8);
-  \draw (5.0,2.8) -- (7.2,2.8);
-  \draw (7.2,1.0) \vresistor{$R$};
-  \draw (7.2,2.8) -- (7.2,2.6);
-  \draw (7.2,1.0) -- (7.2,0);
-  \draw (7.2,0) -- (0,0);
+  % the two plates: fat metal slabs facing each other
+  \draw[fill=gray!30, rounded corners=1pt] (2.9,1.4) rectangle (3.25,4.0);
+  \draw[fill=gray!30, rounded corners=1pt] (4.15,1.4) rectangle (4.5,4.0);
 
-  % the gap: two plates
-  \draw[line width=2pt] (2.2,2.1) -- (2.2,3.5);
-  \draw[line width=2pt] (5.0,2.1) -- (5.0,3.5);
+  % charge crowding the faces
+  \foreach \y in {1.75,2.35,2.95,3.55} { \hplus{3.08}{\y} }
+  \foreach \y in {1.75,2.35,2.95,3.55} { \eminus{4.32}{\y} }
 
-  % conduction current
-  \draw[blue, very thick, ->] (0.5,3.05) -- (1.8,3.05);
-  \node[blue, anchor=south] at (1.15,3.1) {$I$};
-  \draw[blue, very thick, ->] (5.4,3.05) -- (6.7,3.05);
-  \draw[blue, very thick, ->] (6.6,0.3) -- (0.6,0.3);
-
-  % displacement current through the gap: dashed field arrows
-  \foreach \y in {2.35,2.8,3.25} {
-    \draw[echarge, dashed, very thick, ->] (2.35,\y) -- (4.85,\y);
+  % the field in the gap: dashed, changing
+  \foreach \y in {1.85,2.45,3.05,3.65} {
+    \draw[blue, dashed, very thick, ->] (3.35,\y) -- (4.05,\y);
   }
-  \node[echarge, anchor=south, align=center] at (3.6,3.65)
-    {$\displaystyle \frac{\partial D}{\partial t}$};
-  \node[echarge, anchor=north, scale=0.9, align=center] at (3.6,1.8)
+  \node[blue, anchor=south] at (3.7,4.15) {$\displaystyle \frac{\partial D}{\partial t}$};
+
+  % fat wires closing the loop through a load
+  \draw[line width=2.6pt, rounded corners=6pt] (0,2.28) -- (0,4.6) -- (3.07,4.6) -- (3.07,4.0);
+  \draw[line width=2.6pt, rounded corners=6pt] (4.33,4.0) -- (4.33,4.6) -- (7.2,4.6) -- (7.2,1.75);
+  \draw[line width=2.6pt, rounded corners=6pt] (7.2,0.6) -- (7.2,0) -- (0,0) -- (0,0.3);
+  % the load: a chip
+  \draw[fill=black!80, rounded corners=1pt] (6.7,0.75) rectangle (7.7,1.6);
+  \node[white, scale=0.7] at (7.2,1.17) {chip};
+
+  % the current, all the way around
+  \draw[blue, very thick, ->] (0.8,4.85) -- (2.5,4.85);
+  \node[blue, anchor=south] at (1.65,4.9) {$I$};
+  \draw[blue, very thick, ->] (5.0,4.85) -- (6.6,4.85);
+  \draw[blue, very thick, ->] (6.2,-0.3) -- (1.0,-0.3);
+
+  \node[blue, anchor=north, scale=0.9, align=center] at (3.7,1.15)
     {the loop continues\\through the gap};
 
-\end{circuitikz}
+\end{tikzpicture}
 \end{document}

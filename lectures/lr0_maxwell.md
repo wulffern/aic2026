@@ -263,13 +263,15 @@ receipt for the escaped loops.
 
 <!--pan_doc:
 
-The wavelength sets the geometry. A quarter-wave monopole over a
-ground plane, Figure 6, is the workhorse: the arm and its image in
-the plane form a dipole, the current standing wave is maximum at the
-feed and zero at the tip, and resonance lands at $l = \lambda/4$. At
-2.4 GHz that is about 31 mm - which is why the PCB trace antenna in
-the radio chapter is the size it is, and why nothing on a millimetre
-scale chip radiates *efficiently* by accident. Accidental radiators
+The wavelength sets the geometry. Figure 6 shows the workhorse as it
+actually ships: a quarter-wave copper trace on a PCB, fed by the
+radio chip, over a keep-out where the ground is cut away. The ground
+pour is the other half of the antenna - the trace's image in it
+completes the dipole. The current standing wave is maximum at the
+feed and zero at the tip, and resonance lands at $l = \lambda/4$: at
+2.4 GHz about 31 mm, which is why the antenna region of a Bluetooth
+board is the size it is, and why nothing on a millimetre scale chip
+radiates *efficiently* by accident. Accidental radiators
 are inefficient antennas - but a receiver channel fighting for
 -100 dBm does not need your clock harmonic to be efficient, only
 present.
@@ -279,7 +281,7 @@ present.
 ![inline](../media/mx_monopole_tikz.pdf)
 
 <!--pan_doc:
-<sub>Figure 6: The quarter-wave monopole: the image in the ground plane completes the dipole, the current standing wave sets l = lambda/4, about 31 mm at 2.4 GHz</sub>
+<sub>Figure 6: The quarter-wave monopole as it ships: a copper trace on the PCB keep-out, fed by the radio, with the ground pour as the other half. The standing wave sets l = lambda/4, about 31 mm at 2.4 GHz</sub>
 -->
 
 # What this buys you on-chip
