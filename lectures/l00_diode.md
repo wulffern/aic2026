@@ -1348,7 +1348,7 @@ agree with your equations.
 
 But most of the time, the behavior is similar.
 
-## References
+## Would you like to know more?
 
 -->
 

@@ -785,7 +785,26 @@ Below are a couple layout images of the finished PLL
 
 <!--pan_doc:
 
-# Want to learn more?
+---
+
+## Summary
+
+<!--pan_doc:
+
+The one-page version of this chapter:
+
+-->
+
+- Everything on the chip wants a clock, and every clock is a compromise between frequency accuracy (ppm), phase noise and power
+- A crystal gives the accurate reference; the PLL multiplies it up to the frequency the system needs
+- PFD turns phase error into pulse width, the charge pump into charge, the loop filter into a control voltage, the oscillator into frequency, and the divider closes the loop
+- The type-II loop needs its zero: C1 sets the zero with R, C2 cleans the ripple, and the loop bandwidth balances reference noise against VCO noise
+- Inside the bandwidth the PLL follows the reference; outside, the oscillator is on its own - phase noise plots read exactly that way
+- SUN_PLL is the whole story in five schematics: ROSC, PFD, charge pump, loop filter, divider
+
+---
+
+# Would you like to know more?
 
 Back in 2020 there was a Master student at NTNU on PLL. I would recommend looking at that 
 thesis to learn more, and to get inspired [Ultra Low Power Frequency Synthesizer](https://ntnuopen.ntnu.no/ntnu-xmlui/handle/11250/2778127).

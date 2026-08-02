@@ -1528,7 +1528,26 @@ For more information, ask me, or see the patent at
 <!--pan_doc:
 <sub>Figure 36: Incremental first-order sigma-delta ADC from the patent: input and reference resistors into an OTA integrating on C, a clocked comparator as quantizer, and a counter as output filter</sub>
 
-# Want to learn more?
+---
+
+## Summary
+
+<!--pan_doc:
+
+The one-page version of this chapter:
+
+-->
+
+- One number for an ADC: the figure of merit - Walden for speed-limited, Schreier for noise-limited designs
+- Ideal quantization gives SQNR = 6.02 N + 1.76 dB, and the white-noise model of it holds only for busy inputs
+- Oversampling spreads the same noise power over more bandwidth: 3 dB (half a bit) per octave
+- Feedback around the quantizer shapes the noise away from the band: first-order sigma-delta buys 9 dB per octave, and order buys more
+- The decimation filter is where the promised resolution is actually cashed out
+- A compiled ADC is a netlist, an object file and a rule file - portable across processes in weeks, and good enough for JSSC
+
+---
+
+# Would you like to know more?
 
 The design of sigma-delta modulation analog-to-digital converters [@boser88]
 

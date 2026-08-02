@@ -1259,7 +1259,26 @@ Two rules follow from this, and they are worth more than the circuit:
 
 
 
-# Want to learn more?
+---
+
+## Summary
+
+<!--pan_doc:
+
+The one-page version of this chapter:
+
+-->
+
+- A reference must not move with supply, temperature or process; a bias must track what its circuit needs
+- V_BE falls with temperature (CTAT), the difference of two V_BE at a density ratio rises (PTAT, V_T ln N): weight and add for a flat bandgap near 1.2 V
+- Widlar and Brokaw are the classic ways to force the PTAT current and do the sum
+- Distribute currents, not voltages: a routed V_B collects every IR drop on the die
+- The constant-gm loop sets gm = 1/R for everything it biases
+- Every self-biased loop is equally happy at zero current - the startup branch is not optional, and it must let go afterwards
+
+---
+
+# Would you like to know more?
 
 New developments in IC voltage regulators [@widlar71]
 

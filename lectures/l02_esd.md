@@ -808,7 +808,26 @@ You must **always handle ESD** on an IC
 
 <!--pan_doc:
 
-# Want to learn more?
+---
+
+## Summary
+
+<!--pan_doc:
+
+The one-page version of this chapter:
+
+-->
+
+- An ESD zap is a real event with a name: HBM is a charged person (kilovolts, amps through 1.5k), CDM is the chip discharging itself (nanoseconds, brutal)
+- Protection is a promise about every ordered pair of pads: each of the six permutations on a three-pad chip needs somewhere for the current to go
+- Two diodes per pin plus one rail clamp cover all permutations - adding a pin costs two diodes, not six paths
+- The grounded gate NMOS is off by every model you were taught; the parasitic lateral bipolar is what sinks the amperes
+- Thin gate oxide cannot take the leftover voltage, so real inputs add secondary protection behind a resistor
+- Latch-up is the same parasitic bipolars firing in normal operation: keep well taps close, keep injectors away from wells
+
+---
+
+# Would you like to know more?
 
 ESD (Electrostatic Discharge) Protection Design for Nanoelectronics in CMOS Technology [@ker06]
 

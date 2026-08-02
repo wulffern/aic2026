@@ -668,7 +668,25 @@ rund:
 
 <!--pan_doc:
 
-# Want to learn more?
+---
+
+## Summary
+
+<!--pan_doc:
+
+The one-page version of this chapter:
+
+-->
+
+- Digital simulators are fast because they only compute at events; analog simulators are slow because they solve the whole matrix at every timestep
+- Analog SystemVerilog models the analog blocks with real-valued signals inside the digital simulator - the mixed-signal chip simulates at digital speed
+- The model is a contract: it must match the schematic's behavior at the pins, and drift between them is found in co-simulation
+- A SAR ADC in TinyTapeout shows the whole flow: the same testbench drives the Verilog model and the transistor netlist
+- Verification from zero supply, every time - models make that cheap enough to actually do
+
+---
+
+# Would you like to know more?
 
 For more information on real-number modeling I would recommend [The Evolution of Real Number Modeling](https://youtu.be/gNpPslQZT-Y)
 

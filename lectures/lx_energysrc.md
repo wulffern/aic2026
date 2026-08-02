@@ -828,7 +828,26 @@ conversion, is what decides whether a triboelectric system works.
 
 ---
 
-# Want to learn more?
+---
+
+## Summary
+
+<!--pan_doc:
+
+The one-page version of this chapter:
+
+-->
+
+- Harvesters deliver power, batteries deliver energy: a harvester design starts from the average load current, not the peak
+- Thermoelectric generators give millivolts per kelvin of gradient - real designs start below 100 mV and need a boost converter that can
+- A photovoltaic cell is the photodiode from this chapter run in the fourth quadrant: half a volt a cell, current proportional to light
+- Piezo and electromagnetic harvesters turn vibration into AC that must be rectified; triboelectric is the same story with contact charging
+- Ambient RF sounds free until Friis has spoken: microwatts at best, and only near the transmitter
+- Every source needs power management sized to its impedance - maximum power transfer is the whole game
+
+---
+
+# Would you like to know more?
 
 [1] Towards a Green and Self-Powered Internet of Things Using Piezoelectric Energy Harvesting [@shirvanimoghaddam19]
 

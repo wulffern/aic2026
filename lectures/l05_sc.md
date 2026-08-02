@@ -1537,7 +1537,26 @@ almost nothing else about analog design got easier.
 
 [^1]: I use the \$ to mark the end of the period. It comes from [Regular Expressions](https://en.wikipedia.org/wiki/Regular_expression).
 
-# Want to learn more?
+---
+
+## Summary
+
+<!--pan_doc:
+
+The one-page version of this chapter:
+
+-->
+
+- A switched capacitor is a resistor R = 1/(f C) made of ratio-accurate parts: SC filters get their time constants from C ratios and a clock
+- Sampling moves the world to discrete time: the z-domain, aliasing and the sample-rate theorem come with it
+- The parasitic-insensitive integrator and the SC gain stage are the two workhorse circuits; correlated double sampling throws in offset removal
+- Every sample costs kT/C of noise - capacitor sizes come from the noise budget, not the layout
+- Switches need non-overlapping clocks, and bootstrapping when the signal swings
+- Behind every SC circuit stands an OTA and its bias; the settling budget is half a clock period, verified in the transient
+
+---
+
+# Would you like to know more?
 
 Blind Multiband Signal Reconstruction: Compressed Sensing for Analog Signal [@mishali09]
 

@@ -495,7 +495,25 @@ $$ dt = \frac{L dI}{V} $$
 ---
 
 
-# References
+---
+
+## Summary
+
+<!--pan_doc:
+
+The one-page version of this chapter:
+
+-->
+
+- A DAC turns a code into charge, current or voltage by summing weighted unit elements
+- Binary weighting is compact but must switch half the array at the major carry; thermometer coding is monotonic and glitch-free but costs 2^N elements and decoding
+- Segmentation spends thermometer coding on the MSBs where it matters and binary on the LSBs where it is cheap
+- Static accuracy is INL/DNL set by element matching (Pelgrom: area buys bits); dynamic accuracy is glitch energy and SFDR
+- The references and the switch drivers are part of the DAC: their noise and timing skew show up in the output spectrum
+
+---
+
+# Would you like to know more?
 
 
 

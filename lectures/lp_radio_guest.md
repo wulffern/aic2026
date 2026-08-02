@@ -608,7 +608,7 @@ Once the signal has been converted to digital, then the de-modulation, and signa
 
 <!--pan_doc:
 
-# Want to learn more?
+# Would you like to know more?
 
 -->
 

@@ -810,7 +810,25 @@ Below you can see a period of the PFM buck. The state can be seen in the bottom 
 
 <!--pan_doc:
 
-# Want to learn more?
+---
+
+## Summary
+
+<!--pan_doc:
+
+The one-page version of this chapter:
+
+-->
+
+- Supply planning comes first: which blocks share a regulator, what noise they inject, what sequence they wake in
+- A PMOS pass linear regulator gives the lowest dropout but a hard loop (output pole moves with load); the NMOS follower is easy to stabilize but costs a V_GS of headroom
+- Linear regulators burn (V_in - V_out)/V_in of the power - fine for quiet rails, ruinous for big steps
+- Inductive DC/DC converters move charge through an inductor at ~90% efficiency: PWM at heavy load, PFM pulses at light load
+- Line/load regulation and PSRR are the datasheet numbers; the transient response to a load step is what the digital core actually feels
+
+---
+
+# Would you like to know more?
 
 **Search terms:** regulator, buck converter, dc/dc converter, boost converter
 

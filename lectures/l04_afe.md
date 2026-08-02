@@ -868,7 +868,26 @@ You can find the schematic for the OTA at
 
 <!--pan_doc:
 
-# Want to learn more?
+---
+
+## Summary
+
+<!--pan_doc:
+
+The one-page version of this chapter:
+
+-->
+
+- The frontend's job is to hand the ADC a signal it can afford to convert: gain where it is cheap, filtering before sampling folds noise in
+- First order sections come from one gm and one C; biquads stack them with feedback and give Q
+- Gm-C is fast and open loop, active-RC is linear and closed loop - the OTA pays either way
+- A real OTA's finite gain and bandwidth move the filter poles; design the OTA from the filter's error budget
+- Fully differential filters double swing and cancel even harmonics, and carry the CMFB tax
+- A complex (quadrature) filter is two real paths plus cross-coupling: the response stops being symmetric about zero, which a low-IF radio needs
+
+---
+
+# Would you like to know more?
 
 A 77.3-dB SNDR 62.5-kHz Bandwidth Continuous-Time Noise-Shaping SAR ADC With Duty-Cycled Gm-C Integrator [@li23]
 

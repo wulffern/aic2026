@@ -1199,7 +1199,26 @@ I hope you understand now that it's actually complicated.
 
 <!--pan_doc:
 
-# Want to learn more?
+---
+
+## Summary
+
+<!--pan_doc:
+
+The one-page version of this chapter:
+
+-->
+
+- Start from the link budget: Friis in free space, a rather worse exponent indoors, and the antenna wants its fraction of a wavelength
+- The ISM bands set the playing field; 2.4 GHz trades antenna size against propagation and company
+- Energy per bit is the real currency: modulation choice, data rate and duty cycle set the average current, and the battery sets the lifetime
+- Single-carrier modulation keeps the PA efficient (constant envelope); multi-carrier buys spectral efficiency at the cost of backoff
+- The receive chain is LNA, mixer and filter: the LNA sets the noise figure, the mixer moves the band, and everything after runs at a friendlier frequency
+- A software-defined radio on the bench teaches more about radios than any equation in this chapter
+
+---
+
+# Would you like to know more?
 
 -->
 

@@ -701,7 +701,26 @@ $$ f_o = \frac{1}{2}f =  \frac{1}{2RC}$$
 
 <!--pan_doc:
 
-# Want to learn more?
+---
+
+## Summary
+
+<!--pan_doc:
+
+The one-page version of this chapter:
+
+-->
+
+- The precision ladder: atomic clocks, then crystals (ppm), then LC (phase-noise kings on chip), then rings, then RC relaxation - each rung cheaper and noisier
+- A crystal is a mechanical resonator with Q in the tens of thousands; the Pierce circuit keeps it ringing with one inverter
+- Ring oscillators are small, tune over decades, and follow every millivolt of supply - which is why the PLL supply-controls one on purpose
+- Current starving and capacitive load make the ring controllable; the varactor does the same for the LC tank
+- The relaxation oscillator charges C to IR and resets: the cheap always-on clock for waking things up
+- An oscillator's frequency stability over temperature and supply, not its schematic, decides where it may be used
+
+---
+
+# Would you like to know more?
 
 -->
 
