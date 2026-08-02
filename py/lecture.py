@@ -677,10 +677,18 @@ def latex(filename,root,no_append):
     if kwm:
         for kw in kwm.group(1).split(","):
             kw = kw.strip()
-            if kw and not re.search(r"[{}\\$]", kw):
+            #- Keywords must start with a letter, and plain Title Case
+            #  multiword keywords are sentence-cased so they merge with
+            #  the matching section headings in the index.
+            if kw and re.match(r"[A-Za-z]", kw) and not re.search(r"[{}\\$]", kw):
+                words = kw.split()
+                if (len(words) > 1 and
+                        all(w[0].isupper() and w[1:].islower()
+                            for w in words if w.isalpha())):
+                    kw = kw[0].upper() + kw[1:].lower()
                 for c in "_&%#":
                     kw = kw.replace(c, "\\" + c)
-                kw_index += r"\index{" + kw + "}"
+                kw_index += r"\index{" + kw.lower() + "@" + kw + "}"
 
     #- Chapters written by Claude get wrapped in \aicontent, which the
     #  book-ai build renders in colour and the normal build ignores.

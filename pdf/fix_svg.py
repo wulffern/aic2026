@@ -87,9 +87,37 @@ with open(fname) as fi:
 
                 #- Index every section-level heading with a plain-text
                 #  title, so the book's index points at real pages.
+                #  Filtered: generic structural headings (Summary,
+                #  Discussion, ...) and numbered memo items say nothing
+                #  as index entries, and headings differing only in
+                #  capitalization are merged by sorting on a lowercase
+                #  key and displaying in sentence case.
                 hm = re.match(r"\\(chapter|section|subsection)\{([^{}\\$]+)\}", line)
                 if hm:
-                    line = line.rstrip("\n") + "\\index{" + hm.group(2).strip() + "}\n"
+                    term = hm.group(2).strip()
+                    stop = {"summary", "discussion", "conclusion", "advice", "but",
+                            "comparison", "appendix", "demo", "decisions",
+                            "choosing", "checklist", "contacts", "career",
+                            "documentation", "goal", "goal for today",
+                            "my goal", "who", "why", "syllabus", "software",
+                            "introduction", "background",
+                            "would you like to know more?"}
+                    ok = (len(term) > 2
+                          and re.match(r"[A-Za-z]", term)
+                          and not re.match(r"\d", term)
+                          and term.lower() not in stop)
+                    if ok:
+                        words = term.split()
+                        if (len(words) > 1 and
+                                all(w[0].isupper() and w[1:].islower()
+                                    for w in words if w.isalpha())):
+                            #- Sentence-case plain Title Case headings so
+                            #  "Band Diagrams" and "Band diagrams" merge;
+                            #  terms with acronyms (Bluetooth LE, SAR ADC)
+                            #  are left alone
+                            term = term[0].upper() + term[1:].lower()
+                        line = (line.rstrip("\n") + "\\index{"
+                                + term.lower() + "@" + term + "}\n")
 
                 #- Pandoc sometimes uses includesvg instead of includegraphics
                 line = line.replace("includesvg","includegraphics")
