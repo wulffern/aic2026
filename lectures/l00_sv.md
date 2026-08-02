@@ -22,7 +22,7 @@ date: 2024-12-06
 
 # Digital simulation
 
-- The order of execution of events at the same time-step do not matter
+- The order of execution of events at the same time-step does not matter
 
 - The system is causal. Changes in the future do not affect signals in the past or the now
 
@@ -30,7 +30,7 @@ date: 2024-12-06
 
 <!--pan_doc:
 
-There are both commercial an open source tools for digital simulation. If you've never 
+There are both commercial and open source tools for digital simulation. If you've never 
 used a digital simulator, then I'd recommend you start with iverilog. I've made some examples 
 at [dicex](https://github.com/wulffern/dicex/tree/main/project/verilog).
 
@@ -57,8 +57,8 @@ at [dicex](https://github.com/wulffern/dicex/tree/main/project/verilog).
 
 Below is an example of a counter in  SystemVerilog. The code can be found at [counter_sv](https://github.com/wulffern/dicex/tree/main/sim/verilog/counter_sv).
 
-In the always\_comb section we code what will become the combinatorial logic. 
-In the always\_ff section we code what will become our registers. 
+In the always\_ff sections we code what will become our registers;
+combinatorial logic would go in an always\_comb section. 
 
 -->
 
@@ -324,7 +324,7 @@ perl ../../tech/script/gensvinst ../../rtl/dig.v dig
 
 [.column]
 
-The script generates an `svninst.spi` file. The first section imports the
+The script generates an `svinst.spi` file. The first section imports the
 digital compiled library 
 
 [.column]
@@ -430,7 +430,7 @@ signals have the right levels
 
 *- Override the default digital output bridge.
 pre_set auto_bridge_d_out =
-     + ( ".model auto_dac dac_bridge(out_low =te 0.0 out_high = 1.8)"
+     + ( ".model auto_dac dac_bridge(out_low = 0.0 out_high = 1.8)"
      +   "auto_bridge%d [ %s ] [ %s ] auto_dac" )
 
 ```

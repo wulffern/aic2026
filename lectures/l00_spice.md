@@ -87,7 +87,7 @@ built fancy GUI's to hide the fact that we're really writing text files, but tex
 
 -->
 
-Pretty much the same usage model as 48 years ago
+Pretty much the same usage model as 50-odd years ago
 
 ```bash 
 <spice program> testbench.cir
@@ -214,7 +214,7 @@ C5 N1 N2 1u
 
 ## Transistor Models
 
-Needs a model file the transistor model
+Needs a model file describing the transistor model
 
 BSIM (Berkeley Short-channel IGFET Model)
 [http://bsim.berkeley.edu/models/bsim4/](http://bsim.berkeley.edu/models/bsim4/)
@@ -380,7 +380,7 @@ Strong $$ \frac{g_m}{I_d} = \frac{2}{V_{eff}}$$
 1. Do layout, and check it's error free. Run design rule checks (DRC). Check layout versus schematic (LVS)
 1. Extract parasitics from layout. Resistance, capacitance, and inductance if necessary.
 1. On extracted parasitic netlist, check key parameters in all corners and mismatch (if possible).
-1. If everything works, then your done.
+1. If everything works, then you're done.
 
 *On failure, go back*
 

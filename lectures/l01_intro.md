@@ -57,7 +57,7 @@ date: 2026-01-09
 My name is 
 -->
 
-Carsten Wulff [carstenw@ntnu.no](carstenw@ntnu.no)
+Carsten Wulff [carstenw@ntnu.no](mailto:carstenw@ntnu.no)
 
 <!--pan_doc: and I've worked in the integrated circuit industry for over 20 years. 
 
@@ -141,7 +141,7 @@ Everything I know will be gone (except for the small pieces I've left behind in 
 
 Someone must take over, and to do that, they need to know most of what I know, and hopefully a bit more. 
 
-That's were some of you come in. Some of you will find integrated circuits interesting to make, and in addition, you have 
+That's where some of you come in. Some of you will find integrated circuits interesting to make, and in addition, you have 
 the stamina, patience, and brain necessary to learn some of the hardest topics in the world.
 
 -->
@@ -160,15 +160,16 @@ the stamina, patience, and brain necessary to learn some of the hardest topics i
 In this course, we'll focus on analog ICs, because the real world is analog, and all ICs must have some 
 analog components, otherwise they won't work.
 
-The steps to make integrated circuits is split in two. We have an analog flow, and a digital flow, as shown in Figure 3. 
+The steps to make integrated circuits are split in two. We have an analog flow, and a digital flow, as shown in Figure 3. 
 
-It's rare to find a single human that do both flows well. Usually people choose, and I think it's based on what they like and their personality.
+It's rare to find a single human that does both flows well. Usually people choose, and I think it's based on what they like and their personality.
 
 If you like the world to be ordered, with definite answers, then it's likely that you'll find the digital flow interesting.
 
-If you're comfortable with not knowing, and an insatiable desire to understand how the world *really* works at a fundamental level, then 
-it's likely that you'll find analog flow interesting. 
+If you're comfortable with not knowing, and have an insatiable desire to understand how the world *really* works at a fundamental level, then 
+it's likely that you'll find the analog flow interesting. 
 
+-->
 
 ![inline](../media/dig_des_tikz.pdf)
 
@@ -276,7 +277,7 @@ which makes it possible for a private citizen to tape-out their own integrated c
 
 There are a multitude of tools and skills needed to design professional ICs. 
 It's not likely that you'll find all the skills in one human, and even if you
-could, one human does not have sufficient bandwidth to design ICs with all it's aspects in a 
+could, one human does not have sufficient bandwidth to design ICs with all its aspects in a 
 reasonable timeline 
 
 That is, unless we can find a way to make ICs easier.
@@ -288,7 +289,7 @@ The skills needed are
 - _Project flow support_: **Confluence**, JIRA, risk management (DFMEA), failure analysis (8D)
 - _Language_: **English**, **Writing English (Latex, Word, Email)**
 - _Psychology_: Personalities, convincing people, presentations (Powerpoint, Deckset), **stress management (what makes your brain turn off?)**
-- _DevOps_: **Linux**, bulid systems (CMake, make, ninja), continuous integration (bamboo, jenkins), **version control (git)**, containers (docker), container orchestration (swarm, kubernetes)
+- _DevOps_: **Linux**, build systems (CMake, make, ninja), continuous integration (bamboo, jenkins), **version control (git)**, containers (docker), container orchestration (swarm, kubernetes)
 - _Programming_: Python, C, C++, Matlab <sub>Since 1999 I’ve programmed in Python, Go, Visual BASIC, PHP, Ruby, Perl, C#, SKILL, Ocean, Verilog-A, C++, BASH, AWK, VHDL, SPICE, MATLAB, ASP, Java, C, SystemC, Verilog, Assembler, and probably a few I’ve forgotten.</sub>
 - _Firmware_: signal processing, algorithms, software architecture, security
 - _Infrastructure_: **Power management**, **reset**, **bias**, **clocks**
@@ -308,7 +309,7 @@ The skills needed are
 
 When you learn something new, it's good to listen to someone that has done whatever it is before. 
 
-Here is some guiding principles that you'll likely forget. 
+Here are some guiding principles that you'll likely forget. 
 
 -->
 
@@ -337,7 +338,7 @@ Here is some guiding principles that you'll likely forget.
 <!--pan_doc: 
 ## IC design mantra 
 
-To copy an old mantra I have on learning programming (run it in a bash/zsh/cshrc terminal, our in your brain) 
+To copy an old mantra I have on learning programming (run it in a bash/zsh/cshrc terminal, or in your brain) 
 
 -->
 
@@ -372,7 +373,7 @@ echo "Find a problem that you really want to solve,"\
 - Do layout, and check it's error free. Run design rule checks (DRC). Check layout versus schematic (LVS)
 - Extract parasitics from layout. Resistance, capacitance, and inductance if necessary.
 - On extracted parasitic netlist, check key parameters in all corners and mismatch (if possible).
-- If everything works, then your done.
+- If everything works, then you're done.
 
 *On failure, go back as far as necessary*
 

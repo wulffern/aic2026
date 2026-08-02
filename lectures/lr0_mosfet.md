@@ -157,7 +157,7 @@ As you continue to increase the gate voltage the blue color would become a littl
 <sub>Figure 5: MOSFET in strong inversion </sub>
 
 
-This thin blue sheet extend from source to drain, and create a conductive channel where the electrons can move from source to drain (or drain to source), exactly like a resistor. The conductance of the sheet is the same as the brightness, higher gate source voltage, more bright blue, higher conductance, less resistance.
+This thin blue sheet extends from source to drain, and create a conductive channel where the electrons can move from source to drain (or drain to source), exactly like a resistor. The conductance of the sheet is the same as the brightness, higher gate source voltage, more bright blue, higher conductance, less resistance.
 
 Assume you raise the drain voltage. The electrons would move from source to drain proportional to the voltage. 
 How many electrons could  move would depend on the gate voltage. 
@@ -183,7 +183,7 @@ That could make you think the current would stop, but it turns out, that the ele
 the gap because the electric field is so high from the edge of the sheet to the drain.
 
 As you continue to increase the drain voltage, the gap increases, but the current does not really increase that much. It's this exact feature that 
-make transistor so attractive in analog circuits. I can create a current from drain to source that does not depend much on the drain to source voltage! That's why we 
+makes transistors so attractive in analog circuits. I can create a current from drain to source that does not depend much on the drain to source voltage! That's why we 
 sometimes imagine transistors as a "trans-conductance". The conductance between drain and source depends on the voltage somewhere else, the gate-source voltage.
 
 And now you may think you understand how the transistor works. By changing the gate voltage, we can change the electron current from source to drain. 
@@ -244,7 +244,7 @@ Because:
 - How does the brightness of the blue change with gate-source voltage?
 - How can the electrons stay in that sheet when we connect the bulk to 0 V?
 - Why is there not a current from the bulk (0 V) to drain?
-- Why does not the electrons jump from source to drain? It's a gap, the same as from the sheet to drain?
+- Why don't the electrons jump from source to drain? It's a gap, the same as from the sheet to drain?
 
 And did you realize I never in this chapter explained how the field effect worked?
 
@@ -313,7 +313,7 @@ The year after we teach the current equations for MOSFETs, and the books don't h
 
 I think, quite often, we just end up with confused students. And I don't think it's necessary to end up with confused students. Maybe sometimes we end up with confused students because the Professors can't necessarily remember where the equations come from either, nor how electrons and holes really behave.
 
-It's not necessary for an analog design student to remember how to compute the density of available energy states from Schrodinger and the wave function. If we wanted to use the relativistic version of Schrodinger (which includes magnetic fields, and if you did not know, magnetic fields are just a relativistic effect of the electric field) and the wave function to compute how an Silicon atom actually behaves, I don't think we can. As far as I've been able to figure out, it's not possible to have a closed form solution (symbolic), nor is it possible with supercomputers to do a numeric time-evolution of the states in a single Silicon atom with all the inter-particle interactions, space, momentum, spins, electric fields and magnetic fields. 
+It's not necessary for an analog design student to remember how to compute the density of available energy states from Schrodinger and the wave function. If we wanted to use the relativistic version of Schrodinger (which includes magnetic fields, and if you did not know, magnetic fields are just a relativistic effect of the electric field) and the wave function to compute how a Silicon atom actually behaves, I don't think we can. As far as I've been able to figure out, it's not possible to have a closed form solution (symbolic), nor is it possible with supercomputers to do a numeric time-evolution of the states in a single Silicon atom with all the inter-particle interactions, space, momentum, spins, electric fields and magnetic fields. 
 
 But we can make sure we connect the links from Schrodinger to the MOSFET equations, the short version of that was above, but the following sections tries to explain with words how the transistor actually works. 
 
@@ -521,7 +521,7 @@ The Schrodinger equation describes the time evolution of the bound electrons sha
 
 As the gate-source voltage increases the wave function that fits in the Schrodinger equation predicts that the free electrons will form a 2d sheet underneath the gate. The thickness of the sheet is only a few nano meters.
 
-In Figure 2 in 
+In Figure 2 of the paper 
 
 -->
 
@@ -2171,7 +2171,7 @@ charge.
 -->
 
 **Thermal noise**
-Random scattering of carriers, generation-recombination in channel? 
+Random scattering of carriers in the channel 
 $$ PSD_{TH}(f) = \text{Constant}$$
 
 

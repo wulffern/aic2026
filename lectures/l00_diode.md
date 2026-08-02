@@ -55,10 +55,10 @@ This paper attempts to explain in the simplest possible terms how a diode works 
 
 Integrated circuits use single crystalline silicon. The silicon crystal is grown
 with the [Czochralski method](https://en.wikipedia.org/wiki/Czochralski_method)
-which forms a ingot that is cut into wafers. The wafer is a regular
+which forms an ingot that is cut into wafers. The wafer is a regular
 silicon crystal, although, it is not perfect. 
 
-A [silicon]() crystal unit cell, as seen in Figure 1 is a diamond faced cubic with 8 atoms in the corners spaced at 0.543 nm, 6 at the center of the
+A silicon crystal unit cell, as seen in Figure 1 is a diamond faced cubic with 8 atoms in the corners spaced at 0.543 nm, 6 at the center of the
 faces, and 4 atoms inside the unit cell at a nearest neighbor distance of 0.235
 nm. 
 
@@ -73,7 +73,7 @@ away from any others, these orbitals, and energy levels are distinct. As we
 bring atoms closer together, the orbitals start to interact, and in a crystal,
 the distinct orbital energies split into bands of allowed energy states. No two
 electrons, or any Fermion (spin of $1/2$), can occupy the same quantum state.
-We call the outermost "shared" orbitial, or band, in a crystal the valence band.
+We call the outermost "shared" orbital, or band, in a crystal the valence band.
 Hence covalent bonds. 
 
 If we assume the crystal is perfect, then at 0 Kelvin all electrons will be part of
@@ -82,7 +82,7 @@ electrons with its neighbors. What we really mean when we say "share 4
 electrons" is that the wave-functions of the outer orbitals interact, and
 we can no longer think of the orbitals as belonging to either of the silicon
 nuclei. All the neighbors atoms "share" electrons, and
-nowhere is there an vacant state, or a hole, in the valence band. 
+nowhere is there a vacant state, or a hole, in the valence band. 
 
 If such a crystal were to exist, where there were no holes in the valence band, 
 and a net neutral charge, the crystal could not conduct any drift current. Electrons would move 
@@ -176,7 +176,7 @@ the same, while the "doubling every 11 degrees" is just wrong.
 <sub>Figure 2: Intrinsic carrier concentration versus temperature</sub>
 
 
-At room temperature the intrinsic carrier consentration is approximately
+At room temperature the intrinsic carrier concentration is approximately
 $n_{i} =  1 \times 10^{16}$ carriers/m$^3$.
 
 That may sound like a big number, however, if we calculate the electrons
@@ -305,7 +305,7 @@ $$N(dk) = \frac{2}{(2 \pi)^p} dk$$
 Where $p$ is the number of dimensions (in our case 3).
 
 The band structure $E(k)$ is used to convert to the density of states to a
-function of energy $N(E)$. The simplest band structure, and an approxmiation of
+function of energy $N(E)$. The simplest band structure, and an approximation of
 the lowest conduction band is
 -->
 
@@ -336,7 +336,7 @@ states per unit energy is
 
 -->
 
-$$N(E)dE = \frac{2}{\pi^2}\frac{m^*}{\hbar^2}^{3/2} E^{1/2}dE$$
+$$N(E)dE = \frac{2}{\pi^2}\left(\frac{m^*}{\hbar^2}\right)^{3/2} E^{1/2}dE$$
 
 <!--pan_doc:
 
@@ -364,7 +364,7 @@ $$
 
 
 where $E$ is the energy of the electron, $E_F$ is the [Fermi
-level](https://en.wikipedia.org/wiki/Fermi_level) or checmical potential,
+level](https://en.wikipedia.org/wiki/Fermi_level) or chemical potential,
 $k$ is Boltzmann's constant, and $T$ is the temperature in Kelvin. 
 
 Fun fact, the Fermi level difference between two points is what you measure with a voltmeter.
@@ -375,7 +375,7 @@ to
 
 $$ f(E) = \frac{1}{e^{(E-E_F)/kT}} = e^{(E_F - E)/kT}$$
 
-A few observiation on the Fermi-Dirac distribution. If the Energy of a state
+A few observations on the Fermi-Dirac distribution. If the Energy of a state
 is at the Fermi level, then $f(E) = \frac{1}{2}$, or a 50 % probability of being occupied. 
 
 In a metal, the Fermi level lies within a band, as the conduction
@@ -422,7 +422,7 @@ $$
 
 <!--pan_skip: -->
 
-For intrinsic silicon at thermal equlibrium, we could write
+For intrinsic silicon at thermal equilibrium, we could write
 
 $$
 n_0 = 2\left( \frac{2 \pi m^\ast k T}{h^2}\right)^{3/2} e^{-E_g/(2kT)}
@@ -433,7 +433,7 @@ $$
 
 <!--pan_doc: 
 
-For intrinsic silicon at thermal equlibrium, we could write
+For intrinsic silicon at thermal equilibrium, we could write
 
 $$
 n_0 = 2\left( \frac{2 \pi m^\ast k T}{h^2}\right)^{3/2} e^{-E_g/(2kT)}
@@ -455,7 +455,7 @@ the silicon crystal is a bad mental image.
 For example, for a metal-oxide-semiconductor field effect transistor (MOSFET) it is not
 the case that the electrons that form the inversion layer under strong inversion
 come from somewhere else. They are already at the silicon surface, but they are
-bound in covalent bonds (there are literaly trillions of bound electrons in a
+bound in covalent bonds (there are literally trillions of bound electrons in a
 typical transistor). 
 
 What happens is that the applied voltage at the gate shifts the energy bands
@@ -510,7 +510,7 @@ concentration $N_{D}$.
 
 The main effect of doping is that it changes the location
 of the Fermi level at thermal equilibirum. For donors, the Fermi level will
-shift closer to the conduction band, and increase the probabilty of free
+shift closer to the conduction band, and increase the probability of free
 electrons, as determined by Equation \eqref{eq:fm}.
 
 Since the crystal now has an abundance of
@@ -575,7 +575,7 @@ charge on the n-side.
 
 ## Built-in voltage
 
-<!--pan_doc: _
+<!--pan_doc:
 
 The charge difference will create a field, and a built-in voltage will develop across the depletion
 region. 
@@ -590,7 +590,7 @@ $$
 n = \int_{E_C}^{\infty} N(E) f(E) dE 
 $$
 
-<!--pan_doc: _
+<!--pan_doc:
 
 , where $N(E)$ is the density of states, and $f(E)$ is a probability of a
 electron being in that state (Equation \eqref{eq:fm}). 
@@ -673,7 +673,7 @@ $$
 
 The negative sign is because the built in voltage is positive on the n-type side 
 
-Asssume that $-x_{p0}$ is the start of the junction on the p-side, and $x_{n0}$
+Assume that $-x_{p0}$ is the start of the junction on the p-side, and $x_{n0}$
 is the start of the junction on the n-side.
 
 Assume that we lift the p-side by a voltage $qV$
@@ -732,7 +732,7 @@ $$
 
 <!--pan_doc:
 
-where $L_p$ is a diffusion length. I think the equation above, the exponential decay as a function of length, is related to the probabilty of electron/hole recombination, and how the rate of recombination must be related to the exceess hole concentration, as such related to [Exponential decay](https://en.wikipedia.org/wiki/Exponential_decay).
+where $L_p$ is a diffusion length. I think the equation above, the exponential decay as a function of length, is related to the probability of electron/hole recombination, and how the rate of recombination must be related to the exceess hole concentration, as such related to [Exponential decay](https://en.wikipedia.org/wiki/Exponential_decay).
 
 Anyhow, we can now compute the current density, and need only compute it for
 $x_n$ = 0, so you can show it's 
@@ -745,7 +745,7 @@ $$
 
 <!--pan_doc:
 
-which start's to look like the normal diode equation. The $p_n$ is the minority
+which starts to look like the normal diode equation. The $p_n$ is the minority
 concentration of holes on the n-side, which we've before estimated as $p_n =
 \frac{n_i^2}{N_D}$ 
 
@@ -862,8 +862,8 @@ equal to the bandgap of silicon. Diodes don't work at 0 K though.
 
 <!--pan_doc: 
 
-From the diode voltage relation we can calculate the derivative (ask chat to -->
-<!--explain it to you ), and you'll get
+From the diode voltage relation we can calculate the derivative (ask your
+favorite chatbot to explain it to you), and you'll get
 
 -->
 
@@ -1013,8 +1013,9 @@ high temperature, and you cannot drop it if you care about anything
 beyond a back-of-envelope estimate.
 
 The diffusion current doubles roughly every $4$-$5\, K$ near room
-temperature, which is the familiar "reverse current doubles every
-10 K" rule of thumb for ideal junctions [^4].
+temperature - steeper than the familiar "reverse current doubles
+every 10 K" rule of thumb, which belongs to the generation-limited
+regime [^4].
 
 For an n+/p-well antenna diode, the $1/N_D$ term is negligible
 because $N_D \gg N_A$, and $I_S$ is set almost entirely by
@@ -1218,7 +1219,7 @@ Three things to take away from the figure:
   "diffusion-limited" regime. The crossover happens to fall right
   in the middle of the plasma-deposition band, so antenna diodes
   during deposition steps see contributions from both mechanisms.
-- The leakage per $\mu m^2$ swings six decades over the wafer-fab
+- The leakage per $\mu m^2$ swings nearly seven decades over the wafer-fab
   thermal range. An antenna diode that easily sinks the plasma
   charge during a $400\, ^\circ C$ HDP-CVD step may be orders of
   magnitude too small during a room-temperature metal etch. The

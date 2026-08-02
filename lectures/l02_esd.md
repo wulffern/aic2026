@@ -92,9 +92,9 @@ The temperature sensor has two supplies, one analog (3.3 V) and one digital (1.2
 
 We're using [TinyTapeout](http://www.tinytapeout.com)
 
-That has ability for both 3.3 V and 1.8 V. An external low dropout regulator (LDO) provide the digital supply (1.8 V).
+That has ability for both 3.3 V and 1.8 V. An external low dropout regulator (LDO) provides the digital supply (1.8 V).
 
-See more at [Analog Specs]([Absolute maximum ratings](https://caravel-harness.readthedocs.io/en/latest/maximum-ratings.html))
+See for example [absolute maximum ratings](https://caravel-harness.readthedocs.io/en/latest/maximum-ratings.html)
 
 ### Ground 
 
@@ -155,7 +155,7 @@ state until the power supply is high enough (for example 1.62 V).
 One of the challenges with a Power On Reset (POR) is that we want to keep the system in a reset state until we're sure that the power is on. 
 Another challenge is that the POR should not consume current.
 
-If we make a level triggered (triggers when VDD reaches a certain level), then we need a reference, a compared and maybe other circuits. As a result, potentially high current.
+If we make a level triggered (triggers when VDD reaches a certain level), then we need a reference, a comparator and maybe other circuits. As a result, potentially high current.
 
 If we make a delay based POR, then we need a long delay, which means large resistors or capacitors. Accordingly, high cost. 
 
@@ -199,7 +199,7 @@ By requirement I mean if the 1 kV is not met, then the project will be delayed u
 project will be infinitely delayed, or in other words, canceled.
 
 Now imagine it's your responsibility to ensure it meets the 1 kV specification, what would you do? I would recommend you read one
-of the few ESD books in existence, shown below, and rely on you understanding of PN-junctions.
+of the few ESD books in existence - see the reading list at the end of the chapter - and rely on your understanding of PN-junctions.
 
 -->
 
@@ -303,7 +303,7 @@ More on circuits that protect from HBM later.
 > An IC left alone for long enough will equalize the Fermi potential across the whole IC. 
 
 Not entirely a true statement, but roughly true. One exception is non-volatile memory, like flash, which uses 
-[Fowler-Norheim](https://en.wikipedia.org/w/index.php?title=Field_electron_emission&oldformat=true#Fowler–Nordheim_tunneling) tunneling to charge and discharge a capacitor that keeps it's charge for a very, very long time.
+[Fowler-Nordheim](https://en.wikipedia.org/w/index.php?title=Field_electron_emission&oldformat=true#Fowler–Nordheim_tunneling) tunneling to charge and discharge a capacitor that keeps its charge for a very, very long time.
 
 I'm pretty sure that if you leave an SSD hardrive to the [heat death of the universe](https://en.wikipedia.org/wiki/Heat_death_of_the_universe) 
 in maybe $10^{10^{10^{56}}}$ years, then the charges will equalize, and the Fermi level will be the same across the whole IC, so it's just a matter of time.
@@ -322,7 +322,7 @@ Which says that the electric field through the surface is the volume integral of
 If there are the same amount of protons and electrons, and the distribution is even, then there will be no field through IC surface.
 As such, there is no external electric field from the IC.
 
-If we place an IC in an electric field, the charges inside will redistribute. Flip the IC on it's back, 
+If we place an IC in an electric field, the charges inside will redistribute. Flip the IC on its back, 
 place it on an metal plate with an insulator in-between, and charge the metal plate to 1 kV, as shown in Figure 3.
 
 -->
@@ -350,7 +350,7 @@ sensitive devices must remain below where the device physically breaks.
 
 Take the MOSFET transistor. Between the gate and the source there is an thin oxide, maybe a few nm. If the field strength between gate 
 and source is high enough, then the force felt by the electrons in co-valent bonds will be $\vec{F} = q\vec{E}$. At some point the 
-co-valent bonds might break, and the oxide could be permanently damaged. Think of a lighting bolt through the oxide, it's a similar process.
+co-valent bonds might break, and the oxide could be permanently damaged. Think of a lightning bolt through the oxide, it's a similar process.
 
 Our job, as electronics engineers, is to ensure we put in additional circuits to prevent the fields during a CDM event from
 causing damage. 
@@ -376,7 +376,7 @@ Assuming some luck, then VDD1 and VDD2 are separate, but the same voltage, or at
 directions, between VDD1 and VDD2. As such, when VDD1 is grounded, VDD2 will follow but maybe be 0.6 V higher. As a result, the PMOS gate never
 sees more than approximately 0.6 V across the gate oxide, and everyone is happy.
 
-Now imagine an IC will hundreds of supplies, and billions of inverters. How can I make sure that everything is OK?
+Now imagine an IC with hundreds of supplies, and billions of inverters. How can I make sure that everything is OK?
 
 CDM is tricky, because there are so many details, and it's easy to miss one that makes your circuit break.
 
@@ -465,7 +465,7 @@ that's a apt mental image.
 We want a circuit that most of the time sleeps, and does not affect our normal IC operation. But if 
 a huge current comes in on VDD, and the VDD voltage shoots up fast, the circuit must wake up and bring the voltage down.
 
-If the circuit triggers under normal operating condition, when your watching a video on your phone, your battery will 
+If the circuit triggers under normal operating condition, when you're watching a video on your phone, your battery will 
 drain very fast, and your phone might even catch fire.
 
 As such, ESD design engineers have a "ESD design window". Never let the ESD circuit trigger when VDD < normal, but always trigger the ESD circuit 
@@ -550,7 +550,7 @@ The first thing that can happen is that the field in the depletion zone between 
 In the substrate (P-) there are mostly holes, but there are also electrons. If an electron diffuses close to the drain region 
 it will be swept across to drain by the high field.
 
-The high field might accelerate the electron to such an energy that it can, when it scatters of the atoms in the depletion zone,
+The high field might accelerate the electron to such an energy that it can, when it scatters off the atoms in the depletion zone,
 knock out an electron/hole pair. 
 
 The hole will go to the substrate (2), while the new electron will continue towards drain. The new electron can also knock out 
@@ -575,7 +575,7 @@ further increase the avalanche condition.
 For a normal transistor, not designed to survive, the electron flow (4) can cause local damage to the drain. Normally there is nothing 
 that prevents the current from increasing, and the transistor will eventually die.
 
-If we add a resistor to the drain region (unscilicided drain), however, we will slow down the electron flow, and we can get a stable condition,
+If we add a resistor to the drain region (unsilicided drain), however, we will slow down the electron flow, and we can get a stable condition,
 and design a transistor that survives.
 
 
@@ -617,7 +617,7 @@ Right after the die pad, sometimes under, there will be a primary ESD protection
 From the input it's common to have a resistor to reduce the probability of currents going towards
 the core area. 
 
-Before we get to a transistor gate oxide it's common to have a set of secondary protection circutis. A resistor further reduces the current, and two local clamps (GGPMOS and GGNMOS) ensure 
+Before we get to a transistor gate oxide it's common to have a set of secondary protection circuits. A resistor further reduces the current, and two local clamps (GGPMOS and GGNMOS) ensure 
 that the voltage across the transistor gate does not go to breakdown levels.
 
 -->
@@ -647,7 +647,7 @@ The Schmitt trigger must be with thick oxide gates and with IO supply (for examp
 The first inverter must also be a thick oxide inverter, however, the supply of the inverter will be core supply (for example 1.2 V). The thick oxide inverter provides a level-shift to 
 core supply. 
 
-The last inverter is just to get the polarity of the TO\_CORE signal the same as the input. _
+The last inverter is just to get the polarity of the TO\_CORE signal the same as the input.
 
 -->
 
@@ -757,7 +757,7 @@ bulk. If this happens, then we get electron injection into bulk. Some of those e
 
 Now we have a condition where the process accelerates, and locks-up. Once turned on, this circuit will not turn off until the supply is low.
 
-This is a phenomena called latch-up. Similar to ESD circuits, latch-up can short the supply to ground, and make things burn. 
+This is a phenomenon called latch-up. Similar to ESD circuits, latch-up can short the supply to ground, and make things burn. 
 
 That is why, when we have digital logic, we need to be extra careful close to the connection to the real world. Latch-up is bad. 
 
@@ -774,7 +774,7 @@ close to your transistors.
 
 
 Similar to the GGNMOS, this circuit, a [thyristor](https://en.wikipedia.org/wiki/Thyristor) can be a useful circuit in ESD design.
-If we can trigger the thyristor when the VDD shoots to high, then we can create a good ESD protection circuit. 
+If we can trigger the thyristor when the VDD shoots too high, then we can create a good ESD protection circuit. 
 
 See [low-leakage](https://www.sofics.com/features/low-leakage/) ESD for a few examples.
 
@@ -806,8 +806,6 @@ You must **always handle ESD** on an IC
 
 ---
 
-<!--pan_doc:
-
 ---
 
 ## Summary
@@ -828,6 +826,8 @@ The one-page version of this chapter:
 ---
 
 # Would you like to know more?
+
+<!--pan_doc:
 
 ESD (Electrostatic Discharge) Protection Design for Nanoelectronics in CMOS Technology [@ker06]
 

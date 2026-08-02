@@ -45,7 +45,7 @@ Let's make a radio (or at least, let's **pretend**)
 <!--pan_doc:
 
 
-**Keywords:** Range, Antenna Size, Modulation, OFDM, GFSK, pi/4-qpsk, 8-psk, 16 QAM, Bluetooth LE, LP RX, LNA, MIxer, AAF, ADC, BB
+**Keywords:** Range, Antenna Size, Modulation, OFDM, GFSK, pi/4-qpsk, 8-psk, 16 QAM, Bluetooth LE, LP RX, LNA, Mixer, AAF, ADC, BB
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/_hgmxi3F5Ew?si=vVYy8txyCYsAZ7oD" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
@@ -301,7 +301,7 @@ So the real world range of a radio can vary more than an order of magnitude. Sti
 We could have a wired mouse for power, but that's boring. Why would we want a wired mouse to have wireless communication? It must be powered by a battery, but 
 what type of battery?
 
-There exists a bible of batteries, see picture below. It's worth a read if you want to dive deeper into chemistry and properties of primary (non-chargeable) and secondary (chargeable) cells.
+There exists a bible of batteries, Linden's Handbook of Batteries. It's worth a read if you want to dive deeper into chemistry and properties of primary (non-chargeable) and secondary (chargeable) cells.
 
 -->
 
@@ -329,7 +329,7 @@ Mouse is maybe AA,  3000 mAh
 
 <!--pan_doc:
 
-Now we know that we need a 1 Mbps radio at 2.4 GHz that runs of a 1.0 V - 1.8 V or 2.0 V - 3.6 V supply. 
+Now we know that we need a 1 Mbps radio at 2.4 GHz that runs off a 1.0 V - 1.8 V or 2.0 V - 3.6 V supply. 
 
 Next we need to decide what modulation scheme we want for our light. How should we encode the bits onto the 2.4 GHz carrier wave?
 
@@ -387,7 +387,7 @@ In binary phase shift keying the 1 and 0 is encoded in the phase change. Change 
 we're back to where we were. 
 
 It's common to show modulation schemes in a constellation diagram with the real axis and the complex axis. 
-For the real signal we send, the phase and amplitude are both real quantities. 
+For the real signal we send, the phase and amplitude are usually both real quantities. 
 
 I say usually, because in quantum mechanics, and the time evolution of a particle, the amplitude of the wave function is actually a complex variable. As such, nature 
 is actually complex at the most fundamental level. 
@@ -580,8 +580,8 @@ If you wanted to research "new fancy modulation schemes" I'd think about [Sphere
 <!--pan_doc:
 
 
-Assume we wanted to send 1024 Mbps over the air. We could choose a bandwidth of a about 1 GHz with 1-bit per symbol, or  have a bandwidth of 1 MHz if
-we sent 1024 QAM at 1MS/s. Both cases would look like the figure below.
+Assume we wanted to send 1 Gbps over the air. We could choose a bandwidth of about 1 GHz with 1 bit per symbol, or a bandwidth of 100 MHz if
+we sent 1024 QAM at 100 MS/s. Both cases would look like the figure below.
 
 In both cases we get problems with the physical communication channel, the change in phase and amplitude affect what is received. 
 For a 1 GHz bandwidth at 2.4 GHz carrier we'd have problems with the phase. At 1024 QAM we'd have problems with the amplitude. 
@@ -648,8 +648,8 @@ In radio design there are so many choices it's easy to get lost.
 
 <!--pan_doc:
 
-For our mouse, what radio scheme should we choose? One common instances of "how to make a choice" in industry is "Delay the choice as long as possible so
-your sure the choice is right". 
+For our mouse, what radio scheme should we choose? One common instance of "how to make a choice" in industry is "Delay the choice as long as possible so
+you're sure the choice is right". 
 
 Maybe the best would be to use a software defined radio receiver? Something like the picture below, an antenna, low noise amplifier, and a 
 analog-to-digital converter. That way we could support any transmitter. Fantastic idea, right?
@@ -773,7 +773,7 @@ The advertiser channels have been intentionally placed where there is space betw
 
 <!--pan_doc:
 
-Any Bluetooth LE peripheral will advertise it's presence, it will wake up once in a while (every few hundred milliseconds, to seconds) and transmit a short "I'm here" packet. 
+Any Bluetooth LE peripheral will advertise its presence, it will wake up once in a while (every few hundred milliseconds, to seconds) and transmit a short "I'm here" packet. 
 After transmitting it will wait a bit in receive to see if anyone responds. 
 
 A Bluetooth LE central will camp in receive on a advertiser channel and look for these short messages from peripherals. If one is observed, the Central may choose to respond.
@@ -975,8 +975,8 @@ These days most de-modulation happens in digital, and we need to convert the ana
 The anti alias filter rejects frequencies that can fold into the band of interest due to sampling. A simple active-RC 
 filters is often good enough. 
 
-We often need gain in the AAF, as the LNA does not have sufficient gain for the weakest signals. -100 dBm in 50 ohm is 6.2 nV RMS, while input 
-range of an ADC may be 1 V. Assume we place the lowest input signal at 0.1 V, so we need a voltage gain of $20\log(0.1/6.2e-9) = 76$dB in the receiver.
+We often need gain in the AAF, as the LNA does not have sufficient gain for the weakest signals. -100 dBm in 50 ohm is 2.2 $\mu$V RMS, while the input 
+range of an ADC may be 1 V. Assume we place the lowest input signal at 0.1 V, so we need a voltage gain of $20\log(0.1/2.2\times 10^{-6}) \approx 93$ dB in the receiver.
 
 -->
 
@@ -1197,8 +1197,6 @@ I hope you understand now that it's actually complicated.
 
 ---
 
-<!--pan_doc:
-
 ---
 
 ## Summary
@@ -1219,6 +1217,8 @@ The one-page version of this chapter:
 ---
 
 # Would you like to know more?
+
+<!--pan_doc:
 
 -->
 

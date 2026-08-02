@@ -109,7 +109,7 @@ Rules are nice. They reduce the cognitive load since a decision already has been
 design it's not that important what the "rule" is, but sometimes more important that the rule is followed. 
 
 Naming rules are one example. We can have a philosophical discussion till the end of time of whether it's best with 
-uppercase or lower case. CamelCase, however, is wrong in schematics and SPICE, since SPICE is case-insensitive, so "vref" is the same as "Vref**.
+uppercase or lower case. CamelCase, however, is wrong in schematics and SPICE, since SPICE is case-insensitive, so "vref" is the same as "Vref".
 
 Below are the rules I like. You may disagree, but if you're my student, then you don't have a choice. Follow them, or the grade may suffer.
 
@@ -160,7 +160,7 @@ It matters how schematics look. Think of it like this. In 10 years, you will be 
 
 ---
 
-### All digital nets must be "active high"" naming
+### All digital nets must be "active high" naming
 
 ---
 
@@ -190,7 +190,7 @@ The "P" post-fix tells us the current comes from a PMOS, so we can put it into a
 
 **Don't:** W1 = 1 um, W2 = 1.1 um, W3 = 1.2 um, W4 = 2 um, W5 = 2.1 um
 
-You want the layout to be relatively regulator. A bunch of different Ls and Ws is a pain when you do layout
+You want the layout to be relatively regular. A bunch of different Ls and Ws is a pain when you do layout
 
 ### Use pre-defined transistors for regular layout
 

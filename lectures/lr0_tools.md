@@ -17,7 +17,7 @@ date: 2025-10-25
 # Tools
 
 I would strongly recommend that you install all tools locally on your system.
-There is a video that describe the install procedure. It's a few years old, but
+There is a video that describes the install procedure. It's a few years old, but
 should still be able to guide you <https://youtu.be/DRppsdjo2Rc?si=x8cJsa1lpncvSFmu>.
 
 <iframe width="400" height="315" src="https://www.youtube.com/embed/DRppsdjo2Rc" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
@@ -77,7 +77,7 @@ git config --global user.name "Your Name"
 ## Get AICEX and setup your shell 
 
 You don't have to put aicex in `$HOME/pro`, but if you don't know where to put
-it, chose that directory.
+it, choose that directory.
 
 ```bash
 cd 
@@ -260,9 +260,9 @@ option opts
 
 ---
 
-# Check that magic and xschem works
+# Check that magic and xschem work
 
-To check that magic and xschem works
+To check that magic and xschem work
 
 ``` sh
 cd ~/pro/aicex/ip/sun_sar9b_sky130nm/work 

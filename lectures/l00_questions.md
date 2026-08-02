@@ -30,7 +30,7 @@ origin https://github.com/analogicus/lelo_gr01_sky130a.git
 then do 
 
 ```
-git remote set-url origin https://github.com/analogicus/lelo_gr01_sky130a.git
+git remote set-url origin git@github.com:analogicus/lelo_gr01_sky130a.git
 ```
 
 Or it could be because you have not setup public/private key access to github. 

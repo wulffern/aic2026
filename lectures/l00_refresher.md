@@ -34,6 +34,7 @@ All known physical quantities are derived from 7 base units ([SI units](https://
 - kg (kilogram) : weight
 - ampere (A) : current 
 - kelvin (K) : temperature 
+- mole (mol) : amount of substance
 - candela (cd) : luminous intensity
 
 All other units (for example volts), are derived from the base units.
@@ -76,9 +77,9 @@ All electrons are the same, although the quantum state can be different.
 
 -->
 
-An electron cannot occupy the same quantum state as another. This rule that applies to all Fermions (particles with spin of 1/2)
+An electron cannot occupy the same quantum state as another. This rule applies to all fermions (particles with spin of 1/2)
 
-The quantum state of an electron is fully described by it's spin, momentum (p) and position in space (r).
+The quantum state of an electron is fully described by its spin, momentum (p) and position in space (r).
 
 ---
 
@@ -532,9 +533,9 @@ For more information, have a look at [Electromagnetism as a Gauge Theory](https:
 
 # Voltage 
 
-The electric field has units voltage per meter, so the electric field is the derivative of the voltage as a function of space.
+The electric field has units voltage per meter, so the electric field is the negative derivative of the voltage as a function of space.
 
-$$ E = \frac{dV}{dx}$$
+$$ E = -\frac{dV}{dx}$$
 
 ---
 

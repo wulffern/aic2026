@@ -45,7 +45,7 @@ Introduction to **switched regulators**
 
 Most, if not all, integrated circuits need a supply and ground to work.
 
-Assume a system is AC powered. Then there will be switched regulator to turn wall AC into DC. The DC might be 48 V, 24 V, 12 V, 5 V, 3 V
+Assume a system is AC powered. Then there will be a switched regulator to turn wall AC into DC. The DC might be 48 V, 24 V, 12 V, 5 V, 3 V
 1.8 V, 1.0 V, 0.8 V, or who knows. The voltage depends on the type of IC and the application.
  
 Many ICs are battery operated, whether it's your phone, watch, heart rate monitor, mouse, keyboard, game controller or car.
@@ -147,7 +147,7 @@ threshold voltage.
 Negative Bias Temperature Instability is a shift in threshold voltage due to a physical change in the oxide. 
 A strong electric field across the oxide for a long time can break co-valent, or ionic bonds, in the oxide. The bond break will change the forces (stress) in the amorphous silicon oxide which might not recover. As such, there might be more traps (states) than before. See Simultaneous Extraction of Recoverable and Permanent Components Contributing to Bias-Temperature Instability [@grasser07] for more details.
 
-For a long time, I had trouble with "traps in the oxide"". I had a hard time visualizing how electrons wandered down 
+For a long time, I had trouble with "traps in the oxide". I had a hard time visualizing how electrons wandered down 
 the channel and got caught in the oxide. I was trying to imagine the electric field, and that the electron needed to find 
 a positive charge in the oxide to cancel. Diving a bit deeper into quantum mechanics, my mental image improved a bit, so I'll
 try to give you a more accurate mental model for how to think about traps.
@@ -448,7 +448,7 @@ we choose will depend on the application.
 
 # Switched Regulators
 
-Linear regulator have poor power efficiency. Linear regulators have the same current in the load, as from the input. 
+Linear regulators have poor power efficiency. Linear regulators have the same current in the load, as from the input. 
 
 For some applications a poor efficiency might be OK, but for most battery operated systems we're interested in using the electrons from the battery in the most effective manner. 
 
@@ -649,7 +649,7 @@ Assume $I_x=0$ and $I_{o} = 0$ at $t=0$. Assume the output voltage is $V_O=0$. I
 
 Since the $I_x$ is linear, then the increase in $V_o$ would be a second order, as given by the equation of the output voltage above. 
 
-Let's set $A=0$ and $B=1$ for  fixed time duration (it does not need to be the same as duration as we set $A=1$). The voltage across the inductor would be $V_x = 0 - V_o$. The output voltage would not have increased much, so the absolute value of $V_x$ during $A=1$ would be higher than the absolute value of $V_x$ during the first $B=1$. 
+Let's set $A=0$ and $B=1$ for a fixed time duration (it does not need to be the same as duration as we set $A=1$). The voltage across the inductor would be $V_x = 0 - V_o$. The output voltage would not have increased much, so the absolute value of $V_x$ during $A=1$ would be higher than the absolute value of $V_x$ during the first $B=1$. 
 
 The $V_x$ is now negative, so the current will decrease, however, since $V_x$ is small, it does not decrease much. 
  
@@ -748,9 +748,9 @@ We can see 3 inductor/capacitor pairs. One for the "VDDH", and two for "DECRF" a
 
 Power efficiency is key in DC/DC converters. For high loads, PWM, as explained above, is usually the most efficient and practical. For lighter loads, other configurations can be more efficient. 
 
-In PWM we continuously switch the NMOS and PMOS, as such, the parasitic capacitance on the $V_1$ node is charged and discharged, consuming power. If the load is close to 0 A, then the parasitic load's can be significant. 
+In PWM we continuously switch the NMOS and PMOS, as such, the parasitic capacitance on the $V_1$ node is charged and discharged, consuming power. If the load is close to 0 A, then the parasitic losses can be significant. 
 
-In pulsed-frequency mode we switch the NMOS and PMOS when it's needed. If there is no load, there is no switching, and $V_1$ or $DCC$ in figure below is high impedant. 
+In pulsed-frequency mode we switch the NMOS and PMOS when it's needed. If there is no load, there is no switching, and $V_1$ or $DCC$ in figure below is high impedance. 
 
 
 -->
@@ -771,7 +771,7 @@ Imagine $V_o$ is at 1 V, and we apply a constant output load. According to the i
 
 In the figure above we observe $V_o$ with a comparator that sets $V_{OL}$ high if the $V_o < V_{REF}$. The output from the comparator could be the inputs to a finite state machine (FSM). 
 
-Consider the FSM below. On $vol=1$ we transition to "UP" state where turn on the PMOS for a fixed number of clock cycles. The inductor current would increase linearly. From the "UP" state we go to the "DOWN" state, where we turn on the NMOS. The inductor current would decrease roughly linearly. 
+Consider the FSM below. On $vol=1$ we transition to "UP" state where we turn on the PMOS for a fixed number of clock cycles. The inductor current would increase linearly. From the "UP" state we go to the "DWN" state, where we turn on the NMOS. The inductor current would decrease roughly linearly. 
 
 The "zero-cross" comparator observes the voltage across the NMOS drain/source. As soon as we turn the NMOS on the current direction in the inductor is still from $DCC$ to $V_o$. Since the current is pulled from ground, the $DCC$ must be below ground. As the current in the inductor decreases, the voltage across the NMOS will at some point be equal to zero, at which point the inductor current is zero. 
 
@@ -808,8 +808,6 @@ Below you can see a period of the PFM buck. The state can be seen in the bottom 
 
 ---
 
-<!--pan_doc:
-
 ---
 
 ## Summary
@@ -829,6 +827,8 @@ The one-page version of this chapter:
 ---
 
 # Would you like to know more?
+
+<!--pan_doc:
 
 **Search terms:** regulator, buck converter, dc/dc converter, boost converter
 

@@ -27,7 +27,7 @@ date: 2025-01-08
 
 
 
-Metal wires in an integrated circuit comes in two types, copper and aluminium.
+Metal wires in an integrated circuit come in two types, copper and aluminium.
 
 Most of the routing layers will be copper. To ensure that the copper ions don't diffuse into 
 the silicon-oxide a barrier material surrounds all copper interconnect. 
@@ -58,8 +58,8 @@ fit](../media/General-structure-of-an-IC-with-BEOL-evidenced-a-SEM-section-of-an
 
 <!--pan_doc:
 
-The type of circuit we have determine what we must simulate. Everything needs to be simulated with parasitc capacitance and max current.
-Only RF, however, usually needs to be simulated with resistance, capacitance, inductance and maximum current. 
+The type of circuit we have determines what we must simulate. Everything needs to be simulated with parasitic capacitance and max current.
+Analog and power circuits need parasitic resistance as well; only RF and power usually need the inductance too. 
 
 -->
 
@@ -86,8 +86,8 @@ In addition to the PDK, we need tools that can calculate from the layout the par
 Layout parasitic extraction tools
  
 - [Calibre xRC](https://eda.sw.siemens.com/en-US/ic/calibre-design/circuit-verification/xrc/)
-- [Synopsys StarRC](https://eda.sw.siemens.com/en-US/ic/calibre-design/circuit-verification/xrc/)
-- [Cadence Quantus](https://eda.sw.siemens.com/en-US/ic/calibre-design/circuit-verification/xrc/)
+- [Synopsys StarRC](https://www.synopsys.com/implementation-and-signoff/signoff/starrc.html)
+- [Cadence Quantus](https://www.cadence.com/en_US/home/tools/digital-design-and-signoff/silicon-signoff/quantus-extraction-solution.html)
 - [Magic VLSI](http://opencircuitdesign.com/magic/)
  
 [.column]
@@ -95,7 +95,7 @@ Layout parasitic extraction tools
 3D EM Simulators
  
  - [Keysight ADS](https://www.keysight.com/zz/en/products/software/pathwave-design-software/pathwave-advanced-design-system.html)
- - [HFSS](https://www.keysight.com/zz/en/products/software/pathwave-design-software/pathwave-advanced-design-system.html)
+ - [HFSS](https://www.ansys.com/products/electronics/ansys-hfss)
 
 Transistor CAD (TCAD)
  
@@ -204,7 +204,7 @@ square you would need a kilometer of it for a useful resistance.
 
 -->
 
-Usually too low omhic to be a useful resistor
+Usually too low ohmic to be a useful resistor
 
 Useful for "separating nets" in schematic and layout
 

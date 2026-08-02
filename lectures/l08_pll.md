@@ -97,12 +97,12 @@ As long as the Rubidium crystal is clean (few energy states in the vicinity of t
 does not drift too much, then the frequency will be precise. So I buy a [rubidium oscillator](https://www2.mouser.com/ProductDetail/IQD/LFRBXO059244Bulk?qs=iw0hurA%2FaD0K8weKx%2Fu2ow%3D%3D) at 
 a cost of \$ 3k.
 
-I design a an ASIC to count the clock ticks, package it plastic, make a box, and give my manager.
+I design an ASIC to count the clock ticks, package it plastic, make a box, and give my manager.
 
 Who will most likely say something like 
 
-> "Are you insane? The customer want's to put the clock on a wristband, and make millions. We can't have a cost of \$ 3k per device. You must
-make it smaller an it must cost 10 cents to make"
+> "Are you insane? The customer wants to put the clock on a wristband, and make millions. We can't have a cost of \$ 3k per device. You must
+make it smaller and it must cost 10 cents to make"
 
 Where I would respond.
 
@@ -177,11 +177,11 @@ In the figure below you can see the following items.
 
 ## 32 MHz crystal 
 
-Any Bluetooth radio will need a frequency reference. We need to generate an accurate 2.402 MHz - 2.480 MHz carrier frequency for the 
+Any Bluetooth radio will need a frequency reference. We need to generate an accurate 2.402 GHz - 2.480 GHz carrier frequency for the 
 gaussian frequency shift keying (GFSK) modulation. The Bluetooth Standard requires a +- 50 ppm accurate timing reference, and carrier frequency offset accuracy.
 
 I'm not sure it's possible yet to make an IC that does not have some form of frequency reference, like a crystal. The ICs I've seen 
-so far that have "crystal less radio" usually have a resonator (crystal or bulk-accustic-wave or MEMS resonator) on die. 
+so far that have "crystal less radio" usually have a resonator (crystal or bulk-acoustic-wave or MEMS resonator) on die. 
 
 The power consumption of a high frequency crystal will be proportional to frequency. Assuming we have a digital output, then the power of that
 digital output will be $P = C V^2 f$, for example 
@@ -231,7 +231,7 @@ PLLs take a reference input, and can generate a higher frequency, (or indeed low
 
 <!--pan_doc:
 
-Most of the digital blocks on an IC will be synchronous logic, see figure below. A fundamental principle of sychnronous logic is that the data at the flip-flops (DFF, rectangles with triangle clock input, D, Q and $\overline{\text{Q}}$) only need to be correct at certain times. 
+Most of the digital blocks on an IC will be synchronous logic, see figure below. A fundamental principle of synchronous logic is that the data at the flip-flops (DFF, rectangles with triangle clock input, D, Q and $\overline{\text{Q}}$) only need to be correct at certain times. 
 
 The sequence of transitions in the combinatorial logic is of no consequence, as long as the B 
 inputs are correct when the clock goes high next time.
@@ -323,7 +323,7 @@ Sometimes you want a finer frequency resolution, in that case you'd add a divide
 
 Trouble is that dividing down the input frequency will reduce your loop bandwidth, as the low-pass filter needs to be about 1/10'th of the reference frequency. As such, the PLL will respond slower to a frequency change.
 
-We can also use a fractional divider, where we swap between two, or more, integeres in a sigma-delta fashion in the divider. 
+We can also use a fractional divider, where we swap between two, or more, integers in a sigma-delta fashion in the divider. 
 
 -->
 
@@ -391,7 +391,7 @@ Most modern radios, however, will have a two-point modulation. The modulation si
 <!--pan_doc:
 
 I've made an example [PLL](https://github.com/wulffern/sun_pll_sky130nm) that you can download and play with. I make no claims that 
-it's a good PLL. Actually, I know it's a bad PLL. The ring-oscillator frequency varies to fast with the voltage control.  But it does give you a starting point.
+it's a good PLL. Actually, I know it's a bad PLL. The ring-oscillator frequency varies too fast with the voltage control.  But it does give you a starting point.
     
 A PLL can consist of a oscillator (SUN\_PLL\_ROSC) that generates our output frequency. A divider (SUN\_PLL\_DIVN) that generates a feedback frequency that we can compare to the reference. A Phase and Frequency Detector (SUN\_PLL\_PFD) and a charge-pump (SUN\_PLL\_CP) that model the $+$, or the comparison function in our previous picture. And a loop filter (SUN\_PLL\_LPF and SUN\_PLL\_BUF) that is our $H(s)$.
 
@@ -783,8 +783,6 @@ Below are a couple layout images of the finished PLL
 
 
 
-<!--pan_doc:
-
 ---
 
 ## Summary
@@ -805,6 +803,8 @@ The one-page version of this chapter:
 ---
 
 # Would you like to know more?
+
+<!--pan_doc:
 
 Back in 2020 there was a Master student at NTNU on PLL. I would recommend looking at that 
 thesis to learn more, and to get inspired [Ultra Low Power Frequency Synthesizer](https://ntnuopen.ntnu.no/ntnu-xmlui/handle/11250/2778127).

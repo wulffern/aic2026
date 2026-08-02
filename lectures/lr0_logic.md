@@ -22,7 +22,7 @@ date: 2025-01-08
 
  NMOS current (W = 0.4u L=0.15u) as a function of $$V_{GS}$$ and $$V_{DS}$$
 
-<sub><sub>[dicex/lectures/l13/mos.py]()
+<sub><sub>dicex/lectures/l13/mos.py
 
 ![right original fit](../media/l13/transistor_log.png)
 
@@ -166,7 +166,7 @@ logic => [0,1,Z,X];
 | 1 | 0 | Z |
 | 1 | 1 | Z |
 
-*Pull-up paralell*
+*Pull-up parallel*
 
 | A | B | Y |
 |:---|:---|:---|
@@ -194,7 +194,7 @@ logic => [0,1,Z,X];
 | 1 | 0 | Z |
 | 1 | 1 | 0 |
 
-*Pull-down paralell*
+*Pull-down parallel*
 
 | A | B | Y |
 |:---|:---|:---|
@@ -215,10 +215,10 @@ logic => [0,1,Z,X];
 
 **Pull-up**
 OR => PMOS in series => POS 
-AND => PMOS in paralell => PAP
+AND => PMOS in parallel => PAP
 
 **Pull-down**
-OR => NMOS in paralell => NOP 
+OR => NMOS in parallel => NOP 
 AND => NMOS in series => NAS 
 
 ![right fit](../media/l13/pull_tikz.pdf)
@@ -236,7 +236,7 @@ AND => NMOS in series => NAS
 $$ \text{Y} = \overline{\text{AB}} = \text{NOT ( A AND B)}$$
 
  **AND**
- PU => PMOS in paralell
+ PU => PMOS in parallel
  PD  => NMOS in series
 
 
@@ -276,7 +276,7 @@ $$ \text{Y} = \overline{\text{A + B}} = \text{NOT ( A OR B)}$$
 
 **OR**
 PU => PMOS in series
-PD  => NMOS in paralell
+PD  => NMOS in parallel
 
 
 ![right fit ](../media/l13/nor_tr_tikz.pdf)
@@ -458,8 +458,6 @@ $$\text{Y} = \text{A+B} = \overline{\overline{\text{A+B}}}$$
 | S |  Y |
 |:---|:---|
 | 0 | NOT(P1) |
-| 0 | NOT(P1) |
-| 1 | NOT(P0) |
 | 1 | NOT(P0) |
 
 ![right fit](../media/l13/mux_tikz.pdf)
@@ -642,9 +640,9 @@ inserted in the fast path, which means another place and route pass.
 
 Analyze arrival times of all nodes in a combinatorial circuit
 
- $$ arrival_j = max_{j \in fanin(i)}{arrival_j} + t_{pd_i} \Rightarrow  a_j = max_{j \in fanin(i)}{a_j} + t_{pd_i}$$
+ $$ arrival_i = max_{j \in fanin(i)}{arrival_j} + t_{pd_i} \Rightarrow  a_i = max_{j \in fanin(i)}{a_j} + t_{pd_i}$$
 
- $$ slack_i = required_i - arrival_j$$
+ $$ slack_i = required_i - arrival_i$$
 
 Positive slack (over PVT[^1]) => Timing is OK
 Negative slack (over PVT[^1]) => Timing is not OK
@@ -817,7 +815,7 @@ area : 16;
 | :-- | :--| :--|
 | t\_pdr | max rising propagation delay | input to rising output cross 50 %|
 | t\_pdf | max falling propagation delay | input to falling output cross 50 %|
-| t\_pd | propagation delay | t\_pdf = (t\_pdr + t\_pdf)/2|
+| t\_pd | propagation delay | t\_pd = (t\_pdr + t\_pdf)/2|
 | t\_r | rise time | 20 % to 80 %|
 
 
@@ -840,7 +838,7 @@ area : 16;
 
 # Delay estimation
 
-How can we get a resonably accurate hand calculation model of delay?
+How can we get a reasonably accurate hand calculation model of delay?
 
 $$ C \approx 1 \text{ fF}/\mu\text{m}$$
 
@@ -1460,7 +1458,7 @@ Often 5 - 10 layers of metal
 | :--: | :--:|:--:| :--: |
 |Metal 1 | Copper| Thin | in gate routing|
 |Metal 3 - 5 | Copper| Thicker| Between gates routing|
-|RDL | Aluminium | Ultra tick | Can tolerate high forces during wire bonding.|
+|RDL | Aluminium | Ultra thick | Can tolerate high forces during wire bonding.|
 
 <!--![right fit ](https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhicsE_FrEV9hyy3wtzIhV-sw-tyzHzCWnmzcTxQRNxIKG1DHggITsJyhU-06EmzWTQGnMStpR26YtA649XHxyh7EtqzbY1payEhG342Cc9jZtepb3B8dIUPb6NKs3kLKWRsQEJeuiRtue7QrlIz8xvr2mbRFcO7ROAlK1XGTwrLkVTi_kjsApyH1_q/s856/Skywater%20Blog%202.png)-->
 ![right fit](../media/skymetal.png)

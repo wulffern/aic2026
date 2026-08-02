@@ -159,7 +159,7 @@ __A rubidium clock is basically a crystal oscillator locked to an atomic referen
 But how do the clocks work? According to Wikipedia, the picture below, is a common way to operate a rubidium clock.
 
 A light passing through the Rubidium gas will be affected if the frequency injected is at the hyper-fine energy levels (E = hf). The change in brightness can be detected by the photo detector, and we can 
-adjust the frequency of the crystal oscillator, we'll see later how that can be done. The crystal oscillator is used as reference for a PLL (freqency synthesizer   ) to generate the exact frequency needed. 
+adjust the frequency of the crystal oscillator, we'll see later how that can be done. The crystal oscillator is used as reference for a PLL (frequency synthesizer   ) to generate the exact frequency needed. 
 
 The negative feedback loop ensures that the 5 MHz clock coming out is proportional to the hyper-fine energy levels in the Rubidium atoms. Negative feedback is cool! Especially when we have a pole at DC and infinite gain. 
 
@@ -245,7 +245,7 @@ $$ Z_{in} = \frac{s^2 C_F L + 1}{s^3 C_P L C_F + s C_P + s C_F}$$
 
 <!--pan_doc:
 
-Notice that at $s=0$ the impedance goes to infinity, so a crystal is high impedant at DC. 
+Notice that at $s=0$ the impedance goes to infinity, so a crystal is high impedance at DC. 
 
 -->
 
@@ -292,7 +292,7 @@ I would encourage you to read The Crystal Oscillator [@razavi17] for more detail
 
 ## Circuit
 
-Below is a common oscillator circuit, a Pierce Oscillator. The crystal is the below the dotted line, and the two capacitance's are the on-PCB capacitance's.
+Below is a common oscillator circuit, a Pierce Oscillator. The crystal is below the dotted line, and the two capacitances are the on-PCB capacitances.
 
 Above the dotted line is what we have inside the IC. Call the left side of the inverter XC1 and right side XC2. 
 The inverter is biased by a resistor, $R_1$, to keep the XC1 at a reasonable voltage.
@@ -353,7 +353,7 @@ of $R_s = 50$, $C_f = 5e^{-15}$ and $\omega = 2 \pi \times 32$ MHz then $Q \appr
 That number may not tell you much, but think of it like this, it will take 20 000 clock cycles before the amplitude falls by 1/e. For example, if the amplitude
 of oscillation was 1 V, and you stop introducing energy into the system, then 20 000 clock cycles later, or 0.6 ms, the amplitude would be 0.37 V.
 
-The same is roughly true for startup of the oscillator. If the crystal had almost no amplitude, then an increase $e$ would take 20 k cycles. 
+The same is roughly true for startup of the oscillator. If the crystal had almost no amplitude, then an increase of a factor $e$ would take 20 k cycles. 
 Increasing the amplitude of the crystal to 1 V could take milliseconds. 
 
 Most circuits on-chip have startup times on the order of microseconds, while crystal oscillators have startup time on the order of milliseconds. As such, for low power
@@ -365,7 +365,7 @@ IoT, the startup time of crystal oscillators, or indeed keeping the oscillator r
 
 <!--pan_doc:
 The resonance frequency of the crystal oscillator can be modified by the parasitic capacitance from XC1 and XC2 to ground. The tunability of crystals is usually in ppm/pF.
-Sometimes micro-controller vendors will include internal [load capacitance's](https://infocenter.nordicsemi.com/topic/ps_nrf5340/chapters/oscillators/doc/oscillators.html?cp=4_0_0_3_11_0_0#concept_internal_caps)
+Sometimes micro-controller vendors will include internal [load capacitances](https://infocenter.nordicsemi.com/topic/ps_nrf5340/chapters/oscillators/doc/oscillators.html?cp=4_0_0_3_11_0_0#concept_internal_caps)
 to support multiple crystal vendors without changing the PCB. 
 
 
@@ -395,7 +395,7 @@ Volume 6, Part A, Chapter 3.1 (page 2653) for details.
 
 <!--pan_doc:
 
-On an integrated circuit way may need multiple clocks, and we can't have crystal oscillators for all of them. We can use frequency locked loops, phase locked loops and delay locked loops
+On an integrated circuit we may need multiple clocks, and we can't have crystal oscillators for all of them. We can use frequency locked loops, phase locked loops and delay locked loops
 to make multiples of the crystal reference frequency. 
 
 All phase locked loops contain an oscillator where we control the frequency of oscillation.
@@ -452,10 +452,10 @@ temperature), and changes in VDD.
 To reduce the $K_{vco}$ of the standard ring oscillator we can increase the gate length, and increase the number of stages. 
 
 I think it's a good idea to always have a prime number of stages in the ring oscillator. I have seen some ring oscillators with 21 stages oscillate at 3 times the frequency 
-in measurement. Since $21 = 7 \times 3$ it's possible to have three "waves" of traveling through the ring oscillator at all times, forever. If you use a prime number of stages,
+in measurement. Since $21 = 7 \times 3$ it's possible to have three "waves" traveling through the ring oscillator at all times, forever. If you use a prime number of stages,
 then sustained oscillation at other frequencies cannot happen. 
 
-As such, then number of inverter stages should be $\in [3, 5, 7, 11, 13, 17, 19, 23, 29, 31]$
+As such, the number of inverter stages should be $\in [3, 5, 7, 11, 13, 17, 19, 23, 29, 31]$
 
 --->
 
@@ -699,8 +699,6 @@ $$ f_o = \frac{1}{2}f =  \frac{1}{2RC}$$
 
 ---
 
-<!--pan_doc:
-
 ---
 
 ## Summary
@@ -721,6 +719,8 @@ The one-page version of this chapter:
 ---
 
 # Would you like to know more?
+
+<!--pan_doc:
 
 -->
 

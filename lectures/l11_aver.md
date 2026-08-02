@@ -105,7 +105,7 @@ Conceptually, the digital simulator is easy.
 
 -->
 
-- The order of execution of events at the same time-step do not matter
+- The order of execution of events at the same time-step does not matter
 
 - The system is causal. Changes in the future do not affect signals in the past or the now
 
@@ -149,7 +149,7 @@ In SystemDotNet I implemented the event queue as a hash table, so it ran a bit f
 
 <!--pan_doc:
 
-There are both commercial an open source tools for digital simulation. If you've never 
+There are both commercial and open source tools for digital simulation. If you've never 
 used a digital simulator, then I'd recommend you start with iverilog. I've made some examples 
 at [dicex](https://github.com/wulffern/dicex/tree/main/project/verilog).
 
@@ -220,7 +220,7 @@ In the context of a digital simulator, we can think through how the event queue 
 When the clk or reset changes from zero to 1, then schedule an event where if the reset is 1, then 
 out will be zero in the next time step. If reset is 0, then out will be `count` in the next time step. 
 
-In a time-step where `out changes, then schedule an event to set `count` to `out` plus one. As such, each 
+In a time-step where `out` changes, then schedule an event to set `count` to `out` plus one. As such, each 
 positive edge of the clock at least 2 events must be scheduled in the register transfer level (RTL) simulation. 
 
 For example: 
@@ -666,8 +666,6 @@ rund:
 
 
 
-<!--pan_doc:
-
 ---
 
 ## Summary
@@ -687,6 +685,8 @@ The one-page version of this chapter:
 ---
 
 # Would you like to know more?
+
+<!--pan_doc:
 
 For more information on real-number modeling I would recommend [The Evolution of Real Number Modeling](https://youtu.be/gNpPslQZT-Y)
 

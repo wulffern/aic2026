@@ -17,7 +17,7 @@ date: 2025-03-20
 # Layout
 
 The open source tools don't have any automatic analog layout. To my knowledge,
-there is no general purpose analog automagic layout anywhere in the world. It's an unsovled problem.
+there is no general purpose analog automagic layout anywhere in the world. It's an unsolved problem.
 Many have tried (including myself), but none have succeeded with a generic
 analog layout engine.
 
@@ -61,7 +61,7 @@ python3 -m pip install -e .
 # Placement 
 
 To generate an initial placement we can do the command below. If a layout exists
-it will be overriden
+it will be overridden
 
 ```bash 
 cd jnw_gr05_sky130a/work 
@@ -75,7 +75,7 @@ cicpy sch2mag JNW_GR05_SKY130A OTA_Manuel
 -->
 
 The layout engine has no idea what components belong together, for example, the
-current mirror below should have been place together 
+current mirror below should have been placed together 
 
 ![](../media/sch_ota_m1.png)
 

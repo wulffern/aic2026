@@ -26,7 +26,7 @@ If you don't know how to say sorry when you do something stupid, learn.
 
 When life sucks, run, or exercise, it's the only thing that works
 
-Get a mac, time machine, and offsite backup. That ensures you'll never loose data.
+Get a mac, time machine, and offsite backup. That ensures you'll never lose data.
 
 Find a problem that you really want to solve, and learn a programming language to solve it. There is absolutely no point in saying "I want to learn programming", then sitting
 down with a book to read about programming, and expect that you will learn programming that way. It will not happen. The only way to learn programming is to program, a lot.
@@ -38,6 +38,8 @@ Take your time to write a verification plan. And stick to it. Without sufficient
 
 ---
 
+
+The table below is my current view of the abstraction levels of analog design automation - what is solved, what is in progress, and what is still risky:
 
 | Status             | Abstraction | Design        | Layout       | Why                                                     |
 |:------------------|:------------|:--------------|:-------------|:--------------------------------------------------------|
@@ -69,7 +71,7 @@ The skills needed are
 - _Project flow support_: **Confluence**, JIRA, risk management (DFMEA), failure analysis (8D)
 - _Language_: **English**, **Writing English (Latex, Word, Email)**
 - _Psychology_: Personalities, convincing people, presentations (Powerpoint, Deckset), **stress management (what makes your brain turn off?)**
-- _DevOps_: **Linux**, bulid systems (CMake, make, ninja), continuous integration (bamboo, jenkins), **version control (git)**, containers (docker), container orchestration (swarm, kubernetes)
+- _DevOps_: **Linux**, build systems (CMake, make, ninja), continuous integration (bamboo, jenkins), **version control (git)**, containers (docker), container orchestration (swarm, kubernetes)
 - _Programming_: Python, C, C++, Matlab <sub>Since 1999 I’ve programmed in Python, Go, Visual BASIC, PHP, Ruby, Perl, C#, SKILL, Ocean, Verilog-A, C++, BASH, AWK, VHDL, SPICE, MATLAB, ASP, Java, C, SystemC, Verilog, Assembler, and probably a few I’ve forgotten.</sub>
 - _Firmware_: signal processing, algorithms, software architecture, security
 - _Infrastructure_: **Power management**, **reset**, **bias**, **clocks**
@@ -157,7 +159,7 @@ s/programming/analog design/ig
 - Do layout, and check it's error free. Run design rule checks (DRC). Check layout versus schematic (LVS)
 - Extract parasitics from layout. Resistance, capacitance, and inductance if necessary.
 - On extracted parasitic netlist, check key parameters in all corners and mismatch (if possible).
-- If everything works, then your done.
+- If everything works, then you're done.
 
 *On failure, go back as far as necessary*
 
@@ -177,7 +179,7 @@ thought about. I do not remember which quotes/tips came from which professor, or
 indeed which student. So here goes
 
 
-*This is important:** Do not worry about unknowns. Make a list of unknowns and find a test to check whether the unknown is a problem. Fixing things based on guesses will cause trouble.
+**This is important:** Do not worry about unknowns. Make a list of unknowns and find a test to check whether the unknown is a problem. Fixing things based on guesses will cause trouble.
 
 ### AC open, DC closed switch
 
@@ -194,7 +196,7 @@ Bias the block
 Put a small dc current into the node
 Measure the delta V over a short time period
 Calculate capacitance from i = C dv/dt
-Always include a replica with a know capacitance value, i.e. a capacitor, to check your testbench.
+Always include a replica with a known capacitance value, i.e. a capacitor, to check your testbench.
 
 ### On Analog Design
 
@@ -232,7 +234,7 @@ change
 
 Metal wires on-chip have a maximum allowed dc current. This is due, among other
 things, to electromigration. At high current densities the aluminum atoms may
-migrate, and thus leave a void that might grow over time into to a
+migrate, and thus leave a void that might grow over time into a
 discontinuity. Why exactly >20um I don't know, but it was mentioned in a meeting
 as a rule of thumb. Current densities are usually around 1mA/square, but varies
 with technology
@@ -247,7 +249,11 @@ sides. The same for PCBs. Sensitive signals can be routed in in-between layers.
 
 ### Use a current source to feed inverter based oscillators
 
-Check non-overlapping clocks in slow, high temp and low vdd
+An inverter ring fed from a current source oscillates at a frequency set
+by the current rather than the supply, which buys supply rejection - see
+the current-starved ring in the oscillator chapter.
+
+### Check non-overlapping clocks in slow, high temp and low vdd
 
 For non overlapping clocks you should check that the two clocks just meet in
 slow corner, high temperature and low vdd. By meet I mean one clock should start
@@ -325,7 +331,7 @@ You should also include a data output so you can check what was loaded in.
 
 
 On all inputs you should use a Schmitt trigger to improve noise immunity.
-Especially since the input data and clock may be feed from a computer with slow
+Especially since the input data and clock may be fed from a computer with slow
 rise and fall times.
 
 
@@ -415,7 +421,7 @@ nearby RF transmitters.
 
 ### Information sources
 
-Handbook on filter synthezising: Martin Snelgrove Phd thesis
+Handbook on filter synthesizing: Martin Snelgrove Phd thesis
 
 State-Space Adaptive IIR Filters, David A. Johns
 

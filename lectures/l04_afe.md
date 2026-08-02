@@ -179,13 +179,13 @@ used an ADC at the antenna, how many bits would we need?
 
 Bluetooth uses Gaussian Frequency Shift Keying, which is a constant envelope binary modulation, and it's usually sufficient with low number of bits, assume 8-bits for the signal is more than enough.
 
-If we assume the maximum of the ADC should be the blocker in the table below, and the resolution of the digital should be given by
+If we assume the maximum of the ADC must fit the blocker, and the resolution must resolve the wanted signal, we get the numbers in the table below.
 
 -->
 
 
 | What | Power [dBm] | Voltage [V]  |
-|----|----|---|---|
+|----|----|---|
 |Blocker| -30 |  7 m |
 |Wanted | -90 |  7 u|
 |Resolution|  | Wanted/255 = 28 n|
@@ -562,7 +562,7 @@ so I would take a closer look at A 77.3-dB SNDR 62.5-kHz Bandwidth Continuous-Ti
 
 And from Figure 10 a) we can see it's a similar Gm-C cell as chapter 12.5.4 in [@cjm11]. 
 
-One of my Ph.d's used the transonductor below on his master thesis [Design Considerations for a Low-Power Control-Bounded A/D Converter](https://ntnuopen.ntnu.no/ntnu-xmlui/handle/11250/2824253).
+One of my Ph.d's used the transconductor below on his master thesis [Design Considerations for a Low-Power Control-Bounded A/D Converter](https://ntnuopen.ntnu.no/ntnu-xmlui/handle/11250/2824253).
 
 -->
 
@@ -578,7 +578,7 @@ One of my Ph.d's used the transonductor below on his master thesis [Design Consi
 
 <!--pan_doc: 
 
-The Active-RC filter should be well know at this point. However, what might be new is that the open loop gain $A_0$ and unity gain
+The Active-RC filter should be well known at this point. However, what might be new is how the open loop gain $A_0$ and unity gain
 $\omega_{ta}$ 
 
 -->
@@ -589,7 +589,7 @@ $\omega_{ta}$
 
 <!--pan_doc:
 
-Below is a general purpose first order filter and the transfer function. I've used the condutance $G = \frac{1}{R}$ instead of the resistance. The reason
+Below is a general purpose first order filter and the transfer function. I've used the conductance $G = \frac{1}{R}$ instead of the resistance. The reason
 is that it sometimes makes the equations easier to work out. 
 
 If you're stuck on calculating a transfer function, then try and switch to conductance, and see if it resolves.
@@ -657,7 +657,7 @@ you will not have a library of OTAs that you just plug in, and they work.
 I would be very suspicious of working anywhere that had an OTA library I was supposed to use for integrated filter design. 
 I'm not saying it's impossible that some company actually has an OTA library, but I think it's a bad strategy. First of all, 
 if an OTA is generic enough to be used "everywhere", then the OTA is likely using too much power, consumes too much area, 
-and is too complex. And the company runs the risk that the designer have not really checked that the OTA works properly 
+and is too complex. And the company runs the risk that the designer has not really checked that the OTA works properly 
 in the filter because "Someone else designed the OTA, I just used in my design". 
 
 But, for now, to make our lives simpler, we assume the OTA is ideal. That makes the equations pretty, and we know what 
@@ -667,7 +667,7 @@ we should get if the OTA actually was ideal.
 
 The current flowing from $V_{out}$ to virtual ground is 
 
-$$I_{out}= G_{fb}V_{out}$$
+$$I_{out}= G_{out}V_{out}$$
 
 The sum of currents into the virtual ground must be zero
 
@@ -752,7 +752,7 @@ See page 511 in [@cjm11] (chapter 5.8.1)
 # Example circuit
 
 One place where both active-RC and Gm-C filters find a home are continuous time sigma-delta modulators. More on SD later, for now,
-just know that SD us a combination of high-gain, filtering, simple ADCs and simple DACs to make high resolution analog-to-digital converters.
+just know that SD is a combination of high-gain, filtering, simple ADCs and simple DACs to make high resolution analog-to-digital converters.
 
 One such an example is 
 -->
@@ -768,21 +768,21 @@ Below we see the actual circuit. It may look complex, and it is.
 
 Not just "complex" as in complicated circuit, it's also "complex" as in "complex numbers".
 
-We can see there are two paths "i" and "q", for "in-phase" and "quadrature-phase". The fantasitc thing about complex ADCs is that we 
+We can see there are two paths "i" and "q", for "in-phase" and "quadrature-phase". The fantastic thing about complex ADCs is that we 
 can have a-symmetric frequency response around 0 Hz. 
 
 It will be tricky understanding circuits like this in the beginning, but know that it is possible, and it does get easier to understand.
 
 With a complex ADC like this, the first thing to understand is the rough structure.
 
-There are two paths, each path contains 2 ADCs connected in series (Multi-stage Noise-Shaping or MASH). Understanding everything at once does not make sence. 
+There are two paths, each path contains 2 ADCs connected in series (Multi-stage Noise-Shaping or MASH). Understanding everything at once does not make sense. 
 
 Start with "Vpi" and "Vmi", make it into a single path (set Rfb1 and Rfb2 to infinite), ignore what happens after R3 and DAC2i. 
 
 Now we have a continuous time sigma delta with two stages. First stage is a integrator (R1  and C1), and second stage is a filter (Cff1, R2 and C2). The amplified and filtered signal 
 is sampled by the ADC1i and fed back to the input DAC1i. 
 
-It's possible to show that if the gain from $V(Vpi,Vpm)$ to ADC1i input is large, then $Y1i = V(Vpi,Vpm)$ at low frequencies.
+It's possible to show that if the gain from $V(Vpi,Vmi)$ to ADC1i input is large, then $Y1i = V(Vpi,Vmi)$ at low frequencies.
 
 
 -->
@@ -866,8 +866,6 @@ You can find the schematic for the OTA at
 <sub>Figure 18: CNR_OTA schematic in SKY130: bias, differential OTA, common mode sense (VCM) and common mode feedback OTA</sub>
 -->
 
-<!--pan_doc:
-
 ---
 
 ## Summary
@@ -888,6 +886,8 @@ The one-page version of this chapter:
 ---
 
 # Would you like to know more?
+
+<!--pan_doc:
 
 A 77.3-dB SNDR 62.5-kHz Bandwidth Continuous-Time Noise-Shaping SAR ADC With Duty-Cycled Gm-C Integrator [@li23]
 

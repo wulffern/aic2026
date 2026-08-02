@@ -77,11 +77,11 @@ the `README.md` and the `info.yaml`.
 
 ### Design files 
 
-A "cell" in the open source EDA world should consists of the following files
+A "cell" in the open source EDA world should consist of the following files
 
 - Schematic (.sch)
 - Layout (.mag)
-- Documenation (.md)
+- Documentation (.md)
 
 The files must have the same name, and must be stored in `design/<LIB>/` as
 shown below. 
@@ -94,7 +94,7 @@ design
   LELO_EX_SKY130A
   LELO_EX.sch
   JNW_ATR_SKY130A -> ../../jnw_atr_sky130a/design/JNW_ATR_SKY130A
-  JWN_TR_SKY130A -> ../../jnw_tr_sky130a/design/JNW_TR_SKY130A
+  JNW_TR_SKY130A -> ../../jnw_tr_sky130a/design/JNW_TR_SKY130A
 ```
 
 For example, if the cell name was `LELO_EX`, then you would have 
@@ -261,7 +261,7 @@ cicsim simcell  LELO_EX_SKY130A LELO_EX \
     ../tech/cicsim/cell_spice/template.yaml
 ```
 
-I would recommend you have a look at simcell_template.yaml file to understand what happens.
+I would recommend you have a look at the template.yaml file to understand what happens.
 
 ### Familiarize yourself with the simulation folder
 
@@ -412,7 +412,7 @@ search for waveforms (like `i(v0)`) that you want to find.
 Note that the search field uses [regular expressions](https://en.wikipedia.org/wiki/Regular_expression). If you don't know regex,
 then it's time to learn. I always use the perl regular expression variants.
 
-For example, searching for "i(v0)" won't acctually show anything, because the
+For example, searching for "i(v0)" won't actually show anything, because the
 `()` are special characters. "i\(v0\)" will find it though.
 
 I could search for both ibps and v0 at the same time with `ibps|i\(`, so it's
@@ -500,7 +500,7 @@ to generate a HTML slideshow that you can open in browser. Open the HTML file.
 
 ### Viewing results without GUI browser 
 
-If your on a system without a browser, or indeed a GUI, then it's possible to
+If you're on a system without a browser, or indeed a GUI, then it's possible to
 view the results in the terminal.
 
 Check if `lynx` is installed, if it's not installed, then 
@@ -549,7 +549,7 @@ cd work
 magic ../design/LELO_EX_SKY130A/LELO_EX.mag
 ```
 
-Now brace yourself, Magic VLSI was created in the 1980's. For it's time it was extremely modern,
+Now brace yourself, Magic VLSI was created in the 1980's. For its time it was extremely modern,
 however, today it seems dated. However, it is free, so we use it.
 
 ### Magic VLSI
@@ -631,7 +631,7 @@ see via1
 see m2
 ```
 
-Make a box around the layout by left cliking bottom left, and right clicking top
+Make a box around the layout by left clicking bottom left, and right clicking top
 right. Press 'x' to expand.
 
 
@@ -842,7 +842,7 @@ GitHub Actions
 Wait for the workflows to build. And check your github pages. 
 Mine is [https://wulffern.github.io/lelo_ex0_sky130a/](https://wulffern.github.io/lelo_ex0_sky130a/).
 
-## Frequency asked questions
+## Frequently asked questions
 
 *Q:*  My GDS/LVS/DRC action fails, even though it works locally. 
 
@@ -853,7 +853,7 @@ Open the .mag file in a text editor and check. The correct way is
 use JNWATR_NCH_4C5F0  JNWATR_NCH_4C5F0_0 ../LELO_ATR_SKY130A
 ```
 
-It's the last `../JNW_ATR_SKY130A` that sometimes is missing.
+It's the last `../LELO_ATR_SKY130A` that sometimes is missing.
 
 
 

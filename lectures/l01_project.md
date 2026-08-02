@@ -111,7 +111,7 @@ But why? I'll try to explain.
 
 
 
-## System-on-chip have complex regulator systems 
+## Systems-on-chip have complex regulator systems 
 
 <!--pan_doc:  
 
@@ -395,7 +395,7 @@ and ask me questions in reference and bias lecture.
 In the git repository for your group you'll create schematics for the bandgap
 circuits, and you'll make test-benches to check that the bandgap circuit works.
 
-If you don't know what you should simulate and verify, it's good to have a chat to chat.
+If you don't know what you should simulate and verify, it's good to have a chat with ChatGPT.
 See <https://chatgpt.com/share/69481b11-8830-8007-9986-c9e41d735cfc>. 
 
 Or check my test-benches at <https://github.com/wulffern/lelo_temp_sky130a/tree/main/sim/LELOTEMP_BIAS_IBP>

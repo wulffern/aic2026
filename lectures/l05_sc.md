@@ -83,22 +83,22 @@ $$\omega_{p|z} \propto \frac{G}{C} = \frac{1}{RC}$$
 
 <!--pan_doc:
 
-As a result, the total variation of the pole or zero frequency is can have a 
+As a result, the total variation of the pole or zero frequency can have a 
 3-sigma value of 
 
-$$ \sigma_{RC} = \sqrt{ \sigma_R^2 + \sigma_C^2 } = \sqrt{0.02^2 + 0.02^2} = 0.028 = 28 \text{ \%}$$
+$$ \sigma_{RC} = \sqrt{ \sigma_R^2 + \sigma_C^2 } = \sqrt{0.2^2 + 0.2^2} = 0.28 = 28 \text{ \%}$$
 
 On an IC we sometimes need to calibrate the R or C in production 
 to get an accurate RC time constant.
 
 We cannot physically change an IC, every single one of the 100 million copies
 of an IC is from the same Mask set. That's why ICs are cheap. To make the Mask set is 
-incredibility expensive (think 5 million dollars), but a copy made from the Mask set can cost one dollar or less. To calibrate we need additional circuits.
+incredibly expensive (think 5 million dollars), but a copy made from the Mask set can cost one dollar or less. To calibrate we need additional circuits.
 
 Imagine we need a resistor of 1 kOhm. We could create that by parallel connection
 of larger resistors, or series connection of smaller resistors. Since we know the maximum
 variation is 0.02, then we need to be able to calibrate away +- 20 Ohms. We could have
-a 980 kOhm resistor, and then add ten 4 Ohm resistors in series that we can short 
+a 980 Ohm resistor, and then add ten 4 Ohm resistors in series that we can short 
 with a transistor switch. 
 
 But is a resolution of 4 Ohms accurate enough? What if we need a precision of 0.1%?
@@ -109,7 +109,7 @@ But how large is the on-resistance of the transistor switch? Would that
 also affect our precision? 
 
 But is the calibration step linear with addition of the transistors? If we have a non-linear 
-calibration step, then we cannot use gradient decent calibration algorithms, nor can we
+calibration step, then we cannot use gradient descent calibration algorithms, nor can we
 use binary search. 
 
 Analog designers need to deal with an almost infinite series of "But".
@@ -338,7 +338,7 @@ A pipelined 5-Msample/s 9-bit analog-to-digital converter [@Lewis87]
 <!--pan_doc:
 
 Shown in the figure below. You should think of the switched capacitor circuit as 
-similar to a an amplifier with constant gain. We can use two resistors and an opamp 
+similar to an amplifier with constant gain. We can use two resistors and an opamp 
 to create a gain. Imagine we create a circuit without the switches, and 
 with a resistor of $R$ from input to virtual ground, and $4R$ in the feedback. Our Active-R would 
 have a gain of $A = 4$. 
@@ -412,11 +412,11 @@ In general, we can sum up with the following equation.
 
 -->
 
-$$\omega_{p|z} \propto \frac{C_1}{C_2}$$
+$$\omega_{p|z} \propto f_{clk}\frac{C_1}{C_2}$$
 
 <!--pan_doc:
 
-We can use these "switched capacitor resistors"  to get pole or zero frequency or gain proportional to a the relative size of capacitors, which is a 
+We can use these "switched capacitor resistors"  to get pole or zero frequency or gain proportional to the relative size of capacitors, which is a 
 fantastic feature. Assume we make two identical capacitors in our layout. We won't know the absolute size of the capacitors on the 
 integrated circuit, whether the $C_1$ is 100 fF or 80 fF, but 
 we can be certain that if $C_1 = 80$ fF, then $C_2 = 80$ fF to a precision of around 0.1 %. 
@@ -525,7 +525,7 @@ However, if you do an FFT of a sampled signal, then all those infinite spectra w
 If your signal processing skills are a bit thin, now might be a good time to read up on [FFT](https://en.wikipedia.org/wiki/Fast_Fourier_transform),
 [Laplace transform](https://en.wikipedia.org/wiki/Laplace_transform) and [But what is the Fourier Transform?](https://www.youtube.com/watch?v=spUNpyF58BY)
 
-In python we can create a demo and see what happens when we "sample" an "continuous time" signal. Hopefully it's obvious that it's impossible to emulate a "continuous time"
+In python we can create a demo and see what happens when we "sample" a "continuous time" signal. Hopefully it's obvious that it's impossible to emulate a "continuous time"
 signal on a digital computer. After all, it's digital (ones and zeros), and it has a clock!
 
 We can, however, emulate to any precision we want. 
@@ -534,7 +534,7 @@ The code below has four main sections. First is the time vector. I use [Numpy](h
 features for creating ranges, and arrays. 
 
 Secondly, I create continuous time signal. The time vector can be used in numpy functions, like `np.sin()`, and I combine three sinusoid plus some noise. 
-The sampling vector is a repeating pattern of 11001100, so our sample rate should be 1/2'th of the input sample rate. 
+The sampling vector is a repeating pattern of 11000000, so our sample rate is 1/8'th of the input sample rate. 
 FFT's can be unwieldy beasts. I like to use [coherent sampling](https://en.wikipedia.org/wiki/Talk%3ACoherent_sampling), however, here
 the tone is deliberately placed halfway between two FFT bins, so the record is
 not coherent.
@@ -616,7 +616,7 @@ I want you to internalize that the spectral copies are real. They are not some "
 
 They are what happens when we sample a signal into discrete time. 
 Imagine a signal with a band of interest as shown below in Green. We sample at $f_s$. The pink and red unwanted signals do
-not disappear after sampling, even though they are above the Nyquist frequency ($f_s/2$). They fold around $f_s/2$, and in may 
+not disappear after sampling, even though they are above the Nyquist frequency ($f_s/2$). They fold around $f_s/2$, and may 
 appear in-band. That's why it's important to band limit analog signals before they are sampled. 
 
 -->
@@ -648,7 +648,7 @@ our wanted signal (green) is undisturbed.
 
 <!--pan_doc:
 
-Assume that we we're interested in the red signal. We could still use a sample rate of $f_s$. 
+Assume that we're interested in the red signal. We could still use a sample rate of $f_s$. 
 If we bandpass-filtered all but the red signal the red signal would fold on sampling, as shown in the figure below.
 
 Remember that the [Nyquist-Shannon](https://en.wikipedia.org/wiki/Nyquist–Shannon_sampling_theorem) states that a sufficient 
@@ -927,10 +927,10 @@ The IIR filter we implemented above is a resonant low-pass filter: it picks out 
 FIR filters are unconditionally stable, since the impulse response
 will always die out. FIR filters are a linear sum of delayed inputs.
 
-In my humble opinion, there is nothing wrong with an IIR. Yes, the could become unstable, however, they can be designed safely.
+In my humble opinion, there is nothing wrong with an IIR. Yes, they could become unstable, however, they can be designed safely.
 I'm not sure there is a theological feud on IIR vs FIR, I suspect there could be. Talk to someone that knows digital filters better than me. 
 
-But be wary of rules like "IIR are always better than FIR" or visa versa. Especially if statements are written in books. Remember that 
+But be wary of rules like "IIR are always better than FIR" or vice versa. Especially if statements are written in books. Remember that 
 the book was probably written a decade ago, and based on papers two decades old, which were based on three decades old state of the art. 
 Our abilities to use computers for design has improved a bit the last three decades.
 
@@ -1012,7 +1012,7 @@ It's the OTA that ensures that the negative input is the same as the positive in
 At the same time, the voltage across $C_1$ cannot change instantaneously. 
 Neither can the voltage across $C_2$. As such, the voltage at the negative input must immediately go to $-V_1$ (ignoring any parasitic capacitance at the negative input). 
 
-The OTA does not like it's inputs to be different, so it will start to charge $C_2$ to increase the voltage at the negative input to the OTA.
+The OTA does not like its inputs to be different, so it will start to charge $C_2$ to increase the voltage at the negative input to the OTA.
 When the negative input reaches 0 V the OTA is happy again.  At that point the charge on $C_1$ is
 
 -->
@@ -1021,7 +1021,7 @@ $$Q_{1\phi_2\$} = 0$$
 
 <!--pan_doc:
 
-A key point is, that even the voltages now have changed, there is zero volt across $C_1$, and thus there cannot be any charge across $C_1$ the charge that 
+A key point is that even though the voltages have now changed, there is zero volts across $C_1$, and thus there cannot be any charge on $C_1$. The charge that 
 was there cannot have disappeared. The negative input of the OTA is a high impedance node, and cannot supply charge. The charge must have gone somewhere, but where?
 
 In process of changing the voltage at the negative input of the OTA we've changed the voltage across $C_2$. The voltage change must exactly match 
@@ -1388,10 +1388,10 @@ For example, for a 10-bit ADC we need $t > -\ln(1/1024) \tau = 6.9\tau$. This me
 to settle to 10-bit accuracy in the switched capacitor circuit.
 
 Assume the capacitors are large due to noise, then the switches must be low resistance for a reasonable time constant. Larger switches have 
-smaller resistance, however, they also have more charge in the inversion layer, which leads to charge injection when the switches are turned of.
+smaller resistance, however, they also have more charge in the inversion layer, which leads to charge injection when the switches are turned off.
 Accordingly, larger switches are not always the solution.
 
-Sometimes it may be sufficient to switch the bulks, as shown on the left below. But more often that one would like, we have to implement bootstrapped switches
+Sometimes it may be sufficient to switch the bulks, as shown on the left below. But more often than one would like, we have to implement bootstrapped switches
 as shown on the right. 
 
 
@@ -1408,7 +1408,7 @@ as shown on the right.
 
 <!--pan_doc:
 
-The switch I used in my JSSC SAR [@wulff17] is a fully differential boostrapped switch with 
+The switch I used in my JSSC SAR [@wulff17] is a fully differential bootstrapped switch with 
 cross coupled dummy transistors. The JSSC SAR I've also ported to GF130NM, as shown below. The switch is at the bottom. 
 
 -->
@@ -1426,7 +1426,7 @@ cross coupled dummy transistors. The JSSC SAR I've also ported to GF130NM, as sh
 
 <!--pan_doc:
 
-looks like the one below.
+The bootstrapped switch looks like the one below.
 
 -->
 
@@ -1537,6 +1537,8 @@ almost nothing else about analog design got easier.
 
 [^1]: I use the \$ to mark the end of the period. It comes from [Regular Expressions](https://en.wikipedia.org/wiki/Regular_expression).
 
+-->
+
 ---
 
 ## Summary
@@ -1557,6 +1559,8 @@ The one-page version of this chapter:
 ---
 
 # Would you like to know more?
+
+<!--pan_doc:
 
 Blind Multiband Signal Reconstruction: Compressed Sensing for Analog Signal [@mishali09]
 

@@ -41,8 +41,8 @@ Most of you won't buy the book, as such, a few tips.
 
 I can write the section title idea in many words: 
 
-> A shorter text will more elequently describe the intricacies of your thoughts
-> than a long, distinguished, tirade of carefully, wonderfully, choosen words. 
+> A shorter text will more eloquently describe the intricacies of your thoughts
+> than a long, distinguished, tirade of carefully, wonderfully, chosen words. 
 
 or 
 
@@ -124,7 +124,7 @@ Provide a summary where state-of-the-art has moved since the original paper.
 The outline should be included towards the end of the introduction. The
 purpose of the outline is to make this document easy to read. A reader
 should never be surprised by the text. All concepts should be eased
-into. We don't want the reader to feel like they been thrown in at the
+into. We don't want the reader to feel like they've been thrown in at the
 end of a long story. As such, if you chosen to solve the problem
 statement in a way not previously solved in a key references, then you
 should explain that.
@@ -164,7 +164,7 @@ circuitikz), don't use pictures from schematic editors.
 The purpose of the results is to convince the reader that what you made
 actually works. To do that, explain testbenches and simulation results.
 The key to good results is to be critical of your own work. Do not try
-to oversell the results. Your result should speak for themself.
+to oversell the results. Your results should speak for themselves.
 
 For analog circuits, show results from each block. Highlight key
 parameters, like current and delay of comparator. Demonstrate that the

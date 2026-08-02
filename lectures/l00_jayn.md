@@ -34,7 +34,7 @@ a hydrogen atom.
 
 Jayn lived in that hydrogen atom for billions of years. Over time, Jayn joined
 with other hydrogen atoms, coalescing into a star. Jayn basked in the warmth of
-the stars outer layers, content as the star burned brightly in the universe.
+the star's outer layers, content as the star burned brightly in the universe.
 
 Eventually, though, Jayn's hydrogen atom drifted toward the star's core. There,
 something new happened. Instead of circling just one proton, Jayn now orbited
@@ -53,7 +53,7 @@ atom, orbiting a nucleus with 14 protons and -- of course -- 14 electrons.
 
 Jayn was no longer close to the nucleus. Now, Jayn was far out on the edge of the atom, in the
 outermost orbital shell. From there, Jayn could feel the presence of everything around
--- not just the self atom, but all the neighboring atoms as well.
+-- not just its own atom, but all the neighboring atoms as well.
 
 One day, everything
 changed. The star exploded -- a supernova -- flung Jayn into the universe.
@@ -83,7 +83,7 @@ This time, Jayn became part of something incredibly uniform: a crystal lattice
 where every atom was another silicon atom, each in perfect order, with each atom sharing it's
  four outermost electrons in orbital shells with the neighbors. For
 the first time, Jayn could feel the full, equal pull of the electrons and nuclei
-around -- like a invisible ocean of charges. It was electrifying.
+around -- like an invisible ocean of charges. It was electrifying.
 
 
 <!--Time usually passed slowly for Jayn. Electrons moved so fast that the rest of
@@ -105,7 +105,7 @@ And did you know? The presence of just that one electron -- Jayn -- in the gate 
 was enough to
 shift the threshold voltage, change the flow of bias current, alter the
 frequency of an oscillator, cause my phone
-to loose the Bluetooth link to my door lock, and made me swear a number of
+to lose the Bluetooth link to my door lock, and made me swear a number of
 times until the Bluetooth link finally reconnected, many, many, many seconds later.
 
 And yet, Jayn's story doesn't end. Because Jayn, like all electrons, never really

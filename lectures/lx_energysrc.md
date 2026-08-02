@@ -77,7 +77,7 @@ order of magnitudes since the invention of the transistor 75 years ago.
 One of the first commercial ADCs, the [DATRAC](https://www.analog.com/media/en/training-seminars/design-handbooks/Data-Conversion-Handbook/Chapter1.pdf) on page 24, was a 11-bit 50 kSps that consumed 500 W. That's Walden figure of merit of 
 4 $\mu$J/conv.step. Today's state-of-the-art ADCs in the same sampling range have a Walden figure of merit of 0.6 fJ/conv.step [@hsieh18].
 
-4 $\mu$ / 0.6 f = 8.1e9, a difference in power consumption of almost 10 billion times !!!
+4 $\mu$ / 0.6 f = 6.7e9, a difference in power consumption of almost 10 billion times !!!
 
 Improvements to power consumption have become harder and harder, but I believe there is still far to go before we 
 cannot reduce power consumption any more. 
@@ -186,7 +186,7 @@ measure a voltage difference?
 on the loop side would be different, but on the cold side, where we have the ends, there would be no voltage difference. 
 
 Gauss law tell us that inside a conductor there cannot be a static field without a current. As such, if there was 
-a voltage difference between the cold ends, it would quickly dissipated, and no DC current would flow. 
+a voltage difference between the cold ends, it would quickly be dissipated, and no DC current would flow. 
 
 The voltage difference in the material between the hot and cold end will create currents, but we can't use them if we
 only have one type of material. 
@@ -217,12 +217,12 @@ is described by the
 
 <!--pan_doc:
 
-Imagine two parallel wires with different Seebeck coefficients, one of copper ($6.5\text{ } \mu V/K$) and one of iron ($19\text{ } \mu/K$).
+Imagine two parallel wires with different Seebeck coefficients, one of copper ($6.5\text{ } \mu V/K$) and one of iron ($19\text{ } \mu V/K$).
 We connect them at the hot end. The voltage difference between hot and cold would be higher in the iron, than in the copper. 
 At the cold end, we would now measure a difference in voltage between the wires! 
 
 In silicon, the Seebeck coefficient can be modified through doping. A model of Seebeck coefficient is shown below. 
-The value of the Seebeck coefficient depends on the location of the Fermi level in relation to the Conduction band or the V
+The value of the Seebeck coefficient depends on the location of the Fermi level in relation to the Conduction band or the
 valence band. 
 
 -->
@@ -320,7 +320,7 @@ underneath Voyager in the picture below. The radioisotopes provide the heat, spa
 
 <!--pan_doc:
 
-Assume a we wanted to drive a watch from a thermoelectric generator (TEG). 
+Assume we wanted to drive a watch from a thermoelectric generator (TEG). 
 The skin temperature is maybe 33 degrees Celsius, while the 
 ambient temperature is maybe 23 degrees Celsius on average.
 
@@ -839,7 +839,7 @@ The one-page version of this chapter:
 -->
 
 - Harvesters deliver power, batteries deliver energy: a harvester design starts from the average load current, not the peak
-- Thermoelectric generators give millivolts per kelvin of gradient - real designs start below 100 mV and need a boost converter that can
+- Thermoelectric generators give millivolts per kelvin of gradient - real designs start below 100 mV and need a boost converter that can cold-start from that little
 - A photovoltaic cell is the photodiode from this chapter run in the fourth quadrant: half a volt a cell, current proportional to light
 - Piezo and electromagnetic harvesters turn vibration into AC that must be rectified; triboelectric is the same story with contact charging
 - Ambient RF sounds free until Friis has spoken: microwatts at best, and only near the transmitter

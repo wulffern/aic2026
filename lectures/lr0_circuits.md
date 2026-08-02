@@ -122,14 +122,14 @@ transistor. If we had a $g_m/I_D = 15$, then we'd only need 66 $\mu$A in the tra
 
 
 When the $g_m/I_D$ choice is made, then there are some things that have already been determined. One is the 
-necessary drain/source voltage for the transistor to operation in "saturation" or "linear" region. 
+necessary drain/source voltage for the transistor to operate in "saturation" or "linear" region. 
 
 For most circuits we want the transistor to operate in "saturation" region, as such, we must provide a certain 
 drain source voltage. 
 
 In Figure 5 you can see how the $V_{dsat}$ of the transistor changes as the $g_m/I_D$ changes. 
 
-Notice that the two transistor have different $V_{dsat}$. The shorter transistor needs less voltage across drain/source
+Notice that the two transistors have different $V_{dsat}$. The shorter transistor needs less voltage across drain/source
 to operate in saturation. 
 
 -->
@@ -239,19 +239,19 @@ I would encourage you to only use transistors from that library in your design. 
 
 ---
 
-<!--pan_doc: _
+<!--pan_doc:
 
 The reason is usually that the transistors are not operating in the correct region. So either the $V_{GS}$ is causing problems
 or the $V_{DS}$ is not high enough. 
 
 In Figure 8 we can see how the $V_{GS}$ of transistors change with corner. It's usually highest for slow-slow and low temperature, and the lowest for 
-fast-fast and high temperature. But event that statement is obviously not always correct. For a gm/Id of 6 we can see that it's the low temperature that has the lowest $V_{GS}$.
+fast-fast and high temperature. But even that statement is obviously not always correct. For a gm/Id of 6 we can see that it's the low temperature that has the lowest $V_{GS}$.
 
 If we observe the equation for the current in strong inversion 
 
 $$ I_D = \frac{1}{2} \mu_n C_{ox} \frac{W}{L}\left( V_{GS} - V_{TH}\right)^2$$
 
-we can see that the current decreses if the $V_{TH}$ increases, and we can see that current increases if the mobility ($\mu_n$) increases. The threshold voltage increases
+we can see that the current decreases if the $V_{TH}$ increases, and we can see that current increases if the mobility ($\mu_n$) increases. The threshold voltage increases
 at low temperature. The mobility increases at low temperature. At a gm/Id of a bit more than 8 we can see that from Figure 8 the two effects cancel each other. While for lower gm/Id 
 the mobility becomes dominant, and lowers the $V_{GS}$.
 
@@ -397,7 +397,7 @@ $$v_x = i_x\left[ r_{ds2} + R_s(g_{m2} r_{ds2} + 1)\right]$$
 
 Rearranging
 
-$$ r_{out} =  r_{ds2}[1 + R_s(g_{m1} + g_{ds2})] \approx r_{ds2} [1 + g_{m1}R_s]$$ 
+$$ r_{out} =  r_{ds2}[1 + R_s(g_{m2} + g_{ds2})] \approx r_{ds2} [1 + g_{m2}R_s]$$ 
 
 ---
 

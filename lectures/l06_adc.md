@@ -45,7 +45,7 @@ The effective number of bits contain information on the linearity of the ADC. Th
 how efficient the ADC is. The maximum bandwidth limits what signals we can sample and reconstruct in
 digital domain.
 
-Many years ago, Robert Walden did a study of ADCs, one of the plot's is shown below.
+Many years ago, Robert Walden did a study of ADCs, it is worth looking up the plots.
 -->
 
 1999, R. Walden: Analog-to-digital converter survey and analysis [@walden99]
@@ -124,7 +124,7 @@ In the plot below you can see the ISSCC and VLSI ADCs.
 
 -->
 
-People from NTNU have made some of the worlds best ADCs
+People from NTNU have made some of the world's best ADCs
 
 <!--pan_doc:
 
@@ -132,7 +132,7 @@ People from NTNU have made some of the worlds best ADCs
 
 If you ever want to make an ADC, and you want to publish the measurements, then you must be better than most. 
 A good algorithm for state-of-the-art ADC design is to first pick a sample rate with low number of data (blank spaces in the plot above), then read the papers in the vicinity of the blank space
-to understand the application, then set a target FOM which is best in world, then try and find a ADC architecture that can achieve that FOM. 
+to understand the application, then set a target FOM which is best in world, then try and find an ADC architecture that can achieve that FOM. 
 
 That's pretty much the algorithm I, and others, have followed to make state-of-the-art ADCs. A few of the NTNU ADCs are:
 
@@ -207,7 +207,7 @@ For state-of-the-art ADC papers it's not sufficient with the idea, and simulatio
 No-one will really believe that the ADC works until there is measurements of an actual taped out IC. 
 
 Below you can see the layout of the IC I made for the paper. Notice that there are 9 ADCs. I had many ideas that I wanted to try out, and 
-I was not sure what would actually be state of the art. As a result, I taped out multiple ADCS. 
+I was not sure what would actually be state of the art. As a result, I taped out multiple ADCs. 
 
 -->
 
@@ -221,7 +221,7 @@ I was not sure what would actually be state of the art. As a result, I taped out
 
 <!--pan_doc:
 
-The two ADCs that I ended up using in the paper is shown below. The one on the left was made with 180 nm IO transistors, while the one on the right
+The two ADCs that I ended up using in the paper are shown below. The one on the left was made with 180 nm IO transistors, while the one on the right
 was made with core-transistors. Notice that the layout of the two is quite similar. 
 
 -->
@@ -635,7 +635,7 @@ $$
 sin(x) = \frac{e^{ix} - e^{-ix}}{2i}
 $$
 
-The second plot from the left is after sampling, notice that the noise level increases. The rise is exactly $10\log(nfs) = 6.02$ dB, and it is worth being careful about why, because there are two tempting explanations and they are not two effects to be added together.
+The second plot from the left is after sampling, notice that the noise level increases. The rise is exactly $10\log(4) = 6.02$ dB, and it is worth being careful about why, because there are two tempting explanations and they are not two effects to be added together.
 
 Both are named in the same expression. With a Hann window and the peak normalisation that `freqDomain` uses, the noise floor per bin relative to the tone is
 
@@ -810,7 +810,7 @@ We can see that the signal to noise ratio increases with increased oversampling 
 Now put the two halves together. The quantizer always makes the same total amount of noise, $\Delta^2/12$, and always spreads it evenly from zero to $f_s/2$. Sampling faster than we need does not reduce that total, it only spreads it over a wider band, so the part that lands inside the band we actually care about shrinks by the oversampling ratio.
 
 -->
-in-band quantization noise for a oversampling ratio (OSR) 
+in-band quantization noise for an oversampling ratio (OSR) 
 
 $$ \overline{e_n(t)^2} =\frac{\Delta^2}{12 OSR}$$
 
@@ -1249,7 +1249,7 @@ Assume 1-bit quantizer, what would be the maximum ENOB?
 <!--pan_doc:
 <sub>Table: ENOB of a 1-bit quantizer ($B = 1$), from the three expressions above.</sub>
 
-Read down a column and you see what a decoder buys you; read across a row and you see what an architecture buys you. Plain oversampling is hopeless: a thousand-fold increase in sample rate turns one bit into six. First-order shaping turns the same thousand-fold into fifteen, and second-order into twenty-four. That is the entire argument for building the loop, and it is why a 1-bit modulator followed by a decimation filter is a sensible way to make a 20-bit converter, while a 1-bit oversampled ADC is not a way to make anything.
+Read down a column and you see what oversampling buys you; read across a row and you see what an architecture buys you. Plain oversampling is hopeless: a thousand-fold increase in sample rate turns one bit into six. First-order shaping turns the same thousand-fold into fifteen, and second-order into twenty-four. That is the entire argument for building the loop, and it is why a 1-bit modulator followed by a decimation filter is a sensible way to make a 20-bit converter, while a 1-bit oversampled ADC is not a way to make anything.
 
 The second-order column also shows the crossover discussed above. At $OSR=4$ second-order leads first-order by less than a bit, because the extra 7.7 dB penalty has barely been paid off; by $OSR=1024$ it leads by nine.
 
@@ -1436,7 +1436,7 @@ The loop filter was a switched cap loop filter, and we can see the NTF below. Th
 
 ### Control-Bounded ADCs
 
-One of my current Ph.D students is working an even more advanced type of sigma-delta ADC. Actually, it's more a super-set of SD ADCs called
+One of my current Ph.D students is working on an even more advanced type of sigma-delta ADC. Actually, it's more a super-set of SD ADCs called
 control-bounded ADCs. 
 
 -->
@@ -1527,6 +1527,7 @@ For more information, ask me, or see the patent at
 
 <!--pan_doc:
 <sub>Figure 36: Incremental first-order sigma-delta ADC from the patent: input and reference resistors into an OTA integrating on C, a clocked comparator as quantizer, and a counter as output filter</sub>
+-->
 
 ---
 
@@ -1541,13 +1542,15 @@ The one-page version of this chapter:
 - One number for an ADC: the figure of merit - Walden for speed-limited, Schreier for noise-limited designs
 - Ideal quantization gives SQNR = 6.02 N + 1.76 dB, and the white-noise model of it holds only for busy inputs
 - Oversampling spreads the same noise power over more bandwidth: 3 dB (half a bit) per octave
-- Feedback around the quantizer shapes the noise away from the band: first-order sigma-delta buys 9 dB per octave, and order buys more
+- Feedback around the quantizer shapes the noise away from the band: first-order sigma-delta buys 9 dB per octave, and higher order buys more
 - The decimation filter is where the promised resolution is actually cashed out
 - A compiled ADC is a netlist, an object file and a rule file - portable across processes in weeks, and good enough for JSSC
 
 ---
 
 # Would you like to know more?
+
+<!--pan_doc:
 
 The design of sigma-delta modulation analog-to-digital converters [@boser88]
 

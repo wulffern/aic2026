@@ -100,8 +100,8 @@ If we choose to route a reference as a voltage we need to be careful with the gr
 
 <!--pan_doc:
 
-<sub>Figure 2: Voltage source with ground impedance. Routing long distances it's not possible to have
-guarantee we have the same ground impedance at the destination.</sub>
+<sub>Figure 2: Voltage source with ground impedance. Routing long distances it's not possible to guarantee
+we have the same ground impedance at the destination.</sub>
 -->
 
 ---
@@ -149,7 +149,7 @@ but the key point,  is then the receiving block **cannot** be on the other side 
 The reference must be right next to my block.
 
 I could use two references on my IC, one for the ADC and one for the battery charger.
-Ask yourself, “Why do we care if there is two references?” 
+Ask yourself, “Why do we care if there are two references?” 
 And the answer is “Silicon area is expensive, to make things cheap, we must make things small”,  
 in other words,  we should not duplicate features unless we absolutely have to.
 
@@ -296,7 +296,7 @@ provided we can compare to a known voltage.
 We often call this voltage $\Delta V_D$ or $\Delta V_{BE}$, 
 and we can see it's proportional to absolute temperature. 
 
-We know that the $V_D$ decreases linearly with temperature, so if we combined a multi-plum of the 
+We know that the $V_D$ decreases linearly with temperature, so if we combined a multiple of the 
 $\Delta V_{BE}$ with a $V_D$ voltage, then we should get a constant voltage.
 
 -->
@@ -1054,8 +1054,8 @@ With a known voltage, we can convert to a known current with the circuit in Figu
 On-chip we don't have accurate resistors, 
 but for bias currents, it's usually ok with $\pm 20$ % variation  (the variation of R). 
 
-Across a IC, we can expect the resistors to match within 2 % percent, as such, we can recreate a 
-voltage with a accuracy of about 2 % difference from the original if we have a 
+Across an IC, we can expect the resistors to match within 2 % percent, as such, we can recreate a 
+voltage with an accuracy of about 2 % difference from the original if we have a 
 second resistor on the other side of the IC.
 
 If we wanted to create an accurate current, then we'd trim the R in production test 
