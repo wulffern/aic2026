@@ -528,8 +528,7 @@ Those students that follow the course at NTNU will be able to tapeout if the des
 
 ---
 
-## Summary
-
+# Summary
 <!--pan_doc:
 
 The one-page version of this chapter:

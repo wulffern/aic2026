@@ -916,8 +916,7 @@ is free:
 
 ---
 
-## Summary
-
+# Summary
 <!--pan_doc:
 
 The single transistor gives us three views of the same device:

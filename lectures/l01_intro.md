@@ -201,7 +201,7 @@ it's likely that you'll find the analog flow interesting.
 
 <!--pan_skip: -->
 
-### Life of an analog designer: Schematic Design
+## Life of an analog designer: Schematic Design
 
 [.column]
 ![inline](../media/l00_schematic.pdf)
@@ -575,8 +575,7 @@ Expect that you will spend at least $$2\pi$$ times more time than planned *(most
 
 ---
 
-## Summary
-
+# Summary
 <!--pan_doc:
 
 The one-page version of this chapter:

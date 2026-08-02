@@ -321,8 +321,7 @@ the detaching loops are not an accident but the product.
 
 ---
 
-## Summary
-
+# Summary
 <!--pan_doc:
 
 The one-page version of this chapter:

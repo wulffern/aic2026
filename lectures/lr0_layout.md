@@ -129,8 +129,7 @@ The X and Y space is for the distance between groups. The unit is "Ångstrøm", 
 
 ---
 
-## Summary
-
+# Summary
 <!--pan_doc:
 
 The one-page version of this chapter:

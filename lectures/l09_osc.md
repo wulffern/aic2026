@@ -701,8 +701,7 @@ $$ f_o = \frac{1}{2}f =  \frac{1}{2RC}$$
 
 ---
 
-## Summary
-
+# Summary
 <!--pan_doc:
 
 The one-page version of this chapter:

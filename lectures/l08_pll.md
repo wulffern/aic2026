@@ -785,8 +785,7 @@ Below are a couple layout images of the finished PLL
 
 ---
 
-## Summary
-
+# Summary
 <!--pan_doc:
 
 The one-page version of this chapter:

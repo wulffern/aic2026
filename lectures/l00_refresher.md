@@ -719,8 +719,7 @@ and store energy in the magnetic fields in a loop of a conductor.
 
 ---
 
-## Summary
-
+# Summary
 <!--pan_doc:
 
 The one-page version of this chapter:

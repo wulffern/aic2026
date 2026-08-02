@@ -673,7 +673,7 @@ Negative slack (over PVT[^1]) => Timing is not OK
 [OpenTimer](https://github.com/OpenTimer/OpenTimer)
 
 ---
-### [What is timing analysis](https://www.synopsys.com/glossary/what-is-static-timing-analysis.html)
+## [What is timing analysis](https://www.synopsys.com/glossary/what-is-static-timing-analysis.html)
 
 <!--![inline](https://www.synopsys.com/content/dam/synopsys/solutions/design/timing-paths-diagram.jpg.imgw.850.x.jpg)![inline](https://www.synopsys.com/content/dam/synopsys/solutions/design/multiple-paths-through-combined-logic.jpg.imgw.850.x.jpg)-->
 ![inline](../media/l13/timing_paths_tikz.pdf)
@@ -809,7 +809,7 @@ area : 16;
 
 ---
 
-### Delay definitions
+## Delay definitions
 
 | Parameter | Name| Description|
 | :-- | :--| :--|
@@ -846,7 +846,7 @@ $$ R \approx 1 \text{ k}\Omega\mu\text{m}$$
 
 ---
 
-### Inverter with inverter load
+## Inverter with inverter load
 
 
  $$ C \approx 1 \text{ fF}/\mu\text{m}$$, $$ R \approx 1 \text{ k}\Omega\mu\text{m}$$
@@ -1884,8 +1884,7 @@ clean
 
 ---
 
-## Summary
-
+# Summary
 <!--pan_doc:
 
 The one-page version of this chapter:

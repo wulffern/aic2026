@@ -507,8 +507,7 @@ Resistors and Capacitors can be matched extremely well
 
 
 
-## Summary
-
+# Summary
 <!--pan_doc:
 
 The one-page version of this chapter:

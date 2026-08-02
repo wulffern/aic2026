@@ -113,7 +113,7 @@ not.
 The transistors in a particular technology (from GlobalFoundries, TSMC, Samsung or others) have a maximum 
 voltage that they can survive for a certain time. Exceed that time, or voltage, and the transistors die. 
 
-### Why transistors die
+## Why transistors die
 
 A gate oxide will break due to Time Dependent Dielectric Breakdown (TDDB) if the voltage across the gate oxide is too large. Silicon oxide can break down at approximately 5 MV/cm. The breakdown forms a conductive channel from the gate to the channel and is permanent. After breakdown there will be a resistor of kOhms between gate and channel. 
 
@@ -810,8 +810,7 @@ Below you can see a period of the PFM buck. The state can be seen in the bottom 
 
 ---
 
-## Summary
-
+# Summary
 <!--pan_doc:
 
 The one-page version of this chapter:

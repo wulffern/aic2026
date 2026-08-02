@@ -453,8 +453,7 @@ function is often referred to as the *Wiener-Khintchine* theorem.
 
 ---
 
-## Summary
-
+# Summary
 <!--pan_doc:
 
 The one-page version of this chapter:

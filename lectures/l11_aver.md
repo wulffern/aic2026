@@ -145,7 +145,7 @@ In SystemDotNet I implemented the event queue as a hash table, so it ran a bit f
 <sub>Figure 3: Event queue implemented as a hash table in SystemDotNet, where events at 10, 20, 21 and 30 ns are looked up by time step before being run. Source: the SystemDotNet project on SourceForge</sub>
 -->
 
-### Digital Simulators
+## Digital Simulators
 
 <!--pan_doc:
 
@@ -668,8 +668,7 @@ rund:
 
 ---
 
-## Summary
-
+# Summary
 <!--pan_doc:
 
 The one-page version of this chapter:

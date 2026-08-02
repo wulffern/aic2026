@@ -1261,8 +1261,7 @@ Two rules follow from this, and they are worth more than the circuit:
 
 ---
 
-## Summary
-
+# Summary
 <!--pan_doc:
 
 The one-page version of this chapter:

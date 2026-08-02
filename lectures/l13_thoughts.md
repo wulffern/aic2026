@@ -181,7 +181,7 @@ indeed which student. So here goes
 
 **This is important:** Do not worry about unknowns. Make a list of unknowns and find a test to check whether the unknown is a problem. Fixing things based on guesses will cause trouble.
 
-### AC open, DC closed switch
+## AC open, DC closed switch
 
 In SPICE there is usually a switch or capacitor/inductor that has the behavior
 of being open at AC and closed at DC or visa versa. Useful for setting common
@@ -433,8 +433,7 @@ The Data Conversion Handbook, Walt Kester
 
 ---
 
-## Summary
-
+# Summary
 <!--pan_doc:
 
 The one-page version of this chapter:

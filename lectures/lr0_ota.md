@@ -684,8 +684,7 @@ finding it in silicon is the most expensive way to learn this rule.
 
 ---
 
-## Summary
-
+# Summary
 <!--pan_doc:
 
 The one-page version of this chapter:

@@ -86,7 +86,7 @@ What I could find is in the table below, maybe you can find more?
 This list contains supplies, clocks, digital outputs, bias currents and a ground. Let me explain what they are.
 
 
-### Supply 
+## Supply 
 
 The temperature sensor has two supplies, one analog (3.3 V) and one digital (1.2 V), which must come from somewhere. 
 
@@ -729,7 +729,7 @@ with electron injection (1), then forward bias of PMOS source/drain junction (2)
 <!--pan_doc: 
 
 
-### Electron injection
+## Electron injection
 
 Assume that we have an electron source, for example a pad that is below ground for a bit. This will inject 
 electrons into the substrate/bulk (1) and electrons will diffuse around. 
@@ -808,8 +808,7 @@ You must **always handle ESD** on an IC
 
 ---
 
-## Summary
-
+# Summary
 <!--pan_doc:
 
 The one-page version of this chapter:

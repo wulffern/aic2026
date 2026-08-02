@@ -1199,8 +1199,7 @@ I hope you understand now that it's actually complicated.
 
 ---
 
-## Summary
-
+# Summary
 <!--pan_doc:
 
 The one-page version of this chapter:

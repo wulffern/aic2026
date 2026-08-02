@@ -1549,8 +1549,7 @@ almost nothing else about analog design got easier.
 
 ---
 
-## Summary
-
+# Summary
 <!--pan_doc:
 
 The one-page version of this chapter:

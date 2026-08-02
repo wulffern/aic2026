@@ -24,7 +24,7 @@ shows how to start the docker image.
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/8VkmzaZebnc?si=Y7ziwT6FGafCHC6j" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
-## Create the IP 
+# Create the IP 
 
 I've made some scripts to automatically generate the IP. 
 
@@ -35,7 +35,7 @@ cd aicex/ip
 cicconf newip ex --project lelo --technology sky130A --ip  tech_sky130A/cicconf/lelo.yaml
 ```
 
-## The file structure 
+# The file structure 
     
 It matters how you name files, and store files. I would be surprised if you 
 had a good method already, as such, I won't allow you to make your own folder
@@ -43,7 +43,7 @@ structure and names for things. I also control the filenames and folder
 structure because there are many scripts to make your life easier (yes, really)
 that rely on an exact structure. Don't mess with it. 
 
-### Github workflows
+## Github workflows
 
 On github it's possible use something called workflows to run things every time
 you push a new version. It's really nice, since it can then check that
@@ -61,7 +61,7 @@ The workflows are defined below.
              # and Layout Parasitic Extraction
 ```
 
-### Configuration files 
+## Configuration files 
 
 Each IP has a few files that define the setup, you'll need to modify at least
 the `README.md` and the `info.yaml`.
@@ -75,7 +75,7 @@ the `README.md` and the `info.yaml`.
  tech -> ../tech_sky130A  # The technology library
 ``` 
 
-### Design files 
+## Design files 
 
 A "cell" in the open source EDA world should consist of the following files
 
@@ -107,7 +107,7 @@ For example, if the cell name was `LELO_EX`, then you would have
 All these files are text files, so you can edit them in a text editor, but
 mostly you shouldn't (except for the Markdown)
 
-### Simulations 
+## Simulations 
 
 All simulations shall be stored in `sim`. Once you have a Schematic ready for
 simulation, then 
@@ -125,7 +125,7 @@ sim
 ```
 
 
-### The work 
+## The work 
 
 All commands (except for simulation), shall be run in the `work` folder. 
 
@@ -143,7 +143,7 @@ work
  xschemrc
 ```
 
-## Github setup
+# Github setup
 
 Create a repository on [github](https://github.com).
 The name of the repository that you make on GitHub has to be the same as what is written after ```<your username>``` in the last command below. In this example, that is ```lelo_ex_sky130a```.
@@ -155,13 +155,13 @@ git remote add origin \
  git@github.com:<your username>/lelo_ex_sky130a.git
 ```
 
-## Start working 
+# Start working 
 
-### Edit README.md
+## Edit README.md
 
 Open README.md in your favorite text editor and make necessary changes.
 
-### Familiarize yourself with the Makefile and make
+## Familiarize yourself with the Makefile and make
 
 I write all commands I do into a Makefile. There is nothing special with a Makefile, it's just what I choose
 to use 20 years ago. I'm not sure I'd choose something different now.
@@ -173,7 +173,7 @@ make
 
 Take a look inside the file called Makefile.
 
-## Draw Schematic <a name="sch"></a>
+# Draw Schematic <a name="sch"></a>
 
 The block we'll make is a current mirror with a 1 to 4 scaling. 
 
@@ -186,13 +186,13 @@ Open the schematic:
 xschem -b ../design/LELO_EX_SKY130A/LELO_EX.sch &
 ```
 
-### Add Ports
+## Add Ports
 
 Add IBPS\_5U and IBNS\_20U ports, the P and N in the name signifies what
 transistor the current comes from. So IBPS must go into a diode connected NMOS,
 and N will be our output, and go into a diode connected PMOS somewhere else.
 
-### Add transistors
+## Add transistors
 
 Use 'I' or 'Shift+i' (note the letter case) to open the library manager. Click the `lelo_ex_sky130A/design`
 path, then `JNW_ATR_SKY130A` and select `JNWATR_NCH_4C5F0.sym`
@@ -234,7 +234,7 @@ Remember to save the schematic
 <sub>Figure 1: Finished LELO_EX schematic in Xschem - three NMOS current mirror devices between the IBPS_5U, IBNS_20U and VSS ports</sub>
 -->
 
-### Netlist schematic
+## Netlist schematic
 
 Check that the netlist looks OK
 
@@ -246,12 +246,12 @@ cat xsch/LELO_EX.spice
 
 ---
 
-## Typical corner SPICE simulation <a name="simschtyp"></a>
+# Typical corner SPICE simulation <a name="simschtyp"></a>
 
 I've made [cicsim](https://github.com/wulffern/cicsim) that I use to run simulations (ngspice) and extract
 results
 
-### Setup simulation environment
+## Setup simulation environment
 Navigate to the `lelo_ex_sky130a/sim/` directory.
 
 Make a new simulation folder
@@ -263,7 +263,7 @@ cicsim simcell  LELO_EX_SKY130A LELO_EX \
 
 I would recommend you have a look at the template.yaml file to understand what happens.
 
-### Familiarize yourself with the simulation folder
+## Familiarize yourself with the simulation folder
 
 I've added quite a few options to cicsim, and it might be confusing. For
 reference, these are what the files are used for
@@ -286,7 +286,7 @@ cd LELO_EX
 make typical
 ```
 
-### Modify default testbench (tran.spi)
+## Modify default testbench (tran.spi)
 
 Delete the VDD source
 
@@ -305,7 +305,7 @@ Save the voltage by adding v(IBPS_5U) to the save statement
 .save i(V0) v(IBPS_5U)
 ```
 
-### Modify measurements (tran.meas)
+## Modify measurements (tran.meas)
 
 Add measurement of the current and VGS. It must be added between the
 "MEAS_START" and "MEAS_END" lines.
@@ -352,7 +352,7 @@ will skip the
 simulation, and rerun only the measurement. This is why you should split the testbench and the
 measurement. Simulations can run for days, but measurement takes seconds.
 
-### Modify result specification (tran.yaml)
+## Modify result specification (tran.yaml)
 
 Add the result specifications, for example
 
@@ -389,7 +389,7 @@ make typical OPT="--no-run"
 Open `results/tran_Sch_typical.html`
 
 
-### Check waveforms
+## Check waveforms
 
 You can either use ngspice, or you can use cicsim, or you can use something I
 don't know about 
@@ -403,7 +403,7 @@ cicsim wave output_tran/tran_SchGtKttTtVt.raw
 Load the results, and try to look at the plots. There might not be that much
 interesting happening 
 
-#### Searching waveforms
+### Searching waveforms
 
 On the left side of the window you'll see a text box in the middle between the
 filename, and the wave names. This is a regex search field, and you can easily
@@ -422,13 +422,13 @@ A great resource is [Mastering Regular Expressions](https://regex.info/book.html
 
 ---
 
-## All corners SPICE simulations <a name="simschcorner"></a>
+# All corners SPICE simulations <a name="simschcorner"></a>
 
 Analog circuits must be simulated for all physical conditions, we call them corners.
 We must check high and low temperature, high and low voltage, all process corners, and device-to-device mismatch.
 
 
-### Remove Vh and Vl corners (Makefile)
+## Remove Vh and Vl corners (Makefile)
 
 For the current mirror we don't need to vary voltage, since we don't have a VDD.
 
@@ -437,7 +437,7 @@ Open Makefile in your favorite text editor.
 Change all instances of "Vt,Vl,Vh" and "Vl,Vh" to Vt
 
 
-### Run all corners
+## Run all corners
 To simulate all corners do
 
 ``` bash
@@ -449,7 +449,7 @@ where etc is extreme test condition and mc is monte-carlo.
 Wait for simulations to complete.
 
 
-### Get creative with python
+## Get creative with python
 
 Open `tran.py` in your favorite editor, try to read and understand it.
 
@@ -480,7 +480,7 @@ You'll see that cicsim writes all the png's. Check with `ls -l output_tran/*.png
 You'll also notice it will slow down the simulation, so maybe remove the lines
 from `tran.py` again ;-) 
 
-### Generate simulation summary
+## Generate simulation summary
 
 Run
 
@@ -498,7 +498,7 @@ pandoc -s   README.md -o README.html
 
 to generate a HTML slideshow that you can open in browser. Open the HTML file.
 
-### Viewing results without GUI browser 
+## Viewing results without GUI browser 
 
 If you're on a system without a browser, or indeed a GUI, then it's possible to
 view the results in the terminal.
@@ -521,7 +521,7 @@ Then
 lynx README.html
 ```
 
-### Think about the results
+## Think about the results
 
 From the corner and mismatch simulation, we can observe a few things.
 
@@ -532,7 +532,7 @@ From the corner and mismatch simulation, we can observe a few things.
 
 ---
 
-## Draw Layout <a name="layout"></a>
+# Draw Layout <a name="layout"></a>
 
 
 A foundry (the factory that makes integrated circuits) needs to know how we want
@@ -552,7 +552,7 @@ magic ../design/LELO_EX_SKY130A/LELO_EX.mag
 Now brace yourself, Magic VLSI was created in the 1980's. For its time it was extremely modern,
 however, today it seems dated. However, it is free, so we use it.
 
-### Magic VLSI
+## Magic VLSI
 
 Try google for most questions, and there are youtube videos that give an intro.
 
@@ -586,7 +586,7 @@ Type "macro help" in the command window to see all shortcuts
 | Shift-Right | Move cell right                   |
 
 
-### Add transistors
+## Add transistors
 
 Open Cell -> Place Instance. Navigate to the right transistor.
 
@@ -602,7 +602,7 @@ Place all transistors on top of each other as shown below in the picture.
 <sub>Figure 2: Magic with the transistor instances stacked on top of each other, shown as boxes on the left and with layers drawn on the right</sub>
 -->
 
-### Place devices
+## Place devices
 
 You will find that one of the more time consuming things with analog layout is to
 place the devices, and to follow the design rules from foundry. I detest tedious
@@ -618,7 +618,7 @@ make xsch
 cicpy sch2mag LELO_EX_SKY130A LELO_EX
 ```
 
-### Add Ground
+## Add Ground
 
 In the command window, type
 
@@ -653,7 +653,7 @@ change layer down
 <sub>Figure 3: The source terminals of all transistors connected down to the ground rail, DRC clean</sub>
 -->
 
-### Route Gates
+## Route Gates
 
 Press "space" to enter wire mode. Left click on the top gate to start a wire, and right click to end the wire.
 
@@ -669,7 +669,7 @@ a box that matches the locali. Connect the drain to the gate in locali.
 <sub>Figure 4: The gates routed together, with the gate to drain connection of M1 made in locali</sub>
 -->
 
-### Drain of M2
+## Drain of M2
 
 Use the wire tool to draw connections for the drains.
 
@@ -686,7 +686,7 @@ etc. For locali it's usually all over the place.
 <sub>Figure 5: The drain connections routed with the wire tool, using vias to change metal layer</sub>
 -->
 
-### Add labels
+## Add labels
 
 All ports must be named (IBPS\_5U, IBNS\_20U, VSS). The cicpy script may add
 ports, but not necessarily where you want them.
@@ -696,7 +696,7 @@ Select the port button.
 
 ---
 
-## Layout verification <a name="ver"></a>
+# Layout verification <a name="ver"></a>
 
 The DRC can be seen directly in Magic VLSI as you draw.
 
@@ -719,7 +719,7 @@ If you've routed correctly, then the LVS should be correct.
 
 ---
 
-## Extract layout parasitics <a name="lpe"></a>
+# Extract layout parasitics <a name="lpe"></a>
 
 With the layout complete, we can extract parasitic capacitance.
 
@@ -735,7 +735,7 @@ cat lpe/LELO_EX_lpe.spi
 
 ---
 
-## Simulate with layout parasitics <a name="simlpe"></a>
+# Simulate with layout parasitics <a name="simlpe"></a>
 
 Navigate to sim/LELO_EX. We now want to simulate the layout.
 
@@ -753,7 +753,7 @@ to
 VIEW=Lay
 ```
 
-### Typical simuation
+## Typical simuation
 
 Run
 
@@ -761,14 +761,14 @@ Run
 make typical
 ```
 
-### Corners
+## Corners
 Navigate to sim/LELO_EX. Run all corners again
 
 ``` bash
 make all
 ```
 
-### Simulation summary
+## Simulation summary
 
 Open `summary.yaml` and add the layout files.
 
@@ -794,7 +794,7 @@ pandoc -s  README.md -o README.html
 Open the README.html and have a look a the results. The layout should be close
 to the schematic simulation. 
 
-## Make documentation 
+# Make documentation 
 
 Make a file (or it may exists) `design/LELO_EX_SKY130A/LELO_EX.md` and add some
 documentation of what you've made. 
@@ -806,7 +806,7 @@ git add sim/LELO_EX/results/*.html
 git add sim/LELO_EX/README.md 
 ```
 
-## Edit info.yaml 
+# Edit info.yaml 
 
 Finally, let's setup the `info.yaml` so that all the github workflows run
 correctly. 
@@ -834,7 +834,7 @@ doc:
       - LELO_EX
 ```
 
-## Setup github pages 
+# Setup github pages 
 
 Go to your GitHub repository (repo). Press Settings. Press Pages. Choose source under Build and Deployment  ->
 GitHub Actions
@@ -842,7 +842,7 @@ GitHub Actions
 Wait for the workflows to build. And check your github pages. 
 Mine is [https://wulffern.github.io/lelo_ex0_sky130a/](https://wulffern.github.io/lelo_ex0_sky130a/).
 
-## Frequently asked questions
+# Frequently asked questions
 
 *Q:*  My GDS/LVS/DRC action fails, even though it works locally. 
 
@@ -857,8 +857,7 @@ It's the last `../LELO_ATR_SKY130A` that sometimes is missing.
 
 ---
 
-## Summary
-
+# Summary
 <!--pan_doc:
 
 The one-page version of this chapter:

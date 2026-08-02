@@ -398,8 +398,7 @@ Strong $$ \frac{g_m}{I_d} = \frac{2}{V_{eff}}$$
 
 ---
 
-## Summary
-
+# Summary
 <!--pan_doc:
 
 The one-page version of this chapter:

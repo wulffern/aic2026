@@ -119,7 +119,7 @@ All digital processing can be made with the NOT(A AND B) function!
 
 <!--pan_skip: -->
 
-### Should we do as much as possible in the abstract digital world? 
+## Should we do as much as possible in the abstract digital world? 
 
 ![inline](../media/analog_designer.png) ![right](../media/digital_shoulder.png)
 
@@ -868,8 +868,7 @@ You can find the schematic for the OTA at
 
 ---
 
-## Summary
-
+# Summary
 <!--pan_doc:
 
 The one-page version of this chapter:

@@ -830,8 +830,7 @@ conversion, is what decides whether a triboelectric system works.
 
 ---
 
-## Summary
-
+# Summary
 <!--pan_doc:
 
 The one-page version of this chapter:

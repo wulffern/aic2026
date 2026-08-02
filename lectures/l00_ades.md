@@ -115,7 +115,7 @@ Below are the rules I like. You may disagree, but if you're my student, then you
 
 -->
 
-### Only uppercase names allowed 
+## Only uppercase names allowed 
 
 ---
 
@@ -184,7 +184,7 @@ The "P" post-fix tells us the current comes from a PMOS, so we can put it into a
 
 # Layout rules
 
-### Limit the amount of transistor Width's and Length's that you use 
+## Limit the amount of transistor Width's and Length's that you use 
 
 **Do:** W = 1.0 um, L = 180 nm, Use multiplier for other sizes
 

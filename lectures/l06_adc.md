@@ -1531,8 +1531,7 @@ For more information, ask me, or see the patent at
 
 ---
 
-## Summary
-
+# Summary
 <!--pan_doc:
 
 The one-page version of this chapter:
