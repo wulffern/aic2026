@@ -62,7 +62,7 @@ The length (L), and width (W) of the MOS is annotated in blue.
 
 -->
 
-![inline 100%](../media/3dcross.pdf)
+![inline 100%](../media/threedcross_tikz.pdf)
 
 
 ---
@@ -76,7 +76,7 @@ The NMOS is MN1 and PMOS is MP1.
 -->
 
 
-![inline](../media/fig_nmospmos.pdf)  
+![inline](../media/fig_nmospmos_tikz.pdf)  
 
 ---
 
@@ -209,7 +209,7 @@ consume lots of power. There are smarter ways to use the transistors.
 
 -->
 
-![inline](../media/nand_tikz.pdf)  
+![inline](../media/l13/nand_tr_tikz.pdf)  
 
 <!--pan_doc:
 <sub>Figure 8:  NAND </sub>
@@ -640,8 +640,6 @@ In the plot below we can see the sweep of the gate voltage.
 
 -->
 
-$$ i(vcur) = I_{DS} $$
-
 ![right fit](../media/vgate_tikz.pdf)
 
 <!--pan_doc:
@@ -860,8 +858,6 @@ curve has two personalities, and the boundary between them is $V_{eff}$.
 | V<sub>DS</sub> | 0 to 1.8    |
 | V<sub>S</sub>  | 0           |
 | V<sub>B</sub>  | 0           |
-
-$$i(vcur) = I_{DS} $$
 
 ![right fit](../media/vdrain_tikz.pdf)
 

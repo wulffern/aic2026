@@ -1,0 +1,24 @@
+\input{tikz/fig_header.tex}
+
+% The two MOSFETs: NMOS with source down, PMOS with source up, gates
+% driven from the left, every terminal brought out to an open circle.
+% Replaces media/fig_nmospmos.pdf in the MOSFET refresher.
+
+\begin{circuitikz}[american, thick, transform shape, circuit ee IEC]
+
+  \input{tikz/ckt_lib.tex}
+
+  % NMOS: V_S at the source, V_D at the drain, V_G at the gate
+  \draw (0,0) \vnmos{MN1};
+  \draw (MN1.gate) \portIn{$V_G$};
+  \draw (0,0) to [short,-o] ++(0,-\grid/2) node [anchor=north] {$V_S$};
+  \draw (0,\grid) to [short,-o] ++(0,\grid/2) node [anchor=south] {$V_D$};
+
+  % PMOS: source up towards the supply, drain down
+  \draw ({3*\grid},0) \vpmos{MP1};
+  \draw (MP1.gate) \portIn{$V_G$};
+  \draw ({3*\grid},0) to [short,-o] ++(0,-\grid/2) node [anchor=north] {$V_D$};
+  \draw ({3*\grid},\grid) to [short,-o] ++(0,\grid/2) node [anchor=south] {$V_S$};
+
+\end{circuitikz}
+\end{document}

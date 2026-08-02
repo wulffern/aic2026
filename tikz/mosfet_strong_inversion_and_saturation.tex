@@ -6,7 +6,10 @@
 \begin{tikzpicture}[scale=0.9]
   \input{tikz/mos_lib.tex}
   \fetframe
-  \fill[echarge!35, rounded corners=1pt] (2.9,-0.20) rectangle (5.45,0.04);
-  \fill[echarge, rounded corners=1pt] (2.9,-0.14) rectangle (5.5,-0.02);
+  % the sheet thins out and pinches off before the drain
+  \fill[echarge!25] (2.9,-0.30) .. controls (4.2,-0.28) and (5.0,-0.17) .. (5.65,-0.12)
+    -- (5.65,-0.11) .. controls (5.0,-0.07) and (4.2,-0.02) .. (2.9,0.0) -- cycle;
+  \fill[echarge] (2.9,-0.22) .. controls (4.2,-0.20) and (4.9,-0.14) .. (5.55,-0.12)
+    .. controls (4.9,-0.10) and (4.2,-0.06) .. (2.9,-0.04) -- cycle;
 \end{tikzpicture}
 \end{document}
