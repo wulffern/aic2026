@@ -383,6 +383,11 @@ class Lecture():
                 self.skipslide = True
                 self.output = False
 
+            elif(key == "author"):
+                # consumed by the standalone wrapper generation; the
+                # slide and post outputs drop it
+                pass
+
             elif(key == "doc"):
                  # Start statemachine
                 # 1. Skip this line, it should be <!--pan_doc:
@@ -700,10 +705,22 @@ def latex(filename,root,no_append):
     with open("pdf/version_short.tex") as fi:
         version = fi.read()
 
+    #- An optional <!--pan_author: ... --> overrides the standalone byline,
+    #  used by the chapters written with AI assistance.
+    author = "Carsten~Wulff, carsten@wulff.no "
+    pdfauthor = "Carsten~Wulff"
+    with open(filename) as fi:
+        am = re.search(r"<!--pan_author:\s*(.+?)\s*-->", fi.read())
+    if am:
+        author = am.group(1)
+        pdfauthor = author.split(",")[0]
+
     with open("pdf/short_tmplt.tex") as fi:
         buff = fi.read()
         with open("pdf/" + foname,"w") as fo:
-            fo.write(buff.replace("__title__",title).replace("__file__",foname_fixed).replace("__version__",version))
+            fo.write(buff.replace("__title__",title).replace("__file__",foname_fixed)
+                         .replace("__version__",version)
+                         .replace("__author__",author).replace("__pdfauthor__",pdfauthor))
 
     flatex = fname.replace(".md",".latex")
     cmd = f"pandoc --citeproc --bibliography=pdf/aic.bib --csl=pdf/ieee-with-url.csl  -o {flatex} {fname}  "

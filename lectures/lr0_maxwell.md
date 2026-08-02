@@ -11,6 +11,8 @@ date: 2025-01-02
 
 # Fields
 
+<!--pan_author: Written by Claude (Anthropic) -- ideas and review by Carsten~Wulff, carsten@wulff.no -->
+
 <!--pan_title: Fields -->
 
 <!--pan_doc:

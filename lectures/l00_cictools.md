@@ -11,6 +11,8 @@ date: 2025-01-06
 
 # The cic tools
 
+<!--pan_author: Written by Claude (Anthropic) -- ideas and review by Carsten~Wulff, carsten@wulff.no -->
+
 <!--pan_title: The cic tools -->
 
 <!--pan_doc:
