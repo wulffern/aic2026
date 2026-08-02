@@ -1,18 +1,12 @@
 \input{tikz/fig_header.tex}
 
-% Fully differential two-stage OTA with parallel common mode feedback,
-% redrawn from media/diff_ota.png. Only one side of the OTA is drawn,
-% as in the original. Sizes are "WFLF": 24F4F means W = 24 and L = 4
-% minimum gate lengths, in red like the hand original.
-%
-% Left: the CMFB amplifier - VON/VOP sensed through 60k||20f networks
-% into a differential pair against a 100k/100k mid-supply reference,
-% PMOS diode loads, and the diode node drives the gate of one of the
-% two top PMOS in the first stage load (the other is VBP biased).
-% Middle: VBP/VCP cascoded tail, PMOS input pair, NMOS diode load.
-% Right: cascoded mirror (VCN) up to the first stage output X, second
-% stage driver with VBP1 load, and 500f cascode compensation. The X
-% route crosses the 500f wire without a dot, as in the original.
+% The fully differential two-stage OTA, one side drawn, redrawn from
+% media/diff_ota.png. Sizes are "WFLF": 24F4F means W = 24 and L = 4
+% minimum gate lengths. A cascoded PMOS tail feeds the input pair, a
+% cascoded mirror makes the first stage output, and the second stage
+% is a common source with 500f of cascode compensation. The common
+% mode correction arrives as V_CMFB from the CMFB amplifier, which
+% has its own figure.
 
 \begin{circuitikz}[american, thick, transform shape, circuit ee IEC]
 
@@ -23,69 +17,10 @@
     at (#1,#2) {#3};}
 
   % ---- rails ----
-  \draw[line width=2pt] (-4.0,\ytop) -- (20.2,\ytop);
-  \draw[line width=2pt] (-4.0,0) -- (20.2,0);
+  \draw[line width=2pt] (7.0,\ytop) -- (20.2,\ytop);
+  \draw[line width=2pt] (7.0,0) -- (20.2,0);
   \node[anchor=west, scale=0.8] at (20.25,\ytop) {$VDD$};
   \node[anchor=west, scale=0.8] at (20.25,0) {$VSS$};
-
-  % ================= CMFB amplifier =================
-  % PMOS diode loads, drains joined: that node is the CMFB output
-  \draw (1.0,4.8) to [Tpmos, n=cp1] ++(0,\grid);
-  \draw (3.4,4.8) to [Tpmos, n=cp2] ++(0,\grid);
-  % only the LEFT device is the diode; the right one mirrors it, and
-  % its drain runs straight down to its own NMOS. The gate line
-  % crosses that drain without a dot.
-  \draw (0.02,5.6) -- (0.02,4.5) -- (1.0,4.5) -- (1.0,4.8);
-  \draw (2.42,5.6) -- (2.42,4.5) -- (1.0,4.5);
-  \fill (1.0,4.5) circle (0.075);
-  \dsize{1.15}{5.9}{24F4F\\M=1}
-  \dsize{2.1}{5.9}{24F4F\\M=1}
-
-  % NMOS pair under the loads
-  \draw (1.0,1.6) to [Tnmos, n=cn1] ++(0,\grid);
-  \draw (3.4,1.6) to [Tnmos, n=cn2, mirror] ++(0,\grid);
-  \draw (1.0,3.2) -- (1.0,4.8);
-  \draw (3.4,3.2) -- (3.4,4.8);
-  \dsize{1.15}{2.0}{24F1F25\\M=2}
-  \dsize{2.1}{2.0}{24F1F25\\M=2}
-  % common source into the VBN tail
-  \draw (1.0,1.6) -- (3.4,1.6);
-  \draw (2.2,0) to [Tnmos, n=ct] ++(0,\grid);
-  \fill (2.2,1.6) circle (0.075);
-  \draw (1.22,0.8) \portIn{$VBN$};
-  \dsize{2.35}{0.45}{24F4F\\M=2}
-
-  % VON/VOP sense networks: 20f || 60k each, joined at the gate node
-  \draw (-3.4,4.75) node[anchor=south] {$VON$} to [short,o-] (-3.4,4.5);
-  \draw (-3.4,2.9) \vcapacitor{};
-  \draw (-3.4,4.25) -- (-2.8,4.25) -- (-2.8,4.2);
-  \draw (-2.8,2.9) -- (-2.8,3.0) \vresistor{} (-2.8,4.2);
-  \draw (-2.8,2.9) -- (-3.4,2.9);
-  \node[scale=0.75, anchor=east] at (-3.5,3.6) {20f};
-  \draw (-1.4,4.75) node[anchor=south] {$VOP$} to [short,o-] (-1.4,4.5);
-  \draw (-1.4,2.9) \vcapacitor{};
-  \draw (-1.4,4.25) -- (-0.8,4.25) -- (-0.8,4.2);
-  \draw (-0.8,2.9) -- (-0.8,3.0) \vresistor{} (-0.8,4.2);
-  \draw (-0.8,2.9) -- (-1.4,2.9);
-  \node[scale=0.75, anchor=west] at (-0.65,3.6) {60k};
-  \draw (-3.4,2.9) -- (-1.4,2.9);
-  \fill (-1.4,2.9) circle (0.075);
-  \draw (-1.4,2.9) -- (-1.4,2.4) -- (0.02,2.4);
-
-  % 100k/100k mid-supply reference with 500f, into the right gate
-  \draw (5.8,3.0) -- (5.8,3.2) \vresistor{100k} -- (5.8,\ytop);
-  \fill (5.8,3.0) circle (0.075);
-  \draw (5.8,0) -- (5.8,0.7) \vresistor{100k} -- (5.8,3.0);
-  \draw (5.8,3.0) -- (6.5,3.0) -- (6.5,2.9);
-  \draw (6.5,1.3) \vcapacitor{};
-  \node[scale=0.75, anchor=east, fill=white, inner sep=1pt] at (6.35,2.1) {500f};
-  \draw (6.5,1.3) -- (6.5,0);
-  \draw (4.38,2.4) -- (5.8,2.4);
-  \fill (5.8,2.4) circle (0.075);
-
-  % the CMFB boundary, as in the original hand drawing
-  \draw[gray!60, dashed, rounded corners=14pt] (-3.85,0.3) rectangle (7.0,6.1);
-  \node[gray!60!black, anchor=west, scale=0.85] at (-3.7,0.62) {CMFB};
 
   % ================= first stage =================
   % cascoded tail: VBP on the rail, VCP below it
@@ -123,8 +58,9 @@
   \draw (14.0,4.8) -- (14.0,4.6) -- (15.6,4.6) -- (15.6,4.8);
   \fill (14.8,4.6) circle (0.075);
   \draw (14.8,4.6) -- (14.8,4.8);
-  % CMFB route over the top rail to the pcm gate
-  \draw (16.58,5.6) -- (16.58,7.2) -- (0.55,7.2) -- (0.55,4.5);
+  % the CMFB correction arrives as a net, not a wire over the rail
+  \draw (16.58,5.6) -- (17.1,5.6) to [short,-o] ++(0.35,0);
+  \node[anchor=west, scale=0.85] at (17.55,5.6) {$V_{CMFB}$};
   \fill (0.55,4.5) circle (0.075);
 
   % VCP cascode down to the first stage output X
@@ -158,6 +94,7 @@
   % 500f cascode compensation from the internal node to VON
   \fill (19.0,1.45) circle (0.075);
   \draw (14.8,1.45) -- (17.5,1.45) \hcapacitor{500f} -- (19.0,1.45);
+
 
 \end{circuitikz}
 \end{document}

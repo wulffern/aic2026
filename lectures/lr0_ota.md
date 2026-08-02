@@ -530,17 +530,25 @@ first stage load.
 
 -->
 
+![fit](../media/l5_diffota_cmfb_tikz.pdf)
+
+<!--pan_doc:
+<sub>Figure 13: The common mode feedback amplifier: VON and VOP sensed through 60k||20f networks, compared against a 100k/100k mid-supply reference. Only the left load is diode connected, so the output is the right drain - the high impedance node - which leaves as $V_{CMFB}$</sub>
+-->
+
+---
+
 ![fit](../media/l5_diffota_tikz.pdf)
 
 <!--pan_doc:
-<sub>Figure 13: Fully differential two-stage OTA with parallel common mode feedback, sized in multiples of the minimum gate length F</sub>
+<sub>Figure 14: Fully differential two-stage OTA with parallel common mode feedback, sized in multiples of the minimum gate length F</sub>
 -->
 
 ---
 
 <!--pan_doc:
 
-The bias generator in Figure 14 turns a 10 uA reference into the five
+The bias generator in Figure 15 turns a 10 uA reference into the five
 gate voltages the OTA asked for. A diode connected NMOS sets the
 mirror line; one PMOS branch with a diode on top makes VBP; a long
 channel PMOS diode straight off the supply drops enough V_GS to make
@@ -553,7 +561,7 @@ so the second stage can be biased independently of the first.
 ![fit](../media/l5_diffota_bias_tikz.pdf)
 
 <!--pan_doc:
-<sub>Figure 14: Bias circuit generating the OTA bias voltages from a 10 uA reference current</sub>
+<sub>Figure 15: Bias circuit generating the OTA bias voltages from a 10 uA reference current</sub>
 -->
 
 ---

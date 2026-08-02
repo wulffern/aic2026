@@ -1,60 +1,80 @@
 \input{tikz/fig_header.tex}
 
-% Nauta's transconductor: two inverters amplify, and four small
-% inverters hold the common mode - a cross coupled pair between the
-% outputs, and a shorted inverter load on each output. Everything is an
-% inverter, so the OTA works at any supply where an inverter has gain.
+% Nauta's transconductor. Everything in it is an inverter, which is why
+% it works at any supply where an inverter still has gain.
+%
+% Laid out in four columns so the reader can see which inverter does
+% what: the two amplifying inverters on the left, then the cross
+% coupled pair between the output rails - each one taking the other
+% rail and driving this one - and finally a shorted inverter hanging
+% off each output as its load. Drawing the small inverters in their
+% own columns, rather than on the rails, is what keeps the picture
+% readable.
 
 \begin{circuitikz}[american, thick, transform shape, circuit ee IEC]
 
   \input{tikz/ckt_lib.tex}
 
-  \def\yt{1.6}      % top signal path
-  \def\yb{-1.6}     % bottom signal path
+  \def\yt{2.3}       % top output rail
+  \def\yb{-2.3}      % bottom output rail
+  \def\xout{9.6}     % where the rails end
 
-  % main transconductors
-  \draw (-2.0,\yt) \cicInv{inv1};
-  \draw (-3.4,\yt) node[anchor=east] {$v_p$} to [short,o-] (inv1_in);
-  \draw (-2.0,\yb) \cicInv{inv2};
-  \draw (-3.4,\yb) node[anchor=east] {$v_n$} to [short,o-] (inv2_in);
+  % ---- the two amplifying inverters ----
+  \draw (-2.4,\yt) \cicInv{inv1};
+  \draw (-3.9,\yt) node[anchor=east] {$v_p$} to [short,o-] (inv1_in);
+  \draw (-2.4,\yb) \cicInv{inv2};
+  \draw (-3.9,\yb) node[anchor=east] {$v_n$} to [short,o-] (inv2_in);
 
-  % output rails
-  \draw (inv1_out) -- (5.2,\yt);
-  \draw (5.2,\yt) to [short,-o] ++(0.5,0) node[anchor=west] {$v_{on}$};
-  \draw (inv2_out) -- (5.2,\yb);
-  \draw (5.2,\yb) to [short,-o] ++(0.5,0) node[anchor=west] {$v_{op}$};
+  % ---- the output rails ----
+  \draw (inv1_out) -- (\xout,\yt);
+  \draw (\xout,\yt) to [short,-o] ++(0.5,0) node[anchor=west] {$v_{on}$};
+  \draw (inv2_out) -- (\xout,\yb);
+  \draw (\xout,\yb) to [short,-o] ++(0.5,0) node[anchor=west] {$v_{op}$};
 
-  % cross coupled pair between the outputs, small
-  \begin{scope}[shift={(0.6,\yt)}, rotate=-90, scale=0.8]
+  % ---- the cross coupled pair, each in its own column ----
+  % top rail drives the bottom one
+  \begin{scope}[shift={(1.1,0.8)}, rotate=-90, scale=0.8]
     \draw (0,0) \cicInv{inv3};
   \end{scope}
-  \draw (inv3_out) -- (0.6,\yb);
-  \fill (0.6,\yt) circle (0.075);
-  \fill (0.6,\yb) circle (0.075);
+  \draw (1.1,\yt) -- (1.1,0.8);
+  \fill (1.1,\yt) circle (0.075);
+  \draw (inv3_out) -- (1.1,\yb);
+  \fill (1.1,\yb) circle (0.075);
 
-  \begin{scope}[shift={(1.8,\yb)}, rotate=90, scale=0.8]
+  % bottom rail drives the top one
+  \begin{scope}[shift={(3.1,-0.8)}, rotate=90, scale=0.8]
     \draw (0,0) \cicInv{inv4};
   \end{scope}
-  \draw (inv4_out) -- (1.8,\yt);
-  \fill (1.8,\yt) circle (0.075);
-  \fill (1.8,\yb) circle (0.075);
+  \draw (3.1,\yb) -- (3.1,-0.8);
+  \fill (3.1,\yb) circle (0.075);
+  \draw (inv4_out) -- (3.1,\yt);
+  \fill (3.1,\yt) circle (0.075);
 
-  % shorted inverter load on each output, small
-  \draw (3.2,\yt) -- (3.2,{\yt+0.8});
-  \begin{scope}[shift={(3.2,{\yt+0.8})}, scale=0.8]
+  %- the annotation goes below the picture, not between the devices
+  \draw[gray!60, thin] (2.1,{\yb-0.55}) -- (1.1,{\yb-0.15});
+  \draw[gray!60, thin] (2.1,{\yb-0.55}) -- (3.1,{\yb-0.15});
+  \node[anchor=north, scale=0.85, align=center] at (2.1,{\yb-0.6})
+    {cross coupled: each rail drives the other};
+
+  % ---- the loads: a shorted inverter hanging off each output ----
+  \draw (6.3,\yt) -- (6.3,{\yt+1.15});
+  \fill (6.3,\yt) circle (0.075);
+  \begin{scope}[shift={(6.3,{\yt+1.15})}, scale=0.8]
     \draw (0,0) \cicInv{inv5};
   \end{scope}
-  \draw (inv5_out) -- (4.6,{\yt+0.8}) -- (4.6,\yt);
-  \fill (3.2,\yt) circle (0.075);
-  \fill (4.6,\yt) circle (0.075);
+  \draw (inv5_out) -- (8.3,{\yt+1.15}) -- (8.3,\yt);
+  \fill (8.3,\yt) circle (0.075);
 
-  \draw (3.2,\yb) -- (3.2,{\yb-0.8});
-  \begin{scope}[shift={(3.2,{\yb-0.8})}, scale=0.8]
+  \draw (6.3,\yb) -- (6.3,{\yb-1.15});
+  \fill (6.3,\yb) circle (0.075);
+  \begin{scope}[shift={(6.3,{\yb-1.15})}, scale=0.8]
     \draw (0,0) \cicInv{inv6};
   \end{scope}
-  \draw (inv6_out) -- (4.6,{\yb-0.8}) -- (4.6,\yb);
-  \fill (3.2,\yb) circle (0.075);
-  \fill (4.6,\yb) circle (0.075);
+  \draw (inv6_out) -- (8.3,{\yb-1.15}) -- (8.3,\yb);
+  \fill (8.3,\yb) circle (0.075);
+
+  \node[anchor=south, scale=0.85] at (7.3,{\yt+1.95})
+    {shorted inverters: the load};
 
 \end{circuitikz}
 \end{document}

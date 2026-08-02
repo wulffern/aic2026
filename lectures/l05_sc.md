@@ -1324,10 +1324,18 @@ is the minimum gate length in that technology.
 
 -->
 
+![fit](../media/l5_diffota_cmfb_tikz.pdf)
+
+<!--pan_doc:
+<sub>Figure 22: The common mode feedback amplifier: VON and VOP sensed through 60k||20f networks, compared against a 100k/100k mid-supply reference. Only the left load is diode connected, so the output is the right drain - the high impedance node - which leaves as $V_{CMFB}$</sub>
+-->
+
+---
+
 ![fit](../media/l5_diffota_tikz.pdf)
 
 <!--pan_doc:
-<sub>Figure 22: Fully differential two-stage OTA with common mode feedback, sized in multiples of the minimum gate length F</sub>
+<sub>Figure 23: Fully differential two-stage OTA with common mode feedback, sized in multiples of the minimum gate length F</sub>
 -->
 
 
@@ -1342,7 +1350,7 @@ As bias circuit to make the voltages the below will work
 ![fit](../media/l5_diffota_bias_tikz.pdf)
 
 <!--pan_doc:
-<sub>Figure 23: Bias circuit generating the OTA bias voltages from a 10 uA reference current</sub>
+<sub>Figure 24: Bias circuit generating the OTA bias voltages from a 10 uA reference current</sub>
 -->
 
 
@@ -1368,7 +1376,7 @@ but usually we don't have enough headroom to use a single NMOS or PMOS. We may n
 ![original fit](../media/l5_sw1_tikz.pdf)
 
 <!--pan_doc:
-<sub>Figure 24: Switch implementations: NMOS, PMOS, transmission gate, and the transmission gate symbol</sub>
+<sub>Figure 25: Switch implementations: NMOS, PMOS, transmission gate, and the transmission gate symbol</sub>
 -->
 
 
@@ -1400,7 +1408,7 @@ as shown on the right.
 ![original fit](../media/l5_sw2_tikz.pdf)
 
 <!--pan_doc:
-<sub>Figure 25: Transmission gate with switched bulks (left) and a bootstrapped switch (right)</sub>
+<sub>Figure 26: Transmission gate with switched bulks (left) and a bootstrapped switch (right)</sub>
 -->
 
 
@@ -1418,7 +1426,7 @@ cross coupled dummy transistors. The JSSC SAR I've also ported to GF130NM, as sh
 ![original fit](../media/l00_SAR9B_CV.png)
 
 <!--pan_doc:
-<sub>Figure 26: Layout and transient simulation of the 9-bit SAR ADC, with the bootstrapped sampling switch at the bottom</sub>
+<sub>Figure 27: Layout and transient simulation of the 9-bit SAR ADC, with the bootstrapped sampling switch at the bottom</sub>
 -->
 
 
@@ -1433,7 +1441,7 @@ The bootstrapped switch looks like the one below.
 ![original fit](../media/l5_sw3_tikz.pdf)
 
 <!--pan_doc:
-<sub>Figure 27: Fully differential bootstrapped switch with cross coupled dummy transistors</sub>
+<sub>Figure 28: Fully differential bootstrapped switch with cross coupled dummy transistors</sub>
 -->
 
 
@@ -1476,7 +1484,7 @@ corner, where it is smallest, not at typical.
 ![original fit](../media/l5_novl_tikz.pdf)
 
 <!--pan_doc:
-<sub>Figure 28: Non-overlapping clock generator and the resulting phases $\phi_1$ and $\phi_2$</sub>
+<sub>Figure 29: Non-overlapping clock generator and the resulting phases $\phi_1$ and $\phi_2$</sub>
 -->
 
 
@@ -1528,7 +1536,7 @@ almost nothing else about analog design got easier.
 ![fit](../media/l5_scex_tikz.pdf)
 
 <!--pan_doc:
-<sub>Figure 29: Switched capacitor amplifier scaling the bipolar generated voltage by $C_1/C_2 = 10$</sub>
+<sub>Figure 30: Switched capacitor amplifier scaling the bipolar generated voltage by $C_1/C_2 = 10$</sub>
 -->
 
 
