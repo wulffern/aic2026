@@ -1,6 +1,13 @@
 % Preface and conventions, book-only front matter. Input from aic.tex
 % between the table of contents and the chapters.
 
+% The figure colours, defined here as well because the figures compile
+% standalone with their own preamble and the book preamble does not
+% otherwise need them. definecolor overwrites silently, so a later
+% definition elsewhere is harmless.
+\definecolor{armygreen}{rgb}{0, 0.5, 0}
+\definecolor{oxteal}{RGB}{60,140,160}
+
 \setchapterstyle{plain}
 \chapter*{Preface}
 \addcontentsline{toc}{chapter}{Preface}
@@ -54,7 +61,7 @@ line style carry meaning everywhere:
   n-type.
 \item \textcolor{armygreen}{\textbf{Green}} marks equivalence - two
   drawings of the same thing - and mechanical annotations.
-\item {\color[RGB]{60,140,160}\textbf{Teal}} is the gate oxide,
+\item {\color{oxteal}\textbf{Teal}} is the gate oxide,
   wherever it appears.
 \item \textbf{Dashed or arrowed strokes} are annotation, never wires.
 \item \textbf{Wires that cross without a dot are not connected};
