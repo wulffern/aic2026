@@ -26,7 +26,9 @@
 
   % current source load
   \fill (3.4,{\yA+1.6}) circle (0.075);
-  \draw (3.4,{\yA+1.6}) to [I] (3.4,{\yA+3.0});
+  %- the bias current flows from the supply down into the drain, as
+  %- everywhere else in the book
+  \draw (3.4,{\yA+3.0}) to [I] (3.4,{\yA+1.6});
   \draw (3.1,{\yA+3.0}) -- (3.7,{\yA+3.0});
 
   % gate in from the left

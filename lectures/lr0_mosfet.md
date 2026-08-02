@@ -1348,6 +1348,10 @@ capacitive division, and $I_{D0}$ collects the rest.
 ![right fit](../media/weakinv_tikz.pdf)
 
 <!--pan_doc:
+<sub>Figure 33: Weak inversion again, beside the equations it produces: the gate has depleted the surface and the first electrons are arriving, which is the exponential regime the three constants describe</sub>
+-->
+
+<!--pan_doc:
 
 Differentiate an exponential and you get the exponential back, divided by
 $nV_T$: in weak inversion the transconductance is proportional to the
@@ -1379,7 +1383,7 @@ Bang for the buck
 ![right fit](../media/gmid_tikz.pdf)
 
 <!--pan_doc:
-<sub>Figure 33: Simulated $g_m/I_D$ of a sky130 nfet_01v8 ([gmid.py](https://github.com/wulffern/aic2026/blob/main/ex/gmid.py))</sub>
+<sub>Figure 34: Simulated $g_m/I_D$ of a sky130 nfet_01v8 ([gmid.py](https://github.com/wulffern/aic2026/blob/main/ex/gmid.py))</sub>
 
 The transconductance per unit current is the "bang for the buck" of a
 transistor, and the figure shows both hand-calculation limits on top of the
@@ -1425,7 +1429,7 @@ every modern process lives with velocity saturation.
 ![right fit](../media/lr0_velocity_tikz.pdf)
 
 <!--pan_doc:
-<sub>Figure 34: Carrier velocity at 1 V across the channel: the mobility model, what the carriers actually do, and the physical speed limits</sub>
+<sub>Figure 35: Carrier velocity at 1 V across the channel: the mobility model, what the carriers actually do, and the physical speed limits</sub>
 
 Shrink the channel at a fixed voltage and the lateral field, and thus the
 mobility-model velocity (blue), grows without bound - it crosses the
@@ -1618,7 +1622,7 @@ Analog Circuit Design in Nanoscale CMOS Technologies [@lewyn09] --
 ![fit](../media/nanoscale_effects_tikz.pdf)
 
 <!--pan_doc:
-<sub>Figure 35: Four families of short-channel effect on one cross-section - mechanical stress from the isolation trenches, the transverse and lateral fields in the channel, traps at the oxide interface, and hot carriers where the lateral field peaks near the drain</sub>
+<sub>Figure 36: Four families of short-channel effect on one cross-section - mechanical stress from the isolation trenches, the transverse and lateral fields in the channel, traps at the oxide interface, and hot carriers where the lateral field peaks near the drain</sub>
 
 The annotations - stress components, fields, trap densities and proximity effects - are all things that measurably change the current of a modern transistor, and each has its own corner of the device model.
 -->
@@ -1632,7 +1636,7 @@ The annotations - stress components, fields, trap densities and proximity effect
 ![original fit](../media/dibl_tikz.pdf)
 
 <!--pan_doc:
-<sub>Figure 36: Drain induced barrier lowering</sub>
+<sub>Figure 37: Drain induced barrier lowering</sub>
 
 In a long channel (top) the source barrier $\Phi_B$ has a wide, flat top and the drain is far away. In a short channel (bottom left) the barrier is a narrow peak, and pulling the drain potential down (bottom right, dashed) also pulls the top of the barrier down. A lower barrier means more current at the same gate voltage: the threshold voltage effectively drops as $V_{DS}$ increases, which degrades the output resistance.
 -->
@@ -1647,7 +1651,7 @@ In a long channel (top) the source barrier $\Phi_B$ has a wide, flat top and the
 ![original fit](../media/wpe_tikz.pdf)
 
 <!--pan_doc:
-<sub>Figure 37: Well proximity effect</sub>
+<sub>Figure 38: Well proximity effect</sub>
 
 During the well implant, ions scatter off the edge of the photoresist and land in the silicon close to the well edge. Transistors within a micrometer or three of the well edge therefore see higher doping, and thus a higher threshold voltage, than identical transistors in the middle of the well.
 -->
@@ -1678,7 +1682,7 @@ What can change stress?
 ![right fit](../media/stress_tikz.pdf)
 
 <!--pan_doc:
-<sub>Figure 38: Mechanical stress components on the channel</sub>
+<sub>Figure 39: Mechanical stress components on the channel</sub>
 
 Stress changes mobility, so anything that changes the stress - shallow trench isolation, nearby devices, metal fill, even the package - changes the current. The table shows the direction dependence: $F_y$ is vertical, $F_x$ along the current, $F_z$ along the width.
 -->
@@ -1693,7 +1697,7 @@ Stress changes mobility, so anything that changes the stress - shallow trench is
 ![original fit](../media/gateleakage_tikz.pdf)
 
 <!--pan_doc:
-<sub>Figure 39: Gate tunneling current</sub>
+<sub>Figure 40: Gate tunneling current</sub>
 
 With an oxide only 1-2 nm thick, the electron wave function does not stop at the oxide: $\psi(x)$ is non-zero on the other side, so carriers tunnel between channel and gate. The gate is no longer a perfect insulator, which matters for sample-and-holds and anything with high impedance nodes.
 -->
@@ -1707,7 +1711,7 @@ With an oxide only 1-2 nm thick, the electron wave function does not stop at the
 ![original 80%](../media/hci_tikz.pdf)
 
 <!--pan_doc:
-<sub>Figure 40: Hot carrier injection</sub>
+<sub>Figure 41: Hot carrier injection</sub>
 
 In saturation the field across the pinched-off region near the drain is high. Carriers accelerated by it ($F = qE$) can gain enough energy to create electron-hole pairs by impact ionization, and some are injected into the oxide, where they damage the interface or get trapped and shift the threshold voltage over the product lifetime.
 -->
@@ -1721,7 +1725,7 @@ In saturation the field across the pinched-off region near the drain is high. Ca
 ![original 80%](../media/chisel_tikz.pdf)
 
 <!--pan_doc:
-<sub>Figure 41: Channel initiated secondary electrons</sub>
+<sub>Figure 42: Channel initiated secondary electrons</sub>
 
 With a reverse biased bulk ($V_{SB} > 0$), holes generated by impact ionization near the drain are accelerated into the bulk and can generate secondary electrons, which the vertical field can inject into the gate oxide - the same damage mechanism as hot carriers, opened up by the bulk bias.
 -->
@@ -1754,7 +1758,7 @@ Use $$ \frac{W_1}{L_1} = \frac{W_2}{L_2} $$
 ![right 200%](../media/fig_l8_cmsys.pdf)
 
 <!--pan_doc:
-<sub>Figure 42: Current mirror with an off-chip reference resistor</sub>
+<sub>Figure 43: Current mirror with an off-chip reference resistor</sub>
 
 The rest of this section asks a deceptively simple question about this circuit: what makes $I_2$ deviate from the ideal 1 uA?
 -->
@@ -1927,7 +1931,7 @@ Msf and Mfs are exactly the corners that kill ratioed and skewed circuits.
 <!--pan_doc:
 
 Process variation cannot be prevented, but it can be measured and
-corrected. Figure 42 shows the standard trick.
+corrected. Figure 43 shows the standard trick.
 
 -->
 
@@ -1942,7 +1946,7 @@ Be careful with multimeters, they have finite input resistance (typically 10 M$$
 ![right 150%](../media/fig_l8_cmfixproc.pdf)
 
 <!--pan_doc:
-<sub>Figure 43: Trimming out process variation</sub>
+<sub>Figure 44: Trimming out process variation</sub>
 
 Measure the voltage across a known resistor $R_1$ and tune $R_{var}$ until the current is right - once per chip.
 -->
@@ -2194,7 +2198,7 @@ High $$\frac{gm}{I_D}$$ is better (best in weak inversion)
 ![right 200%](../media/fig_diff.pdf)
 
 <!--pan_doc:
-<sub>Figure 44: Differential pair</sub>
+<sub>Figure 45: Differential pair</sub>
 
 Threshold mismatch between the two input transistors appears directly as an input-referred offset voltage - the mismatch equation above divided by $g_m$.
 -->
@@ -2229,7 +2233,7 @@ $$ PSD_{flicker}(f) \propto \frac{1}{f} $$
 ![fit](../media/rts_noise_tikz.pdf)
 
 <!--pan_doc:
-<sub>Figure 45: A single trap gives a two-level random telegraph signal (top) whose spectrum is a Lorentzian, flat then falling as $1/f^2$ (middle). Forty traps with time constants spread over three decades sum to a straight $1/f$, measured slope $-1.02$ between 100 Hz and 10 kHz (bottom)</sub>
+<sub>Figure 46: A single trap gives a two-level random telegraph signal (top) whose spectrum is a Lorentzian, flat then falling as $1/f^2$ (middle). Forty traps with time constants spread over three decades sum to a straight $1/f$, measured slope $-1.02$ between 100 Hz and 10 kHz (bottom)</sub>
 
 The bottom panel is the argument of the last three paragraphs made
 visible, and it is worth noticing that nothing was fitted to make it
