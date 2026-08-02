@@ -682,10 +682,18 @@ def latex(filename,root,no_append):
                     kw = kw.replace(c, "\\" + c)
                 kw_index += r"\index{" + kw + "}"
 
+    #- Chapters written by Claude get wrapped in \aicontent, which the
+    #  book-ai build renders in colour and the normal build ignores.
+    with open(filename) as fi:
+        ai_written = "Claude" in (re.search(
+            r"<!--pan_author:\s*(.+?)\s*-->", fi.read()) or ["", ""])[1]
+
     chapter_text = (r"\setchapterstyle{kao}" + "\n"
         + r"\setchapterpreamble[u]{\margintoc}" + "\n"
         + r"\chapter{" + title + "}" + kw_index + "\n"
         + r"\input{" + foname_fixed + "}" + "\n\n")
+    if ai_written:
+        chapter_text = ("{" + "\\aicontent" + "\n" + chapter_text + "}" + "\n\n")
 
     #- The chapter PDF and, beside it, the HTML deck built by py/slides.py
     download_text = (f"- [{title}](/{aic_version}/assets/{basename}.pdf)"

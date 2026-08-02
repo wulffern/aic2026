@@ -57,6 +57,9 @@ FILES = l00_jayn \
 
 all: version posts-parallel texfiles-parallel examples standalone-parallel latex-nobuild book-nobuild
 
+book-ai:
+	cd pdf; make book-ai
+
 latex-nobuild:
 	cd pdf; make one
 	cp pdf/aic.pdf docs/assets/

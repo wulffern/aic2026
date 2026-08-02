@@ -56,6 +56,16 @@ one: kaobook clean-main-aux
 		echo "gs not found, keeping the uncompressed aic.pdf"; \
 	fi
 
+# The honest-colour edition: same book, but the chapters Claude wrote
+# are set in blue. Same three-pass build under a different jobname, so
+# it never disturbs aic.pdf's aux files.
+book-ai: kaobook
+	chmod -R 755  media
+	${PDFLATEX} -draftmode -jobname aic_ai "\def\AIHIGHLIGHT{}\input{aic.tex}"
+	${PDFLATEX} -draftmode -jobname aic_ai "\def\AIHIGHLIGHT{}\input{aic.tex}"
+	-makeindex -q aic_ai.idx
+	${PDFLATEX} -jobname aic_ai "\def\AIHIGHLIGHT{}\input{aic.tex}"
+
 clean-main-aux:
 	-rm -f ${MAIN_AUX}
 
