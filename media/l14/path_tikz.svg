@@ -33,7 +33,7 @@
 <path fill="none" stroke-width="0.79701" stroke-linecap="butt" stroke-linejoin="miter" stroke="rgb(0%, 0%, 0%)" stroke-opacity="1" stroke-miterlimit="10" d="M 53.857062 -0.000625 L 170.079719 -0.000625 " transform="matrix(1, 0, 0, -1, -1.193, 20.64)"/>
 <path fill="none" stroke-width="0.79701" stroke-linecap="butt" stroke-linejoin="miter" stroke="rgb(0%, 0%, 0%)" stroke-opacity="1" stroke-miterlimit="10" d="M 170.079719 -45.356094 L 170.079719 -34.723281 M 170.079719 -34.723281 L 170.079719 -24.094375 M 164.41175 -24.094375 L 170.079719 -24.094375 M 170.079719 -24.094375 L 175.751594 -24.094375 M 164.41175 -21.258438 L 170.079719 -21.258438 M 170.079719 -21.258438 L 175.751594 -21.258438 M 170.079719 -21.258438 L 170.079719 -10.629531 M 170.079719 -10.629531 L 170.079719 -0.000625 " transform="matrix(1, 0, 0, -1, -1.193, 20.64)"/>
 <path fill="none" stroke-width="0.79701" stroke-linecap="butt" stroke-linejoin="miter" stroke="rgb(0%, 0%, 0%)" stroke-opacity="1" stroke-miterlimit="10" d="M 164.41175 -45.356094 L 170.079719 -45.356094 M 170.079719 -45.356094 L 175.751594 -45.356094 M 167.247688 -48.188125 L 170.079719 -48.188125 M 170.079719 -48.188125 L 172.915656 -48.188125 M 168.66175 -51.024063 L 170.079719 -51.024063 M 170.079719 -51.024063 L 171.497688 -51.024063 " transform="matrix(1, 0, 0, -1, -1.193, 20.64)"/>
-<g fill="rgb(0%, 50%, 0%)" fill-opacity="1">
+<g fill="rgb(27.450562%, 50.979614%, 23.527527%)" fill-opacity="1">
 <use xlink:href="#glyph-1-0" x="183.943" y="42.392"/>
 <use xlink:href="#glyph-1-1" x="188.9243" y="42.392"/>
 </g>
@@ -65,7 +65,7 @@
 <g clip-path="url(#clip-0)">
 <path fill="none" stroke-width="0.79701" stroke-linecap="butt" stroke-linejoin="miter" stroke="rgb(0%, 0%, 0%)" stroke-opacity="1" stroke-miterlimit="10" d="M 164.41175 -136.063125 L 170.079719 -136.063125 M 170.079719 -136.063125 L 175.751594 -136.063125 M 167.247688 -138.899063 L 170.079719 -138.899063 M 170.079719 -138.899063 L 172.915656 -138.899063 M 168.66175 -141.735 L 170.079719 -141.735 M 170.079719 -141.735 L 171.497688 -141.735 " transform="matrix(1, 0, 0, -1, -1.193, 20.64)"/>
 </g>
-<g fill="rgb(0%, 50%, 0%)" fill-opacity="1">
+<g fill="rgb(27.450562%, 50.979614%, 23.527527%)" fill-opacity="1">
 <use xlink:href="#glyph-1-0" x="183.943" y="133.101"/>
 <use xlink:href="#glyph-1-1" x="188.9243" y="133.101"/>
 </g>
