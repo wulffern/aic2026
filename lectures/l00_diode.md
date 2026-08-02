@@ -336,7 +336,7 @@ states per unit energy is
 
 -->
 
-$$N(E)dE = \frac{2}{\pi^2}\left(\frac{m^*}{\hbar^2}\right)^{3/2} E^{1/2}dE$$
+$$N(E)dE = \frac{\sqrt{2}}{\pi^2}\left(\frac{m^*}{\hbar^2}\right)^{3/2} E^{1/2}dE$$
 
 <!--pan_doc:
 

@@ -216,7 +216,7 @@ Select the input transistor, and change the name to 'xo1'
 Select the first output transistor, and change the name to 'xo0[1:0]'. Using bus
 notation on the name will create 2 transistors.
 
-Select the second output transistor and give it the name 'xo1[1:0]'.
+Select the second output transistor and give it the name 'xo2[1:0]'.
 
 Select ports, and use 'm' to move the ports close to the transistors.
 

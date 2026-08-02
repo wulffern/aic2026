@@ -969,11 +969,21 @@ Real delay $$\Rightarrow d = 5\frac{2}{3} \times 3 \text{ ps} = 17 \text{ ps}$$
 
  $$F = GBH = 64$$
 
-*One stage*
+*One stage, with Sutherland's classic $$p \approx 1$$ per inverter*
 $$f = 64 \Rightarrow D = 64 + 1 = 65$$
 
 *Three stage with $$f=4$$*
 $$D_F = 12, p = 3 \Rightarrow D = 12 + 3 = 15$$
+
+<!--pan_doc:
+
+The classic textbook numbers above use Sutherland's parasitic delay of
+about 1 per inverter; our diffusion-heavy estimate earlier gave
+$p = 4$. Redo the sums with $p = 4$ and you get 68 against 24 - the
+absolute numbers move, the conclusion does not: split the path into
+stages of effort around four.
+
+-->
 
 ----
 [.background-color: #000000]

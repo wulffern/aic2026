@@ -654,7 +654,7 @@ The last inverter is just to get the polarity of the TO\_CORE signal the same as
 ![right fit](../media/l6/fig_methodology.pdf)
 
 <!--pan_doc:
-<sub>Figure 13: Full digital input including Schmitt trigger and level shifters </sub>
+<sub>Figure 13: Full digital input including RC filter, Schmitt trigger and level shifters: (a) schematic, (b) netlist, (c) the compiled layout, and (d) the ciccreator recipe that generated it</sub>
 -->
 
 
