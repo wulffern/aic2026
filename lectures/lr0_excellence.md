@@ -13,7 +13,7 @@ Excellence is not a mystery. It is the cumulative result of focusing on what mat
 
 This memo lays out a set of operating principles for building and sustaining excellence.
 
-# 1. Ruthless Focus on Real Value
+# Ruthless Focus on Real Value
 
 Start with the customer. Not the roadmap, not internal politics, not what sounds impressive.
 
@@ -21,7 +21,7 @@ Ask relentlessly: what generates actual value for the customer? If an activity, 
 
 Busy work is not neutral. It actively destroys excellence by consuming time, attention, and energy that should be spent on what matters.
 
-# 2. Chase Down What’s Off
+# Chase Down What’s Off
 
 Anything that feels “funky” usually is.
 
@@ -31,7 +31,7 @@ If something is not understood, do not proceed until it is.
 
 Ambiguity compounds. Small misunderstandings turn into large failures if they are ignored. Excellence requires discomfort: stopping, digging, and asking why.
 
-# 3. Root Causes or Nothing
+# Root Causes or Nothing
 
 Always chase root causes.
 
@@ -41,7 +41,7 @@ Yes, it is worth it.
 
 Treating symptoms feels fast but guarantees recurrence. Every unresolved root cause is technical debt, organizational debt, or cultural debt waiting to collect interest. Excellence is incompatible with bandaid fixes.
 
-# 4. Constraint Is a Feature
+# Constraint Is a Feature
 
 Resources are always constrained. Pretending otherwise leads to mediocrity.
 
@@ -51,7 +51,7 @@ If a task does not meaningfully advance the goal, remove it.
 
 Doing less, better, beats doing more, poorly, every time.
 
-# 5. Kill Bureaucracy Aggressively
+# Kill Bureaucracy Aggressively
 
 Bureaucracy is inertia made visible.
 
@@ -61,7 +61,7 @@ If a meeting has no clear purpose or decisions, cancel it.
 
 You do not need to sync every week. You need clarity, ownership, and trust. Meetings are tools, not rituals.
 
-# 6. Support the People Doing the Work
+# Support the People Doing the Work
 
 Understand the real problems your teams face.
 
@@ -71,7 +71,7 @@ If they need guidance or direction, give it.
 
 Upward communication matters. Learn to articulate problems precisely to your lead, and explain exactly how they can support you. Vague complaints are useless; concrete asks move systems.
 
-# 7. Ask Questions Relentlessly
+# Ask Questions Relentlessly
 
 Assumptions are silent killers.
 
@@ -81,7 +81,7 @@ Ask until the system makes sense.
 
 Curiosity is not weakness. It is a prerequisite for correctness.
 
-# 8. Optimize for Truth, Not Consensus
+# Optimize for Truth, Not Consensus
 
 Agreement is cheap. Being right is expensive.
 
@@ -89,7 +89,7 @@ Focus on what is correct, not what is popular or agreed upon. Consensus that ign
 
 Do not believe things. Show the data.
 
-# 9. Treat the Customer Timeline as Holy
+# Treat the Customer Timeline as Holy
 
 The customer’s timeline is holy.
 
@@ -99,7 +99,7 @@ Never say “yes” to avoid discomfort.
 
 Say no when necessary. Honesty beats optimism theater. Broken promises destroy trust faster than missing features.
 
-# 10. Separate Identity from Job
+# Separate Identity from Job
 
 Your worth as a human being is not tied to your job performance.
 
@@ -108,14 +108,14 @@ Failure at work is not failure as a human.
 
 This separation is essential. People who fuse identity with job become defensive, political, and afraid of truth. Excellence requires psychological safety grounded in reality, not ego.
 
-# 11. Control Emotion, Keep Passion
+# Control Emotion, Keep Passion
 
 Leave personal feelings out of decision-making.
 Bring passion for the work itself.
 
 Emotion-driven execution leads to noise. Passion-driven execution leads to intensity, care, and pride in craftsmanship. The goal is not detachment, but disciplined focus.
 
-# 12. Treat Work as a Game, and Play to Win
+# Treat Work as a Game, and Play to Win
 
 Work is a game with rules, constraints, incentives, and opponents (complexity, entropy, time).
 
