@@ -43,9 +43,9 @@
 <path clip-rule="nonzero" d="M 0 94 L 213.011719 94 L 213.011719 140 L 0 140 Z M 0 94 "/>
 </clipPath>
 </defs>
-<path fill="none" stroke-width="0.79701" stroke-linecap="butt" stroke-linejoin="miter" stroke="rgb(0%, 0%, 0%)" stroke-opacity="1" stroke-miterlimit="10" d="M 46.770781 66.613969 L 46.770781 97.797562 L 72.2825 82.203812 L 46.770781 66.613969 M 77.954375 82.203812 C 77.954375 83.770219 76.684844 85.03975 75.118437 85.03975 C 73.552031 85.03975 72.2825 83.770219 72.2825 82.203812 C 72.2825 80.641312 73.552031 79.371781 75.118437 79.371781 C 76.684844 79.371781 77.954375 80.641312 77.954375 82.203812 Z M 77.954375 82.203812 " transform="matrix(1, 0, 0, -1, 36.905, 148.571)"/>
+<path fill="none" stroke-width="0.79701" stroke-linecap="butt" stroke-linejoin="miter" stroke="rgb(0%, 0%, 0%)" stroke-opacity="1" stroke-miterlimit="10" d="M 46.770781 82.203812 L 53.860625 82.203812 M 53.860625 66.613969 L 53.860625 97.797562 L 79.372344 82.203812 L 53.860625 66.613969 M 85.040312 82.203812 C 85.040312 83.770219 83.770781 85.03975 82.204375 85.03975 C 80.637969 85.03975 79.372344 83.770219 79.372344 82.203812 C 79.372344 80.641312 80.637969 79.371781 82.204375 79.371781 C 83.770781 79.371781 85.040312 80.641312 85.040312 82.203812 Z M 85.040312 82.203812 L 92.12625 82.203812 " transform="matrix(1, 0, 0, -1, 36.905, 148.571)"/>
 <path fill="none" stroke-width="0.79701" stroke-linecap="butt" stroke-linejoin="miter" stroke="rgb(0%, 0%, 0%)" stroke-opacity="1" stroke-miterlimit="10" d="M 0.00125 82.203812 L 46.770781 82.203812 " transform="matrix(1, 0, 0, -1, 36.905, 148.571)"/>
-<path fill="none" stroke-width="0.79701" stroke-linecap="butt" stroke-linejoin="miter" stroke="rgb(0%, 0%, 0%)" stroke-opacity="1" stroke-miterlimit="10" d="M 77.954375 82.203812 L 124.723906 82.203812 " transform="matrix(1, 0, 0, -1, 36.905, 148.571)"/>
+<path fill="none" stroke-width="0.79701" stroke-linecap="butt" stroke-linejoin="miter" stroke="rgb(0%, 0%, 0%)" stroke-opacity="1" stroke-miterlimit="10" d="M 92.12625 82.203812 L 124.723906 82.203812 " transform="matrix(1, 0, 0, -1, 36.905, 148.571)"/>
 <g fill="rgb(0%, 0%, 0%)" fill-opacity="1">
 <use xlink:href="#glyph-0-0" x="89.233" y="94.322"/>
 </g>
