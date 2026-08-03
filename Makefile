@@ -276,7 +276,11 @@ TIKZ_INCLUDES = fig_header.tex constellation_lib.tex esd_lib.tex ckt_lib.tex mos
 TIKZ_REPRODUCIBLE = SOURCE_DATE_EPOCH=1700000000 FORCE_SOURCE_DATE=1
 
 # Every figure source under tikz/, at any depth, minus the shared includes.
+# Anything named *_lib.tex is a library to \input, not a figure to
+# compile. Matching the convention as well as the explicit list means a
+# new library does not have to be remembered here.
 TIKZ_SOURCES = $(shell find tikz -name '*.tex' -not -path 'tikz/build/*' \
+	-not -name '*_lib.tex' \
 	$(foreach i,${TIKZ_INCLUDES},-not -name '${i}') | sort)
 
 # ---------------------------------------------------------------------------
