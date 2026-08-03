@@ -10,6 +10,23 @@ This is **aic2026** — course materials for *TFE4188 Advanced Integrated Circui
 
 Source lectures are Markdown files in `lectures/` that are processed by `py/lecture.py` into both Jekyll posts and LaTeX.
 
+## Writing Guidance
+
+Follow the style guidance from `lectures/lp_project_report.md`.
+
+Apply the principles from *On Writing Well*:
+- Shorter is better.
+- One paragraph, one thought.
+- Prefer direct prose over filler.
+- Avoid unnecessary qualifier words such as `very`, `extremely`, `easily`, `simply`, `really`, `a lot`, and similar softeners unless they add technical meaning.
+- Use transitions deliberately when they improve flow.
+
+When adding figure prose, include explicit figure text in the style used in `lectures/l03_refbias.md`, for example `<sub>Figure N: ... </sub>`.
+
+For any text significantly touched by Codex, beyond spellcheck or minor editorial cleanup, add the attribution line:
+
+`Pictures by Carsten, Written by codex, Approved by Carsten`
+
 ## Key Commands
 
 ### Full build

@@ -186,3 +186,8 @@ ex/*.png
 
 # Local, uncommitted working note (third-party figure review)
 *.local.md
+
+# Photos and clips shown in the guest-lecture decks (lectures/g*.md reference
+# ../video/). Hundreds of megabytes of camera footage that would bloat the
+# history, so the decks are committed and the media is not.
+video/

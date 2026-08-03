@@ -34,6 +34,11 @@ EXCLUDED = {
     "g00_m1p1",         # guest lectures, slides live elsewhere
     "g01_m1p2",
     "g03",
+    "g04",
+    "g05",
+    "g06",
+    "g09",
+    "g10",
     "lp_radio_guest",
     "s_chinf",
     "s_exam",
