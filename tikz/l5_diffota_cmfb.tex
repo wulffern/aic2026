@@ -58,32 +58,39 @@
   \draw (1.22,0.8) \portIn{$VBN$};
   \dsize{2.35}{0.45}{24F4F\\M=2}
 
-  % VON/VOP sense networks: 20f || 60k each, joined at the gate node
-  \draw (-3.4,4.75) node[anchor=south] {$VON$} to [short,o-] (-3.4,4.5);
-  \draw (-3.4,2.9) \vcapacitor{};
-  \draw (-3.4,4.25) -- (-2.8,4.25) -- (-2.8,4.2);
-  \draw (-2.8,2.9) -- (-2.8,3.0) \vresistor{} (-2.8,4.2);
-  \draw (-2.8,2.9) -- (-3.4,2.9);
-  \node[scale=0.75, anchor=east] at (-3.5,3.6) {20f};
-  \draw (-1.4,4.75) node[anchor=south] {$VOP$} to [short,o-] (-1.4,4.5);
-  \draw (-1.4,2.9) \vcapacitor{};
-  \draw (-1.4,4.25) -- (-0.8,4.25) -- (-0.8,4.2);
-  \draw (-0.8,2.9) -- (-0.8,3.0) \vresistor{} (-0.8,4.2);
-  \draw (-0.8,2.9) -- (-1.4,2.9);
-  \node[scale=0.75, anchor=west] at (-0.65,3.6) {60k};
-  \draw (-2.8,2.9) -- (-1.4,2.9);
-  \fill (-2.8,2.9) circle (0.075);
-  \fill (-1.4,2.9) circle (0.075);
-  \draw (-1.4,2.9) -- (-1.4,2.4) -- (0.02,2.4);
+  % VON/VOP sense networks: 20f || 60k each, joined at the gate node.
+  % Both branches span the same two rows, so the parallel pair reads as
+  % a parallel pair: the resistor used to run 0.3 past the junction and
+  % hang there.
+  \newcommand{\sense}[2]{
+    \draw (#1,4.75) node[anchor=south] {#2} to [short,o-] (#1,4.35);
+    \draw (#1,2.75) \vcapacitor{};
+    \draw ({#1+0.6},2.75) \vresistor{};
+    \draw (#1,4.35) -- ({#1+0.6},4.35);
+    \draw (#1,2.75) -- ({#1+0.6},2.75);
+    \fill (#1,4.35) circle (0.075);
+    \fill (#1,2.75) circle (0.075);
+  }
+  \sense{-3.4}{$VON$}
+  \sense{-1.4}{$VOP$}
+  %- one branch carries the values; the other is identical
+  \node[scale=0.75, anchor=east] at (-3.75,3.5) {20f};
+  \node[scale=0.75, anchor=west] at (-2.45,3.5) {60k};
+  \draw (-2.8,2.75) -- (-1.4,2.75);
+  \fill (-2.8,2.75) circle (0.075);
+  \draw (-0.8,2.75) -- (-0.8,2.4) -- (0.02,2.4);
+  \fill (-0.8,2.75) circle (0.075);
 
   % 100k/100k mid-supply reference with 500f, into the right gate
-  \draw (7.4,3.0) -- (7.4,3.2) \vresistor{100k} -- (7.4,\ytop);
-  \fill (7.4,3.0) circle (0.075);
-  \draw (7.4,0) -- (7.4,0.7) \vresistor{100k} -- (7.4,3.0);
-  \draw (7.4,3.0) -- (8.1,3.0) -- (8.1,2.9);
-  \draw (8.1,1.3) \vcapacitor{};
-  \node[scale=0.75, anchor=east, fill=white, inner sep=1pt] at (6.35,2.1) {500f};
-  \draw (8.1,1.3) -- (8.1,0);
+  % One junction, not two: the capacitor and the gate wire leave the
+  % divider's mid node at the same height. The capacitor branch sits far
+  % enough right to clear the lower resistor's own label.
+  \draw (7.4,2.4) -- (7.4,3.2) \vresistor{100k} -- (7.4,\ytop);
+  \draw (7.4,0) -- (7.4,0.9) \vresistor{100k} -- (7.4,2.4);
+  \draw (7.4,2.4) -- (8.8,2.4) -- (8.8,2.15);
+  \draw (8.8,0.65) \vcapacitor{};
+  \node[scale=0.75, anchor=west] at (8.95,1.4) {500f};
+  \draw (8.8,0.65) -- (8.8,0);
   \draw (4.38,2.4) -- (7.4,2.4);
   \fill (7.4,2.4) circle (0.075);
 

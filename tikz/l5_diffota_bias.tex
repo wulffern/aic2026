@@ -36,7 +36,6 @@
   \draw (0.6,1.75) -- (12.42,1.75);
   \fill (2.22,1.75) circle (0.075);
   \fill (7.42,1.75) circle (0.075);
-  \fill (12.42,1.75) circle (0.075);
 
   % ================= VBP branch: the PMOS wide-swing master ========
   % Same trick as the NMOS master, upside down: the mirror device on
@@ -80,7 +79,6 @@
   \dsize{4.45}{2.9}{24F2F\\M=2}
   %- the cascode gate comes from the VCN rail
   \draw (6.98,3.2) -- (6.98,3.95);
-  \fill (6.98,3.95) circle (0.075);
   \draw (6.0,1.6) -- (6.0,2.4);
   \draw (6.0,0) to [Tnmos, n=mnd2] ++(0,\grid);
   \dsize{6.15}{0.45}{24F4F\\M=1}
@@ -105,7 +103,6 @@
   \draw (2.22,4.35) -- (15.4,4.35) to [short,-o] ++(0.5,0) node[anchor=west] {$VCP$};
   % the cascode gates hang on VCP
   \draw (2.22,5.4) -- (2.22,4.35);
-  \fill (2.22,4.35) circle (0.075);
   \draw (5.02,5.4) -- (5.02,4.35);
   \fill (5.02,4.35) circle (0.075);
 
@@ -136,7 +133,6 @@
   \dsize{13.55}{0.45}{24F12F\\M=1}
   \draw (12.42,0.8) -- (12.42,1.75);
   \draw (12.42,7.2) -- (12.42,5.9);
-  \fill (12.42,5.9) circle (0.075);
   \fill (13.4,5.9) circle (0.075);
   \draw (12.42,5.9) -- (15.4,5.9) to [short,-o] ++(0.5,0) node[anchor=west] {$VBP1$};
 

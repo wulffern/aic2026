@@ -33,6 +33,7 @@
   \draw (8.8,3.2) -- (11.2,3.2);
   \fill (10.0,3.2) circle (0.075);
   \draw (8.8,1.6) to [Tpmos, n=min] ++(0,1.6);
+  \draw (8.8,1.6) to [short,-o] (8.8,1.2);
   \draw (min.gate) \portIn{$VIN$};
   \dsize{8.95}{2.0}{24F1F25\\M=10}
   \draw (11.2,1.6) to [Tpmos, n=mip, mirror] ++(0,1.6);
@@ -46,9 +47,12 @@
   % drain lead, a tenth of a unit apart.
   \draw (12.8,0) to [Tnmos, n=nd] ++(0,\grid);
   \draw (11.2,1.6) -- (12.8,1.6);
-  \draw (11.5,0.8) -- (11.5,2.1) -- (12.8,2.1) -- (12.8,1.6);
   \fill (12.8,1.6) circle (0.075);
-  \fill (11.82,0.8) circle (0.075);
+  % The diode connection drops to the shared gate rail on the free side
+  % of the device. Taking it over the top ran the wire under the input
+  % pair and straight through the VCN label.
+  \draw (12.8,1.6) -- (13.3,1.6) -- (13.3,0.8);
+  \fill (13.3,0.8) circle (0.075);
   \dsize{12.95}{0.45}{24F4F\\M=1}
 
   % ================= cascoded load and mirror =================
@@ -78,7 +82,7 @@
   \dsize{14.95}{2.0}{24F2F\\M=8}
   \draw (14.8,0) to [Tnmos, n=nm] ++(0,\grid);
   \dsize{14.95}{0.45}{24F4F\\M=2}
-  \draw (13.82,0.8) -- (11.5,0.8);
+  \draw (13.82,0.8) -- (11.82,0.8);
   \fill (14.8,1.6) circle (0.075);
 
   % ================= second stage =================

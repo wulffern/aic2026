@@ -89,7 +89,12 @@
   \draw ({\xa+0.75},{\yinv-1.6}) \vground;
   \draw ({\xb+0.75},{\yinv-1.6}) \vcapacitor{$C$};
   \draw ({\xb+0.75},{\yinv-1.6}) \vground;
+  % The first two outputs are tapped on the wire that already runs to
+  % the next stage. The last one has no next stage, so its wire to the
+  % load and the feedback has to be drawn: without it the ring was open
+  % right after the last inverter.
   \coordinate (o3) at ({\xc+0.65},\yinv);
+  \draw (i3_out) -- (o3);
   \fill (o3) circle (0.075);
   \draw ({\xc+0.65},{\yinv-1.6}) \vcapacitor{$C$};
   \draw ({\xc+0.65},{\yinv-1.6}) \vground;
