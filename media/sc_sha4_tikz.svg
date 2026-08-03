@@ -120,7 +120,6 @@
 <g fill="rgb(0%, 0%, 0%)" fill-opacity="1">
 <use xlink:href="#glyph-6-0" x="17.4284" y="109.6215"/>
 </g>
-<path fill-rule="nonzero" fill="rgb(0%, 0%, 0%)" fill-opacity="1" d="M 90.367188 106.257812 C 90.367188 105.085938 89.414062 104.132812 88.238281 104.132812 C 87.066406 104.132812 86.113281 105.085938 86.113281 106.257812 C 86.113281 107.433594 87.066406 108.382812 88.238281 108.382812 C 89.414062 108.382812 90.367188 107.433594 90.367188 106.257812 Z M 90.367188 106.257812 "/>
 <path fill="none" stroke-width="0.79701" stroke-linecap="butt" stroke-linejoin="miter" stroke="rgb(0%, 0%, 0%)" stroke-opacity="1" stroke-miterlimit="10" d="M -0.00009375 28.346719 L 31.1835 28.346719 " transform="matrix(1, 0, 0, -1, 30.129, 179.96)"/>
 <path fill-rule="nonzero" fill="rgb(100%, 100%, 100%)" fill-opacity="1" stroke-width="0.79701" stroke-linecap="butt" stroke-linejoin="miter" stroke="rgb(0%, 0%, 0%)" stroke-opacity="1" stroke-miterlimit="10" d="M 1.585844 28.346719 C 1.585844 29.221719 0.874906 29.932656 -0.00009375 29.932656 C -0.875094 29.932656 -1.586031 29.221719 -1.586031 28.346719 C -1.586031 27.471719 -0.875094 26.760781 -0.00009375 26.760781 C 0.874906 26.760781 1.585844 27.471719 1.585844 28.346719 Z M 1.585844 28.346719 " transform="matrix(1, 0, 0, -1, 30.129, 179.96)"/>
 <path fill="none" stroke-width="0.79701" stroke-linecap="butt" stroke-linejoin="miter" stroke="rgb(0%, 0%, 0%)" stroke-opacity="1" stroke-miterlimit="10" d="M 31.1835 28.346719 L 36.992094 28.346719 M 50.882719 28.346719 L 56.695219 28.346719 " transform="matrix(1, 0, 0, -1, 30.129, 179.96)"/>
@@ -149,7 +148,6 @@
 <g fill="rgb(0%, 0%, 0%)" fill-opacity="1">
 <use xlink:href="#glyph-7-0" x="17.3284" y="154.9756"/>
 </g>
-<path fill-rule="nonzero" fill="rgb(0%, 0%, 0%)" fill-opacity="1" d="M 90.367188 151.613281 C 90.367188 150.4375 89.414062 149.488281 88.238281 149.488281 C 87.066406 149.488281 86.113281 150.4375 86.113281 151.613281 C 86.113281 152.789062 87.066406 153.738281 88.238281 153.738281 C 89.414062 153.738281 90.367188 152.789062 90.367188 151.613281 Z M 90.367188 151.613281 "/>
 <path fill="none" stroke-width="0.79701" stroke-linecap="butt" stroke-linejoin="miter" stroke="rgb(0%, 0%, 0%)" stroke-opacity="1" stroke-miterlimit="10" d="M 58.109281 73.702187 L 58.109281 52.440469 " transform="matrix(1, 0, 0, -1, 30.129, 179.96)"/>
 <path fill="none" stroke-width="0.79701" stroke-linecap="butt" stroke-linejoin="miter" stroke="rgb(0%, 0%, 0%)" stroke-opacity="1" stroke-miterlimit="10" d="M 58.109281 52.440469 L 58.109281 57.967812 M 58.109281 44.081094 L 58.109281 49.608437 " transform="matrix(1, 0, 0, -1, 30.129, 179.96)"/>
 <path fill="none" stroke-width="0.79701" stroke-linecap="butt" stroke-linejoin="miter" stroke="rgb(0%, 0%, 0%)" stroke-opacity="1" stroke-miterlimit="10" d="M 58.109281 57.967812 L 65.054594 46.858437 " transform="matrix(1, 0, 0, -1, 30.129, 179.96)"/>
