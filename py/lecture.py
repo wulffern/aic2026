@@ -701,7 +701,8 @@ def latex(filename,root,no_append):
         + r"\chapter{" + title + "}" + kw_index + "\n"
         + r"\input{" + foname_fixed + "}" + "\n\n")
     if ai_written:
-        chapter_text = ("{" + "\\aicontent" + "\n" + chapter_text + "}" + "\n\n")
+        chapter_text = ("\\begin{aicontent}\n" + chapter_text
+                        + "\\end{aicontent}\n\n")
 
     #- The chapter PDF and, beside it, the HTML deck built by py/slides.py
     download_text = (f"- [{title}](/{aic_version}/assets/{basename}.pdf)"

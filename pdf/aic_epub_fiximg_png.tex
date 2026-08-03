@@ -44,6 +44,29 @@
 \newcommand{\myfigwidth}{100mm}
 \newcommand{\myfigheight}{100mm}
 
+% Figures are capped, never inflated. \includegraphics[width=..] scales
+% a graphic TO that width, so a drawing whose natural size is 40 mm was
+% being blown up to fill the box. \aicfig measures the graphic first and
+% asks for the smaller of its natural width and the cap; keepaspectratio
+% with the height cap then bounds tall figures the same way.
+\newsavebox{\aicfigbox}
+\newlength{\aicfigw}
+\newcommand{\aicfig}[1]{%
+
+{
+\centering
+\aicfig{\aicfigbox}
+}
+  \setlength{\aicfigw}{\wd\aicfigbox}%
+  \ifdim\aicfigw>\myfigwidth\setlength{\aicfigw}{\myfigwidth}\fi
+
+{
+\centering
+\aicfig{#1}
+}
+}
+
+
 
   \newcommand\BackgroundPic{%
 \put(0,0){%
@@ -60,6 +83,14 @@ keepaspectratio]{background.png}%
 % {\aicontent ...} by py/lecture.py. In the normal build the command
 % does nothing; build with \def\AIHIGHLIGHT{} (make book-ai) and those
 % chapters_epub are set in ink blue.
+% The book colour theme - the same luminance ladder the figures use,
+% so the Conventions swatches and any coloured text match the art.
+\definecolor{red}{RGB}{160,25,35}
+\definecolor{blue}{RGB}{85,155,235}
+\definecolor{armygreen}{RGB}{70,130,60}
+\definecolor{orange}{RGB}{240,150,40}
+\definecolor{oxteal}{RGB}{140,195,195}
+
 \definecolor{aiink}{RGB}{15,60,150}
 \newcommand{\aicontent}{}
 \ifdefined\AIHIGHLIGHT\renewcommand{\aicontent}{\color{aiink}}\fi
@@ -117,6 +148,8 @@ keepaspectratio]{background.png}%
 
 %\chapter{Background}
 %\input{tex_intro_fiximg.tex}
+
+\input{preface.tex}
 
 \input{chapters_epub.tex}
 % \setchapters_epubtyle{kao}
