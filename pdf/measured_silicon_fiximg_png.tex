@@ -2,7 +2,7 @@
 Temperature chamber, Transfer curve, INL, DNL, Calibration, Allan
 deviation, Quantisation, Dither, Dead zone, Random telegraph noise
 
-\section{Two Sensors, Measured}\label{two-sensors-measured}
+\section{Measured Silicon}\label{measured-silicon}\index{measured silicon@Measured silicon}
 
 The previous chapter set you a project. This one is what happened when
 two groups finished it.
@@ -59,7 +59,11 @@ reading any absolute number below as a property of the sensor alone.
 Where the two designs really part company is what closes the loop, and
 that turns out to matter far more than anything in the analogue.
 
-\pandocbounded{\includegraphics[keepaspectratio]{media/jnwtt_gr07_tikz.pdf}}
+
+{
+\centering
+\aicfig{media/jnwtt_gr07_tikz.png}
+}
 
 \emph{Figure 1: GR07, by Reidar Arne Eidsvik Nerheim, Pol Batalle Largo
 and Tord Olsen Sætermo, drawn from the taped-out netlist. The comparator
@@ -68,7 +72,11 @@ the flip-flop's output both leaves the chip as PWM and turns on the two
 NMOS that short the ramp capacitor. The loop closes through the chip, so
 the sensor free-runs and its period is the observable}
 
-\pandocbounded{\includegraphics[keepaspectratio]{media/jnwtt_gr06_tikz.pdf}}
+
+{
+\centering
+\aicfig{media/jnwtt_gr06_tikz.png}
+}
 
 \emph{Figure 2: GR06, by Gabin Sbaffi, Erik K. Jensen and Renate
 Klemetsdal. The same front end, and the same NMOS shorting the capacitor
@@ -81,9 +89,9 @@ and GR06 produces a pulse about 7.1 µs wide. GR07 therefore delivers
 roughly two hundred times more events per second of measurement, which
 you would expect to make it the better sensor. Hold that thought.
 
-\section{What the silicon does}\label{what-the-silicon-does}
+\section{What the silicon does}\label{what-the-silicon-does}\index{what the silicon does@What the silicon does}
 
-\subsection{Against a real reference}\label{against-a-real-reference}
+\subsection{Against a real reference}\label{against-a-real-reference}\index{against a real reference@Against a real reference}
 
 Everything you can do on a bench calibrates a sensor against itself. To
 find out whether either sensor is \emph{right}, rather than merely
@@ -92,7 +100,11 @@ stepping from 5 °C to 70 °C in 5 K steps, logging its own probe beside
 both sensors, supplies one. Each point below is the mean of the last 90
 s of a dwell, after both the oven and the die have stopped moving.
 
-\pandocbounded{\includegraphics[keepaspectratio]{media/jnwtt_transfer_tikz.pdf}}
+
+{
+\centering
+\aicfig{media/jnwtt_transfer_tikz.png}
+}
 
 \emph{Figure 3: Both sensors against the chamber's own probe, each rate
 divided by its own value at 25 °C. The dashed line is what a current
@@ -120,7 +132,11 @@ is the textbook shape at the textbook size.
 For GR07 the same term barely helps - 1.61 K becomes 1.04 K - and what
 is left still wanders. Whatever limits GR07 is not curvature.
 
-\pandocbounded{\includegraphics[keepaspectratio]{media/jnwtt_inl_tikz.pdf}}
+
+{
+\centering
+\aicfig{media/jnwtt_inl_tikz.png}
+}
 
 \emph{Figure 4: What is left of each transfer after the best straight
 line, and after also allowing a \(T\ln T\) term - the bandgap curvature
@@ -133,20 +149,28 @@ amount. The data cannot tell you which functional form it is; what it
 can tell you is that GR06's residual is smooth curvature of the size and
 sign a bandgap predicts, and that GR07's is not smooth curvature at all.
 
-\subsection{What calibration buys}\label{what-calibration-buys}
+\subsection{What calibration buys}\label{what-calibration-buys}\index{what calibration buys@What calibration buys}
 
 The question a product actually asks is not ``how linear is it'' but
 ``how many oven visits must I pay for''. Every calibration temperature
 costs money in production, so the interesting curve is error against
 number of trim points.
 
-\pandocbounded{\includegraphics[keepaspectratio]{media/jnwtt_cal_gr06_tikz.pdf}}
+
+{
+\centering
+\aicfig{media/jnwtt_cal_gr06_tikz.png}
+}
 
 \emph{Figure 5: GR06's error after calibrating at one, two and three
 temperatures. Each extra trim point buys accuracy, ending at ±0.35 K
 over 5-70 °C. This is what a well-behaved sensor looks like}
 
-\pandocbounded{\includegraphics[keepaspectratio]{media/jnwtt_cal_gr07_tikz.pdf}}
+
+{
+\centering
+\aicfig{media/jnwtt_cal_gr07_tikz.png}
+}
 
 \emph{Figure 6: The same for GR07, which gets \emph{worse} going from
 one point to two}
@@ -165,7 +189,7 @@ else.
 To see what GR07's error actually is, you have to look at what its
 output is made of.
 
-\section{The clock in the loop}\label{the-clock-in-the-loop}
+\section{The clock in the loop}\label{the-clock-in-the-loop}\index{the clock in the loop@The clock in the loop}
 
 \subsection{GR07's output is quantised, and noise is what rescues
 it}\label{gr07s-output-is-quantised-and-noise-is-what-rescues-it}
@@ -213,7 +237,11 @@ simply happened to have enough.
 And a mechanism that depends on noise being big enough has an obvious
 way to fail.
 
-\pandocbounded{\includegraphics[keepaspectratio]{media/jnwtt_deadzone_tikz.pdf}}
+
+{
+\centering
+\aicfig{media/jnwtt_deadzone_tikz.png}
+}
 
 \emph{Figure 7: GR07's measured noise against where its period happens
 to fall between two clock edges, one point per chamber set point. The
@@ -245,7 +273,11 @@ GR06, with no clock anywhere in its path, has none of this. Its output
 is a pulse width in continuous time, and it is limited by something else
 entirely.
 
-\pandocbounded{\includegraphics[keepaspectratio]{media/jnwtt_dnl_tikz.pdf}}
+
+{
+\centering
+\aicfig{media/jnwtt_dnl_tikz.png}
+}
 
 \emph{Figure 8: The same staircase read as a converter: the width of
 each fully traversed code against the ideal 4.75 K step. Worst DNL 0.12
@@ -262,7 +294,11 @@ for \(\tau\) seconds, and its \emph{slope} is the information. Falling
 means averaging still buys you precision. Rising means drift has taken
 over and averaging longer makes the answer worse.
 
-\pandocbounded{\includegraphics[keepaspectratio]{media/jnwtt_allan_tikz.pdf}}
+
+{
+\centering
+\aicfig{media/jnwtt_allan_tikz.png}
+}
 
 \emph{Figure 9: Allan deviation of both sensors over fifteen minutes in
 a quiet room. GR07 starts four times more precise, bottoms out at 57 mK
@@ -289,7 +325,7 @@ A quiet room cannot prove that on its own, though: ``nothing happened''
 and ``both sensors missed it'' look identical from inside. The next
 section is the experiment that separates them.
 
-\subsection{Two sensors, one event}\label{two-sensors-one-event}
+\subsection{Two sensors, one event}\label{two-sensors-one-event}\index{two sensors, one event@Two sensors, one event}
 
 Everything so far measures a sensor against a reference. The two sensors
 on this die can also be measured against each other, which asks a
@@ -297,7 +333,11 @@ different question: not \emph{what is the temperature} but \emph{did
 something happen}. For that you need something to happen - so, a can of
 freeze spray, and then a finger held on the package.
 
-\pandocbounded{\includegraphics[keepaspectratio]{media/jnwtt_spray_tikz.pdf}}
+
+{
+\centering
+\aicfig{media/jnwtt_spray_tikz.png}
+}
 
 \emph{Figure 10: A can of freeze spray at 13 s, then a fingertip on the
 package from 88 s to 122 s, both sensors on one capture. The die falls
@@ -323,7 +363,11 @@ you a way to tell a measurement from an artefact.
 
 Now the same experiment, gently: four breaths on the package.
 
-\pandocbounded{\includegraphics[keepaspectratio]{media/jnwtt_breath_tikz.pdf}}
+
+{
+\centering
+\aicfig{media/jnwtt_breath_tikz.png}
+}
 
 \emph{Figure 11: Four breaths, both sensors, one capture. Each breath
 moves both - but GR06 reads about 2.4 times the excursion GR07 does}
@@ -345,7 +389,7 @@ trust GR06. For GR07, either move it off the edge by changing the clock
 frequency, or accept that excursions of a kelvin or two are compressed
 by something between one and about three.
 
-\section{One trap}\label{one-trap}
+\section{One trap}\label{one-trap}\index{one trap@One trap}
 
 \subsection{GR06 does not drift, it
 switches}\label{gr06-does-not-drift-it-switches}
@@ -354,7 +398,11 @@ GR06 is the better-behaved sensor everywhere above, so it is worth
 asking what actually limits \emph{it}. Hold the chamber still and look
 at ninety seconds of GR06 with the slow dwell drift removed.
 
-\pandocbounded{\includegraphics[keepaspectratio]{media/jnwtt_rts_tikz.pdf}}
+
+{
+\centering
+\aicfig{media/jnwtt_rts_tikz.png}
+}
 
 \emph{Figure 12: Ninety seconds of GR06 at a fixed chamber temperature,
 with the slow dwell drift removed. The reading sits flat, drops about
@@ -372,7 +420,11 @@ says it is one trap rather than a population. The time it stays trapped
 is thermally activated and follows an Arrhenius law, which is what
 identifies it as a trap rather than as something in the instrument.
 
-\pandocbounded{\includegraphics[keepaspectratio]{media/jnwtt_rts_life_tikz.pdf}}
+
+{
+\centering
+\aicfig{media/jnwtt_rts_life_tikz.png}
+}
 
 \emph{Figure 13: The trap's mean lifetime in the low state against
 inverse thermal energy, one point per chamber dwell. A straight line

@@ -12,7 +12,7 @@
 **Keywords:** Tapeout, Tiny Tapeout, PTAT, Time-domain readout, Temperature chamber, Transfer curve, INL, DNL, Calibration, Allan deviation, Quantisation, Dither, Dead zone, Random telegraph noise
 
 
-# Two Sensors, Measured
+# Measured Silicon
 
 
 The previous chapter set you a project. This one is what happened when

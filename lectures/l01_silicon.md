@@ -6,7 +6,7 @@ text:  Helvetica
 header:  Helvetica
 date: 2026-01-16
 
-<!--pan_title: Two Sensors, Measured -->
+<!--pan_title: Measured Silicon -->
 
 <!--pan_author: Measurements by Carsten Wulff. Chapter written by Claude, ideas and review by Carsten Wulff -->
 
@@ -16,7 +16,7 @@ date: 2026-01-16
 
 -->
 
-# Two Sensors, Measured
+# Measured Silicon
 
 <!--pan_doc:
 
