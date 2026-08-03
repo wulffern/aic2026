@@ -64,6 +64,17 @@ Below is the layout of group 6 <https://analogicus.github.io/jnw_gr06_sky130a/> 
 
 <!--pan_doc: 
 <sub>Figure 1: Layout of group 6 and group 7 temperature sensors from AIC2025</sub>
+
+Those two chips came back, and they have a chapter of their own. Both
+PTAT cores work: the rates follow absolute temperature, and the two
+independent designs agree with each other to a per cent. What separates
+them is not the analogue - it is what each group chose to do with the
+comparator output. One re-times it on the project clock, which quantises its
+output in 4.75 K steps and leaves it depending on noise to dither its
+way below them; the other stays asynchronous, is two hundred times
+slower, and ends up the better sensor. Read it before you decide how your own design will be read out,
+because that decision turned out to matter more than anything in the
+front end.
 -->
 
 --- 

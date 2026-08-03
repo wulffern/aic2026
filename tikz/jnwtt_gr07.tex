@@ -1,0 +1,86 @@
+\input{tikz/fig_header.tex}
+
+% GR07, read off the taped-out netlist (JNW_GR07.spice).
+%
+%   x11  temp_to_current_rev2   PTAT current into V_C
+%   x7   CAPX4                  the ramp capacitor
+%   x8..x6  four RPPO4 in series from VDD to VSS, V_REF at the bottom tap
+%   x4   amplifier_rev2         comparator, + on V_C, - on V_REF
+%   x3   BFX1                   buffer
+%   x5   DFRNQNX1               D flip-flop, clocked by CLK, Q = PWM
+%   x2[1:0]  two NCH_2C1F2      the pull-down that shorts V_C, gated by PWM
+%
+% The loop closes through the flip-flop, so PWM both leaves the chip and
+% resets the ramp. That is what makes GR07 free-run - and it also means
+% the ramp always restarts on a clock edge, which is the point argued in
+% the text.
+
+\begin{circuitikz}[american, thick, transform shape, circuit ee IEC]
+
+  \input{tikz/ckt_lib.tex}
+
+  % ---- the PTAT current source, drawn as its block ----
+  \draw (-1.1,3.0) rectangle (1.7,4.6);
+  \node[anchor=center, scale=0.85, align=center] at (0.3,3.8)
+    {PTAT\\$I(T)$};
+  \draw (0.3,4.6) -- (0.3,5.2) \vsupply;
+  \draw (0.3,3.0) -- (0.3,1.9);
+  \fill (0.3,1.9) circle (0.075);
+  \node[anchor=south east, scale=0.85] at (0.15,2.0) {$V_C$};
+
+  % ---- the ramp capacitor ----
+  %- down to the top plate, not through it: \vcapacitor draws upward
+  %- from where it is placed, so the wire must stop where it starts
+  \draw (0.3,1.9) -- (-1.5,1.9) -- (-1.5,1.75);
+  \draw (-1.5,-1.45) -- (-1.5,0.15) \vcapacitor{};
+  \node[anchor=east, scale=0.85] at (-1.7,-0.65) {$C$};
+  \draw (-1.5,-1.45) \vground;
+
+  % ---- the pull-down that shorts it: two NMOS in parallel ----
+  \draw (0.3,0.3) \lvnmos{MRST}{};
+  \draw (0.3,0.3) -- (0.3,-1.45) \vground;
+  \draw (0.3,1.9) circle (0.075);
+  \node[anchor=west, scale=0.8, gray!50!black] at (0.6,0.75) {2$\times$};
+
+  % ---- the reference: four equal resistors across the supply, tapped
+  % ---- one up from the bottom, so V_ref = VDD/4. Drawn to the left and
+  % ---- carried under the ramp so nothing crosses the ramp node.
+  \draw (-4.0,-1.45) \vground;
+  \draw (-4.0,-1.45) -- (-4.0,-0.6) \vresistor{};
+  \draw (-4.0,1.0) circle (0.075);
+  \fill (-4.0,1.0) circle (0.075);
+  \draw (-4.0,1.0) \vresistor{};
+  \draw (-4.0,2.6) \vresistor{};
+  \draw (-4.0,4.2) \vresistor{};
+  \draw (-4.0,5.8) -- (-4.0,6.1) \vsupply;
+  \node[anchor=east, scale=0.8, gray!50!black, align=right]
+    at (-4.2,3.4) {4$\times$ RPPO4,\\so $V_{ref} = V_{DD}/4$};
+  \draw (-4.0,1.0) -- (-3.0,1.0) -- (-3.0,-2.15) -- (5.0,-2.15)
+        -- (5.0,1.1);
+  \node[anchor=south, scale=0.85] at (1.4,-2.1) {$V_{ref}$};
+
+  % ---- the comparator ----
+  \draw (5.8,1.9) \cicOtaSSWP{$+$}{$-$};
+  \draw (0.3,1.9) -- (cicOtaS_inp);
+  \draw (5.0,1.1) -- (cicOtaS_inn);
+
+  % ---- buffer, then the flip-flop that re-times it ----
+  \draw (cicOtaS_out) -- (8.6,1.5);
+  \draw (8.6,1.5) \cicBuf{buf};
+  \draw (buf_out) -- (11.0,1.5);
+  \draw (11.0,0.0) \cicDff{ff};
+  \draw (ff_ck) -- (10.4,0.4) -- (10.4,-1.0) -- (9.0,-1.0) to [short,o-] ++(-0.6,0);
+  \node[anchor=east, scale=0.85] at (8.3,-1.0) {CLK};
+
+  \draw (ff_q) -- (14.4,0.4) to [short,-o] ++(0.5,0);
+  \node[anchor=west, scale=0.9, blue] at (15.05,0.4) {PWM};
+  \fill (13.2,0.4) circle (0.075);
+
+  % ---- and back to the pull-down gate: the loop that makes it free-run
+  \draw[blue] (13.2,0.4) -- (13.2,-3.1) -- (-0.68,-3.1) -- (-0.68,1.1);
+  \node[anchor=south, scale=0.85, blue!60!black] at (6.2,-3.05)
+    {PWM resets the ramp itself, so GR07 free-runs - and because it does,
+     the ramp always restarts on a clock edge};
+
+\end{circuitikz}
+\end{document}

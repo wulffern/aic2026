@@ -28,6 +28,7 @@ FILES = l00_jayn \
 	lr0_tools \
 	lr0_tut1 \
 	l01_project \
+	l01_silicon \
 	l02_esd \
 	l03_refbias \
 	l04_afe \

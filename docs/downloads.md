@@ -27,6 +27,7 @@ permalink: /downloads/
 - [The Tools](/aic2026/assets/lr0_tools.pdf) [[slides]](/aic2026/assets/html/lr0_tools.html)
 - [Sky130nm tutorial](/aic2026/assets/lr0_tut1.pdf) [[slides]](/aic2026/assets/html/lr0_tut1.html)
 - [The Project](/aic2026/assets/l01_project.pdf) [[slides]](/aic2026/assets/html/l01_project.html)
+- [Two Sensors, Measured](/aic2026/assets/l01_silicon.pdf) [[slides]](/aic2026/assets/html/l01_silicon.html)
 - [IC and ESD](/aic2026/assets/l02_esd.pdf) [[slides]](/aic2026/assets/html/l02_esd.html)
 - [References and bias](/aic2026/assets/l03_refbias.pdf) [[slides]](/aic2026/assets/html/l03_refbias.html)
 - [Analog frontend and filters](/aic2026/assets/l04_afe.pdf) [[slides]](/aic2026/assets/html/l04_afe.html)

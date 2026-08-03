@@ -1,0 +1,72 @@
+\input{tikz/fig_header.tex}
+
+% GR06, read off the taped-out netlist (JNW_GR06.spice).
+%
+%   x1   temp_affected_current  PTAT current into CAP
+%   x2   CAPX1                  the ramp capacitor
+%   x7,x5,x6  three RPPO4 from VDD to VSS, the OTA's - input on the
+%                               bottom tap, so V_ref = VDD/3
+%   x3   OTA                    comparator, + on CAP, - on the tap
+%   x4   NCH_2C1F2              the pull-down that shorts CAP, gated by
+%                               the reset pin
+%
+% Nothing here is clocked. The loop is closed by the host: it asserts
+% reset, the capacitor is shorted, and on release the ramp runs once and
+% the output stays high until the next reset. One pulse per stimulus,
+% and its width is the observable.
+
+\begin{circuitikz}[american, thick, transform shape, circuit ee IEC]
+
+  \input{tikz/ckt_lib.tex}
+
+  % ---- the PTAT current source, drawn as its block ----
+  \draw (-1.1,3.0) rectangle (1.7,4.6);
+  \node[anchor=center, scale=0.85, align=center] at (0.3,3.8)
+    {PTAT\\$I(T)$};
+  \draw (0.3,4.6) -- (0.3,5.2) \vsupply;
+  \draw (0.3,3.0) -- (0.3,1.9);
+  \fill (0.3,1.9) circle (0.075);
+  \node[anchor=south east, scale=0.85] at (0.15,2.0) {CAP};
+
+  % ---- the ramp capacitor ----
+  %- down to the top plate, not through it: \vcapacitor draws upward
+  %- from where it is placed, so the wire must stop where it starts
+  \draw (0.3,1.9) -- (-1.5,1.9) -- (-1.5,1.75);
+  \draw (-1.5,-1.45) -- (-1.5,0.15) \vcapacitor{};
+  \node[anchor=east, scale=0.85] at (-1.7,-0.65) {$C$};
+  \draw (-1.5,-1.45) \vground;
+
+  % ---- the pull-down that shorts it ----
+  \draw (0.3,0.3) \lvnmos{MRST}{};
+  \draw (0.3,0.3) -- (0.3,-1.45) \vground;
+
+  % ---- the reference: three equal resistors across the supply, tapped
+  % ---- one up from the bottom, so V_ref = VDD/3
+  \draw (-4.0,-1.45) \vground;
+  \draw (-4.0,-1.45) -- (-4.0,-0.6) \vresistor{};
+  \fill (-4.0,1.0) circle (0.075);
+  \draw (-4.0,1.0) \vresistor{};
+  \draw (-4.0,2.6) \vresistor{};
+  \draw (-4.0,4.2) -- (-4.0,4.6) \vsupply;
+  \node[anchor=east, scale=0.8, gray!50!black, align=right]
+    at (-4.2,2.6) {3$\times$ RPPO4,\\so $V_{ref} = V_{DD}/3$};
+  \draw (-4.0,1.0) -- (-3.0,1.0) -- (-3.0,-2.15) -- (5.0,-2.15)
+        -- (5.0,1.1);
+  \node[anchor=south, scale=0.85] at (1.4,-2.1) {$V_{ref}$};
+
+  % ---- the comparator, straight out to the pin: no clock anywhere ----
+  \draw (5.8,1.9) \cicOtaSSWP{$+$}{$-$};
+  \draw (0.3,1.9) -- (cicOtaS_inp);
+  \draw (5.0,1.1) -- (cicOtaS_inn);
+  \draw (cicOtaS_out) -- (10.0,1.5) to [short,-o] ++(0.5,0);
+  \node[anchor=west, scale=0.9, red] at (10.65,1.5) {OUT};
+
+  % ---- the host closes the loop, not the chip ----
+  \draw[red] (-0.68,1.1) -- (-0.68,-2.9) -- (7.0,-2.9) to [short,-o] ++(0.5,0);
+  \node[anchor=west, scale=0.9, red] at (7.65,-2.9) {reset};
+  \node[anchor=north, scale=0.85, red!60!black, align=center] at (3.0,-3.3)
+    {the host shorts the capacitor and lets go; the ramp then runs once,\\
+     so one pulse comes out per reset and its width is the observable};
+
+\end{circuitikz}
+\end{document}

@@ -1,0 +1,493 @@
+footer: Carsten Wulff 2026
+slidenumbers:true
+autoscale:true
+theme: Plain Jane, 1
+text:  Helvetica
+header:  Helvetica
+date: 2026-01-16
+
+<!--pan_title: Two Sensors, Measured -->
+
+<!--pan_author: Measurements by Carsten Wulff. Chapter written by Claude, ideas and review by Carsten Wulff -->
+
+<!--pan_doc:
+
+**Keywords:** Tapeout, Tiny Tapeout, PTAT, Time-domain readout, Temperature chamber, Transfer curve, INL, DNL, Calibration, Allan deviation, Quantisation, Dither, Dead zone, Random telegraph noise
+
+-->
+
+# Two Sensors, Measured
+
+<!--pan_doc:
+
+The previous chapter set you a project. This one is what happened when
+two groups finished it.
+
+In the spring of 2025 two groups of three students designed temperature
+sensors in this course, and both went to a shuttle: Tiny Tapeout project
+258, `tt_um_jnw_wulffern`, on ttsky25a in sky130. The chips came back.
+This chapter is what they do.
+
+It is here for a specific reason. Everything else in this book is either
+theory or somebody else's measurement. This is the one chapter where the
+circuit was designed by students at your stage, on the tools you are
+using, and then measured against a temperature chamber - and where the
+interesting results are not the ones the designers were aiming at.
+
+-->
+
+---
+
+<!--pan_doc:
+
+## The same physics, read out two ways
+
+Both sensors are the same idea, and it is the idea the project chapter
+asks you to build: a current proportional to absolute temperature (PTAT)
+charging a capacitor, with a comparator watching the ramp. The current
+comes from the difference between two diode voltages at different
+current densities, which is the bandgap core of the references chapter,
+
+$$I(T) = \frac{kT}{qR}\ln N$$
+
+and the time to charge $C$ up to a threshold $V_{ref}$ is therefore
+
+$$t = \frac{V_{ref}C}{I(T)} \propto \frac{1}{T}$$
+
+The time falls as the temperature rises, so the *rate* $1/t$ rises with
+absolute temperature. Everything measured below is done in the rate
+domain for that reason: it is the quantity that should be a straight
+line through the origin.
+
+Both groups built that PTAT core the same way - a pnp of unit area
+against eight of them, an amplifier forcing the two branch voltages
+equal, and a resistor setting the current - but not with the same
+circuit. GR07 puts three RPPO16 in series and mirrors the result
+straight out, one to one. GR06 uses an RPPO8 and an RPPO4 and then
+divides its current down through two further mirrors, an NMOS pair ten
+wide and a PMOS pair ten wide, before it reaches the capacitor. That is
+roughly a hundredfold division, and it is most of why GR06 runs six
+times slower on a capacitor a quarter the size.
+
+Both also take their comparator threshold from a resistive divider
+across the supply rather than from anything absolute: GR07 taps one
+resistor up from ground in a string of four, so $V_{ref} = V_{DD}/4$;
+GR06 taps one of three, so $V_{ref} = V_{DD}/3$. Neither threshold is a
+bandgap voltage. The ratio $V_{ref}/I(T)$ that sets the time therefore
+carries the supply in it, which is worth remembering before reading any
+absolute number below as a property of the sensor alone.
+
+Where the two designs really part company is what closes the loop, and
+that turns out to matter far more than anything in the analogue.
+
+-->
+
+![fit](../media/jnwtt_gr07_tikz.pdf)
+
+<!--pan_doc:
+<sub>Figure 1: GR07, by Reidar Arne Eidsvik Nerheim, Pol Batalle Largo and Tord Olsen Sætermo, drawn from the taped-out netlist. The comparator output is buffered into a D flip-flop clocked by the project clock, and the flip-flop's output both leaves the chip as PWM and turns on the two NMOS that short the ramp capacitor. The loop closes through the chip, so the sensor free-runs and its period is the observable</sub>
+
+-->
+
+![fit](../media/jnwtt_gr06_tikz.pdf)
+
+<!--pan_doc:
+<sub>Figure 2: GR06, by Gabin Sbaffi, Erik K. Jensen and Renate Klemetsdal. The same front end, and the same NMOS shorting the capacitor - but its gate is a chip input. The host asserts reset, the capacitor discharges, and on release the ramp runs once. One pulse per stimulus, and its width is the observable. Nothing in this circuit is clocked</sub>
+
+At room temperature GR07 runs at about 910 kHz - a period near 1.1 µs -
+and GR06 produces a pulse about 7.1 µs wide. GR07 therefore delivers
+roughly two hundred times more events per second of measurement, which
+you would expect to make it the better sensor. Hold that thought.
+
+-->
+
+---
+
+<!--pan_doc:
+
+# What the silicon does
+
+## Against a real reference
+
+Everything you can do on a bench calibrates a sensor against itself. To
+find out whether either sensor is *right*, rather than merely
+repeatable, you need an outside opinion. A Vötsch temperature chamber
+stepping from 5 °C to 70 °C in 5 K steps, logging its own probe beside
+both sensors, supplies one. Each point below is the mean of the last
+90 s of a dwell, after both the oven and the die have stopped moving.
+
+-->
+
+![fit](../media/jnwtt_transfer_tikz.pdf)
+
+<!--pan_doc:
+<sub>Figure 3: Both sensors against the chamber's own probe, each rate divided by its own value at 25 °C. The dashed line is what a current strictly proportional to absolute temperature would do. Both lie on it: the physics works, and the two designs agree with each other despite a sixfold difference in rate</sub>
+
+Figure 3 is the result the students were designing for, and it is a
+good one. Two independently designed PTAT cores, built by different
+people from the same principle, land on the ideal line and on each
+other. GR07 gives 2.98 kHz/K on 907 kHz; GR06 gives 0.48 kHz/K on
+142 kHz. Those are 0.33 %/K and 0.34 %/K - the same fractional slope,
+which is what "proportional to absolute temperature" means.
+
+Figure 4 is where the two part company. Take the straight line away
+and both are left with about 1.3 K of something. Now allow one more
+term - the $T\ln T$ curvature the references chapter warns about, which
+comes from the temperature dependence of the saturation current in the
+very diodes that make the PTAT current.
+
+For GR06 that removes almost all of it: 1.33 K peak becomes 0.23 K, and
+the residual goes flat. GR06's error *is* bandgap curvature, and it is
+the textbook shape at the textbook size.
+
+For GR07 the same term barely helps - 1.61 K becomes 1.04 K - and what
+is left still wanders. Whatever limits GR07 is not curvature.
+
+-->
+
+![fit](../media/jnwtt_inl_tikz.pdf)
+
+<!--pan_doc:
+<sub>Figure 4: What is left of each transfer after the best straight line, and after also allowing a $T\ln T$ term - the bandgap curvature the references chapter warns about. Almost all of GR06's residual is that curvature. Almost none of GR07's is</sub>
+
+One caveat on the identification. Over a 65 K span $T\ln T$ and $T^2$
+are nearly collinear, and fitting either removes the same amount. The
+data cannot tell you which functional form it is; what it can tell you
+is that GR06's residual is smooth curvature of the size and sign a
+bandgap predicts, and that GR07's is not smooth curvature at all.
+
+-->
+
+---
+
+<!--pan_doc:
+
+## What calibration buys
+
+The question a product actually asks is not "how linear is it" but "how
+many oven visits must I pay for". Every calibration temperature costs
+money in production, so the interesting curve is error against number of
+trim points.
+
+-->
+
+![fit](../media/jnwtt_cal_gr06_tikz.pdf)
+
+<!--pan_doc:
+<sub>Figure 5: GR06's error after calibrating at one, two and three temperatures. Each extra trim point buys accuracy, ending at ±0.35 K over 5-70 °C. This is what a well-behaved sensor looks like</sub>
+
+-->
+
+![fit](../media/jnwtt_cal_gr07_tikz.pdf)
+
+<!--pan_doc:
+<sub>Figure 6: The same for GR07, which gets *worse* going from one point to two</sub>
+
+GR06 does what you would hope: 1.93 K with one point, 1.37 K with two,
+0.35 K with three. That is a normal, well-behaved sensor, and ±0.35 K
+over a 65 K span from three trim points is a respectable number for a
+first silicon by three students.
+
+GR07 goes 1.96 K, then 2.21 K, then 1.38 K. Getting worse when you give
+it more information looks like a mistake in the analysis. It is not. A
+two-point calibration corrects a *slope*, and GR07's error is not a
+slope. Trimming the line just pivots it and drops the residual somewhere
+else.
+
+To see what GR07's error actually is, you have to look at what its
+output is made of.
+
+-->
+
+---
+
+<!--pan_doc:
+
+# The clock in the loop
+
+## GR07's output is quantised, and noise is what rescues it
+
+Capture a second of GR07 and histogram the periods. There are nearly a
+million of them, and they take **four distinct values** - in two
+clusters, one 64 MHz clock period apart. The 15.6 ns gap between the
+clusters is one project-clock cycle; the finer structure inside each
+cluster is the logic analyser's own sample quantum.
+
+That is what re-timing does. The comparator trips whenever it trips, but
+the flip-flop can only report it at the following clock edge, so every
+period is a whole number of clock cycles. One cycle is 4.75 K.
+
+It is worth being careful about *why* it is still a useful sensor,
+because the obvious story is wrong. Look again at Figure 1: the
+flip-flop's output is what resets the ramp. So the reset is released on
+a clock edge, and the ramp therefore starts on a clock edge, every
+single time. The charge time is always measured from the same place in
+the clock period.
+
+That matters, because it means nothing accumulates. If the crossing
+sits a fraction $f$ of a cycle past an edge, it sits at the same $f$
+next time, and the next: the sub-cycle remainder is thrown away each
+cycle rather than carried forward. The loop has no memory of it, and
+that is why what follows has to be about noise.
+
+A noiseless version of this circuit would be a plain 4.75 K quantiser.
+Every period would be identical, the average would tell you nothing more
+than one period did, and the sensor would be useless.
+
+What rescues it is noise. Jitter on the comparator crossing - from the
+PTAT current, from the comparator itself, from the supply - is enough to
+push some periods over the clock edge and not others. The output then
+alternates between $N$ and $N+1$ cycles, and the *fraction* of periods
+that come out long is an estimate of $f$. Averaging a million of them
+reads that fraction to a few millikelvin.
+
+That is dither: noise deliberately relied upon to make a coarse
+quantiser resolve below its own step. It is the same mechanism that lets
+a noisy ADC average its way below one LSB, and it is why converters are
+sometimes given dither on purpose. Here nobody gave it any - the circuit
+simply happened to have enough.
+
+And a mechanism that depends on noise being big enough has an obvious
+way to fail.
+
+-->
+
+![fit](../media/jnwtt_deadzone_tikz.pdf)
+
+<!--pan_doc:
+<sub>Figure 7: GR07's measured noise against where its period happens to fall between two clock edges, one point per chamber set point. The noise collapses where the period lands close to a whole number of cycles</sub>
+
+Figure 7 is the failure. Where the crossing sits close to a clock edge
+the noise is more than enough to straddle it and the sensor dithers
+happily. Where it sits far from an edge - up to half a cycle away, which
+is 2.4 K - the noise cannot reach across, every period returns the same
+$N$, and the output goes constant.
+
+The sensor has not become better there. It has gone deaf, and it looks
+ten times quieter while doing it. That is worth stating plainly:
+
+> A quiet-looking GR07 reading is not evidence of a good one.
+
+It also explains Figure 4. GR07's error is not a slope and not a curve -
+it is a 4.75 K staircase with dead zones in it. Calibration fits
+functions; a staircase is not a function of temperature that any
+two-point or three-point fit can absorb. Only sampling the crossing with
+something finer than the clock would remove it, and the natural fix is
+the cheapest one available: run the project clock faster, and the step
+shrinks in proportion.
+
+GR06, with no clock anywhere in its path, has none of this. Its output
+is a pulse width in continuous time, and it is limited by something else
+entirely.
+
+-->
+
+![fit](../media/jnwtt_dnl_tikz.pdf)
+
+<!--pan_doc:
+<sub>Figure 8: The same staircase read as a converter: the width of each fully traversed code against the ideal 4.75 K step. Worst DNL 0.12 LSB, so the steps themselves are even - the problem is their size, not their regularity</sub>
+
+-->
+
+---
+
+<!--pan_doc:
+
+## When averaging stops helping
+
+If the resolution comes from averaging, the honest question is how long
+you can usefully average for. A standard deviation cannot answer it. The
+Allan deviation can: it asks how repeatable the answer is if you average
+for $\tau$ seconds, and its *slope* is the information. Falling means
+averaging still buys you precision. Rising means drift has taken over
+and averaging longer makes the answer worse.
+
+-->
+
+![fit](../media/jnwtt_allan_tikz.pdf)
+
+<!--pan_doc:
+<sub>Figure 9: Allan deviation of both sensors over fifteen minutes in a quiet room. GR07 starts four times more precise, bottoms out at 57 mK after about eight seconds and then degrades. GR06 keeps improving out past a minute, to 31 mK</sub>
+
+GR07 starts ahead, exactly as its two-hundred-fold event advantage says
+it should. Then it turns around. What looks like drift is the dead zones
+of the previous section: while the crossing sits away from a clock edge
+the reading is stuck at one value and therefore biased, and a bias that
+lasts seconds is indistinguishable from drift.
+
+GR06, producing two thousand times fewer events, ends up the better
+sensor for any measurement lasting more than about ten seconds. The
+circuit with less of everything wins, because it has no quantiser.
+
+There is a second result hiding in the same run. Over those fifteen
+minutes the two sensors' fluctuations are essentially uncorrelated
+($r = 0.11$) despite sitting on the same die, in the same room, sharing
+a supply. If the wander were the room, both would see it - so it looks
+like each sensor's own noise rather than the room.
+
+A quiet room cannot prove that on its own, though: "nothing happened"
+and "both sensors missed it" look identical from inside. The next
+section is the experiment that separates them.
+
+-->
+
+---
+
+<!--pan_doc:
+
+## Two sensors, one event
+
+Everything so far measures a sensor against a reference. The two sensors
+on this die can also be measured against each other, which asks a
+different question: not *what is the temperature* but *did something
+happen*. For that you need something to happen - so, a can of freeze
+spray, and then a finger held on the package.
+
+-->
+
+![fit](../media/jnwtt_spray_tikz.pdf)
+
+<!--pan_doc:
+<sub>Figure 10: A can of freeze spray at 13 s, then a fingertip on the package from 88 s to 122 s, both sensors on one capture. The die falls 13 K in 1.4 seconds - a peak rate of 37 K/s. Gaps are dead time between captures, drawn as gaps rather than interpolated</sub>
+
+The two traces lie on top of each other. Through the spray and the
+recovery their correlation is 0.95, and while the finger is on it is
+0.99 - two different circuits, two different readout schemes, a
+two-hundredfold difference in how many events each averages, and they
+agree about what the die did.
+
+This is the control the previous section needed. Quiet, the two sensors
+were uncorrelated; given something real to follow, they agree almost
+perfectly. Both cannot be true of the same physical temperature, and
+that settles it: the wander in the quiet room was not the room, it was
+each sensor's own noise. A real thermal event moves both. Noise moves
+one.
+
+Which is the argument for putting two of anything on a die. One sensor
+gives you a number and no way to know whether to believe it. Two give
+you a way to tell a measurement from an artefact.
+
+Now the same experiment, gently: four breaths on the package.
+
+-->
+
+![fit](../media/jnwtt_breath_tikz.pdf)
+
+<!--pan_doc:
+<sub>Figure 11: Four breaths, both sensors, one capture. Each breath moves both - but GR06 reads about 2.4 times the excursion GR07 does</sub>
+
+Both sensors agree that four things happened, and disagree about how big
+they were by a factor of 2.4. The obvious reading is that the two
+circuits have different gains. They do not: over the 15 K of Figure 10
+they agree to within a few per cent, and a real gain error would show up
+*more* strongly over a wider excursion, not vanish.
+
+It is the staircase again. A one-kelvin breath is about a fifth of
+GR07's 4.75 K step. If the crossing sits away from a clock edge - and
+during this run it did - a signal that small never carries it across,
+and the excursion comes out compressed by an unknown factor. GR06, with
+no clock in its path, reports the whole thing.
+
+So the practical rule for reading these two: for small, fast signals,
+trust GR06. For GR07, either move it off the edge by changing the clock
+frequency, or accept that excursions of a kelvin or two are compressed
+by something between one and about three.
+
+-->
+
+---
+
+<!--pan_doc:
+
+# One trap
+
+## GR06 does not drift, it switches
+
+GR06 is the better-behaved sensor everywhere above, so it is worth
+asking what actually limits *it*. Hold the chamber still and look at
+ninety seconds of GR06 with the slow dwell drift removed.
+
+-->
+
+![fit](../media/jnwtt_rts_tikz.pdf)
+
+<!--pan_doc:
+<sub>Figure 12: Ninety seconds of GR06 at a fixed chamber temperature, with the slow dwell drift removed. The reading sits flat, drops about half a kelvin to a second level, stays there a second or two, and comes back</sub>
+
+Thermal noise would give a fuzzy band around zero. This gives two
+levels. That is random telegraph noise - a single charge trap in the
+silicon capturing and emitting one carrier - and it is the same
+mechanism the noise chapter introduces as the microscopic origin of
+flicker noise, here big enough to see one trap at a time.
+
+The step is about 0.5 K and roughly constant from 5 °C to 55 °C, which
+says it is one trap rather than a population. The time it stays trapped
+is thermally activated and follows an Arrhenius law, which is what
+identifies it as a trap rather than as something in the instrument.
+
+-->
+
+![fit](../media/jnwtt_rts_life_tikz.pdf)
+
+<!--pan_doc:
+<sub>Figure 13: The trap's mean lifetime in the low state against inverse thermal energy, one point per chamber dwell. A straight line here is an Arrhenius law; the slope is an activation energy of 226 meV. Above about 55 °C the two levels merge into the noise and the fit stops meaning anything, so those dwells are left out</sub>
+
+So GR06's real single-reading accuracy is not its ±0.35 K
+three-point calibration - that is a ninety-second mean. A single reading
+can be half a kelvin off whenever the trap happens to be occupied.
+Unlike GR07's quantiser this is cheap to fix: a median over a second or
+two steps straight over it.
+
+-->
+
+---
+
+<!--pan_doc:
+
+# Summary
+
+Two sensors from this course, on the same die, from the same principle.
+
+- Both PTAT cores work. The rates follow absolute temperature to within
+  the residual of Figure 3, and the two designs - different resistors,
+  and a hundredfold current division in one of them - agree with each
+  other to a per cent in fractional slope.
+- GR06, with three calibration points, is accurate to ±0.35 K over
+  5-70 °C. What is left after a straight line is bandgap curvature: a
+  $T\ln T$ term takes 1.33 K down to 0.23 K. Its limit for a single
+  reading is not linearity at all but one charge trap worth about 0.5 K,
+  which a short median removes.
+- GR07 is four times more precise per reading and ends up worse. Its
+  output is quantised to whole clock cycles, 4.75 K each, and only noise
+  dithering the crossing lets averaging resolve below that. Where the
+  crossing sits far from a clock edge the dither fails, and the sensor
+  stops responding while looking ten times quieter.
+- Calibration cannot absorb a staircase. Running the clock faster can.
+- The two sensors' noise is uncorrelated on one die. Two sensors tell
+  you when something is real; one tells you a number.
+
+If you take one thing from this chapter into your own project: both
+groups' analogue cores did what they were designed to do. Every awkward
+result came from the boundary - a flip-flop, a clock frequency, a choice
+of what to observe. That is where to spend your attention.
+
+# Would you like to know more?
+
+The measurement setup, the full analysis and every figure's underlying
+data, in far more detail than fits here [@jnwtt25]
+
+The Tiny Tapeout shuttle that carried it, and how to put your own design
+on one [@tinytapeout]
+
+Where the PTAT core comes from, and why its curvature is not what limits
+these parts [@razavi21]
+
+Quantisation, dither and why a coarse converter with noise on its input
+beats a coarse converter without [@schreier.uds]
+
+Random telegraph noise as the microscopic origin of flicker noise
+[@kirton89]
+
+-->
+
+---

@@ -36,6 +36,7 @@ AICEX = os.environ.get("AICEX", f"{HOME}/pro/aicex")
 DICEX = os.environ.get("DICEX", f"{HOME}/pro/dicex")
 SUNPLL = os.environ.get("SUNPLL", f"{AICEX}/ip/sun_pll_sky130nm")
 CNRATR = os.environ.get("CNRATR", f"{AICEX}/ip/cnr_atr_sky130nm")
+JNWTT = os.environ.get("JNWTT", f"{HOME}/pro/jnw-tt-2025")
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 DATA = os.path.join(HERE, "data")
@@ -229,6 +230,158 @@ def fetch_loadreg():
     return 1
 
 
+def _num(v):
+    """The two sensors are sampled independently, so a row may carry a
+    value for only one of them."""
+    return "" if v is None else f"{float(v):.6g}"
+
+
+def fetch_jnwtt():
+    """The measured silicon: two student temperature sensors on Tiny
+    Tapeout project 258, characterised against a climate chamber.
+
+    Everything here is already reduced - the analysis lives in
+    jnw-tt-2025/meas, not in this book - so this only trims it to the
+    columns the figures draw and writes plain CSV.
+    """
+    import json
+
+    src = f"{JNWTT}/meas/data"
+    if not os.path.isdir(src):
+        print(f"  {src} not found, skipping")
+        return 0
+    n = 0
+
+    #- the chamber sweep: 5 to 70 C in 5 K steps, both sensors
+    chamber = os.path.join(src, "2026-08-03_chamber_summary.csv")
+    if os.path.isfile(chamber):
+        keep = ["set_c", "ref_c", "GR07_rate_hz", "GR07_sigma_hz",
+                "GR06_rate_hz", "GR06_sigma_hz",
+                "GR07_clock_cycles", "GR07_dist_to_whole_cycle"]
+        with open(chamber) as fi:
+            rows = list(csv.DictReader(fi))
+        with open(os.path.join(DATA, "jnwtt_chamber.csv"), "w", newline="") as fo:
+            w = csv.writer(fo)
+            w.writerow(keep)
+            for r in rows:
+                w.writerow([f"{float(r[k]):.6g}" for k in keep])
+        print(f"  jnwtt_chamber.csv ({len(rows)} set points)")
+        n += 1
+
+    #- the code widths of GR07's clock staircase
+    dnl = os.path.join(src, "2026-08-03_chamber_dnl.csv")
+    if os.path.isfile(dnl):
+        with open(dnl) as fi, open(os.path.join(DATA, "jnwtt_dnl.csv"),
+                                   "w", newline="") as fo:
+            rows = list(csv.reader(fi))
+            csv.writer(fo).writerows(rows)
+        print(f"  jnwtt_dnl.csv ({len(rows) - 1} codes)")
+        n += 1
+
+    #- everything the slides computed, keyed by figure
+    deck = os.path.join(src, "deck_data.json")
+    if os.path.isfile(deck):
+        d = json.load(open(deck))
+
+        allan = {s: dict(d["sensors"][s]["allan_curve"]) for s in ("GR07", "GR06")}
+        taus = sorted({t for s in allan for t in allan[s]})
+        with open(os.path.join(DATA, "jnwtt_allan.csv"), "w", newline="") as fo:
+            w = csv.writer(fo)
+            w.writerow(["tau_s", "GR07_dev_c", "GR06_dev_c"])
+            for tau in taus:
+                w.writerow([f"{tau:.6g}",
+                            f"{allan['GR07'].get(tau, float('nan')):.6g}",
+                            f"{allan['GR06'].get(tau, float('nan')):.6g}"])
+        print(f"  jnwtt_allan.csv ({len(taus)} points)")
+        n += 1
+
+        ch = d["chamber"]
+        with open(os.path.join(DATA, "jnwtt_inl.csv"), "w", newline="") as fo:
+            w = csv.writer(fo)
+            w.writerow(["ref_c", "GR07_inl_k", "GR06_inl_k",
+                        "GR07_noise_mk", "GR06_noise_mk"])
+            for i, ref in enumerate(ch["ref_c"]):
+                w.writerow([f"{ref:.6g}",
+                            f"{ch['sensors']['GR07']['inl_k'][i]:.6g}",
+                            f"{ch['sensors']['GR06']['inl_k'][i]:.6g}",
+                            f"{ch['sensors']['GR07']['noise_mk'][i]:.6g}",
+                            f"{ch['sensors']['GR06']['noise_mk'][i]:.6g}"])
+        print(f"  jnwtt_inl.csv ({len(ch['ref_c'])} points)")
+        n += 1
+
+        #- what one, two and three oven visits buy
+        with open(os.path.join(DATA, "jnwtt_cal.csv"), "w", newline="") as fo:
+            w = csv.writer(fo)
+            names = [c["name"] for c in ch["sensors"]["GR07"]["cal"]]
+            w.writerow(["ref_c"] + [f"GR07_{i}" for i in range(len(names))]
+                       + [f"GR06_{i}" for i in range(len(names))])
+            for i, ref in enumerate(ch["ref_c"]):
+                row = [f"{ref:.6g}"]
+                for s in ("GR07", "GR06"):
+                    row += [f"{c['err_k'][i]:.6g}" for c in ch["sensors"][s]["cal"]]
+                w.writerow(row)
+        with open(os.path.join(DATA, "jnwtt_cal_names.csv"), "w", newline="") as fo:
+            w = csv.writer(fo)
+            w.writerow(["index", "name", "GR07_max_k", "GR06_max_k"])
+            for i, c in enumerate(ch["sensors"]["GR07"]["cal"]):
+                w.writerow([i, c["name"], f"{c['max_k']:.6g}",
+                            f"{ch['sensors']['GR06']['cal'][i]['max_k']:.6g}"])
+        print(f"  jnwtt_cal.csv, jnwtt_cal_names.csv ({len(names)} schemes)")
+        n += 2
+
+        #- the single charge trap in GR06
+        b = ch["burst"]
+        with open(os.path.join(DATA, "jnwtt_rts.csv"), "w", newline="") as fo:
+            w = csv.writer(fo)
+            w.writerow(["t_s", "dev_mk"])
+            for t, v in b["trace_mk"]:
+                w.writerow([f"{t:.6g}", f"{v:.6g}"])
+        with open(os.path.join(DATA, "jnwtt_rts_life.csv"), "w", newline="") as fo:
+            w = csv.writer(fo)
+            w.writerow(["ref_c", "step_mk", "life_ms", "frac", "resolved"])
+            for r in b["per_dwell"]:
+                w.writerow([f"{r['ref_c']:.6g}", f"{r['step_mk']:.6g}",
+                            f"{r['life_ms']:.6g}", f"{r['frac']:.6g}",
+                            int(r["resolved"])])
+        print(f"  jnwtt_rts.csv, jnwtt_rts_life.csv")
+        n += 2
+
+        #- a can of freeze spray, then a fingertip on the package
+        with open(os.path.join(DATA, "jnwtt_spray.csv"), "w", newline="") as fo:
+            w = csv.writer(fo)
+            w.writerow(["t_s", "GR07_c", "GR06_c"])
+            #- keys forced to float: the source is a rolling display
+            #- buffer and can hand back its tail before its head
+            a = {float(k): v for k, v in d["sensors"]["GR07"]["trace"]}
+            b = {float(k): v for k, v in d["sensors"]["GR06"]["trace"]}
+            for ts in sorted(set(a) | set(b)):
+                w.writerow([f"{ts:.6g}", _num(a.get(ts)), _num(b.get(ts))])
+        print(f"  jnwtt_spray.csv ({len(a)} + {len(b)} points)")
+        n += 1
+
+        #- four breaths on the package: the same event, two sensors
+        with open(os.path.join(DATA, "jnwtt_breath.csv"), "w", newline="") as fo:
+            w = csv.writer(fo)
+            w.writerow(["t_s", "GR07_c", "GR06_c"])
+            a = {float(k): v for k, v in d["breath"]["trace"]["GR07"]}
+            b = {float(k): v for k, v in d["breath"]["trace"]["GR06"]}
+            for ts in sorted(set(a) | set(b)):
+                w.writerow([f"{ts:.6g}", _num(a.get(ts)), _num(b.get(ts))])
+        print(f"  jnwtt_breath.csv ({len(a)} points)")
+        n += 1
+
+        #- fifteen minutes of both sensors in a quiet room
+        with open(os.path.join(DATA, "jnwtt_dual.csv"), "w", newline="") as fo:
+            w = csv.writer(fo)
+            w.writerow(["t_min", "GR07_c", "GR06_c"])
+            for t, a, b2 in zip(d["series"]["t_min"], d["series"]["GR07"],
+                                d["series"]["GR06"]):
+                w.writerow([f"{t:.6g}", f"{a:.6g}", f"{b2:.6g}"])
+        print(f"  jnwtt_dual.csv ({len(d['series']['t_min'])} readings)")
+        n += 1
+    return n
+
+
 def main():
     os.makedirs(DATA, exist_ok=True)
     print(f"from {AICEX}:")
@@ -238,6 +391,8 @@ def main():
     a += fetch_pll_settling()
     print(f"from {CNRATR}:")
     a += fetch_loadreg()
+    print(f"from {JNWTT}:")
+    a += fetch_jnwtt()
     print(f"from {DICEX}:")
     b = fetch_dicex()
     print(f"{a + b} files in {os.path.relpath(DATA, os.path.dirname(HERE))}")
