@@ -115,6 +115,12 @@ check:
 	${PYTHON} py/check.py
 	${PYTHON} py/lint_lectures.py
 
+#- Regenerate tikz/jnw_sym_lib.tex from the JNW xschem symbol libraries.
+#- The result is committed, so building the book never needs the IP
+#- repositories; run this only when a symbol itself changes.
+symlib:
+	${PYTHON} py/gen_symlib.py
+
 
 # ---------------------------------------------------------------------------
 # Incremental lecture conversion

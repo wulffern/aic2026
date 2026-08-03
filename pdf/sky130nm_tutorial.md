@@ -230,7 +230,7 @@ Remember to save the schematic
 ![](media/lelo_ex_tikz.pdf)
 
 
-<small><sub>_Figure 1: The finished LELO_EX schematic - one diode connected input instance and two output instances of two devices each, between the IBPS_5U, IBNS_20U and VSS ports. Four output devices to one input device is where the 5 uA in and 20 uA out of the port names comes from_</sub></small>
+<small><sub>_Figure 1: The finished LELO_EX schematic - one diode connected input instance and two output instances of two devices each, between the IBPS_5U, IBNS_20U and VSS ports. Four output devices to one input device is where the 5 uA in and 20 uA out of the port names comes from. The devices are the JNWATR_NCH_4C5F0 symbol itself, converted from the library you are placing them from, so the page and the canvas cannot drift apart_</sub></small>
 
 ## Netlist schematic
 

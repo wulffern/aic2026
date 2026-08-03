@@ -269,7 +269,10 @@ Remember to save the schematic
 \emph{Figure 1: The finished LELO\_EX schematic - one diode connected
 input instance and two output instances of two devices each, between the
 IBPS\_5U, IBNS\_20U and VSS ports. Four output devices to one input
-device is where the 5 uA in and 20 uA out of the port names comes from}
+device is where the 5 uA in and 20 uA out of the port names comes from.
+The devices are the JNWATR\_NCH\_4C5F0 symbol itself, converted from the
+library you are placing them from, so the page and the canvas cannot
+drift apart}
 
 \subsection{Netlist schematic}\label{netlist-schematic}
 
