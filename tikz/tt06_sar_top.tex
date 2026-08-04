@@ -1,0 +1,76 @@
+\input{tikz/fig_header.tex}
+
+% Top level of the TinyTapeout tt_um_TT06_SAR_wulffern 8-bit SAR ADC,
+% converted from the xschem source and hand-tuned: the SAR core
+% converts ua into D<7:0> and raises DONE, the output capture block
+% samples D into uo_out on DONE, and the buffered DONE itself leaves on
+% uio_out[0] so a scope can tell whether the clock is too fast. The
+% decoupling bank sits across the supply, and the reverse-biased
+% diodes on the inputs are the pad ESD. Blocks carry their library
+% cell names; buses are single wires with a width tick.
+
+\begin{circuitikz}[american, thick, transform shape, circuit ee IEC]
+
+  \input{tikz/ckt_lib.tex}
+
+  % ---- SAR core ----
+  \draw (4.6,2.0) rectangle (9.0,6.6);
+  \node[anchor=north, align=center] at (6.8,6.3) {SAR core\\\small SUNSAR\_SAR8B\_CV};
+  \node[anchor=west] at (4.7,4.7) {\small SAR\_IN};
+  \node[anchor=west] at (4.7,3.9) {\small EN};
+  \node[anchor=west] at (4.7,3.1) {\small CK\_SAMPLE};
+  \node[anchor=east] at (8.9,4.7) {\small D$\langle$7:0$\rangle$};
+  \node[anchor=east] at (8.9,3.5) {\small DONE};
+
+  % ---- Output capture ----
+  \draw (12.2,2.0) rectangle (16.6,6.6);
+  \node[anchor=north, align=center] at (14.4,6.3) {Output capture\\\small SUNSAR\_CAPT8B\_CV};
+  \node[anchor=west] at (12.3,4.7) {\small D$\langle$7:0$\rangle$};
+  \node[anchor=west] at (12.3,3.5) {\small CK\_SAMPLE};
+  \node[anchor=west] at (12.3,2.7) {\small ENABLE};
+  \node[anchor=east] at (16.5,4.7) {\small DO$\langle$7:0$\rangle$};
+
+  % ---- Left ports into the core ----
+  \draw (0.6,4.7) \portIn{ua[7:0]} -- (4.6,4.7);
+  \draw (2.15,4.45) -- (2.65,4.95);
+  \node[anchor=south] at (2.75,4.85) {\small 8};
+  \draw (0.6,3.9) \portIn{ena} -- (4.6,3.9);
+  \draw (0.6,3.1) \portIn{clk} -- (4.6,3.1);
+  \fill (2.0,3.1) circle (0.075);
+  \draw (2.0,3.1) -- (2.0,1.0) -- (11.0,1.0) -- (11.0,3.5) -- (12.2,3.5);
+  \draw (0.6,2.3) \portIn{ui\_in[0]} -- (11.6,2.3) -- (11.6,2.7) -- (12.2,2.7);
+
+  % ---- Data and DONE between the blocks ----
+  \draw (9.0,4.7) -- (12.2,4.7);
+  \draw (10.35,4.45) -- (10.85,4.95);
+  \node[anchor=south] at (10.95,4.85) {\small 8};
+  \draw (9.0,3.5) -- (9.8,3.5) -- (9.8,0.2) -- (17.6,0.2) coordinate (doneb);
+  \node[anchor=south] at (16.9,0.3) {\small DONE};
+
+  % ---- DONE buffer out to the pad ----
+  \draw (doneb) \cicBuf{bf};
+  \draw (bf_out) to [short,-o] ++(0.9,0) node[anchor=west] {uio\_out[0]};
+
+  % ---- Captured output ----
+  \draw (16.6,4.7) -- (18.4,4.7);
+  \draw (17.15,4.45) -- (17.65,4.95);
+  \draw (18.4,4.7) to [short,-o] ++(0.4,0) node[anchor=west] {uo\_out[7:0]};
+
+  % ---- Power decoupling ----
+  \draw (0.6,-1.6) \portIn{VPWR} -- (4.4,-1.6);
+  \draw (3.6,-3.6) \vground;
+  \draw (3.6,-3.6) \vcapacitor{};
+  \draw (3.6,-2.0) -- (3.6,-1.6);
+  \fill (3.6,-1.6) circle (0.075);
+  \node[anchor=west] at (4.3,-2.7) {\small C$\langle$8:0$\rangle$ decoupling};
+
+  % ---- Pad ESD diodes on the inputs ----
+  \draw (0.6,-4.9) \portIn{rst\_n} -- (8.4,-4.9);
+  \draw (7.6,-6.9) \vground;
+  \draw (7.6,-6.9) \vdiode{};
+  \draw (7.6,-5.3) -- (7.6,-4.9);
+  \fill (7.6,-4.9) circle (0.075);
+  \node[anchor=west] at (8.2,-6.0) {\small pad ESD, also on ua and ui\_in};
+
+\end{circuitikz}
+\end{document}

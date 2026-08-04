@@ -415,7 +415,7 @@ But if we can't run mixed simulation, how do we verify analog with digital?
 
 -->
 
-![fit](../media/mixed_simulator.pdf)
+![fit](../media/mixed_simulator_tikz.pdf)
 
 <!--pan_doc:
 <sub>Figure 5: Mixed signal simulator, where a digital and an analog simulator exchange values through DAC and ADC connect modules under a shared event and timestep control</sub>
@@ -434,10 +434,10 @@ But if we can't run mixed simulation, how do we verify analog with digital?
 
 ---
 
-![](../media/tt_um_TT06_SAR_wulffern.svg)
+![](../media/tt06_sar_top_tikz.pdf)
 
 <!--pan_doc:
-<sub>Figure 6: Top level schematic of the TinyTapeout tt_um_TT06_SAR_wulffern 8-bit SAR ADC, with the SAR core, the output capture block and the power decoupling</sub>
+<sub>Figure 6: Top level of the TinyTapeout tt_um_TT06_SAR_wulffern 8-bit SAR ADC, redrawn from the xschem schematic: the SAR core, the output capture block, the buffered DONE on uio_out[0], the power decoupling and the pad ESD diodes</sub>
 -->
 
 ---
