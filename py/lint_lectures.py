@@ -191,6 +191,12 @@ def check_figures(path: Path, lines: list[str], code: list[bool]) -> list[Findin
                 continue
             target = (path.parent / src).resolve()
             if not target.exists():
+                #- Generated figures are not committed; a media/<name>_tikz.*
+                #  reference is fine as long as its tikz source exists (the
+                #  same rule py/check.py applies).
+                tm = re.match(r"(?:\.\./)?media/(.+)_tikz\.(?:pdf|svg)$", src)
+                if tm and (REPO / "tikz" / f"{tm.group(1)}.tex").exists():
+                    continue
                 out.append(Finding(
                     "missing-image", i, f"{src} does not exist"))
         m = re.search(r"<sub>Figure\s+(\d+):", line)
