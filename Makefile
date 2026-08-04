@@ -374,6 +374,14 @@ print-tikz:
 tikz:
 	printf '%s\n' ${TIKZ_SOURCES} | xargs -P 4 -I{} ${MAKE} --no-print-directory tikz-one FNAME={}
 
+# Figure build with a content-hash cache, mirroring standalone-cached: a
+# figure whose source and shared libraries are unchanged is copied from
+# TIKZ_CACHEDIR instead of recompiled (see py/tikzcache.py). CI restores
+# and saves the cache dir around this.
+TIKZ_CACHEDIR = ~/.cache/aic-tikz
+tikz-cached:
+	${PYTHON} py/tikzcache.py --cache ${TIKZ_CACHEDIR} ${TIKZ_SOURCES}
+
 # Rasterise the figures left in tikz/build/ by tikz-check, so they can be
 # reviewed without a PDF viewer. CI uploads the result as an artifact.
 tikz-preview:
@@ -429,4 +437,6 @@ tikz-one:
 		pdf2svg "tikz/build$$sub/$$b.pdf" "media$$sub/$${b}_tikz.svg" || true; \
 	elif command -v dvisvgm >/dev/null 2>&1; then \
 		dvisvgm --pdf "tikz/build$$sub/$$b.pdf" -n -o "media$$sub/$${b}_tikz.svg" >/dev/null 2>&1 || true; \
+	elif command -v pdftocairo >/dev/null 2>&1; then \
+		pdftocairo -svg "tikz/build$$sub/$$b.pdf" "media$$sub/$${b}_tikz.svg" || true; \
 	fi

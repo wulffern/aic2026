@@ -60,6 +60,32 @@ jobs:
         with:
           submodules: recursive
 
+      # Rolling cache, same scheme as the standalone shards: restore the
+      # newest snapshot, save a fresh one under a unique key. Hits are
+      # decided per figure inside py/tikzcache.py on a content hash.
+      - name: Restore TikZ figure cache
+        uses: actions/cache/restore@v6
+        with:
+          path: ~/.cache/aic-tikz
+          key: tikz-figures-${{ github.run_id }}
+          restore-keys: |
+            tikz-figures-
+
+      # The generated figures are not committed; build them before
+      # prepare-docs copies media/ into pdf/media and docs/assets/media.
+      - name: Build TikZ figures
+        shell: bash
+        run: |
+          git config --global --add safe.directory "$(pwd)"
+          make tikz-cached
+
+      - name: Save TikZ figure cache
+        uses: actions/cache/save@v6
+        if: always()
+        with:
+          path: ~/.cache/aic-tikz
+          key: tikz-figures-${{ github.run_id }}
+
       - name: Prepare shared sources
         shell: bash
         run: |
