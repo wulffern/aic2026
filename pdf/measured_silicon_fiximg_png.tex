@@ -1,6 +1,6 @@
 \textbf{Keywords:} Tapeout, Tiny Tapeout, PTAT, Time-domain readout,
-Temperature chamber, Transfer curve, INL, DNL, Calibration, Allan
-deviation, Quantisation, Dither, Dead zone, Random telegraph noise
+Temperature chamber, Transfer curve, INL, Calibration, Allan deviation,
+Quantisation, Dither, Bernoulli statistics, Random telegraph noise
 
 \section{Measured Silicon}\label{measured-silicon}\index{measured silicon@Measured silicon}
 
@@ -84,10 +84,13 @@ Klemetsdal. The same front end, and the same NMOS shorting the capacitor
 discharges, and on release the ramp runs once. One pulse per stimulus,
 and its width is the observable. Nothing in this circuit is clocked}
 
-At room temperature GR07 runs at about 910 kHz - a period near 1.1 µs -
-and GR06 produces a pulse about 7.1 µs wide. GR07 therefore delivers
-roughly two hundred times more events per second of measurement, which
-you would expect to make it the better sensor. Hold that thought.
+At room temperature GR07 free-runs at about 910 kHz - a period near 1.1
+µs - so half a second of capture contains half a million periods. GR06
+only produces a pulse when the host asks for one, and the host asks
+about 4.5 thousand times a second, so the same half second contains
+about 2 300 pulses. GR07 therefore delivers roughly two hundred times
+more events per measurement, which you would expect to make it the
+better sensor. Hold that thought.
 
 \section{What the silicon does}\label{what-the-silicon-does}\index{what the silicon does@What the silicon does}
 
@@ -194,39 +197,30 @@ output is made of.
 \subsection{GR07's output is quantised, and noise is what rescues
 it}\label{gr07s-output-is-quantised-and-noise-is-what-rescues-it}
 
-Capture a second of GR07 and histogram the periods. There are nearly a
-million of them, and they take \textbf{four distinct values} - in two
-clusters, one 64 MHz clock period apart. The 15.6 ns gap between the
-clusters is one project-clock cycle; the finer structure inside each
-cluster is the logic analyser's own sample quantum.
+Look again at Figure 1. The comparator trips whenever it trips, but its
+output reaches the reset transistors through a flip-flop, and a
+flip-flop can only change at a clock edge. Every GR07 period is
+therefore a whole number of 64 MHz clock cycles, and nothing in between
+is representable.
 
-That is what re-timing does. The comparator trips whenever it trips, but
-the flip-flop can only report it at the following clock edge, so every
-period is a whole number of clock cycles. One cycle is 4.75 K.
-
-It is worth being careful about \emph{why} it is still a useful sensor,
-because the obvious story is wrong. Look again at Figure 1: the
-flip-flop's output is what resets the ramp. So the reset is released on
-a clock edge, and the ramp therefore starts on a clock edge, every
-single time. The charge time is always measured from the same place in
-the clock period.
-
-That matters, because it means nothing accumulates. If the crossing sits
-a fraction \(f\) of a cycle past an edge, it sits at the same \(f\) next
-time, and the next: the sub-cycle remainder is thrown away each cycle
-rather than carried forward. The loop has no memory of it, and that is
-why what follows has to be about noise.
+That is not a small quantum. GR07's period is about seventy clock cycles
+at room temperature and falls by roughly one cycle for every five kelvin
+of warming, so \textbf{one clock cycle is about 4.75 K} - three times
+the whole calibrated error of Figure 6, and larger than the raw
+uncalibrated error of Figure 4.
 
 A noiseless version of this circuit would be a plain 4.75 K quantiser.
-Every period would be identical, the average would tell you nothing more
-than one period did, and the sensor would be useless.
+Every period would come out the same, and the average of a million of
+them would tell you no more than one of them did: 4.75 K steps, and
+nothing in between.
 
-What rescues it is noise. Jitter on the comparator crossing - from the
-PTAT current, from the comparator itself, from the supply - is enough to
-push some periods over the clock edge and not others. The output then
-alternates between \(N\) and \(N+1\) cycles, and the \emph{fraction} of
-periods that come out long is an estimate of \(f\). Averaging a million
-of them reads that fraction to a few millikelvin.
+What gets it below that is noise. Jitter on the comparator crossing -
+from the PTAT current, from the comparator itself, from the supply - is
+enough to push some periods over the clock edge and not others. Say the
+crossing sits a fraction \(f\) of a cycle past an edge. The output then
+alternates between \(N\) and \(N+1\) cycles, and the fraction of periods
+that come out long is an estimate of \(f\). Averaging a million of them
+reads it to a few millikelvin.
 
 That is dither: noise deliberately relied upon to make a coarse
 quantiser resolve below its own step. It is the same mechanism that lets
@@ -243,46 +237,38 @@ way to fail.
 \aicfig{media/jnwtt_deadzone_tikz.png}
 }
 
-\emph{Figure 7: GR07's measured noise against where its period happens
-to fall between two clock edges, one point per chamber set point. The
-noise collapses where the period lands close to a whole number of
-cycles}
+\emph{Figure 7: GR07's measured noise against \(f\), the fractional part
+of its period in 64 MHz clock cycles. The dashed curve is
+\(\sqrt{f(1-f)}\) with one scale factor fitted to the data}
 
-Figure 7 is the failure. Where the crossing sits close to a clock edge
-the noise is more than enough to straddle it and the sensor dithers
-happily. Where it sits far from an edge - up to half a cycle away, which
-is 2.4 K - the noise cannot reach across, every period returns the same
-\(N\), and the output goes constant.
+The measured noise is not constant: it varies by a factor of eight
+across the sweep, and it varies with \(f\) in a very particular way.
 
-The sensor has not become better there. It has gone deaf, and it looks
-ten times quieter while doing it. That is worth stating plainly:
+That shape is not a coincidence. If a fraction \(f\) of the periods come
+out long and the rest short, each period is a coin flip with probability
+\(f\) - a Bernoulli trial, whose variance is \(f(1-f)\). The spread of a
+rate estimated from many of them therefore goes as \(\sqrt{f(1-f)}\):
+smallest where the period is nearly a whole number of cycles, largest
+where it sits half-way between. The dashed curve is that expression with
+a single scale factor fitted, and it follows the fourteen measurements
+with a correlation of 0.997.
 
-\begin{quote}
-A quiet-looking GR07 reading is not evidence of a good one.
-\end{quote}
+So GR07's precision depends on the temperature it happens to be at,
+through nothing more than the arithmetic of the quantiser. At 10 °C its
+period is within a hundredth of a whole cycle and its noise is 22 Hz; at
+25 °C it sits nearly half-way between and the noise is 186 Hz. Same
+circuit, same clock, eight times the noise, and it is the fractional
+part of a division that decides which you get.
 
-It also explains Figure 4. GR07's error is not a slope and not a curve -
-it is a 4.75 K staircase with dead zones in it. Calibration fits
-functions; a staircase is not a function of temperature that any
-two-point or three-point fit can absorb. Only sampling the crossing with
-something finer than the clock would remove it, and the natural fix is
-the cheapest one available: run the project clock faster, and the step
-shrinks in proportion.
+This also puts a floor under how well GR07 can ever be trimmed.
+Calibration fits a smooth function to a transfer; what GR07 delivers is
+a 4.75 K staircase whose dither statistics change from step to step. The
+cheapest real fix is not more calibration points but a faster project
+clock, which shrinks the step in proportion.
 
 GR06, with no clock anywhere in its path, has none of this. Its output
 is a pulse width in continuous time, and it is limited by something else
 entirely.
-
-
-{
-\centering
-\aicfig{media/jnwtt_dnl_tikz.png}
-}
-
-\emph{Figure 8: The same staircase read as a converter: the width of
-each fully traversed code against the ideal 4.75 K step. Worst DNL 0.12
-LSB, so the steps themselves are even - the problem is their size, not
-their regularity}
 
 \subsection{When averaging stops
 helping}\label{when-averaging-stops-helping}
@@ -300,20 +286,32 @@ over and averaging longer makes the answer worse.
 \aicfig{media/jnwtt_allan_tikz.png}
 }
 
-\emph{Figure 9: Allan deviation of both sensors over fifteen minutes in
-a quiet room. GR07 starts four times more precise, bottoms out at 57 mK
-after about eight seconds and then degrades. GR06 keeps improving out
-past a minute, to 31 mK}
+\emph{Figure 8: Allan deviation of both sensors over fifteen minutes in
+a quiet room. GR06 is lower at every averaging time. GR07 bottoms out at
+57 mK after about eight seconds and then degrades; GR06 keeps improving
+out past a minute, to 31 mK}
 
-GR07 starts ahead, exactly as its two-hundred-fold event advantage says
-it should. Then it turns around. What looks like drift is the dead zones
-of the previous section: while the crossing sits away from a clock edge
-the reading is stuck at one value and therefore biased, and a bias that
-lasts seconds is indistinguishable from drift.
+The two-hundred-fold event advantage does not appear anywhere on this
+plot. GR06 is the better sensor at every averaging time, from the
+shortest to the longest, and the gap widens.
 
-GR06, producing two thousand times fewer events, ends up the better
-sensor for any measurement lasting more than about ten seconds. The
-circuit with less of everything wins, because it has no quantiser.
+That is worth sitting with, because within a single half-second capture
+GR07 really is the more precise of the two: its standard error is 3.3 mK
+against GR06's 12.8 mK. But note how little that is. Two hundred times
+the events should be \(\sqrt{200}\), a factor of fifteen, and GR07 only
+manages four. The missing factor is its own single-event resolution: one
+GR07 period is worth 2.3 K of scatter against 0.6 K for one GR06 pulse,
+because 4.75 K of quantiser has to be dithered through. GR07 spends most
+of its event advantage buying back what the flip-flop took.
+
+The four it keeps then does not survive either. Its Allan deviation at
+the shortest averaging time is 80 mK - twenty-four times its own
+statistical error - where GR06's is 55 mK against 12.8 mK, a factor of
+four. Both sensors are limited by something other than counting
+statistics, and GR07 by far the more so. Beyond about ten seconds its
+curve turns upward, which means something slower than the averaging
+window is now spoiling the answer and averaging longer makes it worse.
+GR06, producing two hundred times fewer events, keeps improving.
 
 There is a second result hiding in the same run. Over those fifteen
 minutes the two sensors' fluctuations are essentially uncorrelated
@@ -339,16 +337,24 @@ freeze spray, and then a finger held on the package.
 \aicfig{media/jnwtt_spray_tikz.png}
 }
 
-\emph{Figure 10: A can of freeze spray at 13 s, then a fingertip on the
+\emph{Figure 9: A can of freeze spray at 13 s, then a fingertip on the
 package from 88 s to 122 s, both sensors on one capture. The die falls
-13 K in 1.4 seconds - a peak rate of 37 K/s. Gaps are dead time between
-captures, drawn as gaps rather than interpolated}
+13 K in under two seconds, at better than 20 K/s at the steepest. Gaps
+are dead time between captures, drawn as gaps rather than interpolated}
 
-The two traces lie on top of each other. Through the spray and the
-recovery their correlation is 0.95, and while the finger is on it is
-0.99 - two different circuits, two different readout schemes, a
-two-hundredfold difference in how many events each averages, and they
-agree about what the die did.
+The two traces do not sit on top of each other - through the long
+recovery GR06 reads up to about a kelvin above GR07 - but they move
+together. Every feature appears in both at the same instant, and the
+correlation of the two temperature series is 0.96 through the spray and
+recovery and 0.99 while the finger is on.
+
+The offset is not a surprise. Each sensor is calibrated at a single
+point near 23 °C against the ideal line through the origin, with no
+offset term to absorb comparator delay or reset time, so at 8 °C both
+are extrapolating fifteen kelvin beyond their only anchor. What the
+figure supports is the \emph{shape}: the timing, the rates, and the fact
+that both saw the same thing. The absolute depth is the weakest number
+on the page.
 
 This is the control the previous section needed. Quiet, the two sensors
 were uncorrelated; given something real to follow, they agree almost
@@ -369,25 +375,29 @@ Now the same experiment, gently: four breaths on the package.
 \aicfig{media/jnwtt_breath_tikz.png}
 }
 
-\emph{Figure 11: Four breaths, both sensors, one capture. Each breath
-moves both - but GR06 reads about 2.4 times the excursion GR07 does}
+\emph{Figure 10: Four breaths, both sensors, one capture. Each breath
+moves both - but GR06 reads about 2.2 times the excursion GR07 does}
 
 Both sensors agree that four things happened, and disagree about how big
-they were by a factor of 2.4. The obvious reading is that the two
-circuits have different gains. They do not: over the 15 K of Figure 10
+they were by a factor of 2.2. The obvious reading is that the two
+circuits have different gains. They do not: over the 15 K of Figure 9
 they agree to within a few per cent, and a real gain error would show up
 \emph{more} strongly over a wider excursion, not vanish.
 
-It is the staircase again. A one-kelvin breath is about a fifth of
-GR07's 4.75 K step. If the crossing sits away from a clock edge - and
-during this run it did - a signal that small never carries it across,
-and the excursion comes out compressed by an unknown factor. GR06, with
-no clock in its path, reports the whole thing.
+So something compresses GR07's response to small, fast signals without
+touching its response to large slow ones. A one-kelvin breath is about a
+fifth of GR07's 4.75 K quantiser step, so the quantiser is the obvious
+suspect - but the chamber sweep of Figure 7 shows its dither behaving
+the way ideal dither should, which would give a linear response at any
+excursion. The two observations are not yet reconciled, and nothing else
+measured here settles it.
 
-So the practical rule for reading these two: for small, fast signals,
-trust GR06. For GR07, either move it off the edge by changing the clock
-frequency, or accept that excursions of a kelvin or two are compressed
-by something between one and about three.
+What can be said without hand-waving is the practical part: for small,
+fast signals the two sensors disagree by a factor of about two, and GR06
+is the one that agrees with the larger excursion. Trust it. Establishing
+\emph{why} would need a controlled small-step experiment with GR07
+parked at several known values of \(f\) - which is a good project, and
+is not in this data set.
 
 \section{One trap}\label{one-trap}\index{one trap@One trap}
 
@@ -396,7 +406,7 @@ switches}\label{gr06-does-not-drift-it-switches}
 
 GR06 is the better-behaved sensor everywhere above, so it is worth
 asking what actually limits \emph{it}. Hold the chamber still and look
-at ninety seconds of GR06 with the slow dwell drift removed.
+at a minute of GR06 with the slow dwell drift removed.
 
 
 {
@@ -404,10 +414,10 @@ at ninety seconds of GR06 with the slow dwell drift removed.
 \aicfig{media/jnwtt_rts_tikz.png}
 }
 
-\emph{Figure 12: Ninety seconds of GR06 at a fixed chamber temperature,
+\emph{Figure 11: Sixty seconds of GR06 at a fixed chamber temperature,
 with the slow dwell drift removed. The reading sits flat, drops about
-half a kelvin to a second level, stays there a second or two, and comes
-back}
+six tenths of a kelvin to a second level, stays there a second or two,
+and comes back}
 
 Thermal noise would give a fuzzy band around zero. This gives two
 levels. That is random telegraph noise - a single charge trap in the
@@ -415,9 +425,10 @@ silicon capturing and emitting one carrier - and it is the same
 mechanism the noise chapter introduces as the microscopic origin of
 flicker noise, here big enough to see one trap at a time.
 
-The step is about 0.5 K and roughly constant from 5 °C to 55 °C, which
-says it is one trap rather than a population. The time it stays trapped
-is thermally activated and follows an Arrhenius law, which is what
+The step is about 0.6 K from 5 °C to 55 °C - it drifts from 0.7 K to 0.4
+K across that span, but it does not scale with anything - which says it
+is one trap rather than a population. The time it stays trapped is
+thermally activated and follows an Arrhenius law, which is what
 identifies it as a trap rather than as something in the instrument.
 
 
@@ -426,17 +437,17 @@ identifies it as a trap rather than as something in the instrument.
 \aicfig{media/jnwtt_rts_life_tikz.png}
 }
 
-\emph{Figure 13: The trap's mean lifetime in the low state against
+\emph{Figure 12: The trap's mean lifetime in the low state against
 inverse thermal energy, one point per chamber dwell. A straight line
 here is an Arrhenius law; the slope is an activation energy of 226 meV.
 Above about 55 °C the two levels merge into the noise and the fit stops
 meaning anything, so those dwells are left out}
 
 So GR06's real single-reading accuracy is not its ±0.35 K three-point
-calibration - that is a ninety-second mean. A single reading can be half
-a kelvin off whenever the trap happens to be occupied. Unlike GR07's
-quantiser this is cheap to fix: a median over a second or two steps
-straight over it.
+calibration - that is a ninety-second mean. A single reading can be six
+tenths of a kelvin off whenever the trap happens to be occupied. Unlike
+GR07's quantiser this is cheap to fix: a median over a second or two
+steps straight over it.
 
 \section{Summary}\label{summary}
 
@@ -453,16 +464,19 @@ Two sensors from this course, on the same die, from the same principle.
   GR06, with three calibration points, is accurate to ±0.35 K over 5-70
   °C. What is left after a straight line is bandgap curvature: a
   \(T\ln T\) term takes 1.33 K down to 0.23 K. Its limit for a single
-  reading is not linearity at all but one charge trap worth about 0.5 K,
+  reading is not linearity at all but one charge trap worth about 0.6 K,
   which a short median removes.
 \item
-  GR07 is four times more precise per reading and ends up worse. Its
-  output is quantised to whole clock cycles, 4.75 K each, and only noise
-  dithering the crossing lets averaging resolve below that. Where the
-  crossing sits far from a clock edge the dither fails, and the sensor
-  stops responding while looking ten times quieter.
+  GR07 has four times GR06's statistical precision within a capture and
+  is the worse sensor at every averaging time - its readings scatter
+  twenty-four times more than its own statistics predict. Its output is
+  quantised to whole clock cycles, 4.75 K each, and only noise dithering
+  the crossing lets averaging resolve below that. How precise it is then
+  depends on where it sits in that step: the noise follows
+  \(\sqrt{f(1-f)}\) to a correlation of 0.997, an eightfold range across
+  the sweep, decided by the fractional part of a division.
 \item
-  Calibration cannot absorb a staircase. Running the clock faster can.
+  Calibration cannot absorb a staircase. A faster clock shrinks it.
 \item
   The two sensors' noise is uncorrelated on one die. Two sensors tell
   you when something is real; one tells you a number.

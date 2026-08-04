@@ -89,9 +89,11 @@ keepaspectratio]{background.png}%
 \definecolor{oxteal}{RGB}{140,195,195}
 
 \definecolor{aiink}{RGB}{15,60,150}
-\newcommand{\aicontent}{}
-\ifdefined\AIHIGHLIGHT\renewcommand{\aicontent}{\color{aiink}}\fi
-\newenvironment{aicontent}{\begingroup\aicontent}{\endgroup}
+% \newenvironment{aicontent} also defines \aicontent, so the colour
+% switch it uses needs a name of its own.
+\newcommand{\aiswitch}{}
+\ifdefined\AIHIGHLIGHT\renewcommand{\aiswitch}{\color{aiink}}\fi
+\newenvironment{aicontent}{\begingroup\aiswitch}{\endgroup}
 
 \title{Advanced Integrated Circuits 2026}
 \author{Carsten~Wulff}

@@ -268,16 +268,6 @@ def fetch_jnwtt():
         print(f"  jnwtt_chamber.csv ({len(rows)} set points)")
         n += 1
 
-    #- the code widths of GR07's clock staircase
-    dnl = os.path.join(src, "2026-08-03_chamber_dnl.csv")
-    if os.path.isfile(dnl):
-        with open(dnl) as fi, open(os.path.join(DATA, "jnwtt_dnl.csv"),
-                                   "w", newline="") as fo:
-            rows = list(csv.reader(fi))
-            csv.writer(fo).writerows(rows)
-        print(f"  jnwtt_dnl.csv ({len(rows) - 1} codes)")
-        n += 1
-
     #- everything the slides computed, keyed by figure
     deck = os.path.join(src, "deck_data.json")
     if os.path.isfile(deck):

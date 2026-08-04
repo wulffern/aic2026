@@ -71,7 +71,8 @@ independent designs agree with each other to a per cent. What separates
 them is not the analogue - it is what each group chose to do with the
 comparator output. One re-times it on the project clock, which quantises its
 output in 4.75 K steps and leaves it depending on noise to dither its
-way below them; the other stays asynchronous, is two hundred times
+way below them - so how precise it is depends on where in a step it
+happens to sit. The other stays asynchronous, is two hundred times
 slower, and ends up the better sensor. Read it before you decide how your own design will be read out,
 because that decision turned out to matter more than anything in the
 front end.

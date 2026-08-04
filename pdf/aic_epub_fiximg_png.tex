@@ -80,9 +80,14 @@ keepaspectratio]{background.png}%
 
 
 % AI-content highlighting: chapters_epub written by Claude are wrapped in
-% {\aicontent ...} by py/lecture.py. In the normal build the command
-% does nothing; build with \def\AIHIGHLIGHT{} (make book-ai) and those
-% chapters_epub are set in ink blue.
+% \begin{aicontent}...\end{aicontent} by py/lecture.py. In the normal
+% build the environment does nothing; build with \def\AIHIGHLIGHT{}
+% (make book-ai) and those chapters_epub are set in ink blue.
+%
+% An environment rather than a brace group on purpose: pandoc's LaTeX
+% reader, which builds the epub, does not track a bare {\macro ... }
+% across an \input and reports the closing brace as unexpected. It
+% passes an unknown environment through without complaint.
 % The book colour theme - the same luminance ladder the figures use,
 % so the Conventions swatches and any coloured text match the art.
 \definecolor{red}{RGB}{160,25,35}
@@ -94,6 +99,7 @@ keepaspectratio]{background.png}%
 \definecolor{aiink}{RGB}{15,60,150}
 \newcommand{\aicontent}{}
 \ifdefined\AIHIGHLIGHT\renewcommand{\aicontent}{\color{aiink}}\fi
+\newenvironment{aicontent}{\begingroup\aicontent}{\endgroup}
 
 \title{Advanced Integrated Circuits 2026}
 \author{Carsten~Wulff}
