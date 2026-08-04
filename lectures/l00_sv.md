@@ -214,7 +214,7 @@ If you have money, then buy Cadence Spectre. If you have no money, then start wi
 
 ---
 
-![fit](../media/mixed_simulator.pdf)
+![fit](../media/mixed_simulator_tikz.pdf)
 
 <!--pan_doc:
 <sub>Figure 1: Mixed signal simulator, where a digital and an analog simulator exchange values through DAC and ADC connect modules under a shared event and timestep control</sub>
@@ -245,7 +245,7 @@ What we want from the digital is to control the binary value of the current DAC.
 
 -->
 
-![](../media/JNWSW_CM.pdf)
+![](../media/jnwsw_cm_tikz.pdf)
 
 <!--pan_doc:
 <sub>Figure 2: The JNWSW_CM schematic - a current mirror from ibp plus a 5-bit binary weighted current DAC controlled by b[4:0]</sub>

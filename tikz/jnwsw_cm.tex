@@ -1,0 +1,63 @@
+\input{tikz/fig_header.tex}
+
+% The JNWSW_CM testbench circuit, redrawn from the xschem screenshot:
+% ibp drives a diode-connected reference, three unit devices mirror it
+% out as IBN_0..2, and five more branches sized 1, 2, 4, 8, 16 sit
+% under switch devices gated by b[4:0], their drains joined into
+% IBN_DAC - a current mirror plus a 5-bit binary weighted current DAC.
+% Same visual language as dac_i in the DAC lecture: the reference is
+% mirrored so its gate faces the array and the diode loop runs up the
+% outside.
+
+\begin{circuitikz}[american, thick, transform shape, circuit ee IEC]
+
+  \input{tikz/ckt_lib.tex}
+
+  \def\ytail{0.6}      % source of the mirror devices
+  \def\ygate{1.4}      % the shared gate rail
+  \def\ysw{2.2}        % source of the switch devices
+  \def\ytop{4.6}       % the IBN_DAC rail
+
+  % ---- Reference: ibp into a diode connected device ----
+  \draw (0,\ytail) to [Tnmos, n=M0, mirror] (0,{\ytail+1.6});
+  \draw (0,\ytail) -- ++(0,-0.3) \vground;
+  \draw (M0.gate) -- (0.8,\ygate) -- (0.8,{\ytail+1.6}) -- (0,{\ytail+1.6});
+  \fill (0,{\ytail+1.6}) circle (0.07);
+  \fill (0.8,\ygate) circle (0.07);
+  \draw (0,{\ytail+1.6}) -- (0,{\ytail+2.3});
+  \draw (0,{\ytail+2.3}) circle (0.06);
+  \node[anchor=south] at (0,{\ytail+2.36}) {ibp};
+
+  % ---- Three unit mirror outputs ----
+  \foreach \i/\x in {0/2.4, 1/4.6, 2/6.8} {
+    \draw (\x,\ytail) to [Tnmos, n=MU\i] (\x,{\ytail+1.6});
+    \draw (\x,\ytail) -- ++(0,-0.3) \vground;
+    \fill (MU\i.gate) circle (0.07);
+    \draw (\x,{\ytail+1.6}) -- (\x,{\ytail+2.3});
+    \draw (\x,{\ytail+2.3}) circle (0.06);
+    \node[anchor=south] at (\x,{\ytail+2.36}) {IBN\_\i};
+  }
+
+  % ---- Five binary weighted branches under b[4:0] switches ----
+  \foreach \k/\x/\w in {0/9.6/1, 1/12.0/2, 2/14.4/4, 3/16.8/8, 4/19.2/16} {
+    \draw (\x,\ytail) to [Tnmos, n=MB\k] (\x,\ysw);
+    \draw (\x,\ytail) -- ++(0,-0.3) \vground;
+    \fill (MB\k.gate) circle (0.07);
+    \node[anchor=west] at ({\x+0.3},{\ytail+1.2}) {$\w\times$};
+    \draw (\x,\ysw) to [Tnmos, n=MS\k] (\x,{\ysw+1.6});
+    \draw (MS\k.gate) -- ++(-0.5,0) \portIn{$b_\k$};
+    \draw (\x,{\ysw+1.6}) -- (\x,\ytop);
+  }
+
+  % ---- The gate rail every mirror device sits on ----
+  \draw (0.8,\ygate) -- (MB4.gate);
+
+  % ---- The DAC output rail ----
+  \draw (9.6,\ytop) -- (19.2,\ytop);
+  \foreach \k in {1,2,3} { \fill ({9.6+2.4*\k},\ytop) circle (0.07); }
+  \draw (14.4,\ytop) -- (14.4,{\ytop+0.7});
+  \draw (14.4,{\ytop+0.7}) circle (0.06);
+  \node[anchor=south] at (14.4,{\ytop+0.76}) {IBN\_DAC};
+
+\end{circuitikz}
+\end{document}
