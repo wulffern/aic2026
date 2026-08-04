@@ -80,12 +80,19 @@ def check_lectures(files):
             continue
         text = open(path).read()
 
-        #- 1. local image references resolve
+        #- 1. local image references resolve. Generated figures
+        #  (media/<name>_tikz.*) are not committed, so for those the
+        #  check is that the tikz source exists - stronger than testing
+        #  for the artifact, and it works on a checkout with no TeX.
         for m in re.finditer(r"!\[[^\]]*\]\(([^)\s]+)", text):
             src = m.group(1)
             if src.startswith("http"):
                 continue
-            if not os.path.exists(os.path.join("lectures", src)):
+            tm = re.match(r"(?:\.\./)?media/(.+)_tikz\.(?:pdf|svg)$", src)
+            if tm:
+                if not os.path.exists(f"tikz/{tm.group(1)}.tex"):
+                    err(f"{path}: image {src} has no source tikz/{tm.group(1)}.tex")
+            elif not os.path.exists(os.path.join("lectures", src)):
                 err(f"{path}: image {src} not found")
 
         #- 2. citations exist

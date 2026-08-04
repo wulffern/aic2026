@@ -236,7 +236,17 @@ class Image():
             return
 
         if("jekyll" in self.options):
-            shutil.copyfile(os.path.join(self.options["dir"],self.src), "docs/assets/media/" + self.filesrc)
+            #- Generated figures (media/*_tikz.*) are not committed, so a
+            #  checkout that has not run `make tikz` lacks them. The no-TeX
+            #  Checks workflow builds posts on such a checkout; py/check.py
+            #  verifies the tikz source exists instead, so a missing
+            #  generated figure is a warning here, not a crash.
+            srcpath = os.path.join(self.options["dir"], self.src)
+            if(not os.path.exists(srcpath)
+                    and re.search(r"_tikz\.(pdf|svg)$", self.filesrc)):
+                print(f"Image.copy: {srcpath} missing (run `make tikz`), skipping")
+                return
+            shutil.copyfile(srcpath, "docs/assets/media/" + self.filesrc)
         elif("latex" in self.options):
             os.makedirs(self.options["latex"] + "media/",exist_ok=True)
             try:
