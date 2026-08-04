@@ -130,7 +130,7 @@ Below is an example of ReRAM. In the Pristine state the conductance is low, resi
 ![fit](../media/forming.png)
 
 <!--pan_doc:
-<sub>Figure 2: ReRAM conductance distributions in the pristine, formed (LRS), and reset (HRS) states</sub>
+<sub>Figure 2: ReRAM conductance distributions in the pristine, formed (LRS), and reset (HRS) states. From [google/skywater-pdk-libs-sky130_fd_pr_reram](https://github.com/google/skywater-pdk-libs-sky130_fd_pr_reram/blob/main/docs/figures/reram_document_figures/forming.png), Apache 2.0 license</sub>
 -->
 
 

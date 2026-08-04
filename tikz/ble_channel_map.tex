@@ -1,0 +1,48 @@
+\input{tikz/fig_header.tex}
+
+% The Bluetooth LE channel map against WiFi: forty 2 MHz channels from
+% 2402 to 2480, drawn as lobes on a frequency axis, with the three WiFi
+% channels (1, 6, 11 at 2412/2437/2462, about 22 MHz wide) as wide humps
+% behind them. The point of the figure is the placement: the three
+% advertising channels 37, 38 and 39 (green, taller) sit at 2402, 2426
+% and 2480 - exactly in the gaps between and beside the WiFi channels,
+% so an advertisement is least likely to collide. Data channels in blue,
+% WiFi in red: the interferer gets the danger colour.
+
+\begin{tikzpicture}[thick]
+
+  % x = (f - 2400) * 0.16, so the 80 MHz band spans 12.8 units
+  \def\fx#1{{(#1-2400)*0.16}}
+
+  % ---- WiFi first, so the BLE lobes draw over the humps ----
+  \foreach \fc/\nm in {2412/1, 2437/6, 2462/11} {
+    \draw[red, fill=red!10] (\fx{\fc-11},0)
+      .. controls (\fx{\fc-8},3.2) and (\fx{\fc+8},3.2) .. (\fx{\fc+11},0);
+    \node[red, anchor=south] at (\fx{\fc},3.05) {WiFi \nm};
+  }
+
+  % ---- The 37 data channels ----
+  \foreach \f in {2404,2406,...,2424}
+    \draw[blue, fill=blue!40] (\fx{\f-0.85},0)
+      .. controls (\fx{\f-0.85},2.2) and (\fx{\f+0.85},2.2) .. (\fx{\f+0.85},0);
+  \foreach \f in {2428,2430,...,2478}
+    \draw[blue, fill=blue!40] (\fx{\f-0.85},0)
+      .. controls (\fx{\f-0.85},2.2) and (\fx{\f+0.85},2.2) .. (\fx{\f+0.85},0);
+
+  % ---- The three advertising channels, taller and green ----
+  \foreach \f/\ch in {2402/37, 2426/38, 2480/39} {
+    \draw[armygreen, fill=armygreen!50] (\fx{\f-0.85},0)
+      .. controls (\fx{\f-0.85},2.6) and (\fx{\f+0.85},2.6) .. (\fx{\f+0.85},0);
+    \node[armygreen, anchor=south] at (\fx{\f},2.6) {\ch};
+  }
+
+  % ---- Frequency axis ----
+  \draw[->] (\fx{2399},0) -- (\fx{2483},0);
+  \foreach \f in {2400,2410,...,2480} {
+    \draw (\fx{\f},0) -- (\fx{\f},-0.12);
+    \node[anchor=north] at (\fx{\f},-0.15) {\small \f};
+  }
+  \node[anchor=north] at (\fx{2440},-0.75) {\small MHz};
+
+\end{tikzpicture}
+\end{document}

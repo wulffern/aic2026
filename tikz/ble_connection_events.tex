@@ -1,0 +1,53 @@
+\input{tikz/fig_header.tex}
+
+% Bluetooth LE connection events, redrawn from the Nordic Semiconductor
+% DevZone figure with the spec's current role names: Central below,
+% Peripheral above. Every connection interval the central transmits and
+% the peripheral answers - one exchange, several, or none at all when
+% there is nothing to say (the third event: the central's packet keeps
+% the connection alive even unanswered). TX boxes are filled in the
+% transmitter's colour, RX boxes outlined in the colour of the side
+% they listen to, and the arrows carry the packets between the lines.
+
+\begin{tikzpicture}[thick]
+
+  \def\yp{2.6} \def\yc{0}
+  \def\bw{0.5} \def\bh{0.95}
+
+  \draw[->] (-0.4,\yp) -- (13.2,\yp);
+  \draw[->] (-0.4,\yc) -- (13.2,\yc);
+  \node[anchor=east] at (-0.7,\yp) {Peripheral};
+  \node[anchor=east] at (-0.7,\yc) {Central};
+
+  % One exchange: central TX up to peripheral RX, peripheral TX down to
+  % central RX. #1 is the x of the central TX box.
+  \newcommand{\blePkt}[1]{
+    \draw[fill=blue!70] (#1,\yc) rectangle ++(\bw,\bh) node[midway, white] {\scriptsize TX};
+    \draw[blue] (#1,\yp) rectangle ++(\bw,\bh) node[midway, blue] {\scriptsize RX};
+    \draw[->, blue, very thick] ({#1+\bw/2},{\yc+\bh+0.15}) -- ({#1+\bw/2},{\yp-0.15});
+    \draw[fill=red!70] ({#1+\bw+0.12},\yp) rectangle ++(\bw,\bh) node[midway, white] {\scriptsize TX};
+    \draw[red] ({#1+\bw+0.12},\yc) rectangle ++(\bw,\bh) node[midway, red] {\scriptsize RX};
+    \draw[->, red, very thick] ({#1+\bw+0.12+\bw/2},{\yp-0.15}) -- ({#1+\bw+0.12+\bw/2},{\yc+\bh+0.15});
+  }
+
+  \foreach \x in {0.3,4.3,8.9,11.3} {
+    \draw[->] (\x,\yp) -- (\x,{\yp+1.5});
+    \draw[->] (\x,\yc) -- (\x,{\yc+1.5});
+  }
+
+  \blePkt{0.45}
+  \blePkt{4.45} \blePkt{5.75} \blePkt{7.05}
+  % An event with nothing to say: the central still transmits
+  \draw[fill=blue!70] (9.05,\yc) rectangle ++(\bw,\bh) node[midway, white] {\scriptsize TX};
+  \draw[->, blue, very thick] ({9.05+\bw/2},{\yc+\bh+0.15}) -- ({9.05+\bw/2},{\yp-0.15});
+  \blePkt{11.45}
+
+  \draw[<->] (0.3,-0.9) -- (4.3,-0.9);
+  \draw[<->] (4.3,-0.9) -- (8.9,-0.9);
+  \draw[<->] (8.9,-0.9) -- (11.3,-0.9);
+  \node[anchor=north] at (2.3,-1.05) {connection interval};
+  \node[anchor=north] at (6.6,-1.05) {connection interval};
+  \node[anchor=north] at (10.1,-1.05) {connection interval};
+
+\end{tikzpicture}
+\end{document}
