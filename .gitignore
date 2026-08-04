@@ -2,18 +2,12 @@
 __pycache__/
 *.py[cod]
 *$py.class
-pdf/media/*
 pandoc
 ex/*.pdf
 lectures/*.pdf
 lectures/*.mov
 oldip
 octave
-pdf/aic.*
-pdf/chapters*
-pdf/pandoc.tex
-pdf/kaobook
-pdf/.auctex*
 py/*.svg
 *.aux
 *.bbl
@@ -30,16 +24,15 @@ __pycache__/
 assets/
 docs/_posts
 images.txt
-pdf/
+# Generated copies of the root-level originals (see posts/texfiles targets)
+docs/downloads.md
+docs/plan.md
+docs/syllabus.md
 # C extensions
 *.so
 ip/
 
 # Distribution / packaging
-pdf/*.latex
-pdf/*_fiximg.tex
-pdf/*_fiximg_png.tex
-pdf/*.md
 #media/
 .Python
 build/
@@ -165,6 +158,17 @@ dmypy.json
 # Figure review renders (make preview / make tikz-preview)
 preview/
 .build/
+
+# TikZ figure output, built from tikz/*.tex by make tikz (CI: tikz-cached).
+# Hand-drawn media/*.svg and their exported .pdf are sources and stay tracked;
+# only the _tikz suffix marks a generated file.
+media/*_tikz.pdf
+media/*_tikz.svg
+media/*/*_tikz.pdf
+media/*/*_tikz.svg
+
+# AUCTeX parse cache next to the pdf/ sources
+pdf/.auctex*
 
 # Book-site prototype: generated chapters and shared assets
 docs-book/chapters/
