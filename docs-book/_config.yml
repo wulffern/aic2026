@@ -47,4 +47,4 @@ callouts:
 # the chapters live in a subdirectory
 include: ["chapters"]
 
-footer_content: "Carsten Wulff 2026 &mdash; CC BY-SA 4.0"
+footer_content: "Carsten Wulff 2026 &mdash; <a href=\"https://creativecommons.org/licenses/by/4.0/\">CC BY 4.0</a>"

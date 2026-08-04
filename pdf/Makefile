@@ -79,7 +79,7 @@ compress:
 ebook:
 	cat aic.tex |perl -pe "s/chapters/chapters_epub/ig" > aic_epub.latex
 	cat chapters.tex |perl -pe "s/fiximg/fiximg_png/ig" > chapters_epub.tex
-	pandoc aic_epub.latex -t native | pandoc -f native -t epub3 -o aic.epub --mathml --metadata title="Advanced Integrated Circuits"
+	pandoc aic_epub.latex -t native | pandoc -f native -t epub3 -o aic.epub --mathml --metadata title="Advanced Integrated Circuits" --metadata author="Carsten Wulff" --metadata rights="(C) Carsten Wulff 2026. Text and original figures licensed CC BY 4.0 (https://creativecommons.org/licenses/by/4.0/). Third-party figures keep the licenses given in their captions."
 	${PYTHON} ../py/epubshrink.py aic.epub
 #pandoc --gladtex -o aic.epub aic_epub.latex
 
