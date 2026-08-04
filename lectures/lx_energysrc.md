@@ -227,21 +227,17 @@ valence band.
 
 -->
 
-<!--![inline fit](https://upload.wikimedia.org/wikipedia/commons/e/e5/Absolute_Seebeck_coefficients_of_various_metals_up_to_high_temperatures.svg)-->
-
-![inline fit](../media/Absolute_Seebeck_coefficients_of_various_metals_up_to_high_temperatures.svg)
+![inline fit](../media/seebeck_metals_tikz.pdf)
 
 <!--pan_doc:
-<sub>Figure 5: Absolute Seebeck coefficient versus temperature for a range of metals, spanning roughly +20 uV/K for tungsten to -60 uV/K for palladium. Image: Nanite, CC0, via Wikimedia Commons</sub>
+<sub>Figure 5: Absolute Seebeck coefficient versus temperature for a range of metals, spanning roughly +20 uV/K for tungsten to -60 uV/K for palladium. Data digitized from Nanite's figure, CC0, via Wikimedia Commons</sub>
 -->
 
 
-<!--![right fit](https://upload.wikimedia.org/wikipedia/commons/thumb/b/b7/Mott_Seebeck_silicon.svg/440px-Mott_Seebeck_silicon.svg.png)-->
-
-![right fit](../media/Mott_Seebeck_silicon.png)
+![right fit](../media/seebeck_silicon_tikz.pdf)
 
 <!--pan_doc:
-<sub>Figure 6: Seebeck coefficient and conductivity of silicon as a function of Fermi level, with the sign flipping between the valence and conduction band edges. Image: Nanite, CC0, via Wikimedia Commons</sub>
+<sub>Figure 6: Seebeck coefficient and conductivity of silicon as a function of Fermi level, with the sign flipping over a window of about 4kT where the minority carriers take over, and the conductivity bottoming out at the same spot. Computed from a two-carrier Boltzmann model, after Nanite's figure, CC0, via Wikimedia Commons</sub>
 -->
 
 ---
