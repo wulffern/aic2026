@@ -5,8 +5,11 @@
 % advertisement once per advertisement interval, the central opens its
 % receiver for a scan window once per scan interval, and when a scan
 % catches an advertisement the central may answer with a connection
-% request. The three interval annotations are the whole protocol: the
-% two sides never agreed on a schedule, they only overlap often enough.
+% request. The two intervals are deliberately different, so the phases
+% drift: the first two scans miss, the third lands exactly on an
+% advertisement - same height, same time - and that hit is what the
+% "initiate connection" below answers. The two sides never agreed on a
+% schedule, they only overlap often enough.
 
 \begin{tikzpicture}[thick]
 
@@ -21,15 +24,15 @@
     \draw (\xp,\y) node[draw, anchor=east, minimum height=0.55cm, fill=white]
       {Advertisement (with or without data)};
   }
-  \foreach \y in {-1.9,-4.1,-6.3} {
+  \foreach \y in {-2.0,-3.8,-5.6} {
     \node[draw, minimum width=1.0cm, minimum height=0.55cm, fill=white]
       at (\xc,\y) {Scan};
   }
 
-  \draw[<->] (-1.3,-1.62) -- (-1.3,-2.18);
-  \node[anchor=east, align=center] at (-1.5,-1.9) {Scan\\window};
-  \draw[<->] (-1.3,-4.1) -- (-1.3,-6.3);
-  \node[anchor=east, align=center] at (-1.5,-5.2) {Scan\\interval};
+  \draw[<->] (-1.3,-1.72) -- (-1.3,-2.28);
+  \node[anchor=east, align=center] at (-1.5,-2.0) {Scan\\window};
+  \draw[<->] (-1.3,-3.8) -- (-1.3,-5.6);
+  \node[anchor=east, align=center] at (-1.5,-4.7) {Scan\\interval};
   \draw[<->] (8.3,-1.2) -- (8.3,-3.4);
   \node[anchor=west, align=center] at (8.5,-2.3) {Advertisement\\interval};
 
