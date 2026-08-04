@@ -1,38 +1,54 @@
 \input{tikz/fig_header.tex}
 
-% The matrix decode: a row switch on every tap, but only one column switch
-% per column, so a string of 2^N taps needs 2^(N/2) + 2^(N/2) switches
-% instead of the tree's 2^(N+1) - 2. The drawing is deliberately abstract —
-% each switch is the knife symbol the original uses, not a device.
+% The matrix decode, drawn as the circuit it is rather than as abstract
+% knife switches: sixteen taps from the string enter a 4x4 array of pass
+% devices, a row-select line gates each rank of four, and one column
+% device per column line joins the shared output rail. One switch per tap
+% plus one per column is the 2^N + 2^(N/2) the lecture counts, against the
+% tree's 2^(N+1) - 2. The devices are the same NMOS-with-control the
+% string figures (dac_r_div*) use, so the two slides read as one family.
 
-\begin{tikzpicture}[thick]
+\begin{circuitikz}[american, thick, transform shape, circuit ee IEC]
 
-  \def\dx{1.6}       % column pitch
-  \def\dy{1.3}       % row pitch
-  \def\rr{0.20}      % switch circle radius
+  \input{tikz/ckt_lib.tex}
 
-  % One switch: circle on the left, arm running down to the rail it drives.
-  \newcommand{\rowSw}[2]{%
-    \draw (#1,#2) circle (\rr);
-    \draw ($(#1,#2)+(\rr,-\rr)$) -- ++(0.55,-0.45);
-  }
+  \def\cx{2.6}       % column pitch
+  \def\ry{1.9}       % row pitch
 
-  \foreach \c in {0,1,2,3} {
-    % The column rail, from the top row down to its column switch.
-    \draw ({\c*\dx+0.75}, {3*\dy+0.15}) -- ({\c*\dx+0.75}, {-0.55});
-    \foreach \r in {0,1,2,3} {
-      \rowSw{\c*\dx}{\r*\dy}
+  % ---- The 4x4 array: tap port, pass device, row-select line ----
+  \foreach \r in {0,1,2,3} {
+    \foreach \c in {0,1,2,3} {
+      \pgfmathtruncatemacro{\tap}{4*\r+\c}
+      \draw ({\c*\cx},{\r*\ry}) \portIn{$V_{\tap}$}
+            -- ++(0.36,0) to [Tnmos, n=M\c\r] ++(1.0,0)
+            -- ++(0.3,0) coordinate (o\c\r);
     }
-    % The column switch, onto the shared output rail.
-    \draw ({\c*\dx+0.4}, -0.9) circle (\rr);
-    \draw ({\c*\dx+0.4+\rr}, {-0.9-\rr}) -- ++(0.55,-0.45);
+    % The row line runs through all four gates; the interior gates are
+    % T junctions, the two end gates are where the line starts and stops.
+    \draw (M0\r.gate) -- (M3\r.gate);
+    \fill (M1\r.gate) circle (0.07);
+    \fill (M2\r.gate) circle (0.07);
+    \draw (M0\r.gate) -- ++(-1.6,0) node[anchor=east] {$r_\r$};
   }
 
-  % The output rail every column switch lands on.
-  \draw (-0.35,-1.55) -- ({3*\dx+1.1}, -1.55);
+  % ---- Column rails and the one switch per column ----
+  % The rail crosses the row lines below its own cell without a dot:
+  % crossing is not connection.
+  \foreach \c in {0,1,2,3} {
+    \draw (o\c3) -- (o\c0) -- ++(0,-0.6) coordinate (ctop\c);
+    \foreach \r in {0,1,2} { \fill (o\c\r) circle (0.07); }
+    \draw (ctop\c) to [Tnmos, n=MC\c] ++(0,-1.2) -- ++(0,-0.4) coordinate (cbot\c);
+    \draw (MC\c.gate) -- ++(0.35,0) node[anchor=west] {$c_\c$};
+  }
 
-  \node[anchor=east] at (-0.9, {1.5*\dy}) {Row};
-  \node[anchor=north] at ({1.5*\dx+0.4}, -1.85) {Column};
+  % ---- The shared output rail ----
+  \draw (cbot0) -- (cbot3);
+  \fill (cbot1) circle (0.07);
+  \fill (cbot2) circle (0.07);
+  \fill (cbot3) circle (0.07);
+  \draw (cbot3) -- ++(0.7,0) coordinate (vo);
+  \draw (vo) circle (0.06);
+  \node[anchor=west, xshift=3pt] at (vo) {$V_{OUT}$};
 
-\end{tikzpicture}
+\end{circuitikz}
 \end{document}

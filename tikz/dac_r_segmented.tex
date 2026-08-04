@@ -1,45 +1,74 @@
 \input{tikz/fig_header.tex}
 
-% Segmenting the decode: matrix blocks for the lower bits, a small tree over
-% the blocks for the upper ones. The lecture's arithmetic for ten bits is
-% 2046 switches as a pure tree, 1056 as a pure matrix and 80 this way, and
-% the drawing is what that sentence looks like: two matrices, then a tree
-% with a handful of switches in it.
+% Segmenting the decode, in the same pass-device language as dac_r_rows
+% and dac_r_switches: the string splits in half, each half keeps its own
+% matrix block, and a two-switch tree steered by the MSB picks the half.
+% The blocks are the dac_r_rows drawing at a tighter pitch with the tap
+% and select labels left off - what matters here is the count: the
+% matrices hold almost all the switches, the tree above them shrinks to
+% a handful, and the lecture's table turns that picture into numbers.
 
-\begin{tikzpicture}[thick]
+\begin{circuitikz}[american, thick, transform shape, circuit ee IEC]
 
-  \def\dx{1.35}      % column pitch inside a block
-  \def\dy{1.05}      % row pitch inside a block
-  \def\rr{0.17}
+  \input{tikz/ckt_lib.tex}
 
-  % One matrix block, origin at its lower left. Same drawing as dac_r_rows:
-  % a row switch on every tap, one column switch per column, one rail out.
-  \newcommand{\matBlock}[2]{%
-    \foreach \c in {0,1,2,3} {
-      \draw ({#1+\c*\dx+0.62}, {#2+3*\dy+0.12}) -- ({#1+\c*\dx+0.62}, {#2-0.45});
-      \foreach \r in {0,1,2,3} {
-        \draw ({#1+\c*\dx}, {#2+\r*\dy}) circle (\rr);
-        \draw ({#1+\c*\dx+\rr}, {#2+\r*\dy-\rr}) -- ++(0.45,-0.37);
+  \def\cx{2.2}       % column pitch inside a block
+  \def\ry{1.5}       % row pitch inside a block
+
+  % One matrix block: 4x4 tap switches, row lines through the gates,
+  % a column switch per rail, one output rail. #1 node-name prefix,
+  % #2 y offset of the block's lower-left corner.
+  \newcommand{\segBlock}[2]{%
+  \begin{scope}[shift={(0,#2)}]
+    \foreach \r in {0,1,2,3} {
+      \foreach \c in {0,1,2,3} {
+        \draw ({\c*\cx},{\r*\ry}) circle (0.05);
+        \draw ({\c*\cx+0.05},{\r*\ry}) -- ++(0.2,0)
+              to [Tnmos, n=#1M\c\r] ++(1.0,0)
+              -- ++(0.2,0) coordinate (#1o\c\r);
       }
-      \draw ({#1+\c*\dx+0.34}, {#2-0.75}) circle (\rr);
-      \draw ({#1+\c*\dx+0.34+\rr}, {#2-0.75-\rr}) -- ++(0.45,-0.37);
+      \draw (#1M0\r.gate) -- (#1M3\r.gate);
+      \fill (#1M1\r.gate) circle (0.06);
+      \fill (#1M2\r.gate) circle (0.06);
+      \draw (#1M0\r.gate) -- ++(-0.8,0);
     }
-    \draw ({#1-0.3}, {#2-1.35}) -- ({#1+3*\dx+1.15}, {#2-1.35});
+    \foreach \c in {0,1,2,3} {
+      \draw (#1o\c3) -- (#1o\c0) -- ++(0,-0.5) coordinate (#1ctop\c);
+      \foreach \r in {0,1,2} { \fill (#1o\c\r) circle (0.06); }
+      \draw (#1ctop\c) to [Tnmos, n=#1MC\c] ++(0,-1.0)
+            -- ++(0,-0.3) coordinate (#1cbot\c);
+    }
+    \draw (#1cbot0) -- (#1cbot3);
+    \fill (#1cbot1) circle (0.06);
+    \fill (#1cbot2) circle (0.06);
+    \fill (#1cbot3) circle (0.06);
+    \draw (#1cbot3) -- ++(0.8,0) coordinate (#1rail);
+  \end{scope}
   }
 
-  \matBlock{0}{0}
-  \matBlock{0}{-6.0}
+  \segBlock{U}{10.0}
+  \segBlock{L}{0}
 
-  % ---- The tree over the two blocks ----
-  % Each block's rail ends in a switch, and those two meet in one more.
-  \draw ({3*\dx+1.6}, -1.35) circle (\rr);
-  \draw ({3*\dx+1.15}, -1.35) -- ({3*\dx+1.6-\rr}, -1.35);
-  \draw ({3*\dx+1.6}, -7.35) circle (\rr);
-  \draw ({3*\dx+1.15}, -7.35) -- ({3*\dx+1.6-\rr}, -7.35);
+  \node[anchor=east] at (-1.2,12.2) {upper taps};
+  \node[anchor=east] at (-1.2,2.2) {lower taps};
 
-  \draw ({3*\dx+3.6}, -4.35) circle (\rr);
-  \draw ({3*\dx+1.6+\rr}, -1.35) -- ({3*\dx+3.6-\rr}, -4.35);
-  \draw ({3*\dx+1.6+\rr}, -7.35) -- ({3*\dx+3.6-\rr}, -4.35);
+  % ---- The tree the MSB steers ----
+  \coordinate (eU) at (10.6,11.3);
+  \coordinate (eL) at (10.6,1.3);
+  \draw (Urail) -- (eU);
+  \draw (Lrail) -- (eL);
+  \draw (eU) to [Tnmos, n=TU] ++(1.0,0) -- ++(0.3,0) coordinate (oU);
+  \draw (TU.gate) -- ++(0,0.35) node[anchor=south] {$b_{N-1}$};
+  \draw (eL) to [Tnmos, n=TL] ++(1.0,0) -- ++(0.3,0) coordinate (oL);
+  \draw (TL.gate) -- ++(0,0.35) node[anchor=south] {$\overline{b_{N-1}}$};
 
-\end{tikzpicture}
+  \coordinate (vo) at (13.4,6.3);
+  \draw (oU) -- (vo);
+  \draw (oL) -- (vo);
+  \fill (vo) circle (0.07);
+  \draw (vo) -- ++(0.5,0) coordinate (vp);
+  \draw (vp) circle (0.06);
+  \node[anchor=west, xshift=3pt] at (vp) {$V_{OUT}$};
+
+\end{circuitikz}
 \end{document}

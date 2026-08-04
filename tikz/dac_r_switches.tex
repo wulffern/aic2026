@@ -1,39 +1,77 @@
 \input{tikz/fig_header.tex}
 
-% The tree decode: every tap of the string gets its own switch, and every
-% pair of switches needs another one behind it, all the way down to a single
-% output. That doubling is the 2^(N+1) - 2 the lecture counts, drawn here for
-% a four-bit string so the growth is visible rather than asserted.
+% The tree decode, drawn as pass devices rather than abstract circles:
+% every tap gets a switch steered by b_0 or its complement, every joined
+% pair needs another switch behind it, and the doubling repeats until one
+% node is left. Drawn for a three-bit string: 8 + 4 + 2 = 14 switches is
+% the 2^(N+1) - 2 the lecture counts, and each rank's control label shows
+% which bit pays for it. Same NMOS-with-control language as dac_r_div*
+% and dac_r_rows, so the complexity slides read as one family.
 
-\begin{tikzpicture}[thick]
+\begin{circuitikz}[american, thick, transform shape, circuit ee IEC]
 
-  \def\rr{0.16}      % switch circle radius
-  \def\dx{1.35}      % rank pitch
-  \def\dy{0.62}      % leaf pitch
+  \input{tikz/ckt_lib.tex}
 
-  % A rank of switches: #1 rank index, #2 how many, the y of switch k being
-  % the midpoint of the two it feeds from.
-  \foreach \k in {0,...,15} {
-    \draw ({0}, {\k*\dy}) circle (\rr);
-  }
+  \def\ry{1.9}       % leaf pitch
+
+  % ---- Rank 0: one switch per tap, b_0 on odd taps ----
   \foreach \k in {0,...,7} {
-    \draw ({\dx}, {(2*\k+0.5)*\dy}) circle (\rr);
-    \draw ({\rr}, {2*\k*\dy})     -- ({\dx-\rr}, {(2*\k+0.5)*\dy});
-    \draw ({\rr}, {(2*\k+1)*\dy}) -- ({\dx-\rr}, {(2*\k+0.5)*\dy});
+    \draw (0,{\k*\ry}) \portIn{$V_\k$}
+          -- ++(0.36,0) to [Tnmos, n=A\k] ++(1.0,0)
+          -- ++(0.3,0) coordinate (oA\k);
+    \draw (A\k.gate) -- ++(0,0.35) coordinate (gA\k);
+    \pgfmathparse{int(mod(\k,2))}
+    \ifnum\pgfmathresult=1
+      \node[anchor=south] at (gA\k) {$b_0$};
+    \else
+      \node[anchor=south] at (gA\k) {$\overline{b_0}$};
+    \fi
   }
-  \foreach \k in {0,...,3} {
-    \draw ({2*\dx}, {(4*\k+1.5)*\dy}) circle (\rr);
-    \draw ({\dx+\rr}, {(4*\k+0.5)*\dy}) -- ({2*\dx-\rr}, {(4*\k+1.5)*\dy});
-    \draw ({\dx+\rr}, {(4*\k+2.5)*\dy}) -- ({2*\dx-\rr}, {(4*\k+1.5)*\dy});
-  }
-  \foreach \k in {0,1} {
-    \draw ({3*\dx}, {(8*\k+3.5)*\dy}) circle (\rr);
-    \draw ({2*\dx+\rr}, {(8*\k+1.5)*\dy}) -- ({3*\dx-\rr}, {(8*\k+3.5)*\dy});
-    \draw ({2*\dx+\rr}, {(8*\k+5.5)*\dy}) -- ({3*\dx-\rr}, {(8*\k+3.5)*\dy});
-  }
-  \draw ({4*\dx}, {7.5*\dy}) circle (\rr);
-  \draw ({3*\dx+\rr}, {3.5*\dy})  -- ({4*\dx-\rr}, {7.5*\dy});
-  \draw ({3*\dx+\rr}, {11.5*\dy}) -- ({4*\dx-\rr}, {7.5*\dy});
 
-\end{tikzpicture}
+  % ---- Rank 1: each pair joins into one switch, b_1 decides ----
+  \foreach \m in {0,...,3} {
+    \pgfmathsetmacro{\ym}{(2*\m+0.5)*\ry}
+    \coordinate (eB\m) at (3.2,\ym);
+    \pgfmathtruncatemacro{\ka}{2*\m}
+    \pgfmathtruncatemacro{\kb}{2*\m+1}
+    \draw (oA\ka) -- (eB\m);
+    \draw (oA\kb) -- (eB\m);
+    \fill (eB\m) circle (0.07);
+    \draw (eB\m) to [Tnmos, n=B\m] ++(1.0,0) -- ++(0.3,0) coordinate (oB\m);
+    \draw (B\m.gate) -- ++(0,0.35) coordinate (gB\m);
+    \pgfmathparse{int(mod(\m,2))}
+    \ifnum\pgfmathresult=1
+      \node[anchor=south] at (gB\m) {$b_1$};
+    \else
+      \node[anchor=south] at (gB\m) {$\overline{b_1}$};
+    \fi
+  }
+
+  % ---- Rank 2, and the output the last pair joins into ----
+  \foreach \m in {0,1} {
+    \pgfmathsetmacro{\ym}{(4*\m+1.5)*\ry}
+    \coordinate (eC\m) at (6.2,\ym);
+    \pgfmathtruncatemacro{\ka}{2*\m}
+    \pgfmathtruncatemacro{\kb}{2*\m+1}
+    \draw (oB\ka) -- (eC\m);
+    \draw (oB\kb) -- (eC\m);
+    \fill (eC\m) circle (0.07);
+    \draw (eC\m) to [Tnmos, n=C\m] ++(1.0,0) -- ++(0.3,0) coordinate (oC\m);
+    \draw (C\m.gate) -- ++(0,0.35) coordinate (gC\m);
+    \ifnum\m=1
+      \node[anchor=south] at (gC\m) {$b_2$};
+    \else
+      \node[anchor=south] at (gC\m) {$\overline{b_2}$};
+    \fi
+  }
+
+  \coordinate (vo) at (9.2,{3.5*\ry});
+  \draw (oC0) -- (vo);
+  \draw (oC1) -- (vo);
+  \fill (vo) circle (0.07);
+  \draw (vo) -- ++(0.5,0) coordinate (vp);
+  \draw (vp) circle (0.06);
+  \node[anchor=west, xshift=3pt] at (vp) {$V_{OUT}$};
+
+\end{circuitikz}
 \end{document}
