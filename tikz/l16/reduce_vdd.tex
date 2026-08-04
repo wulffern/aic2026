@@ -1,0 +1,71 @@
+\input{tikz/fig_header.tex}
+
+% Two supply domains, redrawn from the hand sketch: fast logic on VDDH,
+% slow logic on VDDL, and a cross-coupled level shifter where the
+% domains meet. The shifter's input inverters run on VDDL; the
+% cross-coupled PMOS pair on VDDH restores a full swing, so the VDDH
+% gate after it never sees a mid-rail input and burns crowbar current.
+
+\begin{circuitikz}[american, thick, transform shape, circuit ee IEC]
+  \input{tikz/ckt_lib.tex}
+
+  % ---- The two rails and the boxes ----
+  \draw[blue] (-0.5,7.6) -- (13.6,7.6) node[anchor=west] {VDDH};
+  \draw[armygreen] (-0.5,6.8) -- (13.6,6.8) node[anchor=west] {VDDL};
+
+  \draw (0,3.6) rectangle (3.4,5.6);
+  \node at (1.7,4.6) {Fast logic};
+  \draw[blue] (1.7,5.6) -- (1.7,7.6);
+  \fill[blue] (1.7,7.6) circle (0.075);
+
+  \draw (5.4,3.6) rectangle (8.8,5.6);
+  \node at (7.1,4.6) {Slow logic};
+  \draw[armygreen] (7.1,5.6) -- (7.1,6.8);
+  \fill[armygreen] (7.1,6.8) circle (0.075);
+
+  \draw (10.4,3.6) rectangle (12.8,5.6);
+  \node[align=center] at (11.6,4.6) {Level\\shifter};
+  \draw[armygreen] (11.0,5.6) -- (11.0,6.8);
+  \fill[armygreen] (11.0,6.8) circle (0.075);
+  \draw[blue] (12.2,5.6) -- (12.2,7.6);
+  \fill[blue] (12.2,7.6) circle (0.075);
+
+  \draw (-1.2,4.6) -- (0,4.6);
+  \draw (3.4,4.6) -- (5.4,4.6);
+  \draw (8.8,4.6) -- (10.4,4.6);
+  \draw (12.8,4.6) -- (14.0,4.6);
+
+  % ---- The level shifter, transistor level ----
+  % cross-coupled PMOS pair on VDDH
+  \draw (3.6,0.0) \lvnmos{MN1}{};
+  \draw (6.6,0.0) \lvmnmos{MN2}{};
+  \draw (3.6,\grid) \lvpmos{MP1}{};
+  \draw (6.6,\grid) \lvmpmos{MP2}{};
+  \draw (3.6,{2*\grid}) \vsupply;
+  \draw (6.6,{2*\grid}) \vsupply;
+  \draw (3.6,0.0) -- ++(0,-0.3) \vground;
+  \draw (6.6,0.0) -- ++(0,-0.3) \vground;
+  % cross coupling: each PMOS gate to the other drain
+  \draw (MP1.gate) -- (6.6,\grid);
+  \fill (6.6,\grid) circle (0.075);
+  \draw (MP2.gate) -- (3.6,\grid);
+  \fill (3.6,\grid) circle (0.075);
+  % input inverters on VDDL
+  \begin{scope}[scale=0.7]
+    \draw (1.4,1.15) \cicInv{iva};
+  \end{scope}
+  \draw (iva_out) -- (MN1.gate);
+  \draw (iva_in) -- ++(-0.4,0) coordinate (ain);
+  \draw (ain) to [short,-o] ++(-0.5,0) node[anchor=east] {$a$};
+  \node[armygreen, anchor=south] at (1.05,1.5) {\small VDDL};
+  % the other side gets the uninverted a, so the drives are complementary
+  \draw (MN2.gate) -- ++(0.9,0) coordinate (bgate);
+  \fill (ain) circle (0.075);
+  \draw (ain) -- ++(0,-1.6) -| (bgate);
+  % output from the right drain
+  \draw (6.6,\grid) -- ++(1.6,0) coordinate (lsout);
+  \draw (lsout) to [short,-o] ++(0.5,0) node[anchor=west] {$y$ (VDDH)};
+  \node[blue, anchor=south] at (5.1,{2*\grid+0.25}) {\small VDDH};
+
+\end{circuitikz}
+\end{document}

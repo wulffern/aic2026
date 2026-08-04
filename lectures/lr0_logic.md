@@ -91,7 +91,7 @@ $$ V_{GS} < V_{TH}$$ when $$V_G = 0$$
 ---
 
 
-![original fit](../media/l13/rules.pdf)
+![original fit](../media/l13/rules_tikz.pdf)
 
 <!--pan_doc:
 <sub>Figure 6: Two ways to wire a NOR - the accepted one with PMOS pulling up and NMOS pulling down, and the rejected one with the device types swapped so the sources sit at the wrong rail</sub>
@@ -329,7 +329,7 @@ $$\overline{A+B}  = \overline{A} \cdot \overline{B}$$
  $$\overline{Q} = \overline{S Q} = \overline{S} +
 \overline{Q} = \overline{S} + \overline{Q} $$
 
-![right 200% ](../media/l13/sr.pdf)
+![right 200% ](../media/l13/sr_tikz.pdf)
 
 <!--pan_doc:
 <sub>Figure 18: SR-latch truth table and symbol, and the cross-coupled NAND implementation</sub>
@@ -351,7 +351,7 @@ $$\overline{Q} =\overline{S} + \overline{Q}$$
 
 <!--pan_skip: -->
 
-![right 200% ](../media/l13/sr.pdf)
+![right 200% ](../media/l13/sr_tikz.pdf)
 
 ---
 
@@ -1400,7 +1400,7 @@ path into the cloud, so its inputs are held constant and the logic
 inside simply stops toggling.
 -->
 
-![inline fit ](../media/l16/logic.pdf)  ![inline fit ](../media/l16/stop_activity.pdf) 
+![inline fit ](../media/l13/digital_ff_comb_tikz.pdf)  ![inline fit ](../media/l16/stop_activity_tikz.pdf) 
 
 <!--pan_doc:
 <sub>Figure 57: The same flip-flop banks and combinational cloud drawn twice. In the first drawing the cloud is marked at the points where the dynamic power equation can be attacked. In the second the data path from the first flip-flop bank into the cloud is broken, so the cloud sees a constant input and stops switching, while the flip-flops still receive their clock</sub>
@@ -1408,7 +1408,7 @@ inside simply stops toggling.
 
 ---
 ## Reduce frequency
-![inline fit ](../media/l16/reduce_freq.pdf) 
+![inline fit ](../media/l16/reduce_freq_tikz.pdf) 
 
 <!--pan_doc:
 <sub>Figure 58: Reducing clock frequency by clocking the big combinational cloud with ClkB and the small cloud with the faster ClkA</sub>
@@ -1417,7 +1417,7 @@ inside simply stops toggling.
 ---
 ## Turn off power supply [^4]
 
-![inline fit ](../media/l16/powergate.pdf) 
+![inline fit ](../media/l16/powergate_tikz.pdf) 
 
 <!--pan_doc:
 <sub>Figure 59: Power gating with PWRUP header switches above the gated logic block and AND gates holding the outputs</sub>
@@ -1429,7 +1429,7 @@ inside simply stops toggling.
 
 ### Reduce power supply 
 
-![inline fit ](../media/l16/reduce_vdd.pdf) 
+![inline fit ](../media/l16/reduce_vdd_tikz.pdf) 
 
 <!--pan_doc:
 <sub>Figure 60: Two supply domains, fast logic on VDDH and slow logic on VDDL, joined by a cross-coupled level shifter</sub>

@@ -1,0 +1,48 @@
+\input{tikz/fig_header.tex}
+
+% Why the pull-up is PMOS and the pull-down NMOS, drawn as the original
+% hand sketch argues it: the same NOR twice. On the left the accepted
+% wiring - series PMOS to the supply, parallel NMOS to ground - drawn
+% exactly as nor_tr. On the right the device types are swapped, so
+% every source sits at the wrong rail: the NMOS stack can only pull up
+% to VDD - Vt and the PMOS pair only down to |Vt|. The cross and the
+% verdict colours carry the sketch's YES/NO.
+
+\begin{circuitikz}[american, thick, transform shape, circuit ee IEC]
+
+  \input{tikz/ckt_lib.tex}
+
+  % ---- The accepted NOR: PMOS up, NMOS down ----
+  \def\xl{0}
+  \def\xr{2.2}
+  \draw (\xl,0) \vground;
+  \draw (\xl,0) \lvnmos{MNA}{A};
+  \draw (\xr,0) \vground;
+  \draw (\xr,0) \lvnmos{MNB}{B};
+  \draw (\xl,\grid) \lvpmos{MPB}{B};
+  \draw (\xl,{2*\grid}) \lvpmos{MPA}{A};
+  \draw (\xl,{3*\grid}) \vsupply;
+  \draw (\xl,\grid) -- (\xr,\grid);
+  \fill (\xl,\grid) circle (0.075);
+  \draw (\xr,\grid) \portOut{Y};
+  \node[armygreen] at (1.4,{3*\grid+0.6}) {\bfseries Yes};
+
+  % ---- The rejected NOR: same topology, device types swapped ----
+  \begin{scope}[shift={(8.0,0)}]
+    \draw (\xl,0) \vground;
+    \draw (\xl,0) \lvpmos{MPA}{A};
+    \draw (\xr,0) \vground;
+    \draw (\xr,0) \lvpmos{MPB}{B};
+    \draw (\xl,\grid) \lvnmos{MNB}{B};
+    \draw (\xl,{2*\grid}) \lvnmos{MNA}{A};
+    \draw (\xl,{3*\grid}) \vsupply;
+    \draw (\xl,\grid) -- (\xr,\grid);
+    \fill (\xl,\grid) circle (0.075);
+    \draw (\xr,\grid) \portOut{Y};
+    \node[red] at (1.4,{3*\grid+0.6}) {\bfseries No};
+    \draw[red, dashed] (-1.2,-0.8) -- (4.2,{3*\grid+0.9});
+    \draw[red, dashed] (-1.2,{3*\grid+0.9}) -- (4.2,-0.8);
+  \end{scope}
+
+\end{circuitikz}
+\end{document}

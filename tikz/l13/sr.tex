@@ -1,0 +1,50 @@
+\input{tikz/fig_header.tex}
+
+% The SR latch, redrawn from the hand sketch: truth table, box symbol,
+% and the cross-coupled NAND pair. S feeds the gate whose output is
+% Q-bar, as the sketch labels it, so in the two active rows Q simply
+% equals S; both inputs at 1 hold the state and both at 0 is the
+% disallowed X row. Table values match the one printed in the lecture.
+
+\begin{circuitikz}[american, thick, transform shape, circuit ee IEC]
+
+  \input{tikz/ckt_lib.tex}
+
+  % ---- Truth table ----
+  \node[anchor=north west] at (0,7.6) {%
+    $\begin{array}{cc|cc}
+      S & R & Q & \overline{Q} \\ \hline
+      0 & 0 & \multicolumn{2}{c}{\text{X}} \\
+      0 & 1 & 0 & 1 \\
+      1 & 0 & 1 & 0 \\
+      1 & 1 & \multicolumn{2}{c}{\text{hold}} \\
+    \end{array}$};
+
+  % ---- Symbol ----
+  \draw (6.4,4.6) rectangle (8.6,7.2);
+  \node[anchor=west] at (6.45,6.7) {$S$};
+  \node[anchor=west] at (6.45,5.1) {$R$};
+  \node[anchor=east] at (8.55,6.7) {$Q$};
+  \node[anchor=east] at (8.55,5.1) {$\overline{Q}$};
+  \draw (5.8,6.7) -- (6.4,6.7);
+  \draw (5.8,5.1) -- (6.4,5.1);
+  \draw (8.6,6.7) -- (9.2,6.7);
+  \draw (8.6,5.1) -- (9.2,5.1);
+
+  % ---- Cross-coupled NAND pair ----
+  \draw (6.6,2.2) \cicNand{n1};
+  \draw (6.6,-0.4) \cicNand{n2};
+  \draw (n1_in1) to [short,-o] ++(-1.3,0) node[anchor=east] {$S$};
+  \draw (n2_in2) to [short,-o] ++(-1.3,0) node[anchor=east] {$R$};
+  % feedback: each output crosses to the other gate's free input
+  \draw (n1_out) -- ++(0.5,0) coordinate (q1);
+  \draw (n2_out) -- ++(0.5,0) coordinate (q2);
+  \fill (q1) circle (0.075);
+  \fill (q2) circle (0.075);
+  \draw (q1) -- ++(0,-0.9) -- ($(n2_in1)+(-0.5,0.9)$) -- ($(n2_in1)+(-0.5,0)$) -- (n2_in1);
+  \draw (q2) -- ++(0,0.9) -- ($(n1_in2)+(-0.5,-0.9)$) -- ($(n1_in2)+(-0.5,0)$) -- (n1_in2);
+  \draw (q1) to [short,-o] ++(0.9,0) node[anchor=west] {$\overline{Q}$};
+  \draw (q2) to [short,-o] ++(0.9,0) node[anchor=west] {$Q$};
+
+\end{circuitikz}
+\end{document}

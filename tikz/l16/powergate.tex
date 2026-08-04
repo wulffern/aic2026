@@ -1,0 +1,44 @@
+\input{tikz/fig_header.tex}
+
+% Power gating, redrawn from the hand sketch: header PMOS devices
+% between the supply and the gated block kill the leakage when PWRUP
+% is off, and AND gates on the outputs hold the interface at a defined
+% 0 so the always-on logic downstream never sees a floating wire.
+
+\begin{circuitikz}[american, thick, transform shape, circuit ee IEC]
+  \input{tikz/ckt_lib.tex}
+
+  % ---- The gated block ----
+  \draw (0,0) rectangle (4.6,4.2);
+  \node[align=center] at (2.3,2.1) {Gated\\logic};
+  \draw (2.3,0) -- (2.3,-0.3) \vground;
+
+  % ---- Header switches: two PMOS from the supply into the block ----
+  \draw (1.4,4.2) \lvpmos{MH1}{};
+  \draw (1.4,{4.2+\grid}) \vsupply;
+  \draw (3.2,4.2) \lvpmos{MH2}{};
+  \draw (3.2,{4.2+\grid}) \vsupply;
+  \draw (MH1.gate) -- (MH2.gate);
+  \draw (MH1.gate) -- ++(-1.2,0) node[anchor=east] {$\overline{PWRUP}$};
+
+  % ---- Inputs ----
+  \draw (-1.4,3.0) node[anchor=east] {inputs} -- (0,3.0);
+  \draw (-1.4,1.2) -- (0,1.2);
+  \node at (-0.7,2.15) {$\vdots$};
+
+  % ---- Output holders: AND gates with PWRUP on the second input ----
+  \draw (6.6,3.4) \cicAnd{ga};
+  \draw (6.6,0.9) \cicAnd{gb};
+  \draw (4.6,3.0) -- ++(0.6,0) |- (ga_in1);
+  \draw (4.6,1.2) -- ++(0.6,0) |- (gb_in1);
+  \draw (ga_in2) -- ++(-0.35,0) coordinate (pa);
+  \draw (gb_in2) -- ++(-0.35,0) coordinate (pb);
+  \draw (pa) |- ++(0.0,-0.7) coordinate (pj)
+        -- (pb);
+  \node[anchor=south, xshift=8pt] at (pa) {\small $PWRUP$};
+  \draw (ga_out) to [short,-o] ++(0.9,0) node[anchor=west] {outputs};
+  \draw (gb_out) to [short,-o] ++(0.9,0);
+  \node at (7.4,2.3) {$\vdots$};
+
+\end{circuitikz}
+\end{document}
