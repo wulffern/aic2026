@@ -437,7 +437,7 @@ But if we can't run mixed simulation, how do we verify analog with digital?
 ![](../media/tt06_sar_top_tikz.pdf)
 
 <!--pan_doc:
-<sub>Figure 6: Top level of the TinyTapeout tt_um_TT06_SAR_wulffern 8-bit SAR ADC, redrawn from the xschem schematic: the SAR core, the output capture block, the buffered DONE on uio_out[0], the power decoupling and the pad ESD diodes</sub>
+<sub>Figure 6: Top level of the TinyTapeout tt_um_TT06_SAR_wulffern 8-bit SAR ADC, redrawn from the xschem schematic: the SAR core, the output capture block, the buffered DONE on uio_out[0], the power decoupling and the antenna diodes on the inputs</sub>
 -->
 
 ---

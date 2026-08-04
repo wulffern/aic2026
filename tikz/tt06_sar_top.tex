@@ -6,7 +6,8 @@
 % samples D into uo_out on DONE, and the buffered DONE itself leaves on
 % uio_out[0] so a scope can tell whether the clock is too fast. The
 % decoupling bank sits across the supply, and the reverse-biased
-% diodes on the inputs are the pad ESD. Blocks carry their library
+% diodes on the inputs are antenna diodes - they bleed the charge the
+% metal collects during fabrication, not ESD. Blocks carry their library
 % cell names; buses are single wires with a width tick.
 
 \begin{circuitikz}[american, thick, transform shape, circuit ee IEC]
@@ -64,13 +65,13 @@
   \fill (3.6,-1.6) circle (0.075);
   \node[anchor=west] at (4.3,-2.7) {\small C$\langle$8:0$\rangle$ decoupling};
 
-  % ---- Pad ESD diodes on the inputs ----
+  % ---- Antenna diodes on the inputs ----
   \draw (0.6,-4.9) \portIn{rst\_n} -- (8.4,-4.9);
   \draw (7.6,-6.9) \vground;
   \draw (7.6,-6.9) \vdiode{};
   \draw (7.6,-5.3) -- (7.6,-4.9);
   \fill (7.6,-4.9) circle (0.075);
-  \node[anchor=west] at (8.2,-6.0) {\small pad ESD, also on ua and ui\_in};
+  \node[anchor=west] at (8.2,-6.0) {\small antenna diode, also on ua and ui\_in};
 
 \end{circuitikz}
 \end{document}
