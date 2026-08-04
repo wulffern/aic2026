@@ -79,7 +79,15 @@ compress:
 ebook:
 	cat aic.tex |perl -pe "s/chapters/chapters_epub/ig" > aic_epub.latex
 	cat chapters.tex |perl -pe "s/fiximg/fiximg_png/ig" > chapters_epub.tex
-	pandoc aic_epub.latex -t native | pandoc -f native -t epub3 -o aic.epub --mathml --metadata title="Advanced Integrated Circuits" --metadata author="Carsten Wulff" --metadata rights="(C) Carsten Wulff 2026. Text and original figures licensed CC BY 4.0 (https://creativecommons.org/licenses/by/4.0/). Third-party figures keep the licenses given in their captions."
+	#- The epub cover is the book's own title page - the build order
+	#  (one, then ebook) guarantees aic.pdf is fresh here. Skipped with
+	#  a warning if the PDF is absent (ebook run on its own).
+	@if [ -f aic.pdf ]; then \
+		pdftocairo -png -r 150 -f 1 -l 1 -singlefile aic.pdf epub_cover; \
+	else \
+		echo "ebook: no aic.pdf, building without a cover"; \
+	fi
+	pandoc aic_epub.latex -t native | pandoc -f native -t epub3 -o aic.epub --mathml $$([ -f epub_cover.png ] && echo --epub-cover-image=epub_cover.png) --metadata title="Advanced Integrated Circuits" --metadata author="Carsten Wulff" --metadata rights="(C) Carsten Wulff 2026. Text and original figures licensed CC BY 4.0 (https://creativecommons.org/licenses/by/4.0/). Third-party figures keep the licenses given in their captions."
 	${PYTHON} ../py/epubshrink.py aic.epub
 #pandoc --gladtex -o aic.epub aic_epub.latex
 

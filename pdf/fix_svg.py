@@ -19,6 +19,18 @@ def imgConvert(ftype,fotype,path):
         if(ftype == ".svg"):
             fmt = fotype.strip(".")
             cmds.append(f"rsvg-convert --format={fmt} --dpi-x=100 --dpi-y=100 -o {fopath} {path}")
+        if(ftype == ".pdf" and fotype == ".png"):
+            #- A figure that exists as .pdf usually has an .svg sibling
+            #  (tikz builds both); rsvg-convert renders that without
+            #  touching the PDF path at all.
+            sib = path[:-4] + ".svg"
+            if(os.path.exists(sib)):
+                cmds.append(f"rsvg-convert --format=png --dpi-x=100 --dpi-y=100 -o {fopath} {sib}")
+            #- pdftocairo needs no ghostscript delegate. Debian's
+            #  ImageMagick policy.xml denies PDF input, so on CI the
+            #  convert fallback below fails for every PDF and the epub
+            #  shipped without those figures.
+            cmds.append(f"pdftocairo -png -r 100 -singlefile {path} {fopath[:-4]}")
         #- exclude-chunks=date,time: ImageMagick otherwise stamps
         #  date:create/date:modify into every PNG, so an unchanged source
         #  converted on two CI runs produced different bytes — which
