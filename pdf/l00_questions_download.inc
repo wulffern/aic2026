@@ -1,1 +1,0 @@
-- [FAQ](/aic2026/assets/l00_questions.pdf) [[slides]](/aic2026/assets/html/l00_questions.html)

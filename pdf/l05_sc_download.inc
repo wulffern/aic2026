@@ -1,1 +1,0 @@
-- [Switched-Capacitor Circuits](/aic2026/assets/l05_sc.pdf) [[slides]](/aic2026/assets/html/l05_sc.html)

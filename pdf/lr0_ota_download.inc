@@ -1,1 +1,0 @@
-- [OTAs](/aic2026/assets/lr0_ota.pdf) [[slides]](/aic2026/assets/html/lr0_ota.html)

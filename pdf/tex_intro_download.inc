@@ -1,1 +1,0 @@
-- [Background](/aic2026/assets/tex_intro.pdf) [[slides]](/aic2026/assets/html/tex_intro.html)

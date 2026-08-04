@@ -1,1 +1,0 @@
-- [Energy Sources](/aic2026/assets/lx_energysrc.pdf) [[slides]](/aic2026/assets/html/lx_energysrc.html)

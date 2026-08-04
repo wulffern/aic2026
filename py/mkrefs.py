@@ -31,22 +31,22 @@ def main():
         return 1
 
     md = "---\nnocite: |\n  " + ", ".join("@" + k for k in keys) + "\n---\n\n"
-    with open("pdf/references.md", "w") as fo:
+    with open(".build/references.md", "w") as fo:
         fo.write(md)
 
     subprocess.run(["pandoc", "--citeproc", "--bibliography=pdf/aic.bib",
-                    "--csl=pdf/ieee-with-url.csl", "-o", "pdf/references.latex",
-                    "pdf/references.md"], check=True)
+                    "--csl=pdf/ieee-with-url.csl", "-o", ".build/references.latex",
+                    ".build/references.md"], check=True)
 
     #- Same citeproc-output normalization as py/lecture.py
-    buff = open("pdf/references.latex").read()
+    buff = open(".build/references.latex").read()
     buff = re.sub(
         r"\\leavevmode\\vadjust pre\{\\hypertarget\{(ref-[^}]+)\}\{\}\}%",
         r"\\bibitem[\\citeproctext]{\1}",
         buff)
-    open("pdf/references.latex", "w").write(buff)
+    open(".build/references.latex", "w").write(buff)
 
-    with open("pdf/references_chapter.inc", "w") as fo:
+    with open(".build/references_chapter.inc", "w") as fo:
         fo.write("\\setchapterstyle{kao}\n"
                  "\\chapter{References}\n"
                  "\\input{references_fiximg.tex}\n\n")

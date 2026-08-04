@@ -1,1 +1,0 @@
-- [Measured Silicon](/aic2026/assets/l01_silicon.pdf) [[slides]](/aic2026/assets/html/l01_silicon.html)

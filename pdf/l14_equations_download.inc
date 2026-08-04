@@ -1,1 +1,0 @@
-- [Equations](/aic2026/assets/l14_equations.pdf) [[slides]](/aic2026/assets/html/l14_equations.html)

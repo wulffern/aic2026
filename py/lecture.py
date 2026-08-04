@@ -175,7 +175,7 @@ class Image():
         self.directory = options["dir"]
         self.skip = False
         self.isUrl = False
-        self.abstmp = os.path.abspath(os.path.normpath(options["dir"] +  "/../pdf/media")) + "/"
+        self.abstmp = os.path.abspath(os.path.normpath(options["dir"] +  "/../.build/media")) + "/"
 
         # exist_ok, not a prior exists() check: posts-parallel runs four
         # workers and they raced here, one of them dying with FileExistsError.
@@ -644,7 +644,7 @@ def post(filename,root,date,images_file):
 
 @cli.command()
 @click.argument("filename")
-@click.option("--root",default="pdf/",help="output root")
+@click.option("--root",default=".build/",help="output root")
 @click.option("--no-append",is_flag=True,default=False,help="Skip appending to shared files (for parallel builds)")
 def latex(filename,root,no_append):
     options = dict()
@@ -708,18 +708,18 @@ def latex(filename,root,no_append):
     download_text = (f"- [{title}](/{aic_version}/assets/{basename}.pdf)"
                      f" [[slides]](/{aic_version}/assets/html/{basename}.html)\n")
 
-    with open(f"pdf/{basename}_chapter.inc","w") as fo:
+    with open(os.path.join(root, f"{basename}_chapter.inc"),"w") as fo:
         fo.write(chapter_text)
-    with open(f"pdf/{basename}_download.inc","w") as fo:
+    with open(os.path.join(root, f"{basename}_download.inc"),"w") as fo:
         fo.write(download_text)
 
     if not no_append:
-        with open("pdf/chapters.tex","a") as fo:
+        with open(os.path.join(root, "chapters.tex"),"a") as fo:
             fo.write(chapter_text)
         with open("docs/downloads.md","a") as fo:
             fo.write(download_text)
 
-    with open("pdf/version_short.tex") as fi:
+    with open(os.path.join(root, "version_short.tex")) as fi:
         version = fi.read()
 
     #- An optional <!--pan_author: ... --> overrides the standalone byline,
@@ -734,7 +734,7 @@ def latex(filename,root,no_append):
 
     with open("pdf/short_tmplt.tex") as fi:
         buff = fi.read()
-        with open("pdf/" + foname,"w") as fo:
+        with open(os.path.join(root, foname),"w") as fo:
             fo.write(buff.replace("__title__",title).replace("__file__",foname_fixed)
                          .replace("__version__",version)
                          .replace("__author__",author).replace("__pdfauthor__",pdfauthor))

@@ -1,1 +1,0 @@
-- [CMOS Logic](/aic2026/assets/lr0_logic.pdf) [[slides]](/aic2026/assets/html/lr0_logic.html)

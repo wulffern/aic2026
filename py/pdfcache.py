@@ -1,14 +1,14 @@
 #!/usr/bin/env python3
 """Build standalone chapter PDFs, skipping chapters whose content is unchanged.
 
-The generated pdf/<f>.tex wrapper embeds the build date and git hash, so its
+The generated .build/<f>.tex wrapper embeds the build date and git hash, so its
 bytes change on every commit even when the chapter does not. The cache key
 therefore hashes what actually determines the PDF's content:
 
-  - pdf/<f>_fiximg.tex          (the full chapter body, images substituted)
+  - .build/<f>_fiximg.tex          (the full chapter body, images substituted)
   - every media file it \\includegraphics's
-  - pdf/<f>_chapter.inc         (carries the chapter title)
-  - pdf/short_tmplt.tex, pdf/pandoc.tex, pdf/version.tex? no — version is
+  - .build/<f>_chapter.inc         (carries the chapter title)
+  - .build/short_tmplt.tex, .build/pandoc.tex, .build/version.tex? no — version is
     excluded on purpose: an unchanged chapter keeps the date it was last
     actually built, which is what that date claims to be anyway.
 
@@ -31,24 +31,24 @@ import sys
 
 def fiximg_path(name):
     #- The _fiximg file is named after the lecture *title*, not the source
-    #  basename; the generated wrapper pdf/<name>.tex knows the mapping.
-    with open(f"pdf/{name}.tex") as fi:
+    #  basename; the generated wrapper .build/<name>.tex knows the mapping.
+    with open(f".build/{name}.tex") as fi:
         m = re.search(r"\\input\{([^}]*_fiximg)(?:\.tex)?\}", fi.read())
     if not m:
-        raise SystemExit(f"pdfcache: no _fiximg input found in pdf/{name}.tex")
-    return f"pdf/{m.group(1)}.tex"
+        raise SystemExit(f"pdfcache: no _fiximg input found in .build/{name}.tex")
+    return f".build/{m.group(1)}.tex"
 
 
 def chapter_key(name):
     h = hashlib.sha256()
-    for path in [fiximg_path(name), f"pdf/{name}_chapter.inc",
-                 "pdf/short_tmplt.tex", "pdf/pandoc.tex"]:
+    for path in [fiximg_path(name), f".build/{name}_chapter.inc",
+                 ".build/short_tmplt.tex", ".build/pandoc.tex"]:
         with open(path, "rb") as fi:
             body = fi.read()
         h.update(body)
         if path.endswith("_fiximg.tex"):
             for m in re.finditer(rb"\\includegraphics(?:\[[^\]]*\])?\{([^}]+)\}", body):
-                img = os.path.join("pdf", m.group(1).decode())
+                img = os.path.join(".build", m.group(1).decode())
                 h.update(m.group(1))
                 #- Downloaded images are named by the sha256 of their URL and
                 #  re-fetched on every CI run; servers do not return byte-
@@ -84,15 +84,15 @@ def main():
         wanted[f"{f}-{key}.pdf"] = True
         if os.path.exists(entry):
             print(f"pdfcache: {f} unchanged, reusing cached PDF")
-            shutil.copyfile(entry, f"pdf/{f}.pdf")
+            shutil.copyfile(entry, f".build/{f}.pdf")
             hits += 1
         else:
             print(f"pdfcache: {f} changed, building")
-            subprocess.run(["make", "-C", "pdf", "standalone", f"FNAME={f}.tex"],
+            subprocess.run(["make", "-C", ".build", "standalone", f"FNAME={f}.tex"],
                            check=True)
-            shutil.copyfile(f"pdf/{f}.pdf", entry)
+            shutil.copyfile(f".build/{f}.pdf", entry)
             misses += 1
-        shutil.copyfile(f"pdf/{f}.pdf", f"docs/assets/{f}.pdf")
+        shutil.copyfile(f".build/{f}.pdf", f"docs/assets/{f}.pdf")
 
     #- Prune superseded entries for the lectures this run covered, so the
     #  cache stays one file per chapter. Entries belonging to other shards

@@ -1,1 +1,0 @@
-- [A Refresher](/aic2026/assets/l00_refresher.pdf) [[slides]](/aic2026/assets/html/l00_refresher.html)

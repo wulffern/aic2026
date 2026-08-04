@@ -58,22 +58,36 @@ FILES = l00_jayn \
 
 all: version posts-parallel texfiles-parallel examples standalone-parallel latex-nobuild book-nobuild
 
-book-ai:
-	cd pdf; make book-ai
+book-ai: builddir
+	cd ${BUILDDIR}; make book-ai
 
-latex-nobuild:
-	cd pdf; make one
-	cp pdf/aic.pdf docs/assets/
+latex-nobuild: builddir
+	cd ${BUILDDIR}; make one
+	cp ${BUILDDIR}/aic.pdf docs/assets/
 
-book-nobuild:
-	cd pdf; make ebook
-	cp pdf/aic.epub docs/assets/
+book-nobuild: builddir
+	cd ${BUILDDIR}; make ebook
+	cp ${BUILDDIR}/aic.epub docs/assets/
 
 version:
 	echo "aic${YEAR}" > version
 
+# pdf/ holds only tracked sources; the whole PDF build happens in
+# ${BUILDDIR}, which sits at the same depth so every ../media-style
+# relative path resolves the same way. The sources are symlinked in
+# rather than copied, so an edit in pdf/ is always what gets built.
+# ln -sf makes the rule idempotent, and re-running it also repairs
+# links that a CI artifact round-trip flattened or dropped.
+PDF_SOURCES = Makefile aic.tex aic.bib incoming.bib fix_svg.py \
+	ieee-with-url.csl IEEEtran.cls authors.tex preface.tex \
+	short_tmplt.tex background.png wulff.eps \
+	$(notdir $(wildcard pdf/pandoc_*.tex))
+builddir:
+	@mkdir -p ${BUILDDIR}
+	@for f in ${PDF_SOURCES}; do ln -sf "../pdf/$$f" "${BUILDDIR}/$$f"; done
+
 prepare-docs: clean-prepared version figures posts-parallel texfiles-parallel slides-parallel examples
-	cd pdf; [ -d kaobook ] || git clone https://github.com/fmarotta/kaobook.git
+	cd ${BUILDDIR}; [ -d kaobook ] || git clone https://github.com/fmarotta/kaobook.git
 
 # ---------------------------------------------------------------------------
 # Interactive examples
@@ -104,7 +118,6 @@ clean-prepared:
 	-rm -f docs/downloads.md images.txt *_images.inc
 	-rm -f docs/assets/*.pdf docs/assets/*.epub
 	-rm -rf docs/assets/html docs/assets/examples
-	-rm -f pdf/*.aux pdf/*.log pdf/*.pdf pdf/*.epub pdf/*.bbl pdf/*.blg pdf/*.toc pdf/*.bcf pdf/*.xml pdf/*.mw
 
 print-files:
 	@printf '%s\n' ${FILES}
@@ -172,83 +185,83 @@ jbook:
 TEX_STAMPS = ${addprefix ${BUILDDIR}/,${addsuffix .tex,tex_intro ${FILES}}}
 
 ${BUILDDIR}/%.tex: lectures/%.md py/lecture.py pdf/aic.bib pdf/short_tmplt.tex pdf/ieee-with-url.csl | version
-	@mkdir -p ${BUILDDIR} pdf/media
+	@mkdir -p ${BUILDDIR}/media
 	${PYTHON} py/lecture.py latex --no-append lectures/$*.md
 	@touch $@
 
 texfiles: texfiles-parallel
-texfiles-parallel:
-	-mkdir -p pdf/media
-	cd pdf; make hash_short
+texfiles-parallel: builddir
+	-mkdir -p ${BUILDDIR}/media
+	cd ${BUILDDIR}; make hash_short
 	@${MAKE} --no-print-directory -j 4 ${TEX_STAMPS}
 	cat downloads.md > docs/downloads.md
-	cat pdf/tex_intro_chapter.inc > pdf/chapters.tex
-	${foreach f, ${FILES}, cat pdf/${f}_chapter.inc >> pdf/chapters.tex;}
-	${foreach f, ${FILES}, cat pdf/${f}_download.inc >> docs/downloads.md;}
+	cat ${BUILDDIR}/tex_intro_chapter.inc > ${BUILDDIR}/chapters.tex
+	${foreach f, ${FILES}, cat ${BUILDDIR}/${f}_chapter.inc >> ${BUILDDIR}/chapters.tex;}
+	${foreach f, ${FILES}, cat ${BUILDDIR}/${f}_download.inc >> docs/downloads.md;}
 	${PYTHON} py/mkrefs.py
-	cat pdf/references_chapter.inc >> pdf/chapters.tex
-	cd pdf; make fix hash pandoc.tex
+	cat ${BUILDDIR}/references_chapter.inc >> ${BUILDDIR}/chapters.tex
+	cd ${BUILDDIR}; make fix hash pandoc.tex
 
 images:
 	${foreach f, ${FILES}, echo ${f} && egrep "^!.*\(https://" lectures/${f}.md;}
 
 standalone: texfiles standalone-nobuild
-standalone-nobuild:
-	${foreach f, ${FILES}, cd pdf; make standalone FNAME=${f}.tex;}
-	${foreach f, ${FILES}, cp pdf/${f}.pdf docs/assets/;}
+standalone-nobuild: builddir
+	${foreach f, ${FILES}, cd ${BUILDDIR}; make standalone FNAME=${f}.tex;}
+	${foreach f, ${FILES}, cp ${BUILDDIR}/${f}.pdf docs/assets/;}
 
-standalone-parallel:
-	printf '%s\n' ${FILES} | xargs -P 4 -I{} sh -c 'cd pdf && make standalone FNAME={}.tex && cp {}.pdf ../docs/assets/'
+standalone-parallel: builddir
+	printf '%s\n' ${FILES} | xargs -P 4 -I{} sh -c 'cd ${BUILDDIR} && make standalone FNAME={}.tex && cp {}.pdf ../docs/assets/'
 
-standalone-one:
+standalone-one: builddir
 	@test -n "${FNAME}" || (echo "Usage: make standalone-one FNAME=l03_refbias"; exit 1)
 	-mkdir -p docs/assets
 	@set -e; \
 	f="${FNAME}"; \
 	f="$${f%.tex}"; \
 	echo "Building $$f"; \
-	cd pdf && $(MAKE) standalone FNAME="$$f.tex"; \
+	cd ${BUILDDIR} && $(MAKE) standalone FNAME="$$f.tex"; \
 	cp "$$f.pdf" "../docs/assets/"
 
 # Like standalone-list, but chapters whose content hash matches a cached PDF
 # are copied instead of rebuilt. The version stamp is excluded from the hash
 # on purpose (see py/pdfcache.py). CI restores/saves CACHEDIR around this.
 CACHEDIR = ~/.cache/aic-standalone
-standalone-cached:
+standalone-cached: builddir
 	@test -n "${FILES}" || (echo "Usage: make standalone-cached FILES=\"l03_refbias l04_afe\""; exit 1)
 	${PYTHON} py/pdfcache.py --cache ${CACHEDIR} ${FILES}
 
-standalone-list:
+standalone-list: builddir
 	@test -n "${FILES}" || (echo "Usage: make standalone-list FILES=\"l03_refbias l04_afe\""; exit 1)
 	-mkdir -p docs/assets
 	@set -e; \
 	for f in ${FILES}; do \
 		name="$${f%.tex}"; \
 		echo "Building $$name"; \
-		cd pdf && $(MAKE) standalone FNAME="$$name.tex"; \
+		cd ${BUILDDIR} && $(MAKE) standalone FNAME="$$name.tex"; \
 		cd ..; \
-		cp "pdf/$$name.pdf" "docs/assets/"; \
+		cp "${BUILDDIR}/$$name.pdf" "docs/assets/"; \
 	done
 
 latex: texfiles
-	cd pdf; make one
-	cp pdf/aic.pdf docs/assets/
+	cd ${BUILDDIR}; make one
+	cp ${BUILDDIR}/aic.pdf docs/assets/
 
-book:
-	cd pdf; make ebook
-	cp pdf/aic.epub docs/assets/
+book: builddir
+	cd ${BUILDDIR}; make ebook
+	cp ${BUILDDIR}/aic.epub docs/assets/
 
-book-pdf:
+book-pdf: builddir
 	-mkdir -p docs/assets
-	cd pdf; $(MAKE) one
-	cp pdf/aic.pdf docs/assets/
-	cd pdf; $(MAKE) book-ai
-	cp pdf/aic_ai.pdf docs/assets/
+	cd ${BUILDDIR}; $(MAKE) one
+	cp ${BUILDDIR}/aic.pdf docs/assets/
+	cd ${BUILDDIR}; $(MAKE) book-ai
+	cp ${BUILDDIR}/aic_ai.pdf docs/assets/
 
-book-epub:
+book-epub: builddir
 	-mkdir -p docs/assets
-	cd pdf; $(MAKE) ebook
-	cp pdf/aic.epub docs/assets/
+	cd ${BUILDDIR}; $(MAKE) ebook
+	cp ${BUILDDIR}/aic.epub docs/assets/
 
 
 ci:

@@ -72,7 +72,7 @@ jobs:
             tikz-figures-
 
       # The generated figures are not committed; build them before
-      # prepare-docs copies media/ into pdf/media and docs/assets/media.
+      # prepare-docs copies media/ into .build/media and docs/assets/media.
       - name: Build TikZ figures
         shell: bash
         run: |
@@ -104,18 +104,20 @@ jobs:
             docs/downloads.md
             docs/plan.md
             docs/syllabus.md
-            pdf
-            !pdf/*.aux
-            !pdf/*.log
-            !pdf/*.pdf
-            !pdf/*.epub
-            !pdf/*.bbl
-            !pdf/*.blg
-            !pdf/*.toc
-            !pdf/*.bcf
-            !pdf/*.xml
-            !pdf/*.mw
+            .build
+            !.build/*.aux
+            !.build/*.log
+            !.build/*.pdf
+            !.build/*.epub
+            !.build/*.bbl
+            !.build/*.blg
+            !.build/*.toc
+            !.build/*.bcf
+            !.build/*.xml
+            !.build/*.mw
             version
+          # .build is a dotdir, which upload-artifact skips by default
+          include-hidden-files: true
           if-no-files-found: error
 
   plan_matrix:

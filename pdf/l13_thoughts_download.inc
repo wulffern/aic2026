@@ -1,1 +1,0 @@
-- [Thoughts and Advice](/aic2026/assets/l13_thoughts.pdf) [[slides]](/aic2026/assets/html/l13_thoughts.html)

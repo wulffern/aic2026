@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 This is **aic2026** — course materials for *TFE4188 Advanced Integrated Circuits 2026* by Carsten Wulff. The repo generates:
 - A **Jekyll website** (`docs/`) deployed to GitHub Pages at `wulffern.github.io/aic2026`
-- **Standalone PDFs** (one per lecture) and a combined **PDF book** (`pdf/aic.pdf`) and **ebook** (`pdf/aic.epub`)
+- **Standalone PDFs** (one per lecture) and a combined **PDF book** (`.build/aic.pdf`) and **ebook** (`.build/aic.epub`)
 
 Source lectures are Markdown files in `lectures/` that are processed by `py/lecture.py` into both Jekyll posts and LaTeX.
 
@@ -37,9 +37,9 @@ make all   # version + posts-parallel + texfiles-parallel + standalone-parallel 
 ### Partial builds (most common)
 ```sh
 make posts-parallel       # Convert lectures/*.md → docs/_posts/*.markdown (parallel, 4 workers)
-make texfiles-parallel    # Convert lectures/*.md → pdf/*.tex (parallel, 4 workers)
-make standalone-parallel  # Compile individual PDFs in pdf/ (parallel, 4 workers)
-make latex-nobuild        # Compile combined PDF (pdf/aic.pdf) without regenerating .tex files
+make texfiles-parallel    # Convert lectures/*.md → .build/*.tex (parallel, 4 workers)
+make standalone-parallel  # Compile individual PDFs in .build/ (parallel, 4 workers)
+make latex-nobuild        # Compile combined PDF (.build/aic.pdf) without regenerating .tex files
 make book-nobuild         # Compile EPUB without regenerating .tex files
 ```
 
@@ -123,17 +123,19 @@ Files prefixed `l` are main lectures; `lr` are reference/refresher lectures; `lx
 ### Python processor (`py/lecture.py`)
 Two CLI commands via Click:
 - `post` → `Lecture` class: produces Jekyll markdown for `docs/_posts/`
-- `latex` → `Latex` class: produces `.tex` and `pdf/*_chapter.inc` / `pdf/*_download.inc` files
+- `latex` → `Latex` class: produces `.tex` and `.build/*_chapter.inc` / `.build/*_download.inc` files
 
 Key classes: `Bibtex`, `Image`, `Lecture`, `Latex`.
 
 The `FILES` list in the root `Makefile` controls which lectures are processed and their order in the book.
 
-### PDF pipeline (`pdf/Makefile`)
+### PDF pipeline (`pdf/Makefile`, run inside `.build/`)
+- `pdf/` holds only tracked sources (~17 files: `aic.tex`, `aic.bib`, `Makefile`, templates). The whole build happens in `.build/`, which sits at the same depth so `../media`-style paths resolve identically; the `builddir` target symlinks the sources in, and nothing under `.build/` or generated into `media/` is ever committed
 - Individual lecture `.tex` files are compiled with `pdflatex` via `make standalone FNAME=<file>.tex`
 - The book (`aic.pdf`) is compiled with `kaobook` (auto-cloned from GitHub) using `TEXINPUTS=".:kaobook:"`
-- `pdf/chapters.tex` is assembled from `*_chapter.inc` files; `docs/downloads.md` from `*_download.inc` files
+- `.build/chapters.tex` is assembled from `*_chapter.inc` files; `docs/downloads.md` from `*_download.inc` files
 - `pdf/fix_svg.py` post-processes generated `.latex` files before compilation
+- TikZ figure output (`media/*_tikz.{pdf,svg}`) is likewise untracked; CI builds it with `make tikz-cached` (content-hash cache, `py/tikzcache.py`)
 
 ### Jekyll site (`docs/`)
 - Uses `jekyll/jekyll:3.8` Docker image

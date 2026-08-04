@@ -1,1 +1,0 @@
-- [Mixed Signal Simulation in NGSPICE](/aic2026/assets/l00_sv.pdf) [[slides]](/aic2026/assets/html/l00_sv.html)

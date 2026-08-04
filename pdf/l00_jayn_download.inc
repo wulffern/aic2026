@@ -1,1 +1,0 @@
-- [The Story of Jayn](/aic2026/assets/l00_jayn.pdf) [[slides]](/aic2026/assets/html/l00_jayn.html)

@@ -1,1 +1,0 @@
-- [How to write a project report](/aic2026/assets/lp_project_report.pdf) [[slides]](/aic2026/assets/html/lp_project_report.html)

@@ -1,1 +1,0 @@
-- [How to Achieve Excellence](/aic2026/assets/lr0_excellence.pdf) [[slides]](/aic2026/assets/html/lr0_excellence.html)

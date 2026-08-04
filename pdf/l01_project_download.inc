@@ -1,1 +1,0 @@
-- [The Project](/aic2026/assets/l01_project.pdf) [[slides]](/aic2026/assets/html/l01_project.html)
