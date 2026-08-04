@@ -23,3 +23,9 @@ terms govern that figure rather than the CC BY 4.0 above.
 - Create git repo for new year
 - Change origin
 - Push
+
+Generated artifacts are not tracked: `pdf/` holds only sources (the
+build runs in `.build/`), and `media/*_tikz.*` come from `make tikz`.
+Possible follow-up for a new year: generate the hand-drawn SVGs'
+PDF exports with `rsvg-convert` too and untrack them after a visual
+check of the book.
