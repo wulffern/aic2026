@@ -154,7 +154,6 @@ posts-parallel:
 	cp plan.md docs/plan.md
 	@${MAKE} --no-print-directory -j 4 ${POST_STAMPS}
 	cat ${addprefix ${BUILDDIR}/,${addsuffix _images.inc,${FILES}}} > images.txt
-	@if [ -z "$$CI" ] && [ -s images.txt ]; then cd lectures && cat ../images.txt | xargs git add -f; fi
 
 
 jstart:

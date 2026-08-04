@@ -4,8 +4,11 @@ name: TikZ figures
 # tikz_translation_plan.md depends on being able to push a draft figure and
 # see it built before the lecture reference is switched.
 # No paths filter: a push touching tikz/ and Makefile was silently skipped
-# once, and an unexplained miss is worse than a ~90s no-op run. The job
-# commits nothing when the figures are unchanged, so running it always is cheap.
+# once, and an unexplained miss is worse than a ~90s no-op run.
+# Check-only: figure PDFs/SVGs are no longer committed back - the Docs
+# workflow builds them itself (make tikz-cached in the prepare job). This
+# job exists so a broken figure fails fast and a TeX-less author still
+# gets rendered previews from the artifact below.
 on:
   push:
   pull_request:
@@ -16,7 +19,7 @@ concurrency:
   cancel-in-progress: true
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
   figures:
@@ -53,31 +56,3 @@ jobs:
           name: tikz-previews
           path: preview
           if-no-files-found: error
-
-      # Commit the generated PDFs so a figure can be authored without a local
-      # TeX install. Everything except pull_request, whose checkout is a merge
-      # commit with no branch to push back to.
-      - name: Commit generated figures
-        if: github.event_name != 'pull_request'
-        shell: bash
-        env:
-          BRANCH: ${{ github.ref_name }}
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-
-          find media -name '*_tikz.pdf' -print0 | xargs -0 --no-run-if-empty git add --
-
-          if git diff --cached --quiet; then
-            echo "Figures unchanged, nothing to commit."
-            exit 0
-          fi
-
-          git diff --cached --name-only
-          git commit -m "Rebuild TikZ figures [skip ci]"
-          # The branch may have moved while this ran - the Bibliography
-          # workflow pushes [skip ci] commits from the same trigger and has
-          # won that race before. Rebase onto the moved branch and push;
-          # a genuine conflict still fails rather than clobbering.
-          git pull --rebase origin "${BRANCH}"
-          git push origin "HEAD:refs/heads/${BRANCH}"
