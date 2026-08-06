@@ -98,7 +98,8 @@ As a result, by definition, the cesium clocks are exact. That's how the second i
 
 <!--pan_doc:
 
-One example of a ultra precise time piece is shown below. The bullets in the list below is from the marketing blurb. 
+One example of a ultra precise time piece can be found in [Microchip 5071B](https://www.microchip.com/en-us/products/clock-and-timing/components/atomic-clocks/atomic-system-clocks/cesium-time/5071b). 
+The bullets in the list below is from the marketing blurb. 
 
 Why would the thing take 30 minutes to start up? Does the temperature need to settle? Is it the loop bandwidth of the PLL that is low? Who knows, but 30 minutes is too long for a IC startup time.
 And we can't really pack the big box onto a chip. 
@@ -129,7 +130,7 @@ Also, when they say
 
 
 <!--pan_doc:
-and can actually be made quite small. Microsemi's Miniature Atomic Clock (MAC) is a coin-sized rubidium module. According to the marketing blurb: 
+and can actually be made quite small. [Microsemi's Miniature Atomic Clock (MAC)](https://www.microchip.com/en-us/products/clock-and-timing/components/atomic-clocks/embedded-atomic-oscillators/mac) is a coin-sized rubidium module. According to the marketing blurb: 
 
 -->
 
