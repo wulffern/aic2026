@@ -4,7 +4,7 @@ title: About
 permalink: /about/
 ---
 
-My name is Carsten Wulff and I'm an IC nerd, agent orchestrator (formerly know
+My name is Carsten Wulff and I'm an IC nerd, agent orchestrator (formerly known
 as a programmer), and teacher
 
 I have three axis in relation to analog integrated circuit design:
