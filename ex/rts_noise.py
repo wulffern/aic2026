@@ -41,7 +41,9 @@ def psd(x, nseg=32):
     64 segments is what turns a black smear into a visible corner.
     """
     n = len(x)//nseg
-    w = np.hanning(n)
+    #- N+1 with the last point dropped: the periodic Hann window, which
+    #  tiles continuously the way the DFT assumes (aic2023 issue #10)
+    w = np.hanning(n + 1)[:n]
     acc = np.zeros(n//2 + 1)
     for k in range(2*nseg - 1):          # 50 % overlap
         seg = x[k*n//2 : k*n//2 + n]

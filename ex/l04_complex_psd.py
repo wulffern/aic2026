@@ -57,7 +57,9 @@ def psd(y, segments=16):
     """Welch: average the periodogram over segments, so the noise floor
     is a floor and not a thicket."""
     L = len(y) // segments
-    w = np.hanning(L)
+    #- N+1 with the last point dropped: the periodic Hann window, which
+    #  tiles continuously the way the DFT assumes (aic2023 issue #10)
+    w = np.hanning(L + 1)[:L]
     acc = np.zeros(L)
     for k in range(segments):
         seg = y[k * L:(k + 1) * L] * w

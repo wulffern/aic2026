@@ -58,7 +58,13 @@ y_sn = adc(x_sn,bits)
 #----------------------------------------------
 def freqDomain(x,hann=True):
     N = len(x)
-    # Use hanning window to prevent FFT bin energy spread
+    # Use hanning window to prevent FFT bin energy spread.
+    # N+1 with the last sample dropped is deliberate: np.hanning(N) is
+    # the symmetric window, whose first and last samples repeat when the
+    # DFT tiles the frame, kinking the implied infinite signal. One
+    # sample longer, minus the duplicate endpoint, is the periodic
+    # window that tiles continuously. Repeat both back to back and FFT
+    # them to see the difference (aic2023 issue #10).
     if(hann):
         w = np.hanning(N+1)
     else:
