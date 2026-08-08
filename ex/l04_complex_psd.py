@@ -58,7 +58,8 @@ def psd(y, segments=16):
     is a floor and not a thicket."""
     L = len(y) // segments
     #- N+1 with the last point dropped: the periodic Hann window, which
-    #  tiles continuously the way the DFT assumes (aic2023 issue #10)
+    #  is three DFT basis vectors exactly, so it does not leak between
+    #  bins the way the symmetric np.hanning(n) does (aic2023 issue #10)
     w = np.hanning(L + 1)[:L]
     acc = np.zeros(L)
     for k in range(segments):

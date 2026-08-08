@@ -59,12 +59,16 @@ y_sn = adc(x_sn,bits)
 def freqDomain(x,hann=True):
     N = len(x)
     # Use hanning window to prevent FFT bin energy spread.
-    # N+1 with the last sample dropped is deliberate: np.hanning(N) is
-    # the symmetric window, whose first and last samples repeat when the
-    # DFT tiles the frame, kinking the implied infinite signal. One
-    # sample longer, minus the duplicate endpoint, is the periodic
-    # window that tiles continuously. Repeat both back to back and FFT
-    # them to see the difference (aic2023 issue #10).
+    # N+1 with the last sample dropped is deliberate. It is exactly the
+    # periodic window 0.5 - 0.5*cos(2*pi*n/N), which is a sum of three
+    # DFT basis vectors: bins 0 and +-1, with weights 1/2, -1/4, -1/4.
+    # Multiplying by it therefore convolves the spectrum with three
+    # taps, so a tone sitting on an exact bin lands in exactly three
+    # bins and leaks nothing anywhere else. np.hanning(N) is the
+    # symmetric window, 0.5 - 0.5*cos(2*pi*n/(N-1)), which is not a
+    # combination of DFT basis vectors - it has N-1 nonzero DFT
+    # coefficients - so the same tone smears across every bin at about
+    # -45 dBc. Measured, not asserted (aic2023 issue #10).
     if(hann):
         w = np.hanning(N+1)
     else:

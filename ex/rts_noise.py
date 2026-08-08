@@ -42,7 +42,8 @@ def psd(x, nseg=32):
     """
     n = len(x)//nseg
     #- N+1 with the last point dropped: the periodic Hann window, which
-    #  tiles continuously the way the DFT assumes (aic2023 issue #10)
+    #  is three DFT basis vectors exactly, so it does not leak between
+    #  bins the way the symmetric np.hanning(n) does (aic2023 issue #10)
     w = np.hanning(n + 1)[:n]
     acc = np.zeros(n//2 + 1)
     for k in range(2*nseg - 1):          # 50 % overlap
