@@ -66,20 +66,37 @@ def fold_toc(body):
 
 
 
-def write_page(path, title, nav_order, permalink, body):
-    front = "\n".join(
-        [
-            "---",
-            "layout: default",
-            f"title: {title}",
-            f"nav_order: {nav_order}",
-            f"permalink: {permalink}",
-            "---",
-            "",
-        ]
-    )
+def write_page(path, title, nav_order, permalink, body, extra=None):
+    lines = [
+        "---",
+        "layout: default",
+        f"title: {title}",
+        f"nav_order: {nav_order}",
+        f"permalink: {permalink}",
+    ]
+    lines += extra or []
+    lines += ["---", ""]
     with open(path, "w") as fo:
-        fo.write(front + fold_toc(body))
+        fo.write("\n".join(lines) + fold_toc(body))
+
+
+# The sidebar groups the chapters into collapsible parts; a flat list of
+# forty entries made e.g. the ngspice pages a long scroll away. Order:
+# (title, slug, permalink, lecture id regex); the last entry with regex
+# None catches everything unmatched.
+SECTIONS = [
+    ("Lectures", "lectures", "/lectures/", r"^l(0[1-9]|1\d)_"),
+    ("Refreshers", "refreshers", "/refreshers/", r"^lr"),
+    ("Background", "background", "/background/", r"^l00_"),
+    ("Extras", "extras", "/extras/", None),
+]
+
+
+def section_for(lid):
+    for title, _, _, pattern in SECTIONS:
+        if pattern is None or re.match(pattern, lid):
+            return title
+    return SECTIONS[-1][0]
 
 
 def make_pages():
@@ -136,17 +153,33 @@ def main():
         print("extra posts appended: " + " ".join(extras))
     order += extras
 
+    # the section landing pages: just-the-docs lists the children on
+    # them and folds each section in the sidebar. They sort after the
+    # top level pages (nav_order 0-6).
+    members = {section_for(lid) for lid in order}
+    for k, (stitle, slug, perm, _) in enumerate(SECTIONS):
+        if stitle not in members:
+            continue
+        write_page(os.path.join(CHAPTERS, f"{(k + 1) * 10}_{slug}.md"),
+                   stitle, (k + 1) * 10, perm,
+                   "The chapters in this part:\n",
+                   extra=["has_children: true"])
+
+    # one scrollable page per chapter, nested under its section - the
+    # sidebar heading dropdown comes from _includes/js/custom.js
+    within = {}
     for n, lid in enumerate(order, start=1):
         text = posts[lid]
         head, body = front_matter(text)
         title = re.search(r"title:\s*(.*)", head).group(1).strip()
         permalink = re.search(r"permalink:\s*(.*)", head).group(1).strip()
-        # chapters sort after the top level pages in the sidebar; one
-        # scrollable page per chapter - the sidebar heading dropdown
-        # comes from _includes/js/custom.js
+        stitle = section_for(lid)
+        within[stitle] = within.get(stitle, 0) + 1
         write_page(os.path.join(CHAPTERS, f"{n:02d}_{lid}.md"),
-                   title, n + 10, permalink, body)
-    print(f"wrote {len(order)} chapters to docs-book/chapters/")
+                   title, within[stitle], permalink, body,
+                   extra=[f"parent: {stitle}"])
+    print(f"wrote {len(order)} chapters to docs-book/chapters/ "
+          f"in {len(members)} sections")
 
     make_slides_page(order, posts)
 

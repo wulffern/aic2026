@@ -1,0 +1,79 @@
+// Site overrides for just-the-docs. This file is imported last into
+// every color-scheme build, so scheme variables ($body-background-color,
+// $color-scheme) resolve per scheme. CSS must live here, not in
+// assets/css/, which mkbooksite.py deletes on every build.
+
+// The sidebar header is clamped to $header-height, but between the md
+// and lg breakpoints the sidebar is only 15.5rem wide and the site
+// title wraps to three lines: "Advanced" clipped above, "Circuits"
+// spilling onto the nav. Let the header grow with its content.
+@include mq(md) {
+  .site-header {
+    height: auto;
+    max-height: none;
+  }
+  .site-title {
+    @include fs-5;
+  }
+}
+
+// Keep the search bar reachable while reading: the header sticks to the
+// top of the viewport. search-active mode is unaffected - a sticky
+// ancestor is not a containing block for the fixed .search overlay.
+.main-header {
+  @include mq(md) {
+    position: sticky;
+    top: 0;
+    z-index: 3; // above .main-content; .search inside keeps z-index: 2
+    background-color: $body-background-color;
+  }
+}
+
+// Theme toggle button, rendered by _includes/header_custom.html between
+// the search bar and the aux links.
+.theme-toggle {
+  align-self: center;
+  flex-shrink: 0;
+  padding: $sp-2;
+  margin-right: $sp-2;
+  font-size: 1rem;
+  line-height: 1;
+  cursor: pointer;
+  border-radius: $border-radius;
+}
+// Show the glyph for the scheme a click would switch to.
+.theme-toggle .theme-toggle-dark { display: inline; }
+.theme-toggle .theme-toggle-light { display: none; }
+html[data-theme="dark"] {
+  .theme-toggle .theme-toggle-dark { display: none; }
+  .theme-toggle .theme-toggle-light { display: inline; }
+}
+
+// Floating "search this word" pill shown next to a text selection,
+// wired up in _includes/js/custom.js.
+.select-search-btn {
+  position: absolute;
+  z-index: 4;
+  max-width: 20rem;
+  overflow: hidden;
+  padding: $sp-1 $sp-2;
+  font-size: 0.75rem;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  cursor: pointer;
+  color: $body-text-color;
+  background-color: $search-background-color;
+  border: 1px solid $border-color;
+  border-radius: 1rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+}
+
+@if $color-scheme == dark {
+  // The figures are pdftocairo SVGs: black strokes on a transparent
+  // background, invisible on the dark page. Give them a light backing.
+  .main-content img {
+    padding: 4px;
+    background-color: #fff;
+    border-radius: 4px;
+  }
+}

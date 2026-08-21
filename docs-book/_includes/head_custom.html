@@ -1,4 +1,23 @@
 <script>
+  // Pick the color scheme before first paint: a stored choice wins,
+  // otherwise the OS preference. Runs after the stylesheet link above
+  // exists in the DOM, so there is no flash of the wrong theme.
+  (function () {
+    var theme = localStorage.getItem("aic-theme") ||
+      (window.matchMedia("(prefers-color-scheme: dark)").matches
+        ? "dark" : "default");
+    if (theme === "dark") {
+      var link = document.querySelector(
+        'link[rel="stylesheet"][href*="just-the-docs-default"]');
+      if (link) {
+        link.href = link.href.replace(
+          "just-the-docs-default", "just-the-docs-dark");
+      }
+    }
+    document.documentElement.setAttribute("data-theme", theme);
+  })();
+</script>
+<script>
   MathJax = {
     tex: {
       inlineMath: [['$', '$'], ['\\(', '\\)']],
