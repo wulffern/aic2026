@@ -85,7 +85,7 @@ def write_page(path, title, nav_order, permalink, body, extra=None):
 # (title, slug, permalink, lecture id regex); the last entry with regex
 # None catches everything unmatched.
 SECTIONS = [
-    ("Lectures", "lectures", "/lectures/", r"^l(0[1-9]|1\d)_"),
+    ("Lectures", "lectures", "/lectures/", r"^l(0[1-9]|1\d|x)_"),
     ("Refreshers", "refreshers", "/refreshers/", r"^lr"),
     ("Background", "background", "/background/", r"^l00_"),
     ("Extras", "extras", "/extras/", None),
