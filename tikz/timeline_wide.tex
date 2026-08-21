@@ -1,0 +1,29 @@
+\input{tikz/fig_header.tex}
+
+% My life, reconstructed in TikZ from the drawio original (media/timeline.svg).
+% Geometry (label and leader positions) is a faithful transcription of that
+% file; the events and their placement are unchanged.
+
+% Single row variant for slides: the body is drawn once, unclipped,
+% so the whole 1976-2026 span is one wide strip that fits a 16:9
+% slide. The two row version (timeline.tex) is for the book page.
+% The picture is thirty units wide, so at text width the labels are
+% scaled far down: they are set large here to survive that.
+% The picture is thirty units wide - as one row in a book that makes
+% every label unreadable. The body is defined once (a faithful
+% transcription of the drawio original) and drawn twice through
+% clipping windows: 1976-2006 on the top row, 2006-2026 below it.
+% Nothing in the transcription moves; only what is visible changes.
+
+\input{tikz/timeline_body.tex}
+
+\begin{tikzpicture}[line width=0.9pt]
+  \tikzset{ev/.style={font=\normalsize, align=center, inner sep=1.5pt},
+           lead/.style={->, line width=0.9pt},
+           yr/.style={font=\normalsize},
+           nordic/.style={ev, blue},
+           nordiclead/.style={lead, blue}}
+
+    \timelinebody
+\end{tikzpicture}
+\end{document}
