@@ -4,13 +4,13 @@
 % Geometry (label and leader positions) is a faithful transcription of that
 % file; the events and their placement are unchanged.
 
-% The picture is thirty units wide, so at text width the labels are
-% scaled far down: they are set large here to survive that.
-% The picture is thirty units wide - as one row in a book that makes
-% every label unreadable. The body is defined once (a faithful
-% transcription of the drawio original) and drawn twice through
-% clipping windows: 1976-2006 on the top row, 2006-2026 below it.
-% Nothing in the transcription moves; only what is visible changes.
+% The picture is thirty units wide - as one row on a book page that
+% makes every label unreadable, so it is drawn as two rows: 1976-2006
+% on top, 2011 onwards below. The split is by content, not by a
+% clipping window: the labels form one unbroken band, so any window
+% would cut some of them in half. Each row draws the labels whose year
+% it owns, and clips nothing but the axis. timeline_wide.tex draws the
+% same body as a single row for slides.
 
 \input{tikz/timeline_body.tex}
 
@@ -21,20 +21,25 @@
            nordic/.style={ev, blue},
            nordiclead/.style={lead, blue}}
 
-  %- top row: the years up to 2006
+  %- top row: up to 2006
   \begin{scope}
-    \clip (-0.4,-3.1) rectangle (17.8,4.6);
-    \timelinebody
+    \begin{scope}
+      \clip (-0.4,-1.05) rectangle (17.9,1.05);
+      \timelineaxis
+    \end{scope}
+    \tlwindow{-1000}{17.9}
+    \timelinelabels
   \end{scope}
 
-  %- bottom row: 2006 onwards, brought back to the left and down
-  \begin{scope}[shift={(-17.35,-9.0)}]
+  %- bottom row: 2011 onwards, brought back to the left and down far
+  %- enough that its tallest label clears the top row's year numbers
+  \begin{scope}[shift={(-17.67,-7.2)}]
     \begin{scope}
-      %- taller than the top row: the 2026 label sits on its own line
-    \clip (17.8,-3.95) rectangle (30.8,4.6);
-      %- the Nordic band and its label live in the body's coordinates
-      \timelinebody
+      \clip (17.9,-1.05) rectangle (30.8,1.05);
+      \timelineaxis
     \end{scope}
+    \tlwindow{17.9}{1000}
+    \timelinelabels
   \end{scope}
 
 \end{tikzpicture}

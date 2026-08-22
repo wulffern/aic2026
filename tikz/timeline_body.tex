@@ -1,15 +1,24 @@
 % The timeline events, shared by timeline.tex (two rows, for a book
 % page) and timeline_wide.tex (one row, for a 16:9 slide). Edit the
 % events here; both figures pick them up.
+%
+% The two row figure splits the timeline by content rather than by
+% geometry. Nothing here is wide enough to cut in half cleanly - the
+% labels form one unbroken band from 1991 to 2026 - so each label is
+% drawn by whichever row owns its year, and only the axis is clipped.
+% \tlwindow sets the span a row owns.
 
-\newcommand{\timelinebody}{%
+\newcommand{\tlmin}{-1000}
+\newcommand{\tlmax}{1000}
+\newcommand{\tlwindow}[2]{\renewcommand{\tlmin}{#1}\renewcommand{\tlmax}{#2}}
+\newcommand{\tlin}[2]{%
+  \ifdim #1pt>\tlmin pt\relax\ifdim #1pt<\tlmax pt\relax #2\fi\fi}
 
+%- the axis, its ticks and the Nordic band: safe to clip, because a
+%- clipped tick is still a tick
+\newcommand{\timelineaxis}{%
   %- The Nordic Semiconductor years, marked as a band under the axis
   \fill[blue!12] (16.186,-0.42) rectangle (30.145,0.42);
-  \node[blue!70!black, font=\normalsize, anchor=south east] at (30.0,0.5)
-    {Nordic Semiconductor};
-
-  % axis, broken twice at the left to compress 1976-1991
   \draw[line width=0.9pt] (0.27,0) -- (1.04,0);
   \draw[line width=0.9pt] (1.256,0) -- (2.241,0);
   \draw[line width=0.9pt,->] (2.565,0) -- (30.145,0);
@@ -17,142 +26,111 @@
   \draw[line width=0.9pt] (1.026,-0.608) -- (1.526,0.621);
   \draw[line width=0.9pt] (2.066,-0.608) -- (2.565,0.621);
   \draw[line width=0.9pt] (2.308,-0.608) -- (2.821,0.621);
-
-  % year ticks
   \draw (0.494,0.933) -- (0.494,-0.921);
-    \node[yr,anchor=north] at (0.494,-1.323) {1976};
   \draw (1.791,0.933) -- (1.791,-0.921);
-    \node[yr,anchor=north] at (1.791,-1.323) {1986};
   \draw (3.347,0.933) -- (3.347,-0.921);
-    \node[yr,anchor=north] at (3.347,-1.323) {1991};
   \draw (4.088,0.624) -- (4.088,-0.612);
   \draw (4.829,0.624) -- (4.829,-0.612);
   \draw (5.57,0.624) -- (5.57,-0.612);
   \draw (6.311,0.624) -- (6.311,-0.612);
   \draw (7.052,0.933) -- (7.052,-0.921);
-    \node[yr,anchor=north] at (7.052,-1.323) {1996};
   \draw (7.794,0.624) -- (7.794,-0.612);
   \draw (8.535,0.624) -- (8.535,-0.612);
   \draw (9.276,0.624) -- (9.276,-0.612);
   \draw (10.017,0.624) -- (10.017,-0.612);
   \draw (10.758,0.933) -- (10.758,-0.921);
-    \node[yr,anchor=north] at (10.758,-1.323) {2001};
   \draw (11.499,0.624) -- (11.499,-0.612);
   \draw (12.24,0.624) -- (12.24,-0.612);
   \draw (12.982,0.624) -- (12.982,-0.612);
   \draw (13.723,0.624) -- (13.723,-0.612);
   \draw (14.464,0.933) -- (14.464,-0.921);
-    \node[yr,anchor=north] at (14.464,-1.323) {2006};
   \draw (15.205,0.624) -- (15.205,-0.612);
   \draw (15.946,0.624) -- (15.946,-0.612);
   \draw (16.687,0.624) -- (16.687,-0.612);
   \draw (17.428,0.624) -- (17.428,-0.612);
   \draw (18.17,0.933) -- (18.17,-0.921);
-    \node[yr,anchor=north] at (18.17,-1.323) {2011};
   \draw (18.911,0.624) -- (18.911,-0.612);
   \draw (19.652,0.624) -- (19.652,-0.612);
   \draw (20.393,0.624) -- (20.393,-0.612);
   \draw (21.134,0.624) -- (21.134,-0.612);
   \draw (21.875,0.933) -- (21.875,-0.921);
-    \node[yr,anchor=north] at (21.875,-1.323) {2016};
   \draw (22.617,0.624) -- (22.617,-0.612);
   \draw (23.358,0.624) -- (23.358,-0.612);
   \draw (24.099,0.624) -- (24.099,-0.612);
   \draw (24.84,0.624) -- (24.84,-0.612);
   \draw (25.581,0.933) -- (25.581,-0.921);
-    \node[yr,anchor=north] at (25.581,-1.323) {2021};
   \draw (26.322,0.624) -- (26.322,-0.612);
   \draw (27.063,0.624) -- (27.063,-0.612);
   \draw (27.805,0.624) -- (27.805,-0.612);
   \draw (28.546,0.624) -- (28.546,-0.612);
   \draw (29.287,0.933) -- (29.287,-0.921);
-    \node[yr,anchor=north] at (29.287,-1.323) {2026};
+}
 
+%- every piece of text, drawn by the row that owns its year
+\newcommand{\timelinelabels}{%
+  %- the name of the band drawn under the axis by \timelineaxis
+  \tlin{30.0}{\node[blue!70!black, font=\normalsize, anchor=south east] at (30.0,0.5) {Nordic Semiconductor};}
+
+  % year numbers
+  \tlin{0.494}{\node[yr,anchor=north] at (0.494,-1.323) {1976};}
+  \tlin{1.791}{\node[yr,anchor=north] at (1.791,-1.323) {1986};}
+  \tlin{3.347}{\node[yr,anchor=north] at (3.347,-1.323) {1991};}
+  \tlin{7.052}{\node[yr,anchor=north] at (7.052,-1.323) {1996};}
+  \tlin{10.758}{\node[yr,anchor=north] at (10.758,-1.323) {2001};}
+  \tlin{14.464}{\node[yr,anchor=north] at (14.464,-1.323) {2006};}
+  \tlin{18.17}{\node[yr,anchor=north] at (18.17,-1.323) {2011};}
+  \tlin{21.875}{\node[yr,anchor=north] at (21.875,-1.323) {2016};}
+  \tlin{25.581}{\node[yr,anchor=north] at (25.581,-1.323) {2021};}
+  \tlin{29.287}{\node[yr,anchor=north] at (29.287,-1.323) {2026};}
   % events
-  \node[ev,anchor=south] at (0.499,1.458) {Born};
-  \node[ev,anchor=south] at (1.809,1.458) {First PC};
-  \node[ev,anchor=south] at (3.685,1.552) {A year in\\Australia};
-    \draw[lead] (3.685,1.552) -- (5.657,0.378);
-  \node[ev,anchor=south] at (5.008,2.484) {Bought first\\book on\\electronics};
-    \draw[lead] (5.008,2.484) -- (5.967,0.432);
-  \node[ev,anchor=south] at (6.129,2.011) {Army, HTV};
-    \draw[lead] (6.129,2.011) -- (7.412,0.716);
-  \node[ev,anchor=south] at (7.02,3.564) {Started NTNU};
-    \draw[lead] (7.02,3.564) -- (7.965,0.756);
-  \node[ev,anchor=south] at (8.343,2.632) {1. dan ITF\\Taekwon-do};
-    \draw[lead] (8.343,2.632) -- (8.95,0.756);
-  \node[ev,anchor=south] at (9.234,4.333) {Mom died};
-    \draw[lead] (9.234,4.333) -- (9.477,0.702);
-  \node[ev,anchor=south] at (10.179,2.943) {Met ex wife};
-    \draw[lead] (10.179,2.943) -- (9.761,0.756);
-  \node[ev,anchor=south] at (11.34,4.117) {Summer intern\\NTNU};
-    \draw[lead] (11.34,4.117) -- (11.219,1.067);
-  \node[ev,anchor=south] at (12.447,2.997) {First paper,\\Aruba};
-    \draw[lead] (11.961,2.997) -- (11.489,0.824);
-  \node[ev,anchor=south] at (12.42,2.173) {Master};
-    \draw[lead] (12.204,2.173) -- (11.974,0.513);
-  \node[ev,anchor=south] at (13.554,4.171) {First book\\chapter};
-    \draw[lead] (13.554,4.171) -- (12.488,0.202);
-  \node[ev,anchor=south] at (14.067,2.268) {Started Ph.D};
-    \draw[lead] (13.514,2.268) -- (12.973,0.135);
-  \node[ev,anchor=south] at (14.094,1.093) {Son\\born};
-    \draw[lead] (14.094,1.093) -- (14.162,0.446);
-  \node[ev,anchor=south] at (15.296,3.874) {University\\of\\Toronto};
-    \draw[lead] (15.296,3.874) -- (14.701,1.067);
-  \node[ev,anchor=south] at (15.349,1.242) {Got\\Married};
-    \draw[lead] (15.349,1.242) -- (15.822,0.729);
-  \node[ev,anchor=south] at (15.903,1.863) {Finished\\Ph.D};
-    \draw[lead] (15.903,1.863) -- (16.133,0.756);
-  \node[nordic,anchor=south] at (16.821,2.943) {Started\\Nordic};
-    \draw[nordiclead] (16.821,2.943) -- (16.186,0.756);
-  \node[ev,anchor=south] at (17.334,0.931) {Twins\\born};
-    \draw[lead] (17.334,0.931) -- (17.361,0.756);
-  \node[nordic,anchor=south] at (18.75,2.2) {Senior R \& D\\engineer};
-    \draw[nordiclead] (18.6,2.2) -- (18.131,1.067);
-  \node[ev,anchor=south] at (19.264,1.458) {Post.Doc\\Start};
-    \draw[lead] (19.264,1.458) -- (20.25,0.702);
-  \node[ev,anchor=south] at (19.777,3.308) {2. dan ITF\\Taekwon-do};
-    \draw[lead] (19.777,3.308) -- (20.79,0.756);
-  \node[nordic,anchor=south] at (21.101,1.863) {Wireless\\group\\manager};
-    \draw[nordiclead] (21.101,1.863) -- (21.317,0.756);
-  \node[ev,anchor=south] at (22.707,2.484) {Compiled\\ADC,\\ESSCIRC16};
-    \draw[lead] (22.707,2.484) -- (22.235,0.756);
-  \node[ev,anchor=south] at (23.355,1.674) {Post.Doc\\End};
-    \draw[lead] (23.355,1.674) -- (23.044,0.756);
-  \node[ev,anchor=south] at (24.098,1.337) {Divorced};
-    \draw[lead] (24.098,1.337) -- (23.854,0.621);
-  \node[ev,anchor=south] at (24.813,1.067) {6a};
-  \node[ev,anchor=south] at (25.488,0.986) {Rando};
-    \draw[lead] (25.043,0.986) -- (24.962,0.689);
-  \node[ev,anchor=south] at (26.825,1.188) {Associate\\Professor};
-    \draw[lead] (26.177,1.188) -- (25.744,0.283);
-  \node[nordic,anchor=south] at (28.607,1.242) {IC Scientist};
-    \draw[nordiclead] (27.837,1.242) -- (27.405,0.338);
+  \tlin{0.499}{\node[ev,anchor=south] at (0.499,1.458) {Born};}
+  \tlin{1.809}{\node[ev,anchor=south] at (1.809,1.458) {First PC};}
+  \tlin{3.685}{\node[ev,anchor=south] at (3.685,1.552) {A year in\\Australia}; \draw[lead] (3.685,1.552) -- (5.657,0.378);}
+  \tlin{5.008}{\node[ev,anchor=south] at (5.008,2.544) {Bought first\\book on\\electronics}; \draw[lead] (5.008,2.544) -- (5.967,0.432);}
+  \tlin{6.129}{\node[ev,anchor=south] at (6.129,2.011) {Army, HTV}; \draw[lead] (6.129,2.011) -- (7.412,0.716);}
+  \tlin{7.02}{\node[ev,anchor=south] at (7.02,3.864) {Started NTNU}; \draw[lead] (7.02,3.864) -- (7.965,0.756);}
+  \tlin{8.343}{\node[ev,anchor=south] at (8.343,2.632) {1. dan ITF\\Taekwon-do}; \draw[lead] (8.343,2.632) -- (8.95,0.756);}
+  \tlin{9.234}{\node[ev,anchor=south] at (9.234,4.333) {Mom died}; \draw[lead] (9.234,4.333) -- (9.477,0.702);}
+  \tlin{10.179}{\node[ev,anchor=south] at (10.179,3.543) {Met ex wife}; \draw[lead] (10.179,3.543) -- (9.761,0.756);}
+  \tlin{11.34}{\node[ev,anchor=south] at (11.34,4.117) {Summer intern\\NTNU}; \draw[lead] (11.34,4.117) -- (11.219,1.067);}
+  \tlin{12.447}{\node[ev,anchor=south] at (12.447,2.997) {First paper,\\Aruba}; \draw[lead] (11.961,2.997) -- (11.489,0.824);}
+  \tlin{12.42}{\node[ev,anchor=south] at (12.42,2.173) {Master}; \draw[lead] (12.204,2.173) -- (11.974,0.513);}
+  \tlin{13.554}{\node[ev,anchor=south] at (13.554,4.171) {First book\\chapter}; \draw[lead] (13.554,4.171) -- (12.488,0.202);}
+  \tlin{14.067}{\node[ev,anchor=south] at (14.067,2.268) {Started Ph.D}; \draw[lead] (13.514,2.268) -- (12.973,0.135);}
+  \tlin{14.094}{\node[ev,anchor=south] at (14.094,1.093) {Son\\born}; \draw[lead] (14.094,1.093) -- (14.162,0.446);}
+  \tlin{15.296}{\node[ev,anchor=south] at (15.296,3.874) {University\\of\\Toronto}; \draw[lead] (15.296,3.874) -- (14.701,1.067);}
+  \tlin{15.349}{\node[ev,anchor=south] at (15.349,1.242) {Got\\Married}; \draw[lead] (15.349,1.242) -- (15.822,0.729);}
+  \tlin{15.903}{\node[ev,anchor=south] at (15.903,2.163) {Finished\\Ph.D}; \draw[lead] (15.903,2.163) -- (16.133,0.756);}
+  \tlin{16.821}{\node[nordic,anchor=south] at (16.821,3.063) {Started\\Nordic}; \draw[nordiclead] (16.821,3.063) -- (16.186,0.756);}
+  \tlin{17.334}{\node[ev,anchor=south] at (17.334,0.931) {Twins\\born}; \draw[lead] (17.334,0.931) -- (17.361,0.756);}
+  \tlin{18.75}{\node[nordic,anchor=south] at (18.75,2.380) {Senior R \& D\\engineer}; \draw[nordiclead] (18.6,2.380) -- (18.131,1.067);}
+  \tlin{19.264}{\node[ev,anchor=south] at (19.264,1.458) {Post.Doc\\Start}; \draw[lead] (19.264,1.458) -- (20.25,0.702);}
+  \tlin{19.777}{\node[ev,anchor=south] at (19.777,3.368) {2. dan ITF\\Taekwon-do}; \draw[lead] (19.777,3.368) -- (20.79,0.756);}
+  \tlin{21.101}{\node[nordic,anchor=south] at (21.101,1.863) {Wireless\\group\\manager}; \draw[nordiclead] (21.101,1.863) -- (21.317,0.756);}
+  \tlin{22.707}{\node[ev,anchor=south] at (22.707,3.264) {Compiled\\ADC,\\ESSCIRC16}; \draw[lead] (22.707,3.264) -- (22.235,0.756);}
+  \tlin{23.355}{\node[ev,anchor=south] at (23.355,1.974) {Post.Doc\\End}; \draw[lead] (23.355,1.974) -- (23.044,0.756);}
+  \tlin{24.098}{\node[ev,anchor=south] at (24.098,1.457) {Divorced}; \draw[lead] (24.098,1.457) -- (23.854,0.621);}
+  %- one event, not two: the words were split to dodge a neighbour, and
+  %- the gap between them read as two labels sharing one leader
+  \tlin{25.100}{\node[ev,anchor=south] at (25.100,0.986) {6a Rando}; \draw[lead] (25.043,0.986) -- (24.962,0.689);}
+  \tlin{26.825}{\node[ev,anchor=south] at (26.825,1.488) {Associate\\Professor}; \draw[lead] (26.177,1.488) -- (25.744,0.283);}
+  \tlin{28.607}{\node[nordic,anchor=south] at (28.607,1.242) {IC Scientist}; \draw[nordiclead] (27.837,1.242) -- (27.405,0.338);}
   %- March 2026: 25.581 + (2026.17-2021)*0.7412 = 29.413
-  \node[nordic,anchor=south] at (29.55,2.2) {Principal Radio\\Architect};
-    \draw[nordiclead] (29.55,2.2) -- (29.413,0.8);
-  \node[nordic,anchor=north] at (18.373,-2.025) {ADC,\\nRF51};
-    \draw[nordiclead] (18.468,-2.025) -- (18.657,-0.729);
-  \node[nordic,anchor=north] at (19.359,-1.404) {RX\_ADC,\\nRF52};
-    \draw[nordiclead] (19.359,-1.404) -- (19.251,-0.864);
-  \node[nordic,anchor=north] at (20.142,-2.376) {DC/DC,\\nRF52};
-    \draw[nordiclead] (20.317,-2.376) -- (19.926,-0.729);
-  \node[nordic,anchor=north] at (21.262,-1.674) {SAADC,\\nRF52};
-    \draw[nordiclead] (20.898,-1.674) -- (20.372,-0.851);
-  \node[nordic,anchor=north] at (22.707,-1.958) {DC/DC\\nRF91};
-    \draw[nordiclead] (22.518,-1.958) -- (22.221,-0.594);
-  \node[nordic,anchor=north] at (23.517,-1.188) {Compiled\\ADC, JSSC};
-    \draw[nordiclead] (23.395,-1.188) -- (22.91,0.486);
-  \node[nordic,anchor=north] at (25.204,-2.052) {Bluetooth\\SIG CSWG};
-    \draw[nordiclead] (25.029,-2.052) -- (24.529,-0.594);
-
+  \tlin{29.55}{\node[nordic,anchor=south] at (29.55,2.2) {Principal Radio\\Architect}; \draw[nordiclead] (29.55,2.2) -- (29.413,0.8);}
+  \tlin{18.373}{\node[nordic,anchor=north] at (18.373,-2.865) {ADC,\\nRF51}; \draw[nordiclead] (18.468,-2.865) -- (18.657,-0.729);}
+  \tlin{19.359}{\node[nordic,anchor=north] at (19.359,-1.944) {RX\_ADC,\\nRF52}; \draw[nordiclead] (19.359,-1.944) -- (19.251,-0.864);}
+  \tlin{20.142}{\node[nordic,anchor=north] at (20.142,-2.916) {DC/DC,\\nRF52}; \draw[nordiclead] (20.317,-2.916) -- (19.926,-0.729);}
+  \tlin{21.262}{\node[nordic,anchor=north] at (21.262,-1.974) {SAADC,\\nRF52}; \draw[nordiclead] (20.898,-1.974) -- (20.372,-0.851);}
+  \tlin{22.707}{\node[nordic,anchor=north] at (22.707,-2.138) {DC/DC\\nRF91}; \draw[nordiclead] (22.518,-2.138) -- (22.221,-0.594);}
+  \tlin{23.517}{\node[nordic,anchor=north] at (23.517,-1.188) {Compiled\\ADC, JSSC}; \draw[nordiclead] (23.395,-1.188) -- (22.91,0.486);}
+  \tlin{25.204}{\node[nordic,anchor=north] at (25.204,-2.952) {Bluetooth\\SIG CSWG}; \draw[nordiclead] (25.029,-2.952) -- (24.529,-0.594);}
   %- the student tapeouts, black because they are NTNU and not Nordic
   %- y=-1.9 keeps both clear of the year labels, which sit at y=-1.323
   %- and reach about -1.75; two lines from here stay inside the -3.1 clip
-  \node[ev,anchor=north] at (27.2,-1.9) {Student designs\\on ttsky25a};
-    \draw[lead] (27.6,-1.9) -- (28.546,-0.594);
+  \tlin{27.2}{\node[ev,anchor=north] at (27.2,-1.960) {Student designs\\on ttsky25a}; \draw[lead] (27.6,-1.960) -- (28.546,-0.594);}
   %- centred under the 2026 tick, so it needs no leader; drawing one
   %- would have to cross the year label to reach the axis
-  \node[ev,anchor=north] at (29.287,-2.95) {LELO tapeout\\4 group designs};
+  \tlin{29.287}{\node[ev,anchor=north] at (29.287,-2.95) {LELO tapeout\\4 group designs};}
 }
 
+\newcommand{\timelinebody}{\timelineaxis\timelinelabels}
