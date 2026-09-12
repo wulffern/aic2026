@@ -80,6 +80,64 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
+// Full screen reading: hide the sidebar, let the text use the window,
+// and ask the browser for real fullscreen on top of it. A browser that
+// refuses fullscreen still gets the wide page, which is the half that
+// matters.
+//
+// The button owns the state, and nothing else changes it. Following a
+// link exits fullscreen - the browser does that on every navigation -
+// and an earlier version listened for fullscreenchange to put the
+// sidebar back, which meant clicking through to the next chapter
+// dropped you out of wide mode and wrote the preference away with it.
+// So fullscreen is a nicety layered on top; losing it leaves the wide
+// page alone.
+document.addEventListener("DOMContentLoaded", function () {
+  var btn = document.getElementById("wide-toggle");
+  if (!btn) { return; }
+  var root = document.documentElement;
+
+  function isWide() {
+    return root.getAttribute("data-wide") === "on";
+  }
+
+  function apply(wide) {
+    if (wide) {
+      root.setAttribute("data-wide", "on");
+    } else {
+      root.removeAttribute("data-wide");
+    }
+    btn.setAttribute("aria-pressed", wide ? "true" : "false");
+    localStorage.setItem("aic-wide", wide ? "on" : "off");
+  }
+
+  function toggle() {
+    var wide = !isWide();
+    apply(wide);
+    // Fullscreen needs a user gesture, so it is only ever requested
+    // from here - never when restoring the stored choice on load.
+    if (wide && !document.fullscreenElement && root.requestFullscreen) {
+      root.requestFullscreen().catch(function () { /* wide mode is enough */ });
+    } else if (!wide && document.fullscreenElement && document.exitFullscreen) {
+      document.exitFullscreen().catch(function () { });
+    }
+  }
+
+  apply(isWide());
+  btn.addEventListener("click", toggle);
+
+  // f for fullscreen, the same key the HTML slide decks use. Ignored
+  // while typing, so it never eats a letter meant for the search box.
+  document.addEventListener("keydown", function (e) {
+    if (e.key !== "f" || e.metaKey || e.ctrlKey || e.altKey) { return; }
+    var el = document.activeElement;
+    if (el && (el.tagName === "INPUT" || el.tagName === "TEXTAREA" ||
+               el.isContentEditable)) { return; }
+    e.preventDefault();
+    toggle();
+  });
+});
+
 // Select a word in the text and a small pill offers to search the site
 // for it, feeding the theme's own lunr search box. Desktop only: below
 // the md breakpoint the search input is hidden and native selection

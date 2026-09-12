@@ -29,9 +29,9 @@
   }
 }
 
-// Theme toggle button, rendered by _includes/header_custom.html between
-// the search bar and the aux links.
-.theme-toggle {
+// Buttons rendered by _includes/header_custom.html between the search
+// bar and the aux links.
+.header-btn {
   align-self: center;
   flex-shrink: 0;
   padding: $sp-2;
@@ -47,6 +47,31 @@
 html[data-theme="dark"] {
   .theme-toggle .theme-toggle-dark { display: none; }
   .theme-toggle .theme-toggle-light { display: inline; }
+}
+
+// Full screen reading, toggled by #wide-toggle in _includes/js/custom.js.
+// The sidebar goes and the content column stops being clamped to
+// $content-width, which is what a wide table or schematic needs. Below
+// the md breakpoint the theme already hides the sidebar behind its own
+// nav button, so there is nothing to gain and nothing to do.
+@include mq(md) {
+  html[data-wide="on"] {
+    .side-bar {
+      display: none;
+    }
+
+    .main {
+      max-width: none;
+      margin-left: 0;
+    }
+  }
+}
+
+// Show the icon for what a click would do next.
+.wide-toggle-out { display: none; }
+html[data-wide="on"] {
+  .wide-toggle-in { display: none; }
+  .wide-toggle-out { display: inline; }
 }
 
 // Floating "search this word" pill shown next to a text selection,

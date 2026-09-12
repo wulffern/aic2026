@@ -1,7 +1,16 @@
 <script>
-  // Pick the color scheme before first paint: a stored choice wins,
-  // otherwise the OS preference. Runs after the stylesheet link above
-  // exists in the DOM, so there is no flash of the wrong theme.
+  /*
+    Block comments, not //, anywhere in an inline script on this site.
+    just-the-docs renders every page through its vendor/compress layout,
+    which strips the newlines - so a // comment swallows the rest of the
+    file and the script dies with a syntax error. That is what had been
+    happening here: the scheme below was never applied on the built
+    site, and every page loaded light and then flipped.
+
+    Pick the color scheme before first paint: a stored choice wins,
+    otherwise the OS preference. Runs after the stylesheet link above
+    exists in the DOM, so there is no flash of the wrong theme.
+  */
   (function () {
     var theme = localStorage.getItem("aic-theme") ||
       (window.matchMedia("(prefers-color-scheme: dark)").matches
@@ -15,6 +24,14 @@
       }
     }
     document.documentElement.setAttribute("data-theme", theme);
+
+    /*
+      Same reason, for full screen reading: set it before first paint or
+      the sidebar is drawn and then yanked away on every page load.
+    */
+    if (localStorage.getItem("aic-wide") === "on") {
+      document.documentElement.setAttribute("data-wide", "on");
+    }
   })();
 </script>
 <script>
