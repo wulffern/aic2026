@@ -84,19 +84,45 @@ def write_page(path, title, nav_order, permalink, body, extra=None):
 # forty entries made e.g. the ngspice pages a long scroll away. Order:
 # (title, slug, permalink, lecture id regex); the last entry with regex
 # None catches everything unmatched.
-SECTIONS = [
-    ("Lectures", "lectures", "/lectures/", r"^l(0[1-9]|1\d|x)_"),
-    ("Refreshers", "refreshers", "/refreshers/", r"^lr"),
-    ("Background", "background", "/background/", r"^l00_"),
-    ("Extras", "extras", "/extras/", None),
-]
+#- Chapters sort after the top level pages, which take nav_order 0 to 6.
+CHAPTER_NAV_BASE = 10
+
+BASEURL = "/aic2026"
+
+#- The sidebar used to group the chapters into these parts, each with a
+#  landing page at its own URL. The grouping is gone - the chapters are
+#  listed in book order now - but the URLs were live and may have been
+#  shared, so they stay as redirects rather than turning into 404s.
+GONE_SECTIONS = ["lectures", "refreshers", "background", "extras"]
+
+REDIRECT = """---
+permalink: {perm}
+nav_exclude: true
+search_exclude: true
+sitemap: false
+---
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="refresh" content="0; url={to}">
+<link rel="canonical" href="{to}">
+<title>Moved</title>
+</head>
+<body>
+<p>The chapters are no longer grouped into parts. They are all listed in
+the order of the book at <a href="{to}">the front page</a>.</p>
+</body>
+</html>
+"""
 
 
-def section_for(lid):
-    for title, _, _, pattern in SECTIONS:
-        if pattern is None or re.match(pattern, lid):
-            return title
-    return SECTIONS[-1][0]
+def write_redirects():
+    """Keep the retired section URLs alive, pointing at the front page."""
+    for slug in GONE_SECTIONS:
+        with open(os.path.join(CHAPTERS, f"00_gone_{slug}.html"), "w") as fo:
+            fo.write(REDIRECT.format(perm=f"/{slug}/", to=BASEURL + "/"))
+    print(f"wrote {len(GONE_SECTIONS)} redirects for the retired part URLs")
 
 
 def make_pages():
@@ -153,33 +179,23 @@ def main():
         print("extra posts appended: " + " ".join(extras))
     order += extras
 
-    # the section landing pages: just-the-docs lists the children on
-    # them and folds each section in the sidebar. They sort after the
-    # top level pages (nav_order 0-6).
-    members = {section_for(lid) for lid in order}
-    for k, (stitle, slug, perm, _) in enumerate(SECTIONS):
-        if stitle not in members:
-            continue
-        write_page(os.path.join(CHAPTERS, f"{(k + 1) * 10}_{slug}.md"),
-                   stitle, (k + 1) * 10, perm,
-                   "The chapters in this part:\n",
-                   extra=["has_children: true"])
+    write_redirects()
 
-    # one scrollable page per chapter, nested under its section - the
-    # sidebar heading dropdown comes from _includes/js/custom.js
-    within = {}
+    # One scrollable page per chapter, listed flat in the order of the
+    # Makefile FILES list, which is the order of the book. They were
+    # grouped into Lectures, Refreshers and Background for a while, which
+    # suits browsing for a topic but hides where a chapter sits in the
+    # book, and the book order is the one that matters here. The sidebar
+    # heading dropdown comes from _includes/js/custom.js.
     for n, lid in enumerate(order, start=1):
         text = posts[lid]
         head, body = front_matter(text)
         title = re.search(r"title:\s*(.*)", head).group(1).strip()
         permalink = re.search(r"permalink:\s*(.*)", head).group(1).strip()
-        stitle = section_for(lid)
-        within[stitle] = within.get(stitle, 0) + 1
         write_page(os.path.join(CHAPTERS, f"{n:02d}_{lid}.md"),
-                   title, within[stitle], permalink, body,
-                   extra=[f"parent: {stitle}"])
+                   title, CHAPTER_NAV_BASE + n, permalink, body)
     print(f"wrote {len(order)} chapters to docs-book/chapters/ "
-          f"in {len(members)} sections")
+          "in book order")
 
     make_slides_page(order, posts)
 
