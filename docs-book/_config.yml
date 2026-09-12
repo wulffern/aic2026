@@ -44,7 +44,8 @@ callouts:
     title: Note
     color: blue
 
-# the chapters live in a subdirectory
-include: ["chapters"]
+# the chapters live in a subdirectory; txt/ is the text edition built by
+# py/mkllms.py, which has no front matter and is copied through as is
+include: ["chapters", "txt"]
 
 footer_content: "Carsten Wulff 2026 &mdash; <a href=\"https://creativecommons.org/licenses/by/4.0/\">CC BY 4.0</a>"

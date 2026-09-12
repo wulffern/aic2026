@@ -170,6 +170,15 @@ media/*/*_tikz.svg
 # AUCTeX parse cache next to the pdf/ sources
 pdf/.auctex*
 
+# Text edition, assembled by py/mkllms.py from .build/*.llm.md. The
+# descriptions it pulls in live in tikz/desc/ and are tracked; these are
+# the generated output and are not.
+docs-book/llms.md
+docs-book/llms.txt
+docs-book/llms-full.md
+docs-book/llms-full.txt
+docs-book/txt/
+
 # Book-site prototype: generated chapters and shared assets
 docs-book/chapters/
 docs-book/assets/

@@ -8,9 +8,12 @@ on:
     paths:
       - 'lectures/**'
       - 'docs/**'
+      - 'docs-book/**'
       - 'media/**'
       - 'pdf/**'
       - 'tikz/**.tex'
+      # Figure descriptions for the text edition, read by py/figtext.py
+      - 'tikz/desc/**'
       - 'py/**'
       - 'ex/**'
       - 'examples/**'
@@ -300,6 +303,13 @@ jobs:
       - name: Generate book site sources
         if: env.SITE_FLAVOR == 'book'
         run: python3 py/mkbooksite.py
+
+      # The text edition: llms.txt, llms-full.txt and txt/<id>.md, built
+      # from the .build/*.llm.md that came over in prepared-sources. None
+      # has front matter, so Jekyll copies all of it through untouched.
+      - name: Generate text edition
+        if: env.SITE_FLAVOR == 'book'
+        run: python3 py/mkllms.py
 
       - name: Setup Ruby
         if: env.SITE_FLAVOR == 'book'

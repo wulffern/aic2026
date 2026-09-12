@@ -1,0 +1,179 @@
+# CLAUDE.md
+
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+
+## Overview
+
+This is **aic2026** — course materials for *TFE4188 Advanced Integrated Circuits
+2026* by Carsten Wulff. The repo generates:
+
+- A **Jekyll website** deployed to GitHub Pages at `wulffern.github.io/aic2026`
+  — the live site is the just-the-docs **book flavor** in `docs-book/`,
+  assembled by `py/mkbooksite.py` from the posts in `docs/` (`SITE_FLAVOR: book`
+  in `.github/workflows/matrix_build.yaml`; the legacy minima site in `docs/` is
+  rollback only)
+  
+- **Standalone PDFs** (one per lecture) and a combined **PDF book**
+  (`.build/aic.pdf`) and **ebook** (`.build/aic.epub`)
+  
+
+Source lectures are Markdown files in `lectures/` that are processed by
+`py/lecture.py` into both Jekyll posts and LaTeX.
+
+## Writing Guidance
+
+Follow the style guidance from `lectures/lp_project_report.md`.
+
+Apply the principles from *On Writing Well*:
+- Shorter is better.
+- One paragraph, one thought.
+- Prefer direct prose over filler.
+- Avoid unnecessary qualifier words such as `very`, `extremely`, `easily`,
+  `simply`, `really`, `a lot`, and similar softeners unless they add technical
+  meaning.
+- Use transitions deliberately when they improve flow.
+
+When adding figure prose, include explicit figure text in the style used in
+`lectures/l03_refbias.md`, for example `<sub>Figure N: ... </sub>`.
+
+For any text significantly touched, beyond spellcheck or minor
+editorial cleanup, add the attribution line:
+
+`Pictures by Carsten, Written by model, Approved by Carsten`
+
+## Key Commands
+
+### Full build
+```sh
+make all   # version + posts-parallel + texfiles-parallel + standalone-parallel + latex-nobuild + book-nobuild
+```
+
+### Partial builds (most common)
+```sh
+make posts-parallel       # Convert lectures/*.md → docs/_posts/*.markdown (parallel, 4 workers)
+make texfiles-parallel    # Convert lectures/*.md → .build/*.tex (parallel, 4 workers)
+make standalone-parallel  # Compile individual PDFs in .build/ (parallel, 4 workers)
+make latex-nobuild        # Compile combined PDF (.build/aic.pdf) without regenerating .tex files
+make book-nobuild         # Compile EPUB without regenerating .tex files
+```
+
+### Single lecture processing
+```sh
+# Jekyll post
+python3 py/lecture.py post lectures/l01_intro.md
+
+# LaTeX file
+python3 py/lecture.py latex lectures/l01_intro.md
+
+# With --no-append flag (skips writing to shared chapters.tex/downloads.md, used in parallel builds)
+python3 py/lecture.py latex --no-append lectures/l01_intro.md
+```
+
+### Jekyll development server
+```sh
+make jstart   # Runs Jekyll in Docker on port 3002 (http://localhost:3002)
+```
+
+### Text edition (for AI readers)
+```sh
+make llms          # .build/*.llm.md, then docs-book/llms{,-full}.{md,txt} + txt/
+make texts-parallel  # just the per-lecture Markdown, 4 workers
+```
+The site, PDF and EPUB are built for people. `py/mkllms.py` builds the
+same content as Markdown a language model can fetch: `llms.md` indexes
+every chapter, `llms-full.md` is the whole book with a line-numbered
+table of contents, and `txt/<id>.md` is one chapter. Each of the first
+two is also written as `.txt`, because the llms.txt convention puts that
+name at the site root. Everything is wrapped to 80 columns and its
+tables aligned by `py/mdwrap.py`.
+
+Figures become text, not pictures: `py/figtext.py` looks up
+`tikz/desc/<name>.md`, falling back to the figure's header comment in
+`tikz/<name>.tex`. `make check` reports how many are still undescribed.
+See `tikz/STYLE.md` for how to write one.
+
+### Slide decks
+```sh
+make slides              # Render every lecture to docs/assets/html/<name>.html
+make slides-parallel     # Same, 4 workers
+make slides-one FNAME=l05_sc
+```
+The lectures in `lectures/` are Deckset source. `py/slides.py` renders the same
+files to standalone HTML decks: `pan_doc`/`pan_latex` bodies are dropped, the
+`pan_skip` title slides are kept, and the Deckset directives (`---`, `#[fit]`,
+`![left fit]`, `[.column]`, `[.background-color:]`) become CSS. Open the HTML
+in a browser and scroll, swipe, or press arrows/space/Page Down; navigation is
+native CSS scroll-snap, so it works with JavaScript off. `f` is fullscreen and
+Cmd-P prints to PDF. A lecture written as prose rather than a deck (fewer than five
+`---` breaks) is split on its headings instead, so it still presents. Maths is typeset by a vendored MathJax (`slides/vendor/`), not a
+CDN, so a deck works with no network. Needs `markdown` (in
+`requirements-ci.txt`) and `pdftocairo` from poppler to turn PDF figures into
+SVG for the browser.
+
+### TikZ figures
+```sh
+make tikz   # Builds tikz/*.tex files → media/*_tikz.{pdf,svg}
+```
+The shared figure libraries (`tikz/ckt_lib.tex`, `tikz/fig_header.tex`,
+`tikz/*_lib.tex`) are symlinks into the `cictikz` git submodule — edit
+them via `cictikz/`, commit there, then bump the submodule. Clone with
+`--recursive` or run `git submodule update --init` first.
+
+### Data plots
+```sh
+make plots                  # regenerate every generated tikz/*.tex, then rebuild
+make plots-one FNAME=buck   # one script (accepts ex/buck.py too)
+make plots-data             # re-vendor simulation data into ex/data/
+```
+Figures that plot numbers are generated by scripts in `ex/` through
+`py/tikzplot.py`, which renders them with the same preamble as the
+schematics so the two match on a page. Any script in `ex/` importing
+`tikzplot` is registered automatically. The simulation data those
+scripts need is vendored into `ex/data/`, so they run anywhere; only
+`make plots-data` needs the aicex and dicex repositories. Generated
+`tikz/*.tex` are committed, so building the book runs none of this. See
+`tikz/STYLE.md` for how to write one.
+
+### Docker image
+```sh
+make ci           # Build Docker image wulffern/aic:2026_latest
+make cish         # Shell into the Docker image with repo mounted
+make tagpush      # Tag and push to Docker Hub
+```
+
+## Architecture
+
+### Lecture source format (`lectures/*.md`)
+Markdown with special front-matter and pandoc-style comment blocks:
+- `<!--pan_title: Title -->` — sets the lecture title
+- `<!--pan_skip: -->` — content skipped in web output (slide deck headers)
+- `<!--pan_doc: ... -->` — content included only in web/doc output (not slides)
+- `<!--pan_latex: ... -->` — LaTeX-only content
+
+Files prefixed `l` are main lectures; `lr` are reference/refresher lectures; `lx` are extra topics; `lp` are project-related; `g` are guest lectures; `s` are scratch decks — not part of the lecture series, not in the book, and not built at all. They stay in `lectures/` and in `EXCLUDED` so `make check` still sees them. A lecture file must either be in the Makefile `FILES` list or in the `EXCLUDED` set in `py/check.py`, or `make check` fails.
+
+### Python processor (`py/lecture.py`)
+Two CLI commands via Click:
+- `post` → `Lecture` class: produces Jekyll markdown for `docs/_posts/`
+- `latex` → `Latex` class: produces `.tex` and `.build/*_chapter.inc` / `.build/*_download.inc` files
+
+Key classes: `Bibtex`, `Image`, `Lecture`, `Latex`.
+
+The `FILES` list in the root `Makefile` controls which lectures are processed and their order in the book.
+
+### PDF pipeline (`pdf/Makefile`, run inside `.build/`)
+- `pdf/` holds only tracked sources (~17 files: `aic.tex`, `aic.bib`, `Makefile`, templates). The whole build happens in `.build/`, which sits at the same depth so `../media`-style paths resolve identically; the `builddir` target symlinks the sources in, and nothing under `.build/` or generated into `media/` is ever committed
+- Individual lecture `.tex` files are compiled with `pdflatex` via `make standalone FNAME=<file>.tex`
+- The book (`aic.pdf`) is compiled with `kaobook` (auto-cloned from GitHub) using `TEXINPUTS=".:kaobook:"`
+- `.build/chapters.tex` is assembled from `*_chapter.inc` files; `docs/downloads.md` from `*_download.inc` files
+- `pdf/fix_svg.py` post-processes generated `.latex` files before compilation
+- TikZ figure output (`media/*_tikz.{pdf,svg}`) is likewise untracked; CI builds it with `make tikz-cached` (content-hash cache, `py/tikzcache.py`)
+
+### Jekyll site (`docs/`)
+- Uses `jekyll/jekyll:3.8` Docker image
+- Remote theme: `wulffern/minima`
+- Posts land in `docs/_posts/` as `YYYY-MM-DD-<title>.markdown`
+- Media assets copy to `docs/assets/media/`
+
+### Dependencies
+The build requires: `pandoc`, `pdflatex` + kaobook, `python3` with `click`, `svglib`, `numpy`, `pandas`, `matplotlib`. The Docker image (`docker/Dockerfile`) has all dependencies pre-installed.

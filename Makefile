@@ -10,7 +10,7 @@ ifneq ($(wildcard /pyenv/bin/.*),)
 	PYTHON=/pyenv/bin/python3
 endif
 
-.PHONY:  plots plots-one plots-data slides slides-one slides-parallel version tikz tikz-one tikz-check tikz-preview preview print-tikz figures prepare-docs standalone-one standalone-list book-pdf book-epub print-files examples check
+.PHONY:  plots plots-one plots-data slides slides-one slides-parallel version tikz tikz-one tikz-check tikz-preview preview print-tikz figures prepare-docs standalone-one standalone-list book-pdf book-epub print-files examples check texts texts-parallel llms
 
 #	lr0_logic \
 
@@ -86,7 +86,7 @@ builddir:
 	@mkdir -p ${BUILDDIR}
 	@for f in ${PDF_SOURCES}; do ln -sf "../pdf/$$f" "${BUILDDIR}/$$f"; done
 
-prepare-docs: clean-prepared version figures posts-parallel texfiles-parallel slides-parallel examples
+prepare-docs: clean-prepared version figures posts-parallel texfiles-parallel texts-parallel slides-parallel examples
 	cd ${BUILDDIR}; [ -d kaobook ] || git clone https://github.com/fmarotta/kaobook.git
 
 # ---------------------------------------------------------------------------
@@ -181,6 +181,29 @@ jstart:
 jbook:
 	${PYTHON} py/mkbooksite.py
 	docker run --rm --name aic_book --volume="$(shell pwd)/docs-book:/srv/jekyll" -w /srv/jekyll -e BUNDLE_PATH=vendor/bundle -p 3003:4000 -it ruby:3.3 sh -c "bundle install --quiet && bundle exec jekyll serve --watch --host 0.0.0.0"
+
+# ---------------------------------------------------------------------------
+# Text edition (see py/mkllms.py)
+#
+# The same content as the site and the book, as Markdown a language model
+# can read: docs-book/llms.txt indexes it, llms-full.txt holds all of it,
+# txt/<id>.md holds one chapter. Figure descriptions come from tikz/desc/
+# through py/figtext.py, so a description edit rebuilds the chapter.
+# ---------------------------------------------------------------------------
+
+TEXT_STAMPS = ${addprefix ${BUILDDIR}/,${addsuffix .llm,${FILES}}}
+
+${BUILDDIR}/%.llm: lectures/%.md py/lecture.py py/figtext.py | version
+	@mkdir -p ${BUILDDIR}
+	${PYTHON} py/lecture.py text lectures/$*.md
+	@touch $@
+
+texts: texts-parallel
+texts-parallel:
+	@${MAKE} --no-print-directory -j 4 ${TEXT_STAMPS}
+
+llms: texts-parallel
+	${PYTHON} py/mkllms.py
 
 TEX_STAMPS = ${addprefix ${BUILDDIR}/,${addsuffix .tex,tex_intro ${FILES}}}
 

@@ -23,6 +23,9 @@ import re
 import subprocess
 import sys
 
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import figtext  # noqa: E402
+
 #- Lectures that exist but are deliberately not built. Anything new in
 #  lectures/ that is neither here nor in FILES fails check 4, so a lecture
 #  cannot silently rot outside the build.
@@ -142,11 +145,42 @@ def check_posts():
             err(f"{path}: footnote [^{k}] referenced but never defined")
 
 
+def report_figtext(files):
+    """How much of the text edition still has no figure description.
+
+    Not an error. The descriptions in tikz/desc/ are written a figure at
+    a time, and a book with half of them written is more use to a machine
+    reader than no text edition at all. This just says how far along it
+    is, and which figures are next.
+    """
+    seen, described = [], []
+    for f in files:
+        path = f"lectures/{f}.md"
+        if not os.path.exists(path):
+            continue
+        for m in re.finditer(r"!\[[^\]]*\]\(([^)\s]+)", open(path).read()):
+            src = m.group(1)
+            k = figtext.key(src)
+            if k is None or k in seen:
+                continue
+            seen.append(k)
+            if figtext.description(src):
+                described.append(k)
+
+    missing = [k for k in seen if k not in described]
+    print(f"\nfigure descriptions: {len(described)}/{len(seen)} "
+          f"({len(missing)} to write, see tikz/desc/)")
+    if missing:
+        print("  next: " + ", ".join(missing[:8])
+              + (" ..." if len(missing) > 8 else ""))
+
+
 def main():
     files = files_list()
     check_lectures(files)
     check_coverage(files)
     check_posts()
+    report_figtext(files)
     if errors:
         print(f"\n{len(errors)} problem(s) found")
         return 1

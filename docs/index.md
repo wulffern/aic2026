@@ -23,4 +23,9 @@ IPs, like digital cells for analog design, transistors, and a 9-bit ADC can be f
 
 I've compiled all the lectures notes into a [book](https://analogicus.com/aic2026/assets/aic.pdf)
 
+The book is also published as plain text, for reading by AI:
+[llms.md](/aic2026/llms.md) lists every chapter, and
+[llms-full.md](/aic2026/llms-full.md) is all of it in one file, with the figures
+written out as descriptions.
+
 

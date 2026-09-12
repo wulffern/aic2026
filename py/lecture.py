@@ -9,6 +9,24 @@ import urllib.parse
 import hashlib
 import subprocess
 
+import figtext
+import mdwrap
+
+
+def _youtube(m):
+    """An embedded player, as the link it stands for.
+
+    The text edition cannot show a video, but the lecture recording is
+    content, not decoration, so the URL survives. The embed form is
+    turned back into the watch URL a reader would actually open, keeping
+    the start offset when the lecture points at one.
+    """
+    vid, start = m.group(1), m.group(2)
+    url = "https://www.youtube.com/watch?v=" + vid
+    if start:
+        url += "&t=" + start + "s"
+    return "Video: " + url
+
 aic_version = "aicXX"
 
 with open("version") as fi:
@@ -22,6 +40,10 @@ year = aic_version.replace("aic","")
 #  required two trailing spaces before ], so [.table: margin(8)] was published
 #  verbatim on the site and in the book.
 DECKSET_DIRECTIVE = r"\[\.[a-zA-Z-]+[^\]]*\]"
+
+#- Placeholder the text edition leaves where an image was, so the caption
+#  in the pan_doc block below it can be folded into the same figure block.
+FIGURE_MARK = "@@FIGURE:%s@@"
 
 class Bibtex(dict):
 
@@ -189,7 +211,10 @@ class Image():
             self.isUrl = True
 
 
-        if(not self.skip and ".pdf" in self.src and "latex" not in self.options):
+        #- The text edition never renders the figure, only names it, so it
+        #  must not pay for a pdftocairo run per image.
+        if(not self.skip and ".pdf" in self.src
+           and "latex" not in self.options and "text" not in self.options):
             #- I've changed to svg, hopefully better images
             svg = self.src.replace(".pdf",".svg")
             svg_created = os.path.exists(os.path.join(self.directory,svg))
@@ -264,6 +289,11 @@ class Image():
         if(self.skip):
             return f"> image {self.src} removed"
 
+        if("text" in self.options):
+            #- Resolved in Text.__str__, once the caption that follows the
+            #  image in the lecture is in the buffer too.
+            return FIGURE_MARK % self.orgsrc
+
         if("jekyll" in self.options):
             path = self.options["jekyll"] + "assets/media/" + self.filesrc
 
@@ -281,7 +311,12 @@ class Image():
         return self.src
 
 class Lecture():
-    
+
+    #- The web posts renumber [@key] into [^N] footnotes. The LaTeX and
+    #  text editions keep the key and resolve it later, pandoc --citeproc
+    #  for the book, a keyed bibliography for the text edition.
+    replace_cites = True
+
     def __init__(self,filename,options):
         self.filename = filename
         self.title = ""
@@ -300,7 +335,7 @@ class Lecture():
         self.bibtex = Bibtex("pdf/aic.bib")
 
         self._read()
-        if("Latex" not in str(self.__class__)):
+        if(self.replace_cites):
             self._replaceCites()
 
     def copyAssets(self, images_file="images.txt"):
@@ -566,6 +601,8 @@ output:
 
 class Latex(Lecture):
 
+    replace_cites = False
+
     def __init__(self,filename,options):
         self.filename = filename
         self.title = filename.replace(".md","")
@@ -610,7 +647,98 @@ class Latex(Lecture):
         return ss
 
 
-    
+class Text(Lecture):
+    """The lecture as plain Markdown, for the text edition read by machines.
+
+    Same pan_doc/pan_skip walk as the other two outputs. What differs is
+    what gets thrown away — anything that only means something to a
+    browser or a slide projector — and what figures turn into: a
+    delimited block carrying the caption and a written description
+    instead of a link to an image nobody can see.
+    """
+
+    replace_cites = False
+
+    #- An image is followed, in the lecture, by its own pan_doc block
+    #  holding <sub>Figure N: ...</sub>. By the time the buffer is joined
+    #  the wrapper is gone and the caption is a plain paragraph, so the
+    #  marker and the paragraph under it are one figure.
+    #  The caption may wrap, so it runs to the first blank line; "Figure
+    #  N:" with the colon is the form py/lint_lectures.py enforces, and
+    #  requiring it keeps prose that merely opens with "Figure 3 shows"
+    #  from being eaten as a caption.
+    FIGURE = re.compile(
+        r"@@FIGURE:(?P<src>[^@]+)@@[ \t]*\n+"
+        r"(?:(?P<cap>Figure[ \t]+\d+:[^\n]*(?:\n[ \t]*\S[^\n]*)*)\n)?")
+
+    def __init__(self,filename,options):
+        self.filename = filename
+        self.title = os.path.basename(filename).replace(".md","")
+        self.options = options
+        self.date = None
+        self.images = list()
+
+        self.filters = {
+            r"^\s*---\s*$" : "",
+            DECKSET_DIRECTIVE : "",
+            r"\#\s*\[\s*fit\s*\]" : "# ",
+            r"\#\#\s*\[\s*fit\s*\]" : "## ",
+            r"\*\*Q:\*\*" : "",
+            r"#(.*) Thanks!" : "",
+            #- An embedded lecture recording becomes a plain link; any
+            #  other player, and the markup around all of them, goes.
+            #  Tables of contents and Jekyll attribute lists are
+            #  navigation for a browser, and in a text file they are
+            #  angle brackets between two paragraphs of electronics.
+            r"<iframe[^>]*youtube\.com/embed/([^\"?]+)"
+            r"(?:[^\"]*?[?&](?:amp;)?start=(\d+))?[^>]*>" : _youtube,
+            r"<iframe[^>]*>.*?</iframe>" : "",
+            r"<iframe[^>]*>" : "",
+            r"</iframe>" : "",
+            r"^\* TOC\s*$" : "",
+            r"^\{:toc\s*\}\s*$" : "",
+            r"\{:\s*[^}]*\}" : "",
+            #- Commented-out slide content, mostly images the author
+            #  parked. The pan_ tags are handled by _readPan and must
+            #  survive this.
+            r"<!--(?!pan_).*?-->" : "",
+            #- The caption wrapper, dropped rather than translated: the
+            #  figure block below says it is a caption.
+            r"</?sub>" : "",
+            r"</?small>" : "",
+        }
+
+        self._read()
+
+    def _figure(self,m):
+        src = m.group("src").strip()
+        cap = (m.group("cap") or "").strip()
+        cap = re.sub(r"\s*\n\s*"," ",cap)
+
+        out = "[FIGURE " + figtext.figure_id(src) + "]\n"
+        if(cap):
+            out += "Caption: " + cap + "\n"
+        desc = figtext.description(src)
+        if(desc):
+            #- Indented by mdwrap, which knows it is inside a figure.
+            out += "Description: " + desc + "\n"
+        out += "[/FIGURE]\n"
+        return "\n" + out + "\n"
+
+    def __str__(self):
+
+        ss = "# " + self.title.strip() + "\n\n"
+        ss += "".join(self.buffer)
+
+        ss = self.FIGURE.sub(self._figure,ss)
+
+        #- Three or more blank lines happen wherever a slide separator and
+        #  a pan_doc wrapper were removed from the same gap.
+        ss = re.sub(r"\n{3,}","\n\n",ss)
+        ss = re.sub(r"[ \t]+\n","\n",ss)
+
+        return mdwrap.wrap(ss).strip() + "\n"
+
 
 @click.group()
 def cli():
@@ -650,6 +778,28 @@ def post(filename,root,date,images_file):
 
 
     
+
+
+@cli.command()
+@click.argument("filename")
+@click.option("--root",default=".build/",help="output root")
+def text(filename,root):
+    """Write the lecture as plain Markdown for the text edition."""
+    options = dict()
+    options["text"] = True
+    options["dir"] = os.path.dirname(filename)
+
+    os.makedirs(root, exist_ok=True)
+
+    #- Named by lecture id, not by pan_title: py/mkllms.py orders the book
+    #  by the Makefile FILES list, and that list holds ids.
+    basename = os.path.basename(filename).replace(".md","")
+
+    print(f"Info: {filename}")
+    t = Text(filename,options)
+
+    with open(os.path.join(root, basename + ".llm.md"),"w") as fo:
+        fo.write(str(t))
 
 
 @cli.command()

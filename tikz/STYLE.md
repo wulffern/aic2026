@@ -213,3 +213,30 @@ Every figure starts with a comment saying what it shows and why it is
 drawn the way it is. Reasons ("the sources cross, so both b0 devices
 would hang off one tail") are worth more than descriptions ("four
 transistors").
+
+The comment is not only for whoever edits the figure next. The text
+edition of the book (`make llms`, see `py/mkllms.py`) has no pictures,
+and `py/figtext.py` falls back to this comment for what to say about the
+figure. A figure whose comment is missing, or is a note about
+coordinates, reaches that edition as a caption and nothing else.
+
+## Figure descriptions
+
+`tikz/desc/<name>.md` holds a written description of what a figure
+shows, and overrides the header comment in the text edition. The name
+matches the figure: `tikz/l3_vsrc.tex` is described by
+`tikz/desc/l3_vsrc.md`, and a figure in a subdirectory keeps it
+(`tikz/l13/pills.tex`, `tikz/desc/l13/pills.md`). Descriptions are keyed
+on the figure rather than on the lecture, so a figure used in three
+chapters is described once.
+
+Write the topology, not the picture. "NMOS input pair M1/M2 on a tail
+source M5, PMOS mirror load M3/M4 with M3 diode-connected, output at the
+M2/M4 drain" tells a reader what the circuit is; "five transistors and
+two supply rails" does not. Name devices as the figure names them, say
+which nodes connect, and say which way signals and currents go. For a
+plot, say what is on each axis, over what range, and which curves are
+on it.
+
+`make check` reports how many figures still have no description and
+names the next few.
