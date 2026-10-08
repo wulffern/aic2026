@@ -8,6 +8,9 @@ layout: home
 I write all the lectures in markdown, and you can see the source at
 [aic2026](https://github.com/wulffern/aic2026)
 
+There is a new version at [source aic2027](https://github.com/wulffern/aic2027)
+and [aic2027](https://analogicus.com/aic2027)
+
 For the slides, I use [deckset](https://www.deckset.com) to play the slideshow.
 
 I use a python script to convert the markdown slides into jekyll posts.
