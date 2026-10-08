@@ -1,0 +1,62 @@
+\input{tikz/fig_header.tex}
+
+% The configuration coordinate diagram of a trap: why capture is
+% thermally activated.
+%
+% The horizontal axis is a lattice coordinate Q, the length of the
+% bonds around the defect. The blue parabola is the total energy with
+% the electron in the channel and the trap empty; the red one with
+% the electron in the trap, where the atoms have moved to make room
+% for it. Straight up at fixed Q costs energy the electron does not
+% have. It has to wait until a thermal fluctuation of the lattice
+% reaches the crossing, where the two states have the same energy and
+% the hop is free. That wait is exp(E_B/kT): an Arrhenius law, which
+% is what the GR06 trap measures (226 meV).
+%
+% Parabolas: A = 0.55 (Q-1.5)^2 + 0.5, B = 0.55 (Q-4.3)^2 + 0.2,
+% crossing at Q = 2.80, E = 1.43.
+
+\begin{tikzpicture}[thick]
+
+  % axes
+  \draw[gray!60, ->] (-1.0,-0.2) -- (7.4,-0.2);
+  \draw[gray!60, ->] (-1.0,-0.2) -- (-1.0,5.0);
+  \node[gray!50!black, anchor=north, scale=0.85] at (3.0,-0.3)
+    {lattice coordinate $Q$ (bond length near the trap)};
+  \node[gray!50!black, anchor=south, rotate=90, scale=0.85] at (-1.05,2.4) {total energy};
+
+  % electron in the channel, trap empty
+  \draw[blue, very thick] plot[domain=-0.3:4.2, samples=60] (\x, {0.55*(\x-1.5)^2 + 0.5});
+  \node[blue, anchor=south, scale=0.85, align=center] at (-0.1,4.25)
+    {electron in the channel,\\trap empty};
+
+  % electron in the trap, lattice relaxed
+  \draw[red, very thick] plot[domain=1.45:6.65, samples=60] (\x, {0.55*(\x-4.3)^2 + 0.2});
+  \node[red, anchor=south, scale=0.85, align=center] at (6.4,3.35)
+    {electron in the trap,\\atoms moved};
+
+  % minima and the crossing
+  \fill[blue] (1.5,0.5) circle (0.075);
+  \fill[red] (4.3,0.2) circle (0.075);
+  \fill[black] (2.80,1.43) circle (0.09);
+
+  % the barrier, measured off to the left
+  \draw[gray!60, thin, dashed] (1.5,0.5) -- (-0.15,0.5);
+  \draw[gray!60, thin, dashed] (2.80,1.43) -- (-0.15,1.43);
+  \draw[<->] (0.0,0.5) -- (0.0,1.43);
+  \node[anchor=east, scale=0.9] at (-0.02,0.96) {$E_B$};
+
+  % straight up at fixed Q
+  \draw[gray!70, ->, dashed] (1.5,0.6) -- (1.5,4.45);
+  \node[gray!50!black, anchor=east, scale=0.8, align=right] at (1.42,3.1)
+    {straight up\\at fixed $Q$:\\costs energy};
+
+  % capture over the crossing
+  \draw[armygreen, very thick, ->] (1.95,0.95) .. controls (2.5,2.0) and (3.1,2.0) .. (3.6,0.8);
+  \draw[armygreen!50, thin] (3.3,1.72) -- (6.9,1.72);
+  \node[armygreen!70!black, anchor=west, scale=0.85, align=left] at (6.9,1.72)
+    {capture: wait for the\\lattice to reach\\the crossing};
+  \node[anchor=west, scale=0.95] at (5.3,0.45) {$\tau_c \propto e^{E_B/kT}$};
+
+\end{tikzpicture}
+\end{document}

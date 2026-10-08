@@ -369,6 +369,143 @@ def fetch_jnwtt():
                 w.writerow([f"{t:.6g}", f"{a:.6g}", f"{b2:.6g}"])
         print(f"  jnwtt_dual.csv ({len(d['series']['t_min'])} readings)")
         n += 1
+    n += fetch_jnwtt_trap(src)
+    return n
+
+
+def _two_state(x, enter, leave):
+    """Label each sample 0 or 1 with hysteresis: enter state 1 when x
+    crosses `enter`, leave it when x crosses back past `leave`. Two
+    thresholds keep the white noise from chattering the label."""
+    import numpy as np
+
+    up = enter > leave
+    st = np.zeros(x.size, dtype=int)
+    cur = 0
+    for i, v in enumerate(x):
+        if cur == 0 and ((v > enter) if up else (v < enter)):
+            cur = 1
+        elif cur == 1 and ((v < leave) if up else (v > leave)):
+            cur = 0
+        st[i] = cur
+    return st
+
+
+def _dwells(st, dt):
+    """Run lengths of a 0/1 label, in seconds. The first and last runs
+    are cut by the record and are dropped."""
+    import numpy as np
+
+    edges = np.flatnonzero(np.diff(st)) + 1
+    bounds = np.concatenate(([0], edges, [st.size]))
+    runs = [(st[a], (b - a) * dt) for a, b in zip(bounds[:-1], bounds[1:])]
+    return runs[1:-1]
+
+
+def fetch_jnwtt_trap(src):
+    """Is the GR06 telegraph signal one trap, or the supply?
+
+    GR06 compares its ramp against VDD/3 from a resistive divider, so a
+    supply step would look like a trap. GR07 references VDD/4 the same
+    way, with the opposite sign: a fractional supply step moves GR07's
+    frequency by minus the step in GR06's width. The 2026-08-04 dual run
+    sampled both on one loop, so ask what GR07 does while GR06 is in
+    each state. The 2026-10-08 burst is 26 minutes of GR06 alone, long
+    enough for the dwell time statistics.
+    """
+    import json
+
+    import numpy as np
+    from scipy.ndimage import median_filter, percentile_filter
+
+    n = 0
+
+    #- 26 minutes of GR06, 10 ms bins: the dwell times
+    burst = os.path.join(src, "jnwtemp-GR06-burst-20261008-085042.csv")
+    if os.path.isfile(burst):
+        d = np.genfromtxt(burst, delimiter=",", names=True)
+        temp = d["temp_c"]
+        dt = float(np.median(np.diff(d["t_rel_s"])))
+        #- the free state dominates, so a 70th percentile over 30 s
+        #- follows it and ignores the excursions
+        x = temp - percentile_filter(temp, 70, size=3001, mode="nearest")
+        s = np.convolve(x, np.ones(10) / 10, "same")
+        st = _two_state(s, -0.42, -0.2)
+        step = x[st == 1].mean() - x[st == 0].mean()
+        with open(os.path.join(DATA, "jnwtt_trap_dwell.csv"), "w",
+                  newline="") as fo:
+            w = csv.writer(fo)
+            w.writerow(["state", "dwell_s"])
+            for k, v in _dwells(st, dt):
+                w.writerow([int(k), f"{v:.4g}"])
+        print(f"  jnwtt_trap_dwell.csv (step {step * 1e3:.0f} mK, "
+              f"{np.median(temp):.1f} C)")
+        n += 1
+
+    #- GR06 and GR07 at the same time: the supply test
+    meta_path = os.path.join(src, "corr-dual-20260804-232543.meta.json")
+    if os.path.isfile(meta_path):
+        meta = json.load(open(meta_path))
+        stem = meta_path[: -len(".meta.json")]
+        t7 = np.fromfile(stem + ".gr07.u32", dtype=np.uint32).astype(float)
+        t6 = np.fromfile(stem + ".gr06.u32", dtype=np.uint32).astype(float)
+        ix = np.fromfile(stem + ".index.u32", dtype=np.uint32).astype(np.int64)
+        f7 = meta["gr07_periods_per_sample"] / (t7 * meta["gr07_tick_s"])
+        w6 = t6 * meta["gr06_tick_s"]
+        #- put GR06 on GR07's grid, chunk by chunk, with the recorded
+        #- pulse index (as jnw-tt-2025/meas/scripts/corr_analyse.py does)
+        y7, y6 = [], []
+        a7 = a6 = 0
+        for c in meta["chunks"]:
+            s7, s6 = f7[a7:a7 + c["n7"]], w6[a6:a6 + c["n6"]]
+            si = ix[a7:a7 + c["n7"]]
+            a7 += c["n7"]
+            a6 += c["n6"]
+            if s7.size != c["n7"] or s6.size != c["n6"]:
+                break
+            lo = np.concatenate(([0], si[:-1]))
+            keep = (si > lo) & (si <= s6.size)
+            cs = np.concatenate(([0.0], np.cumsum(s6)))
+            y6.append((cs[si[keep]] - cs[lo[keep]]) / (si[keep] - lo[keep]))
+            y7.append(s7[keep])
+        y6, y7 = np.concatenate(y6), np.concatenate(y7)
+        fs = float(np.median(f7)) / meta["gr07_periods_per_sample"]
+        #- fractional deviation from a 30 s running median
+        r6 = y6 / median_filter(y6, size=30001, mode="nearest") - 1
+        r7 = y7 / median_filter(y7, size=30001, mode="nearest") - 1
+        k = int(round(0.1 * fs))
+        s6 = np.convolve(r6, np.ones(k) / k, "same")
+        st = _two_state(s6, 900e-6, 300e-6)
+        g6 = r6[st == 1].mean() - r6[st == 0].mean()
+        g7 = r7[st == 1].mean() - r7[st == 0].mean()
+        #- the error bar from the data itself: the same step with the
+        #- GR06 label slid 20 s to 400 s against GR07, where nothing
+        #- real can line up
+        null = [r7[np.roll(st, sh) == 1].mean() - r7[np.roll(st, sh) == 0].mean()
+                for sh in range(int(20 * fs), int(400 * fs), int(5 * fs))]
+        with open(os.path.join(DATA, "jnwtt_trap_supply.csv"), "w",
+                  newline="") as fo:
+            w = csv.writer(fo)
+            w.writerow(["t_s", "GR06_ppm", "GR07_ppm"])
+            #- one minute, in 50 ms means
+            a, b, m = int(300 * fs), int(360 * fs), int(round(0.05 * fs))
+            for i in range(a, b - m, m):
+                w.writerow([f"{(i - a) / fs:.4g}",
+                            f"{r6[i:i + m].mean() * 1e6:.4g}",
+                            f"{r7[i:i + m].mean() * 1e6:.4g}"])
+        with open(os.path.join(DATA, "jnwtt_trap_supply_step.csv"), "w",
+                  newline="") as fo:
+            w = csv.writer(fo)
+            w.writerow(["GR06_step_ppm", "GR07_step_ppm", "GR07_null_rms_ppm",
+                        "transitions", "record_s"])
+            w.writerow([f"{g6 * 1e6:.4g}", f"{g7 * 1e6:.4g}",
+                        f"{np.std(null) * 1e6:.3g}",
+                        int(np.count_nonzero(np.diff(st))),
+                        f"{r6.size / fs:.4g}"])
+        print(f"  jnwtt_trap_supply.csv, jnwtt_trap_supply_step.csv "
+              f"(GR06 {g6 * 1e6:+.0f} ppm, GR07 {g7 * 1e6:+.1f} "
+              f"+- {np.std(null) * 1e6:.1f} ppm)")
+        n += 2
     return n
 
 

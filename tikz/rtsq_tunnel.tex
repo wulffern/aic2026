@@ -1,0 +1,110 @@
+\input{tikz/fig_header.tex}
+
+% Why a trap a few nanometres into the oxide has a time constant
+% anywhere from microseconds to months.
+%
+% Upper panel: the band diagram through gate, oxide and silicon in
+% strong inversion. The inversion electrons sit in the lowest subband
+% E_0 of the surface well (as in mos_2deg). Traps in the oxide with a
+% level near E_F can swap an electron with the channel.
+%
+% Lower panel: the channel wave function's probability density on a
+% log axis. In the silicon it is the familiar hump; in the oxide it is
+% an evanescent tail, exp(-2 kappa x), a straight line on a log axis.
+% With a 3.1 eV barrier and m_ox = 0.5 m_0, kappa = 6.4 /nm, so the
+% density falls a decade every 0.18 nm. The tunnelling rate goes as
+% the density at the trap, so tau = tau_0 exp(2 kappa x), with
+% tau_0 ~ 0.1 ns: 40 us at 1 nm, 13 s at 2 nm, two months at 3 nm.
+%
+% The energy scale of the upper panel is a cartoon; the lower panel's
+% slope in the oxide is computed (0.2 units per decade, 1.2 units per
+% nm), and the silicon hump is drawn, not computed.
+
+\begin{tikzpicture}[thick]
+
+  \def\nm{1.2}       % one nanometre, horizontally
+  \def\xg{-4.6}      % left edge of the gate
+  \def\xox{-3.6}     % gate/oxide interface (3 nm oxide)
+  \def\xmax{6.6}     % into the silicon
+
+  % ================= upper panel: the bands =================
+  \begin{scope}[shift={(0,1.4)}]
+    % gate metal, filled to its Fermi level
+    \fill[gray!25] (\xg,-0.3) rectangle (\xox,0.4);
+    \draw[gray!60] (\xg,-0.3) rectangle (\xox,4.8);
+    \draw[dashed] (\xg,0.4) -- (\xox,0.4);
+    \node[anchor=south, scale=0.85] at (-4.1,0.42) {$E_{F,gate}$};
+    \node[gray!50!black, anchor=center, scale=0.9] at (-4.1,3.2) {gate};
+
+    % the oxide: a tall barrier, tilted by the gate field
+    \fill[oxteal!45] (\xox,-0.3) rectangle (0,4.8);
+    \draw[gray!60] (\xox,-0.3) rectangle (0,4.8);
+    \draw[blue, very thick] (\xox,3.7) -- (0,4.4);
+    \node[oxteal!45!black, anchor=south, scale=0.9] at (-1.8,4.42) {oxide};
+    \draw[gray!70, <->] (0.15,0.6) -- (0.15,4.4);
+    \node[gray!50!black, anchor=west, scale=0.8] at (0.3,3.3) {3.1 eV};
+
+    % the silicon conduction band: a well at the surface
+    \draw[blue, very thick] (0,4.4) -- (0,0.6)
+      .. controls (1.6,1.55) and (3.4,2.2) .. (\xmax,2.4);
+    \node[blue, anchor=south east, scale=0.95] at (\xmax,2.42) {$E_C$};
+
+    % the lowest subband and the Fermi level
+    \draw[armygreen, dashed, very thick] (0,0.95) -- (2.9,0.95);
+    \node[armygreen, anchor=west, scale=0.9] at (2.95,0.95) {$E_0$};
+    \draw[dashed] (\xox,1.25) -- (\xmax,1.25);
+    \node[anchor=south east, scale=0.85] at (\xmax,1.27) {$E_F$};
+
+    % traps near E_F, at one and two nanometres
+    \draw[red, line width=2.2pt] ({-1*\nm-0.18},1.38) -- ({-1*\nm+0.18},1.38);
+    \draw[red, line width=2.2pt] ({-2*\nm-0.18},1.12) -- ({-2*\nm+0.18},1.12);
+    \node[red, anchor=south, scale=0.85] at ({-1.5*\nm},1.75) {traps near $E_F$};
+
+    % the electron tunnels from the channel into the trap
+    \draw[red, very thick, ->] (0.55,0.95) .. controls (0.1,1.05) and (-0.4,1.3) .. ({-1*\nm+0.22},1.38);
+    \node[red, anchor=north, scale=0.85] at (-0.45,0.85) {tunnel};
+  \end{scope}
+
+  % the two trap depths, carried down into the lower panel
+  \foreach \d in {1,2} {
+    \draw[red!50, thin, dashed] ({-\d*\nm},2.5) -- ({-\d*\nm},{-1.11*\d});
+  }
+
+  % ================= lower panel: log of the density =================
+  % 0.2 units per decade; the interface value is the reference (0)
+  \draw[gray!60] (\xox,-3.7) rectangle (0,0.8);
+  \fill[oxteal!20] (\xox,-3.7) rectangle (0,0.8);
+  \draw[line width=1.4pt] (0,-3.7) -- (0,0.8);
+
+  % the evanescent tail: -5.56 decades per nm, x in drawing units
+  \draw[blue, very thick] plot[domain=\xox:0, samples=2] (\x, {0.2*5.56*\x/\nm});
+  % the hump in the silicon, drawn
+  \draw[blue, very thick]
+    plot[domain=0:\xmax, samples=80]
+      (\x, {0.2*ln(1 + 330*(\x/\nm)^2*exp(-1.33*\x/\nm))/ln(10)});
+  \node[blue, anchor=south, scale=0.95] at (2.0,0.45) {$\log|\psi_0|^2$};
+
+  \node[blue!60!black, anchor=north west, scale=0.85, align=left] at (-3.5,0.7)
+    {straight on a log axis:\\a decade every 0.18 nm};
+
+  % tau at each depth
+  \foreach \d in {1,2,3} { \fill[red] ({-\d*\nm},{-1.112*\d}) circle (0.075); }
+  \node[red, anchor=west, scale=0.85] at ({-1*\nm+0.1},-1.2) {$\tau \approx 40\,\mu$s};
+  \node[red, anchor=west, scale=0.85] at ({-2*\nm+0.1},-2.3) {$\tau \approx 13$ s};
+  \node[red, anchor=west, scale=0.85] at ({-3*\nm+0.1},-3.4) {$\tau \approx$ 2 months};
+
+  % depth axis, both ways from the interface
+  \draw[gray!60] (\xox,-3.7) -- (\xmax,-3.7);
+  \foreach \k in {1,2,3} {
+    \draw[gray!60] ({-\k*\nm},-3.7) -- ({-\k*\nm},-3.84);
+    \node[gray!50!black, anchor=north, scale=0.8] at ({-\k*\nm},-3.86) {\k};
+  }
+  \foreach \k in {1,2,3,4,5} {
+    \draw[gray!60] ({\k*\nm},-3.7) -- ({\k*\nm},-3.84);
+    \node[gray!50!black, anchor=north, scale=0.8] at ({\k*\nm},-3.86) {\k};
+  }
+  \node[gray!50!black, anchor=north, scale=0.85] at (-1.8,-4.25) {into the oxide [nm]};
+  \node[gray!50!black, anchor=north, scale=0.85] at (3.3,-4.25) {into the silicon [nm]};
+
+\end{tikzpicture}
+\end{document}
