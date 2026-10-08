@@ -1,0 +1,161 @@
+/* @theme aic */
+
+/*
+ * The Marp theme for the course decks. One idea: the slide is a column,
+ * the title on top, and whatever is left over goes to the figure.
+ *
+ * Colours follow tikz/STYLE.md: black for text, one blue for structure,
+ * red only for what the slide is about.
+ */
+
+@import 'default';
+
+:root {
+  --ink: #1a1a1a;
+  --muted: #8a8a8a;
+  --rule: #e2e2e2;
+  --accent: #1f5fbf;
+  --red: #b3261e;
+}
+
+section {
+  width: 1280px;
+  height: 720px;
+  padding: 56px 72px 64px 72px;
+  background: #ffffff;
+  color: var(--ink);
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 28px;
+  line-height: 1.4;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+h1, h2, h3 {
+  color: var(--ink);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  margin: 0 0 0.6em 0;
+  line-height: 1.15;
+}
+h1 { font-size: 52px; }
+h2 { font-size: 44px; }
+h3 { font-size: 34px; }
+
+/* the title of an ordinary slide gets a thin rule under it */
+h1:first-child, h2:first-child {
+  padding-bottom: 0.25em;
+  border-bottom: 2px solid var(--rule);
+}
+
+p, ul, ol { margin: 0.35em 0; }
+li { margin: 0.2em 0; }
+li::marker { color: var(--accent); }
+strong { font-weight: 600; }
+a { color: var(--accent); text-decoration: none; }
+
+/* ---- figures: take the space that is left ---- */
+
+/* a paragraph that is only an image grows to fill the slide */
+p:has(> img:only-child) {
+  flex: 1 1 0;
+  min-height: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0.4em 0 0 0;
+}
+p > img:only-child {
+  height: 100%;
+  width: auto;
+  max-width: 100%;
+  object-fit: contain;
+}
+
+/* ---- maths ---- */
+
+mjx-container { font-size: 112%; }
+mjx-container[display="true"] {
+  margin: 0.45em 0 !important;
+}
+
+/* ---- tables ---- */
+
+table {
+  border-collapse: collapse;
+  font-size: 26px;
+  margin: 0.4em auto;
+}
+th, td {
+  border: none;
+  border-bottom: 1px solid var(--rule);
+  padding: 0.3em 0.8em;
+  background: transparent !important;
+}
+th {
+  border-bottom: 2px solid var(--ink);
+  font-weight: 600;
+}
+table tr:nth-child(2n) { background: transparent; }
+
+sub { font-size: 18px; color: var(--muted); vertical-align: baseline; }
+
+/* ---- columns: [.column] ---- */
+
+.columns {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 1fr;
+  gap: 48px;
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+/* ---- section slides: #[fit] ---- */
+
+section.section {
+  justify-content: center;
+}
+section.section h1, section.section h2 {
+  font-size: 88px;
+  border: none;
+  padding: 0;
+  color: var(--ink);
+}
+section.section h1::after, section.section h2::after {
+  content: "";
+  display: block;
+  width: 120px;
+  height: 6px;
+  margin-top: 0.35em;
+  background: var(--accent);
+}
+
+/* ---- the footer and page number ---- */
+
+footer, section::after {
+  font-size: 16px;
+  color: var(--muted);
+}
+footer { left: 72px; bottom: 24px; }
+section::after { right: 72px; bottom: 24px; }
+
+/* ---- a slide with a lot on it: one step smaller ---- */
+
+section.dense { font-size: 23px; }
+section.dense li { margin: 0.1em 0; }
+
+/* ---- the title slide ---- */
+
+section.title {
+  justify-content: center;
+  background: linear-gradient(90deg, var(--accent) 0 14px, #ffffff 14px);
+}
+section.title h1 {
+  font-size: 72px;
+  border: none;
+  padding: 0;
+  max-width: 900px;
+}
+section.title p { color: var(--muted); font-size: 26px; }
