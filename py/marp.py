@@ -4,7 +4,7 @@
 Prototype. The lectures stay Deckset source; this writes a Marp copy to
 .build/marp/<name>.md and, with --html or --pdf, runs marp-cli on it.
 
-    python3 py/marp.py lectures/lr1_transistor_noise.md --html --pdf
+    python3 py/marp.py lectures/lr0_noise.md --html --pdf
 
 What changes on the way:
 
