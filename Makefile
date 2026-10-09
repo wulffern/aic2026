@@ -25,7 +25,6 @@ FILES = l00_jayn \
 	lr0_ota \
 	lr0_passives \
 	lr0_noise \
-	lr1_transistor_noise \
 	lr0_tools \
 	lr0_tut1 \
 	l01_project \
